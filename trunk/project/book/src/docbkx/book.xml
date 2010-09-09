@@ -1,0 +1,356 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+  "/usr/share/xml/docbook/schema/dtd/4.4/docbookx.dtd" [
+        <!ENTITY version "1.0">
+        <!ENTITY product "gXML">
+        ]>
+<book>
+
+<title>&product; &version;</title>
+<subtitle>XQuery Data Model using Java Generics</subtitle>
+<bookinfo>
+    <authorgroup>
+        <author>
+            <personname>
+                <firstname>Amelia</firstname>
+                <othername>A.</othername>
+                <surname>Lewis</surname></personname>
+            <email>alewis@tibco.com</email>
+        </author>
+    </authorgroup>
+    <!--
+    <pubdate>2009-08-12</pubdate>
+    -->
+</bookinfo>
+
+<dedication>
+    <para>This is for David, who did the hard parts.  :-)</para>
+</dedication>
+
+<toc>
+</toc>
+
+<chapter>
+    <title>Getting Started Quickly</title>
+    
+    <para>To help new users and developers understand the &product; API and its
+application, this section describes a fairly trivial (though real) task that might
+be faced.  The task is more likely to be encountered as part of a larger application,
+in which case the problem solution would be complicated by interaction with other
+moving parts.  Here, we keep it simple, so that a developer new to &product; (and
+the XQuery Data Model) can quickly get up to speed.</para>
+    
+    <section>
+        <title>A Simple XML Processing Task</title>
+        <para />
+    </section>
+    <section>
+        <title>Existing &product; Bridges</title>
+        <para />
+    </section>
+    <section>
+        <title>Injecting the Bridge</title>
+        <para />
+    </section>
+    <section>
+        <title>Invoking the Processor</title>
+        <para />
+    </section>
+    <section>
+        <title>Navigating and Extracting Information</title>
+        
+        <para>For example:</para>
+        <programlisting language="java">
+package org.example.gxml;
+
+import org.gxml.base.*;
+
+public class Example
+{
+    public static void main(String[] args)
+    {
+        doSomething();
+    }
+}
+        </programlisting>
+    </section>
+</chapter>
+
+<chapter>
+    <title>&product; Overview</title>
+    <para></para>
+    <section>
+        <title>Design</title>
+        <para></para>
+    </section>
+    <section>
+        <title>Vision</title>
+        <para></para>
+    </section>
+    <section>
+        <title>Components</title>
+        <para></para>
+        <!--theme>
+            <title>Application</title>
+            <para></para>
+        </theme-->
+        <!--theme>
+            <title>Processing Context</title>
+            <para></para>
+        </theme-->
+        <!--theme>
+            <title>Bridges</title>
+            <para></para>
+        </theme-->
+        <!--theme>
+            <title>Data Model and Schema Model</title>
+            <para></para>
+        </theme-->
+    </section>
+    <section>
+        <title>W3C Technologies</title>
+        <para></para>
+        <!--theme>
+            <title>XQuery 1.0 and XPath 2.0 Data Model (XDM)</title>
+            <para></para>
+        </theme-->
+        <!--theme>
+            <title>XML Path Language (XPath) 2.0</title>
+            <para></para>
+        </theme-->
+        <!--theme>
+            <title>eXtensible Stylesheet Language: Transformations (XSLT) 2.0</title>
+            <para></para>
+        </theme-->
+        <!--theme>
+            <title>XQuery 1.0</title>
+            <para></para>
+        </theme-->
+        <!--theme>
+            <title>W3C XML Schema</title>
+            <para></para>
+        </theme-->
+        <!--theme>
+            <title>Validation</title>
+            <para></para>
+        </theme-->
+        <!--theme>
+            <title>Serialization</title>
+            <para></para>
+        </theme-->
+    </section>
+    <section>
+        <title>Performance</title>
+        <para></para>
+    </section>
+</chapter>
+<chapter>
+<!-- this chapter probably belongs in recipes. -->
+    <title>Developing &product; Applications</title>
+    <para></para>
+    <section>
+        <title>Handles</title>
+        <para></para>
+    </section>
+    <section>
+        <title>Bridges</title>
+        <para></para>
+    </section>
+    <section>
+        <title>Exceptions</title>
+        <para></para>
+    </section>
+    <section>
+        <title>Basic Application Steps</title>
+        <para>
+            This section illustrates one way of using &product;.
+            All &product; processors, including custom processing, run within a ProcessingContext instance that
+            provides necessary meta data. A ProcessingContext instance in turn is created through a application instance.
+            It is your responsibility to write a class that provides an instance of application. The best way
+            to do this is to write an abstract class that implements all but the newProcessingContext
+            method of application. This approach will allow you to write your application generically and then
+            inject the choice of parameterization as late as possible for maximum code reuse and flexibility.
+        </para>
+        <para>
+            This, of course, is not the only way to use &product;. An existing architecture may
+            force the choice of parameterization and create silos of XML processing. The degree of
+            integration in this case may be less that is possible with a homogeneous solution.
+        </para>
+        <para>
+            Whatever the approach, the best way to use &product; is to write generic, parameterized,
+            XML processing code whenever possible.
+        </para>
+        <!--theme>
+            <title>Implementing GxApplication</title>
+            <para></para>
+            <code>src/org/gxml/book/common/SampleApp.java,0,1024, ,&syntax;,&numbers;</code>
+        </theme-->
+        <!--theme>
+            <title>Implementing GxCatalog</title>
+            <para>
+                A catalog provides the means to isolate you application from the physical location of file resources.
+                Writing a catalog simply means implementing the GxCatalog interface so that it maps form the
+                logical locations specified in code or XML resources to the corresponding physical location.
+            </para>
+            <code>src/org/gxml/book/common/SampleCatalog.java,0,1024, ,&syntax;,&numbers;</code>
+        </theme-->
+        <!--theme>
+            <title>Implementing GxResolver</title>
+            <para>
+                A resolver takes a base-uri and an href and uses these two values to return a stream.
+            </para>
+            <code>src/org/gxml/book/common/SampleResolver.java,0,1024, ,&syntax;,&numbers;</code>
+        </theme-->
+        <!--theme>
+            <title>Injecting DOM</title>
+            <para>
+                The final task in providing a concrete GxApplication class is to implement the newProcessingContext
+                method on a derived class. This is where you get to choose the tree, atomic values, meta data and
+                symbols that your application will use. In many cases you will use an off-the-shelf processing
+                context class, but it is also possible to assemble your own variety or build one entirely from
+                scratch.
+            </para>
+            <para>
+                If you are going to use &product; with org.w3c.dom.Node, you still have choices for the atomic
+                values that your system will use as well as the meta data implementation. This example uses atomic
+                values that are mostly Java Wrapper types and the reference sequence type implementation, SmSequenceType.
+            </para>
+            <code>src/org/gxml/book/parsing/DomValidatingParsingSample.java,0,1024, ,&syntax;,&numbers;</code>
+        </theme-->
+        <!-- The Classic (Cx) Reference implementation will be replaced by something much faster -->
+        <!--theme>
+            <title>Injecting the Reference Implementation</title>
+            <para>
+                The reference implementation is designed with compliance foremost. It will still perform better than
+                a DOM implementation in most cases. Using the reference implementation is recommended until
+                more performant and equally compliant implementations become available. You should, of course, write
+                your XML processing code generically so as to be able to adopt a new implementation!
+            </para>
+            <code>src/org/gxml/book/parsing/CxValidatingParsingSample.java,0,1024, ,&syntax;,&numbers;</code>
+        </theme-->
+    </section>
+</chapter>
+<chapter>
+    <title>&product; Recipes</title>
+    <para>This chapter provides recipies for perfoming common programming tasks.</para>
+    <section>
+        <title>Parsing</title>
+        <para></para>
+        <!--theme>
+            <title>Parsing a Character Stream and a Byte Stream</title>
+            <para></para>
+            <code>src/org/gxml/book/parsing/BookIntroParsingSample.java,0,1024, ,&syntax;,&numbers;</code>
+        </theme-->
+        <!--theme>
+            <title>Constructing a Data Model Tree Programmatically</title>
+            <para>This example demonstrates constructing a tree directly using the fragment builder.</para>
+            <code>src/org/gxml/book/snoopy/SnoopySample.java,0,1024, ,&syntax;,&numbers;</code>
+        </theme-->
+        <!--theme>
+            <title>Validating</title>
+            <para></para>
+            <code>src/org/gxml/book/parsing/BookValidatingParsingSample.java,0,1024, ,&syntax;,&numbers;</code>
+        </theme-->
+        <!--theme>
+            <title>Navigation</title>
+            <para></para>
+            <code>src/org/gxml/book/parsing/BookNavigationParsingSample.java,0,1024, ,&syntax;,&numbers;</code>
+        </theme-->
+        <!--theme>
+            <title>Mutation</title>
+            <para></para>
+            <code>src/org/gxml/book/mutable/MutableSample.java,0,1024, ,&syntax;,&numbers;</code>
+        </theme-->
+    </section>
+    <section>
+        <title>Serialization</title>
+        <para></para>
+        <!--theme>
+            <title>Introduction</title>
+            <para></para>
+            <code>src/org/gxml/book/serialization/IntroSerializationSample.java,0,1024, ,&syntax;,&numbers;</code>
+        </theme-->
+    </section>
+    <section>
+        <title>XPath</title>
+        <para></para>
+        <!--theme>
+            <title>Basic</title>
+            <para></para>
+            <code>src/org/gxml/book/xpath/XPathSample.java,0,1024, ,&syntax;,&numbers;</code>
+        </theme-->
+    </section>
+    <section>
+        <title>XSLT</title>
+        <para></para>
+        <!--theme>
+            <title>Introduction</title>
+            <para></para>
+            <code>src/org/gxml/book/xslt/XSLTSample.java,0,1024, ,&syntax;,&numbers;</code>
+        </theme-->
+    </section>
+    <section>
+        <title>XQuery</title>
+        <para></para>
+        <!--theme>
+            <title>Basic</title>
+            <para></para>
+            <code>src/org/gxml/book/xquery/XQuerySample.java,0,1024, ,&syntax;,&numbers;</code>
+        </theme-->
+    </section>
+    <section>
+        <title>Validation</title>
+        <para></para>
+        <!--theme>
+            <title>Basic</title>
+            <para></para>
+            <code>src/org/gxml/book/validation/ValidationSample.java,0,1024, ,&syntax;,&numbers;</code>
+        </theme-->
+    </section>
+</chapter>
+
+<chapter>
+    <title>Building &product; Bridges</title>
+    <section>
+        <title>Analyzing the Tree Model</title>
+        <para />
+    </section>
+    <section>
+        <title>Parameterizing</title>
+        <para />
+    </section>
+    <section>
+        <title>ProcessingContext</title>
+        <para></para>
+    </section>
+    <section>
+        <title>Model and Cursor</title>
+        <para></para>
+    </section>
+    <section>
+        <title>Builders</title>
+        <para />
+    </section>
+    <section>
+        <title>Schema Awareness</title>
+        <para />
+    </section>
+</chapter>
+
+<appendix>
+    <title>&product; API Reference</title>
+    <section>
+        <title></title>
+        <para></para>
+    </section>
+</appendix>
+
+<appendix>
+    <title>Refactoring Processors for &product;</title>
+    <section>
+        <title />
+        <para />
+    </section>
+</appendix>
+
+</book>
