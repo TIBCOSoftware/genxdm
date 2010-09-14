@@ -49,6 +49,8 @@ Mailing list: gxml-dev *at* yahooogroups *dot* com
 
 [http://opensourcegxml.wordpress.com/ Developers' blog] (Wordpress)
 
+[http://www.balisage.net/Proceedings/vol5/html/Lewis01/BalisageVol5-Lewis01.html Paper presented at Balisage 2010]
+
 <wiki:comment>This is at the bottom, so that we have the logo without annoying the
 life out of everyone trying to actually find information</wiki:comment>
 http://gxml.googlecode.com/svn/trunk/project/images/gxml.png
