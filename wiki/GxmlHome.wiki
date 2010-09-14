@@ -1,0 +1,40 @@
+#summary Front page for gXML Open Source Project's wiki
+#sidebar TableOfContents
+
+= gXML =
+
+# copy and paste from old site
+
+gXML enables applications to write code that uses and manipulates XML trees
+without being tied to a particular XML tree representation like DOM, DOM4J,
+AXIOM, or any other. It also prods developers towards an immutable view of XML
+trees, which will make it easier and faster to work with XML across multiple
+cores and multiple processors.
+
+gXML adds support for critical new XML specifications. Specifically, gXML
+supports the XQuery Data Model, the foundation of XQuery 1.0, XPath 2.0, and
+XSLT 2.0, and an area of active specification development at W3C.
+
+== People ==
+
+(in alphabetical order: surname, given name)
+
+Project owners:
+
+ * Joe Baysdon
+ * Eric Johnson
+ * Amelia Lewis
+
+You can contact one of the above to be added to one of the below:
+
+Committers:
+
+Contributors:
+
+== Resources ==
+
+If you're here, you ought to be able to find the code. :-)
+
+Mailing list: gxml-dev *at* yahooogroups *dot* com
+
+[http://opensourcegxml.wordpress.com/ Developers' blog] (Wordpress)

@@ -1,0 +1,3 @@
+#summary The preferred sidebar
+
+ * [GxmlHome gXML Open Source Wiki Home]
