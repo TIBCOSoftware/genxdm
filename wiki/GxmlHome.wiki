@@ -3,8 +3,6 @@
 
 = gXML =
 
-http://gxml.googlecode.com/svn/trunk/project/images/gxml.png
-
 <wiki:comment>
 copy and paste from old site
 
@@ -50,3 +48,7 @@ If you're here, you ought to be able to find the code. :-)
 Mailing list: gxml-dev *at* yahooogroups *dot* com
 
 [http://opensourcegxml.wordpress.com/ Developers' blog] (Wordpress)
+
+<wiki:comment>This is at the bottom, so that we have the logo without annoying the
+life out of everyone trying to actually find information</wiki:comment>
+http://gxml.googlecode.com/svn/trunk/project/images/gxml.png
