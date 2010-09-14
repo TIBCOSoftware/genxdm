@@ -3,7 +3,7 @@
 
 = gXML =
 
-http://gxml.googlecode.com/trunk/project/images/gxml.svg
+http://gxml.googlecode.com/svn/trunk/project/images/gxml.png
 
 <wiki:comment>
 copy and paste from old site
