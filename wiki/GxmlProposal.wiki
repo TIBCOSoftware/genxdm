@@ -10,7 +10,7 @@ we'll consider returning, if we build more momentum around the project).
 
 == Contents ==
 
-<wiki:toc max_depth="1" />
+<wiki:toc max_depth="3" />
 
 == Abstract ==
 
