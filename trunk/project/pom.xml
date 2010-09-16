@@ -34,11 +34,35 @@
     developers towards an immutable view of XML trees, which will make it
     easier and faster to work with XML across multiple cores and multiple
     processors.</description>
+    <licenses>
+      <license>
+        <name>Apache 2</name>
+        <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        <distribution>repo</distribution>
+        <comments>A business-friendly OSS license</comments>
+      </license>
+    </licenses>
 
     <issueManagement>
         <system>Google Code</system>
         <url>http://code.google.com/p/gxml/issues/list</url>
     </issueManagement>
+
+    <developers>
+        <developer>
+            <id>aaletal</id>
+            <name>Amy!</name>
+            <roles>
+                <role>bottle-washer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <!--contributors>
+        <contributor>
+            <name></name>
+        </contributor>
+    </contributors-->
 
     <mailingLists>
         <mailingList>
@@ -52,6 +76,22 @@
         <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project</developerConnection>
         <url>http://gxml.googlecode.com/svn/trunk/project</url>
     </scm>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>changelog-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>taglist-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
 
      <modules> 
         <module>api</module> <!-- api --> 
