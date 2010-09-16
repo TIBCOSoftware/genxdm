@@ -30,11 +30,9 @@
     <modules>
         <module>api</module> <!-- api -->
         <module>bridge</module> <!-- container -->
-        <module>book</module>
         <module>processor</module> <!-- container -->
         <module>xpath</module> <!-- api -->
-        <module>samples</module>
-        <module>performance</module>
+        <module>support</module> <!-- container -->
     </modules>
 
     <build>
