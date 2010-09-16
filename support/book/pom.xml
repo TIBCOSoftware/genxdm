@@ -20,7 +20,7 @@
     
     <parent>
         <groupId>org.gxml</groupId>
-        <artifactId>project</artifactId>
+        <artifactId>support</artifactId>
         <version>1.0.0</version>
     </parent>
     
