@@ -2,7 +2,7 @@
 <project name="gXML">
   <bannerLeft>
     <name>gXML</name>
-    <src>http://gxml.googlecode.com/svn/trunk/project/support/images/gxml-small.png</src>
+    <src>images/gxml-small.png</src>
     <href>http://gxml.googlecode.com/</href>
   </bannerLeft>
   <bannerRight>
