@@ -28,7 +28,13 @@
     <artifactId>proc-w3cxs</artifactId>
     <version>1.0.0</version>
     <name>gXML W3C XML Schema Parser</name>
-    
+
+    <scm>
+        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/processor/w3c.xs</connection>
+        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/processor/w3c.xs</developerConnection>
+        <url>http://gxml.googlecode.com/svn/trunk/project/processor/w3c.xs</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>org.gxml</groupId>

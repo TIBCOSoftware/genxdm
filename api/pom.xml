@@ -49,6 +49,12 @@
         </plugins>
     </reporting>
 
+    <scm>
+        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/api</connection>
+        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/api</developerConnection>
+        <url>http://gxml.googlecode.com/svn/trunk/project/api</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>stax</groupId>

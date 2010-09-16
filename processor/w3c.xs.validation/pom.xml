@@ -28,13 +28,19 @@
     <artifactId>proc-w3cxs-val</artifactId>
     <version>1.0.0</version>
     <name>gXML W3C XML Schema Validator</name>
-    
+
+    <scm>
+        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/processor/w3c.xs.validation</connection>
+        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/processor/w3c.xs.validation</developerConnection>
+        <url>http://gxml.googlecode.com/svn/trunk/project/processor/w3c.xs.validation</url>
+    </scm>
+
     <dependencies>
-    	<dependency>
-    		<groupId>org.gxml</groupId>
-    		<artifactId>gxml-api</artifactId>
-    		<version>[,2)</version>
-    	</dependency>
+        <dependency>
+            <groupId>org.gxml</groupId>
+            <artifactId>gxml-api</artifactId>
+            <version>[,2)</version>
+        </dependency>
         <dependency>
             <groupId>org.gxml</groupId>
             <artifactId>proc-w3cxs</artifactId>

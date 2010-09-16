@@ -28,7 +28,14 @@
     <artifactId>proc-iotest</artifactId>
     <version>1.0.0</version>
     <name>gXML Input/Output Processor Tests</name>
-    
+
+    <scm>
+        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/processor/iotest</connection>
+        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/processor/iotest</developerConnection>
+        <url>http://gxml.googlecode.com/svn/trunk/project/processor/iotest</url>
+    </scm>
+
+
     <dependencies>
         <dependency>
             <groupId>org.gxml</groupId>
