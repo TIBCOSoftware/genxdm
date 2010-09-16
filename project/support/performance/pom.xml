@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<!-- Copyright (c) 2010 TIBCO Software Inc.
-		
-		Licensed under the Apache License, Version 2.0 (the "License");
- 		you may not use this file except in compliance with the License.
- 		You may obtain a copy of the License at
+    <!-- Copyright (c) 2010 TIBCO Software Inc.
+        
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
 
-			http://www.apache.org/licenses/LICENSE-2.0
+            http://www.apache.org/licenses/LICENSE-2.0
 
-		Unless required by applicable law or agreed to in writing, software
-		distributed under the License is distributed on an "AS IS" BASIS,
-		WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-		See the License for the specific language governing permissions and
-		limitations under the License.
-	
-	-->
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+    
+    -->
   <properties>
   </properties>
   <parent>
-    <artifactId>project</artifactId>
+    <artifactId>support</artifactId>
     <groupId>org.gxml</groupId>
     <version>1.0.0</version>
   </parent>
@@ -30,40 +30,40 @@
   <name>gXML Performance Evaluation</name>
   
   <dependencies>
-	<!--dependency>
-		<groupId>org.gxml</groupId>
-		<artifactId>gxml-api</artifactId>
-		<version>[,2]</version>
-	</dependency-->
-	<dependency>
-		<groupId>org.gxml</groupId>
-		<artifactId>bridge-dom</artifactId>
-		<version>[,2)</version>
-	</dependency>
-	<dependency>
-		<groupId>org.gxml</groupId>
-		<artifactId>bridge-cx</artifactId>
-		<version>[,2)</version>
-	</dependency>
+    <!--dependency>
+        <groupId>org.gxml</groupId>
+        <artifactId>gxml-api</artifactId>
+        <version>[,2]</version>
+    </dependency-->
+    <dependency>
+        <groupId>org.gxml</groupId>
+        <artifactId>bridge-dom</artifactId>
+        <version>[,2)</version>
+    </dependency>
+    <dependency>
+        <groupId>org.gxml</groupId>
+        <artifactId>bridge-cx</artifactId>
+        <version>[,2)</version>
+    </dependency>
     <dependency>
         <groupId>org.apache.ws.commons.axiom</groupId>
         <artifactId>axiom-impl</artifactId>
         <version>[1.2.8,2.0.0)</version>
     </dependency>
-	<dependency>
-		<groupId>org.gxml</groupId>
-		<artifactId>bridge-axiom</artifactId>
-		<version>[,2]</version>
-	</dependency>
-	<dependency>
-		<groupId>org.gxml</groupId>
-		<artifactId>proc-w3cxs-val</artifactId>
-		<version>[,2]</version>
-	</dependency>
-	<dependency>
-	  <groupId>xerces</groupId>
-	  <artifactId>xercesImpl</artifactId>
-	  <version>[2,3)</version>
-	</dependency>  
+    <dependency>
+        <groupId>org.gxml</groupId>
+        <artifactId>bridge-axiom</artifactId>
+        <version>[,2]</version>
+    </dependency>
+    <dependency>
+        <groupId>org.gxml</groupId>
+        <artifactId>proc-w3cxs-val</artifactId>
+        <version>[,2]</version>
+    </dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>[2,3)</version>
+    </dependency>  
 </dependencies>
 </project>
