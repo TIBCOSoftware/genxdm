@@ -28,7 +28,13 @@
     <artifactId>proc-convert</artifactId>
     <version>1.0.0</version>
     <name>gXML Conversion Processor</name>
-    
+
+    <scm>
+        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/processor/convert</connection>
+        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/processor/convert</developerConnection>
+        <url>http://gxml.googlecode.com/svn/trunk/project/processor/convert</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>org.gxml</groupId>

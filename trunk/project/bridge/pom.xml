@@ -27,7 +27,13 @@
     <packaging>pom</packaging>
     <version>1.0.0</version>
     <name>gXML Bridges</name>
-  
+
+    <scm>
+        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/bridge</connection>
+        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/bridge</developerConnection>
+        <url>http://gxml.googlecode.com/svn/trunk/project/bridge</url>
+    </scm>
+
     <modules>
         <module>bridgekit</module>
         <module>bridgetest</module>

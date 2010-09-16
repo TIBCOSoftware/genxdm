@@ -28,7 +28,13 @@
   <artifactId>samples</artifactId>
   <version>1.0.0</version>
   <name>gXML Samples</name>
-  
+
+  <scm>
+      <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/support/samples</connection>
+      <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/support/samples</developerConnection>
+      <url>http://gxml.googlecode.com/svn/trunk/project/support/samples</url>
+  </scm>
+
   <dependencies>
     <dependency>
         <groupId>org.gxml</groupId>

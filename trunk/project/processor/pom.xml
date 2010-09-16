@@ -27,7 +27,13 @@
     <packaging>pom</packaging>
     <version>1.0.0</version>
     <name>gXML Processors</name>
-  
+
+    <scm>
+        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/processor</connection>
+        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/processor</developerConnection>
+        <url>http://gxml.googlecode.com/svn/trunk/project/processor</url>
+    </scm>
+
     <modules>
         <module>convert</module>
         <module>input-output</module>

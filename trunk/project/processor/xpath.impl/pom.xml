@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
 <project>
-	<!--
-	
-		Copyright (c) 2010 TIBCO Software Inc.
-		
-		Licensed under the Apache License, Version 2.0 (the "License");
- 		you may not use this file except in compliance with the License.
- 		You may obtain a copy of the License at
+    <!--
+    
+        Copyright (c) 2010 TIBCO Software Inc.
+        
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
 
-			http://www.apache.org/licenses/LICENSE-2.0
+            http://www.apache.org/licenses/LICENSE-2.0
 
-		Unless required by applicable law or agreed to in writing, software
-		distributed under the License is distributed on an "AS IS" BASIS,
-		WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-		See the License for the specific language governing permissions and
-		limitations under the License.
-	
-	-->
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+    
+    -->
     <properties>
     </properties>
     
@@ -30,7 +30,13 @@
     <artifactId>proc-xpath</artifactId>
     <version>1.0.0</version>
     <name>gXML XPath 1.0 Implementation</name>
-    
+
+    <scm>
+        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/processor/xpath.impl</connection>
+        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/processor/xpath.impl</developerConnection>
+        <url>http://gxml.googlecode.com/svn/trunk/project/processor/xpath.impl</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>org.gxml</groupId>
@@ -38,9 +44,9 @@
             <version>[,2)</version>
         </dependency>
         <dependency>
-        	<groupId>org.gxml</groupId>
-        	<artifactId>bridgekit</artifactId>
-        	<version>[,2)</version>
+            <groupId>org.gxml</groupId>
+            <artifactId>bridgekit</artifactId>
+            <version>[,2)</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -50,17 +56,17 @@
     </dependencies>
     <url>http://developer.tibco.com/gxml/default.jsp</url>
     <build>
-    	<resources>
-    		<resource>
-    			<targetPath>META-INF</targetPath>
-    			<directory>${basedir}</directory>
-    			<includes>
-    				<include>copying.txt</include>
-    				<include>copyingjc.txt</include>
-    				<include>NOTICE</include>
-    				<include>LICENSE.txt</include>
-    			</includes>
-    		</resource>
-    	</resources>
+        <resources>
+            <resource>
+                <targetPath>META-INF</targetPath>
+                <directory>${basedir}</directory>
+                <includes>
+                    <include>copying.txt</include>
+                    <include>copyingjc.txt</include>
+                    <include>NOTICE</include>
+                    <include>LICENSE.txt</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 </project>
