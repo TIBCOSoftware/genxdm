@@ -25,14 +25,40 @@
     <artifactId>project</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
+    
     <name>gXML</name>
-  
-    <modules>
-        <module>api</module> <!-- api -->
-        <module>bridge</module> <!-- container -->
+    <url>http://gxml.googlecode.com/</url>
+    <description>gXML enables applications to write code that uses and
+    manipulates XML trees without being tied to a particular XML tree
+    representation like DOM, DOM4J, AXIOM, or any other. It also prods
+    developers towards an immutable view of XML trees, which will make it
+    easier and faster to work with XML across multiple cores and multiple
+    processors.</description>
+
+    <issueManagement>
+        <system>Google Code</system>
+        <url>http://code.google.com/p/gxml/issues/list</url>
+    </issueManagement>
+
+    <mailingLists>
+        <mailingList>
+            <name>gXML Developers Mailing List</name>
+            <post>gxml-dev@yahoogroups.com</post>
+        </mailingList>
+    </mailingLists>
+
+    <scm>
+        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project</connection>
+        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project</developerConnection>
+        <url>http://gxml.googlecode.com/svn/trunk/project</url>
+    </scm>
+
+     <modules> 
+        <module>api</module> <!-- api --> 
+        <module>bridge</module> <!-- container --> 
         <module>processor</module> <!-- container -->
-        <module>xpath</module> <!-- api -->
-        <module>support</module> <!-- container -->
+        <module>xpath</module> <!-- api --> 
+        <module>support</module> <!-- container --> 
     </modules>
 
     <build>
