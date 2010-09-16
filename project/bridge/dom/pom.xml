@@ -28,7 +28,13 @@
     <artifactId>bridge-dom</artifactId>
     <version>1.0.0</version>
     <name>gXML Document Object Model Bridge</name>
-    
+
+    <scm>
+        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/bridge/dom</connection>
+        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/bridge/dom</developerConnection>
+        <url>http://gxml.googlecode.com/svn/trunk/project/bridge/dom</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>org.gxml</groupId>
@@ -36,9 +42,9 @@
             <version>[,2)</version>
         </dependency>
         <dependency>
-        	<groupId>org.gxml</groupId>
-        	<artifactId>proc-io</artifactId>
-        	<version>[,2)</version>
+            <groupId>org.gxml</groupId>
+            <artifactId>proc-io</artifactId>
+            <version>[,2)</version>
         </dependency>
         <dependency>
             <groupId>org.gxml</groupId>
@@ -47,10 +53,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-        	<groupId>org.gxml</groupId>
-        	<artifactId>proc-iotest</artifactId>
-        	<version>[,2)</version>
-        	<scope>test</scope>
+            <groupId>org.gxml</groupId>
+            <artifactId>proc-iotest</artifactId>
+            <version>[,2)</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.gxml</groupId>

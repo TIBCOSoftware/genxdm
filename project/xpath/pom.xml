@@ -28,7 +28,13 @@
     <artifactId>gxml-xpath-api</artifactId>
     <version>1.0.0</version>
     <name>gXML XPath 1.0 API</name>
-    
+
+    <scm>
+        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/xpath</connection>
+        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/xpath</developerConnection>
+        <url>http://gxml.googlecode.com/svn/trunk/project/xpath</url>
+    </scm>
+
     <organization>
     </organization>
     <dependencies>

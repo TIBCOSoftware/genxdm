@@ -28,7 +28,13 @@
   <artifactId>performance</artifactId>
   <version>1.0.0</version>
   <name>gXML Performance Evaluation</name>
-  
+
+  <scm>
+      <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/support/performance</connection>
+      <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/support/performance</developerConnection>
+      <url>http://gxml.googlecode.com/svn/trunk/project/support/performance</url>
+  </scm>
+
   <dependencies>
     <!--dependency>
         <groupId>org.gxml</groupId>
