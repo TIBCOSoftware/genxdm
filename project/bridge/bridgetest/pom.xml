@@ -29,6 +29,12 @@
     <version>1.0.0</version>
     <name>gXML Bridge Test Kit</name>
     
+    <scm>
+        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/bridge/bridgetest</connection>
+        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/bridge/bridgetest</developerConnection>
+        <url>http://gxml.googlecode.com/svn/trunk/project/bridge/bridgetest</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>org.gxml</groupId>
@@ -36,9 +42,9 @@
             <version>[,2)</version>
         </dependency>
         <dependency>
-        	<groupId>org.gxml</groupId>
-        	<artifactId>bridgekit</artifactId>
-        	<version>[,2)</version>
+            <groupId>org.gxml</groupId>
+            <artifactId>bridgekit</artifactId>
+            <version>[,2)</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

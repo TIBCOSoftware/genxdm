@@ -29,6 +29,12 @@
     <version>1.0.0</version>
     <name>gXML Bridge Kit</name>
     
+    <scm>
+        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/bridge/bridgekit</connection>
+        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/bridge/bridgekit</developerConnection>
+        <url>http://gxml.googlecode.com/svn/trunk/project/bridge/bridgekit</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>org.gxml</groupId>

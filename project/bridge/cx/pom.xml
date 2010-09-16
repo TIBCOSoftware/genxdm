@@ -29,6 +29,12 @@
     <version>1.0.0</version>
     <name>gXML Cx (reference) Bridge</name>
 
+    <scm>
+        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/bridge/cx</connection>
+        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/bridge/cx</developerConnection>
+        <url>http://gxml.googlecode.com/svn/trunk/project/bridge/cx</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>org.gxml</groupId>

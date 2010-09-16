@@ -28,7 +28,13 @@
     <artifactId>proc-io</artifactId>
     <version>1.0.0</version>
     <name>gXML Input/Output Processor</name>
-    
+
+    <scm>
+        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/processor/input-output</connection>
+        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/processor/input-output</developerConnection>
+        <url>http://gxml.googlecode.com/svn/trunk/project/processor/input-output</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>org.gxml</groupId>

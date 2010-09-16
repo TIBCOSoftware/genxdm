@@ -27,7 +27,13 @@
     <packaging>pom</packaging>
     <version>1.0.0</version>
     <name>gXML Support</name>
-  
+
+    <scm>
+        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/support</connection>
+        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/support</developerConnection>
+        <url>http://gxml.googlecode.com/svn/trunk/project/support</url>
+    </scm>
+
     <modules>
         <module>book</module>
         <module>samples</module>
