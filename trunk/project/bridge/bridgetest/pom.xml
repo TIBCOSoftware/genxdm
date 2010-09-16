@@ -28,7 +28,26 @@
     <artifactId>bridgetest</artifactId>
     <version>1.0.0</version>
     <name>gXML Bridge Test Kit</name>
-    
+
+    <reporting>
+        <plugins>
+            <!--plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jxr-maven-plugin</artifactId>
+            </plugin-->
+            <plugin>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
+
     <scm>
         <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/bridge/bridgetest</connection>
         <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/bridge/bridgetest</developerConnection>

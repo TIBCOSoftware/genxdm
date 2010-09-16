@@ -32,15 +32,15 @@
     <description>gXML API</description>
     <reporting>
         <plugins>
-            <plugin>
+            <!--plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jxr-maven-plugin</artifactId>
-            </plugin>
+            </plugin-->
             <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
