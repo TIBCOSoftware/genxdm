@@ -88,9 +88,9 @@
 
     <reporting>
         <plugins>
-            <plugin>
+            <!--plugin>
                 <artifactId>maven-changelog-plugin</artifactId>
-            </plugin>
+            </plugin-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>taglist-maven-plugin</artifactId>
