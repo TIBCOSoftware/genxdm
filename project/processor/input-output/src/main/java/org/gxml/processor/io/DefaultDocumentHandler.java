@@ -174,6 +174,7 @@ public class DefaultDocumentHandler<N>
             ContentHandlerOnXmlStreamWriter adapter = new ContentHandlerOnXmlStreamWriter(stream);
             //ContentWriter adapter = new ContentWriter(characterStream);
             model.stream(source, true, adapter);
+            stream.flush();
         }
         catch (XMLStreamException xse)
         {
