@@ -83,11 +83,20 @@ public interface NodeInformer<N>
 	 * 
 	 * <br/>
 	 * 
+	 * <p>
 	 * TEXT, COMMENT, and DOCUMENT nodes return <code>null</code>; they have no name.
+	 * </p>
 	 * 
-	 * Other node types should never return <code>null</code>.
+	 * <p>Other node types should never return <code>null</code>.  Note that in the
+	 * case of namespace nodes, the <code>dm:node-name</code> accessor indicates that
+	 * it returns an empty sequence in the case of an "empty" prefix (as in
+	 * <code>xmlns=...</code>).  This API, however, dictates that an empty string
+	 * will be returned in that particular case.</p>
+	 *  
      * @param node
      *            The node for which the node local-name is required.
+     *            
+     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name
      */
     String getLocalName(N node);
 
