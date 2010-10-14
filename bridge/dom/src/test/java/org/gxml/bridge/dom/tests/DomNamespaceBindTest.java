@@ -15,7 +15,7 @@
  */
 package org.gxml.bridge.dom.tests;
 
-import org.gxml.bridgetest.NamespaceBindTestBase;
+import org.genxdm.bridgetest.NamespaceBindTestBase;
 import org.gxml.bridge.dom.DomProcessingContext;
 import org.w3c.dom.Node;
 

@@ -15,7 +15,7 @@
  */
 package org.gxml.bridge.dom.tests;
 
-import org.gxml.bridgetest.ChildAxisTestBase;
+import org.genxdm.bridgetest.ChildAxisTestBase;
 import org.gxml.bridge.dom.DomProcessingContext;
 import org.w3c.dom.Node;
 
