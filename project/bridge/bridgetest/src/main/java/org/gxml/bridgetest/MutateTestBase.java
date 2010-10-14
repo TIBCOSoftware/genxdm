@@ -27,10 +27,10 @@ import org.genxdm.base.ProcessingContext;
 import org.genxdm.base.io.ContentHandler;
 import org.genxdm.base.mutable.MutableModel;
 import org.genxdm.base.mutable.NodeFactory;
+import org.genxdm.bridgekit.ProcessingContextFactory;
+import org.genxdm.bridgekit.tree.Ordering;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.names.NameSource;
-import org.gxml.bridgekit.ProcessingContextFactory;
-import org.gxml.bridgekit.tree.Ordering;
 
 public abstract class MutateTestBase<N> 
     extends TestCase

@@ -23,7 +23,6 @@ import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
 
-import org.gxml.bridgekit.ProcessingContextFactory;
 import org.genxdm.xpath.v10.XPathCompiler;
 import org.genxdm.xpath.v10.XPathToolkit;
 import org.genxdm.xpath.v10.XPathToolkitFactory;
@@ -46,6 +45,7 @@ import org.genxdm.Resolver;
 import org.genxdm.base.Model;
 import org.genxdm.base.ProcessingContext;
 import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.bridgekit.ProcessingContextFactory;
 import org.genxdm.processor.xpath.v10.XPathToolkitFactoryImpl;
 
 public abstract class XPathTestBase<N> 

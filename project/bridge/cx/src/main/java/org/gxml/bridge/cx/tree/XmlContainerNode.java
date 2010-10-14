@@ -18,10 +18,10 @@ package org.gxml.bridge.cx.tree;
 import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
+import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NamespaceBinding;
-import org.gxml.bridgekit.atoms.XmlAtom;
-import org.gxml.bridgekit.misc.UnaryIterable;
 
 // there are only two possible containers: the "root" (typically a document, but xquery allows
 // it to be a little strange) or an element.
