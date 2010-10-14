@@ -13,39 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gxml.samples.performance;
+package org.genxdm.bridge.dom.tests;
 
 import org.genxdm.bridge.dom.DomProcessingContext;
-import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.processor.io.tests.RoundTripTestBase;
 import org.w3c.dom.Node;
 
-public class DomBridgePerformance extends BridgePerformance<Node, XmlAtom> {
-
-	/**
-	 * @param args args[0] is the location of the test properties file
-	 */
-	static public void main(String[] args)
-	{
-		try {
-			if(args.length < 1)
-			{
-				throw new IllegalArgumentException("Test properites filename must be specified on command line.");
-			}
-			else
-			{
-				DomBridgePerformance sample = new DomBridgePerformance(args[0]);
-				sample.runPerfTest();
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-	public DomBridgePerformance(String propsFile)
-	{
-		super(propsFile);
-	}
+public class DomRoundTripTest
+    extends RoundTripTestBase<Node>
+{
     public final DomProcessingContext newProcessingContext()
     {
         return new DomProcessingContext();
     }
+
 }

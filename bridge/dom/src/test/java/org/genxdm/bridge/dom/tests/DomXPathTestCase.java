@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010 TIBCO Software Inc.
+ * Copyright (c) 2009-2010 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,37 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gxml.samples.performance;
+package org.genxdm.bridge.dom.tests;
 
 import org.genxdm.bridge.dom.DomProcessingContext;
-import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.processor.xpath.v10.tests.XPathTestBase;
 import org.w3c.dom.Node;
 
-public class DomBridgePerformance extends BridgePerformance<Node, XmlAtom> {
-
-	/**
-	 * @param args args[0] is the location of the test properties file
-	 */
-	static public void main(String[] args)
-	{
-		try {
-			if(args.length < 1)
-			{
-				throw new IllegalArgumentException("Test properites filename must be specified on command line.");
-			}
-			else
-			{
-				DomBridgePerformance sample = new DomBridgePerformance(args[0]);
-				sample.runPerfTest();
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-	public DomBridgePerformance(String propsFile)
-	{
-		super(propsFile);
-	}
+public class DomXPathTestCase
+    extends XPathTestBase<Node>
+{
     public final DomProcessingContext newProcessingContext()
     {
         return new DomProcessingContext();
