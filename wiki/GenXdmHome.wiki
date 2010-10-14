@@ -1,7 +1,7 @@
-#summary Front page for gXML Open Source Project's wiki
+#summary Front page for GenXDM Open Source Project's wiki
 #sidebar TableOfContents
 
-= gXML =
+= GenXDM =
 
 <wiki:comment>
 copy and paste from old site
@@ -15,13 +15,13 @@ todo: add links
 todo: link to external hosted site (or decide not to worry about it, and just use the wiki)
 </wiki:comment>
 
-gXML enables applications to write code that uses and manipulates XML trees
+GenXDM enables applications to write code that uses and manipulates XML trees
 without being tied to a particular XML tree representation like DOM, DOM4J,
 AXIOM, or any other. It also prods developers towards an immutable view of XML
 trees, which will make it easier and faster to work with XML across multiple
 cores and multiple processors.
 
-gXML adds support for critical new XML specifications. Specifically, gXML
+GenXDM adds support for critical new XML specifications. Specifically, GenXDM
 supports the XQuery Data Model, the foundation of XQuery 1.0, XPath 2.0, and
 XSLT 2.0, and an area of active specification development at W3C.
 
@@ -45,12 +45,11 @@ Contributors:
 
 If you're here, you ought to be able to find the code. :-)
 
-Mailing list: gxml-dev *at* yahooogroups *dot* com
+[http://groups.google.com/group/genxdm Mailing list] (Google Groups)
+
+[http://www.genxdm.org/ Website] (Maven-generated)
 
 [http://opensourcegxml.wordpress.com/ Developers' blog] (Wordpress)
 
 [http://www.balisage.net/Proceedings/vol5/html/Lewis01/BalisageVol5-Lewis01.html Paper presented at Balisage 2010]
 
-<wiki:comment>This is at the bottom, so that we have the logo without annoying the
-life out of everyone trying to actually find information</wiki:comment>
-http://gxml.googlecode.com/svn/trunk/project/src/site/resources/images/gxml.png
