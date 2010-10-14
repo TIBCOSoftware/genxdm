@@ -15,7 +15,7 @@
  */
 package org.gxml.bridge.dom.tests;
 
-import org.gxml.xpath.v10.tests.XPathTestBase;
+import org.genxdm.processor.xpath.v10.tests.XPathTestBase;
 import org.gxml.bridge.dom.DomProcessingContext;
 import org.w3c.dom.Node;
 
