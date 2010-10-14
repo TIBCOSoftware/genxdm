@@ -31,16 +31,16 @@ import org.genxdm.base.ProcessingContext;
 import org.genxdm.base.io.DocumentHandler;
 import org.genxdm.bridgekit.ProcessingContextFactory;
 import org.genxdm.exceptions.GxmlMarshalException;
+import org.genxdm.processor.w3c.xs.W3cXmlSchemaParser;
+import org.genxdm.processor.w3c.xs.validation.GxContentValidator;
+import org.genxdm.processor.w3c.xs.validation.GxValidatorCache;
+import org.genxdm.processor.w3c.xs.validation.ValidatorCacheFactory;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.xs.SmMetaLoadArgs;
 import org.genxdm.xs.components.SmComponentBag;
 import org.genxdm.xs.exceptions.SmAbortException;
 import org.genxdm.xs.exceptions.SmException;
 import org.genxdm.xs.exceptions.SmExceptionCatcher;
-import org.gxml.processor.w3c.xs.W3cXmlSchemaParser;
-import org.gxml.processor.w3c.xs.validation.GxContentValidator;
-import org.gxml.processor.w3c.xs.validation.GxValidatorCache;
-import org.gxml.processor.w3c.xs.validation.ValidatorCacheFactory;
 
 /**
  * This sample illustrates a simple, serialization.  
