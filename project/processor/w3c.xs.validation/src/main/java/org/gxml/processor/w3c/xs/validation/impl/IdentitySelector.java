@@ -22,8 +22,8 @@ import java.util.LinkedList;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.constraints.SmRestrictedXPath;
-import org.gxml.xs.exceptions.SmAbortException;
+import org.genxdm.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.exceptions.SmAbortException;
 
 /**
  * Provides a streaming evaluation of a restricted XPath expression. <br/>

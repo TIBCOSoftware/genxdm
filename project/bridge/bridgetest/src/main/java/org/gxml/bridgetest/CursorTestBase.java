@@ -23,14 +23,14 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.Feature;
-import org.gxml.NodeKind;
-import org.gxml.base.Cursor;
-import org.gxml.base.Model;
-import org.gxml.base.ProcessingContext;
-import org.gxml.base.io.FragmentBuilder;
-import org.gxml.names.NameSource;
-import org.gxml.names.NamespaceBinding;
+import org.genxdm.Feature;
+import org.genxdm.NodeKind;
+import org.genxdm.base.Cursor;
+import org.genxdm.base.Model;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.names.NameSource;
+import org.genxdm.names.NamespaceBinding;
 
 public abstract class CursorTestBase<N> 
     extends GxTestBase<N>

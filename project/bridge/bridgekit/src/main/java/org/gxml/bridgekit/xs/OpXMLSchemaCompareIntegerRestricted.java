@@ -17,9 +17,9 @@ package org.gxml.bridgekit.xs;
 
 import java.math.BigInteger;
 
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.exceptions.SmAtomCastException;
-import org.gxml.xs.types.SmNativeType;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.exceptions.SmAtomCastException;
+import org.genxdm.xs.types.SmNativeType;
 
 final class OpXMLSchemaCompareIntegerRestricted<A> implements SmValueComp<A>
 {

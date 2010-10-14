@@ -22,8 +22,8 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.resolve.SmResolver;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.resolve.SmResolver;
 
 enum DefaultSmResolver implements SmResolver
 {

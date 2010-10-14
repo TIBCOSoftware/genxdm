@@ -17,16 +17,16 @@ package org.gxml.bridgekit.xs;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.enums.SmNodeKind;
+import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.types.SmAttributeNodeType;
+import org.genxdm.xs.types.SmPrimeChoiceType;
+import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.SmPrimeTypeKind;
+import org.genxdm.xs.types.SmSequenceType;
+import org.genxdm.xs.types.SmSequenceTypeVisitor;
 import org.gxml.bridgekit.names.QNameAsSet;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.enums.SmNodeKind;
-import org.gxml.xs.enums.SmScopeExtent;
-import org.gxml.xs.types.SmAttributeNodeType;
-import org.gxml.xs.types.SmPrimeChoiceType;
-import org.gxml.xs.types.SmPrimeType;
-import org.gxml.xs.types.SmPrimeTypeKind;
-import org.gxml.xs.types.SmSequenceType;
-import org.gxml.xs.types.SmSequenceTypeVisitor;
 
 final class AttributeNodeType<A> extends AbstractPrimeExcludingNoneType<A> implements SmAttributeNodeType<A>
 {

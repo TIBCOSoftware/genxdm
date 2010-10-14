@@ -17,7 +17,7 @@ package org.gxml.processor.w3c.xs.exception;
 
 import java.math.BigInteger;
 
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.exceptions.PreCondition;
 
 /**
  * Used to indicate an implementation limitation wherein we cannot model integers values larger than Integer.MAX_VALUE

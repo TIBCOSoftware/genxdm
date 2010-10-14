@@ -17,7 +17,7 @@ package org.gxml.processor.w3c.xs.exception;
 
 import java.util.HashMap;
 
-import org.gxml.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.SmLocation;
 
 public final class SrcFrozenLocation implements SmLocation
 {

@@ -15,9 +15,9 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.constraints.SmElementUse;
-import org.gxml.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.constraints.SmElementUse;
+import org.genxdm.xs.constraints.SmValueConstraint;
 
 public final class ParticleWithElementTerm<A> extends ParticleImpl<A> implements SmElementUse<A>
 {

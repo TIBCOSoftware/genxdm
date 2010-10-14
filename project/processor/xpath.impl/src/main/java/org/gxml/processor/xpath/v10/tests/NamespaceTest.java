@@ -20,9 +20,9 @@
  */
 package org.gxml.processor.xpath.v10.tests;
 
+import org.genxdm.NodeKind;
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.ExprContextDynamic;
-import org.gxml.NodeKind;
-import org.gxml.base.Model;
 import org.gxml.processor.xpath.v10.patterns.PathPatternBase;
 
 public final class NamespaceTest 

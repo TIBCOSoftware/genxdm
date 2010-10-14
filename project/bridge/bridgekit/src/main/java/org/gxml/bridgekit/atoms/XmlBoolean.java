@@ -20,8 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.genxdm.xs.types.SmNativeType;
 import org.gxml.bridgekit.misc.UnaryIterator;
-import org.gxml.xs.types.SmNativeType;
 
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#boolean">boolean</a>.

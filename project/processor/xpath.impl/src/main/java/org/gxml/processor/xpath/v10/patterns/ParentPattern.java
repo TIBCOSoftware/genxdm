@@ -20,10 +20,10 @@
  */
 package org.gxml.processor.xpath.v10.patterns;
 
+import org.genxdm.NodeKind;
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.ExprContextDynamic;
 import org.gxml.xpath.v10.expressions.ExprException;
-import org.gxml.NodeKind;
-import org.gxml.base.Model;
 
 /**
  * represents the concatenation of step patterns, right to left in a LocationPathPattern

@@ -17,10 +17,10 @@ package org.gxml.processor.w3c.xs.exception;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.enums.SmOutcome;
-import org.gxml.xs.exceptions.SmSimpleTypeException;
-import org.gxml.xs.resolve.SmLocation;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.enums.SmOutcome;
+import org.genxdm.xs.exceptions.SmSimpleTypeException;
+import org.genxdm.xs.resolve.SmLocation;
 
 @SuppressWarnings("serial")
 public abstract class CvcAttributeException extends SmLocationException

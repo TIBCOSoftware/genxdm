@@ -17,16 +17,16 @@ package org.gxml.bridgekit.xs;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.components.SmAttribute;
-import org.gxml.xs.enums.SmNodeKind;
-import org.gxml.xs.enums.SmQuantifier;
-import org.gxml.xs.enums.SmScopeExtent;
-import org.gxml.xs.types.SmPrimeType;
-import org.gxml.xs.types.SmPrimeTypeKind;
-import org.gxml.xs.types.SmSequenceTypeVisitor;
-import org.gxml.xs.types.SmSimpleMarkerType;
-import org.gxml.xs.types.SmSimpleType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.components.SmAttribute;
+import org.genxdm.xs.enums.SmNodeKind;
+import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.SmPrimeTypeKind;
+import org.genxdm.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.xs.types.SmSimpleMarkerType;
+import org.genxdm.xs.types.SmSimpleType;
 
 public final class AttributeDeclTypeImpl<A> extends DataComponentImpl<A> implements SmAttribute<A>
 {

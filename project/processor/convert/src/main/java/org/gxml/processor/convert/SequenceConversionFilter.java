@@ -22,12 +22,12 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.DtdAttributeKind;
-import org.gxml.exceptions.GxmlAtomCastException;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.io.SequenceHandler;
-import org.gxml.typed.types.AtomBridge;
+import org.genxdm.DtdAttributeKind;
+import org.genxdm.exceptions.GxmlAtomCastException;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.io.SequenceHandler;
+import org.genxdm.typed.types.AtomBridge;
 
 public class SequenceConversionFilter<Asrc, Atrg>
     implements SequenceHandler<Asrc>

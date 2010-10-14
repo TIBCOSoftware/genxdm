@@ -24,13 +24,13 @@ import java.util.Map;
 
 import javax.xml.XMLConstants;
 
+import org.genxdm.NodeKind;
+import org.genxdm.base.Model;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.names.NameSource;
 import org.gxml.bridgekit.tree.Ordering;
-import org.gxml.NodeKind;
-import org.gxml.base.Model;
-import org.gxml.base.ProcessingContext;
-import org.gxml.base.io.FragmentBuilder;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.names.NameSource;
 
 public abstract class NamespaceAxisTestBase<N> 
     extends GxTestBase<N>

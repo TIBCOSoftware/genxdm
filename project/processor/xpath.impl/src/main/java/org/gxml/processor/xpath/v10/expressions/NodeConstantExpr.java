@@ -20,10 +20,10 @@
  */
 package org.gxml.processor.xpath.v10.expressions;
 
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.ConvertibleNodeSetExpr;
 import org.gxml.xpath.v10.expressions.ExprContextDynamic;
 import org.gxml.xpath.v10.iterators.NodeIterator;
-import org.gxml.base.Model;
 import org.gxml.processor.xpath.v10.iterators.SingleNodeIterator;
 
 final class NodeConstantExpr<CN>

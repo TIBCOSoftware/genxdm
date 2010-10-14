@@ -18,7 +18,7 @@ package org.gxml.bridgekit.axes;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.gxml.base.Model;
+import org.genxdm.base.Model;
 
 final class IteratorChildAxisElementsByName<N> implements Iterator<N>
 {

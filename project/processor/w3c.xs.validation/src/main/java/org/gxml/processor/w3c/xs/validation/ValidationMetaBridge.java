@@ -17,11 +17,11 @@ package org.gxml.processor.w3c.xs.validation;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.typed.TypedContext;
+import org.genxdm.xs.components.SmAttribute;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.types.SmType;
 import org.gxml.processor.w3c.xs.validation.api.VxMetaBridge;
-import org.gxml.typed.TypedContext;
-import org.gxml.xs.components.SmAttribute;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.types.SmType;
 
 
 final class ValidationMetaBridge<N, A> implements VxMetaBridge<A>

@@ -17,7 +17,7 @@
     -->
     
     <parent>
-        <groupId>org.gxml</groupId>
+        <groupId>org.genxdm</groupId>
         <artifactId>project</artifactId>
         <version>1.0.0</version>
     </parent>
@@ -26,12 +26,12 @@
     <artifactId>support</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
-    <name>gXML Support</name>
+    <name>GenXDM Support</name>
 
     <scm>
-        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/support</connection>
-        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/support</developerConnection>
-        <url>http://gxml.googlecode.com/svn/trunk/project/support</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/support</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/support</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/support</url>
     </scm>
 
     <modules>

@@ -23,6 +23,24 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.enums.SmNodeKind;
+import org.genxdm.xs.enums.SmProcessContentsMode;
+import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.exceptions.SmException;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.types.SmComplexMarkerType;
+import org.genxdm.xs.types.SmComplexType;
+import org.genxdm.xs.types.SmContentTypeKind;
+import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.SmUnionSimpleType;
 import org.gxml.processor.w3c.xs.exception.CvcElementAbstractException;
 import org.gxml.processor.w3c.xs.exception.CvcElementDeclarationAndTypeException;
 import org.gxml.processor.w3c.xs.exception.CvcElementFixedAndNilledException;
@@ -46,24 +64,6 @@ import org.gxml.processor.w3c.xs.exception.SmUnexpectedEndException;
 import org.gxml.processor.w3c.xs.exception.SrcFrozenLocation;
 import org.gxml.processor.w3c.xs.validation.api.VxMetaBridge;
 import org.gxml.processor.w3c.xs.validation.api.VxPSVI;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.components.SmWildcard;
-import org.gxml.xs.constraints.SmIdentityConstraint;
-import org.gxml.xs.constraints.SmValueConstraint;
-import org.gxml.xs.enums.SmDerivationMethod;
-import org.gxml.xs.enums.SmNodeKind;
-import org.gxml.xs.enums.SmProcessContentsMode;
-import org.gxml.xs.exceptions.SmAbortException;
-import org.gxml.xs.exceptions.SmComponentConstraintException;
-import org.gxml.xs.exceptions.SmException;
-import org.gxml.xs.exceptions.SmExceptionHandler;
-import org.gxml.xs.resolve.SmLocation;
-import org.gxml.xs.types.SmComplexMarkerType;
-import org.gxml.xs.types.SmComplexType;
-import org.gxml.xs.types.SmContentTypeKind;
-import org.gxml.xs.types.SmSimpleType;
-import org.gxml.xs.types.SmType;
-import org.gxml.xs.types.SmUnionSimpleType;
 
 
 /**

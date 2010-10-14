@@ -19,8 +19,8 @@ import java.util.Collections;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.components.SmParticleTerm;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.SmParticleTerm;
 
 final class ParticleElementExpression<A> implements ValidationExpr<A, SmParticleTerm<A>>
 {

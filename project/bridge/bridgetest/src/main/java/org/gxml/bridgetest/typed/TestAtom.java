@@ -18,8 +18,8 @@ package org.gxml.bridgetest.typed;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import org.genxdm.xs.types.SmNativeType;
 import org.gxml.bridgetest.WhiteSpaceMangler;
-import org.gxml.xs.types.SmNativeType;
 
 /**
  * The class members are primarily a data structure for representing an atom. There are also static methods which create

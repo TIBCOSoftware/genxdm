@@ -17,12 +17,12 @@ package org.gxml.processor.w3c.xs;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.types.SmEmptyType;
-import org.gxml.xs.types.SmNamespaceNodeType;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmPrimeType;
-import org.gxml.xs.types.SmSequenceType;
-import org.gxml.xs.types.SmType;
+import org.genxdm.xs.types.SmEmptyType;
+import org.genxdm.xs.types.SmNamespaceNodeType;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.SmSequenceType;
+import org.genxdm.xs.types.SmType;
 
 /**
  * Keep private. This will go away.

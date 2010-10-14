@@ -17,7 +17,7 @@ package org.gxml.processor.w3c.xs.exception;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.exceptions.SmComponentConstraintException;
 
 @SuppressWarnings("serial")
 public final class SccElementDeclarationSubstitutionGroupTypeDerivationException extends SccElementDeclarationException

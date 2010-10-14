@@ -18,13 +18,13 @@ package org.gxml.bridgetest.xs;
 import java.math.BigInteger;
 import java.util.List;
 
-import org.gxml.exceptions.IllegalNullArgumentException;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.exceptions.SmFacetException;
-import org.gxml.xs.exceptions.SmFacetMinMaxException;
-import org.gxml.xs.facets.SmFacetKind;
-import org.gxml.xs.facets.SmLimit;
-import org.gxml.xs.types.SmSimpleType;
+import org.genxdm.exceptions.IllegalNullArgumentException;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.exceptions.SmFacetException;
+import org.genxdm.xs.exceptions.SmFacetMinMaxException;
+import org.genxdm.xs.facets.SmFacetKind;
+import org.genxdm.xs.facets.SmLimit;
+import org.genxdm.xs.types.SmSimpleType;
 
 /**
  * This facet has been designed with generality in mind rather than efficiency.

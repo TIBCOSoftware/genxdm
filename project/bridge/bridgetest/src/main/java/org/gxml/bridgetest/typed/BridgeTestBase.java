@@ -27,18 +27,18 @@ import java.util.Map;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.Feature;
+import org.genxdm.NodeKind;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.names.NameSource;
+import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.TypedModel;
+import org.genxdm.typed.io.SequenceBuilder;
+import org.genxdm.typed.types.AtomBridge;
 import org.gxml.bridgekit.tree.Ordering;
-import org.gxml.Feature;
-import org.gxml.NodeKind;
-import org.gxml.base.ProcessingContext;
 import org.gxml.bridgetest.Axis;
 import org.gxml.bridgetest.GxTestBase;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.names.NameSource;
-import org.gxml.typed.TypedContext;
-import org.gxml.typed.TypedModel;
-import org.gxml.typed.io.SequenceBuilder;
-import org.gxml.typed.types.AtomBridge;
 import org.xml.sax.SAXException;
 
 public abstract class BridgeTestBase<N, A> 

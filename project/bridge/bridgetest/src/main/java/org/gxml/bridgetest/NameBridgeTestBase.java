@@ -18,8 +18,8 @@ package org.gxml.bridgetest;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.gxml.names.NameSource;
-import org.gxml.xs.types.SmNativeType;
+import org.genxdm.names.NameSource;
+import org.genxdm.xs.types.SmNativeType;
 
 // TODO: this test should not be in bridgetest.
 // at this point, it only tests NameSource.  Move it or lose it.

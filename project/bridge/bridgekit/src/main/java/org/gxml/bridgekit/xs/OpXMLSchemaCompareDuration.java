@@ -17,8 +17,8 @@ package org.gxml.bridgekit.xs;
 
 import java.math.BigDecimal;
 
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.types.SmNativeType;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.types.SmNativeType;
 
 final class OpXMLSchemaCompareDuration<A> implements SmValueComp<A>
 {

@@ -19,11 +19,11 @@ import java.util.List;
 
 import javax.xml.XMLConstants;
 
-import org.gxml.NodeKind;
-import org.gxml.base.Model;
-import org.gxml.base.ProcessingContext;
-import org.gxml.base.io.FragmentBuilder;
-import org.gxml.names.NameSource;
+import org.genxdm.NodeKind;
+import org.genxdm.base.Model;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.names.NameSource;
 
 public abstract class MatchingTestBase<N> 
     extends GxTestBase<N>

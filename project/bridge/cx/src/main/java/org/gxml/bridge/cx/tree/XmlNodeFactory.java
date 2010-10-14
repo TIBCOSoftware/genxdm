@@ -19,10 +19,10 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.genxdm.DtdAttributeKind;
+import org.genxdm.base.mutable.NodeFactory;
+import org.genxdm.xs.types.SmType;
 import org.gxml.bridgekit.atoms.XmlAtom;
-import org.gxml.DtdAttributeKind;
-import org.gxml.base.mutable.NodeFactory;
-import org.gxml.xs.types.SmType;
 
 public class XmlNodeFactory
     implements NodeFactory<XmlNode>

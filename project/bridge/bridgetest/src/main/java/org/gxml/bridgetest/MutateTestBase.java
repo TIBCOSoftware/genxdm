@@ -21,16 +21,16 @@ import javax.xml.XMLConstants;
 
 import junit.framework.TestCase;
 
+import org.genxdm.Resolver;
+import org.genxdm.base.Model;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.ContentHandler;
+import org.genxdm.base.mutable.MutableModel;
+import org.genxdm.base.mutable.NodeFactory;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.names.NameSource;
 import org.gxml.bridgekit.ProcessingContextFactory;
 import org.gxml.bridgekit.tree.Ordering;
-import org.gxml.Resolver;
-import org.gxml.base.Model;
-import org.gxml.base.ProcessingContext;
-import org.gxml.base.io.ContentHandler;
-import org.gxml.base.mutable.MutableModel;
-import org.gxml.base.mutable.NodeFactory;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.names.NameSource;
 
 public abstract class MutateTestBase<N> 
     extends TestCase

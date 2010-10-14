@@ -15,8 +15,8 @@
  */
 package org.gxml.processor.w3c.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.types.SmContentTypeKind;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.types.SmContentTypeKind;
 
 final class XMLContentType<A>
 {

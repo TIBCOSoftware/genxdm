@@ -23,16 +23,16 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.types.SmComplexType;
+import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SmType;
 import org.gxml.processor.w3c.xs.exception.CvcIdentityConstraintFieldNodeNotSimpleTypeException;
 import org.gxml.processor.w3c.xs.exception.SmDuplicateKeyFieldException;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.constraints.SmRestrictedXPath;
-import org.gxml.xs.exceptions.SmAbortException;
-import org.gxml.xs.exceptions.SmExceptionHandler;
-import org.gxml.xs.resolve.SmLocation;
-import org.gxml.xs.types.SmComplexType;
-import org.gxml.xs.types.SmSimpleType;
-import org.gxml.xs.types.SmType;
 
 
 /**

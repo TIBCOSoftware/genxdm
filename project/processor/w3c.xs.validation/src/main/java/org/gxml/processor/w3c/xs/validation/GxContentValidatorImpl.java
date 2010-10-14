@@ -22,16 +22,16 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.DtdAttributeKind;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.names.NameSource;
+import org.genxdm.DtdAttributeKind;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.names.NameSource;
+import org.genxdm.typed.io.SequenceHandler;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.typed.types.Emulation;
+import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
 import org.gxml.processor.w3c.xs.validation.api.VxMapping;
 import org.gxml.processor.w3c.xs.validation.api.VxValidator;
-import org.gxml.typed.io.SequenceHandler;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.typed.types.Emulation;
-import org.gxml.xs.exceptions.SmAbortException;
-import org.gxml.xs.exceptions.SmExceptionHandler;
 
 
 final class GxContentValidatorImpl<A> implements GxContentValidator<A>

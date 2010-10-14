@@ -15,7 +15,7 @@
  */
 package org.gxml.processor.w3c.xs;
 
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.exceptions.PreCondition;
 
 abstract class XMLFacet<A> extends XMLTag<A>
 {

@@ -24,9 +24,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.gxml.Resolved;
-import org.gxml.Resolver;
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.Resolved;
+import org.genxdm.Resolver;
+import org.genxdm.exceptions.PreCondition;
 
 public final class SampleResolver implements Resolver
 {

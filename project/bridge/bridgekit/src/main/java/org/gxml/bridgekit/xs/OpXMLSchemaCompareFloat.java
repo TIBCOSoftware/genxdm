@@ -15,7 +15,7 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.typed.types.AtomBridge;
+import org.genxdm.typed.types.AtomBridge;
 
 final class OpXMLSchemaCompareFloat<A> implements SmValueComp<A>
 {

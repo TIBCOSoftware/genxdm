@@ -20,12 +20,12 @@ import java.util.List;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.NodeKind;
+import org.genxdm.base.Model;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.names.NameSource;
 import org.gxml.bridgekit.tree.Ordering;
-import org.gxml.NodeKind;
-import org.gxml.base.Model;
-import org.gxml.base.ProcessingContext;
-import org.gxml.base.io.FragmentBuilder;
-import org.gxml.names.NameSource;
 
 public abstract class GettingStartedTestBase<N> 
     extends GxTestBase<N>

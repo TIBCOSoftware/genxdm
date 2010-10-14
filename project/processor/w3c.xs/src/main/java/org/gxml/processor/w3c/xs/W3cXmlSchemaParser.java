@@ -18,13 +18,13 @@ package org.gxml.processor.w3c.xs;
 import java.io.InputStream;
 import java.net.URI;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.SmMetaLoadArgs;
-import org.gxml.xs.components.SmComponentBag;
-import org.gxml.xs.components.SmComponentProvider;
-import org.gxml.xs.exceptions.SmAbortException;
-import org.gxml.xs.exceptions.SmExceptionHandler;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.SmMetaLoadArgs;
+import org.genxdm.xs.components.SmComponentBag;
+import org.genxdm.xs.components.SmComponentProvider;
+import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
 
 public final class W3cXmlSchemaParser<A>
 {

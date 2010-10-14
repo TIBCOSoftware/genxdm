@@ -18,7 +18,7 @@ package org.gxml.processor.w3c.xs;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.exceptions.PreCondition;
 
 /**
  * A reference to either a global type identified by name or a local type (anonymous) identified by an object reference.

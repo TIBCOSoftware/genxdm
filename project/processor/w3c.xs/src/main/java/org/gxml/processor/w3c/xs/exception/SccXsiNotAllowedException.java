@@ -33,9 +33,9 @@ package org.gxml.processor.w3c.xs.exception;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.enums.SmOutcome;
-import org.gxml.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.enums.SmOutcome;
+import org.genxdm.xs.exceptions.SmComponentConstraintException;
 
 
 @SuppressWarnings("serial")

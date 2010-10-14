@@ -20,7 +20,7 @@
  */
 package org.gxml.xpath.v10.variants;
 
-import org.gxml.exceptions.IllegalNullArgumentException;
+import org.genxdm.exceptions.IllegalNullArgumentException;
 import org.gxml.xpath.v10.Converter;
 
 public final class StringVariant<N> extends VariantBase<N>

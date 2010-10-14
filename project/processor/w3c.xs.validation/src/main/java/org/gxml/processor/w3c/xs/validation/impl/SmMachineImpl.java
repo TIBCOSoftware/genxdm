@@ -19,10 +19,10 @@ import java.util.LinkedList;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.SmParticleTerm;
+import org.genxdm.xs.components.SmWildcard;
 import org.gxml.processor.w3c.xs.validation.regex.api.RegExMachine;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.components.SmParticleTerm;
-import org.gxml.xs.components.SmWildcard;
 
 
 

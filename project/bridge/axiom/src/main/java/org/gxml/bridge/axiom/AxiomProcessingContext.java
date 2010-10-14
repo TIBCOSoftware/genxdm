@@ -18,26 +18,26 @@ package org.gxml.bridge.axiom;
 import javax.xml.stream.XMLReporter;
 
 import org.apache.axiom.om.OMFactory;
+import org.genxdm.Feature;
+import org.genxdm.Resolver;
+import org.genxdm.base.Cursor;
+import org.genxdm.base.Model;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.DocumentHandler;
+import org.genxdm.base.mutable.MutableContext;
+import org.genxdm.base.mutable.MutableCursor;
+import org.genxdm.base.mutable.MutableModel;
+import org.genxdm.base.mutable.NodeFactory;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.NameSource;
+import org.genxdm.nodes.Bookmark;
+import org.genxdm.typed.TypedContext;
 import org.gxml.bridgekit.atoms.XmlAtom;
 import org.gxml.bridgekit.tree.BookmarkOnModel;
 import org.gxml.bridgekit.tree.CursorOnModel;
 import org.gxml.bridgekit.tree.MutableCursorOnMutableModel;
 import org.gxml.processor.io.DefaultDocumentHandler;
-import org.gxml.Feature;
-import org.gxml.Resolver;
-import org.gxml.base.Cursor;
-import org.gxml.base.Model;
-import org.gxml.base.ProcessingContext;
-import org.gxml.base.io.DocumentHandler;
-import org.gxml.base.mutable.MutableContext;
-import org.gxml.base.mutable.MutableCursor;
-import org.gxml.base.mutable.MutableModel;
-import org.gxml.base.mutable.NodeFactory;
 import org.gxml.bridge.axiom.enhanced.AxiomSAProcessingContext;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.names.NameSource;
-import org.gxml.nodes.Bookmark;
-import org.gxml.typed.TypedContext;
 
 public class AxiomProcessingContext
     implements ProcessingContext<Object>

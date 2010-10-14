@@ -20,7 +20,7 @@ import java.util.LinkedList;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.exceptions.PreCondition;
 
 final class XMLAttributeGroup<A> extends XMLComponent<A>
 {

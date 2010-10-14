@@ -18,8 +18,8 @@ package org.gxml.bridgekit.axes;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.gxml.base.Model;
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.base.Model;
+import org.genxdm.exceptions.PreCondition;
 
 
 final class IteratorAncestorAxis<N> implements Iterator<N>

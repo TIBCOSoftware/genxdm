@@ -20,6 +20,7 @@
  */
 package org.gxml.processor.xpath.v10.functions;
 
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.ConvertibleExpr;
 import org.gxml.xpath.v10.expressions.ConvertibleNodeSetExpr;
 import org.gxml.xpath.v10.expressions.ExprContextDynamic;
@@ -31,7 +32,6 @@ import org.gxml.xpath.v10.expressions.StringExpr;
 import org.gxml.xpath.v10.expressions.VariantExpr;
 import org.gxml.xpath.v10.iterators.NodeIterator;
 import org.gxml.xpath.v10.variants.Variant;
-import org.gxml.base.Model;
 import org.gxml.processor.xpath.v10.iterators.SingleNodeIterator;
 
 /**

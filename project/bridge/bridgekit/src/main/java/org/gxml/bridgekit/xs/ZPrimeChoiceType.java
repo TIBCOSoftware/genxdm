@@ -15,11 +15,11 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.types.SmPrimeChoiceType;
-import org.gxml.xs.types.SmPrimeType;
-import org.gxml.xs.types.SmPrimeTypeKind;
-import org.gxml.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.types.SmPrimeChoiceType;
+import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.SmPrimeTypeKind;
+import org.genxdm.xs.types.SmSequenceTypeVisitor;
 
 final class ZPrimeChoiceType<A> extends AbstractPrimeExcludingNoneType<A> implements SmPrimeChoiceType<A>
 {

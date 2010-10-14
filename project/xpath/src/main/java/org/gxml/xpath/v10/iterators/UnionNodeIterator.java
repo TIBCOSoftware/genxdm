@@ -20,7 +20,7 @@
  */
 package org.gxml.xpath.v10.iterators;
 
-import org.gxml.base.Model;
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.ExprException;
 
 public final class UnionNodeIterator<N> implements NodeIterator<N>

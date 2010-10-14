@@ -21,18 +21,18 @@ import java.util.HashMap;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.components.SmAttribute;
-import org.gxml.xs.components.SmAttributeGroup;
-import org.gxml.xs.components.SmComponentBag;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.components.SmModelGroup;
-import org.gxml.xs.components.SmNotation;
-import org.gxml.xs.constraints.SmIdentityConstraint;
-import org.gxml.xs.enums.SmScopeExtent;
-import org.gxml.xs.types.SmComplexType;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmSimpleType;
-import org.gxml.xs.types.SmType;
+import org.genxdm.xs.components.SmAttribute;
+import org.genxdm.xs.components.SmAttributeGroup;
+import org.genxdm.xs.components.SmComponentBag;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.SmModelGroup;
+import org.genxdm.xs.components.SmNotation;
+import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.types.SmComplexType;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SmType;
 
 final class XsiSchema<A> implements SmComponentBag<A>
 {

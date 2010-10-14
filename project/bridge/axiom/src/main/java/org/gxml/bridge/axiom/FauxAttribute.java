@@ -21,7 +21,7 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.gxml.exceptions.IllegalNullArgumentException;
+import org.genxdm.exceptions.IllegalNullArgumentException;
 
 final class FauxAttribute implements OMAttribute
 {

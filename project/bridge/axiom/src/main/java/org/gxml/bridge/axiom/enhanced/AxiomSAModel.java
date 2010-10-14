@@ -24,15 +24,15 @@ import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
+import org.genxdm.NodeKind;
+import org.genxdm.base.io.ContentHandler;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.names.NamespaceBinding;
+import org.genxdm.typed.TypedModel;
+import org.genxdm.typed.io.SequenceHandler;
+import org.genxdm.typed.types.AtomBridge;
 import org.gxml.bridgekit.atoms.XmlAtom;
-import org.gxml.NodeKind;
-import org.gxml.base.io.ContentHandler;
 import org.gxml.bridge.axiom.AxiomModel;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.names.NamespaceBinding;
-import org.gxml.typed.TypedModel;
-import org.gxml.typed.io.SequenceHandler;
-import org.gxml.typed.types.AtomBridge;
 
 /**
  * Note that some implementations of Axiom implement {@link OMNode} on their document node but don't support the OMNode interface methods. This means that we have to check for a document first in order not to throw unchecked exceptions.

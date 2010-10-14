@@ -21,12 +21,12 @@ import java.util.Stack;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.components.SmAttribute;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.components.SmModelGroup;
-import org.gxml.xs.components.SmParticle;
-import org.gxml.xs.components.SmParticleTerm;
-import org.gxml.xs.components.SmWildcard;
+import org.genxdm.xs.components.SmAttribute;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.SmModelGroup;
+import org.genxdm.xs.components.SmParticle;
+import org.genxdm.xs.components.SmParticleTerm;
+import org.genxdm.xs.components.SmWildcard;
 
 final class ModelGroupExpression<A> implements ValidationExpr<A, SmParticleTerm<A>>
 {

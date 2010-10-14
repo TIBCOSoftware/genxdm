@@ -15,10 +15,10 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.components.SmWildcard;
-import org.gxml.xs.constraints.SmNamespaceConstraint;
-import org.gxml.xs.enums.SmProcessContentsMode;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.constraints.SmNamespaceConstraint;
+import org.genxdm.xs.enums.SmProcessContentsMode;
 
 public final class WildcardImpl<A> implements SmWildcard<A>
 {
