@@ -35,8 +35,8 @@ import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.nodes.Bookmark;
+import org.genxdm.processor.io.DefaultDocumentHandler;
 import org.genxdm.typed.TypedContext;
-import org.gxml.processor.io.DefaultDocumentHandler;
 import org.gxml.bridge.axiom.enhanced.AxiomSAProcessingContext;
 
 public class AxiomProcessingContext
