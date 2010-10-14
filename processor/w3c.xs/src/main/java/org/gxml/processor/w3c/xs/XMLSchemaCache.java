@@ -25,8 +25,10 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.names.NameSource;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.NameSource;
+import org.genxdm.xs.constraints.SmIdentityConstraintKind;
+import org.genxdm.xs.exceptions.SmException;
 import org.gxml.processor.w3c.xs.exception.SmDuplicateAttributeException;
 import org.gxml.processor.w3c.xs.exception.SmDuplicateAttributeGroupException;
 import org.gxml.processor.w3c.xs.exception.SmDuplicateElementException;
@@ -35,8 +37,6 @@ import org.gxml.processor.w3c.xs.exception.SmDuplicateModelGroupException;
 import org.gxml.processor.w3c.xs.exception.SmDuplicateNotationException;
 import org.gxml.processor.w3c.xs.exception.SmDuplicateTypeException;
 import org.gxml.processor.w3c.xs.exception.SmUndeclaredReferenceException;
-import org.gxml.xs.constraints.SmIdentityConstraintKind;
-import org.gxml.xs.exceptions.SmException;
 
 
 /**

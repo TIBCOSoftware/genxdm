@@ -15,7 +15,7 @@
  */
 package org.gxml.bridge.dom;
 
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.exceptions.PreCondition;
 import org.w3c.dom.Node;
 
 /**

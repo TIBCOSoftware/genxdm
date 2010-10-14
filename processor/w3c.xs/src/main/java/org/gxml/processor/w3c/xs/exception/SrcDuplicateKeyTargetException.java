@@ -19,7 +19,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.SmLocation;
 
 
 @SuppressWarnings("serial")

@@ -17,7 +17,7 @@ package org.gxml.processor.w3c.xs;
 
 import java.math.BigInteger;
 
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.exceptions.PreCondition;
 
 abstract class XMLParticle<A> extends XMLTag<A>
 {

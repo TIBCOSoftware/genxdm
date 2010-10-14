@@ -23,7 +23,7 @@ package org.gxml.xpath.v10.iterators;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gxml.base.Model;
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.ExprException;
 
 public final class CloneableNodeIteratorImpl<N> implements CloneableNodeIterator<N>

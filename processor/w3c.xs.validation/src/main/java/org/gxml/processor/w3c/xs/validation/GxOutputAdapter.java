@@ -20,10 +20,10 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.typed.io.SequenceHandler;
+import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SmType;
 import org.gxml.processor.w3c.xs.validation.api.VxOutputHandler;
-import org.gxml.typed.io.SequenceHandler;
-import org.gxml.xs.types.SmSimpleType;
-import org.gxml.xs.types.SmType;
 
 
 public class GxOutputAdapter<A> implements VxOutputHandler<A>

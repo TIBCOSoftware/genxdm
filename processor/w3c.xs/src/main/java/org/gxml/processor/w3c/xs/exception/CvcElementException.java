@@ -15,11 +15,11 @@
  */
 package org.gxml.processor.w3c.xs.exception;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.enums.SmOutcome;
-import org.gxml.xs.exceptions.SmComponentConstraintException;
-import org.gxml.xs.resolve.SmLocation;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.enums.SmOutcome;
+import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.resolve.SmLocation;
 
 /**
  * Corresponds to the <b>Element Locally Valid</b> validation rule.

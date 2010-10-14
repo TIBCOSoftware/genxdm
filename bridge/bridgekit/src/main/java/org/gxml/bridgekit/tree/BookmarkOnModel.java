@@ -19,10 +19,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.gxml.base.Cursor;
-import org.gxml.base.Model;
+import org.genxdm.base.Cursor;
+import org.genxdm.base.Model;
+import org.genxdm.nodes.Bookmark;
 import org.gxml.bridgekit.misc.UnaryIterable;
-import org.gxml.nodes.Bookmark;
 
 public class BookmarkOnModel<N>
     extends InformerOnModel<N>

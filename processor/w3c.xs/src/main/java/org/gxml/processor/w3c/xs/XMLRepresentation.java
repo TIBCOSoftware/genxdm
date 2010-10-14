@@ -17,7 +17,7 @@ package org.gxml.processor.w3c.xs;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.constraints.SmValueConstraint;
 
 class XMLRepresentation
 {

@@ -22,15 +22,15 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.NodeKind;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.NamespaceBinding;
+import org.genxdm.xs.types.SmAtomicType;
+import org.genxdm.xs.types.SmType;
 import org.gxml.bridgekit.atoms.XmlAtom;
 import org.gxml.bridgekit.misc.UnaryIterable;
 import org.gxml.bridgekit.names.DefaultNamespaceBinding;
 import org.gxml.bridgekit.names.QNameComparator;
-import org.gxml.NodeKind;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.names.NamespaceBinding;
-import org.gxml.xs.types.SmAtomicType;
-import org.gxml.xs.types.SmType;
 
 public final class XmlElementNode
     extends XmlContainerNode

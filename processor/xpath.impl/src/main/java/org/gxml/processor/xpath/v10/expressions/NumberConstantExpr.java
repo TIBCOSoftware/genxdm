@@ -20,9 +20,9 @@
  */
 package org.gxml.processor.xpath.v10.expressions;
 
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.ConvertibleNumberExpr;
 import org.gxml.xpath.v10.expressions.ExprContextDynamic;
-import org.gxml.base.Model;
 
 public final class NumberConstantExpr 
     extends ConvertibleNumberExpr

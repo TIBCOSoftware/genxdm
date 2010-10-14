@@ -17,7 +17,7 @@ package org.gxml.processor.w3c.xs;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.exceptions.PreCondition;
 
 abstract class XMLDeclaration<A> extends XMLComponent<A>
 {

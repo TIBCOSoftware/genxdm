@@ -19,8 +19,8 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.enums.SmOutcome;
-import org.gxml.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.SmOutcome;
+import org.genxdm.xs.exceptions.SmComponentConstraintException;
 
 @SuppressWarnings("serial")
 public final class SccNotationNotInValueSpace extends SmComponentConstraintException

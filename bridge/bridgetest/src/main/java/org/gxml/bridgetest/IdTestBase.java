@@ -18,11 +18,11 @@ package org.gxml.bridgetest;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.genxdm.base.Model;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.DocumentHandler;
+import org.genxdm.exceptions.GxmlMarshalException;
 import org.gxml.bridgekit.ProcessingContextFactory;
-import org.gxml.base.Model;
-import org.gxml.base.ProcessingContext;
-import org.gxml.base.io.DocumentHandler;
-import org.gxml.exceptions.GxmlMarshalException;
 import org.xml.sax.InputSource;
 
 import junit.framework.TestCase;

@@ -22,8 +22,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.exceptions.SmAbortException;
-import org.gxml.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
 
 public interface VxValidator<A>
 {

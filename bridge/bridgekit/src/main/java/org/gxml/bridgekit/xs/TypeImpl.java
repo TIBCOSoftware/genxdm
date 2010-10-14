@@ -19,11 +19,11 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.names.NameSource;
-import org.gxml.xs.enums.SmDerivationMethod;
-import org.gxml.xs.enums.SmScopeExtent;
-import org.gxml.xs.types.SmType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.NameSource;
+import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.types.SmType;
 
 /**
  * Implementation Note: We're trying to maintain a single implementation of SmType to represent complex and simple types as well as lists and unions. The advantage of this is that the implementation does not have to downcast.

@@ -17,11 +17,11 @@ package org.gxml.bridge.cx.tree;
 
 import java.net.URI;
 
+import org.genxdm.NodeKind;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.nodes.Informer;
+import org.genxdm.nodes.TypeInformer;
 import org.gxml.bridgekit.atoms.XmlAtom;
-import org.gxml.NodeKind;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.nodes.Informer;
-import org.gxml.nodes.TypeInformer;
 
 public abstract class XmlNode
     implements Informer, TypeInformer<XmlAtom>, XmlNodeNavigator

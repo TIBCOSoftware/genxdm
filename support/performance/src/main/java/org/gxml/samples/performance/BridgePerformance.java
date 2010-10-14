@@ -24,23 +24,23 @@ import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.genxdm.Resolved;
+import org.genxdm.Resolver;
+import org.genxdm.base.Model;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.DocumentHandler;
+import org.genxdm.exceptions.GxmlMarshalException;
+import org.genxdm.typed.TypedContext;
+import org.genxdm.xs.SmMetaLoadArgs;
+import org.genxdm.xs.components.SmComponentBag;
+import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.SmException;
+import org.genxdm.xs.exceptions.SmExceptionCatcher;
 import org.gxml.bridgekit.ProcessingContextFactory;
 import org.gxml.processor.w3c.xs.W3cXmlSchemaParser;
 import org.gxml.processor.w3c.xs.validation.GxContentValidator;
 import org.gxml.processor.w3c.xs.validation.GxValidatorCache;
 import org.gxml.processor.w3c.xs.validation.ValidatorCacheFactory;
-import org.gxml.Resolved;
-import org.gxml.Resolver;
-import org.gxml.base.Model;
-import org.gxml.base.ProcessingContext;
-import org.gxml.base.io.DocumentHandler;
-import org.gxml.exceptions.GxmlMarshalException;
-import org.gxml.typed.TypedContext;
-import org.gxml.xs.SmMetaLoadArgs;
-import org.gxml.xs.components.SmComponentBag;
-import org.gxml.xs.exceptions.SmAbortException;
-import org.gxml.xs.exceptions.SmException;
-import org.gxml.xs.exceptions.SmExceptionCatcher;
 
 /**
  * This sample illustrates a simple, serialization.  

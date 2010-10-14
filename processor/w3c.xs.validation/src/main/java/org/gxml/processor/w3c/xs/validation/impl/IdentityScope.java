@@ -21,14 +21,14 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.constraints.SmIdentityConstraint;
-import org.gxml.xs.constraints.SmRestrictedXPath;
-import org.gxml.xs.exceptions.SmAbortException;
-import org.gxml.xs.exceptions.SmExceptionHandler;
-import org.gxml.xs.resolve.SmLocation;
-import org.gxml.xs.types.SmSimpleType;
-import org.gxml.xs.types.SmType;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SmType;
 
 /**
  * {@link IdentityScope} corresponds to an identity-constraint. An {@link IdentityScope} is created for each constraint

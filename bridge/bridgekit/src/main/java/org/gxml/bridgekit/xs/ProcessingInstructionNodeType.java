@@ -15,12 +15,12 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.xs.enums.SmNodeKind;
-import org.gxml.xs.types.SmPrimeChoiceType;
-import org.gxml.xs.types.SmPrimeType;
-import org.gxml.xs.types.SmPrimeTypeKind;
-import org.gxml.xs.types.SmProcessingInstructionNodeType;
-import org.gxml.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.xs.enums.SmNodeKind;
+import org.genxdm.xs.types.SmPrimeChoiceType;
+import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.SmPrimeTypeKind;
+import org.genxdm.xs.types.SmProcessingInstructionNodeType;
+import org.genxdm.xs.types.SmSequenceTypeVisitor;
 
 final class ProcessingInstructionNodeType<A> extends AbstractLeafNodeType<A> implements SmProcessingInstructionNodeType<A>
 {

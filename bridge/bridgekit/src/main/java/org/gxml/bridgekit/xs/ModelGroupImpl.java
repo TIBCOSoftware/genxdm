@@ -21,10 +21,10 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.components.SmModelGroup;
-import org.gxml.xs.components.SmParticle;
-import org.gxml.xs.enums.SmScopeExtent;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.components.SmModelGroup;
+import org.genxdm.xs.components.SmParticle;
+import org.genxdm.xs.enums.SmScopeExtent;
 
 public final class ModelGroupImpl<A> extends NamedComponentImpl<A> implements SmModelGroup<A>
 {

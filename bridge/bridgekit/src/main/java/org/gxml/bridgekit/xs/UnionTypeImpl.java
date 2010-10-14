@@ -19,19 +19,19 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.enums.SmDerivationMethod;
-import org.gxml.xs.enums.SmQuantifier;
-import org.gxml.xs.enums.SmScopeExtent;
-import org.gxml.xs.enums.SmWhiteSpacePolicy;
-import org.gxml.xs.exceptions.SmDatatypeException;
-import org.gxml.xs.resolve.SmPrefixResolver;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmPrimeType;
-import org.gxml.xs.types.SmSequenceTypeVisitor;
-import org.gxml.xs.types.SmSimpleType;
-import org.gxml.xs.types.SmUnionSimpleType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.enums.SmWhiteSpacePolicy;
+import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SmUnionSimpleType;
 
 public final class UnionTypeImpl<A> extends SimpleTypeImpl<A> implements SmUnionSimpleType<A>
 {

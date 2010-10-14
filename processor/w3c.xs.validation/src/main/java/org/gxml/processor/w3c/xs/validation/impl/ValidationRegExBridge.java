@@ -17,9 +17,9 @@ package org.gxml.processor.w3c.xs.validation.impl;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.names.NameSource;
+import org.genxdm.names.NameSource;
+import org.genxdm.xs.components.SmParticleTerm;
 import org.gxml.processor.w3c.xs.validation.regex.api.RegExBridge;
-import org.gxml.xs.components.SmParticleTerm;
 
 
 final class ValidationRegExBridge<A> implements RegExBridge<ValidationExpr<A, SmParticleTerm<A>>, QName>

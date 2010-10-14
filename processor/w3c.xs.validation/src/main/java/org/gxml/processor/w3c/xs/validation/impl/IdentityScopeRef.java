@@ -17,11 +17,11 @@ package org.gxml.processor.w3c.xs.validation.impl;
 
 import java.util.ArrayList;
 
+import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.resolve.SmLocation;
 import org.gxml.processor.w3c.xs.exception.CvcDanglingKeyReferenceException;
-import org.gxml.xs.constraints.SmIdentityConstraint;
-import org.gxml.xs.exceptions.SmAbortException;
-import org.gxml.xs.exceptions.SmExceptionHandler;
-import org.gxml.xs.resolve.SmLocation;
 
 
 /**

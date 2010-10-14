@@ -17,7 +17,7 @@ package org.gxml.processor.w3c.xs;
 
 import java.util.ArrayList;
 
-import org.gxml.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.constraints.SmRestrictedXPath;
 
 final class RestrictedXPathImpl implements SmRestrictedXPath
 {

@@ -19,11 +19,11 @@ import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
 
-import org.gxml.DtdAttributeKind;
-import org.gxml.base.io.ContentHandler;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.exceptions.GxmlIOException;
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.DtdAttributeKind;
+import org.genxdm.base.io.ContentHandler;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GxmlIOException;
+import org.genxdm.exceptions.PreCondition;
 
 final class SimplestSerializer<N> implements ContentHandler
 {

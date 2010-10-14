@@ -17,15 +17,15 @@ package org.gxml.processor.convert;
 
 import java.util.List;
 
-import org.gxml.base.Cursor;
-import org.gxml.base.ProcessingContext;
-import org.gxml.base.io.FragmentBuilder;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.TypedContext;
-import org.gxml.typed.TypedModel;
-import org.gxml.typed.io.SequenceBuilder;
-import org.gxml.typed.types.AtomBridge;
+import org.genxdm.base.Cursor;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.TypedModel;
+import org.genxdm.typed.io.SequenceBuilder;
+import org.genxdm.typed.types.AtomBridge;
 
 public class Converter<N, A>
 {

@@ -17,7 +17,7 @@ package org.gxml.bridgekit.xs;
 
 import java.math.BigInteger;
 
-import org.gxml.typed.types.AtomBridge;
+import org.genxdm.typed.types.AtomBridge;
 
 final class OpXMLSchemaCompareInteger<A> implements SmValueComp<A>
 {

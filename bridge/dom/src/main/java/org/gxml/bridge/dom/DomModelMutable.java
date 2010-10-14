@@ -15,8 +15,8 @@
  */
 package org.gxml.bridge.dom;
 
-import org.gxml.base.mutable.MutableModel;
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.base.mutable.MutableModel;
+import org.genxdm.exceptions.PreCondition;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

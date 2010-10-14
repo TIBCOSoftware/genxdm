@@ -15,10 +15,10 @@
  */
 package org.gxml.bridge.cx.tests;
 
+import org.genxdm.names.NameSource;
 import org.gxml.bridgetest.TimingTestBase;
 import org.gxml.bridge.cx.base.XmlNodeContext;
 import org.gxml.bridge.cx.tree.XmlNode;
-import org.gxml.names.NameSource;
 
 public final class CxTimingTest 
     extends TimingTestBase<XmlNode> 

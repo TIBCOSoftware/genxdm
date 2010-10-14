@@ -15,10 +15,10 @@
  */
 package org.gxml.processor.w3c.xs.exception;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.enums.SmOutcome;
-import org.gxml.xs.exceptions.SmException;
-import org.gxml.xs.resolve.SmLocation;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.enums.SmOutcome;
+import org.genxdm.xs.exceptions.SmException;
+import org.genxdm.xs.resolve.SmLocation;
 
 @SuppressWarnings("serial")
 public abstract class SrcRedefinitionException extends SmLocationException

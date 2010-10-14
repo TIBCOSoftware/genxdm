@@ -15,8 +15,8 @@
  */
 package org.gxml.bridgekit.tree;
 
-import org.gxml.base.mutable.MutableCursor;
-import org.gxml.base.mutable.MutableModel;
+import org.genxdm.base.mutable.MutableCursor;
+import org.genxdm.base.mutable.MutableModel;
 
 public class MutableCursorOnMutableModel<N>
     extends CursorOnModel<N>

@@ -15,9 +15,9 @@
  */
 package org.gxml.bridgetest.typed;
 
+import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.types.AtomBridge;
 import org.gxml.bridgetest.GxTestBase;
-import org.gxml.typed.TypedContext;
-import org.gxml.typed.types.AtomBridge;
 
 // TODO: perhaps we could do something useful, hmmm?
 public abstract class CastingTestBase<N, A> 

@@ -15,11 +15,11 @@
  */
 package org.gxml.bridge.cx.tree;
 
-import org.gxml.NodeKind;
-import org.gxml.base.mutable.MutableModel;
+import org.genxdm.NodeKind;
+import org.genxdm.base.mutable.MutableModel;
+import org.genxdm.exceptions.PreCondition;
 import org.gxml.bridge.cx.base.XmlNodeBuilder;
 import org.gxml.bridge.cx.base.XmlNodeModel;
-import org.gxml.exceptions.PreCondition;
 
 public class XmlNodeMutator
     extends XmlNodeModel

@@ -15,9 +15,9 @@
  */
 package org.gxml.processor.w3c.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.constraints.SmNamespaceConstraint;
-import org.gxml.xs.enums.SmProcessContentsMode;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.constraints.SmNamespaceConstraint;
+import org.genxdm.xs.enums.SmProcessContentsMode;
 
 final class XMLWildcard<A> implements XMLParticleTerm<A>
 {

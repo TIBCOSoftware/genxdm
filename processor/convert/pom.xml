@@ -19,7 +19,7 @@
     </properties>
     
     <parent>
-        <groupId>org.gxml</groupId>
+        <groupId>org.genxdm</groupId>
         <artifactId>processor</artifactId>
         <version>1.0.0</version>
     </parent>
@@ -27,7 +27,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>proc-convert</artifactId>
     <version>1.0.0</version>
-    <name>gXML Conversion Processor</name>
+    <name>GenXDM Conversion Processor</name>
 
     <reporting>
         <plugins>
@@ -49,15 +49,15 @@
     </reporting>
 
     <scm>
-        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/processor/convert</connection>
-        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/processor/convert</developerConnection>
-        <url>http://gxml.googlecode.com/svn/trunk/project/processor/convert</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/processor/convert</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/processor/convert</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/processor/convert</url>
     </scm>
 
     <dependencies>
         <dependency>
-            <groupId>org.gxml</groupId>
-            <artifactId>gxml-api</artifactId>
+            <groupId>org.genxdm</groupId>
+            <artifactId>genxdm-api</artifactId>
             <version>[,2)</version>
         </dependency>
         <!--dependency>

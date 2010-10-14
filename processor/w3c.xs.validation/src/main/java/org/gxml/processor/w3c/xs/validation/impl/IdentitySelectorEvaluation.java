@@ -17,7 +17,7 @@ package org.gxml.processor.w3c.xs.validation.impl;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.constraints.SmRestrictedXPath;
 
 /**
  * The status of a streaming XPath evaluation for an xs:selector.

@@ -17,7 +17,7 @@ package org.gxml.bridge.cx.tree;
 
 import javax.xml.XMLConstants;
 
-import org.gxml.NodeKind;
+import org.genxdm.NodeKind;
 
 public final class XmlNamespaceNode
     extends XmlLeafNode

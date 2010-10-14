@@ -15,10 +15,10 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.exceptions.SmDatatypeException;
-import org.gxml.xs.types.SmSimpleType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.types.SmSimpleType;
 
 final class ISO8601
 {

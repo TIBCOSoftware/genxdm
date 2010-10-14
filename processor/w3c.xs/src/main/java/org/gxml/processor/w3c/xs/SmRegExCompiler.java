@@ -15,7 +15,7 @@
  */
 package org.gxml.processor.w3c.xs;
 
-import org.gxml.xs.facets.SmRegExPattern;
+import org.genxdm.xs.facets.SmRegExPattern;
 
 public interface SmRegExCompiler
 {

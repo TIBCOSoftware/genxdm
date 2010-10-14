@@ -23,16 +23,16 @@ import java.util.List;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.gxml.Feature;
-import org.gxml.base.ProcessingContext;
+import org.genxdm.Feature;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.names.NameSource;
+import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.TypedModel;
+import org.genxdm.typed.io.SequenceBuilder;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.types.SmNativeType;
 import org.gxml.bridgetest.GxTestBase;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.names.NameSource;
-import org.gxml.typed.TypedContext;
-import org.gxml.typed.TypedModel;
-import org.gxml.typed.io.SequenceBuilder;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.types.SmNativeType;
 
 public abstract class TypedValueTestBase<N, A> 
     extends GxTestBase<N>

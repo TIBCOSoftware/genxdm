@@ -35,6 +35,11 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
+import org.genxdm.NodeKind;
+import org.genxdm.base.Model;
+import org.genxdm.base.io.ContentHandler;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.names.NamespaceBinding;
 import org.gxml.bridgekit.axes.IterableAncestorAxis;
 import org.gxml.bridgekit.axes.IterableAncestorOrSelfAxis;
 import org.gxml.bridgekit.axes.IterableChildAxis;
@@ -48,11 +53,6 @@ import org.gxml.bridgekit.axes.IterablePrecedingAxis;
 import org.gxml.bridgekit.axes.IterablePrecedingSiblingAxis;
 import org.gxml.bridgekit.names.QNameComparator;
 import org.gxml.bridgekit.tree.Ordering;
-import org.gxml.NodeKind;
-import org.gxml.base.Model;
-import org.gxml.base.io.ContentHandler;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.names.NamespaceBinding;
 
 public class AxiomModel
     implements Model<Object>

@@ -15,9 +15,9 @@
  */
 package org.gxml.bridge.dom.tests;
 
+import org.genxdm.names.NameSource;
 import org.gxml.bridgetest.TimingTestBase;
 import org.gxml.bridge.dom.DomProcessingContext;
-import org.gxml.names.NameSource;
 import org.w3c.dom.Node;
 
 public final class DomTimingTest

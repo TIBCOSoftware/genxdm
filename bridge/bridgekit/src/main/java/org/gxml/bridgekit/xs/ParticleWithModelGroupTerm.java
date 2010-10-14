@@ -15,13 +15,13 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.components.SmModelGroup;
-import org.gxml.xs.components.SmParticle;
-import org.gxml.xs.components.SmParticleTerm;
-import org.gxml.xs.components.SmWildcard;
-import org.gxml.xs.constraints.SmModelGroupUse;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.SmModelGroup;
+import org.genxdm.xs.components.SmParticle;
+import org.genxdm.xs.components.SmParticleTerm;
+import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.constraints.SmModelGroupUse;
 
 public final class ParticleWithModelGroupTerm<A> extends ParticleImpl<A> implements SmModelGroupUse<A>
 {

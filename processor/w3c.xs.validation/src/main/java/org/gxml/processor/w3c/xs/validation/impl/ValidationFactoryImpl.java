@@ -15,11 +15,11 @@
  */
 package org.gxml.processor.w3c.xs.validation.impl;
 
+import org.genxdm.xs.components.SmElement;
 import org.gxml.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrategy;
 import org.gxml.processor.w3c.xs.validation.api.VxValidationHost;
 import org.gxml.processor.w3c.xs.validation.api.VxValidatorCache;
 import org.gxml.processor.w3c.xs.validation.api.VxValidatorCacheFactory;
-import org.gxml.xs.components.SmElement;
 
 
 public final class ValidationFactoryImpl<A> implements VxValidatorCacheFactory<A>

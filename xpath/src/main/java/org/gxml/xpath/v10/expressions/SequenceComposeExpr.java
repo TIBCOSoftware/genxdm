@@ -20,7 +20,7 @@
  */
 package org.gxml.xpath.v10.expressions;
 
-import org.gxml.base.Model;
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.iterators.NodeIterator;
 import org.gxml.xpath.v10.iterators.SequenceComposeNodeIterator;
 

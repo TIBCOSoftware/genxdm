@@ -18,7 +18,7 @@ package org.gxml.bridge.dom.axes;
 
 import java.util.Iterator;
 
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.exceptions.PreCondition;
 import org.w3c.dom.Node;
 
 public final class AxisChildIterable implements Iterable<Node>

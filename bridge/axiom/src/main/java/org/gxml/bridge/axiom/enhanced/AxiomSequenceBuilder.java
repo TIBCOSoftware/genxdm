@@ -21,12 +21,12 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMFactory;
+import org.genxdm.DtdAttributeKind;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.typed.io.SequenceBuilder;
+import org.genxdm.typed.types.AtomBridge;
 import org.gxml.bridgekit.atoms.XmlAtom;
-import org.gxml.DtdAttributeKind;
 import org.gxml.bridge.axiom.AxiomFragmentBuilder;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.typed.io.SequenceBuilder;
-import org.gxml.typed.types.AtomBridge;
 
 final class AxiomSequenceBuilder 
     implements SequenceBuilder<Object, XmlAtom>

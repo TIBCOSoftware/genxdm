@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 
 import javax.xml.datatype.DatatypeConstants;
 
-import org.gxml.typed.types.AtomBridge;
+import org.genxdm.typed.types.AtomBridge;
 
 public final class OpXMLSchemaCompareGregorian<A> implements SmValueComp<A>
 {

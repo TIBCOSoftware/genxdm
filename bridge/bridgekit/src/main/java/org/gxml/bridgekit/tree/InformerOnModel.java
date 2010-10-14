@@ -19,11 +19,11 @@ import java.net.URI;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.NodeKind;
-import org.gxml.base.Model;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.names.NamespaceBinding;
-import org.gxml.nodes.Informer;
+import org.genxdm.NodeKind;
+import org.genxdm.base.Model;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.NamespaceBinding;
+import org.genxdm.nodes.Informer;
 
 class InformerOnModel<N>
     implements Informer

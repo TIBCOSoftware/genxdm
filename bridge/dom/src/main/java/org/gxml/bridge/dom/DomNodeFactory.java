@@ -20,8 +20,8 @@ import java.net.URI;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.gxml.base.mutable.NodeFactory;
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.base.mutable.NodeFactory;
+import org.genxdm.exceptions.PreCondition;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 

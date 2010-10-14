@@ -17,7 +17,7 @@
     -->
     
     <parent>
-        <groupId>org.gxml</groupId>
+        <groupId>org.genxdm</groupId>
         <artifactId>project</artifactId>
         <version>1.0.0</version>
     </parent>
@@ -26,12 +26,12 @@
     <artifactId>bridge</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
-    <name>gXML Bridges</name>
+    <name>GenXDM Bridges</name>
 
     <scm>
-        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/bridge</connection>
-        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/bridge</developerConnection>
-        <url>http://gxml.googlecode.com/svn/trunk/project/bridge</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/bridge</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/bridge</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/bridge</url>
     </scm>
 
     <modules>

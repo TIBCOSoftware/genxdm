@@ -20,11 +20,11 @@
  */
 package org.gxml.processor.xpath.v10.expressions;
 
+import org.genxdm.NodeKind;
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.ExprContextDynamic;
 import org.gxml.xpath.v10.iterators.NodeIterator;
 import org.gxml.xpath.v10.iterators.NodeIteratorOnIterator;
-import org.gxml.NodeKind;
-import org.gxml.base.Model;
 
 /**
  * an XPath expression component representing an ancestor axis

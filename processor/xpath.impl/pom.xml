@@ -21,7 +21,7 @@
     </properties>
     
     <parent>
-        <groupId>org.gxml</groupId>
+        <groupId>org.genxdm</groupId>
         <artifactId>processor</artifactId>
         <version>1.0.0</version>
     </parent>
@@ -29,7 +29,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>proc-xpath</artifactId>
     <version>1.0.0</version>
-    <name>gXML XPath 1.0 Implementation</name>
+    <name>GenXDM XPath 1.0 Implementation</name>
 
     <reporting>
         <plugins>
@@ -51,19 +51,19 @@
     </reporting>
 
     <scm>
-        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/processor/xpath.impl</connection>
-        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/processor/xpath.impl</developerConnection>
-        <url>http://gxml.googlecode.com/svn/trunk/project/processor/xpath.impl</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/processor/xpath.impl</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/processor/xpath.impl</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/processor/xpath.impl</url>
     </scm>
 
     <dependencies>
         <dependency>
-            <groupId>org.gxml</groupId>
-            <artifactId>gxml-xpath-api</artifactId>
+            <groupId>org.genxdm</groupId>
+            <artifactId>genxdm-xpath-api</artifactId>
             <version>[,2)</version>
         </dependency>
         <dependency>
-            <groupId>org.gxml</groupId>
+            <groupId>org.genxdm</groupId>
             <artifactId>bridgekit</artifactId>
             <version>[,2)</version>
         </dependency>

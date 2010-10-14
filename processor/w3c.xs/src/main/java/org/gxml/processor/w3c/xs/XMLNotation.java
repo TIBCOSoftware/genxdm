@@ -19,7 +19,7 @@ import java.net.URI;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.exceptions.PreCondition;
 
 final class XMLNotation<A> extends XMLComponent<A>
 {

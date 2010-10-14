@@ -15,12 +15,12 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.xs.enums.SmNodeKind;
-import org.gxml.xs.types.SmPrimeChoiceType;
-import org.gxml.xs.types.SmPrimeType;
-import org.gxml.xs.types.SmPrimeTypeKind;
-import org.gxml.xs.types.SmSequenceTypeVisitor;
-import org.gxml.xs.types.SmTextNodeType;
+import org.genxdm.xs.enums.SmNodeKind;
+import org.genxdm.xs.types.SmPrimeChoiceType;
+import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.SmPrimeTypeKind;
+import org.genxdm.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.xs.types.SmTextNodeType;
 
 final class TextNodeType<A> extends AbstractLeafNodeType<A> implements SmTextNodeType<A>
 {

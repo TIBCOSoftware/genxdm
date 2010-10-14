@@ -20,13 +20,13 @@
  */
 package org.gxml.processor.xpath.v10.relations;
 
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.Converter;
 import org.gxml.xpath.v10.expressions.ExprException;
 import org.gxml.xpath.v10.iterators.CloneableNodeIterator;
 import org.gxml.xpath.v10.iterators.CloneableNodeIteratorImpl;
 import org.gxml.xpath.v10.iterators.NodeIterator;
 import org.gxml.xpath.v10.variants.Variant;
-import org.gxml.base.Model;
 
 public abstract class Relation 
 {

@@ -15,8 +15,8 @@
  */
 package org.gxml.processor.w3c.xs.exception;
 
-import org.gxml.xs.exceptions.SmException;
-import org.gxml.xs.resolve.SmLocation;
+import org.genxdm.xs.exceptions.SmException;
+import org.genxdm.xs.resolve.SmLocation;
 
 @SuppressWarnings("serial")
 public class SmInclusionNamespaceMismatchException extends SmInclusionException

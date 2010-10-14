@@ -17,10 +17,10 @@ package org.gxml.bridgekit.xs;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.components.SmDataComponent;
-import org.gxml.xs.constraints.SmHasValueConstraint;
-import org.gxml.xs.constraints.SmValueConstraint;
-import org.gxml.xs.enums.SmScopeExtent;
+import org.genxdm.xs.components.SmDataComponent;
+import org.genxdm.xs.constraints.SmHasValueConstraint;
+import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.enums.SmScopeExtent;
 
 public abstract class DataComponentImpl<A> extends NamedComponentImpl<A> implements SmDataComponent<A>, SmHasValueConstraint<A>
 {

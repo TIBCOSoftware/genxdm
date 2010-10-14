@@ -18,7 +18,7 @@ package org.gxml.bridge.axiom;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.exceptions.PreCondition;
 
 /**
  * This wrapper class ensures that a namespace node has a parent.

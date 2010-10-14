@@ -15,7 +15,7 @@
  */
 package org.gxml.bridge.cx.tree;
 
-import org.gxml.NodeKind;
+import org.genxdm.NodeKind;
 
 public final class XmlCommentNode
     extends XmlLeafNode

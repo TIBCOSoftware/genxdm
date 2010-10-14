@@ -15,8 +15,8 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.xs.enums.SmNodeKind;
-import org.gxml.xs.types.SmNodeType;
+import org.genxdm.xs.enums.SmNodeKind;
+import org.genxdm.xs.types.SmNodeType;
 
 abstract class AbstractLeafNodeType<A> extends AbstractPrimeExcludingNoneType<A> implements SmNodeType<A>
 {

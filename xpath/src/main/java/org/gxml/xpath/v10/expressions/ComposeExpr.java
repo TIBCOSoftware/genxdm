@@ -22,7 +22,7 @@ package org.gxml.xpath.v10.expressions;
 
 import java.lang.reflect.Array;
 
-import org.gxml.base.Model;
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.iterators.MergeNodeIterator;
 import org.gxml.xpath.v10.iterators.NodeIterator;
 import org.gxml.xpath.v10.iterators.NullNodeIterator;

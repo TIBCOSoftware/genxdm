@@ -22,17 +22,17 @@ import java.util.List;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.GxmlAtomCastException;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.exceptions.SpillagePolicy;
-import org.gxml.names.NameSource;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.typed.types.CastingContext;
-import org.gxml.xs.SmSchema;
-import org.gxml.xs.exceptions.SmDatatypeException;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmSimpleType;
-import org.gxml.xs.types.SmType;
+import org.genxdm.exceptions.GxmlAtomCastException;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.exceptions.SpillagePolicy;
+import org.genxdm.names.NameSource;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.typed.types.CastingContext;
+import org.genxdm.xs.SmSchema;
+import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SmType;
 
 final class CastingSupport
 {

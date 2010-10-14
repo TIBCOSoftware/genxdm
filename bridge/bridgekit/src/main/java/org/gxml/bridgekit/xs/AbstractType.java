@@ -15,7 +15,7 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.xs.types.SmSequenceType;
+import org.genxdm.xs.types.SmSequenceType;
 
 abstract class AbstractType<A> implements SmSequenceType<A>
 {

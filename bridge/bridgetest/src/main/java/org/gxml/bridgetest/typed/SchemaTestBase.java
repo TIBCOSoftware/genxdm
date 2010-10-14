@@ -24,21 +24,21 @@ import java.util.Set;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.gxml.base.ProcessingContext;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.names.NameSource;
+import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.components.SmAttribute;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.facets.SmFacet;
+import org.genxdm.xs.facets.SmLimit;
+import org.genxdm.xs.types.SmComplexType;
+import org.genxdm.xs.types.SmSimpleType;
 import org.gxml.bridgetest.GxTestBase;
 import org.gxml.bridgetest.xs.MyElementDeclaration;
 import org.gxml.bridgetest.xs.MyIntegerType;
-import org.gxml.names.NameSource;
-import org.gxml.typed.TypedContext;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.components.SmAttribute;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.enums.SmDerivationMethod;
-import org.gxml.xs.exceptions.SmDatatypeException;
-import org.gxml.xs.facets.SmFacet;
-import org.gxml.xs.facets.SmLimit;
-import org.gxml.xs.types.SmComplexType;
-import org.gxml.xs.types.SmSimpleType;
 
 public abstract class SchemaTestBase<N, A> 
     extends GxTestBase<N>

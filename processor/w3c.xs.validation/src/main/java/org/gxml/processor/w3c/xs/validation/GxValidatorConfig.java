@@ -15,7 +15,7 @@
  */
 package org.gxml.processor.w3c.xs.validation;
 
-import org.gxml.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
 
 public interface GxValidatorConfig
 {

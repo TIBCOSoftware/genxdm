@@ -20,12 +20,12 @@
  */
 package org.gxml.processor.xpath.v10.expressions;
 
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.ConvertibleNodeSetExpr;
 import org.gxml.xpath.v10.expressions.ExprContextDynamic;
 import org.gxml.xpath.v10.expressions.ExprException;
 import org.gxml.xpath.v10.expressions.NodeSetExpr;
 import org.gxml.xpath.v10.iterators.NodeIterator;
-import org.gxml.base.Model;
 
 /**
  * an XPath expression (component) that evaluates a sub-expression with a document root Node as the contextNode

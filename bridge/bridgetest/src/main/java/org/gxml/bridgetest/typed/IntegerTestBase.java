@@ -20,16 +20,16 @@ import java.math.BigInteger;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.base.ProcessingContext;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.exceptions.GxmlAtomCastException;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.exceptions.SpillagePolicy;
+import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.typed.types.CastingContext;
+import org.genxdm.typed.types.Emulation;
+import org.genxdm.xs.types.SmNativeType;
 import org.gxml.bridgetest.GxTestBase;
-import org.gxml.exceptions.GxmlAtomCastException;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.exceptions.SpillagePolicy;
-import org.gxml.typed.TypedContext;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.typed.types.CastingContext;
-import org.gxml.typed.types.Emulation;
-import org.gxml.xs.types.SmNativeType;
 
 /**
  * These unit tests provide broad coverage of casting of integers.

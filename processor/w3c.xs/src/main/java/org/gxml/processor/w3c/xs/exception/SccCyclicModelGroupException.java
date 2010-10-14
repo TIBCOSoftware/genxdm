@@ -17,7 +17,7 @@ package org.gxml.processor.w3c.xs.exception;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.SmLocation;
 
 
 @SuppressWarnings("serial")

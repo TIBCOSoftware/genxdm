@@ -19,9 +19,9 @@ import java.util.LinkedList;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.constraints.SmIdentityConstraintKind;
-import org.gxml.xs.constraints.SmRestrictedXPath;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.constraints.SmIdentityConstraintKind;
+import org.genxdm.xs.constraints.SmRestrictedXPath;
 
 final class XMLIdentityConstraint<A> extends XMLComponent<A>
 {

@@ -15,8 +15,8 @@
  */
 package org.gxml.processor.w3c.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.facets.SmFacetKind;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.facets.SmFacetKind;
 
 final class XMLMinMaxFacet<A> extends XMLFacet<A>
 {

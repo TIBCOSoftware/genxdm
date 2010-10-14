@@ -17,14 +17,14 @@ package org.gxml.bridgekit.xs;
 
 import java.util.List;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.exceptions.SmFacetException;
-import org.gxml.xs.exceptions.SmFacetFractionDigitsException;
-import org.gxml.xs.facets.SmFacetKind;
-import org.gxml.xs.facets.SmFractionDigits;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmSimpleType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.exceptions.SmFacetException;
+import org.genxdm.xs.exceptions.SmFacetFractionDigitsException;
+import org.genxdm.xs.facets.SmFacetKind;
+import org.genxdm.xs.facets.SmFractionDigits;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmSimpleType;
 
 public final class FacetFractionDigitsImpl<A> extends FacetImpl<A> implements SmFractionDigits<A>
 {

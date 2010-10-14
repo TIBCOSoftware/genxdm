@@ -15,13 +15,13 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.exceptions.SmFacetException;
-import org.gxml.xs.exceptions.SmFacetMinLengthException;
-import org.gxml.xs.facets.SmFacetKind;
-import org.gxml.xs.facets.SmLengthFacetUOM;
-import org.gxml.xs.facets.SmMinLength;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.exceptions.SmFacetException;
+import org.genxdm.xs.exceptions.SmFacetMinLengthException;
+import org.genxdm.xs.facets.SmFacetKind;
+import org.genxdm.xs.facets.SmLengthFacetUOM;
+import org.genxdm.xs.facets.SmMinLength;
 
 public final class FacetMinLengthImpl<A> extends FacetLengthCommonImpl<A> implements SmMinLength<A>
 {

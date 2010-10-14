@@ -15,9 +15,9 @@
  */
 package org.gxml.processor.w3c.xs;
 
-import org.gxml.xs.constraints.SmRestrictedXPath;
-import org.gxml.xs.exceptions.SmSimpleTypeException;
-import org.gxml.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.exceptions.SmSimpleTypeException;
+import org.genxdm.xs.resolve.SmPrefixResolver;
 
 /**
  * A parser of restricted XPath expressions.

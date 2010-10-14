@@ -22,9 +22,9 @@ package org.gxml.processor.xpath.v10.patterns;
 
 import java.lang.reflect.Array;
 
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.ExprContextDynamic;
 import org.gxml.xpath.v10.expressions.ExprException;
-import org.gxml.base.Model;
 
 /**
  * represents an "OR" (union) of match patterns

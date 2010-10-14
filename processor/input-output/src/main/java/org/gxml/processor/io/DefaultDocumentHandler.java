@@ -32,15 +32,15 @@ import javax.xml.stream.XMLReporter;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.genxdm.Resolver;
+import org.genxdm.base.Model;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.DocumentHandler;
+import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.exceptions.GxmlMarshalException;
+import org.genxdm.exceptions.PreCondition;
 import org.gxml.processor.input.XmlEventVisitor;
 import org.gxml.processor.output.ContentHandlerOnXmlStreamWriter;
-import org.gxml.Resolver;
-import org.gxml.base.Model;
-import org.gxml.base.ProcessingContext;
-import org.gxml.base.io.DocumentHandler;
-import org.gxml.base.io.FragmentBuilder;
-import org.gxml.exceptions.GxmlMarshalException;
-import org.gxml.exceptions.PreCondition;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 
@@ -51,8 +51,8 @@ import org.xml.sax.InputSource;
  * (the implementation will retrieve a fragment builder for input and a model
  * for output), or the pair FragmentBuilder, Model, in the constructor.
  * 
- * This implementation makes use of the generic adapters found in org.gxml.processor.input
- * and org.gxml.processor.output.
+ * This implementation makes use of the generic adapters found in org.genxdm.processor.input
+ * and org.genxdm.processor.output.
  * 
  * @param <N> The node handle.
  */

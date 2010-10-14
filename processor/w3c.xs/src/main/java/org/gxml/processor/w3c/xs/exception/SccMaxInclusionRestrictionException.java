@@ -15,9 +15,9 @@
  */
 package org.gxml.processor.w3c.xs.exception;
 
-import org.gxml.xs.enums.SmOutcome;
-import org.gxml.xs.facets.SmFacetKind;
-import org.gxml.xs.facets.SmLimit;
+import org.genxdm.xs.enums.SmOutcome;
+import org.genxdm.xs.facets.SmFacetKind;
+import org.genxdm.xs.facets.SmLimit;
 
 @SuppressWarnings("serial")
 public class SccMaxInclusionRestrictionException extends SccLimitRestrictionException

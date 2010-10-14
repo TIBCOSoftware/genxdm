@@ -20,17 +20,17 @@ import java.util.StringTokenizer;
 
 import javax.xml.XMLConstants;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.names.NameSource;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.NameSource;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.components.SmComponentProvider;
+import org.genxdm.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.exceptions.SmSimpleTypeException;
+import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmSimpleType;
 import org.gxml.processor.w3c.xs.exception.SrcPrefixNotFoundException;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.components.SmComponentProvider;
-import org.gxml.xs.constraints.SmRestrictedXPath;
-import org.gxml.xs.exceptions.SmDatatypeException;
-import org.gxml.xs.exceptions.SmSimpleTypeException;
-import org.gxml.xs.resolve.SmPrefixResolver;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmSimpleType;
 
 
 final class RestrictedXPathParser<A> implements SmRestrictedXPathParser

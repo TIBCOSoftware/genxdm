@@ -18,10 +18,10 @@ package org.gxml.samples.conversion;
 import java.io.FileReader;
 import java.io.StringWriter;
 
-import org.gxml.base.Cursor;
-import org.gxml.base.ProcessingContext;
-import org.gxml.base.io.DocumentHandler;
-import org.gxml.base.io.FragmentBuilder;
+import org.genxdm.base.Cursor;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.DocumentHandler;
+import org.genxdm.base.io.FragmentBuilder;
 
 /**
  * This sample illustrates a simple, untyped conversion from an untyped source 

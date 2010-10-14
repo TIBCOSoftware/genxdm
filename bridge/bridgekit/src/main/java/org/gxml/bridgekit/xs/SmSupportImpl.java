@@ -17,13 +17,13 @@ package org.gxml.bridgekit.xs;
 
 import java.util.Set;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.names.NameSource;
-import org.gxml.xs.enums.SmDerivationMethod;
-import org.gxml.xs.enums.SmQuantifier;
-import org.gxml.xs.types.SmPrimeType;
-import org.gxml.xs.types.SmSequenceType;
-import org.gxml.xs.types.SmType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.NameSource;
+import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.SmSequenceType;
+import org.genxdm.xs.types.SmType;
 
 /**
  * Implementation helper functions.
