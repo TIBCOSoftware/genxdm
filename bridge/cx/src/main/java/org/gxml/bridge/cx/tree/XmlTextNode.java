@@ -18,8 +18,8 @@ package org.gxml.bridge.cx.tree;
 import java.util.List;
 
 import org.genxdm.NodeKind;
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.xs.types.SmType;
-import org.gxml.bridgekit.atoms.XmlAtom;
 
 public final class XmlTextNode
     extends XmlLeafNode

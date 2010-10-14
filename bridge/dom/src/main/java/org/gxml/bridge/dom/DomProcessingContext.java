@@ -26,13 +26,13 @@ import org.genxdm.base.mutable.MutableContext;
 import org.genxdm.base.mutable.MutableCursor;
 import org.genxdm.base.mutable.MutableModel;
 import org.genxdm.base.mutable.NodeFactory;
+import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.bridgekit.tree.BookmarkOnModel;
+import org.genxdm.bridgekit.tree.CursorOnModel;
+import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
-import org.gxml.bridgekit.atoms.XmlAtom;
-import org.gxml.bridgekit.tree.BookmarkOnModel;
-import org.gxml.bridgekit.tree.CursorOnModel;
-import org.gxml.bridgekit.tree.MutableCursorOnMutableModel;
 import org.gxml.bridge.dom.enhanced.DomSAProcessingContext;
 import org.w3c.dom.Node;
 

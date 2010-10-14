@@ -17,7 +17,7 @@ package org.gxml.bridge.axiom.tests;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.genxdm.base.ProcessingContext;
-import org.gxml.bridgekit.atoms.XmlAtom;
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.gxml.bridgetest.typed.CastingTestBase;
 import org.gxml.bridge.axiom.AxiomProcessingContext;
 

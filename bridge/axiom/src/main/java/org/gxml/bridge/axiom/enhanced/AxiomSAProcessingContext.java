@@ -19,6 +19,13 @@ import java.util.EnumSet;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.bridgekit.atoms.XmlAtomBridge;
+import org.genxdm.bridgekit.tree.CoreModelDecoration;
+import org.genxdm.bridgekit.tree.CoreModelDecorator;
+import org.genxdm.bridgekit.tree.CursorOnTypedModel;
+import org.genxdm.bridgekit.xs.GxMetaBridgeOnSmMetaBridgeAdapter;
+import org.genxdm.bridgekit.xs.SmMetaBridgeFactory;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
@@ -44,13 +51,6 @@ import org.genxdm.xs.types.SmSimpleType;
 import org.genxdm.xs.types.SmSimpleUrType;
 import org.genxdm.xs.types.SmType;
 import org.gxml.bridge.axiom.AxiomProcessingContext;
-import org.gxml.bridgekit.atoms.XmlAtom;
-import org.gxml.bridgekit.atoms.XmlAtomBridge;
-import org.gxml.bridgekit.tree.CoreModelDecoration;
-import org.gxml.bridgekit.tree.CoreModelDecorator;
-import org.gxml.bridgekit.tree.CursorOnTypedModel;
-import org.gxml.bridgekit.xs.GxMetaBridgeOnSmMetaBridgeAdapter;
-import org.gxml.bridgekit.xs.SmMetaBridgeFactory;
 
 public final class AxiomSAProcessingContext 
     implements TypedContext<Object, XmlAtom>

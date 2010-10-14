@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.genxdm.DtdAttributeKind;
 import org.genxdm.base.mutable.NodeFactory;
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.xs.types.SmType;
-import org.gxml.bridgekit.atoms.XmlAtom;
 
 public class XmlNodeFactory
     implements NodeFactory<XmlNode>

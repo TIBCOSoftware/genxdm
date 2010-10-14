@@ -15,8 +15,8 @@
  */
 package org.gxml.samples.performance;
 
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.gxml.bridge.dom.DomProcessingContext;
-import org.gxml.bridgekit.atoms.XmlAtom;
 import org.w3c.dom.Node;
 
 public class DomBridgePerformance extends BridgePerformance<Node, XmlAtom> {

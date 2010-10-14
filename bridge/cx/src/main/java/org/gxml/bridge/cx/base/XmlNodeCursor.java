@@ -22,10 +22,10 @@ import javax.xml.namespace.QName;
 import org.genxdm.NodeKind;
 import org.genxdm.base.Cursor;
 import org.genxdm.base.io.ContentHandler;
+import org.genxdm.bridgekit.tree.Ordering;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NamespaceBinding;
 import org.genxdm.nodes.Bookmark;
-import org.gxml.bridgekit.tree.Ordering;
 import org.gxml.bridge.cx.tree.Walker;
 import org.gxml.bridge.cx.tree.XmlNode;
 

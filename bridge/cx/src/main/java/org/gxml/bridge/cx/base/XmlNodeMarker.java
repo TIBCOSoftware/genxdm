@@ -25,10 +25,10 @@ import javax.xml.namespace.QName;
 import org.genxdm.NodeKind;
 import org.genxdm.base.Cursor;
 import org.genxdm.base.Model;
+import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NamespaceBinding;
 import org.genxdm.nodes.Bookmark;
-import org.gxml.bridgekit.misc.UnaryIterable;
 import org.gxml.bridge.cx.tree.XmlNode;
 
 public class XmlNodeMarker
