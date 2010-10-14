@@ -23,9 +23,9 @@ package org.gxml.processor.xpath.v10.iterators;
 import java.util.Iterator;
 import java.util.List;
 
+import org.genxdm.exceptions.PreCondition;
 import org.gxml.xpath.v10.expressions.ExprException;
 import org.gxml.xpath.v10.iterators.NodeIterator;
-import org.gxml.exceptions.PreCondition;
 
 public class ListNodeIterator<N>
     implements NodeIterator<N>

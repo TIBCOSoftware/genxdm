@@ -19,8 +19,8 @@ import java.net.URI;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.components.SmNotation;
-import org.gxml.xs.enums.SmScopeExtent;
+import org.genxdm.xs.components.SmNotation;
+import org.genxdm.xs.enums.SmScopeExtent;
 
 public final class NotationImpl<A> extends NamedComponentImpl<A> implements SmNotation<A>
 {

@@ -19,8 +19,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
-import org.gxml.typed.types.VariantBridge;
-import org.gxml.typed.types.VariantKind;
+import org.genxdm.typed.types.VariantBridge;
+import org.genxdm.typed.types.VariantKind;
 import org.w3c.dom.Node;
 
 final class DomValueBridge<A> implements VariantBridge<Node, A, Object>

@@ -22,9 +22,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.genxdm.exceptions.GxmlMarshalException;
+import org.genxdm.exceptions.PreCondition;
 import org.gxml.processor.io.DefaultDocumentHandler;
-import org.gxml.exceptions.GxmlMarshalException;
-import org.gxml.exceptions.PreCondition;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.ErrorHandler;

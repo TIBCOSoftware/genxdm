@@ -22,7 +22,7 @@ package org.gxml.processor.xpath.v10.patterns;
 
 import java.lang.reflect.Array;
 
-import org.gxml.NodeKind;
+import org.genxdm.NodeKind;
 
 /**
  * a (component of) a compiled XPath pattern expression

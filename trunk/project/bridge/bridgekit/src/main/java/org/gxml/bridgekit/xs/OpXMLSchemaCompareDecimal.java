@@ -17,7 +17,7 @@ package org.gxml.bridgekit.xs;
 
 import java.math.BigDecimal;
 
-import org.gxml.typed.types.AtomBridge;
+import org.genxdm.typed.types.AtomBridge;
 
 final class OpXMLSchemaCompareDecimal<A> implements SmValueComp<A>
 {

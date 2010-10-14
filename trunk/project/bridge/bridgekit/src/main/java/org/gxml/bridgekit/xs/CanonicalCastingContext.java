@@ -15,9 +15,9 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.exceptions.SpillagePolicy;
-import org.gxml.typed.types.CastingContext;
-import org.gxml.typed.types.Emulation;
+import org.genxdm.exceptions.SpillagePolicy;
+import org.genxdm.typed.types.CastingContext;
+import org.genxdm.typed.types.Emulation;
 
 public class CanonicalCastingContext<A> implements CastingContext<A>
 {

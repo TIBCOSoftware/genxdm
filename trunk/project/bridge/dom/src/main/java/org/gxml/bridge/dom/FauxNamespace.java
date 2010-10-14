@@ -17,9 +17,9 @@ package org.gxml.bridge.dom;
 
 import javax.xml.XMLConstants;
 
-import org.gxml.NodeKind;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.types.Emulation;
+import org.genxdm.NodeKind;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.Emulation;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;

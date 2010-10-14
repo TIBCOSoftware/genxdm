@@ -15,8 +15,8 @@
  */
 package org.gxml.processor.w3c.xs.exception;
 
-import org.gxml.xs.enums.SmOutcome;
-import org.gxml.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.SmOutcome;
+import org.genxdm.xs.exceptions.SmComponentConstraintException;
 
 /**
  * Date: Mar 11, 2008

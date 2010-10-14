@@ -15,8 +15,8 @@
  */
 package org.gxml.processor.w3c.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.resolve.SmPrefixResolver;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.resolve.SmPrefixResolver;
 
 final class XMLEnumeration<A> extends XMLFacet<A>
 {

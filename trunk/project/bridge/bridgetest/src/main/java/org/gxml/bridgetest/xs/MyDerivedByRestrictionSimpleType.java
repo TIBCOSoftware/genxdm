@@ -16,9 +16,9 @@
 package org.gxml.bridgetest.xs;
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.IllegalNullArgumentException;
-import org.gxml.xs.enums.SmDerivationMethod;
-import org.gxml.xs.types.SmSimpleType;
+import org.genxdm.exceptions.IllegalNullArgumentException;
+import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.types.SmSimpleType;
 
 public abstract class MyDerivedByRestrictionSimpleType<A> implements SmSimpleType<A>
 {

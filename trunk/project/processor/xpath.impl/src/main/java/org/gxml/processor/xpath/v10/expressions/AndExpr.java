@@ -20,11 +20,11 @@
  */
 package org.gxml.processor.xpath.v10.expressions;
 
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.BooleanExpr;
 import org.gxml.xpath.v10.expressions.ConvertibleBooleanExpr;
 import org.gxml.xpath.v10.expressions.ExprContextDynamic;
 import org.gxml.xpath.v10.expressions.ExprException;
-import org.gxml.base.Model;
 
 final class AndExpr
     extends ConvertibleBooleanExpr

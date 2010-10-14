@@ -19,20 +19,20 @@
     </properties>
     
     <parent>
-        <groupId>org.gxml</groupId>
+        <groupId>org.genxdm</groupId>
         <artifactId>support</artifactId>
         <version>1.0.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>gxml-book</artifactId>
+    <artifactId>genxdm-book</artifactId>
     <version>1.0.0</version>
-    <name>gXML Book</name>
+    <name>GenXDM Book</name>
 
     <scm>
-        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/support/book</connection>
-        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/support/book</developerConnection>
-        <url>http://gxml.googlecode.com/svn/trunk/project/support/book</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/support/book</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/support/book</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/support/book</url>
     </scm>
 
     <build>

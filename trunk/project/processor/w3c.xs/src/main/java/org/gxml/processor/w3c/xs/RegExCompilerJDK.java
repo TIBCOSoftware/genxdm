@@ -18,8 +18,8 @@ package org.gxml.processor.w3c.xs;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.facets.SmRegExPattern;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.facets.SmRegExPattern;
 
 /**
  * Regular Expression implementation using the JDK implementation.

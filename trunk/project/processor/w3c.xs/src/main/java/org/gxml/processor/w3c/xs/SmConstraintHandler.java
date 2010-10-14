@@ -15,17 +15,17 @@
  */
 package org.gxml.processor.w3c.xs;
 
-import org.gxml.xs.components.SmAttribute;
-import org.gxml.xs.components.SmAttributeGroup;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.components.SmModelGroup;
-import org.gxml.xs.components.SmNotation;
-import org.gxml.xs.components.SmParticle;
-import org.gxml.xs.constraints.SmIdentityConstraint;
-import org.gxml.xs.exceptions.SmAbortException;
-import org.gxml.xs.exceptions.SmException;
-import org.gxml.xs.types.SmComplexType;
-import org.gxml.xs.types.SmSimpleType;
+import org.genxdm.xs.components.SmAttribute;
+import org.genxdm.xs.components.SmAttributeGroup;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.SmModelGroup;
+import org.genxdm.xs.components.SmNotation;
+import org.genxdm.xs.components.SmParticle;
+import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.SmException;
+import org.genxdm.xs.types.SmComplexType;
+import org.genxdm.xs.types.SmSimpleType;
 
 public interface SmConstraintHandler<A>
 {

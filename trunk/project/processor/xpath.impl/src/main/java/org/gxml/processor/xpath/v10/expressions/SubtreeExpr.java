@@ -20,6 +20,7 @@
  */
 package org.gxml.processor.xpath.v10.expressions;
 
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.ConvertibleNodeSetExpr;
 import org.gxml.xpath.v10.expressions.ExprContextDynamic;
 import org.gxml.xpath.v10.expressions.ExprException;
@@ -27,7 +28,6 @@ import org.gxml.xpath.v10.iterators.NodeIterator;
 import org.gxml.xpath.v10.iterators.NodeIteratorOnIterator;
 import org.gxml.xpath.v10.iterators.SequenceComposeNodeIterator;
 import org.gxml.xpath.v10.iterators.UnionNodeIterator;
-import org.gxml.base.Model;
 
 /**
  * descendants-or-self(node())/E when E has STAYS_IN_SUBTREE

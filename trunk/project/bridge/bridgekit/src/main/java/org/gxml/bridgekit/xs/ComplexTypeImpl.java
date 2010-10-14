@@ -22,24 +22,24 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.names.NameSource;
-import org.gxml.xs.components.SmComponentProvider;
-import org.gxml.xs.components.SmWildcard;
-import org.gxml.xs.constraints.SmAttributeUse;
-import org.gxml.xs.enums.SmDerivationMethod;
-import org.gxml.xs.enums.SmQuantifier;
-import org.gxml.xs.enums.SmScopeExtent;
-import org.gxml.xs.types.SmComplexType;
-import org.gxml.xs.types.SmContentType;
-import org.gxml.xs.types.SmElementNodeType;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmPrimeChoiceType;
-import org.gxml.xs.types.SmPrimeType;
-import org.gxml.xs.types.SmPrimeTypeKind;
-import org.gxml.xs.types.SmSequenceType;
-import org.gxml.xs.types.SmSequenceTypeVisitor;
-import org.gxml.xs.types.SmType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.NameSource;
+import org.genxdm.xs.components.SmComponentProvider;
+import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.constraints.SmAttributeUse;
+import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.types.SmComplexType;
+import org.genxdm.xs.types.SmContentType;
+import org.genxdm.xs.types.SmElementNodeType;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmPrimeChoiceType;
+import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.SmPrimeTypeKind;
+import org.genxdm.xs.types.SmSequenceType;
+import org.genxdm.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.xs.types.SmType;
 
 /**
  * A complex type, but not the Complex Ur-Type.

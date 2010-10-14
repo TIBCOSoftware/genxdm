@@ -22,11 +22,11 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.GxmlException;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SmType;
 import org.gxml.processor.w3c.xs.validation.api.VxOutputHandler;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.types.SmSimpleType;
-import org.gxml.xs.types.SmType;
 
 
 final class GxStreamValidatorImplBackEnd<A> implements VxOutputHandler<A>

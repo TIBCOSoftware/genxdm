@@ -17,8 +17,8 @@ package org.gxml.bridgekit.axes;
 
 import java.util.Iterator;
 
-import org.gxml.base.Model;
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.base.Model;
+import org.genxdm.exceptions.PreCondition;
 
 
 public final class IterableDescendantOrSelfAxis<N> implements Iterable<N>

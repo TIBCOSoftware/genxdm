@@ -21,24 +21,24 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.components.SmEnumeration;
-import org.gxml.xs.enums.SmDerivationMethod;
-import org.gxml.xs.enums.SmScopeExtent;
-import org.gxml.xs.enums.SmWhiteSpacePolicy;
-import org.gxml.xs.facets.SmFacet;
-import org.gxml.xs.facets.SmFacetKind;
-import org.gxml.xs.facets.SmPattern;
-import org.gxml.xs.resolve.SmPrefixResolver;
-import org.gxml.xs.types.SmAtomicType;
-import org.gxml.xs.types.SmAtomicUrType;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmPrimeChoiceType;
-import org.gxml.xs.types.SmPrimeType;
-import org.gxml.xs.types.SmPrimeTypeKind;
-import org.gxml.xs.types.SmSequenceTypeVisitor;
-import org.gxml.xs.types.SmType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.components.SmEnumeration;
+import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.enums.SmWhiteSpacePolicy;
+import org.genxdm.xs.facets.SmFacet;
+import org.genxdm.xs.facets.SmFacetKind;
+import org.genxdm.xs.facets.SmPattern;
+import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.types.SmAtomicType;
+import org.genxdm.xs.types.SmAtomicUrType;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmPrimeChoiceType;
+import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.SmPrimeTypeKind;
+import org.genxdm.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.xs.types.SmType;
 
 final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implements SmAtomicUrType<A>
 {

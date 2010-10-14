@@ -17,7 +17,7 @@ package org.gxml.bridgekit.axes;
 
 import java.util.Iterator;
 
-import org.gxml.base.Model;
+import org.genxdm.base.Model;
 
 public final class IterableChildAxisElementsByName<N> implements Iterable<N>
 {

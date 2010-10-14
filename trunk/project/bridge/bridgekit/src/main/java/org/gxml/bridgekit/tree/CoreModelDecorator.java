@@ -22,8 +22,13 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.NodeKind;
-import org.gxml.base.io.ContentHandler;
+import org.genxdm.NodeKind;
+import org.genxdm.base.io.ContentHandler;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.names.NamespaceBinding;
+import org.genxdm.typed.TypedModel;
+import org.genxdm.typed.io.SequenceHandler;
+import org.genxdm.typed.types.AtomBridge;
 import org.gxml.bridgekit.axes.IterableAncestorAxis;
 import org.gxml.bridgekit.axes.IterableAncestorOrSelfAxis;
 import org.gxml.bridgekit.axes.IterableChildAxis;
@@ -35,11 +40,6 @@ import org.gxml.bridgekit.axes.IterableFollowingAxis;
 import org.gxml.bridgekit.axes.IterableFollowingSiblingAxis;
 import org.gxml.bridgekit.axes.IterablePrecedingAxis;
 import org.gxml.bridgekit.axes.IterablePrecedingSiblingAxis;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.names.NamespaceBinding;
-import org.gxml.typed.TypedModel;
-import org.gxml.typed.io.SequenceHandler;
-import org.gxml.typed.types.AtomBridge;
 
 public final class CoreModelDecorator<N, A> 
     implements TypedModel<N, A>

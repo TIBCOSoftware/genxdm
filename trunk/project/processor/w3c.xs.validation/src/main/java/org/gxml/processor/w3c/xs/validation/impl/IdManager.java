@@ -20,13 +20,13 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.types.SmSimpleType;
 import org.gxml.processor.w3c.xs.exception.CvcDanglingIDReferenceException;
 import org.gxml.processor.w3c.xs.exception.SmDuplicateIDException;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.exceptions.SmAbortException;
-import org.gxml.xs.exceptions.SmExceptionHandler;
-import org.gxml.xs.resolve.SmLocation;
-import org.gxml.xs.types.SmSimpleType;
 
 
 /**

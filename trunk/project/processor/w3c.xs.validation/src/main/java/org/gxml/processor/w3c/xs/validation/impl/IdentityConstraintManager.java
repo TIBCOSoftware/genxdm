@@ -20,12 +20,12 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.constraints.SmIdentityConstraint;
-import org.gxml.xs.exceptions.SmAbortException;
-import org.gxml.xs.exceptions.SmExceptionHandler;
-import org.gxml.xs.types.SmSimpleType;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.types.SmSimpleType;
 
 /**
  * This manager has overall resposibility for checking identity constraints. <br/>

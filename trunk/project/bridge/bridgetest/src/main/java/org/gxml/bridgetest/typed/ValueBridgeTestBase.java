@@ -18,9 +18,9 @@ package org.gxml.bridgetest.typed;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.genxdm.typed.types.VariantBridge;
+import org.genxdm.typed.types.VariantKind;
 import org.gxml.bridgetest.GxTestBase;
-import org.gxml.typed.types.VariantBridge;
-import org.gxml.typed.types.VariantKind;
 
 public abstract class ValueBridgeTestBase<N, A, X> 
     extends GxTestBase<N>

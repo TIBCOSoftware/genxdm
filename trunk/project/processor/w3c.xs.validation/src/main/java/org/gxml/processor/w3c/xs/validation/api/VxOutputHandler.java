@@ -20,8 +20,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.types.SmSimpleType;
-import org.gxml.xs.types.SmType;
+import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SmType;
 
 
 public interface VxOutputHandler<A>

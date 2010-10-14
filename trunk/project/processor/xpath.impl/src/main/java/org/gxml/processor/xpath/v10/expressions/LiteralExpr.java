@@ -20,9 +20,9 @@
  */
 package org.gxml.processor.xpath.v10.expressions;
 
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.ConvertibleStringExpr;
 import org.gxml.xpath.v10.expressions.ExprContextDynamic;
-import org.gxml.base.Model;
 
 final class LiteralExpr
     extends ConvertibleStringExpr

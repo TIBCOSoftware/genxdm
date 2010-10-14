@@ -17,11 +17,11 @@ package org.gxml.bridgekit.xs;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.enums.SmQuantifier;
-import org.gxml.xs.types.SmNoneType;
-import org.gxml.xs.types.SmPrimeType;
-import org.gxml.xs.types.SmPrimeTypeKind;
-import org.gxml.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.types.SmNoneType;
+import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.SmPrimeTypeKind;
+import org.genxdm.xs.types.SmSequenceTypeVisitor;
 
 final class NoneType<A> extends AbstractType<A> implements SmNoneType<A>
 {

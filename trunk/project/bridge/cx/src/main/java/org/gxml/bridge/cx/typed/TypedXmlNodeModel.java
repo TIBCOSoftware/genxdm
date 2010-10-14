@@ -17,14 +17,14 @@ package org.gxml.bridge.cx.typed;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.TypedModel;
+import org.genxdm.typed.io.SequenceHandler;
+import org.genxdm.typed.types.AtomBridge;
 import org.gxml.bridgekit.atoms.XmlAtom;
 import org.gxml.bridge.cx.base.XmlNodeModel;
 import org.gxml.bridge.cx.tree.XmlNode;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.TypedModel;
-import org.gxml.typed.io.SequenceHandler;
-import org.gxml.typed.types.AtomBridge;
 
 public class TypedXmlNodeModel
     extends XmlNodeModel

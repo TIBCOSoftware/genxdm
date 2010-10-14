@@ -25,10 +25,10 @@ import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
 
+import org.genxdm.NodeKind;
+import org.genxdm.base.Model;
 import org.gxml.bridgekit.ProcessingContextFactory;
 import org.gxml.bridgekit.names.QNameComparator;
-import org.gxml.NodeKind;
-import org.gxml.base.Model;
 
 abstract public class GxTestBase<N>
     extends TestCase

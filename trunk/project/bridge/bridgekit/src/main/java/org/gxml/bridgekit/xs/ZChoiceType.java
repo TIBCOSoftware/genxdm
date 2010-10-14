@@ -15,12 +15,12 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.enums.SmQuantifier;
-import org.gxml.xs.types.SmChoiceType;
-import org.gxml.xs.types.SmPrimeType;
-import org.gxml.xs.types.SmSequenceType;
-import org.gxml.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.types.SmChoiceType;
+import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.SmSequenceType;
+import org.genxdm.xs.types.SmSequenceTypeVisitor;
 
 final class ZChoiceType<A> implements SmChoiceType<A>
 {

@@ -15,7 +15,7 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.xs.facets.SmFacet;
+import org.genxdm.xs.facets.SmFacet;
 
 /**
  * Abstract base class for implementations of {@link SmFacet}

@@ -19,17 +19,17 @@
     </properties>
     
     <parent>
-        <groupId>org.gxml</groupId>
+        <groupId>org.genxdm</groupId>
         <artifactId>project</artifactId>
         <version>1.0.0</version>
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>gxml-api</artifactId>
+    <artifactId>genxdm-api</artifactId>
     <version>1.0.0</version>
 
-    <name>gXML API</name>
-    <description>gXML API</description>
+    <name>GenXDM API</name>
+    <description>GenXDM API module</description>
     <reporting>
         <plugins>
             <plugin>
@@ -50,9 +50,9 @@
     </reporting>
 
     <scm>
-        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/api</connection>
-        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/api</developerConnection>
-        <url>http://gxml.googlecode.com/svn/trunk/project/api</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/api</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/api</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/api</url>
     </scm>
 
     <dependencies>

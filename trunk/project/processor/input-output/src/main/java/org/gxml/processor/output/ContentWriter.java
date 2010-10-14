@@ -20,10 +20,10 @@ import java.io.Writer;
 import java.net.URI;
 import java.util.Stack;
 
-import org.gxml.DtdAttributeKind;
-import org.gxml.base.io.ContentHandler;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.DtdAttributeKind;
+import org.genxdm.base.io.ContentHandler;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.PreCondition;
 import org.gxml.processor.io.WhitespaceEmitter;
 
 public class ContentWriter

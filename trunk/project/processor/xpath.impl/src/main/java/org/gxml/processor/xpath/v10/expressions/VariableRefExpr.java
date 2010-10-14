@@ -22,12 +22,12 @@ package org.gxml.processor.xpath.v10.expressions;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.base.Model;
+import org.genxdm.exceptions.IllegalNullArgumentException;
 import org.gxml.xpath.v10.expressions.ConvertibleVariantExpr;
 import org.gxml.xpath.v10.expressions.ExprContextDynamic;
 import org.gxml.xpath.v10.expressions.ExprException;
 import org.gxml.xpath.v10.variants.Variant;
-import org.gxml.base.Model;
-import org.gxml.exceptions.IllegalNullArgumentException;
 
 final class VariableRefExpr
     extends ConvertibleVariantExpr

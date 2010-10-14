@@ -17,23 +17,23 @@ package org.gxml.bridgekit.xs;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.names.NameSource;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.components.SmAttribute;
-import org.gxml.xs.components.SmAttributeGroup;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.components.SmModelGroup;
-import org.gxml.xs.constraints.SmIdentityConstraint;
-import org.gxml.xs.types.SmAtomicType;
-import org.gxml.xs.types.SmAtomicUrType;
-import org.gxml.xs.types.SmComplexType;
-import org.gxml.xs.types.SmComplexUrType;
-import org.gxml.xs.types.SmDocumentNodeType;
-import org.gxml.xs.types.SmElementNodeType;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmSequenceType;
-import org.gxml.xs.types.SmSimpleType;
-import org.gxml.xs.types.SmSimpleUrType;
+import org.genxdm.names.NameSource;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.components.SmAttribute;
+import org.genxdm.xs.components.SmAttributeGroup;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.SmModelGroup;
+import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.types.SmAtomicType;
+import org.genxdm.xs.types.SmAtomicUrType;
+import org.genxdm.xs.types.SmComplexType;
+import org.genxdm.xs.types.SmComplexUrType;
+import org.genxdm.xs.types.SmDocumentNodeType;
+import org.genxdm.xs.types.SmElementNodeType;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmSequenceType;
+import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SmSimpleUrType;
 
 /**
  * Keep private. This can go away.

@@ -15,9 +15,9 @@
  */
 package org.gxml.processor.w3c.xs.validation.impl;
 
-import org.gxml.xs.exceptions.SmAbortException;
-import org.gxml.xs.exceptions.SmException;
-import org.gxml.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.SmException;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
 
 public enum SmExceptionThrower implements SmExceptionHandler
 {

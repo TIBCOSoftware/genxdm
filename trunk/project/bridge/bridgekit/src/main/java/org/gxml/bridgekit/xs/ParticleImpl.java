@@ -15,9 +15,9 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.components.SmParticle;
-import org.gxml.xs.components.SmParticleTerm;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.components.SmParticle;
+import org.genxdm.xs.components.SmParticleTerm;
 
 abstract class ParticleImpl<A> extends LockableImpl implements SmParticle<A>
 {

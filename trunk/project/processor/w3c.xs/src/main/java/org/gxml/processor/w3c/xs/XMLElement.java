@@ -20,8 +20,8 @@ import java.util.LinkedList;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.enums.SmDerivationMethod;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.enums.SmDerivationMethod;
 
 final class XMLElement<A> extends XMLDeclaration<A> implements XMLParticleTerm<A>
 {

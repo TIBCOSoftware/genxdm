@@ -15,7 +15,7 @@
  */
 package org.gxml.processor.w3c.xs.validation.impl;
 
-import org.gxml.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.SmLocation;
 
 /**
  * Internal abstraction for avoiding the construction of a location object unless it is needed.

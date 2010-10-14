@@ -17,18 +17,18 @@ package org.gxml.processor.w3c.xs.validation.impl;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.enums.SmProcessContentsMode;
+import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.SmException;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.types.SmComplexType;
+import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SmType;
 import org.gxml.processor.w3c.xs.exception.CvcNoRootElementException;
 import org.gxml.processor.w3c.xs.exception.SrcFrozenLocation;
 import org.gxml.processor.w3c.xs.validation.api.VxMetaBridge;
 import org.gxml.processor.w3c.xs.validation.api.VxPSVI;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.enums.SmProcessContentsMode;
-import org.gxml.xs.exceptions.SmAbortException;
-import org.gxml.xs.exceptions.SmException;
-import org.gxml.xs.exceptions.SmExceptionHandler;
-import org.gxml.xs.types.SmComplexType;
-import org.gxml.xs.types.SmSimpleType;
-import org.gxml.xs.types.SmType;
 
 
 final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>

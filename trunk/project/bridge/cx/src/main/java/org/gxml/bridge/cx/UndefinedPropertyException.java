@@ -15,7 +15,7 @@
  */
 package org.gxml.bridge.cx;
 
-import org.gxml.NodeKind;
+import org.genxdm.NodeKind;
 
 /**
  * Exception to be used when calling an method that is not defined for the node type.

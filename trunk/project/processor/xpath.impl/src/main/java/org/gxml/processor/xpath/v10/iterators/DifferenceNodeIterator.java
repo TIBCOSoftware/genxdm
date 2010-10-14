@@ -20,9 +20,9 @@
  */
 package org.gxml.processor.xpath.v10.iterators;
 
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.ExprException;
 import org.gxml.xpath.v10.iterators.NodeIterator;
-import org.gxml.base.Model;
 
 public final class DifferenceNodeIterator<N> implements NodeIterator<N>
 {

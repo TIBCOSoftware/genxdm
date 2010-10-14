@@ -15,8 +15,8 @@
  */
 package org.gxml.processor.w3c.xs.exception;
 
-import org.gxml.xs.enums.SmOutcome;
-import org.gxml.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.SmOutcome;
+import org.genxdm.xs.resolve.SmLocation;
 
 @SuppressWarnings("serial")
 public class SrcException extends SmLocationException

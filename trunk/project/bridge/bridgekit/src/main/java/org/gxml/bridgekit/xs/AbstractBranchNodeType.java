@@ -15,9 +15,9 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.enums.SmNodeKind;
-import org.gxml.xs.types.SmNodeType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.enums.SmNodeKind;
+import org.genxdm.xs.types.SmNodeType;
 
 abstract class AbstractBranchNodeType<A> extends AbstractPrimeExcludingNoneType<A> implements SmNodeType<A>
 {

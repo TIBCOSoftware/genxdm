@@ -18,9 +18,9 @@ package org.gxml.processor.w3c.xs;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.components.SmEnumeration;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.components.SmEnumeration;
 
 final class FacetEnumerationImpl<A> implements SmEnumeration<A>
 {

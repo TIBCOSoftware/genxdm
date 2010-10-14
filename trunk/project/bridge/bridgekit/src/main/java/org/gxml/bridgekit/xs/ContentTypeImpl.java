@@ -15,11 +15,11 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.constraints.SmModelGroupUse;
-import org.gxml.xs.types.SmContentType;
-import org.gxml.xs.types.SmContentTypeKind;
-import org.gxml.xs.types.SmSimpleType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.constraints.SmModelGroupUse;
+import org.genxdm.xs.types.SmContentType;
+import org.genxdm.xs.types.SmContentTypeKind;
+import org.genxdm.xs.types.SmSimpleType;
 
 public final class ContentTypeImpl<A> implements SmContentType<A>
 {

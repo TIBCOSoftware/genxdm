@@ -15,14 +15,14 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.enums.SmNodeKind;
-import org.gxml.xs.types.SmDocumentNodeType;
-import org.gxml.xs.types.SmPrimeChoiceType;
-import org.gxml.xs.types.SmPrimeType;
-import org.gxml.xs.types.SmPrimeTypeKind;
-import org.gxml.xs.types.SmSequenceType;
-import org.gxml.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.enums.SmNodeKind;
+import org.genxdm.xs.types.SmDocumentNodeType;
+import org.genxdm.xs.types.SmPrimeChoiceType;
+import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.SmPrimeTypeKind;
+import org.genxdm.xs.types.SmSequenceType;
+import org.genxdm.xs.types.SmSequenceTypeVisitor;
 
 final class DocumentNodeType<A> extends AbstractBranchNodeType<A> implements SmDocumentNodeType<A>
 {

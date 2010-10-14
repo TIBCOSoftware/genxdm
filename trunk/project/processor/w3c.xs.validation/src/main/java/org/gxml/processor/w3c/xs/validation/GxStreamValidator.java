@@ -15,7 +15,7 @@
  */
 package org.gxml.processor.w3c.xs.validation;
 
-import org.gxml.typed.io.TypedReader;
+import org.genxdm.typed.io.TypedReader;
 
 /**
  * A "pull" style streaming validator.

@@ -17,8 +17,8 @@ package org.gxml.processor.w3c.xs.validation.impl;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.components.SmWildcard;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.SmWildcard;
 
 /**
  * State-machine abstraction used for XML content model validation of a child axis.

@@ -20,9 +20,9 @@ import java.util.HashMap;
 
 import javax.xml.XMLConstants;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.names.NameSource;
-import org.gxml.xs.resolve.SmPrefixResolver;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.NameSource;
+import org.genxdm.xs.resolve.SmPrefixResolver;
 
 final class SmPrefixMappingSupport implements SmPrefixResolver
 {

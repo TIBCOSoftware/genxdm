@@ -23,23 +23,23 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.names.NameSource;
-import org.gxml.xs.components.SmModelGroup;
-import org.gxml.xs.components.SmParticle;
-import org.gxml.xs.components.SmWildcard;
-import org.gxml.xs.constraints.SmAttributeUse;
-import org.gxml.xs.constraints.SmNamespaceConstraint;
-import org.gxml.xs.enums.SmDerivationMethod;
-import org.gxml.xs.enums.SmProcessContentsMode;
-import org.gxml.xs.enums.SmScopeExtent;
-import org.gxml.xs.types.SmComplexUrType;
-import org.gxml.xs.types.SmContentType;
-import org.gxml.xs.types.SmPrimeChoiceType;
-import org.gxml.xs.types.SmPrimeType;
-import org.gxml.xs.types.SmPrimeTypeKind;
-import org.gxml.xs.types.SmSequenceTypeVisitor;
-import org.gxml.xs.types.SmType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.NameSource;
+import org.genxdm.xs.components.SmModelGroup;
+import org.genxdm.xs.components.SmParticle;
+import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.constraints.SmAttributeUse;
+import org.genxdm.xs.constraints.SmNamespaceConstraint;
+import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.enums.SmProcessContentsMode;
+import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.types.SmComplexUrType;
+import org.genxdm.xs.types.SmContentType;
+import org.genxdm.xs.types.SmPrimeChoiceType;
+import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.SmPrimeTypeKind;
+import org.genxdm.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.xs.types.SmType;
 
 /**
  * xs:anyType

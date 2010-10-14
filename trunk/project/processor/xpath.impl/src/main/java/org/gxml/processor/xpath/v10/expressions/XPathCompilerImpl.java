@@ -17,6 +17,7 @@ package org.gxml.processor.xpath.v10.expressions;
 
 import java.util.HashMap;
 
+import org.genxdm.exceptions.PreCondition;
 import org.gxml.xpath.v10.Function;
 import org.gxml.xpath.v10.XPathCompiler;
 import org.gxml.xpath.v10.expressions.BooleanExpr;
@@ -26,7 +27,6 @@ import org.gxml.xpath.v10.expressions.NodeSetExpr;
 import org.gxml.xpath.v10.expressions.NumberExpr;
 import org.gxml.xpath.v10.expressions.StringExpr;
 import org.gxml.xpath.v10.expressions.VariantExpr;
-import org.gxml.exceptions.PreCondition;
 import org.gxml.processor.xpath.v10.relations.Relation;
 
 public final class XPathCompilerImpl

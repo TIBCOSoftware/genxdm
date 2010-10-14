@@ -15,7 +15,7 @@
  */
 package org.gxml.processor.w3c.xs.validation.api;
 
-import org.gxml.xs.components.SmElement;
+import org.genxdm.xs.components.SmElement;
 
 public interface VxValidatorCacheFactory<A>
 {

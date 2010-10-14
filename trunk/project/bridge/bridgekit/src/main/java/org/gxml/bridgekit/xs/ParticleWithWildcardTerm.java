@@ -15,8 +15,8 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.xs.components.SmWildcard;
-import org.gxml.xs.components.SmWildcardUse;
+import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.components.SmWildcardUse;
 
 public final class ParticleWithWildcardTerm<A> extends ParticleImpl<A> implements SmWildcardUse<A>
 {

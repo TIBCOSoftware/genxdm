@@ -22,8 +22,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.types.SmNativeType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.types.SmNativeType;
 
 public final class SmAtomicTypeSupport
 {

@@ -17,8 +17,8 @@ package org.gxml.bridgekit.atoms;
 
 import java.util.Arrays;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.types.SmNativeType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.types.SmNativeType;
 
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#base64Binary">base64Binary</a>.

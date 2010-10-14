@@ -26,6 +26,7 @@ import java.util.HashMap;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.NodeKind;
 import org.gxml.xpath.v10.Converter;
 import org.gxml.xpath.v10.Function;
 import org.gxml.xpath.v10.expressions.BooleanExpr;
@@ -36,7 +37,6 @@ import org.gxml.xpath.v10.expressions.ExprParseException;
 import org.gxml.xpath.v10.expressions.NodeSetExpr;
 import org.gxml.xpath.v10.expressions.NumberExpr;
 import org.gxml.xpath.v10.expressions.VariantExpr;
-import org.gxml.NodeKind;
 import org.gxml.processor.xpath.v10.patterns.PathPatternBase;
 import org.gxml.processor.xpath.v10.patterns.Pattern;
 import org.gxml.processor.xpath.v10.relations.NumericRelation;

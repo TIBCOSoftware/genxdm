@@ -17,9 +17,9 @@ package org.gxml.processor.w3c.xs.exception;
 
 import java.util.Set;
 
-import org.gxml.xs.enums.SmDerivationMethod;
-import org.gxml.xs.exceptions.SmComponentConstraintException;
-import org.gxml.xs.types.SmType;
+import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.types.SmType;
 
 
 @SuppressWarnings("serial")

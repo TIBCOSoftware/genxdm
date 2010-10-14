@@ -17,16 +17,16 @@ package org.gxml.bridgetest.typed;
 
 import java.math.BigDecimal;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.exceptions.SpillagePolicy;
-import org.gxml.typed.TypedContext;
-import org.gxml.typed.types.Emulation;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.exceptions.SpillagePolicy;
+import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.types.Emulation;
 
 /**
  * A casting context providing a constant current-dateTime: 1964-04-21T03:13:27Z
  */
 final class CastingContext<N, A> 
-    implements org.gxml.typed.types.CastingContext<A>
+    implements org.genxdm.typed.types.CastingContext<A>
 {
 	private final TypedContext<N, A> pcx;
 

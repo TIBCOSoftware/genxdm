@@ -17,8 +17,8 @@ package org.gxml.processor.w3c.xs.validation.impl;
 
 import java.util.ArrayList;
 
-import org.gxml.xs.constraints.SmIdentityConstraint;
-import org.gxml.xs.resolve.SmLocation;
+import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.resolve.SmLocation;
 
 final class IdentityDanglingReference<A>
 {

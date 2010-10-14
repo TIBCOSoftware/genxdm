@@ -24,10 +24,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.genxdm.base.Model;
+import org.genxdm.names.NamespaceBinding;
 import org.gxml.bridgetest.ModelTestBase;
-import org.gxml.base.Model;
 import org.gxml.bridge.dom.DomProcessingContext;
-import org.gxml.names.NamespaceBinding;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

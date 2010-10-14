@@ -21,14 +21,14 @@
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.gxml</groupId>
+    <groupId>org.genxdm</groupId>
     <artifactId>project</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
     
-    <name>gXML</name>
-    <url>http://gxml.googlecode.com/svn/trunk/site</url>
-    <description>gXML enables applications to write code that uses and
+    <name>GenXDM</name>
+    <url>http://www.genxdm.org/</url>
+    <description>GenXDM enables applications to write code that uses and
     manipulates XML trees without being tied to a particular XML tree
     representation like DOM, DOM4J, AXIOM, or any other. It also prods
     developers towards an immutable view of XML trees, which will make it
@@ -46,7 +46,7 @@
 
     <issueManagement>
         <system>Google Code</system>
-        <url>http://code.google.com/p/gxml/issues/list</url>
+        <url>http://code.google.com/p/genxdm/issues/list</url>
     </issueManagement>
 
     <developers>
@@ -75,15 +75,15 @@
 
     <mailingLists>
         <mailingList>
-            <name>gXML Developers Mailing List</name>
-            <post>gxml-dev@yahoogroups.com</post>
+            <name>GenXDM Mailing List</name>
+            <post>genxdm@googlegroups.com</post>
         </mailingList>
     </mailingLists>
 
     <scm>
-        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project</connection>
-        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project</developerConnection>
-        <url>http://gxml.googlecode.com/svn/trunk/project</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project</url>
     </scm>
 
     <reporting>

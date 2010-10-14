@@ -17,7 +17,7 @@
     -->
     
     <parent>
-        <groupId>org.gxml</groupId>
+        <groupId>org.genxdm</groupId>
         <artifactId>project</artifactId>
         <version>1.0.0</version>
     </parent>
@@ -26,12 +26,12 @@
     <artifactId>processor</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
-    <name>gXML Processors</name>
+    <name>GenXDM Processors</name>
 
     <scm>
-        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/processor</connection>
-        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/processor</developerConnection>
-        <url>http://gxml.googlecode.com/svn/trunk/project/processor</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/processor</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/processor</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/processor</url>
     </scm>
 
     <modules>

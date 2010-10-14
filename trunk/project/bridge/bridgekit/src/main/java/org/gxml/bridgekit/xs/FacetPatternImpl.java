@@ -15,10 +15,10 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.exceptions.SmPatternException;
-import org.gxml.xs.facets.SmPattern;
-import org.gxml.xs.facets.SmRegExPattern;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.exceptions.SmPatternException;
+import org.genxdm.xs.facets.SmPattern;
+import org.genxdm.xs.facets.SmRegExPattern;
 
 public final class FacetPatternImpl implements SmPattern
 {
