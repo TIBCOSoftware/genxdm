@@ -20,8 +20,8 @@ import java.util.HashMap;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.xs.resolve.SmLocation;
 import org.gxml.processor.w3c.xs.exception.SrcFrozenLocation;
-import org.gxml.xs.resolve.SmLocation;
 
 
 /**

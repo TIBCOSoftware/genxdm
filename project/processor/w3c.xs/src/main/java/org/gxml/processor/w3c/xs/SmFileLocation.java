@@ -15,7 +15,7 @@
  */
 package org.gxml.processor.w3c.xs;
 
-import org.gxml.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.SmLocation;
 
 /**
  * Marker interface indicating a location in a file.

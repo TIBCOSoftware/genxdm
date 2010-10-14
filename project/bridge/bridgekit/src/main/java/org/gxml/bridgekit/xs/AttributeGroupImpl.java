@@ -17,11 +17,11 @@ package org.gxml.bridgekit.xs;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.components.SmAttributeGroup;
-import org.gxml.xs.components.SmWildcard;
-import org.gxml.xs.constraints.SmAttributeUse;
-import org.gxml.xs.enums.SmScopeExtent;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.components.SmAttributeGroup;
+import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.constraints.SmAttributeUse;
+import org.genxdm.xs.enums.SmScopeExtent;
 
 public final class AttributeGroupImpl<A> extends NamedComponentImpl<A> implements SmAttributeGroup<A>
 {

@@ -20,13 +20,13 @@
  */
 package org.gxml.processor.xpath.v10.iterators;
 
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.BooleanExpr;
 import org.gxml.xpath.v10.expressions.ExprContextDynamic;
 import org.gxml.xpath.v10.expressions.ExprException;
 import org.gxml.xpath.v10.iterators.CloneableNodeIterator;
 import org.gxml.xpath.v10.iterators.CloneableNodeIteratorImpl;
 import org.gxml.xpath.v10.iterators.NodeIterator;
-import org.gxml.base.Model;
 import org.gxml.processor.xpath.v10.expressions.DelegateExprContext;
 
 public final class FilterNodeIterator<N> 

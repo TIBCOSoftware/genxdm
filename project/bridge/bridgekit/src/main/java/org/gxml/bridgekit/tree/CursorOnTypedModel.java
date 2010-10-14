@@ -19,8 +19,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.typed.TypedCursor;
-import org.gxml.typed.TypedModel;
+import org.genxdm.typed.TypedCursor;
+import org.genxdm.typed.TypedModel;
 
 /**
  * Implementation of a {@link GuCursor} when only a model is available.

@@ -17,10 +17,10 @@ package org.gxml.bridgetest;
 
 import javax.xml.XMLConstants;
 
-import org.gxml.base.Model;
-import org.gxml.base.ProcessingContext;
-import org.gxml.base.io.FragmentBuilder;
-import org.gxml.names.NameSource;
+import org.genxdm.base.Model;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.names.NameSource;
 
 public abstract class ModelTestBase<N> 
     extends GxTestBase<N>

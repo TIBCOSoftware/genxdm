@@ -17,7 +17,7 @@ package org.gxml.processor.w3c.xs.exception;
 
 import java.math.BigInteger;
 
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.exceptions.PreCondition;
 
 @SuppressWarnings("serial")
 public final class SccMinOccursLeMaxOccursException extends SccParticleCorrectException

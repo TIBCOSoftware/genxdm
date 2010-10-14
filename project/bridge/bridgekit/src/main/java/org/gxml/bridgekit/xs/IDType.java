@@ -21,19 +21,19 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.components.SmEnumeration;
-import org.gxml.xs.enums.SmDerivationMethod;
-import org.gxml.xs.enums.SmScopeExtent;
-import org.gxml.xs.enums.SmWhiteSpacePolicy;
-import org.gxml.xs.exceptions.SmDatatypeException;
-import org.gxml.xs.facets.SmFacet;
-import org.gxml.xs.facets.SmFacetKind;
-import org.gxml.xs.facets.SmPattern;
-import org.gxml.xs.resolve.SmPrefixResolver;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmSequenceTypeVisitor;
-import org.gxml.xs.types.SmSimpleType;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.components.SmEnumeration;
+import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.enums.SmWhiteSpacePolicy;
+import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.facets.SmFacet;
+import org.genxdm.xs.facets.SmFacetKind;
+import org.genxdm.xs.facets.SmPattern;
+import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.xs.types.SmSimpleType;
 
 final class IDType<A> extends AbstractAtomType<A>
 {

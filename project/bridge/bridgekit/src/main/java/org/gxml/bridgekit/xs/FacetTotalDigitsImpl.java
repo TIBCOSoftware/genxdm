@@ -18,14 +18,14 @@ package org.gxml.bridgekit.xs;
 import java.math.BigInteger;
 import java.util.List;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.exceptions.SmFacetException;
-import org.gxml.xs.exceptions.SmFacetTotalDigitsException;
-import org.gxml.xs.facets.SmFacetKind;
-import org.gxml.xs.facets.SmTotalDigits;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmSimpleType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.exceptions.SmFacetException;
+import org.genxdm.xs.exceptions.SmFacetTotalDigitsException;
+import org.genxdm.xs.facets.SmFacetKind;
+import org.genxdm.xs.facets.SmTotalDigits;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmSimpleType;
 
 public final class FacetTotalDigitsImpl<A> extends FacetImpl<A> implements SmTotalDigits<A>
 {

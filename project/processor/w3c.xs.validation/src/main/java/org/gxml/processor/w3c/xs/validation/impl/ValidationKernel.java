@@ -22,6 +22,21 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.enums.SmProcessContentsMode;
+import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.exceptions.SmSimpleTypeException;
+import org.genxdm.xs.types.SmComplexMarkerType;
+import org.genxdm.xs.types.SmComplexType;
+import org.genxdm.xs.types.SmContentType;
+import org.genxdm.xs.types.SmSimpleMarkerType;
+import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SmSimpleUrType;
+import org.genxdm.xs.types.SmType;
 import org.gxml.processor.w3c.xs.exception.CvcElementFixedValueOverriddenSimpleException;
 import org.gxml.processor.w3c.xs.exception.CvcElementUnexpectedChildInNilledElementException;
 import org.gxml.processor.w3c.xs.exception.CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException;
@@ -33,21 +48,6 @@ import org.gxml.processor.w3c.xs.validation.api.VxPSVI;
 import org.gxml.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrategy;
 import org.gxml.processor.w3c.xs.validation.api.VxValidationHost;
 import org.gxml.processor.w3c.xs.validation.api.VxValidator;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.constraints.SmValueConstraint;
-import org.gxml.xs.enums.SmProcessContentsMode;
-import org.gxml.xs.exceptions.SmAbortException;
-import org.gxml.xs.exceptions.SmDatatypeException;
-import org.gxml.xs.exceptions.SmExceptionHandler;
-import org.gxml.xs.exceptions.SmSimpleTypeException;
-import org.gxml.xs.types.SmComplexMarkerType;
-import org.gxml.xs.types.SmComplexType;
-import org.gxml.xs.types.SmContentType;
-import org.gxml.xs.types.SmSimpleMarkerType;
-import org.gxml.xs.types.SmSimpleType;
-import org.gxml.xs.types.SmSimpleUrType;
-import org.gxml.xs.types.SmType;
 
 
 /**

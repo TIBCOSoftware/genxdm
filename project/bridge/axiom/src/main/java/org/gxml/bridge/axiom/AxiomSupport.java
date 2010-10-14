@@ -24,7 +24,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
-import org.gxml.NodeKind;
+import org.genxdm.NodeKind;
 
 /**
  * A bunch of helper functions for supporting Axiom integration.

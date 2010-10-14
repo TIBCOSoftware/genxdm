@@ -15,7 +15,7 @@
  */
 package org.gxml.bridgekit.atoms;
 
-import org.gxml.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmNativeType;
 
 public class XmlQName extends XmlAbstractAtom
 {

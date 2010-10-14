@@ -15,7 +15,7 @@
  */
 package org.gxml.bridge.cx.tree;
 
-import org.gxml.base.io.ContentHandler;
+import org.genxdm.base.io.ContentHandler;
 
 public final class Walker
 {

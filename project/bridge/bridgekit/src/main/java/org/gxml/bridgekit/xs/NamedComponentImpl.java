@@ -17,9 +17,9 @@ package org.gxml.bridgekit.xs;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.components.SmComponent;
-import org.gxml.xs.enums.SmScopeExtent;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.components.SmComponent;
+import org.genxdm.xs.enums.SmScopeExtent;
 
 abstract class NamedComponentImpl<A> extends LockableImpl implements SmComponent<A>
 {

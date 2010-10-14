@@ -22,8 +22,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.genxdm.base.Cursor;
 import org.gxml.bridgetest.CursorTestBase;
-import org.gxml.base.Cursor;
 import org.gxml.bridge.dom.DomProcessingContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

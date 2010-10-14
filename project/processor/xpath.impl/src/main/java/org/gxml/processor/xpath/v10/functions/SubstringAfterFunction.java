@@ -20,13 +20,13 @@
  */
 package org.gxml.processor.xpath.v10.functions;
 
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.ConvertibleExpr;
 import org.gxml.xpath.v10.expressions.ConvertibleStringExpr;
 import org.gxml.xpath.v10.expressions.ExprContextDynamic;
 import org.gxml.xpath.v10.expressions.ExprContextStatic;
 import org.gxml.xpath.v10.expressions.ExprException;
 import org.gxml.xpath.v10.expressions.StringExpr;
-import org.gxml.base.Model;
 
 public final class SubstringAfterFunction 
     extends Function2

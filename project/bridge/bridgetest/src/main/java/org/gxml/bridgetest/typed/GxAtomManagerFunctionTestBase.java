@@ -17,12 +17,12 @@ package org.gxml.bridgetest.typed;
 
 import java.util.ArrayList;
 
+import org.genxdm.names.NameSource;
+import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.typed.types.MetaBridge;
+import org.genxdm.xs.types.SmNativeType;
 import org.gxml.bridgetest.GxTestBase;
-import org.gxml.names.NameSource;
-import org.gxml.typed.TypedContext;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.typed.types.MetaBridge;
-import org.gxml.xs.types.SmNativeType;
 
 public abstract class GxAtomManagerFunctionTestBase<N, A, X> 
     extends GxTestBase<N>

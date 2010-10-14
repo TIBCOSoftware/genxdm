@@ -15,11 +15,11 @@
  */
 package org.gxml.processor.w3c.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.components.SmComponentProvider;
-import org.gxml.xs.resolve.SmCatalog;
-import org.gxml.xs.resolve.SmResolver;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.components.SmComponentProvider;
+import org.genxdm.xs.resolve.SmCatalog;
+import org.genxdm.xs.resolve.SmResolver;
 
 final class SmParserFactory<A>
 {

@@ -17,17 +17,17 @@ package org.gxml.bridgekit.xs;
 
 import java.util.List;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.exceptions.SmFacetException;
-import org.gxml.xs.facets.SmFacetKind;
-import org.gxml.xs.facets.SmLengthFacetUOM;
-import org.gxml.xs.types.SmListSimpleType;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmSimpleType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.exceptions.SmFacetException;
+import org.genxdm.xs.facets.SmFacetKind;
+import org.genxdm.xs.facets.SmLengthFacetUOM;
+import org.genxdm.xs.types.SmListSimpleType;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmSimpleType;
 
 /**
- * Abstract base class for implementations of {@link org.gxml.xs.facets.SmFacet}
+ * Abstract base class for implementations of {@link org.genxdm.xs.facets.SmFacet}
  */
 abstract class FacetLengthCommonImpl<A> extends FacetImpl<A>
 {

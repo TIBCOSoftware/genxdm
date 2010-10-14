@@ -20,14 +20,14 @@
   </properties>
   <parent>
     <artifactId>support</artifactId>
-    <groupId>org.gxml</groupId>
+    <groupId>org.genxdm</groupId>
     <version>1.0.0</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
   <artifactId>samples</artifactId>
   <version>1.0.0</version>
-  <name>gXML Samples</name>
+  <name>GenXDM Samples</name>
 
   <reporting>
       <plugins>
@@ -49,24 +49,24 @@
   </reporting>
 
   <scm>
-      <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/support/samples</connection>
-      <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/support/samples</developerConnection>
-      <url>http://gxml.googlecode.com/svn/trunk/project/support/samples</url>
+      <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/support/samples</connection>
+      <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/support/samples</developerConnection>
+      <url>http://genxdm.googlecode.com/svn/trunk/project/support/samples</url>
   </scm>
 
   <dependencies>
     <dependency>
-        <groupId>org.gxml</groupId>
+        <groupId>org.genxdm</groupId>
         <artifactId>proc-convert</artifactId>
         <version>[,2)</version>
     </dependency>
     <dependency>
-        <groupId>org.gxml</groupId>
+        <groupId>org.genxdm</groupId>
         <artifactId>bridge-dom</artifactId>
         <version>[,2)</version>
     </dependency>
     <dependency>
-        <groupId>org.gxml</groupId>
+        <groupId>org.genxdm</groupId>
         <artifactId>bridge-cx</artifactId>
         <version>[,2)</version>
     </dependency>

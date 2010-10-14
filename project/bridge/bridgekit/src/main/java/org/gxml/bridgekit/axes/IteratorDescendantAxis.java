@@ -18,9 +18,9 @@ package org.gxml.bridgekit.axes;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.gxml.base.Model;
+import org.genxdm.base.Model;
+import org.genxdm.exceptions.PreCondition;
 import org.gxml.bridgekit.tree.Ordering;
-import org.gxml.exceptions.PreCondition;
 
 
 public final class IteratorDescendantAxis<N> implements Iterator<N>

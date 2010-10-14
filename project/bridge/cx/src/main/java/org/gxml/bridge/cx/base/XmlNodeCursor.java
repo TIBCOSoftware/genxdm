@@ -19,15 +19,15 @@ import java.net.URI;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.NodeKind;
+import org.genxdm.base.Cursor;
+import org.genxdm.base.io.ContentHandler;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.NamespaceBinding;
+import org.genxdm.nodes.Bookmark;
 import org.gxml.bridgekit.tree.Ordering;
-import org.gxml.NodeKind;
-import org.gxml.base.Cursor;
-import org.gxml.base.io.ContentHandler;
 import org.gxml.bridge.cx.tree.Walker;
 import org.gxml.bridge.cx.tree.XmlNode;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.names.NamespaceBinding;
-import org.gxml.nodes.Bookmark;
 
 public class XmlNodeCursor
     implements Cursor<XmlNode>

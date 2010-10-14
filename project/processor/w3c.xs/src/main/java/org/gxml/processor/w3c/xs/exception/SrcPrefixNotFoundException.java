@@ -15,7 +15,7 @@
  */
 package org.gxml.processor.w3c.xs.exception;
 
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.exceptions.PreCondition;
 
 @SuppressWarnings("serial")
 public final class SrcPrefixNotFoundException extends SrcQNameInterpretationException

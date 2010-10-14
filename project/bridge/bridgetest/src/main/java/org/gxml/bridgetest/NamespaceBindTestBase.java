@@ -23,12 +23,12 @@ import java.util.Map;
 
 import javax.xml.XMLConstants;
 
-import org.gxml.base.Model;
-import org.gxml.base.ProcessingContext;
-import org.gxml.base.io.FragmentBuilder;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.names.NameSource;
-import org.gxml.names.NamespaceBinding;
+import org.genxdm.base.Model;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.names.NameSource;
+import org.genxdm.names.NamespaceBinding;
 
 public abstract class NamespaceBindTestBase<N> 
     extends GxTestBase<N>

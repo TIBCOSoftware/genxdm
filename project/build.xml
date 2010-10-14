@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
-<project name="gXML Site Generation" default="xyzzy">
+<project name="GenXDM Site Generation" default="xyzzy">
 
     <property name="target-dir" location="target/site" />
     <available property="_can_agg_" file="${target-dir}" type="dir" />
 
     <target name="aggregate" description="Aggregate the generated sites into a single site" if="_can_agg_">
         <echo>This is the cheap and sleazy approach.  There's got to be a better way.</echo>
-        <move todir="${target-dir}/gxml-api">
+        <move todir="${target-dir}/genxdm-api">
             <fileset dir="api/target/site" />
         </move>
-        <move todir="${target-dir}/gxml-xpath-api">
+        <move todir="${target-dir}/genxdm-xpath-api">
             <fileset dir="xpath/target/site" />
         </move>
         <property name="bridge-target" location="${target-dir}/bridge" />
@@ -57,7 +57,7 @@
         <move todir="${support-target}">
             <fileset dir="support/target/site" />
         </move>
-        <move todir="${support-target}/gxml-book">
+        <move todir="${support-target}/genxdm-book">
             <fileset dir="support/book/target/site" />
         </move>
         <move todir="${support-target}/performance">

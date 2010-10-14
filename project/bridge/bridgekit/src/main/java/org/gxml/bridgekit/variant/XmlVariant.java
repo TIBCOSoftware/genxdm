@@ -18,7 +18,7 @@ package org.gxml.bridgekit.variant;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.gxml.typed.types.VariantKind;
+import org.genxdm.typed.types.VariantKind;
 
 public final class XmlVariant
 {

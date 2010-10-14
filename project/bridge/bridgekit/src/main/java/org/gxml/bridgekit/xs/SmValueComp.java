@@ -15,7 +15,7 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.xs.exceptions.SmAtomCastException;
+import org.genxdm.xs.exceptions.SmAtomCastException;
 
 /**
  * Internal implementation interface for organizing value comparisons.

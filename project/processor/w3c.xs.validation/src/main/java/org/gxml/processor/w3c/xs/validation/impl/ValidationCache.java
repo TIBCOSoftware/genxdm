@@ -21,6 +21,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.SmModelGroup;
+import org.genxdm.xs.components.SmParticle;
+import org.genxdm.xs.components.SmParticleTerm;
+import org.genxdm.xs.types.SmComplexType;
+import org.genxdm.xs.types.SmContentType;
 import org.gxml.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrategy;
 import org.gxml.processor.w3c.xs.validation.api.VxValidationHost;
 import org.gxml.processor.w3c.xs.validation.api.VxValidator;
@@ -30,12 +36,6 @@ import org.gxml.processor.w3c.xs.validation.regex.api.RegExFactory;
 import org.gxml.processor.w3c.xs.validation.regex.api.RegExMachine;
 import org.gxml.processor.w3c.xs.validation.regex.api.RegExPattern;
 import org.gxml.processor.w3c.xs.validation.regex.impl.nfa.NfaFactory;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.components.SmModelGroup;
-import org.gxml.xs.components.SmParticle;
-import org.gxml.xs.components.SmParticleTerm;
-import org.gxml.xs.types.SmComplexType;
-import org.gxml.xs.types.SmContentType;
 
 
 final class ValidationCache<A> implements VxValidatorCache<A>

@@ -21,8 +21,8 @@ import java.util.Enumeration;
 
 import javax.xml.XMLConstants;
 
-import org.gxml.names.NameSource;
-import org.gxml.xs.resolve.SmPrefixResolver;
+import org.genxdm.names.NameSource;
+import org.genxdm.xs.resolve.SmPrefixResolver;
 
 final class ValidationPrefixResolver implements SmPrefixResolver
 {

@@ -15,7 +15,7 @@
  */
 package org.gxml.processor.w3c.xs.exception;
 
-import org.gxml.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
 
 public interface SmExceptionSupplier
 {

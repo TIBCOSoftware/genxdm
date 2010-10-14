@@ -15,7 +15,7 @@
  */
 package org.gxml.processor.w3c.xs.validation;
 
-import org.gxml.typed.io.SequenceHandler;
+import org.genxdm.typed.io.SequenceHandler;
 import org.xml.sax.ContentHandler;
 
 /**

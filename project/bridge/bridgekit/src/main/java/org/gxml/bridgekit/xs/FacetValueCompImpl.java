@@ -19,17 +19,17 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.GxmlAtomCastException;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.typed.types.CastingContext;
-import org.gxml.xs.exceptions.SmAtomCastException;
-import org.gxml.xs.exceptions.SmFacetException;
-import org.gxml.xs.exceptions.SmFacetMinMaxException;
-import org.gxml.xs.facets.SmFacetKind;
-import org.gxml.xs.facets.SmLimit;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmSimpleType;
+import org.genxdm.exceptions.GxmlAtomCastException;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.typed.types.CastingContext;
+import org.genxdm.xs.exceptions.SmAtomCastException;
+import org.genxdm.xs.exceptions.SmFacetException;
+import org.genxdm.xs.exceptions.SmFacetMinMaxException;
+import org.genxdm.xs.facets.SmFacetKind;
+import org.genxdm.xs.facets.SmLimit;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmSimpleType;
 
 public final class FacetValueCompImpl<A> extends FacetImpl<A> implements SmLimit<A>
 {

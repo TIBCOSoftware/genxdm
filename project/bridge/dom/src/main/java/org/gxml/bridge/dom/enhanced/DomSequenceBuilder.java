@@ -20,14 +20,14 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.io.SequenceBuilder;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.typed.types.Emulation;
 import org.gxml.bridge.dom.DomFragmentBuilder;
 import org.gxml.bridge.dom.DomSupport;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.TypedContext;
-import org.gxml.typed.io.SequenceBuilder;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.typed.types.Emulation;
 import org.w3c.dom.Node;
 
 final class DomSequenceBuilder<A>

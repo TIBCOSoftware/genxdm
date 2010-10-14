@@ -15,10 +15,10 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.components.SmAttribute;
-import org.gxml.xs.constraints.SmAttributeUse;
-import org.gxml.xs.constraints.SmValueConstraint;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.components.SmAttribute;
+import org.genxdm.xs.constraints.SmAttributeUse;
+import org.genxdm.xs.constraints.SmValueConstraint;
 
 public final class AttributeUseImpl<A> extends LockableImpl implements SmAttributeUse<A>
 {

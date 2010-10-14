@@ -15,7 +15,7 @@
  */
 package org.gxml.bridgekit.atoms;
 
-import org.gxml.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmNativeType;
 
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#float">float</a>.

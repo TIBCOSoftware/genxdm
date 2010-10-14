@@ -15,14 +15,14 @@
  */
 package org.gxml.bridge.cx.base;
 
-import org.gxml.base.mutable.MutableContext;
-import org.gxml.base.mutable.MutableCursor;
-import org.gxml.base.mutable.MutableModel;
-import org.gxml.base.mutable.NodeFactory;
+import org.genxdm.base.mutable.MutableContext;
+import org.genxdm.base.mutable.MutableCursor;
+import org.genxdm.base.mutable.MutableModel;
+import org.genxdm.base.mutable.NodeFactory;
+import org.genxdm.exceptions.PreCondition;
 import org.gxml.bridge.cx.tree.XmlNode;
 import org.gxml.bridge.cx.tree.XmlNodeFactory;
 import org.gxml.bridge.cx.tree.XmlNodeMutator;
-import org.gxml.exceptions.PreCondition;
 
 public class XmlNodeMutableContext
     implements MutableContext<XmlNode>

@@ -17,8 +17,8 @@ package org.gxml.processor.w3c.xs;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.enums.SmWhiteSpacePolicy;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.enums.SmWhiteSpacePolicy;
 
 final class ForeignAtomManager<A>
 {

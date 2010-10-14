@@ -22,7 +22,7 @@ import java.util.Stack;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.exceptions.PreCondition;
 
 final class XMLTypeHierarchyComparator<A> implements Comparator<XMLType<A>>
 {

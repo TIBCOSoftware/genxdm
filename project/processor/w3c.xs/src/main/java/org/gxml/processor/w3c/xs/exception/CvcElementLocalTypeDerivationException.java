@@ -15,11 +15,11 @@
  */
 package org.gxml.processor.w3c.xs.exception;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.exceptions.SmComponentConstraintException;
-import org.gxml.xs.resolve.SmLocation;
-import org.gxml.xs.types.SmType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.types.SmType;
 
 @SuppressWarnings("serial")
 public final class CvcElementLocalTypeDerivationException extends CvcElementException

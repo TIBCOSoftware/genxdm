@@ -27,6 +27,22 @@ import java.util.Set;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.names.NameSource;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.components.SmAttribute;
+import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.constraints.SmAttributeUse;
+import org.genxdm.xs.constraints.SmNamespaceConstraint;
+import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.enums.SmProcessContentsMode;
+import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.exceptions.SmSimpleTypeException;
+import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.types.SmComplexType;
+import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SmType;
 import org.gxml.processor.w3c.xs.exception.CvcAttributeFixedValueOverriddenException;
 import org.gxml.processor.w3c.xs.exception.CvcAttributeNormalizedValueException;
 import org.gxml.processor.w3c.xs.exception.CvcAttributeOnSimpleTypeException;
@@ -35,26 +51,10 @@ import org.gxml.processor.w3c.xs.exception.CvcMissingAttributeDeclarationExcepti
 import org.gxml.processor.w3c.xs.exception.CvcUnexpectedAttributeException;
 import org.gxml.processor.w3c.xs.exception.SmAttributeUseException;
 import org.gxml.processor.w3c.xs.exception.SmMissingAttributeException;
-import org.gxml.names.NameSource;
 import org.gxml.processor.w3c.xs.validation.api.VxMapping;
 import org.gxml.processor.w3c.xs.validation.api.VxMetaBridge;
 import org.gxml.processor.w3c.xs.validation.api.VxOutputHandler;
 import org.gxml.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrategy;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.components.SmAttribute;
-import org.gxml.xs.components.SmWildcard;
-import org.gxml.xs.constraints.SmAttributeUse;
-import org.gxml.xs.constraints.SmNamespaceConstraint;
-import org.gxml.xs.constraints.SmValueConstraint;
-import org.gxml.xs.enums.SmProcessContentsMode;
-import org.gxml.xs.exceptions.SmAbortException;
-import org.gxml.xs.exceptions.SmDatatypeException;
-import org.gxml.xs.exceptions.SmExceptionHandler;
-import org.gxml.xs.exceptions.SmSimpleTypeException;
-import org.gxml.xs.resolve.SmPrefixResolver;
-import org.gxml.xs.types.SmComplexType;
-import org.gxml.xs.types.SmSimpleType;
-import org.gxml.xs.types.SmType;
 
 
 /**

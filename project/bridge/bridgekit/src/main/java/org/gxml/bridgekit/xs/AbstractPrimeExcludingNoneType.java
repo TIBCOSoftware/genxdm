@@ -15,8 +15,8 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.xs.enums.SmQuantifier;
-import org.gxml.xs.types.SmPrimeType;
+import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.types.SmPrimeType;
 
 abstract class AbstractPrimeExcludingNoneType<A> extends AbstractType<A> implements SmPrimeType<A>
 {

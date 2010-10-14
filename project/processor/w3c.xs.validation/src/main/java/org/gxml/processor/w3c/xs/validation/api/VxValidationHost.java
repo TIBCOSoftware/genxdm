@@ -15,8 +15,8 @@
  */
 package org.gxml.processor.w3c.xs.validation.api;
 
-import org.gxml.names.NameSource;
-import org.gxml.typed.types.AtomBridge;
+import org.genxdm.names.NameSource;
+import org.genxdm.typed.types.AtomBridge;
 
 public interface VxValidationHost<A>
 {

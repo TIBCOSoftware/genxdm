@@ -17,8 +17,8 @@ package org.gxml.bridgekit.atoms;
 
 import java.util.List;
 
+import org.genxdm.xs.types.SmNativeType;
 import org.gxml.bridgekit.XmlItem;
-import org.gxml.xs.types.SmNativeType;
 
 public interface XmlAtom extends XmlItem, List<XmlAtom>
 {

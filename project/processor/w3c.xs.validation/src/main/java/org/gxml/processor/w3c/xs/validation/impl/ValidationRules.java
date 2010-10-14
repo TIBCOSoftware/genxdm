@@ -17,16 +17,16 @@ package org.gxml.processor.w3c.xs.validation.impl;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.types.SmComplexType;
 import org.gxml.processor.w3c.xs.exception.CvcAbstractComplexTypeException;
 import org.gxml.processor.w3c.xs.exception.CvcElementChildElementWithFixedException;
 import org.gxml.processor.w3c.xs.exception.CvcElementFixedValueOverriddenMixedException;
 import org.gxml.processor.w3c.xs.exception.SrcFrozenLocation;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.constraints.SmValueConstraint;
-import org.gxml.xs.exceptions.SmAbortException;
-import org.gxml.xs.exceptions.SmExceptionHandler;
-import org.gxml.xs.types.SmComplexType;
 
 
 final class ValidationRules

@@ -15,8 +15,8 @@
  */
 package org.gxml.processor.w3c.xs;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.exceptions.SmException;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.exceptions.SmException;
 
 @SuppressWarnings("serial")
 final class XMLEnumerationException extends Exception

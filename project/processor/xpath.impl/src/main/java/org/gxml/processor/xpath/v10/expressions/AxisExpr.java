@@ -20,9 +20,9 @@
  */
 package org.gxml.processor.xpath.v10.expressions;
 
+import org.genxdm.NodeKind;
 import org.gxml.xpath.v10.expressions.BooleanExpr;
 import org.gxml.xpath.v10.expressions.ConvertibleNodeSetExpr;
-import org.gxml.NodeKind;
 
 public abstract class AxisExpr
     extends ConvertibleNodeSetExpr 

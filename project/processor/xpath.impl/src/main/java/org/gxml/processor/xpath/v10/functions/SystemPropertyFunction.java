@@ -20,6 +20,7 @@
  */
 package org.gxml.processor.xpath.v10.functions;
 
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.Function;
 import org.gxml.xpath.v10.expressions.ConvertibleExpr;
 import org.gxml.xpath.v10.expressions.ConvertibleVariantExpr;
@@ -28,7 +29,6 @@ import org.gxml.xpath.v10.expressions.ExprContextStatic;
 import org.gxml.xpath.v10.expressions.ExprException;
 import org.gxml.xpath.v10.expressions.ExprParseException;
 import org.gxml.xpath.v10.variants.Variant;
-import org.gxml.base.Model;
 
 /**
  * implements the system-property() function, XSLT 1.0, section 12.4

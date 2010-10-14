@@ -17,8 +17,8 @@ package org.gxml.bridgekit.atoms;
 
 import java.math.BigInteger;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.types.SmNativeType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.types.SmNativeType;
 
 public final class XmlIntegerDerived extends XmlAbstractAtom
 {

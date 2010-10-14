@@ -15,8 +15,8 @@
  */
 package org.gxml.bridgekit.names;
 
-import org.gxml.exceptions.IllegalNullArgumentException;
-import org.gxml.names.NamespaceBinding;
+import org.genxdm.exceptions.IllegalNullArgumentException;
+import org.genxdm.names.NamespaceBinding;
 
 public final class DefaultNamespaceBinding implements NamespaceBinding 
 {

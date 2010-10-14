@@ -17,8 +17,8 @@ package org.gxml.processor.w3c.xs.validation.api;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.types.SmType;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.types.SmType;
 
 public interface VxPSVI<A>
 {

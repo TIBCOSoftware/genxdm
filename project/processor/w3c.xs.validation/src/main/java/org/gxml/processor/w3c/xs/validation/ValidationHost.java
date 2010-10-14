@@ -15,11 +15,11 @@
  */
 package org.gxml.processor.w3c.xs.validation;
 
-import org.gxml.names.NameSource;
+import org.genxdm.names.NameSource;
+import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.types.AtomBridge;
 import org.gxml.processor.w3c.xs.validation.api.VxMetaBridge;
 import org.gxml.processor.w3c.xs.validation.api.VxValidationHost;
-import org.gxml.typed.TypedContext;
-import org.gxml.typed.types.AtomBridge;
 
 
 public final class ValidationHost<N, A> implements VxValidationHost<A>

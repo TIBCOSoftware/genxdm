@@ -27,16 +27,16 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.gxml.NodeKind;
-import org.gxml.exceptions.GxmlException;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.TypedContext;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.typed.types.Emulation;
-import org.gxml.typed.types.MetaBridge;
-import org.gxml.xs.exceptions.SmDatatypeException;
-import org.gxml.xs.types.SmSimpleType;
-import org.gxml.xs.types.SmType;
+import org.genxdm.NodeKind;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.typed.types.Emulation;
+import org.genxdm.typed.types.MetaBridge;
+import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SmType;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -533,7 +533,7 @@ public final class DomSupport implements DomConstants
 	}
 
 	/**
-	 * Helper function to convert a w3c DOM node type to a Data Model node-kind. Unrecognized node types return null. The DOM {@link Node#ATTRIBUTE_NODE} maps to {@link org.gxml.NodeKind#ATTRIBUTE} regardless of whether the attribute actually represents a
+	 * Helper function to convert a w3c DOM node type to a Data Model node-kind. Unrecognized node types return null. The DOM {@link Node#ATTRIBUTE_NODE} maps to {@link org.genxdm.NodeKind#ATTRIBUTE} regardless of whether the attribute actually represents a
 	 * namespace node.
 	 * 
 	 * @param nodeType

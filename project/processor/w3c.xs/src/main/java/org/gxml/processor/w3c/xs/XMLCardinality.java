@@ -15,7 +15,7 @@
  */
 package org.gxml.processor.w3c.xs;
 
-import org.gxml.xs.components.SmParticle;
+import org.genxdm.xs.components.SmParticle;
 
 final class XMLCardinality
 {

@@ -17,8 +17,8 @@ package org.gxml.bridgekit.atoms;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.IllegalNullArgumentException;
-import org.gxml.xs.types.SmNativeType;
+import org.genxdm.exceptions.IllegalNullArgumentException;
+import org.genxdm.xs.types.SmNativeType;
 
 public final class XmlForeignAtom extends XmlAbstractAtom
 {

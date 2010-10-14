@@ -23,19 +23,19 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.constraints.SmIdentityConstraint;
-import org.gxml.xs.enums.SmDerivationMethod;
-import org.gxml.xs.enums.SmNodeKind;
-import org.gxml.xs.enums.SmQuantifier;
-import org.gxml.xs.enums.SmScopeExtent;
-import org.gxml.xs.types.SmElementNodeType;
-import org.gxml.xs.types.SmPrimeChoiceType;
-import org.gxml.xs.types.SmPrimeType;
-import org.gxml.xs.types.SmPrimeTypeKind;
-import org.gxml.xs.types.SmSequenceTypeVisitor;
-import org.gxml.xs.types.SmType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.enums.SmNodeKind;
+import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.types.SmElementNodeType;
+import org.genxdm.xs.types.SmPrimeChoiceType;
+import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.SmPrimeTypeKind;
+import org.genxdm.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.xs.types.SmType;
 
 public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implements SmElement<A>
 {

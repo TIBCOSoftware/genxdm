@@ -17,9 +17,9 @@ package org.gxml.bridgetest;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.base.ProcessingContext;
-import org.gxml.names.NameSource;
-import org.gxml.xs.types.SmNativeType;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.names.NameSource;
+import org.genxdm.xs.types.SmNativeType;
 
 // TODO: either move the atom bridge test to a new typedtiming, or make this a typed test.
 public abstract class TimingTestBase<N> 

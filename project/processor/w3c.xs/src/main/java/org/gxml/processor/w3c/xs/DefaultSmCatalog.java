@@ -17,7 +17,7 @@ package org.gxml.processor.w3c.xs;
 
 import java.net.URI;
 
-import org.gxml.xs.resolve.SmCatalog;
+import org.genxdm.xs.resolve.SmCatalog;
 
 enum DefaultSmCatalog implements SmCatalog
 {

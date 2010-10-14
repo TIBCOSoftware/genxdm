@@ -22,11 +22,11 @@ import java.util.LinkedList;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.gxml.names.NameSource;
+import org.genxdm.names.NameSource;
+import org.genxdm.typed.io.SequenceHandler;
+import org.genxdm.xs.exceptions.SmExceptionHandler;
 import org.gxml.processor.w3c.xs.validation.api.VxMapping;
 import org.gxml.processor.w3c.xs.validation.api.VxValidator;
-import org.gxml.typed.io.SequenceHandler;
-import org.gxml.xs.exceptions.SmExceptionHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;

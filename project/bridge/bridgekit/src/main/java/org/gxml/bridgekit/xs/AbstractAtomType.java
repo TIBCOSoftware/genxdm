@@ -20,17 +20,17 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.enums.SmDerivationMethod;
-import org.gxml.xs.enums.SmQuantifier;
-import org.gxml.xs.exceptions.SmDatatypeException;
-import org.gxml.xs.types.SmAtomicType;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmPrimeChoiceType;
-import org.gxml.xs.types.SmPrimeType;
-import org.gxml.xs.types.SmPrimeTypeKind;
-import org.gxml.xs.types.SmType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.types.SmAtomicType;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmPrimeChoiceType;
+import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.SmPrimeTypeKind;
+import org.genxdm.xs.types.SmType;
 
 abstract class AbstractAtomType<A> implements SmAtomicType<A>
 {

@@ -19,7 +19,7 @@
     </properties>
     
     <parent>
-        <groupId>org.gxml</groupId>
+        <groupId>org.genxdm</groupId>
         <artifactId>bridge</artifactId>
         <version>1.0.0</version>
     </parent>
@@ -27,7 +27,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bridge-cx</artifactId>
     <version>1.0.0</version>
-    <name>gXML Cx (reference) Bridge</name>
+    <name>GenXDM Cx (reference) Bridge</name>
 
     <reporting>
         <plugins>
@@ -49,36 +49,36 @@
     </reporting>
 
     <scm>
-        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/bridge/cx</connection>
-        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/bridge/cx</developerConnection>
-        <url>http://gxml.googlecode.com/svn/trunk/project/bridge/cx</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/bridge/cx</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/bridge/cx</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/bridge/cx</url>
     </scm>
 
     <dependencies>
         <dependency>
-            <groupId>org.gxml</groupId>
+            <groupId>org.genxdm</groupId>
             <artifactId>bridgekit</artifactId>
             <version>[,2)</version>
         </dependency>
         <dependency>
-            <groupId>org.gxml</groupId>
+            <groupId>org.genxdm</groupId>
             <artifactId>proc-io</artifactId>
             <version>[,2)</version>
         </dependency>
         <dependency>
-            <groupId>org.gxml</groupId>
+            <groupId>org.genxdm</groupId>
             <artifactId>bridgetest</artifactId>
             <version>[,2)</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-        	<groupId>org.gxml</groupId>
+        	<groupId>org.genxdm</groupId>
         	<artifactId>proc-iotest</artifactId>
         	<version>[,2)</version>
         	<scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.gxml</groupId>
+            <groupId>org.genxdm</groupId>
             <artifactId>proc-xpath</artifactId>
             <version>[,2)</version>
             <scope>test</scope>

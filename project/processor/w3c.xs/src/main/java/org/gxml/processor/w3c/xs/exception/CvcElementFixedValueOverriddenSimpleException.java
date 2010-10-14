@@ -15,9 +15,9 @@
  */
 package org.gxml.processor.w3c.xs.exception;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.components.SmElement;
-import org.gxml.xs.resolve.SmLocation;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.resolve.SmLocation;
 
 @SuppressWarnings("serial")
 public final class CvcElementFixedValueOverriddenSimpleException extends CvcElementException

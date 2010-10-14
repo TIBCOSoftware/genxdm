@@ -15,7 +15,7 @@
  */
 package org.gxml.bridgekit.xs;
 
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.exceptions.PreCondition;
 
 abstract class LockableImpl
 {

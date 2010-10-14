@@ -20,7 +20,7 @@ import java.net.URI;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
-import org.gxml.base.mutable.NodeFactory;
+import org.genxdm.base.mutable.NodeFactory;
 
 public class AxiomFactory
     implements NodeFactory<Object>

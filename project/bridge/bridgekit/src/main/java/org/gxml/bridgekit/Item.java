@@ -15,7 +15,7 @@
  */
 package org.gxml.bridgekit;
 
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.exceptions.PreCondition;
 
 public class Item<N, A>
 {

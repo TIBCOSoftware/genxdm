@@ -15,10 +15,10 @@
  */
 package org.gxml.processor.w3c.xs.exception;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.exceptions.SmComponentConstraintException;
-import org.gxml.xs.exceptions.SmException;
-import org.gxml.xs.resolve.SmLocation;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.exceptions.SmException;
+import org.genxdm.xs.resolve.SmLocation;
 
 /**
  * A Schema Component Constraint Exception wrapped in physical location information.

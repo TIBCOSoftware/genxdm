@@ -22,7 +22,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
-import org.gxml.base.mutable.MutableModel;
+import org.genxdm.base.mutable.MutableModel;
 
 public class AxiomMutableModel
     extends AxiomModel

@@ -19,7 +19,7 @@
     </properties>
     
     <parent>
-        <groupId>org.gxml</groupId>
+        <groupId>org.genxdm</groupId>
         <artifactId>processor</artifactId>
         <version>1.0.0</version>
     </parent>
@@ -27,7 +27,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>proc-iotest</artifactId>
     <version>1.0.0</version>
-    <name>gXML Input/Output Processor Tests</name>
+    <name>GenXDM Input/Output Processor Tests</name>
 
     <reporting>
         <plugins>
@@ -49,20 +49,20 @@
     </reporting>
 
     <scm>
-        <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/processor/iotest</connection>
-        <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/processor/iotest</developerConnection>
-        <url>http://gxml.googlecode.com/svn/trunk/project/processor/iotest</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/processor/iotest</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/processor/iotest</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/processor/iotest</url>
     </scm>
 
 
     <dependencies>
         <dependency>
-            <groupId>org.gxml</groupId>
+            <groupId>org.genxdm</groupId>
             <artifactId>proc-io</artifactId>
             <version>[,2)</version>
         </dependency>
         <dependency>
-            <groupId>org.gxml</groupId>
+            <groupId>org.genxdm</groupId>
             <artifactId>bridgekit</artifactId>
             <version>[,2)</version>
         </dependency>

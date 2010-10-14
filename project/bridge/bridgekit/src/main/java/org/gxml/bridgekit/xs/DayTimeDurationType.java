@@ -17,9 +17,9 @@ package org.gxml.bridgekit.xs;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmSimpleType;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmSimpleType;
 
 final class DayTimeDurationType<A> extends AbstractDurationType<A>
 {

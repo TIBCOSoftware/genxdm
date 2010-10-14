@@ -17,7 +17,7 @@ package org.gxml.processor.w3c.xs.exception;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
+import org.genxdm.exceptions.PreCondition;
 
 @SuppressWarnings("serial")
 public final class SccComplexTypeAttributeUniquenessException extends SccComplexTypeDefinitionException

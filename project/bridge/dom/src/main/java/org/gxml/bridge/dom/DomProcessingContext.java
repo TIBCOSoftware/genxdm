@@ -17,23 +17,23 @@ package org.gxml.bridge.dom;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.genxdm.Feature;
+import org.genxdm.base.Cursor;
+import org.genxdm.base.Model;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.base.mutable.MutableContext;
+import org.genxdm.base.mutable.MutableCursor;
+import org.genxdm.base.mutable.MutableModel;
+import org.genxdm.base.mutable.NodeFactory;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.nodes.Bookmark;
+import org.genxdm.typed.TypedContext;
 import org.gxml.bridgekit.atoms.XmlAtom;
 import org.gxml.bridgekit.tree.BookmarkOnModel;
 import org.gxml.bridgekit.tree.CursorOnModel;
 import org.gxml.bridgekit.tree.MutableCursorOnMutableModel;
-import org.gxml.Feature;
-import org.gxml.base.Cursor;
-import org.gxml.base.Model;
-import org.gxml.base.ProcessingContext;
-import org.gxml.base.io.FragmentBuilder;
-import org.gxml.base.mutable.MutableContext;
-import org.gxml.base.mutable.MutableCursor;
-import org.gxml.base.mutable.MutableModel;
-import org.gxml.base.mutable.NodeFactory;
 import org.gxml.bridge.dom.enhanced.DomSAProcessingContext;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.nodes.Bookmark;
-import org.gxml.typed.TypedContext;
 import org.w3c.dom.Node;
 
 public class DomProcessingContext

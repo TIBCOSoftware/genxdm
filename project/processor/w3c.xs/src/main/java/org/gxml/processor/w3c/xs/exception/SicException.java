@@ -15,9 +15,9 @@
  */
 package org.gxml.processor.w3c.xs.exception;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.enums.SmOutcome;
-import org.gxml.xs.exceptions.SmException;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.enums.SmOutcome;
+import org.genxdm.xs.exceptions.SmException;
 
 /**
  * Used to indicate an implementation limitations

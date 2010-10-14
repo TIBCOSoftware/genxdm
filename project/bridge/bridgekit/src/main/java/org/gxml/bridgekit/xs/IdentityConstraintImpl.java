@@ -19,11 +19,11 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.constraints.SmIdentityConstraint;
-import org.gxml.xs.constraints.SmIdentityConstraintKind;
-import org.gxml.xs.constraints.SmRestrictedXPath;
-import org.gxml.xs.enums.SmScopeExtent;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.constraints.SmIdentityConstraintKind;
+import org.genxdm.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.enums.SmScopeExtent;
 
 public final class IdentityConstraintImpl<A> extends NamedComponentImpl<A> implements SmIdentityConstraint<A>
 {

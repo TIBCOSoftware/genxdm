@@ -17,12 +17,12 @@ package org.gxml.bridgekit.tree;
 
 import java.io.IOException;
 
-import org.gxml.NodeKind;
-import org.gxml.base.Cursor;
-import org.gxml.base.Model;
-import org.gxml.base.io.ContentHandler;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.nodes.Bookmark;
+import org.genxdm.NodeKind;
+import org.genxdm.base.Cursor;
+import org.genxdm.base.Model;
+import org.genxdm.base.io.ContentHandler;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.nodes.Bookmark;
 
 public class CursorOnModel<N>
     extends InformerOnModel<N>

@@ -20,14 +20,14 @@
   </properties>
   <parent>
     <artifactId>support</artifactId>
-    <groupId>org.gxml</groupId>
+    <groupId>org.genxdm</groupId>
     <version>1.0.0</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
   <artifactId>performance</artifactId>
   <version>1.0.0</version>
-  <name>gXML Performance Evaluation</name>
+  <name>GenXDM Performance Evaluation</name>
 
   <reporting>
       <plugins>
@@ -49,24 +49,24 @@
   </reporting>
 
   <scm>
-      <connection>scm:svn:http://gxml.googlecode.com/svn/trunk/project/support/performance</connection>
-      <developerConnection>scm:svn:https://gxml.googlecode.com/svn/trunk/project/support/performance</developerConnection>
-      <url>http://gxml.googlecode.com/svn/trunk/project/support/performance</url>
+      <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/support/performance</connection>
+      <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/support/performance</developerConnection>
+      <url>http://genxdm.googlecode.com/svn/trunk/project/support/performance</url>
   </scm>
 
   <dependencies>
     <!--dependency>
-        <groupId>org.gxml</groupId>
-        <artifactId>gxml-api</artifactId>
+        <groupId>org.genxdm</groupId>
+        <artifactId>genxdm-api</artifactId>
         <version>[,2]</version>
     </dependency-->
     <dependency>
-        <groupId>org.gxml</groupId>
+        <groupId>org.genxdm</groupId>
         <artifactId>bridge-dom</artifactId>
         <version>[,2)</version>
     </dependency>
     <dependency>
-        <groupId>org.gxml</groupId>
+        <groupId>org.genxdm</groupId>
         <artifactId>bridge-cx</artifactId>
         <version>[,2)</version>
     </dependency>
@@ -76,12 +76,12 @@
         <version>[1.2.8,2.0.0)</version>
     </dependency>
     <dependency>
-        <groupId>org.gxml</groupId>
+        <groupId>org.genxdm</groupId>
         <artifactId>bridge-axiom</artifactId>
         <version>[,2]</version>
     </dependency>
     <dependency>
-        <groupId>org.gxml</groupId>
+        <groupId>org.genxdm</groupId>
         <artifactId>proc-w3cxs-val</artifactId>
         <version>[,2]</version>
     </dependency>

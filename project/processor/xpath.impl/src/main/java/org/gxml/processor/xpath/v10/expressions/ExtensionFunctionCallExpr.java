@@ -24,12 +24,12 @@ import java.lang.reflect.Array;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.ConvertibleVariantExpr;
 import org.gxml.xpath.v10.expressions.ExprContextDynamic;
 import org.gxml.xpath.v10.expressions.ExprException;
 import org.gxml.xpath.v10.expressions.VariantExpr;
 import org.gxml.xpath.v10.variants.Variant;
-import org.gxml.base.Model;
 
 final class ExtensionFunctionCallExpr 
     extends ConvertibleVariantExpr

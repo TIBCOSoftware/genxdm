@@ -26,26 +26,26 @@ import java.util.List;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.gxml.base.ProcessingContext;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.exceptions.GxmlAtomCastException;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.exceptions.SpillagePolicy;
+import org.genxdm.names.NameSource;
+import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.typed.types.CastingContext;
+import org.genxdm.typed.types.Emulation;
+import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.enums.SmWhiteSpacePolicy;
+import org.genxdm.xs.facets.SmFacet;
+import org.genxdm.xs.facets.SmFacetKind;
+import org.genxdm.xs.facets.SmFractionDigits;
+import org.genxdm.xs.types.SmAtomicType;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SmType;
 import org.gxml.bridgetest.GxTestBase;
-import org.gxml.exceptions.GxmlAtomCastException;
-import org.gxml.exceptions.PreCondition;
-import org.gxml.exceptions.SpillagePolicy;
-import org.gxml.names.NameSource;
-import org.gxml.typed.TypedContext;
-import org.gxml.typed.types.AtomBridge;
-import org.gxml.typed.types.CastingContext;
-import org.gxml.typed.types.Emulation;
-import org.gxml.xs.enums.SmDerivationMethod;
-import org.gxml.xs.enums.SmQuantifier;
-import org.gxml.xs.enums.SmWhiteSpacePolicy;
-import org.gxml.xs.facets.SmFacet;
-import org.gxml.xs.facets.SmFacetKind;
-import org.gxml.xs.facets.SmFractionDigits;
-import org.gxml.xs.types.SmAtomicType;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmSimpleType;
-import org.gxml.xs.types.SmType;
 
 public abstract class NativeTypeTestBase<N, A> 
     extends GxTestBase<N>

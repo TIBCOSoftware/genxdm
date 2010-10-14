@@ -23,6 +23,11 @@ import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
 
+import org.genxdm.Feature;
+import org.genxdm.Resolver;
+import org.genxdm.base.Model;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.FragmentBuilder;
 import org.gxml.bridgekit.ProcessingContextFactory;
 import org.gxml.xpath.v10.XPathCompiler;
 import org.gxml.xpath.v10.XPathToolkit;
@@ -41,11 +46,6 @@ import org.gxml.xpath.v10.iterators.NodeIterator;
 import org.gxml.xpath.v10.variants.BooleanVariant;
 import org.gxml.xpath.v10.variants.NumberVariant;
 import org.gxml.xpath.v10.variants.StringVariant;
-import org.gxml.Feature;
-import org.gxml.Resolver;
-import org.gxml.base.Model;
-import org.gxml.base.ProcessingContext;
-import org.gxml.base.io.FragmentBuilder;
 import org.gxml.processor.xpath.v10.XPathToolkitFactoryImpl;
 
 public abstract class XPathTestBase<N> 

@@ -19,11 +19,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
+import org.genxdm.typed.types.VariantBridge;
+import org.genxdm.typed.types.VariantKind;
 import org.gxml.bridgekit.atoms.XmlAtom;
 import org.gxml.bridgekit.variant.XmlVariant;
 import org.gxml.bridge.cx.tree.XmlNode;
-import org.gxml.typed.types.VariantBridge;
-import org.gxml.typed.types.VariantKind;
 
 public final class XmlVariantBridge implements VariantBridge<XmlNode, XmlAtom, XmlVariant>
 {

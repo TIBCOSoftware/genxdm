@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.genxdm.base.Model;
 import org.gxml.xpath.v10.expressions.ExprException;
 import org.gxml.xpath.v10.iterators.NodeIterator;
-import org.gxml.base.Model;
 import org.gxml.processor.xpath.v10.iterators.ListNodeIterator;
 
 /**

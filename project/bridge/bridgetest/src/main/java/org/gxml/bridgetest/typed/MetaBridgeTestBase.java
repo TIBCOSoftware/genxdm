@@ -17,15 +17,15 @@ package org.gxml.bridgetest.typed;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.base.ProcessingContext;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.names.NameSource;
+import org.genxdm.names.NamespaceResolver;
+import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.types.MetaBridge;
+import org.genxdm.typed.types.Quantifier;
+import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.SmSequenceType;
 import org.gxml.bridgetest.GxTestBase;
-import org.gxml.names.NameSource;
-import org.gxml.names.NamespaceResolver;
-import org.gxml.typed.TypedContext;
-import org.gxml.typed.types.MetaBridge;
-import org.gxml.typed.types.Quantifier;
-import org.gxml.xs.types.SmNativeType;
-import org.gxml.xs.types.SmSequenceType;
 
 public abstract class MetaBridgeTestBase<N, A> 
     extends GxTestBase<N>

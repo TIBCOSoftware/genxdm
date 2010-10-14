@@ -17,9 +17,9 @@ package org.gxml.processor.w3c.xs.exception;
 
 import javax.xml.namespace.QName;
 
-import org.gxml.exceptions.PreCondition;
-import org.gxml.xs.resolve.SmLocation;
-import org.gxml.xs.types.SmComplexType;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.types.SmComplexType;
 
 @SuppressWarnings("serial")
 public final class CvcAbstractComplexTypeException extends SmComplexTypeException
