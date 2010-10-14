@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gxml.samples.performance;
+package org.genxdm.samples.performance;
 
 import org.genxdm.bridge.dom.DomProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
