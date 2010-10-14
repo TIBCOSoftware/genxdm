@@ -21,8 +21,8 @@ import java.io.InputStream;
 import org.genxdm.base.Model;
 import org.genxdm.base.ProcessingContext;
 import org.genxdm.base.io.DocumentHandler;
+import org.genxdm.bridgekit.ProcessingContextFactory;
 import org.genxdm.exceptions.GxmlMarshalException;
-import org.gxml.bridgekit.ProcessingContextFactory;
 import org.xml.sax.InputSource;
 
 import junit.framework.TestCase;

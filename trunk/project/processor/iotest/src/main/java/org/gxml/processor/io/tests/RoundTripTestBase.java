@@ -34,7 +34,7 @@ import org.genxdm.base.Cursor;
 import org.genxdm.base.ProcessingContext;
 import org.genxdm.base.io.DocumentHandler;
 import org.genxdm.base.io.FragmentBuilder;
-import org.gxml.bridgekit.ProcessingContextFactory;
+import org.genxdm.bridgekit.ProcessingContextFactory;
 
 abstract public class RoundTripTestBase<N>
     extends TestCase

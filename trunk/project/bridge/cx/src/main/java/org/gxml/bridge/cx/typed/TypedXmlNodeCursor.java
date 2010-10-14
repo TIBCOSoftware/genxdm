@@ -17,10 +17,10 @@ package org.gxml.bridge.cx.typed;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.types.AtomBridge;
-import org.gxml.bridgekit.atoms.XmlAtom;
 import org.gxml.bridge.cx.base.XmlNodeCursor;
 import org.gxml.bridge.cx.tree.XmlNode;
 

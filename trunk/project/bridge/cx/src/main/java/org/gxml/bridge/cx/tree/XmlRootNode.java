@@ -20,8 +20,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.genxdm.NodeKind;
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.typed.types.AtomBridge;
-import org.gxml.bridgekit.atoms.XmlAtom;
 
 public final class XmlRootNode
     extends XmlContainerNode

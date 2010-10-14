@@ -16,7 +16,7 @@
 package org.gxml.bridge.dom.tests;
 
 import org.genxdm.base.ProcessingContext;
-import org.gxml.bridgekit.atoms.XmlAtom;
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.gxml.bridgetest.typed.CastingTestBase;
 import org.gxml.bridge.dom.DomProcessingContext;
 import org.w3c.dom.Node;

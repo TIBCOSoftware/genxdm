@@ -16,8 +16,8 @@
 package org.gxml.samples.performance;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.gxml.bridge.axiom.AxiomProcessingContext;
-import org.gxml.bridgekit.atoms.XmlAtom;
 
 public class AxiomBridgePerformance extends BridgePerformance<Object, XmlAtom> {
 

@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
 import org.genxdm.base.io.ContentHandler;
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
@@ -38,7 +39,6 @@ import org.genxdm.xs.types.SmType;
 import org.gxml.bridge.dom.DomModel;
 import org.gxml.bridge.dom.DomNID;
 import org.gxml.bridge.dom.DomSupport;
-import org.gxml.bridgekit.atoms.XmlAtom;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 

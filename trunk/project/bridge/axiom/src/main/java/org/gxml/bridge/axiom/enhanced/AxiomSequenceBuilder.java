@@ -22,10 +22,10 @@ import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMFactory;
 import org.genxdm.DtdAttributeKind;
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
-import org.gxml.bridgekit.atoms.XmlAtom;
 import org.gxml.bridge.axiom.AxiomFragmentBuilder;
 
 final class AxiomSequenceBuilder 

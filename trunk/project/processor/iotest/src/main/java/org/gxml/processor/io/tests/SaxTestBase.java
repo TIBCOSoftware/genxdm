@@ -24,7 +24,7 @@ import org.genxdm.NodeKind;
 import org.genxdm.base.Cursor;
 import org.genxdm.base.ProcessingContext;
 import org.genxdm.base.io.DocumentHandler;
-import org.gxml.bridgekit.ProcessingContextFactory;
+import org.genxdm.bridgekit.ProcessingContextFactory;
 import org.xml.sax.InputSource;
 
 abstract public class SaxTestBase<N>

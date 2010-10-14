@@ -19,11 +19,11 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.xs.types.SmType;
-import org.gxml.bridgekit.atoms.XmlAtom;
 import org.gxml.bridge.cx.base.XmlNodeBuilder;
 import org.gxml.bridge.cx.tree.XmlAttributeNode;
 import org.gxml.bridge.cx.tree.XmlElementNode;

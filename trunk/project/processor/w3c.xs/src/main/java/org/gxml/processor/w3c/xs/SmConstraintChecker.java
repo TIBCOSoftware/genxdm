@@ -28,6 +28,7 @@ import java.util.Set;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.xs.Gregorian;
 import org.genxdm.exceptions.GxmlAtomCastException;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
@@ -69,7 +70,6 @@ import org.genxdm.xs.types.SmNativeType;
 import org.genxdm.xs.types.SmSimpleType;
 import org.genxdm.xs.types.SmType;
 import org.genxdm.xs.types.SmUnionSimpleType;
-import org.gxml.bridgekit.xs.Gregorian;
 import org.gxml.processor.w3c.xs.exception.SccAllGroupAppearsException;
 import org.gxml.processor.w3c.xs.exception.SccAttributeDeclarationTypeIDConflictsValueConstraintException;
 import org.gxml.processor.w3c.xs.exception.SccAttributeDerivationRequiredConflictException;
