@@ -22,16 +22,16 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
+import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.bridgekit.atoms.XmlAtomBridge;
+import org.genxdm.bridgekit.atoms.XmlUntypedAtomic;
+import org.genxdm.bridgekit.misc.UnaryIterable;
+import org.genxdm.bridgekit.xs.SmMetaBridgeFactory;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.names.NamespaceBinding;
 import org.genxdm.xs.types.SmNativeType;
 import org.genxdm.xs.types.SmType;
-import org.gxml.bridgekit.atoms.XmlAtom;
-import org.gxml.bridgekit.atoms.XmlAtomBridge;
-import org.gxml.bridgekit.atoms.XmlUntypedAtomic;
-import org.gxml.bridgekit.misc.UnaryIterable;
-import org.gxml.bridgekit.xs.SmMetaBridgeFactory;
 
 // since there are only two container nodes, it follows that there are five leaf nodes:
 // attribute, namespace, text, comment, pi

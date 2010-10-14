@@ -16,9 +16,9 @@
 package org.gxml.samples.performance;
 
 import org.genxdm.base.ProcessingContext;
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.gxml.bridge.cx.base.XmlNodeContext;
 import org.gxml.bridge.cx.tree.XmlNode;
-import org.gxml.bridgekit.atoms.XmlAtom;
 
 public class CxBridgePerformance extends BridgePerformance<XmlNode, XmlAtom> {
 

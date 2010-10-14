@@ -21,9 +21,9 @@ import javax.xml.XMLConstants;
 
 import org.genxdm.DtdAttributeKind;
 import org.genxdm.NodeKind;
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.xs.types.SmAtomicType;
 import org.genxdm.xs.types.SmType;
-import org.gxml.bridgekit.atoms.XmlAtom;
 
 public final class XmlAttributeNode
     extends XmlLeafNode

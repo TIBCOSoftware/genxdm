@@ -38,21 +38,21 @@ import org.apache.axiom.om.OMText;
 import org.genxdm.NodeKind;
 import org.genxdm.base.Model;
 import org.genxdm.base.io.ContentHandler;
+import org.genxdm.bridgekit.axes.IterableAncestorAxis;
+import org.genxdm.bridgekit.axes.IterableAncestorOrSelfAxis;
+import org.genxdm.bridgekit.axes.IterableChildAxis;
+import org.genxdm.bridgekit.axes.IterableChildAxisElements;
+import org.genxdm.bridgekit.axes.IterableChildAxisElementsByName;
+import org.genxdm.bridgekit.axes.IterableDescendantAxis;
+import org.genxdm.bridgekit.axes.IterableDescendantOrSelfAxis;
+import org.genxdm.bridgekit.axes.IterableFollowingAxis;
+import org.genxdm.bridgekit.axes.IterableFollowingSiblingAxis;
+import org.genxdm.bridgekit.axes.IterablePrecedingAxis;
+import org.genxdm.bridgekit.axes.IterablePrecedingSiblingAxis;
+import org.genxdm.bridgekit.names.QNameComparator;
+import org.genxdm.bridgekit.tree.Ordering;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.names.NamespaceBinding;
-import org.gxml.bridgekit.axes.IterableAncestorAxis;
-import org.gxml.bridgekit.axes.IterableAncestorOrSelfAxis;
-import org.gxml.bridgekit.axes.IterableChildAxis;
-import org.gxml.bridgekit.axes.IterableChildAxisElements;
-import org.gxml.bridgekit.axes.IterableChildAxisElementsByName;
-import org.gxml.bridgekit.axes.IterableDescendantAxis;
-import org.gxml.bridgekit.axes.IterableDescendantOrSelfAxis;
-import org.gxml.bridgekit.axes.IterableFollowingAxis;
-import org.gxml.bridgekit.axes.IterableFollowingSiblingAxis;
-import org.gxml.bridgekit.axes.IterablePrecedingAxis;
-import org.gxml.bridgekit.axes.IterablePrecedingSiblingAxis;
-import org.gxml.bridgekit.names.QNameComparator;
-import org.gxml.bridgekit.tree.Ordering;
 
 public class AxiomModel
     implements Model<Object>

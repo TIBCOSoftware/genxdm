@@ -18,6 +18,11 @@ package org.gxml.bridge.dom.enhanced;
 import javax.xml.namespace.QName;
 
 import org.genxdm.base.ProcessingContext;
+import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.bridgekit.atoms.XmlAtomBridge;
+import org.genxdm.bridgekit.tree.CursorOnTypedModel;
+import org.genxdm.bridgekit.xs.GxMetaBridgeOnSmMetaBridgeAdapter;
+import org.genxdm.bridgekit.xs.SmMetaBridgeFactory;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.TypedContext;
@@ -42,11 +47,6 @@ import org.genxdm.xs.types.SmNativeType;
 import org.genxdm.xs.types.SmSimpleType;
 import org.genxdm.xs.types.SmSimpleUrType;
 import org.genxdm.xs.types.SmType;
-import org.gxml.bridgekit.atoms.XmlAtom;
-import org.gxml.bridgekit.atoms.XmlAtomBridge;
-import org.gxml.bridgekit.tree.CursorOnTypedModel;
-import org.gxml.bridgekit.xs.GxMetaBridgeOnSmMetaBridgeAdapter;
-import org.gxml.bridgekit.xs.SmMetaBridgeFactory;
 import org.gxml.bridge.dom.DomProcessingContext;
 import org.w3c.dom.Node;
 
