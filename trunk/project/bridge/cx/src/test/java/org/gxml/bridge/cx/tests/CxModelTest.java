@@ -15,7 +15,7 @@
  */
 package org.gxml.bridge.cx.tests;
 
-import org.gxml.bridgetest.ModelTestBase;
+import org.genxdm.bridgetest.ModelTestBase;
 import org.gxml.bridge.cx.base.XmlNodeContext;
 import org.gxml.bridge.cx.tree.XmlNode;
 

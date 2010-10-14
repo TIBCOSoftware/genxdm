@@ -17,7 +17,7 @@ package org.gxml.bridge.axiom.tests;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.genxdm.base.ProcessingContext;
-import org.gxml.bridgetest.CursorTestBase;
+import org.genxdm.bridgetest.CursorTestBase;
 import org.gxml.bridge.axiom.AxiomProcessingContext;
 
  public final class AxiomCursorTest

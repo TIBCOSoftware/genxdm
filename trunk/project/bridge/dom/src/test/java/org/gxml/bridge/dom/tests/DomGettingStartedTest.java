@@ -15,7 +15,7 @@
  */
 package org.gxml.bridge.dom.tests;
 
-import org.gxml.bridgetest.GettingStartedTestBase;
+import org.genxdm.bridgetest.GettingStartedTestBase;
 import org.gxml.bridge.dom.DomProcessingContext;
 import org.w3c.dom.Node;
 

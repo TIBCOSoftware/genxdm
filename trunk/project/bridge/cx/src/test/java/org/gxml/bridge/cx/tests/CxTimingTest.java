@@ -15,8 +15,8 @@
  */
 package org.gxml.bridge.cx.tests;
 
+import org.genxdm.bridgetest.TimingTestBase;
 import org.genxdm.names.NameSource;
-import org.gxml.bridgetest.TimingTestBase;
 import org.gxml.bridge.cx.base.XmlNodeContext;
 import org.gxml.bridge.cx.tree.XmlNode;
 
