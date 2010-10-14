@@ -17,7 +17,7 @@ package org.gxml.bridge.axiom.tests;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.genxdm.base.ProcessingContext;
-import org.gxml.xpath.v10.tests.XPathTestBase;
+import org.genxdm.processor.xpath.v10.tests.XPathTestBase;
 import org.gxml.bridge.axiom.AxiomProcessingContext;
 
 public final class AxiomXPathTestCase
