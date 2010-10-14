@@ -18,7 +18,7 @@ package org.gxml.bridge.axiom.tests;
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.genxdm.base.ProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.gxml.bridgetest.typed.NativeTypeTestBase;
+import org.genxdm.bridgetest.typed.NativeTypeTestBase;
 import org.gxml.bridge.axiom.AxiomProcessingContext;
 
 public final class AxiomNativeTypeTest

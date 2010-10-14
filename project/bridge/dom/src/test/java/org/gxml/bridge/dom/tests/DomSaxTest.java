@@ -15,7 +15,7 @@
  */
 package org.gxml.bridge.dom.tests;
 
-import org.gxml.processor.io.tests.SaxTestBase;
+import org.genxdm.processor.io.tests.SaxTestBase;
 import org.gxml.bridge.dom.DomProcessingContext;
 import org.w3c.dom.Node;
 

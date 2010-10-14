@@ -15,7 +15,7 @@
  */
 package org.gxml.bridge.cx.tests;
 
-import org.gxml.bridgetest.NameBridgeTestBase;
+import org.genxdm.bridgetest.NameBridgeTestBase;
 import org.gxml.bridge.cx.base.XmlNodeContext;
 import org.gxml.bridge.cx.tree.XmlNode;
 

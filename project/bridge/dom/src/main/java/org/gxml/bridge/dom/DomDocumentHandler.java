@@ -24,7 +24,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.genxdm.exceptions.GxmlMarshalException;
 import org.genxdm.exceptions.PreCondition;
-import org.gxml.processor.io.DefaultDocumentHandler;
+import org.genxdm.processor.io.DefaultDocumentHandler;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.ErrorHandler;

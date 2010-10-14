@@ -28,8 +28,8 @@ import org.genxdm.base.mutable.MutableContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.nodes.Bookmark;
+import org.genxdm.processor.io.DefaultDocumentHandler;
 import org.genxdm.typed.TypedContext;
-import org.gxml.processor.io.DefaultDocumentHandler;
 import org.gxml.bridge.cx.tree.XmlNode;
 import org.gxml.bridge.cx.typed.TypedXmlNodeContext;
 

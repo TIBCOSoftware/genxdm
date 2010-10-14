@@ -25,8 +25,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.genxdm.base.Model;
+import org.genxdm.bridgetest.ModelTestBase;
 import org.genxdm.names.NamespaceBinding;
-import org.gxml.bridgetest.ModelTestBase;
 import org.gxml.bridge.dom.DomProcessingContext;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;

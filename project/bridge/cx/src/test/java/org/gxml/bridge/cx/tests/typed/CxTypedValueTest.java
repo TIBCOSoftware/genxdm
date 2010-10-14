@@ -16,7 +16,7 @@
 package org.gxml.bridge.cx.tests.typed;
 
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.gxml.bridgetest.typed.TypedValueTestBase;
+import org.genxdm.bridgetest.typed.TypedValueTestBase;
 import org.gxml.bridge.cx.base.XmlNodeContext;
 import org.gxml.bridge.cx.tree.XmlNode;
 
