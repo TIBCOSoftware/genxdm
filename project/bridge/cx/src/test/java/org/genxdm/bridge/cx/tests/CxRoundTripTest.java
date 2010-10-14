@@ -13,30 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gxml.samples.conversion;
+package org.genxdm.bridge.cx.tests;
 
-import org.genxdm.base.ProcessingContext;
 import org.genxdm.bridge.cx.base.XmlNodeContext;
 import org.genxdm.bridge.cx.tree.XmlNode;
-import org.genxdm.bridge.dom.DomProcessingContext;
-import org.w3c.dom.Node;
+import org.genxdm.processor.io.tests.RoundTripTestBase;
 
-public class Cx2DomSampleConverter {
-	
-	/**
-	 * Creates Cx & DOM processing contexts for conversion example.
-	 * @param args args[0] is filepath to input document
-	 */
-	static public void main(String[] args)
-	{
-		ProcessingContext<XmlNode> cxContext = new XmlNodeContext();
-		ProcessingContext<Node> domContext = new DomProcessingContext();
-		
-		try {
-			SampleConverter.convertSample(args[0], cxContext, domContext);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-	
+public class CxRoundTripTest
+    extends RoundTripTestBase<XmlNode>
+{
+
+    public XmlNodeContext newProcessingContext()
+    {
+        return new XmlNodeContext();
+    }
+
 }

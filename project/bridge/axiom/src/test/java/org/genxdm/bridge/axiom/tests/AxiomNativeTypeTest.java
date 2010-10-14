@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010 TIBCO Software Inc.
+ * Copyright (c) 2009-2010 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,38 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gxml.samples.performance;
+package org.genxdm.bridge.axiom.tests;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
+import org.genxdm.base.ProcessingContext;
 import org.genxdm.bridge.axiom.AxiomProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.bridgetest.typed.NativeTypeTestBase;
 
-public class AxiomBridgePerformance extends BridgePerformance<Object, XmlAtom> {
-
-	/**
-	 * @param args args[0] is the location of the test properties file
-	 */
-	static public void main(String[] args)
-	{
-		try {
-			if(args.length < 1)
-			{
-				throw new IllegalArgumentException("Test properites filename must be specified on command line.");
-			}
-			else
-			{
-				AxiomBridgePerformance sample = new AxiomBridgePerformance(args[0]);
-				sample.runPerfTest();
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-	public AxiomBridgePerformance(String propsFile)
-	{
-		super(propsFile);
-	}
-    public final AxiomProcessingContext newProcessingContext()
+public final class AxiomNativeTypeTest
+    extends NativeTypeTestBase<Object, XmlAtom>
+{
+    public ProcessingContext<Object> newProcessingContext()
     {
         return new AxiomProcessingContext(new OMLinkedListImplFactory());
     }
