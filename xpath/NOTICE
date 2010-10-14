@@ -1,20 +1,20 @@
 =========================================================================
 ==  NOTICE file corresponding to section 4(d) of the Apache License,   ==
-==  Version 2.0, in this case for the TIBCO gXML distribution.       ==
+==  Version 2.0, in this case for the TIBCO GenXDM distribution.       ==
 =========================================================================
 
 TIBCO gXML
 Copyright 2009-2010 TIBCO Software Inc.
 
-Portsion of the gxml-xpath-api project were originally developed by
+Portions of the genxdm-xpath-api project were originally developed by
 TIBCO Software Inc. and are licensed under the Apache License 2.0. 
 
-Portions of gxml-xpath-api were originally developed by
+Portions of the genxdm-xpath-api project source code were originally developed by
 James Clark and Bill Lindsey.
 
 =========================================================================
 
-The gxml-xpath-api library is derived from portions of the the XT library
+The genxdm-xpath-api library is derived from portions of the the XT library
 developed by James Clark and Bill Lindsey.
 
 XT from James Clark:
