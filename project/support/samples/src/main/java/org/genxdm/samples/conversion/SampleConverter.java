@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gxml.samples.conversion;
+package org.genxdm.samples.conversion;
 
 import java.io.FileReader;
 import java.io.StringWriter;
