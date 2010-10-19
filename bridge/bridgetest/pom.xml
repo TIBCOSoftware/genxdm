@@ -26,7 +26,12 @@
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bridgetest</artifactId>
-    <version>1.0.0</version>
+    <version>0.2</version>
+    <!-- bridgetest needs to be more or less replaced.  Although the design is
+         good (makes it easy to implement the test for a particular bridge),
+         the execution is haphazard at best, and difficult to comprehend.
+         New work is in progress to establish a consistent, contract-based
+         test suite. -->
     <name>GenXDM Bridge Test Kit</name>
 
     <reporting>
