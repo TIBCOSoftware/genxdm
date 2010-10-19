@@ -26,7 +26,11 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>proc-io</artifactId>
-    <version>1.0.0</version>
+    <version>0.5</version>
+    <!-- barely at an adequate maturity level.  It needs more attention; the
+         possibility that we may revise serialization APIs to better fit into
+         the XQuery Serialization spec makes even 0.5 questionable.  Still ...
+         it *does* work. -->
     <name>GenXDM Input/Output Processor</name>
 
     <reporting>

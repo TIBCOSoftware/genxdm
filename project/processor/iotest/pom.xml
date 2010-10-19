@@ -26,7 +26,10 @@
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>proc-iotest</artifactId>
-    <version>1.0.0</version>
+    <version>0.2</version>
+    <!-- Known incomplete, and even the completed stuff is arguably out of
+         date for the processor that it's exercising.  This needs to be
+         revisited when bridgetest revisions are complete. -->
     <name>GenXDM Input/Output Processor Tests</name>
 
     <reporting>
