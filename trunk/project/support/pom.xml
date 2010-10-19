@@ -25,8 +25,8 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>support</artifactId>
     <packaging>pom</packaging>
-    <version>0.3</version>
-    <!-- version matches main project version; no other reason -->
+    <version>0.2</version>
+    <!-- version set to 0.2; there's nothing here higher than that. -->
     <name>GenXDM Support</name>
 
     <scm>
