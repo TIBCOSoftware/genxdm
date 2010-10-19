@@ -24,7 +24,10 @@
     <groupId>org.genxdm</groupId>
     <artifactId>project</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>0.3</version>
+    <!-- version set to 0.3: although we have less-mature modules incorporated,
+         the overall feeling is that this is *somewhat* in advance of an 0.2
+         version (in particular, the project module/pom itself is fairly stable -->
     
     <name>GenXDM</name>
     <url>http://www.genxdm.org/</url>
