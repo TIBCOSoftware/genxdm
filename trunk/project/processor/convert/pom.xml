@@ -26,7 +26,9 @@
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>proc-convert</artifactId>
-    <version>1.0.0</version>
+    <version>0.8</version>
+    <!-- Not necessarily "mature", but it's so simple that it's hard to imagine
+         significant change unless underlying APIs change -->
     <name>GenXDM Conversion Processor</name>
 
     <reporting>

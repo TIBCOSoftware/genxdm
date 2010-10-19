@@ -26,7 +26,10 @@
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bridge-dom</artifactId>
-    <version>1.0.0</version>
+    <version>0.5</version>
+    <!-- once the most mature of the bridges, and still probably the most-used
+         and most tested in practice, but the API has changed and the changes
+         that have happened here have not always been thoughtful and well-chosen -->
     <name>GenXDM Document Object Model Bridge</name>
 
     <reporting>
