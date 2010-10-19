@@ -21,15 +21,23 @@
     <parent>
         <groupId>org.genxdm</groupId>
         <artifactId>project</artifactId>
-        <version>1.0.0</version>
+        <version>0.3</version>
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>genxdm-api</artifactId>
-    <version>1.0.0</version>
+    <version>0.7</version>
+    <!-- version set to 0.7: while this is mostly solid, there are some
+         significant questions about the mutable API, and we should consider
+         the questions raised about naming of the schema model and about the
+         structure of parse/serialize -->
 
     <name>GenXDM API</name>
-    <description>GenXDM API module</description>
+    <description>The GenXDM API module defines the core interfaces and abstractions
+        for GenXDM bridges and processors.  The untyped immutable API is focused
+        in the 'base' package; the mutable extension in base.mutable.  The
+        typed extension is in the typed package; it depends upon the XML
+        Schema API found in the xs package.</description>
     <reporting>
         <plugins>
             <plugin>
