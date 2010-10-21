@@ -69,10 +69,10 @@ import org.genxdm.processor.w3c.xs.exception.SrcPrefixNotFoundException;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ModelGroup;
-import org.genxdm.xs.constraints.SmIdentityConstraintKind;
-import org.genxdm.xs.constraints.SmNamespaceConstraint;
-import org.genxdm.xs.constraints.SmRestrictedXPath;
-import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.constraints.IdentityConstraintKind;
+import org.genxdm.xs.constraints.NamespaceConstraint;
+import org.genxdm.xs.constraints.RestrictedXPath;
+import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ProcessContentsMode;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
@@ -81,11 +81,11 @@ import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.exceptions.SimpleTypeException;
-import org.genxdm.xs.facets.SmFacetKind;
+import org.genxdm.xs.facets.FacetKind;
 import org.genxdm.xs.resolve.SchemaCatalog;
 import org.genxdm.xs.resolve.CatalogResolver;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
 
 import com.ctc.wstx.stax.WstxInputFactory;
 
@@ -681,7 +681,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	private XMLWildcard<A> anyAttributeTag(final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
 	{
 		ProcessContentsMode processContents = ProcessContentsMode.Strict;
-		SmNamespaceConstraint namespaceConstraint = SmNamespaceConstraint.Any(nameSource);
+		NamespaceConstraint namespaceConstraint = NamespaceConstraint.Any(nameSource);
 
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
@@ -797,7 +797,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	private XMLParticle<A> anyElementTag(final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
 	{
 		ProcessContentsMode processContents = ProcessContentsMode.Strict;
-		SmNamespaceConstraint namespaceConstraint = SmNamespaceConstraint.Any(nameSource);
+		NamespaceConstraint namespaceConstraint = NamespaceConstraint.Any(nameSource);
 
 		BigInteger minOccurs = BigInteger.ONE;
 		BigInteger maxOccurs = BigInteger.ONE;
@@ -921,7 +921,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 	private URI anyURI(final String initialValue) throws SimpleTypeException
 	{
-		final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.ANY_URI);
+		final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.ANY_URI);
 		try
 		{
 			final List<A> value = atomicType.validate(initialValue);
@@ -1364,7 +1364,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					seenDefault = true;
 					if (null == valueConstraint)
 					{
-						valueConstraint = new XMLValueConstraint(SmValueConstraint.Kind.Default, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
+						valueConstraint = new XMLValueConstraint(ValueConstraint.Kind.Default, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
 					}
 					else
 					{
@@ -1375,7 +1375,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				{
 					if (null == valueConstraint)
 					{
-						valueConstraint = new XMLValueConstraint(SmValueConstraint.Kind.Fixed, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
+						valueConstraint = new XMLValueConstraint(ValueConstraint.Kind.Fixed, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
 					}
 					else
 					{
@@ -1626,7 +1626,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					// seenDefault = true;
 					if (null == attribute.m_valueConstraint)
 					{
-						attribute.m_valueConstraint = new XMLValueConstraint(SmValueConstraint.Kind.Default, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
+						attribute.m_valueConstraint = new XMLValueConstraint(ValueConstraint.Kind.Default, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
 					}
 					else
 					{
@@ -1637,7 +1637,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				{
 					if (null == attribute.m_valueConstraint)
 					{
-						attribute.m_valueConstraint = new XMLValueConstraint(SmValueConstraint.Kind.Fixed, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
+						attribute.m_valueConstraint = new XMLValueConstraint(ValueConstraint.Kind.Fixed, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
 					}
 					else
 					{
@@ -1797,7 +1797,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	{
 		PreCondition.assertArgumentNotNull(strval, LN_ID);
 
-		final SmSimpleType<A> idType = bootstrap.getAtomicType(SmNativeType.ID);
+		final SimpleType<A> idType = bootstrap.getAtomicType(NativeType.ID);
 
 		final List<A> value;
 		try
@@ -2850,7 +2850,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				}
 				else
 				{
-					final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.UNTYPED_ATOMIC);
+					final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.UNTYPED_ATOMIC);
 					final DatatypeException cause = new DatatypeException(token, atomicType);
 					throw new SimpleTypeException(strval, atomicType, cause);
 				}
@@ -3207,7 +3207,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					assertRefAbsent(ref, reader.getLocation());
 					if (null == valueConstraint)
 					{
-						valueConstraint = new XMLValueConstraint(SmValueConstraint.Kind.Default, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
+						valueConstraint = new XMLValueConstraint(ValueConstraint.Kind.Default, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
 					}
 					else
 					{
@@ -3219,7 +3219,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					assertRefAbsent(ref, reader.getLocation());
 					if (null == valueConstraint)
 					{
-						valueConstraint = new XMLValueConstraint(SmValueConstraint.Kind.Fixed, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
+						valueConstraint = new XMLValueConstraint(ValueConstraint.Kind.Fixed, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
 					}
 					else
 					{
@@ -3403,7 +3403,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				{
 					if (null == element.m_valueConstraint)
 					{
-						element.m_valueConstraint = new XMLValueConstraint(SmValueConstraint.Kind.Default, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
+						element.m_valueConstraint = new XMLValueConstraint(ValueConstraint.Kind.Default, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
 					}
 					else
 					{
@@ -3414,7 +3414,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				{
 					if (null == element.m_valueConstraint)
 					{
-						element.m_valueConstraint = new XMLValueConstraint(SmValueConstraint.Kind.Fixed, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
+						element.m_valueConstraint = new XMLValueConstraint(ValueConstraint.Kind.Fixed, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
 					}
 					else
 					{
@@ -3537,7 +3537,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					assertRefAbsent(ref, reader.getLocation());
 					if (null == valueConstraint)
 					{
-						valueConstraint = new XMLValueConstraint(SmValueConstraint.Kind.Default, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
+						valueConstraint = new XMLValueConstraint(ValueConstraint.Kind.Default, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
 					}
 					else
 					{
@@ -3549,7 +3549,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					assertRefAbsent(ref, reader.getLocation());
 					if (null == valueConstraint)
 					{
-						valueConstraint = new XMLValueConstraint(SmValueConstraint.Kind.Fixed, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
+						valueConstraint = new XMLValueConstraint(ValueConstraint.Kind.Fixed, reader.getAttributeName(i), reader.getAttributeValue(i), getFrozenLocation(reader.getLocation()));
 					}
 					else
 					{
@@ -4143,9 +4143,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private SmRestrictedXPath fieldTag(final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, XMLFieldException, AbortException
+	private RestrictedXPath fieldTag(final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, XMLFieldException, AbortException
 	{
-		SmRestrictedXPath xpath = null;
+		RestrictedXPath xpath = null;
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
 		{
@@ -4867,7 +4867,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 			module.registerIdentityConstraintName(name, reader.getLocation());
 
-			keyref = cache.registerIdentityConstraint(SmIdentityConstraintKind.KeyRef, name, getFrozenLocation(reader.getLocation()));
+			keyref = cache.registerIdentityConstraint(IdentityConstraintKind.KeyRef, name, getFrozenLocation(reader.getLocation()));
 		}
 		catch (final SchemaException e)
 		{
@@ -5023,7 +5023,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 			module.registerIdentityConstraintName(name, reader.getLocation());
 
-			constraint = cache.registerIdentityConstraint(SmIdentityConstraintKind.Key, name, getFrozenLocation(reader.getLocation()));
+			constraint = cache.registerIdentityConstraint(IdentityConstraintKind.Key, name, getFrozenLocation(reader.getLocation()));
 		}
 		catch (final SchemaException e)
 		{
@@ -5159,7 +5159,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 	private String lang(final String initialValue) throws SimpleTypeException
 	{
-		return validateString(initialValue, SmNativeType.LANGUAGE);
+		return validateString(initialValue, NativeType.LANGUAGE);
 	}
 
 	/**
@@ -5449,7 +5449,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:maxExclusive, xs:maxInclusive, xs:minExclusive, xs:minInclusive
 	 */
-	private XMLMinMaxFacet<A> minmaxTag(final XMLType<A> simpleType, final SmFacetKind kind, final String elementName, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, SmComplexTypeException, AbortException
+	private XMLMinMaxFacet<A> minmaxTag(final XMLType<A> simpleType, final FacetKind kind, final String elementName, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, SmComplexTypeException, AbortException
 	{
 		final XMLMinMaxFacet<A> minmax = new XMLMinMaxFacet<A>(kind, elementName, simpleType, getFrozenLocation(reader.getLocation()));
 
@@ -5572,7 +5572,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 	private String name(final String initialValue) throws SimpleTypeException
 	{
-		final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.NCNAME);
+		final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.NCNAME);
 		try
 		{
 			final List<A> value = atomicType.validate(initialValue);
@@ -5591,7 +5591,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private SmNamespaceConstraint namespaces(final String initialValue, final String targetNamespace) throws SimpleTypeException
+	private NamespaceConstraint namespaces(final String initialValue, final String targetNamespace) throws SimpleTypeException
 	{
 		final String strval = initialValue.trim();
 
@@ -5603,15 +5603,15 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			// it is the same as not having the namespace attribute at all
 			// so the default is ##any.
 			// http://www.w3.org/Bugs/Public/show_bug.cgi?id=4066
-			return SmNamespaceConstraint.Any(nameSource);
+			return NamespaceConstraint.Any(nameSource);
 		}
 		else if (strval.equals("##any"))
 		{
-			return SmNamespaceConstraint.Any(nameSource);
+			return NamespaceConstraint.Any(nameSource);
 		}
 		else if (strval.equals("##other"))
 		{
-			return SmNamespaceConstraint.exclude(targetNamespace, nameSource);
+			return NamespaceConstraint.exclude(targetNamespace, nameSource);
 		}
 		else
 		{
@@ -5638,13 +5638,13 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					throw new SimpleTypeException(strval, null, cause);
 				}
 			}
-			return SmNamespaceConstraint.include(namespaces, nameSource);
+			return NamespaceConstraint.include(namespaces, nameSource);
 		}
 	}
 
 	private BigInteger nonNegativeInteger(final String initialValue) throws SimpleTypeException
 	{
-		final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.NON_NEGATIVE_INTEGER);
+		final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.NON_NEGATIVE_INTEGER);
 		try
 		{
 			final List<A> value = atomicType.validate(initialValue);
@@ -6043,7 +6043,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 	private BigInteger positiveInteger(final String initialValue) throws SimpleTypeException
 	{
-		final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.POSITIVE_INTEGER);
+		final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.POSITIVE_INTEGER);
 		try
 		{
 			final List<A> value = atomicType.validate(initialValue);
@@ -6339,7 +6339,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		final String name = reader.getAttributeValue(null, attributeName);
 		if (null != name)
 		{
-			final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.NCNAME);
+			final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.NCNAME);
 			try
 			{
 				final List<A> value = atomicType.validate(name);
@@ -6705,7 +6705,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 								{
 									try
 									{
-										complexType.simpleType.getMinMaxFacets().add(minmaxTag(complexType.simpleType, SmFacetKind.MaxExclusive, localName, reader, module));
+										complexType.simpleType.getMinMaxFacets().add(minmaxTag(complexType.simpleType, FacetKind.MaxExclusive, localName, reader, module));
 									}
 									catch (final SmComplexTypeException e)
 									{
@@ -6717,7 +6717,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									missingMaxInclusive = checkWxsElementMaxOccursUnity(missingMaxInclusive, LN_RESTRICTION, LN_MAX_INCLUSIVE, reader.getLocation());
 									try
 									{
-										complexType.simpleType.getMinMaxFacets().add(minmaxTag(complexType.simpleType, SmFacetKind.MaxInclusive, localName, reader, module));
+										complexType.simpleType.getMinMaxFacets().add(minmaxTag(complexType.simpleType, FacetKind.MaxInclusive, localName, reader, module));
 									}
 									catch (final SmComplexTypeException e)
 									{
@@ -6729,7 +6729,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									missingMinExclusive = checkWxsElementMaxOccursUnity(missingMinExclusive, LN_RESTRICTION, LN_MIN_EXCLUSIVE, reader.getLocation());
 									try
 									{
-										complexType.simpleType.getMinMaxFacets().add(minmaxTag(complexType.simpleType, SmFacetKind.MinExclusive, localName, reader, module));
+										complexType.simpleType.getMinMaxFacets().add(minmaxTag(complexType.simpleType, FacetKind.MinExclusive, localName, reader, module));
 									}
 									catch (final SmComplexTypeException e)
 									{
@@ -6741,7 +6741,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									missingMinInclusive = checkWxsElementMaxOccursUnity(missingMinInclusive, LN_RESTRICTION, LN_MIN_INCLUSIVE, reader.getLocation());
 									try
 									{
-										complexType.simpleType.getMinMaxFacets().add(minmaxTag(complexType.simpleType, SmFacetKind.MinInclusive, localName, reader, module));
+										complexType.simpleType.getMinMaxFacets().add(minmaxTag(complexType.simpleType, FacetKind.MinInclusive, localName, reader, module));
 									}
 									catch (final SmComplexTypeException e)
 									{
@@ -6981,7 +6981,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 								missingMaxExclusive = checkWxsElementMaxOccursUnity(missingMaxExclusive, LN_RESTRICTION, LN_MAX_EXCLUSIVE, reader.getLocation());
 								try
 								{
-									simpleType.getMinMaxFacets().add(minmaxTag(simpleType, SmFacetKind.MaxExclusive, localName, reader, module));
+									simpleType.getMinMaxFacets().add(minmaxTag(simpleType, FacetKind.MaxExclusive, localName, reader, module));
 								}
 								catch (final SmComplexTypeException e)
 								{
@@ -6994,7 +6994,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 								missingMaxInclusive = checkWxsElementMaxOccursUnity(missingMaxInclusive, LN_RESTRICTION, LN_MAX_INCLUSIVE, reader.getLocation());
 								try
 								{
-									simpleType.getMinMaxFacets().add(minmaxTag(simpleType, SmFacetKind.MaxInclusive, localName, reader, module));
+									simpleType.getMinMaxFacets().add(minmaxTag(simpleType, FacetKind.MaxInclusive, localName, reader, module));
 								}
 								catch (final SmComplexTypeException e)
 								{
@@ -7007,7 +7007,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 								missingMinExclusive = checkWxsElementMaxOccursUnity(missingMinExclusive, LN_RESTRICTION, LN_MIN_EXCLUSIVE, reader.getLocation());
 								try
 								{
-									simpleType.getMinMaxFacets().add(minmaxTag(simpleType, SmFacetKind.MinExclusive, localName, reader, module));
+									simpleType.getMinMaxFacets().add(minmaxTag(simpleType, FacetKind.MinExclusive, localName, reader, module));
 								}
 								catch (final SmComplexTypeException e)
 								{
@@ -7020,7 +7020,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 								missingMinInclusive = checkWxsElementMaxOccursUnity(missingMinInclusive, LN_RESTRICTION, LN_MIN_INCLUSIVE, reader.getLocation());
 								try
 								{
-									simpleType.getMinMaxFacets().add(minmaxTag(simpleType, SmFacetKind.MinInclusive, localName, reader, module));
+									simpleType.getMinMaxFacets().add(minmaxTag(simpleType, FacetKind.MinInclusive, localName, reader, module));
 								}
 								catch (final SmComplexTypeException e)
 								{
@@ -7444,9 +7444,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private SmRestrictedXPath selectorTag(final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, XMLSelectorException, AbortException
+	private RestrictedXPath selectorTag(final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, XMLSelectorException, AbortException
 	{
-		SmRestrictedXPath xpath = null;
+		RestrictedXPath xpath = null;
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
 		{
@@ -7928,7 +7928,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 	private String token(final String initialValue) throws SimpleTypeException
 	{
-		final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.TOKEN);
+		final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.TOKEN);
 		try
 		{
 			final List<A> atoms = atomicType.validate(initialValue);
@@ -8059,7 +8059,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 	private boolean trueOrFalse(final String initialValue) throws SimpleTypeException
 	{
-		final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.BOOLEAN);
+		final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.BOOLEAN);
 		try
 		{
 			final List<A> value = atomicType.validate(initialValue);
@@ -8225,7 +8225,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		{
 			final QName name = requiredNCName(LN_NAME, targetNamespace, reader);
 			module.registerIdentityConstraintName(name, reader.getLocation());
-			unique = cache.registerIdentityConstraint(SmIdentityConstraintKind.Unique, name, getFrozenLocation(reader.getLocation()));
+			unique = cache.registerIdentityConstraint(IdentityConstraintKind.Unique, name, getFrozenLocation(reader.getLocation()));
 		}
 		catch (final SchemaException e)
 		{
@@ -8380,9 +8380,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private String validateString(final String initialValue, final SmNativeType derivedType) throws SimpleTypeException
+	private String validateString(final String initialValue, final NativeType derivedType) throws SimpleTypeException
 	{
-		final SmSimpleType<A> atomicType = bootstrap.getAtomicType(derivedType);
+		final SimpleType<A> atomicType = bootstrap.getAtomicType(derivedType);
 		try
 		{
 			final List<A> value = atomicType.validate(initialValue);
@@ -8508,7 +8508,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return policy;
 	}
 
-	private SmRestrictedXPath xpath(final String strval, final Location location, final QName elementName) throws SmAttributeUseException
+	private RestrictedXPath xpath(final String strval, final Location location, final QName elementName) throws SmAttributeUseException
 	{
 		try
 		{

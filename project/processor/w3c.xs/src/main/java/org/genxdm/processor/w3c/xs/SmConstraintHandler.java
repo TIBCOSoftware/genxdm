@@ -21,17 +21,17 @@ import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.components.SchemaParticle;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaException;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.SimpleType;
 
 public interface SmConstraintHandler<A>
 {
-	void error(SmSimpleType<A> simpleType, SchemaException exception) throws AbortException;
+	void error(SimpleType<A> simpleType, SchemaException exception) throws AbortException;
 
-	void error(SmComplexType<A> complexType, SchemaException exception) throws AbortException;
+	void error(ComplexType<A> complexType, SchemaException exception) throws AbortException;
 
 	void error(AttributeDefinition<A> attribute, SchemaException exception) throws AbortException;
 
@@ -41,7 +41,7 @@ public interface SmConstraintHandler<A>
 
 	void error(AttributeGroupDefinition<A> attributeGroup, SchemaException exception) throws AbortException;
 
-	void error(SmIdentityConstraint<A> constraint, SchemaException exception) throws AbortException;
+	void error(IdentityConstraint<A> constraint, SchemaException exception) throws AbortException;
 
 	void error(NotationDefinition<A> notation, SchemaException exception) throws AbortException;
 

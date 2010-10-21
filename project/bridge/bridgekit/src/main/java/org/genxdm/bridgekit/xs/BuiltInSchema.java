@@ -30,81 +30,81 @@ import org.genxdm.xs.components.ComponentBag;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
-import org.genxdm.xs.constraints.SmAttributeUse;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.constraints.AttributeUse;
+import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
-import org.genxdm.xs.types.SmAtomicType;
-import org.genxdm.xs.types.SmAtomicUrType;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmComplexUrType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmSimpleUrType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.AtomicType;
+import org.genxdm.xs.types.AtomicUrType;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.ComplexUrType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.SimpleUrType;
+import org.genxdm.xs.types.Type;
 
 final class BuiltInSchema<A> implements ComponentBag<A>
 {
-	private final SmAtomicUrType<A> ANY_ATOMIC_TYPE;
-	private final SmSimpleUrType<A> ANY_SIMPLE_TYPE;
-	private final SmComplexUrType<A> ANY_COMPLEX_TYPE;
-	final SmSimpleType<A> ANY_URI;
-	final SmSimpleType<A> BASE64_BINARY;
-	final SmAtomicType<A> BOOLEAN;
-	final SmSimpleType<A> BYTE;
-	final SmSimpleType<A> DATE;
-	final SmSimpleType<A> DATETIME;
-	final SmSimpleType<A> DECIMAL;
-	final SmSimpleType<A> DOUBLE;
-	final SmSimpleType<A> DURATION;
-	final SmSimpleType<A> DURATION_DAYTIME;
-	final SmSimpleType<A> DURATION_YEARMONTH;
-	final SmSimpleType<A> ENTITIES;
-	final SmSimpleType<A> ENTITY;
-	final SmSimpleType<A> FLOAT;
-	final SmSimpleType<A> GDAY;
-	final SmSimpleType<A> GMONTH;
-	final SmSimpleType<A> GMONTHDAY;
-	final SmSimpleType<A> GYEAR;
-	final SmSimpleType<A> GYEARMONTH;
-	final SmSimpleType<A> HEX_BINARY;
-	final SmSimpleType<A> ID;
-	final SmSimpleType<A> IDREF;
-	final SmSimpleType<A> IDREFS;
-	final SmSimpleType<A> INT;
-	final SmSimpleType<A> INTEGER;
-	final SmSimpleType<A> LANGUAGE;
-	final SmSimpleType<A> LONG;
-	private final HashMap<QName, SmComplexType<A>> m_complexTypes = new HashMap<QName, SmComplexType<A>>();
-	private final HashMap<QName, SmSimpleType<A>> m_simpleTypes = new HashMap<QName, SmSimpleType<A>>();
-	final SmSimpleType<A> NAME;
-	final SmSimpleType<A> NCNAME;
-	final SmSimpleType<A> NEGATIVE_INTEGER;
-	final SmSimpleType<A> NMTOKEN;
-	final SmSimpleType<A> NMTOKENS;
-	final SmSimpleType<A> NON_NEGATIVE_INTEGER;
-	final SmSimpleType<A> NON_POSITIVE_INTEGER;
-	final SmSimpleType<A> NORMALIZED_STRING;
-	final SmSimpleType<A> NOTATION;
-	final SmSimpleType<A> POSITIVE_INTEGER;
-	final SmSimpleType<A> QNAME;
-	final SmSimpleType<A> SHORT;
-	final SmSimpleType<A> STRING;
-	final SmSimpleType<A> TIME;
-	final SmSimpleType<A> TOKEN;
-	final SmSimpleType<A> UNSIGNED_BYTE;
-	final SmSimpleType<A> UNSIGNED_INT;
+	private final AtomicUrType<A> ANY_ATOMIC_TYPE;
+	private final SimpleUrType<A> ANY_SIMPLE_TYPE;
+	private final ComplexUrType<A> ANY_COMPLEX_TYPE;
+	final SimpleType<A> ANY_URI;
+	final SimpleType<A> BASE64_BINARY;
+	final AtomicType<A> BOOLEAN;
+	final SimpleType<A> BYTE;
+	final SimpleType<A> DATE;
+	final SimpleType<A> DATETIME;
+	final SimpleType<A> DECIMAL;
+	final SimpleType<A> DOUBLE;
+	final SimpleType<A> DURATION;
+	final SimpleType<A> DURATION_DAYTIME;
+	final SimpleType<A> DURATION_YEARMONTH;
+	final SimpleType<A> ENTITIES;
+	final SimpleType<A> ENTITY;
+	final SimpleType<A> FLOAT;
+	final SimpleType<A> GDAY;
+	final SimpleType<A> GMONTH;
+	final SimpleType<A> GMONTHDAY;
+	final SimpleType<A> GYEAR;
+	final SimpleType<A> GYEARMONTH;
+	final SimpleType<A> HEX_BINARY;
+	final SimpleType<A> ID;
+	final SimpleType<A> IDREF;
+	final SimpleType<A> IDREFS;
+	final SimpleType<A> INT;
+	final SimpleType<A> INTEGER;
+	final SimpleType<A> LANGUAGE;
+	final SimpleType<A> LONG;
+	private final HashMap<QName, ComplexType<A>> m_complexTypes = new HashMap<QName, ComplexType<A>>();
+	private final HashMap<QName, SimpleType<A>> m_simpleTypes = new HashMap<QName, SimpleType<A>>();
+	final SimpleType<A> NAME;
+	final SimpleType<A> NCNAME;
+	final SimpleType<A> NEGATIVE_INTEGER;
+	final SimpleType<A> NMTOKEN;
+	final SimpleType<A> NMTOKENS;
+	final SimpleType<A> NON_NEGATIVE_INTEGER;
+	final SimpleType<A> NON_POSITIVE_INTEGER;
+	final SimpleType<A> NORMALIZED_STRING;
+	final SimpleType<A> NOTATION;
+	final SimpleType<A> POSITIVE_INTEGER;
+	final SimpleType<A> QNAME;
+	final SimpleType<A> SHORT;
+	final SimpleType<A> STRING;
+	final SimpleType<A> TIME;
+	final SimpleType<A> TOKEN;
+	final SimpleType<A> UNSIGNED_BYTE;
+	final SimpleType<A> UNSIGNED_INT;
 
-	final SmSimpleType<A> UNSIGNED_LONG;
-	final SmSimpleType<A> UNSIGNED_SHORT;
+	final SimpleType<A> UNSIGNED_LONG;
+	final SimpleType<A> UNSIGNED_SHORT;
 	final ComplexTypeImpl<A> UNTYPED;
 
-	final SmSimpleType<A> UNTYPED_ATOMIC;
+	final SimpleType<A> UNTYPED_ATOMIC;
 
 	/**
 	 * Constructs the W3C XML Schema native types and atributes.
 	 */
-	public BuiltInSchema(final String W3C_XML_SCHEMA_NS_URI, final SmCacheImpl<A> cache)
+	public BuiltInSchema(final String W3C_XML_SCHEMA_NS_URI, final SchemaCacheImpl<A> cache)
 	{
 		final AtomBridge<A> atomBridge = cache.getAtomBridge();
 		final NameSource nameBridge = atomBridge.getNameBridge();
@@ -113,7 +113,7 @@ final class BuiltInSchema<A> implements ComponentBag<A>
 		ANY_SIMPLE_TYPE = cache.getSimpleUrType();
 		ANY_ATOMIC_TYPE = cache.getAtomicUrType();
 
-		final Map<QName, SmAttributeUse<A>> EMPTY_ATTRIBUTE_USES = Collections.emptyMap();
+		final Map<QName, AttributeUse<A>> EMPTY_ATTRIBUTE_USES = Collections.emptyMap();
 		UNTYPED = new ComplexTypeImpl<A>(name(W3C_XML_SCHEMA_NS_URI, "untyped"), true, false, ScopeExtent.Global, ANY_COMPLEX_TYPE, DerivationMethod.Restriction, EMPTY_ATTRIBUTE_USES, ANY_COMPLEX_TYPE.getContentType(), EnumSet
 				.noneOf(DerivationMethod.class), nameBridge, cache);
 		UNTYPED.setAttributeWildcard(ANY_COMPLEX_TYPE.getAttributeWildcard());
@@ -138,22 +138,22 @@ final class BuiltInSchema<A> implements ComponentBag<A>
 		INT = new IntType<A>(name(W3C_XML_SCHEMA_NS_URI, "int"), LONG, atomBridge);
 		SHORT = new ShortType<A>(name(W3C_XML_SCHEMA_NS_URI, "short"), INT, atomBridge);
 		BYTE = new ByteType<A>(name(W3C_XML_SCHEMA_NS_URI, "byte"), SHORT, atomBridge);
-		NON_POSITIVE_INTEGER = new IntegerDerivedType<A>(SmNativeType.NON_POSITIVE_INTEGER, name(W3C_XML_SCHEMA_NS_URI, "nonPositiveInteger"), INTEGER, atomBridge);
-		NEGATIVE_INTEGER = new IntegerDerivedType<A>(SmNativeType.NEGATIVE_INTEGER, name(W3C_XML_SCHEMA_NS_URI, "negativeInteger"), NON_POSITIVE_INTEGER, atomBridge);
-		NON_NEGATIVE_INTEGER = new IntegerDerivedType<A>(SmNativeType.NON_NEGATIVE_INTEGER, name(W3C_XML_SCHEMA_NS_URI, "nonNegativeInteger"), INTEGER, atomBridge);
-		POSITIVE_INTEGER = new IntegerDerivedType<A>(SmNativeType.POSITIVE_INTEGER, name(W3C_XML_SCHEMA_NS_URI, "positiveInteger"), NON_NEGATIVE_INTEGER, atomBridge);
-		UNSIGNED_LONG = new IntegerDerivedType<A>(SmNativeType.UNSIGNED_LONG, name(W3C_XML_SCHEMA_NS_URI, "unsignedLong"), NON_NEGATIVE_INTEGER, atomBridge);
-		UNSIGNED_INT = new IntegerDerivedType<A>(SmNativeType.UNSIGNED_INT, name(W3C_XML_SCHEMA_NS_URI, "unsignedInt"), UNSIGNED_LONG, atomBridge);
-		UNSIGNED_SHORT = new IntegerDerivedType<A>(SmNativeType.UNSIGNED_SHORT, name(W3C_XML_SCHEMA_NS_URI, "unsignedShort"), UNSIGNED_INT, atomBridge);
-		UNSIGNED_BYTE = new IntegerDerivedType<A>(SmNativeType.UNSIGNED_BYTE, name(W3C_XML_SCHEMA_NS_URI, "unsignedByte"), UNSIGNED_SHORT, atomBridge);
-		DATE = new GregorianType<A>(SmNativeType.DATE, name(W3C_XML_SCHEMA_NS_URI, "date"), ANY_ATOMIC_TYPE, atomBridge);
-		DATETIME = new GregorianType<A>(SmNativeType.DATETIME, name(W3C_XML_SCHEMA_NS_URI, "dateTime"), ANY_ATOMIC_TYPE, atomBridge);
-		TIME = new GregorianType<A>(SmNativeType.TIME, name(W3C_XML_SCHEMA_NS_URI, "time"), ANY_ATOMIC_TYPE, atomBridge);
-		GYEARMONTH = new GregorianType<A>(SmNativeType.GYEARMONTH, name(W3C_XML_SCHEMA_NS_URI, "gYearMonth"), ANY_ATOMIC_TYPE, atomBridge);
-		GYEAR = new GregorianType<A>(SmNativeType.GYEAR, name(W3C_XML_SCHEMA_NS_URI, "gYear"), ANY_ATOMIC_TYPE, atomBridge);
-		GMONTHDAY = new GregorianType<A>(SmNativeType.GMONTHDAY, name(W3C_XML_SCHEMA_NS_URI, "gMonthDay"), ANY_ATOMIC_TYPE, atomBridge);
-		GDAY = new GregorianType<A>(SmNativeType.GDAY, name(W3C_XML_SCHEMA_NS_URI, "gDay"), ANY_ATOMIC_TYPE, atomBridge);
-		GMONTH = new GregorianType<A>(SmNativeType.GMONTH, name(W3C_XML_SCHEMA_NS_URI, "gMonth"), ANY_ATOMIC_TYPE, atomBridge);
+		NON_POSITIVE_INTEGER = new IntegerDerivedType<A>(NativeType.NON_POSITIVE_INTEGER, name(W3C_XML_SCHEMA_NS_URI, "nonPositiveInteger"), INTEGER, atomBridge);
+		NEGATIVE_INTEGER = new IntegerDerivedType<A>(NativeType.NEGATIVE_INTEGER, name(W3C_XML_SCHEMA_NS_URI, "negativeInteger"), NON_POSITIVE_INTEGER, atomBridge);
+		NON_NEGATIVE_INTEGER = new IntegerDerivedType<A>(NativeType.NON_NEGATIVE_INTEGER, name(W3C_XML_SCHEMA_NS_URI, "nonNegativeInteger"), INTEGER, atomBridge);
+		POSITIVE_INTEGER = new IntegerDerivedType<A>(NativeType.POSITIVE_INTEGER, name(W3C_XML_SCHEMA_NS_URI, "positiveInteger"), NON_NEGATIVE_INTEGER, atomBridge);
+		UNSIGNED_LONG = new IntegerDerivedType<A>(NativeType.UNSIGNED_LONG, name(W3C_XML_SCHEMA_NS_URI, "unsignedLong"), NON_NEGATIVE_INTEGER, atomBridge);
+		UNSIGNED_INT = new IntegerDerivedType<A>(NativeType.UNSIGNED_INT, name(W3C_XML_SCHEMA_NS_URI, "unsignedInt"), UNSIGNED_LONG, atomBridge);
+		UNSIGNED_SHORT = new IntegerDerivedType<A>(NativeType.UNSIGNED_SHORT, name(W3C_XML_SCHEMA_NS_URI, "unsignedShort"), UNSIGNED_INT, atomBridge);
+		UNSIGNED_BYTE = new IntegerDerivedType<A>(NativeType.UNSIGNED_BYTE, name(W3C_XML_SCHEMA_NS_URI, "unsignedByte"), UNSIGNED_SHORT, atomBridge);
+		DATE = new GregorianType<A>(NativeType.DATE, name(W3C_XML_SCHEMA_NS_URI, "date"), ANY_ATOMIC_TYPE, atomBridge);
+		DATETIME = new GregorianType<A>(NativeType.DATETIME, name(W3C_XML_SCHEMA_NS_URI, "dateTime"), ANY_ATOMIC_TYPE, atomBridge);
+		TIME = new GregorianType<A>(NativeType.TIME, name(W3C_XML_SCHEMA_NS_URI, "time"), ANY_ATOMIC_TYPE, atomBridge);
+		GYEARMONTH = new GregorianType<A>(NativeType.GYEARMONTH, name(W3C_XML_SCHEMA_NS_URI, "gYearMonth"), ANY_ATOMIC_TYPE, atomBridge);
+		GYEAR = new GregorianType<A>(NativeType.GYEAR, name(W3C_XML_SCHEMA_NS_URI, "gYear"), ANY_ATOMIC_TYPE, atomBridge);
+		GMONTHDAY = new GregorianType<A>(NativeType.GMONTHDAY, name(W3C_XML_SCHEMA_NS_URI, "gMonthDay"), ANY_ATOMIC_TYPE, atomBridge);
+		GDAY = new GregorianType<A>(NativeType.GDAY, name(W3C_XML_SCHEMA_NS_URI, "gDay"), ANY_ATOMIC_TYPE, atomBridge);
+		GMONTH = new GregorianType<A>(NativeType.GMONTH, name(W3C_XML_SCHEMA_NS_URI, "gMonth"), ANY_ATOMIC_TYPE, atomBridge);
 		HEX_BINARY = new HexBinaryType<A>(name(W3C_XML_SCHEMA_NS_URI, "hexBinary"), ANY_ATOMIC_TYPE, atomBridge);
 		BASE64_BINARY = new Base64BinaryType<A>(name(W3C_XML_SCHEMA_NS_URI, "base64Binary"), ANY_ATOMIC_TYPE, atomBridge);
 		QNAME = new QNameType<A>(name(W3C_XML_SCHEMA_NS_URI, "QName"), ANY_ATOMIC_TYPE, atomBridge);
@@ -221,9 +221,9 @@ final class BuiltInSchema<A> implements ComponentBag<A>
 		register(ENTITIES);
 	}
 
-	public SmSimpleType<A> getAtomicType(final QName name)
+	public SimpleType<A> getAtomicType(final QName name)
 	{
-		final SmSimpleType<A> simpleType = getSimpleType(name);
+		final SimpleType<A> simpleType = getSimpleType(name);
 		if (simpleType.isAtomicType())
 		{
 			return simpleType;
@@ -254,12 +254,12 @@ final class BuiltInSchema<A> implements ComponentBag<A>
 		return Collections.emptyList();
 	}
 
-	public SmComplexType<A> getComplexType(final QName name)
+	public ComplexType<A> getComplexType(final QName name)
 	{
 		return m_complexTypes.get(name);
 	}
 
-	public Iterable<SmComplexType<A>> getComplexTypes()
+	public Iterable<ComplexType<A>> getComplexTypes()
 	{
 		return m_complexTypes.values();
 	}
@@ -274,12 +274,12 @@ final class BuiltInSchema<A> implements ComponentBag<A>
 		return Collections.emptyList();
 	}
 
-	public SmIdentityConstraint<A> getIdentityConstraint(final QName name)
+	public IdentityConstraint<A> getIdentityConstraint(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<SmIdentityConstraint<A>> getIdentityConstraints()
+	public Iterable<IdentityConstraint<A>> getIdentityConstraints()
 	{
 		return Collections.emptyList();
 	}
@@ -304,17 +304,17 @@ final class BuiltInSchema<A> implements ComponentBag<A>
 		return Collections.emptyList();
 	}
 
-	public SmSimpleType<A> getSimpleType(final QName name)
+	public SimpleType<A> getSimpleType(final QName name)
 	{
 		return m_simpleTypes.get(name);
 	}
 
-	public Iterable<SmSimpleType<A>> getSimpleTypes()
+	public Iterable<SimpleType<A>> getSimpleTypes()
 	{
 		return m_simpleTypes.values();
 	}
 
-	public SmType<A> getType(final QName name)
+	public Type<A> getType(final QName name)
 	{
 		if (hasSimpleType(name))
 		{
@@ -375,12 +375,12 @@ final class BuiltInSchema<A> implements ComponentBag<A>
 		return hasSimpleType(name) || hasComplexType(name);
 	}
 
-	private void register(final SmComplexType<A> complexType)
+	private void register(final ComplexType<A> complexType)
 	{
 		m_complexTypes.put(complexType.getName(), complexType);
 	}
 
-	private void register(final SmSimpleType<A> simpleType)
+	private void register(final SimpleType<A> simpleType)
 	{
 		m_simpleTypes.put(simpleType.getName(), simpleType);
 	}

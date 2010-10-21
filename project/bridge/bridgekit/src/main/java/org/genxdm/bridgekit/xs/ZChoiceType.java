@@ -17,14 +17,14 @@ package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.enums.KeeneQuantifier;
-import org.genxdm.xs.types.SmChoiceType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmSequenceType;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.xs.types.ChoiceType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.SequenceType;
+import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class ZChoiceType<A> implements SmChoiceType<A>
+final class ZChoiceType<A> implements ChoiceType<A>
 {
-	public static <A> SmSequenceType<A> choice(final SmSequenceType<A> lhs, final SmSequenceType<A> rhs)
+	public static <A> SequenceType<A> choice(final SequenceType<A> lhs, final SequenceType<A> rhs)
 	{
 		// Make an attempt to simplify, but not approximate the type expression by detecting
 		// "none" type subtrees which are the identity element for choice. However we must use
@@ -45,11 +45,11 @@ final class ZChoiceType<A> implements SmChoiceType<A>
 		{
 			return ZMultiplyType.multiply(lhs, KeeneQuantifier.OPTIONAL);
 		}
-		else if (SmSupportImpl.subtype(lhs, rhs))
+		else if (SchemaSupport.subtype(lhs, rhs))
 		{
 			return rhs;
 		}
-		else if (SmSupportImpl.subtype(rhs, lhs))
+		else if (SchemaSupport.subtype(rhs, lhs))
 		{
 			return lhs;
 		}
@@ -59,27 +59,27 @@ final class ZChoiceType<A> implements SmChoiceType<A>
 		}
 	}
 
-	private final SmSequenceType<A> m_lhs;
+	private final SequenceType<A> m_lhs;
 
-	private final SmSequenceType<A> m_rhs;
+	private final SequenceType<A> m_rhs;
 
-	private ZChoiceType(final SmSequenceType<A> lhs, final SmSequenceType<A> rhs)
+	private ZChoiceType(final SequenceType<A> lhs, final SequenceType<A> rhs)
 	{
 		m_lhs = PreCondition.assertArgumentNotNull(lhs);
 		m_rhs = PreCondition.assertArgumentNotNull(rhs);
 	}
 
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public SmSequenceType<A> getLHS()
+	public SequenceType<A> getLHS()
 	{
 		return m_lhs;
 	}
 
-	public SmSequenceType<A> getRHS()
+	public SequenceType<A> getRHS()
 	{
 		return m_rhs;
 	}
@@ -89,7 +89,7 @@ final class ZChoiceType<A> implements SmChoiceType<A>
 		return true;
 	}
 
-	public SmPrimeType<A> prime()
+	public PrimeType<A> prime()
 	{
 		return ZPrimeChoiceType.choice(m_lhs.prime(), m_rhs.prime());
 	}

@@ -18,7 +18,7 @@ package org.genxdm.bridgekit.atoms;
 import java.util.Arrays;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#base64Binary">base64Binary</a>.
@@ -58,9 +58,9 @@ public final class XmlBase64Binary extends XmlAbstractAtom
 		return Base64BinarySupport.encodeBase64(bytes, true);
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.BASE64_BINARY;
+		return NativeType.BASE64_BINARY;
 	}
 
 	@Override

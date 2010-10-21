@@ -19,19 +19,19 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.resolve.LocationInSchema;
-import org.genxdm.xs.types.SmComplexType;
+import org.genxdm.xs.types.ComplexType;
 
 @SuppressWarnings("serial")
 public final class CvcAbstractComplexTypeException extends SmComplexTypeException
 {
-	private final SmComplexType<?> complexType;
+	private final ComplexType<?> complexType;
 
-	public SmComplexType<?> getComplexType()
+	public ComplexType<?> getComplexType()
 	{
 		return complexType;
 	}
 
-	public CvcAbstractComplexTypeException(final QName elementName, final SmComplexType<?> complexType, final LocationInSchema location)
+	public CvcAbstractComplexTypeException(final QName elementName, final ComplexType<?> complexType, final LocationInSchema location)
 	{
 		super(PART_ABSTRACT_FALSE, elementName, location);
 		this.complexType = PreCondition.assertArgumentNotNull(complexType, "complexType");

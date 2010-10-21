@@ -29,13 +29,13 @@ import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
 import org.genxdm.xs.exceptions.DatatypeException;
-import org.genxdm.xs.facets.SmFacet;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmPattern;
+import org.genxdm.xs.facets.Facet;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.Pattern;
 import org.genxdm.xs.resolve.PrefixResolver;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.Type;
 
 abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 {
@@ -84,12 +84,12 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		}
 	}
 
-	public AbstractDurationType(final QName name, final SmType<A> baseType, final AtomBridge<A> atomBridge)
+	public AbstractDurationType(final QName name, final Type<A> baseType, final AtomBridge<A> atomBridge)
 	{
 		super(name, baseType, atomBridge);
 	}
 
-	public final void accept(SmSequenceTypeVisitor<A> visitor)
+	public final void accept(SequenceTypeVisitor<A> visitor)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -107,13 +107,13 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		throw new AssertionError("TODO");
 	}
 
-	public final SmFacet<A> getFacetOfKind(SmFacetKind facetKind)
+	public final Facet<A> getFacetOfKind(FacetKind facetKind)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public final Iterable<SmFacet<A>> getFacets()
+	public final Iterable<Facet<A>> getFacets()
 	{
 		return Collections.emptyList();
 	}
@@ -123,7 +123,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		return Collections.emptySet();
 	}
 
-	public final Iterable<SmPattern> getPatterns()
+	public final Iterable<Pattern> getPatterns()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -145,7 +145,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		return false;
 	}
 
-	public final boolean hasFacetOfKind(final SmFacetKind facetKind)
+	public final boolean hasFacetOfKind(final FacetKind facetKind)
 	{
 		return false;
 	}
@@ -175,7 +175,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		return false;
 	}
 
-	private final A parseDuration(final String srcval, final SmNativeType targetType) throws DatatypeException
+	private final A parseDuration(final String srcval, final NativeType targetType) throws DatatypeException
 	{
 		PreCondition.assertArgumentNotNull(srcval, "srcval");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");

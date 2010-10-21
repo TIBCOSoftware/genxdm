@@ -21,14 +21,14 @@ import java.util.NoSuchElementException;
 import org.genxdm.exceptions.PreCondition;
 
 /**
- * Used internally by {@link SmNativeType} to return ancestors.
+ * Used internally by {@link NativeType} to return ancestors.
  */
-final class UberTypeArgumentOrSelfIterator implements Iterator<SmNativeType>
+final class UberTypeArgumentOrSelfIterator implements Iterator<NativeType>
 {
-	private SmNativeType m_pending;
+	private NativeType m_pending;
 	private final boolean m_promotions;
 
-	public UberTypeArgumentOrSelfIterator(final SmNativeType origin, final boolean promotions)
+	public UberTypeArgumentOrSelfIterator(final NativeType origin, final boolean promotions)
 	{
 		m_pending = PreCondition.assertArgumentNotNull(origin, "origin");
 		m_promotions = promotions;
@@ -39,11 +39,11 @@ final class UberTypeArgumentOrSelfIterator implements Iterator<SmNativeType>
 		return (null != m_pending);
 	}
 
-	public SmNativeType next()
+	public NativeType next()
 	{
 		if (null != m_pending)
 		{
-			final SmNativeType next = m_pending;
+			final NativeType next = m_pending;
 
 			m_pending = computePending(m_pending);
 
@@ -55,7 +55,7 @@ final class UberTypeArgumentOrSelfIterator implements Iterator<SmNativeType>
 		}
 	}
 
-	private SmNativeType computePending(final SmNativeType type)
+	private NativeType computePending(final NativeType type)
 	{
 		if (m_promotions)
 		{

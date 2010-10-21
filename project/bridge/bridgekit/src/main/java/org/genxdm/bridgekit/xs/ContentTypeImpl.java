@@ -16,34 +16,34 @@
 package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.constraints.SmModelGroupUse;
-import org.genxdm.xs.types.SmContentType;
-import org.genxdm.xs.types.SmContentTypeKind;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.constraints.ModelGroupUse;
+import org.genxdm.xs.types.ContentType;
+import org.genxdm.xs.types.ContentTypeKind;
+import org.genxdm.xs.types.SimpleType;
 
-public final class ContentTypeImpl<A> implements SmContentType<A>
+public final class ContentTypeImpl<A> implements ContentType<A>
 {
-	private SmModelGroupUse<A> contentModel;
-	private SmContentTypeKind kind;
-	private SmSimpleType<A> simpleType;
+	private ModelGroupUse<A> contentModel;
+	private ContentTypeKind kind;
+	private SimpleType<A> simpleType;
 
 	public ContentTypeImpl()
 	{
-		this.kind = SmContentTypeKind.Empty;
+		this.kind = ContentTypeKind.Empty;
 		this.simpleType = null;
 		this.contentModel = null;
 	}
 
-	public ContentTypeImpl(final boolean mixed, final SmModelGroupUse<A> contentModel)
+	public ContentTypeImpl(final boolean mixed, final ModelGroupUse<A> contentModel)
 	{
-		this.kind = mixed ? SmContentTypeKind.Mixed : SmContentTypeKind.ElementOnly;
+		this.kind = mixed ? ContentTypeKind.Mixed : ContentTypeKind.ElementOnly;
 		this.simpleType = null;
 		this.contentModel = PreCondition.assertArgumentNotNull(contentModel, "contentModel");
 	}
 
-	public ContentTypeImpl(final SmSimpleType<A> simpleType)
+	public ContentTypeImpl(final SimpleType<A> simpleType)
 	{
-		this.kind = SmContentTypeKind.Simple;
+		this.kind = ContentTypeKind.Simple;
 		this.simpleType = PreCondition.assertArgumentNotNull(simpleType, "simpleType");
 		this.contentModel = null;
 	}
@@ -55,18 +55,18 @@ public final class ContentTypeImpl<A> implements SmContentType<A>
 		destination.contentModel = contentModel;
 	}
 
-	public SmModelGroupUse<A> getContentModel() throws AssertionError
+	public ModelGroupUse<A> getContentModel() throws AssertionError
 	{
 		PreCondition.assertTrue(isMixed() || isElementOnly(), "isMixed() || isElementOnly()");
 		return contentModel;
 	}
 
-	public SmContentTypeKind getKind()
+	public ContentTypeKind getKind()
 	{
 		return PreCondition.assertArgumentNotNull(kind, "kind");
 	}
 
-	public SmSimpleType<A> getSimpleType() throws AssertionError
+	public SimpleType<A> getSimpleType() throws AssertionError
 	{
 		PreCondition.assertTrue(isSimple(), "isSimple()");
 		return simpleType;

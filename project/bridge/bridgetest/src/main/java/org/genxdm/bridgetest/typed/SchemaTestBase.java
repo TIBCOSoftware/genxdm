@@ -35,10 +35,10 @@ import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.exceptions.DatatypeException;
-import org.genxdm.xs.facets.SmFacet;
-import org.genxdm.xs.facets.SmLimit;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.facets.Facet;
+import org.genxdm.xs.facets.Limit;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.SimpleType;
 
 public abstract class SchemaTestBase<N, A> 
     extends GxTestBase<N>
@@ -109,9 +109,9 @@ public abstract class SchemaTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final Map<QName, SmComplexType<A>> complexTypes = new HashMap<QName, SmComplexType<A>>();
+		final Map<QName, ComplexType<A>> complexTypes = new HashMap<QName, ComplexType<A>>();
 		int count = 0;
-		for (final SmComplexType<A> complexType : pcx.getComplexTypes())
+		for (final ComplexType<A> complexType : pcx.getComplexTypes())
 		{
 			complexTypes.put(complexType.getName(), complexType);
 			count++;
@@ -129,10 +129,10 @@ public abstract class SchemaTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final Map<QName, SmSimpleType<A>> simpleTypes = new HashMap<QName, SmSimpleType<A>>();
+		final Map<QName, SimpleType<A>> simpleTypes = new HashMap<QName, SimpleType<A>>();
 		int count = 0;
 		int anons = 0;
-		for (final SmSimpleType<A> simpleType : pcx.getSimpleTypes())
+		for (final SimpleType<A> simpleType : pcx.getSimpleTypes())
 		{
 			simpleTypes.put(simpleType.getName(), simpleType);
 			if (!simpleType.isAnonymous())
@@ -161,7 +161,7 @@ public abstract class SchemaTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final MyIntegerType<A> atomicType = new MyIntegerType<A>(copy("http://www.example.com"), copy("myInteger"), pcx, atomBridge);
-		// final SmAtomicType<A> atomicType = type;
+		// final AtomicType<A> atomicType = type;
 
 		assertEquals(DerivationMethod.Restriction, atomicType.getDerivationMethod());
 		// {name}
@@ -173,13 +173,13 @@ public abstract class SchemaTestBase<N, A>
 //		assertEquals(nameBridge.name(new QName("http://www.example.com", "myInteger")), atomicType.getName());
 		// {facets}
 		assertTrue(atomicType.hasFacets());
-		for (final SmFacet<A> facet : atomicType.getFacets())
+		for (final Facet<A> facet : atomicType.getFacets())
 		{
 			switch (facet.getKind())
 			{
 				case MinInclusive:
 				{
-					final SmLimit<A> minInclusive = (SmLimit<A>)facet;
+					final Limit<A> minInclusive = (Limit<A>)facet;
 					final A limit = minInclusive.getLimit();
 					assertNotNull(limit);
 					assertTrue(atomBridge.getNativeType(limit).isInteger());
@@ -188,7 +188,7 @@ public abstract class SchemaTestBase<N, A>
 				break;
 				case MaxExclusive:
 				{
-					final SmLimit<A> maxExclusive = (SmLimit<A>)facet;
+					final Limit<A> maxExclusive = (Limit<A>)facet;
 					final A limit = maxExclusive.getLimit();
 					assertNotNull(limit);
 					assertTrue(atomBridge.getNativeType(limit).isInteger());
@@ -294,7 +294,7 @@ public abstract class SchemaTestBase<N, A>
 		final NameSource nameBridge = new NameSource();
 
 		final ElementDefinition<A> e = new MyElementDeclaration<A>(nameBridge.empty(), "root", pcx, atomBridge);
-		final SmSimpleType<A> st = new MyIntegerType<A>(copy("http://www.example.com"), copy("myInteger"), pcx, atomBridge);
+		final SimpleType<A> st = new MyIntegerType<A>(copy("http://www.example.com"), copy("myInteger"), pcx, atomBridge);
 
 		pcx.declareElement(e);
 		pcx.defineSimpleType(st);

@@ -39,20 +39,20 @@ import org.genxdm.typed.types.Emulation;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
-import org.genxdm.xs.facets.SmFacet;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmFractionDigits;
-import org.genxdm.xs.types.SmAtomicType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.facets.Facet;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.FractionDigits;
+import org.genxdm.xs.types.AtomicType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 
 public abstract class NativeTypeTestBase<N, A> 
     extends GxTestBase<N>
 {
 	private static final boolean CHECK_SOURCE_TYPE = false;
 
-	private void assertSourceType(final SmNativeType expect, final QName actual)
+	private void assertSourceType(final NativeType expect, final QName actual)
 	{
 		if (CHECK_SOURCE_TYPE)
 		{
@@ -65,14 +65,14 @@ public abstract class NativeTypeTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 		try
 		{
-			atomBridge.compile(lexical, SmNativeType.DURATION_YEARMONTH);
+			atomBridge.compile(lexical, NativeType.DURATION_YEARMONTH);
 			fail();
 		}
 		catch (final GxmlAtomCastException e)
 		{
 			assertEquals(lexical, e.getSourceValue());
-			assertEquals(SmNativeType.UNTYPED_ATOMIC.toQName(), e.getSourceType());
-			assertEquals(SmNativeType.DURATION_YEARMONTH.toQName(), e.getTargetType());
+			assertEquals(NativeType.UNTYPED_ATOMIC.toQName(), e.getSourceType());
+			assertEquals(NativeType.DURATION_YEARMONTH.toQName(), e.getTargetType());
 			assertEquals(new QName("http://www.w3.org/2005/xqt-errors/", "FORG0001"), e.getErrorCode());
 		}
 	}
@@ -90,7 +90,7 @@ public abstract class NativeTypeTestBase<N, A>
 		// Verify that the lexical representation parses to yield the months value and the canonical representation.
 		try
 		{
-			final A atom = atomBridge.compile(lexical, SmNativeType.DURATION_YEARMONTH);
+			final A atom = atomBridge.compile(lexical, NativeType.DURATION_YEARMONTH);
 			assertEquals(months, atomBridge.getDurationTotalMonths(atom));
 			assertEquals(canonical, atomBridge.getC14NForm(atom));
 		}
@@ -119,17 +119,17 @@ public abstract class NativeTypeTestBase<N, A>
 		};
 	}
 
-	private void checkAtomicType(final SmSimpleType<A> atomicType, AtomBridge<A> atomBridge)
+	private void checkAtomicType(final SimpleType<A> atomicType, AtomBridge<A> atomBridge)
 	{
-		// final SmAtomicType<A> prime = atomicType.prime();
+		// final AtomicType<A> prime = atomicType.prime();
 		// assertEquals(prime.getName(), atomicType.getName());
 		// assertFalse(atomicType.isNone());
 		assertEquals(KeeneQuantifier.EXACTLY_ONE, atomicType.quantifier());
-		// assertEquals(SmPrimeTypeKind.ATOM, atomicType.getKind());
+		// assertEquals(PrimeTypeKind.ATOM, atomicType.getKind());
 
 		final NameSource nameBridge = atomBridge.getNameBridge();
 
-		if (atomicType.getName().equals(nameBridge.nativeType(SmNativeType.NOTATION)))
+		if (atomicType.getName().equals(nameBridge.nativeType(NativeType.NOTATION)))
 		{
 			assertTrue(atomicType.toString(), atomicType.isAbstract());
 		}
@@ -142,21 +142,21 @@ public abstract class NativeTypeTestBase<N, A>
 
 		if (atomicType.hasFacets())
 		{
-			final Iterator<SmFacet<A>> facets = atomicType.getFacets().iterator();
+			final Iterator<Facet<A>> facets = atomicType.getFacets().iterator();
 			assertTrue(facets.hasNext());
-			for (final SmFacet<A> facet : atomicType.getFacets())
+			for (final Facet<A> facet : atomicType.getFacets())
 			{
 				facet.getKind();
 			}
 		}
 		else
 		{
-			final Iterator<SmFacet<A>> facets = atomicType.getFacets().iterator();
+			final Iterator<Facet<A>> facets = atomicType.getFacets().iterator();
 			assertFalse(facets.hasNext());
 		}
 	}
 
-	private void checkAtomicValue(final A atom, final SmNativeType nativeType, final AtomBridge<A> atomBridge)
+	private void checkAtomicValue(final A atom, final NativeType nativeType, final AtomBridge<A> atomBridge)
 	{
 		PreCondition.assertArgumentNotNull(atom, "atom");
 		PreCondition.assertTrue(atomBridge.isAtom(atom));
@@ -359,7 +359,7 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			assertEquals(atomBridge.getC14NForm(atom), atomBridge.getString(atomBridge.castAs(atom, SmNativeType.STRING, new CastingContext<A>()
+			assertEquals(atomBridge.getC14NForm(atom), atomBridge.getString(atomBridge.castAs(atom, NativeType.STRING, new CastingContext<A>()
 			{
 
 				public Emulation getEmulation()
@@ -520,7 +520,7 @@ public abstract class NativeTypeTestBase<N, A>
 	    final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		for (final SmNativeType nativeType : SmNativeType.values())
+		for (final NativeType nativeType : NativeType.values())
 		{
 			switch (nativeType)
 			{
@@ -541,20 +541,20 @@ public abstract class NativeTypeTestBase<N, A>
 				break;
 			default:
 			{
-				final SmType<A> type = pcx.getTypeDefinition(nativeType);
+				final Type<A> type = pcx.getTypeDefinition(nativeType);
 				assertNotNull(type);
 				assertTrue(nativeType.name(), type.isAtomicType());
-				final SmSimpleType<A> atomicType = (SmSimpleType<A>)type;
+				final SimpleType<A> atomicType = (SimpleType<A>)type;
 				assertEquals(nativeType.name() + ".getNativeType()", nativeType, atomicType.getNativeType());
 				assertEquals(XMLConstants.W3C_XML_SCHEMA_NS_URI, atomicType.getTargetNamespace().toString());
 				assertEquals(nativeType.name() + ".getLocalName()", nativeType.toQName().getLocalPart(), atomicType.getLocalName().toString());
 				assertTrue(atomicType.isNative());
 				assertFalse(atomicType.isSimpleUrType());
-				final SmType<A> baseType = atomicType.getBaseType();
+				final Type<A> baseType = atomicType.getBaseType();
 				assertNotNull(baseType);
 				assertFalse(atomicType.hasPatterns());
 				assertFalse(atomicType.hasEnumerations());
-				assertFalse(atomicType.derivedFromType(pcx.getTypeDefinition(SmNativeType.NOTATION), EnumSet.of(DerivationMethod.Restriction)));
+				assertFalse(atomicType.derivedFromType(pcx.getTypeDefinition(NativeType.NOTATION), EnumSet.of(DerivationMethod.Restriction)));
 				assertFalse(atomicType.isIDREFS());
 				assertEquals(nativeType.name() + ".getNativeTypeDefinition()", nativeType, atomicType.getNativeTypeDefinition().getNativeType());
 				assertFalse(atomicType.isAnonymous());
@@ -571,8 +571,8 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmSimpleType<A> atomicType = (SmSimpleType<A>)pcx.getTypeDefinition(SmNativeType.ANY_URI);
-		final SmType<A> baseType = atomicType.getBaseType();
+		final SimpleType<A> atomicType = (SimpleType<A>)pcx.getTypeDefinition(NativeType.ANY_URI);
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -589,7 +589,7 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A atom = atomBridge.compile(initial, SmNativeType.ANY_URI);
+			final A atom = atomBridge.compile(initial, NativeType.ANY_URI);
 			assertEquals(mangled, atomBridge.getC14NForm(atom));
 			try
 			{
@@ -602,7 +602,7 @@ public abstract class NativeTypeTestBase<N, A>
 			{
 				fail();
 			}
-			assertNull(atomBridge.createStringDerived(null, SmNativeType.ANY_URI));
+			assertNull(atomBridge.createStringDerived(null, NativeType.ANY_URI));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -611,7 +611,7 @@ public abstract class NativeTypeTestBase<N, A>
 		try
 		{
 			final URI uri = new URI(mangled);
-			checkAtomicValue(atomBridge.createURI(uri), SmNativeType.ANY_URI, atomBridge);
+			checkAtomicValue(atomBridge.createURI(uri), NativeType.ANY_URI, atomBridge);
 		}
 		catch (final URISyntaxException e)
 		{
@@ -624,9 +624,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.BASE64_BINARY);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.BASE64_BINARY);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -646,7 +646,7 @@ public abstract class NativeTypeTestBase<N, A>
 			final String initial = "   SGVsbG8sIFdvcmxkIQ==    ";
 			final String mangled = "SGVsbG8sIFdvcmxkIQ==";
 			assertEquals(mangled, atomBridge.getC14NForm(atom));
-			final byte[] actualBytes = atomBridge.getBase64Binary(atomBridge.compile(initial, SmNativeType.BASE64_BINARY));
+			final byte[] actualBytes = atomBridge.getBase64Binary(atomBridge.compile(initial, NativeType.BASE64_BINARY));
 			assertEquals(expectBytes.length, actualBytes.length);
 			for (int i = 0; i < expectBytes.length; i++)
 			{
@@ -658,7 +658,7 @@ public abstract class NativeTypeTestBase<N, A>
 			fail();
 		}
 
-		checkAtomicValue(atomBridge.createBase64Binary(expectBytes), SmNativeType.BASE64_BINARY, atomBridge);
+		checkAtomicValue(atomBridge.createBase64Binary(expectBytes), NativeType.BASE64_BINARY, atomBridge);
 	}
 
 	public void testXsBoolean()
@@ -666,9 +666,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.BOOLEAN);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.BOOLEAN);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -683,8 +683,8 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			assertEquals(true, atomBridge.getBoolean(atomBridge.compile("true", SmNativeType.BOOLEAN)));
-			assertEquals(false, atomBridge.getBoolean(atomBridge.compile("false", SmNativeType.BOOLEAN)));
+			assertEquals(true, atomBridge.getBoolean(atomBridge.compile("true", NativeType.BOOLEAN)));
+			assertEquals(false, atomBridge.getBoolean(atomBridge.compile("false", NativeType.BOOLEAN)));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -696,9 +696,9 @@ public abstract class NativeTypeTestBase<N, A>
 		assertEquals(true, atomBridge.getBoolean(atomBridge.getBooleanTrue()));
 		assertEquals(false, atomBridge.getBoolean(atomBridge.getBooleanFalse()));
 
-		checkAtomicValue(atomBridge.createBoolean(true), SmNativeType.BOOLEAN, atomBridge);
-		checkAtomicValue(atomBridge.createBoolean(false), SmNativeType.BOOLEAN, atomBridge);
-		checkAtomicValue(atomBridge.getBooleanFalse(), SmNativeType.BOOLEAN, atomBridge);
+		checkAtomicValue(atomBridge.createBoolean(true), NativeType.BOOLEAN, atomBridge);
+		checkAtomicValue(atomBridge.createBoolean(false), NativeType.BOOLEAN, atomBridge);
+		checkAtomicValue(atomBridge.getBooleanFalse(), NativeType.BOOLEAN, atomBridge);
 	}
 
 	public void testXsByte()
@@ -706,9 +706,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.BYTE);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.BYTE);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("short", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -724,7 +724,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final byte byteValue = 123;
 		try
 		{
-			final A atom = atomBridge.compile("123", SmNativeType.BYTE);
+			final A atom = atomBridge.compile("123", NativeType.BYTE);
 			assertEquals(byteValue, atomBridge.getByte(atom));
 			assertEquals(byteValue, atomBridge.getShort(atom));
 			assertEquals(byteValue, atomBridge.getInt(atom));
@@ -738,8 +738,8 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 		try
 		{
-			assertEquals(127, atomBridge.getByte(atomBridge.compile("127", SmNativeType.BYTE)));
-			assertEquals(-128, atomBridge.getByte(atomBridge.compile("-128", SmNativeType.BYTE)));
+			assertEquals(127, atomBridge.getByte(atomBridge.compile("127", NativeType.BYTE)));
+			assertEquals(-128, atomBridge.getByte(atomBridge.compile("-128", NativeType.BYTE)));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -747,7 +747,7 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 		try
 		{
-			atomBridge.compile("128", SmNativeType.BYTE);
+			atomBridge.compile("128", NativeType.BYTE);
 			fail();
 		}
 		catch (final GxmlAtomCastException e)
@@ -756,7 +756,7 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 		try
 		{
-			atomBridge.compile("-129", SmNativeType.BYTE);
+			atomBridge.compile("-129", NativeType.BYTE);
 			fail();
 		}
 		catch (final GxmlAtomCastException e)
@@ -764,7 +764,7 @@ public abstract class NativeTypeTestBase<N, A>
 			// OK
 		}
 
-		checkAtomicValue(atomBridge.createByte(byteValue), SmNativeType.BYTE, atomBridge);
+		checkAtomicValue(atomBridge.createByte(byteValue), NativeType.BYTE, atomBridge);
 	}
 
 	public void testXsDate()
@@ -772,9 +772,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.DATE);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.DATE);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -789,7 +789,7 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A gregorian = atomBridge.compile("2009-10-18-05:00", SmNativeType.DATE);
+			final A gregorian = atomBridge.compile("2009-10-18-05:00", NativeType.DATE);
 			assertEquals(2009, atomBridge.getYear(gregorian));
 			assertEquals(10, atomBridge.getMonth(gregorian));
 			assertEquals(18, atomBridge.getDayOfMonth(gregorian));
@@ -815,7 +815,7 @@ public abstract class NativeTypeTestBase<N, A>
 			assertEquals(-300, atomBridge.getGmtOffset(gregorian));
 		}
 
-		checkAtomicValue(atomBridge.createDate(2009, 10, 18, 0), SmNativeType.DATE, atomBridge);
+		checkAtomicValue(atomBridge.createDate(2009, 10, 18, 0), NativeType.DATE, atomBridge);
 	}
 
 	public void testXsDateTime()
@@ -823,9 +823,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.DATETIME);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.DATETIME);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -840,7 +840,7 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A gregorian = atomBridge.compile("2009-10-18T03:30:59.999-05:00", SmNativeType.DATETIME);
+			final A gregorian = atomBridge.compile("2009-10-18T03:30:59.999-05:00", NativeType.DATETIME);
 			assertEquals(2009, atomBridge.getYear(gregorian));
 			assertEquals(10, atomBridge.getMonth(gregorian));
 			assertEquals(18, atomBridge.getDayOfMonth(gregorian));
@@ -866,10 +866,10 @@ public abstract class NativeTypeTestBase<N, A>
 			assertEquals(-300, atomBridge.getGmtOffset(gregorian));
 		}
 
-		checkAtomicValue(atomBridge.createDateTime(2009, 10, 18, 8, 0, 0, 0, BigDecimal.ZERO, 0), SmNativeType.DATETIME, atomBridge);
+		checkAtomicValue(atomBridge.createDateTime(2009, 10, 18, 8, 0, 0, 0, BigDecimal.ZERO, 0), NativeType.DATETIME, atomBridge);
 		try
 		{
-			atomBridge.compile("2009-10-18T24:00:00.001-05:00", SmNativeType.DATETIME);
+			atomBridge.compile("2009-10-18T24:00:00.001-05:00", NativeType.DATETIME);
 			// TODO: If hours = 24, seconds must be zero.
 			// fail();
 		}
@@ -879,7 +879,7 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 		try
 		{
-			final A gregorian = atomBridge.compile("2009-10-18T24:00:00-05:00", SmNativeType.DATETIME);
+			final A gregorian = atomBridge.compile("2009-10-18T24:00:00-05:00", NativeType.DATETIME);
 			assertEquals(2009, atomBridge.getYear(gregorian));
 			assertEquals(10, atomBridge.getMonth(gregorian));
 			// TODO: Should rollover 24 hrs to next day.
@@ -902,9 +902,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.DURATION_DAYTIME);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.DURATION_DAYTIME);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("duration", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -920,7 +920,7 @@ public abstract class NativeTypeTestBase<N, A>
 		try
 		{
 			final BigDecimal seconds = BigDecimal.ONE;
-			final A atom = atomBridge.compile("PT1S", SmNativeType.DURATION_DAYTIME);
+			final A atom = atomBridge.compile("PT1S", NativeType.DURATION_DAYTIME);
 			assertEquals(seconds, atomBridge.getDurationTotalSeconds(atom));
 		}
 		catch (final GxmlAtomCastException e)
@@ -930,7 +930,7 @@ public abstract class NativeTypeTestBase<N, A>
 		try
 		{
 			final BigDecimal seconds = BigDecimal.valueOf(1004199059);
-			final A atom = atomBridge.compile("PT1004199059S", SmNativeType.DURATION_DAYTIME);
+			final A atom = atomBridge.compile("PT1004199059S", NativeType.DURATION_DAYTIME);
 			assertEquals(seconds, atomBridge.getDurationTotalSeconds(atom));
 			assertEquals("P11622DT16H10M59S", atomBridge.getC14NForm(atom));
 		}
@@ -941,7 +941,7 @@ public abstract class NativeTypeTestBase<N, A>
 		try
 		{
 			final BigDecimal seconds = BigDecimal.valueOf(130);
-			final A atom = atomBridge.compile("PT130S", SmNativeType.DURATION_DAYTIME);
+			final A atom = atomBridge.compile("PT130S", NativeType.DURATION_DAYTIME);
 			assertEquals(seconds, atomBridge.getDurationTotalSeconds(atom));
 			assertEquals("PT2M10S", atomBridge.getC14NForm(atom));
 		}
@@ -950,11 +950,11 @@ public abstract class NativeTypeTestBase<N, A>
 			fail();
 		}
 
-		checkAtomicValue(atomBridge.createDayTimeDuration(BigDecimal.TEN), SmNativeType.DURATION_DAYTIME, atomBridge);
+		checkAtomicValue(atomBridge.createDayTimeDuration(BigDecimal.TEN), NativeType.DURATION_DAYTIME, atomBridge);
 		// We don't want to be accepting an xs:yearMonthDuration.
 		try
 		{
-			atomBridge.compile("P3Y4M", SmNativeType.DURATION_DAYTIME);
+			atomBridge.compile("P3Y4M", NativeType.DURATION_DAYTIME);
 			fail();
 		}
 		catch (final GxmlAtomCastException e)
@@ -965,7 +965,7 @@ public abstract class NativeTypeTestBase<N, A>
 		try
 		{
 			final BigDecimal seconds = BigDecimal.valueOf(295200);
-			final A atom = atomBridge.compile("P3DT10H", SmNativeType.DURATION_DAYTIME);
+			final A atom = atomBridge.compile("P3DT10H", NativeType.DURATION_DAYTIME);
 			assertEquals(seconds, atomBridge.getDurationTotalSeconds(atom));
 			assertEquals("P3DT10H", atomBridge.getC14NForm(atom));
 		}
@@ -975,7 +975,7 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 		try
 		{
-			atomBridge.compile("P3DT10H+08:00", SmNativeType.DURATION_DAYTIME);
+			atomBridge.compile("P3DT10H+08:00", NativeType.DURATION_DAYTIME);
 			fail();
 		}
 		catch (final GxmlAtomCastException e)
@@ -985,7 +985,7 @@ public abstract class NativeTypeTestBase<N, A>
 		// If the 'T' separator is specified then there must be at least one hour, minute or second component.
 		try
 		{
-			atomBridge.compile("P1DT", SmNativeType.DURATION_DAYTIME);
+			atomBridge.compile("P1DT", NativeType.DURATION_DAYTIME);
 			fail();
 		}
 		catch (final GxmlAtomCastException e)
@@ -995,13 +995,13 @@ public abstract class NativeTypeTestBase<N, A>
 		// Standalone test to verify the exception arguments.
 		try
 		{
-			atomBridge.castAs(atomBridge.createInteger(0), SmNativeType.DURATION_DAYTIME, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N));
+			atomBridge.castAs(atomBridge.createInteger(0), NativeType.DURATION_DAYTIME, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N));
 			fail();
 		}
 		catch (final GxmlAtomCastException e)
 		{
-			assertSourceType(SmNativeType.INTEGER, e.getSourceType());
-			assertEquals(SmNativeType.DURATION_DAYTIME.toQName(), e.getTargetType());
+			assertSourceType(NativeType.INTEGER, e.getSourceType());
+			assertEquals(NativeType.DURATION_DAYTIME.toQName(), e.getTargetType());
 		}
 	}
 
@@ -1010,9 +1010,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.DECIMAL);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.DECIMAL);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1022,7 +1022,7 @@ public abstract class NativeTypeTestBase<N, A>
 		assertFalse(atomicType.isIDREF());
 
 		assertFalse(atomicType.hasFacets());
-		final Iterator<SmFacet<A>> facets = atomicType.getFacets().iterator();
+		final Iterator<Facet<A>> facets = atomicType.getFacets().iterator();
 		assertFalse(facets.hasNext());
 
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
@@ -1030,7 +1030,7 @@ public abstract class NativeTypeTestBase<N, A>
 		try
 		{
 			final BigDecimal decval = BigDecimal.valueOf(123);
-			final A atom = atomBridge.compile("123", SmNativeType.DECIMAL);
+			final A atom = atomBridge.compile("123", NativeType.DECIMAL);
 			assertEquals(decval, atomBridge.getDecimal(atom));
 		}
 		catch (final GxmlAtomCastException e)
@@ -1038,7 +1038,7 @@ public abstract class NativeTypeTestBase<N, A>
 			fail();
 		}
 
-		checkAtomicValue(atomBridge.createDecimal(10), SmNativeType.DECIMAL, atomBridge);
+		checkAtomicValue(atomBridge.createDecimal(10), NativeType.DECIMAL, atomBridge);
 	}
 
 	public void testXsDouble()
@@ -1046,9 +1046,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.DOUBLE);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.DOUBLE);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1064,13 +1064,13 @@ public abstract class NativeTypeTestBase<N, A>
 		try
 		{
 			final double dblval = 123;
-			final A atom = atomBridge.compile("123", SmNativeType.DOUBLE);
+			final A atom = atomBridge.compile("123", NativeType.DOUBLE);
 			assertEquals(dblval, atomBridge.getDouble(atom));
-			assertEquals(atomBridge.createString("1.23E2"), atomBridge.castAs(atom, SmNativeType.STRING, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
+			assertEquals(atomBridge.createString("1.23E2"), atomBridge.castAs(atom, NativeType.STRING, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
 			// TODO: Cx and DOM Bridges can't handle this yet because the cast over the SmAtomBridge (deprecated).
-			// assertEquals(atomBridge.createString("123"), atomBridge.castAs(atom, SmNativeType.STRING,
+			// assertEquals(atomBridge.createString("123"), atomBridge.castAs(atom, NativeType.STRING,
 			// castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.MODERN)));
-			// assertEquals(atomBridge.createString("123"), atomBridge.castAs(atom, SmNativeType.STRING,
+			// assertEquals(atomBridge.createString("123"), atomBridge.castAs(atom, NativeType.STRING,
 			// castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.LEGACY)));
 		}
 		catch (final GxmlAtomCastException e)
@@ -1078,7 +1078,7 @@ public abstract class NativeTypeTestBase<N, A>
 			fail();
 		}
 
-		checkAtomicValue(atomBridge.createDouble(123), SmNativeType.DOUBLE, atomBridge);
+		checkAtomicValue(atomBridge.createDouble(123), NativeType.DOUBLE, atomBridge);
 	}
 
 	public void testXsDuration()
@@ -1086,9 +1086,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.DURATION);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.DURATION);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1105,7 +1105,7 @@ public abstract class NativeTypeTestBase<N, A>
 		{
 			final BigDecimal seconds = new BigDecimal("278430.123");
 			final int months = 14;
-			final A atom = atomBridge.compile("P1Y2M3DT5H20M30.123S", SmNativeType.DURATION);
+			final A atom = atomBridge.compile("P1Y2M3DT5H20M30.123S", NativeType.DURATION);
 			assertEquals(seconds, atomBridge.getDurationTotalSeconds(atom));
 			assertEquals(months, atomBridge.getDurationTotalMonths(atom));
 			assertEquals("P1Y2M3DT5H20M30.123S", atomBridge.getC14NForm(atom));
@@ -1115,7 +1115,7 @@ public abstract class NativeTypeTestBase<N, A>
 			fail();
 		}
 
-		checkAtomicValue(atomBridge.createDuration(1, BigDecimal.ONE), SmNativeType.DURATION, atomBridge);
+		checkAtomicValue(atomBridge.createDuration(1, BigDecimal.ONE), NativeType.DURATION, atomBridge);
 	}
 
 	public void testXsENTITY()
@@ -1123,9 +1123,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.ENTITY);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.ENTITY);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("NCName", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1140,13 +1140,13 @@ public abstract class NativeTypeTestBase<N, A>
 
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		checkAtomicValue(atomBridge.createStringDerived(initial, SmNativeType.ENTITY), SmNativeType.ENTITY, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived(initial, NativeType.ENTITY), NativeType.ENTITY, atomBridge);
 		try
 		{
-			final A atom = atomBridge.compile(initial, SmNativeType.ENTITY);
+			final A atom = atomBridge.compile(initial, NativeType.ENTITY);
 			assertEquals(mangled, atomBridge.getString(atom));
-			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, SmNativeType.ENTITY)));
-			assertNull(atomBridge.createStringDerived(null, SmNativeType.ENTITY));
+			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, NativeType.ENTITY)));
+			assertNull(atomBridge.createStringDerived(null, NativeType.ENTITY));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -1159,9 +1159,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.FLOAT);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.FLOAT);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1177,7 +1177,7 @@ public abstract class NativeTypeTestBase<N, A>
 		try
 		{
 			final float fltval = 123;
-			final A atom = atomBridge.compile("123", SmNativeType.FLOAT);
+			final A atom = atomBridge.compile("123", NativeType.FLOAT);
 			assertEquals(fltval, atomBridge.getFloat(atom));
 		}
 		catch (final GxmlAtomCastException e)
@@ -1185,7 +1185,7 @@ public abstract class NativeTypeTestBase<N, A>
 			fail();
 		}
 
-		checkAtomicValue(atomBridge.createFloat(123), SmNativeType.FLOAT, atomBridge);
+		checkAtomicValue(atomBridge.createFloat(123), NativeType.FLOAT, atomBridge);
 	}
 
 	public void testXsgDay()
@@ -1193,9 +1193,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.GDAY);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.GDAY);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1210,7 +1210,7 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A gregorian = atomBridge.compile("---18-05:00", SmNativeType.GDAY);
+			final A gregorian = atomBridge.compile("---18-05:00", NativeType.GDAY);
 			assertEquals(1970, atomBridge.getYear(gregorian));
 			assertEquals(1, atomBridge.getMonth(gregorian));
 			assertEquals(18, atomBridge.getDayOfMonth(gregorian));
@@ -1236,7 +1236,7 @@ public abstract class NativeTypeTestBase<N, A>
 			assertEquals(-300, atomBridge.getGmtOffset(gregorian));
 		}
 
-		checkAtomicValue(atomBridge.createDay(18, 0), SmNativeType.GDAY, atomBridge);
+		checkAtomicValue(atomBridge.createDay(18, 0), NativeType.GDAY, atomBridge);
 	}
 
 	public void testXsgMonth()
@@ -1244,9 +1244,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.GMONTH);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.GMONTH);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1261,7 +1261,7 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A gregorian = atomBridge.compile("--10-05:00", SmNativeType.GMONTH);
+			final A gregorian = atomBridge.compile("--10-05:00", NativeType.GMONTH);
 			assertEquals(1970, atomBridge.getYear(gregorian));
 			assertEquals(10, atomBridge.getMonth(gregorian));
 			assertEquals(1, atomBridge.getDayOfMonth(gregorian));
@@ -1288,7 +1288,7 @@ public abstract class NativeTypeTestBase<N, A>
 			assertEquals(-300, atomBridge.getGmtOffset(gregorian));
 		}
 
-		checkAtomicValue(atomBridge.createMonth(10, 0), SmNativeType.GMONTH, atomBridge);
+		checkAtomicValue(atomBridge.createMonth(10, 0), NativeType.GMONTH, atomBridge);
 	}
 
 	public void testXsgMonthDay()
@@ -1296,9 +1296,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.GMONTHDAY);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.GMONTHDAY);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1313,7 +1313,7 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A gregorian = atomBridge.compile("--10-18-05:00", SmNativeType.GMONTHDAY);
+			final A gregorian = atomBridge.compile("--10-18-05:00", NativeType.GMONTHDAY);
 			assertEquals(1970, atomBridge.getYear(gregorian));
 			assertEquals(10, atomBridge.getMonth(gregorian));
 			assertEquals(18, atomBridge.getDayOfMonth(gregorian));
@@ -1339,7 +1339,7 @@ public abstract class NativeTypeTestBase<N, A>
 			assertEquals(-300, atomBridge.getGmtOffset(gregorian));
 		}
 
-		checkAtomicValue(atomBridge.createMonthDay(10, 18, 0), SmNativeType.GMONTHDAY, atomBridge);
+		checkAtomicValue(atomBridge.createMonthDay(10, 18, 0), NativeType.GMONTHDAY, atomBridge);
 	}
 
 	public void testXsgYear()
@@ -1347,9 +1347,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.GYEAR);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.GYEAR);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1364,7 +1364,7 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A gregorian = atomBridge.compile("2009-05:00", SmNativeType.GYEAR);
+			final A gregorian = atomBridge.compile("2009-05:00", NativeType.GYEAR);
 			assertEquals(2009, atomBridge.getYear(gregorian));
 			assertEquals(1, atomBridge.getMonth(gregorian));
 			assertEquals(1, atomBridge.getDayOfMonth(gregorian));
@@ -1390,10 +1390,10 @@ public abstract class NativeTypeTestBase<N, A>
 			assertEquals(-300, atomBridge.getGmtOffset(gregorian));
 		}
 
-		checkAtomicValue(atomBridge.createYear(2009, 0), SmNativeType.GYEAR, atomBridge);
+		checkAtomicValue(atomBridge.createYear(2009, 0), NativeType.GYEAR, atomBridge);
 		try
 		{
-			atomBridge.compile("02004", SmNativeType.GYEAR);
+			atomBridge.compile("02004", NativeType.GYEAR);
 			// TODO: If year part has more than 4 digits, leading zeros are prohibited.
 			// fail();
 		}
@@ -1408,9 +1408,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.GYEARMONTH);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.GYEARMONTH);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1425,7 +1425,7 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A gregorian = atomBridge.compile("2009-10-05:00", SmNativeType.GYEARMONTH);
+			final A gregorian = atomBridge.compile("2009-10-05:00", NativeType.GYEARMONTH);
 			assertEquals(2009, atomBridge.getYear(gregorian));
 			assertEquals(10, atomBridge.getMonth(gregorian));
 			assertEquals(1, atomBridge.getDayOfMonth(gregorian));
@@ -1451,7 +1451,7 @@ public abstract class NativeTypeTestBase<N, A>
 			assertEquals(-300, atomBridge.getGmtOffset(gregorian));
 		}
 
-		checkAtomicValue(atomBridge.createYearMonth(2009, 10, 0), SmNativeType.GYEARMONTH, atomBridge);
+		checkAtomicValue(atomBridge.createYearMonth(2009, 10, 0), NativeType.GYEARMONTH, atomBridge);
 	}
 
 	public void testXsHexBinary()
@@ -1459,9 +1459,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.HEX_BINARY);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.HEX_BINARY);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1481,7 +1481,7 @@ public abstract class NativeTypeTestBase<N, A>
 			final String initial = "   48656C6C6F2C20576F726C6421    ";
 			final String mangled = "48656C6C6F2C20576F726C6421";
 			assertEquals(mangled, atomBridge.getC14NForm(atom));
-			final byte[] actualBytes = atomBridge.getHexBinary(atomBridge.compile(initial, SmNativeType.HEX_BINARY));
+			final byte[] actualBytes = atomBridge.getHexBinary(atomBridge.compile(initial, NativeType.HEX_BINARY));
 			assertEquals(expectBytes.length, actualBytes.length);
 			for (int i = 0; i < expectBytes.length; i++)
 			{
@@ -1493,7 +1493,7 @@ public abstract class NativeTypeTestBase<N, A>
 			fail();
 		}
 
-		checkAtomicValue(atomBridge.createHexBinary(expectBytes), SmNativeType.HEX_BINARY, atomBridge);
+		checkAtomicValue(atomBridge.createHexBinary(expectBytes), NativeType.HEX_BINARY, atomBridge);
 	}
 
 	public void testXsID()
@@ -1501,9 +1501,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.ID);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.ID);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("NCName", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1518,13 +1518,13 @@ public abstract class NativeTypeTestBase<N, A>
 
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		checkAtomicValue(atomBridge.createStringDerived(initial, SmNativeType.ID), SmNativeType.ID, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived(initial, NativeType.ID), NativeType.ID, atomBridge);
 		try
 		{
-			final A atom = atomBridge.compile(initial, SmNativeType.ID);
+			final A atom = atomBridge.compile(initial, NativeType.ID);
 			assertEquals(mangled, atomBridge.getString(atom));
-			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, SmNativeType.ID)));
-			assertNull(atomBridge.createStringDerived(null, SmNativeType.ID));
+			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, NativeType.ID)));
+			assertNull(atomBridge.createStringDerived(null, NativeType.ID));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -1537,9 +1537,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.IDREF);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.IDREF);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("NCName", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1554,13 +1554,13 @@ public abstract class NativeTypeTestBase<N, A>
 
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		checkAtomicValue(atomBridge.createStringDerived(initial, SmNativeType.IDREF), SmNativeType.IDREF, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived(initial, NativeType.IDREF), NativeType.IDREF, atomBridge);
 		try
 		{
-			final A atom = atomBridge.compile(initial, SmNativeType.IDREF);
+			final A atom = atomBridge.compile(initial, NativeType.IDREF);
 			assertEquals(mangled, atomBridge.getString(atom));
-			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, SmNativeType.IDREF)));
-			assertNull(atomBridge.createStringDerived(null, SmNativeType.IDREF));
+			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, NativeType.IDREF)));
+			assertNull(atomBridge.createStringDerived(null, NativeType.IDREF));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -1573,9 +1573,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.INT);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.INT);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("long", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1591,7 +1591,7 @@ public abstract class NativeTypeTestBase<N, A>
 		try
 		{
 			final int intValue = 123;
-			final A atom = atomBridge.compile("123", SmNativeType.INT);
+			final A atom = atomBridge.compile("123", NativeType.INT);
 			assertEquals(intValue, atomBridge.getInt(atom));
 			assertEquals(intValue, atomBridge.getLong(atom));
 			assertEquals(BigInteger.valueOf(intValue), atomBridge.getInteger(atom));
@@ -1602,7 +1602,7 @@ public abstract class NativeTypeTestBase<N, A>
 			fail();
 		}
 
-		checkAtomicValue(atomBridge.createInt(123), SmNativeType.INT, atomBridge);
+		checkAtomicValue(atomBridge.createInt(123), NativeType.INT, atomBridge);
 	}
 
 	public void testXsInteger()
@@ -1610,9 +1610,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.INTEGER);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.INTEGER);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("decimal", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1625,11 +1625,11 @@ public abstract class NativeTypeTestBase<N, A>
 		 * fractionDigits with value zero.
 		 */
 		assertTrue(atomicType.hasFacets());
-		final Iterator<SmFacet<A>> facets = atomicType.getFacets().iterator();
+		final Iterator<Facet<A>> facets = atomicType.getFacets().iterator();
 		assertTrue(facets.hasNext());
-		final SmFacet<A> facet = facets.next();
-		assertEquals(SmFacetKind.FractionDigits, facet.getKind());
-		final SmFractionDigits<A> fractionDigits = (SmFractionDigits<A>)facet;
+		final Facet<A> facet = facets.next();
+		assertEquals(FacetKind.FractionDigits, facet.getKind());
+		final FractionDigits<A> fractionDigits = (FractionDigits<A>)facet;
 		assertEquals(0, fractionDigits.getFractionDigits());
 		assertFalse(facets.hasNext());
 
@@ -1638,32 +1638,32 @@ public abstract class NativeTypeTestBase<N, A>
 		try
 		{
 			final BigInteger ival = BigInteger.valueOf(123);
-			final A atom = atomBridge.compile("123", SmNativeType.INTEGER);
+			final A atom = atomBridge.compile("123", NativeType.INTEGER);
 			assertEquals(ival, atomBridge.getInteger(atom));
 			assertEquals(new BigDecimal(ival), atomBridge.getDecimal(atom));
-			assertEquals(atomBridge.createString("123"), atomBridge.castAs(atom, SmNativeType.STRING, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
-			assertEquals(atomBridge.createInteger(BigInteger.valueOf(123)), atomBridge.castAs(atom, SmNativeType.INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING,
+			assertEquals(atomBridge.createString("123"), atomBridge.castAs(atom, NativeType.STRING, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
+			assertEquals(atomBridge.createInteger(BigInteger.valueOf(123)), atomBridge.castAs(atom, NativeType.INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING,
 					Emulation.C14N)));
-			assertEquals(atomBridge.createInteger(123), atomBridge.castAs(atom, SmNativeType.INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
-			assertEquals(atomBridge.createLong(123), atomBridge.castAs(atom, SmNativeType.LONG, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
-			assertEquals(atomBridge.createInt(123), atomBridge.castAs(atom, SmNativeType.INT, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
-			assertEquals(atomBridge.createShort((short)123), atomBridge.castAs(atom, SmNativeType.SHORT, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
-			assertEquals(atomBridge.createByte((byte)123), atomBridge.castAs(atom, SmNativeType.BYTE, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
-			assertEquals(atomBridge.createIntegerDerived(BigInteger.valueOf(-123), SmNativeType.NON_POSITIVE_INTEGER), atomBridge.castAs(atomBridge.createInteger(-123),
-					SmNativeType.NON_POSITIVE_INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
-			assertEquals(atomBridge.createIntegerDerived(BigInteger.valueOf(-123), SmNativeType.NEGATIVE_INTEGER), atomBridge.castAs(atomBridge.createInteger(-123),
-					SmNativeType.NEGATIVE_INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
-			assertEquals(atomBridge.createIntegerDerived(BigInteger.valueOf(123), SmNativeType.NON_NEGATIVE_INTEGER), atomBridge.castAs(atomBridge.createInteger(123),
-					SmNativeType.NON_NEGATIVE_INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
-			assertEquals(atomBridge.createIntegerDerived(BigInteger.valueOf(123), SmNativeType.POSITIVE_INTEGER), atomBridge.castAs(atomBridge.createInteger(123),
-					SmNativeType.POSITIVE_INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
-			assertEquals(atomBridge.createIntegerDerived(BigInteger.valueOf(123), SmNativeType.UNSIGNED_LONG), atomBridge.castAs(atomBridge.createInteger(123),
-					SmNativeType.UNSIGNED_LONG, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
-			assertEquals(atomBridge.createIntegerDerived(123, SmNativeType.UNSIGNED_INT), atomBridge.castAs(atomBridge.createInteger(123), SmNativeType.UNSIGNED_INT,
+			assertEquals(atomBridge.createInteger(123), atomBridge.castAs(atom, NativeType.INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
+			assertEquals(atomBridge.createLong(123), atomBridge.castAs(atom, NativeType.LONG, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
+			assertEquals(atomBridge.createInt(123), atomBridge.castAs(atom, NativeType.INT, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
+			assertEquals(atomBridge.createShort((short)123), atomBridge.castAs(atom, NativeType.SHORT, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
+			assertEquals(atomBridge.createByte((byte)123), atomBridge.castAs(atom, NativeType.BYTE, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
+			assertEquals(atomBridge.createIntegerDerived(BigInteger.valueOf(-123), NativeType.NON_POSITIVE_INTEGER), atomBridge.castAs(atomBridge.createInteger(-123),
+					NativeType.NON_POSITIVE_INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
+			assertEquals(atomBridge.createIntegerDerived(BigInteger.valueOf(-123), NativeType.NEGATIVE_INTEGER), atomBridge.castAs(atomBridge.createInteger(-123),
+					NativeType.NEGATIVE_INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
+			assertEquals(atomBridge.createIntegerDerived(BigInteger.valueOf(123), NativeType.NON_NEGATIVE_INTEGER), atomBridge.castAs(atomBridge.createInteger(123),
+					NativeType.NON_NEGATIVE_INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
+			assertEquals(atomBridge.createIntegerDerived(BigInteger.valueOf(123), NativeType.POSITIVE_INTEGER), atomBridge.castAs(atomBridge.createInteger(123),
+					NativeType.POSITIVE_INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
+			assertEquals(atomBridge.createIntegerDerived(BigInteger.valueOf(123), NativeType.UNSIGNED_LONG), atomBridge.castAs(atomBridge.createInteger(123),
+					NativeType.UNSIGNED_LONG, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
+			assertEquals(atomBridge.createIntegerDerived(123, NativeType.UNSIGNED_INT), atomBridge.castAs(atomBridge.createInteger(123), NativeType.UNSIGNED_INT,
 					castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
-			assertEquals(atomBridge.createIntegerDerived(123, SmNativeType.UNSIGNED_SHORT), atomBridge.castAs(atomBridge.createInteger(123), SmNativeType.UNSIGNED_SHORT,
+			assertEquals(atomBridge.createIntegerDerived(123, NativeType.UNSIGNED_SHORT), atomBridge.castAs(atomBridge.createInteger(123), NativeType.UNSIGNED_SHORT,
 					castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
-			assertEquals(atomBridge.createIntegerDerived(123, SmNativeType.UNSIGNED_BYTE), atomBridge.castAs(atomBridge.createInteger(123), SmNativeType.UNSIGNED_BYTE,
+			assertEquals(atomBridge.createIntegerDerived(123, NativeType.UNSIGNED_BYTE), atomBridge.castAs(atomBridge.createInteger(123), NativeType.UNSIGNED_BYTE,
 					castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
 		}
 		catch (final GxmlAtomCastException e)
@@ -1675,16 +1675,16 @@ public abstract class NativeTypeTestBase<N, A>
 		// Standalone test to verify the exception arguments.
 		try
 		{
-			atomBridge.castAs(atomBridge.createInteger(0), SmNativeType.LANGUAGE, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N));
+			atomBridge.castAs(atomBridge.createInteger(0), NativeType.LANGUAGE, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N));
 			fail();
 		}
 		catch (final GxmlAtomCastException e)
 		{
-			assertSourceType(SmNativeType.INTEGER, e.getSourceType());
-			assertEquals(SmNativeType.LANGUAGE.toQName(), e.getTargetType());
+			assertSourceType(NativeType.INTEGER, e.getSourceType());
+			assertEquals(NativeType.LANGUAGE.toQName(), e.getTargetType());
 		}
 
-		checkAtomicValue(atomBridge.createInteger(BigInteger.TEN), SmNativeType.INTEGER, atomBridge);
+		checkAtomicValue(atomBridge.createInteger(BigInteger.TEN), NativeType.INTEGER, atomBridge);
 	}
 
 	public void testXsLanguage()
@@ -1692,9 +1692,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.LANGUAGE);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.LANGUAGE);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("token", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1709,13 +1709,13 @@ public abstract class NativeTypeTestBase<N, A>
 
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		checkAtomicValue(atomBridge.createStringDerived(initial, SmNativeType.LANGUAGE), SmNativeType.LANGUAGE, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived(initial, NativeType.LANGUAGE), NativeType.LANGUAGE, atomBridge);
 		try
 		{
-			final A atom = atomBridge.compile(initial, SmNativeType.LANGUAGE);
+			final A atom = atomBridge.compile(initial, NativeType.LANGUAGE);
 			assertEquals(mangled, atomBridge.getString(atom));
-			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, SmNativeType.LANGUAGE)));
-			assertNull(atomBridge.createStringDerived(null, SmNativeType.LANGUAGE));
+			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, NativeType.LANGUAGE)));
+			assertNull(atomBridge.createStringDerived(null, NativeType.LANGUAGE));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -1728,9 +1728,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.LONG);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.LONG);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("integer", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1746,7 +1746,7 @@ public abstract class NativeTypeTestBase<N, A>
 		try
 		{
 			final long longValue = 123;
-			final A atom = atomBridge.compile("123", SmNativeType.LONG);
+			final A atom = atomBridge.compile("123", NativeType.LONG);
 			assertEquals(longValue, atomBridge.getLong(atom));
 			assertEquals(BigInteger.valueOf(longValue), atomBridge.getInteger(atom));
 			assertEquals(BigDecimal.valueOf(longValue), atomBridge.getDecimal(atom));
@@ -1756,7 +1756,7 @@ public abstract class NativeTypeTestBase<N, A>
 			fail();
 		}
 
-		checkAtomicValue(atomBridge.createLong(123), SmNativeType.LONG, atomBridge);
+		checkAtomicValue(atomBridge.createLong(123), NativeType.LONG, atomBridge);
 	}
 
 	public void testXsName()
@@ -1764,9 +1764,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.NAME);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.NAME);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("token", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1781,13 +1781,13 @@ public abstract class NativeTypeTestBase<N, A>
 
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		checkAtomicValue(atomBridge.createStringDerived(initial, SmNativeType.NAME), SmNativeType.NAME, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived(initial, NativeType.NAME), NativeType.NAME, atomBridge);
 		try
 		{
-			final A atom = atomBridge.compile(initial, SmNativeType.NAME);
+			final A atom = atomBridge.compile(initial, NativeType.NAME);
 			assertEquals(mangled, atomBridge.getString(atom));
-			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, SmNativeType.NAME)));
-			assertNull(atomBridge.createStringDerived(null, SmNativeType.NAME));
+			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, NativeType.NAME)));
+			assertNull(atomBridge.createStringDerived(null, NativeType.NAME));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -1800,9 +1800,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.NCNAME);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.NCNAME);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("Name", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1817,13 +1817,13 @@ public abstract class NativeTypeTestBase<N, A>
 
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		checkAtomicValue(atomBridge.createStringDerived(initial, SmNativeType.NCNAME), SmNativeType.NCNAME, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived(initial, NativeType.NCNAME), NativeType.NCNAME, atomBridge);
 		try
 		{
-			final A atom = atomBridge.compile(initial, SmNativeType.NCNAME);
+			final A atom = atomBridge.compile(initial, NativeType.NCNAME);
 			assertEquals(mangled, atomBridge.getString(atom));
-			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, SmNativeType.NCNAME)));
-			assertNull(atomBridge.createStringDerived(null, SmNativeType.NCNAME));
+			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, NativeType.NCNAME)));
+			assertNull(atomBridge.createStringDerived(null, NativeType.NCNAME));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -1836,9 +1836,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.NEGATIVE_INTEGER);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.NEGATIVE_INTEGER);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("nonPositiveInteger", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1853,15 +1853,15 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A atom = atomBridge.compile("-123", SmNativeType.NEGATIVE_INTEGER);
+			final A atom = atomBridge.compile("-123", NativeType.NEGATIVE_INTEGER);
 			assertEquals(BigInteger.valueOf(-123), atomBridge.getInteger(atom));
-			assertEquals(atomBridge.createIntegerDerived(-123, SmNativeType.INTEGER).getClass(), atomBridge.castAs(
-					atomBridge.createIntegerDerived(-123, SmNativeType.NEGATIVE_INTEGER), SmNativeType.INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N))
+			assertEquals(atomBridge.createIntegerDerived(-123, NativeType.INTEGER).getClass(), atomBridge.castAs(
+					atomBridge.createIntegerDerived(-123, NativeType.NEGATIVE_INTEGER), NativeType.INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N))
 					.getClass());
-			assertEquals(atomBridge.createIntegerDerived(-123, SmNativeType.INTEGER), atomBridge.castAs(atomBridge.createIntegerDerived(-123, SmNativeType.NEGATIVE_INTEGER),
-					SmNativeType.INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
-			assertEquals(atomBridge.createIntegerDerived(-123, SmNativeType.NON_POSITIVE_INTEGER), atomBridge.castAs(atomBridge.createIntegerDerived(-123,
-					SmNativeType.NEGATIVE_INTEGER), SmNativeType.NON_POSITIVE_INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
+			assertEquals(atomBridge.createIntegerDerived(-123, NativeType.INTEGER), atomBridge.castAs(atomBridge.createIntegerDerived(-123, NativeType.NEGATIVE_INTEGER),
+					NativeType.INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
+			assertEquals(atomBridge.createIntegerDerived(-123, NativeType.NON_POSITIVE_INTEGER), atomBridge.castAs(atomBridge.createIntegerDerived(-123,
+					NativeType.NEGATIVE_INTEGER), NativeType.NON_POSITIVE_INTEGER, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -1870,15 +1870,15 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 
 		{
-			final A atom = atomBridge.createIntegerDerived(-123, SmNativeType.NEGATIVE_INTEGER);
+			final A atom = atomBridge.createIntegerDerived(-123, NativeType.NEGATIVE_INTEGER);
 			assertEquals(BigInteger.valueOf(-123), atomBridge.getInteger(atom));
 		}
 		{
-			final A atom = atomBridge.createIntegerDerived(BigInteger.valueOf(-123), SmNativeType.NEGATIVE_INTEGER);
+			final A atom = atomBridge.createIntegerDerived(BigInteger.valueOf(-123), NativeType.NEGATIVE_INTEGER);
 			assertEquals(BigInteger.valueOf(-123), atomBridge.getInteger(atom));
 		}
 
-		checkAtomicValue(atomBridge.createIntegerDerived(BigInteger.valueOf(-123), SmNativeType.NEGATIVE_INTEGER), SmNativeType.NEGATIVE_INTEGER, atomBridge);
+		checkAtomicValue(atomBridge.createIntegerDerived(BigInteger.valueOf(-123), NativeType.NEGATIVE_INTEGER), NativeType.NEGATIVE_INTEGER, atomBridge);
 	}
 
 	public void testXsNMTOKEN()
@@ -1886,9 +1886,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.NMTOKEN);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.NMTOKEN);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("token", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1903,13 +1903,13 @@ public abstract class NativeTypeTestBase<N, A>
 
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		checkAtomicValue(atomBridge.createStringDerived(initial, SmNativeType.NMTOKEN), SmNativeType.NMTOKEN, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived(initial, NativeType.NMTOKEN), NativeType.NMTOKEN, atomBridge);
 		try
 		{
-			final A atom = atomBridge.compile(initial, SmNativeType.NMTOKEN);
+			final A atom = atomBridge.compile(initial, NativeType.NMTOKEN);
 			assertEquals(mangled, atomBridge.getString(atom));
-			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, SmNativeType.NMTOKEN)));
-			assertNull(atomBridge.createStringDerived(null, SmNativeType.NMTOKEN));
+			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, NativeType.NMTOKEN)));
+			assertNull(atomBridge.createStringDerived(null, NativeType.NMTOKEN));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -1922,9 +1922,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.NON_NEGATIVE_INTEGER);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.NON_NEGATIVE_INTEGER);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("integer", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1939,7 +1939,7 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A atom = atomBridge.compile("123", SmNativeType.NON_NEGATIVE_INTEGER);
+			final A atom = atomBridge.compile("123", NativeType.NON_NEGATIVE_INTEGER);
 			assertEquals(BigInteger.valueOf(123), atomBridge.getInteger(atom));
 		}
 		catch (final GxmlAtomCastException e)
@@ -1948,15 +1948,15 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 
 		{
-			final A atom = atomBridge.createIntegerDerived(123, SmNativeType.NON_NEGATIVE_INTEGER);
+			final A atom = atomBridge.createIntegerDerived(123, NativeType.NON_NEGATIVE_INTEGER);
 			assertEquals(BigInteger.valueOf(123), atomBridge.getInteger(atom));
 		}
 		{
-			final A atom = atomBridge.createIntegerDerived(BigInteger.valueOf(123), SmNativeType.NON_NEGATIVE_INTEGER);
+			final A atom = atomBridge.createIntegerDerived(BigInteger.valueOf(123), NativeType.NON_NEGATIVE_INTEGER);
 			assertEquals(BigInteger.valueOf(123), atomBridge.getInteger(atom));
 		}
 
-		checkAtomicValue(atomBridge.createIntegerDerived(BigInteger.valueOf(123), SmNativeType.NON_NEGATIVE_INTEGER), SmNativeType.NON_NEGATIVE_INTEGER, atomBridge);
+		checkAtomicValue(atomBridge.createIntegerDerived(BigInteger.valueOf(123), NativeType.NON_NEGATIVE_INTEGER), NativeType.NON_NEGATIVE_INTEGER, atomBridge);
 	}
 
 	public void testXsNonPositiveInteger()
@@ -1964,9 +1964,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.NON_POSITIVE_INTEGER);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.NON_POSITIVE_INTEGER);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("integer", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -1981,7 +1981,7 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A atom = atomBridge.compile("-123", SmNativeType.NON_POSITIVE_INTEGER);
+			final A atom = atomBridge.compile("-123", NativeType.NON_POSITIVE_INTEGER);
 			assertEquals(BigInteger.valueOf(-123), atomBridge.getInteger(atom));
 		}
 		catch (final GxmlAtomCastException e)
@@ -1990,15 +1990,15 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 
 		{
-			final A atom = atomBridge.createIntegerDerived(BigInteger.valueOf(-123), SmNativeType.NON_POSITIVE_INTEGER);
+			final A atom = atomBridge.createIntegerDerived(BigInteger.valueOf(-123), NativeType.NON_POSITIVE_INTEGER);
 			assertEquals(BigInteger.valueOf(-123), atomBridge.getInteger(atom));
 		}
 		{
-			final A atom = atomBridge.createIntegerDerived(BigInteger.valueOf(-123), SmNativeType.NON_POSITIVE_INTEGER);
+			final A atom = atomBridge.createIntegerDerived(BigInteger.valueOf(-123), NativeType.NON_POSITIVE_INTEGER);
 			assertEquals(BigInteger.valueOf(-123), atomBridge.getInteger(atom));
 		}
 
-		checkAtomicValue(atomBridge.createIntegerDerived(BigInteger.valueOf(-123), SmNativeType.NON_POSITIVE_INTEGER), SmNativeType.NON_POSITIVE_INTEGER, atomBridge);
+		checkAtomicValue(atomBridge.createIntegerDerived(BigInteger.valueOf(-123), NativeType.NON_POSITIVE_INTEGER), NativeType.NON_POSITIVE_INTEGER, atomBridge);
 	}
 
 	public void testXsNormalizedString()
@@ -2006,9 +2006,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.NORMALIZED_STRING);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.NORMALIZED_STRING);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("string", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.REPLACE, atomicType.getWhiteSpacePolicy());
@@ -2026,25 +2026,25 @@ public abstract class NativeTypeTestBase<N, A>
 		try
 		{
 			final String strval = mangled;
-			final A atom = atomBridge.compile(initial, SmNativeType.NORMALIZED_STRING);
+			final A atom = atomBridge.compile(initial, NativeType.NORMALIZED_STRING);
 			assertEquals(strval, atomBridge.getString(atom));
-			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, SmNativeType.NORMALIZED_STRING)));
-			assertNull(atomBridge.createStringDerived(null, SmNativeType.NORMALIZED_STRING));
+			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, NativeType.NORMALIZED_STRING)));
+			assertNull(atomBridge.createStringDerived(null, NativeType.NORMALIZED_STRING));
 		}
 		catch (final GxmlAtomCastException e)
 		{
 			fail();
 		}
-		checkAtomicValue(atomBridge.createStringDerived(initial, SmNativeType.NORMALIZED_STRING), SmNativeType.NORMALIZED_STRING, atomBridge);
-		checkAtomicValue(atomBridge.createStringDerived("123", SmNativeType.NORMALIZED_STRING), SmNativeType.NORMALIZED_STRING, atomBridge);
-		checkAtomicValue(atomBridge.createStringDerived("", SmNativeType.NORMALIZED_STRING), SmNativeType.NORMALIZED_STRING, atomBridge);
-		checkAtomicValue(atomBridge.createStringDerived("  ", SmNativeType.NORMALIZED_STRING), SmNativeType.NORMALIZED_STRING, atomBridge);
-		checkAtomicValue(atomBridge.createStringDerived("\t\r\n", SmNativeType.NORMALIZED_STRING), SmNativeType.NORMALIZED_STRING, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived(initial, NativeType.NORMALIZED_STRING), NativeType.NORMALIZED_STRING, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived("123", NativeType.NORMALIZED_STRING), NativeType.NORMALIZED_STRING, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived("", NativeType.NORMALIZED_STRING), NativeType.NORMALIZED_STRING, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived("  ", NativeType.NORMALIZED_STRING), NativeType.NORMALIZED_STRING, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived("\t\r\n", NativeType.NORMALIZED_STRING), NativeType.NORMALIZED_STRING, atomBridge);
 
 		try
 		{
-			final A atom = atomBridge.compile(Long.toString(Long.MAX_VALUE), SmNativeType.LONG);
-			atomBridge.castAs(atom, SmNativeType.NORMALIZED_STRING, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N));
+			final A atom = atomBridge.compile(Long.toString(Long.MAX_VALUE), NativeType.LONG);
+			atomBridge.castAs(atom, NativeType.NORMALIZED_STRING, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -2057,9 +2057,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.NOTATION);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.NOTATION);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -2080,11 +2080,11 @@ public abstract class NativeTypeTestBase<N, A>
 			assertEquals("p", name.getPrefix());
 		}
 
-		checkAtomicValue(atomBridge.createQName("http://www.example.com", "foo", "p"), SmNativeType.QNAME, atomBridge);
+		checkAtomicValue(atomBridge.createQName("http://www.example.com", "foo", "p"), NativeType.QNAME, atomBridge);
 		try
 		{
 			@SuppressWarnings("unused")
-			final A atom = atomBridge.compile("p:foo", SmNativeType.NOTATION);
+			final A atom = atomBridge.compile("p:foo", NativeType.NOTATION);
 			// fail();
 		}
 		catch (final GxmlAtomCastException e)
@@ -2098,9 +2098,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.POSITIVE_INTEGER);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.POSITIVE_INTEGER);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("nonNegativeInteger", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -2115,7 +2115,7 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A atom = atomBridge.compile("123", SmNativeType.POSITIVE_INTEGER);
+			final A atom = atomBridge.compile("123", NativeType.POSITIVE_INTEGER);
 			assertEquals(BigInteger.valueOf(123), atomBridge.getInteger(atom));
 		}
 		catch (final GxmlAtomCastException e)
@@ -2124,15 +2124,15 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 
 		{
-			final A atom = atomBridge.createIntegerDerived(123, SmNativeType.POSITIVE_INTEGER);
+			final A atom = atomBridge.createIntegerDerived(123, NativeType.POSITIVE_INTEGER);
 			assertEquals(BigInteger.valueOf(123), atomBridge.getInteger(atom));
 		}
 		{
-			final A atom = atomBridge.createIntegerDerived(BigInteger.valueOf(123), SmNativeType.POSITIVE_INTEGER);
+			final A atom = atomBridge.createIntegerDerived(BigInteger.valueOf(123), NativeType.POSITIVE_INTEGER);
 			assertEquals(BigInteger.valueOf(123), atomBridge.getInteger(atom));
 		}
 
-		checkAtomicValue(atomBridge.createIntegerDerived(BigInteger.valueOf(123), SmNativeType.POSITIVE_INTEGER), SmNativeType.POSITIVE_INTEGER, atomBridge);
+		checkAtomicValue(atomBridge.createIntegerDerived(BigInteger.valueOf(123), NativeType.POSITIVE_INTEGER), NativeType.POSITIVE_INTEGER, atomBridge);
 	}
 
 	public void testXsQName()
@@ -2140,9 +2140,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.QNAME);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.QNAME);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals(copy("anyAtomicType"), baseType.getLocalName());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -2165,11 +2165,11 @@ public abstract class NativeTypeTestBase<N, A>
 			assertEquals("p", name.getPrefix());
 		}
 
-		checkAtomicValue(atomBridge.createQName("http://www.example.com", "foo", "p"), SmNativeType.QNAME, atomBridge);
+		checkAtomicValue(atomBridge.createQName("http://www.example.com", "foo", "p"), NativeType.QNAME, atomBridge);
 		try
 		{
 			@SuppressWarnings("unused")
-			final A atom = atomBridge.compile("p:foo", SmNativeType.QNAME);
+			final A atom = atomBridge.compile("p:foo", NativeType.QNAME);
 			// fail();
 		}
 		catch (final GxmlAtomCastException e)
@@ -2183,9 +2183,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.SHORT);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.SHORT);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("int", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -2201,7 +2201,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final short shortValue = 123;
 		try
 		{
-			final A atom = atomBridge.compile("123", SmNativeType.SHORT);
+			final A atom = atomBridge.compile("123", NativeType.SHORT);
 			assertEquals(shortValue, atomBridge.getShort(atom));
 			assertEquals(shortValue, atomBridge.getInt(atom));
 			assertEquals(shortValue, atomBridge.getLong(atom));
@@ -2213,7 +2213,7 @@ public abstract class NativeTypeTestBase<N, A>
 			fail();
 		}
 
-		checkAtomicValue(atomBridge.createShort(shortValue), SmNativeType.SHORT, atomBridge);
+		checkAtomicValue(atomBridge.createShort(shortValue), NativeType.SHORT, atomBridge);
 	}
 
 	public void testXsString()
@@ -2221,9 +2221,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.STRING);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.STRING);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.PRESERVE, atomicType.getWhiteSpacePolicy());
@@ -2236,14 +2236,14 @@ public abstract class NativeTypeTestBase<N, A>
 
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		checkAtomicValue(atomBridge.createString("123"), SmNativeType.STRING, atomBridge);
-		checkAtomicValue(atomBridge.createString(""), SmNativeType.STRING, atomBridge);
-		checkAtomicValue(atomBridge.createString("    "), SmNativeType.STRING, atomBridge);
-		checkAtomicValue(atomBridge.createString("\t\r\n"), SmNativeType.STRING, atomBridge);
+		checkAtomicValue(atomBridge.createString("123"), NativeType.STRING, atomBridge);
+		checkAtomicValue(atomBridge.createString(""), NativeType.STRING, atomBridge);
+		checkAtomicValue(atomBridge.createString("    "), NativeType.STRING, atomBridge);
+		checkAtomicValue(atomBridge.createString("\t\r\n"), NativeType.STRING, atomBridge);
 		try
 		{
 			final String strval = "123";
-			final A atom = atomBridge.compile("123", SmNativeType.STRING);
+			final A atom = atomBridge.compile("123", NativeType.STRING);
 			assertEquals(strval, atomBridge.getString(atom));
 			assertNull(atomBridge.createString(null));
 		}
@@ -2258,9 +2258,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.TIME);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.TIME);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -2275,7 +2275,7 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A gregorian = atomBridge.compile("03:30:59.999-05:00", SmNativeType.TIME);
+			final A gregorian = atomBridge.compile("03:30:59.999-05:00", NativeType.TIME);
 			assertEquals(1970, atomBridge.getYear(gregorian));
 			assertEquals(1, atomBridge.getMonth(gregorian));
 			assertEquals(1, atomBridge.getDayOfMonth(gregorian));
@@ -2301,7 +2301,7 @@ public abstract class NativeTypeTestBase<N, A>
 			assertEquals(-300, atomBridge.getGmtOffset(gregorian));
 		}
 
-		checkAtomicValue(atomBridge.createTime(8, 0, 0, 0, BigDecimal.ZERO, 0), SmNativeType.TIME, atomBridge);
+		checkAtomicValue(atomBridge.createTime(8, 0, 0, 0, BigDecimal.ZERO, 0), NativeType.TIME, atomBridge);
 	}
 
 	public void testXsToken()
@@ -2309,9 +2309,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.TOKEN);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.TOKEN);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("normalizedString", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -2326,13 +2326,13 @@ public abstract class NativeTypeTestBase<N, A>
 
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		checkAtomicValue(atomBridge.createStringDerived(initial, SmNativeType.TOKEN), SmNativeType.TOKEN, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived(initial, NativeType.TOKEN), NativeType.TOKEN, atomBridge);
 		try
 		{
-			final A atom = atomBridge.compile(initial, SmNativeType.TOKEN);
+			final A atom = atomBridge.compile(initial, NativeType.TOKEN);
 			assertEquals(mangled, atomBridge.getString(atom));
-			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, SmNativeType.TOKEN)));
-			assertNull(atomBridge.createStringDerived(null, SmNativeType.TOKEN));
+			assertEquals(mangled, atomBridge.getC14NForm(atomBridge.createStringDerived(initial, NativeType.TOKEN)));
+			assertNull(atomBridge.createStringDerived(null, NativeType.TOKEN));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -2340,7 +2340,7 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 		try
 		{
-			final A atom = atomBridge.compile("123", SmNativeType.TOKEN);
+			final A atom = atomBridge.compile("123", NativeType.TOKEN);
 			assertEquals("123", atomBridge.getString(atom));
 		}
 		catch (final GxmlAtomCastException e)
@@ -2349,18 +2349,18 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 		try
 		{
-			final A atom = atomBridge.compile("", SmNativeType.TOKEN);
+			final A atom = atomBridge.compile("", NativeType.TOKEN);
 			assertEquals("", atomBridge.getString(atom));
 		}
 		catch (final GxmlAtomCastException e)
 		{
 			fail();
 		}
-		checkAtomicValue(atomBridge.createStringDerived(initial, SmNativeType.TOKEN), SmNativeType.TOKEN, atomBridge);
-		checkAtomicValue(atomBridge.createStringDerived("123", SmNativeType.TOKEN), SmNativeType.TOKEN, atomBridge);
-		checkAtomicValue(atomBridge.createStringDerived("", SmNativeType.TOKEN), SmNativeType.TOKEN, atomBridge);
-		checkAtomicValue(atomBridge.createStringDerived(" ", SmNativeType.TOKEN), SmNativeType.TOKEN, atomBridge);
-		checkAtomicValue(atomBridge.createStringDerived("\t\r\n", SmNativeType.TOKEN), SmNativeType.TOKEN, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived(initial, NativeType.TOKEN), NativeType.TOKEN, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived("123", NativeType.TOKEN), NativeType.TOKEN, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived("", NativeType.TOKEN), NativeType.TOKEN, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived(" ", NativeType.TOKEN), NativeType.TOKEN, atomBridge);
+		checkAtomicValue(atomBridge.createStringDerived("\t\r\n", NativeType.TOKEN), NativeType.TOKEN, atomBridge);
 	}
 
 	public void testXsUnsignedByte()
@@ -2368,9 +2368,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.UNSIGNED_BYTE);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.UNSIGNED_BYTE);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("unsignedShort", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -2385,7 +2385,7 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A atom = atomBridge.compile("255", SmNativeType.UNSIGNED_BYTE);
+			final A atom = atomBridge.compile("255", NativeType.UNSIGNED_BYTE);
 			assertEquals(255, atomBridge.getUnsignedByte(atom));
 			assertEquals(255, atomBridge.getUnsignedShort(atom));
 			assertEquals(255, atomBridge.getUnsignedInt(atom));
@@ -2397,13 +2397,13 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 
 		{
-			final A atom = atomBridge.createIntegerDerived(255, SmNativeType.UNSIGNED_BYTE);
+			final A atom = atomBridge.createIntegerDerived(255, NativeType.UNSIGNED_BYTE);
 			assertEquals(BigInteger.valueOf(255), atomBridge.getInteger(atom));
 		}
 
 		try
 		{
-			final A atom = atomBridge.compile("0", SmNativeType.UNSIGNED_BYTE);
+			final A atom = atomBridge.compile("0", NativeType.UNSIGNED_BYTE);
 			assertEquals(BigInteger.valueOf(0), atomBridge.getInteger(atom));
 		}
 		catch (final GxmlAtomCastException e)
@@ -2412,7 +2412,7 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 		try
 		{
-			atomBridge.compile("256", SmNativeType.UNSIGNED_BYTE);
+			atomBridge.compile("256", NativeType.UNSIGNED_BYTE);
 			fail();
 		}
 		catch (final GxmlAtomCastException e)
@@ -2421,7 +2421,7 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 		try
 		{
-			atomBridge.compile("-1", SmNativeType.UNSIGNED_BYTE);
+			atomBridge.compile("-1", NativeType.UNSIGNED_BYTE);
 			fail();
 		}
 		catch (final GxmlAtomCastException e)
@@ -2429,7 +2429,7 @@ public abstract class NativeTypeTestBase<N, A>
 			// OK
 		}
 
-		checkAtomicValue(atomBridge.createIntegerDerived(255, SmNativeType.UNSIGNED_BYTE), SmNativeType.UNSIGNED_BYTE, atomBridge);
+		checkAtomicValue(atomBridge.createIntegerDerived(255, NativeType.UNSIGNED_BYTE), NativeType.UNSIGNED_BYTE, atomBridge);
 	}
 
 	public void testXsUnsignedInt()
@@ -2437,9 +2437,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.UNSIGNED_INT);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.UNSIGNED_INT);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("unsignedLong", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -2454,7 +2454,7 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A atom = atomBridge.compile("4294967295", SmNativeType.UNSIGNED_INT);
+			final A atom = atomBridge.compile("4294967295", NativeType.UNSIGNED_INT);
 			assertEquals(BigInteger.valueOf(4294967295l), atomBridge.getInteger(atom));
 			assertEquals(4294967295l, atomBridge.getUnsignedInt(atom));
 		}
@@ -2464,13 +2464,13 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 
 		{
-			final A atom = atomBridge.createIntegerDerived(4294967295l, SmNativeType.UNSIGNED_INT);
+			final A atom = atomBridge.createIntegerDerived(4294967295l, NativeType.UNSIGNED_INT);
 			assertEquals(BigInteger.valueOf(4294967295l), atomBridge.getInteger(atom));
 		}
 		try
 		{
-			final A atom = atomBridge.compile(Long.toString(Long.MAX_VALUE), SmNativeType.LONG);
-			atomBridge.castAs(atom, SmNativeType.UNSIGNED_INT, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N));
+			final A atom = atomBridge.compile(Long.toString(Long.MAX_VALUE), NativeType.LONG);
+			atomBridge.castAs(atom, NativeType.UNSIGNED_INT, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N));
 			fail();
 		}
 		catch (final GxmlAtomCastException e)
@@ -2478,7 +2478,7 @@ public abstract class NativeTypeTestBase<N, A>
 			// OK
 		}
 
-		checkAtomicValue(atomBridge.createIntegerDerived(4294967295l, SmNativeType.UNSIGNED_INT), SmNativeType.UNSIGNED_INT, atomBridge);
+		checkAtomicValue(atomBridge.createIntegerDerived(4294967295l, NativeType.UNSIGNED_INT), NativeType.UNSIGNED_INT, atomBridge);
 	}
 
 	public void testXsUnsignedLong()
@@ -2486,9 +2486,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.UNSIGNED_LONG);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.UNSIGNED_LONG);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("nonNegativeInteger", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -2503,7 +2503,7 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A atom = atomBridge.compile("4294967295", SmNativeType.UNSIGNED_LONG);
+			final A atom = atomBridge.compile("4294967295", NativeType.UNSIGNED_LONG);
 			assertEquals(BigInteger.valueOf(4294967295l), atomBridge.getInteger(atom));
 		}
 		catch (final GxmlAtomCastException e)
@@ -2512,11 +2512,11 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 
 		{
-			final A atom = atomBridge.createIntegerDerived(BigInteger.valueOf(4294967295l), SmNativeType.UNSIGNED_LONG);
+			final A atom = atomBridge.createIntegerDerived(BigInteger.valueOf(4294967295l), NativeType.UNSIGNED_LONG);
 			assertEquals(BigInteger.valueOf(4294967295l), atomBridge.getInteger(atom));
 		}
 
-		checkAtomicValue(atomBridge.createIntegerDerived(BigInteger.valueOf(4294967295l), SmNativeType.UNSIGNED_LONG), SmNativeType.UNSIGNED_LONG, atomBridge);
+		checkAtomicValue(atomBridge.createIntegerDerived(BigInteger.valueOf(4294967295l), NativeType.UNSIGNED_LONG), NativeType.UNSIGNED_LONG, atomBridge);
 	}
 
 	public void testXsUnsignedShort()
@@ -2524,9 +2524,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.UNSIGNED_SHORT);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.UNSIGNED_SHORT);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("unsignedInt", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -2541,14 +2541,14 @@ public abstract class NativeTypeTestBase<N, A>
 
 		try
 		{
-			final A atom = atomBridge.compile("65535", SmNativeType.UNSIGNED_SHORT);
+			final A atom = atomBridge.compile("65535", NativeType.UNSIGNED_SHORT);
 			assertEquals(65535, atomBridge.getUnsignedShort(atom));
 			assertEquals(65535, atomBridge.getUnsignedInt(atom));
 			assertEquals(BigInteger.valueOf(65535), atomBridge.getInteger(atom));
-			assertEquals(atomBridge.createString("65535"), atomBridge.castAs(atom, SmNativeType.STRING, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
-			assertEquals(atomBridge.createInteger(123), atomBridge.castAs(atomBridge.createIntegerDerived(123, SmNativeType.UNSIGNED_SHORT), SmNativeType.INTEGER, castingContext(
+			assertEquals(atomBridge.createString("65535"), atomBridge.castAs(atom, NativeType.STRING, castingContext(SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
+			assertEquals(atomBridge.createInteger(123), atomBridge.castAs(atomBridge.createIntegerDerived(123, NativeType.UNSIGNED_SHORT), NativeType.INTEGER, castingContext(
 					SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
-			assertEquals(atomBridge.createLong(123), atomBridge.castAs(atomBridge.createIntegerDerived(123, SmNativeType.UNSIGNED_SHORT), SmNativeType.LONG, castingContext(
+			assertEquals(atomBridge.createLong(123), atomBridge.castAs(atomBridge.createIntegerDerived(123, NativeType.UNSIGNED_SHORT), NativeType.LONG, castingContext(
 					SpillagePolicy.DO_THE_RIGHT_THING, Emulation.C14N)));
 		}
 		catch (final GxmlAtomCastException e)
@@ -2558,11 +2558,11 @@ public abstract class NativeTypeTestBase<N, A>
 		}
 
 		{
-			final A atom = atomBridge.createIntegerDerived(65535, SmNativeType.UNSIGNED_SHORT);
+			final A atom = atomBridge.createIntegerDerived(65535, NativeType.UNSIGNED_SHORT);
 			assertEquals(BigInteger.valueOf(65535), atomBridge.getInteger(atom));
 		}
 
-		checkAtomicValue(atomBridge.createIntegerDerived(65535, SmNativeType.UNSIGNED_SHORT), SmNativeType.UNSIGNED_SHORT, atomBridge);
+		checkAtomicValue(atomBridge.createIntegerDerived(65535, NativeType.UNSIGNED_SHORT), NativeType.UNSIGNED_SHORT, atomBridge);
 	}
 
 	public void testXsUntypedAtomic()
@@ -2570,9 +2570,9 @@ public abstract class NativeTypeTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.UNTYPED_ATOMIC);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.UNTYPED_ATOMIC);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.PRESERVE, atomicType.getWhiteSpacePolicy());
@@ -2588,7 +2588,7 @@ public abstract class NativeTypeTestBase<N, A>
 		try
 		{
 			final String strval = "123";
-			final A atom = atomBridge.compile("123", SmNativeType.UNTYPED_ATOMIC);
+			final A atom = atomBridge.compile("123", NativeType.UNTYPED_ATOMIC);
 			assertEquals(strval, atomBridge.getC14NForm(atom));
 		}
 		catch (final GxmlAtomCastException e)
@@ -2596,7 +2596,7 @@ public abstract class NativeTypeTestBase<N, A>
 			fail();
 		}
 
-		checkAtomicValue(atomBridge.createUntypedAtomic("123"), SmNativeType.UNTYPED_ATOMIC, atomBridge);
+		checkAtomicValue(atomBridge.createUntypedAtomic("123"), NativeType.UNTYPED_ATOMIC, atomBridge);
 	}
 
 	public void testXsYearMonthDuration()
@@ -2604,9 +2604,9 @@ public abstract class NativeTypeTestBase<N, A>
 	    ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final SmType<A> type = pcx.getTypeDefinition(SmNativeType.DURATION_YEARMONTH);
-		final SmAtomicType<A> atomicType = (SmAtomicType<A>)type;
-		final SmType<A> baseType = atomicType.getBaseType();
+		final Type<A> type = pcx.getTypeDefinition(NativeType.DURATION_YEARMONTH);
+		final AtomicType<A> atomicType = (AtomicType<A>)type;
+		final Type<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("duration", baseType.getLocalName().toString());
 		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
@@ -2657,7 +2657,7 @@ public abstract class NativeTypeTestBase<N, A>
 		assertYearMonthDurationPass("P112Y3M", 1347, "P1347M", pcx);
 		assertYearMonthDurationPass("-P112Y3M", -1347, "-P1347M", pcx);
 
-		checkAtomicValue(atomBridge.createYearMonthDuration(40), SmNativeType.DURATION_YEARMONTH, atomBridge);
+		checkAtomicValue(atomBridge.createYearMonthDuration(40), NativeType.DURATION_YEARMONTH, atomBridge);
 
 		assertYearMonthDurationFail("PY43M", pcx);
 		assertYearMonthDurationFail("PT0S", pcx);
@@ -2669,7 +2669,7 @@ public abstract class NativeTypeTestBase<N, A>
 		try
 		{
 			final int months = 255;
-			final A atom = atomBridge.compile("P20Y15M", SmNativeType.DURATION_YEARMONTH);
+			final A atom = atomBridge.compile("P20Y15M", NativeType.DURATION_YEARMONTH);
 			assertEquals(months, atomBridge.getDurationTotalMonths(atom));
 			assertEquals("P21Y3M", atomBridge.getC14NForm(atom));
 		}
@@ -2680,7 +2680,7 @@ public abstract class NativeTypeTestBase<N, A>
 		// This should be OK, but we don't want any gibberish on the end.
 		try
 		{
-			atomBridge.compile("P20Y15M+08:00", SmNativeType.DURATION_YEARMONTH);
+			atomBridge.compile("P20Y15M+08:00", NativeType.DURATION_YEARMONTH);
 			fail();
 		}
 		catch (final GxmlAtomCastException e)

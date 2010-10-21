@@ -18,7 +18,7 @@ package org.genxdm.bridgekit.xs;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.exceptions.DatatypeException;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SimpleType;
 
 final class ISO8601
 {
@@ -27,7 +27,7 @@ final class ISO8601
 		START, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, FINISH;
 	}
 
-	public static <A> A parseGregorian(final String s, final AtomBridge<A> atomBridge, final SmSimpleType<A> type) throws DatatypeException
+	public static <A> A parseGregorian(final String s, final AtomBridge<A> atomBridge, final SimpleType<A> type) throws DatatypeException
 	{
 		PreCondition.assertArgumentNotNull(s, "s");
 		final int length = s.length();

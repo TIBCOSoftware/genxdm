@@ -26,27 +26,27 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.SchemaWildcard;
-import org.genxdm.xs.constraints.SmAttributeUse;
+import org.genxdm.xs.constraints.AttributeUse;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.enums.ScopeExtent;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmContentType;
-import org.genxdm.xs.types.SmElementNodeType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmPrimeChoiceType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmPrimeTypeKind;
-import org.genxdm.xs.types.SmSequenceType;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.ContentType;
+import org.genxdm.xs.types.ElementNodeType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.PrimeChoiceType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.PrimeTypeKind;
+import org.genxdm.xs.types.SequenceType;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.Type;
 
 /**
  * A complex type, but not the Complex Ur-Type.
  */
-public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexType<A>, SmPrimeType<A>
+public final class ComplexTypeImpl<A> extends TypeImpl<A> implements ComplexType<A>, PrimeType<A>
 {
-	private static <A> SchemaWildcard<A> computeAttributeWildcard(final SmType<A> baseType, final DerivationMethod derivation)
+	private static <A> SchemaWildcard<A> computeAttributeWildcard(final Type<A> baseType, final DerivationMethod derivation)
 	{
 		if (derivation.isRestriction())
 		{
@@ -54,9 +54,9 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 		}
 		if (derivation.isExtension())
 		{
-			if (baseType instanceof SmComplexType<?>)
+			if (baseType instanceof ComplexType<?>)
 			{
-				return ((SmComplexType<A>)baseType).getAttributeWildcard();
+				return ((ComplexType<A>)baseType).getAttributeWildcard();
 			}
 			else
 			{
@@ -70,12 +70,12 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 	}
 
 	private final boolean isNative;
-	private final Map<QName, SmAttributeUse<A>> m_attributeUses;
+	private final Map<QName, AttributeUse<A>> m_attributeUses;
 	/**
 	 * {attribute wildcard} is mutable
 	 */
 	private SchemaWildcard<A> m_attributeWildcard = null;
-	private final SmType<A> m_baseType;
+	private final Type<A> m_baseType;
 
 	private final Set<DerivationMethod> m_block;
 
@@ -86,7 +86,7 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 	/**
 	 * {content type} is mutable.
 	 */
-	private SmContentType<A> m_contentType;
+	private ContentType<A> m_contentType;
 
 	/**
 	 * {final} is mutable.
@@ -98,8 +98,8 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 	 */
 	private boolean m_isAbstract = false;
 
-	public ComplexTypeImpl(final QName name, final boolean isNative, final boolean isAnonymous, final ScopeExtent scope, final SmType<A> baseType, final DerivationMethod derivation, final Map<QName, SmAttributeUse<A>> attributeUses,
-			final SmContentType<A> contentType, final Set<DerivationMethod> block, final NameSource nameBridge, final ComponentProvider<A> cache)
+	public ComplexTypeImpl(final QName name, final boolean isNative, final boolean isAnonymous, final ScopeExtent scope, final Type<A> baseType, final DerivationMethod derivation, final Map<QName, AttributeUse<A>> attributeUses,
+			final ContentType<A> contentType, final Set<DerivationMethod> block, final NameSource nameBridge, final ComponentProvider<A> cache)
 	{
 		super(PreCondition.assertArgumentNotNull(name, "name"), isAnonymous, scope, derivation, nameBridge);
 		this.isNative = isNative;
@@ -112,17 +112,17 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 		m_attributeWildcard = computeAttributeWildcard(baseType, derivation);
 	}
 
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public SmSequenceType<A> atomSet()
+	public SequenceType<A> atomSet()
 	{
-		return m_cache.getAtomicType(SmNativeType.UNTYPED_ATOMIC);
+		return m_cache.getAtomicType(NativeType.UNTYPED_ATOMIC);
 	}
 
-	public Map<QName, SmAttributeUse<A>> getAttributeUses()
+	public Map<QName, AttributeUse<A>> getAttributeUses()
 	{
 		return m_attributeUses;
 	}
@@ -132,12 +132,12 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 		return m_attributeWildcard;
 	}
 
-	public SmType<A> getBaseType()
+	public Type<A> getBaseType()
 	{
 		return m_baseType;
 	}
 
-	public SmContentType<A> getContentType()
+	public ContentType<A> getContentType()
 	{
 		return m_contentType;
 	}
@@ -147,9 +147,9 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 		return m_final;
 	}
 
-	public SmPrimeTypeKind getKind()
+	public PrimeTypeKind getKind()
 	{
-		return SmPrimeTypeKind.COMPLEX;
+		return PrimeTypeKind.COMPLEX;
 	}
 
 	public Set<DerivationMethod> getProhibitedSubstitutions()
@@ -203,7 +203,7 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 		return false;
 	}
 
-	public final SmPrimeType<A> prime()
+	public final PrimeType<A> prime()
 	{
 		return this;
 	}
@@ -238,7 +238,7 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 		}
 	}
 
-	public void setContentType(final SmContentType<A> contentType)
+	public void setContentType(final ContentType<A> contentType)
 	{
 		assertNotLocked();
 		m_contentType = PreCondition.assertArgumentNotNull(contentType, "name");
@@ -259,26 +259,26 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 		}
 	}
 
-	public boolean subtype(final SmPrimeType<A> rhs)
+	public boolean subtype(final PrimeType<A> rhs)
 	{
 		PreCondition.assertArgumentNotNull(rhs, "type");
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final SmPrimeChoiceType<A> choiceType = (SmPrimeChoiceType<A>)rhs;
+				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 				// case ANY_TYPE:
 				// case COMPLEX:
 				// {
-				// final SmComplexType<A> complexType = (SmComplexType<A>)rhs;
-				// return SmSupportImpl.subtype(this, complexType);
+				// final ComplexType<A> complexType = (ComplexType<A>)rhs;
+				// return SchemaSupport.subtype(this, complexType);
 				// }
 			case ELEMENT:
 			{
 				@SuppressWarnings("unused")
-				final SmElementNodeType<A> element = (SmElementNodeType<A>)rhs;
+				final ElementNodeType<A> element = (ElementNodeType<A>)rhs;
 				return false;
 			}
 			default:

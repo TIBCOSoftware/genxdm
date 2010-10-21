@@ -22,17 +22,17 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.exceptions.FacetException;
 import org.genxdm.xs.exceptions.FacetTotalDigitsException;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmTotalDigits;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.TotalDigits;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
 
-public final class FacetTotalDigitsImpl<A> extends FacetImpl<A> implements SmTotalDigits<A>
+public final class FacetTotalDigitsImpl<A> extends FacetImpl<A> implements TotalDigits<A>
 {
 	private static <A> int totalDigits(final A atom, final AtomBridge<A> atomBridge)
 	{
-		final SmNativeType nativeType = atomBridge.getNativeType(atom);
-		if (nativeType == SmNativeType.BYTE)
+		final NativeType nativeType = atomBridge.getNativeType(atom);
+		if (nativeType == NativeType.BYTE)
 		{
 			final byte value = atomBridge.getByte(atom);
 			if (value < 0)
@@ -44,7 +44,7 @@ public final class FacetTotalDigitsImpl<A> extends FacetImpl<A> implements SmTot
 				return Byte.toString(value).length();
 			}
 		}
-		else if (nativeType == SmNativeType.SHORT)
+		else if (nativeType == NativeType.SHORT)
 		{
 			final short value = atomBridge.getShort(atom);
 			if (value < 0)
@@ -56,7 +56,7 @@ public final class FacetTotalDigitsImpl<A> extends FacetImpl<A> implements SmTot
 				return Short.toString(value).length();
 			}
 		}
-		else if (nativeType == SmNativeType.INT)
+		else if (nativeType == NativeType.INT)
 		{
 			final int value = atomBridge.getInt(atom);
 			if (value < 0)
@@ -68,7 +68,7 @@ public final class FacetTotalDigitsImpl<A> extends FacetImpl<A> implements SmTot
 				return Integer.toString(value).length();
 			}
 		}
-		else if (nativeType == SmNativeType.LONG)
+		else if (nativeType == NativeType.LONG)
 		{
 			final long value = atomBridge.getLong(atom);
 			if (value < 0)
@@ -202,9 +202,9 @@ public final class FacetTotalDigitsImpl<A> extends FacetImpl<A> implements SmTot
 		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
 	}
 
-	public SmFacetKind getKind()
+	public FacetKind getKind()
 	{
-		return SmFacetKind.TotalDigits;
+		return FacetKind.TotalDigits;
 	}
 
 	public int getTotalDigits()
@@ -212,7 +212,7 @@ public final class FacetTotalDigitsImpl<A> extends FacetImpl<A> implements SmTot
 		return totalDigits;
 	}
 
-	public void validate(final List<? extends A> actualValue, final SmSimpleType<A> simpleType) throws FacetException
+	public void validate(final List<? extends A> actualValue, final SimpleType<A> simpleType) throws FacetException
 	{
 		for (final A atom : actualValue)
 		{

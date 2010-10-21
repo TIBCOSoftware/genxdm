@@ -37,8 +37,8 @@ import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
 import org.genxdm.xs.exceptions.DatatypeException;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -272,10 +272,10 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 				case ATTRIBUTE:
 				{
 					final QName typeName = DomSupport.getAnnotationType(node, m_metaBridge);
-					final SmType<XmlAtom> type = pcx.getTypeDefinition(typeName);
-					if (type instanceof SmSimpleType<?>)
+					final Type<XmlAtom> type = pcx.getTypeDefinition(typeName);
+					if (type instanceof SimpleType<?>)
 					{
-						final SmSimpleType<XmlAtom> simpleType = (SmSimpleType<XmlAtom>)type;
+						final SimpleType<XmlAtom> simpleType = (SimpleType<XmlAtom>)type;
 						final String stringValue = getStringValue(node);
 						try
 						{
@@ -337,10 +337,10 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 //			{
 //				final AtomBridge<XmlAtom> atomBridge = m_metaBridge.getAtomBridge();
 //				final QName typeName = DomSupport.getAnnotationType(node, m_metaBridge);
-//				final SmType<XmlAtom> type = pcx.getTypeDefinition(typeName);
-//				if (type instanceof SmSimpleType<?>)
+//				final Type<XmlAtom> type = pcx.getTypeDefinition(typeName);
+//				if (type instanceof SimpleType<?>)
 //				{
-//					final SmSimpleType<XmlAtom> simpleType = (SmSimpleType<XmlAtom>)type;
+//					final SimpleType<XmlAtom> simpleType = (SimpleType<XmlAtom>)type;
 //					final String stringValue = getStringValue(node);
 //					try
 //					{

@@ -35,8 +35,8 @@ import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.Emulation;
 import org.genxdm.typed.types.MetaBridge;
 import org.genxdm.xs.exceptions.DatatypeException;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -832,10 +832,10 @@ public final class DomSupport implements DomConstants
 			case ELEMENT:
 			{
 				final QName typeName = getAnnotationType(node, metaBridge);
-				final SmType<A> type = pcx.getTypeDefinition(typeName);
-				if (type instanceof SmSimpleType<?>)
+				final Type<A> type = pcx.getTypeDefinition(typeName);
+				if (type instanceof SimpleType<?>)
 				{
-					final SmSimpleType<A> simpleType = (SmSimpleType<A>)type;
+					final SimpleType<A> simpleType = (SimpleType<A>)type;
 					final String stringValue = getStringValue(node, separator, emulation);
 					try
 					{

@@ -16,7 +16,7 @@
 package org.genxdm.bridgekit.atoms;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#NOTATION">NOTATION</a>.
@@ -63,9 +63,9 @@ public final class XmlNOTATION extends XmlAbstractAtom
 		return namespaceURI;
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.NOTATION;
+		return NativeType.NOTATION;
 	}
 
 	public String getPrefix()

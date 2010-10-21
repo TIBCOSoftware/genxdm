@@ -17,9 +17,9 @@ package org.genxdm.processor.w3c.xs;
 
 import java.util.ArrayList;
 
-import org.genxdm.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.constraints.RestrictedXPath;
 
-final class RestrictedXPathImpl implements SmRestrictedXPath
+final class RestrictedXPathImpl implements RestrictedXPath
 {
 	private final ArrayList<String> m_namespaces = new ArrayList<String>();
 	private final ArrayList<String> m_localNames = new ArrayList<String>();

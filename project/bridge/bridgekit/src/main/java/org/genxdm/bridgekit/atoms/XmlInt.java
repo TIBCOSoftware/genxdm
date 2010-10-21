@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.atoms;
 
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#int">int</a>.
@@ -51,9 +51,9 @@ public final class XmlInt extends XmlAbstractAtom
 		return Integer.toString(intValue);
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.INT;
+		return NativeType.INT;
 	}
 
 	@Override

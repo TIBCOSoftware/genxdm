@@ -27,18 +27,18 @@ import org.genxdm.xs.components.ComponentBag;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.enums.ScopeExtent;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 
 final class XmlSchema<A> implements ComponentBag<A>
 {
 	private final HashMap<QName, AttributeDefinition<A>> m_attributes = new HashMap<QName, AttributeDefinition<A>>();
 
-	private final HashMap<QName, SmSimpleType<A>> m_simpleTypes = new HashMap<QName, SmSimpleType<A>>();
+	private final HashMap<QName, SimpleType<A>> m_simpleTypes = new HashMap<QName, SimpleType<A>>();
 	final AttributeDefinition<A> XML_BASE;
 
 	final AttributeDefinition<A> XML_LANG;
@@ -46,26 +46,26 @@ final class XmlSchema<A> implements ComponentBag<A>
 	/**
 	 * Constructs the W3C XML Schema native types and atributes.
 	 */
-	public XmlSchema(final SmCacheImpl<A> cache)
+	public XmlSchema(final SchemaCacheImpl<A> cache)
 	{
 	    // these are in blocks so that we can call register using a standard pattern.
 		{
 			final QName name = new QName(XMLConstants.XML_NS_URI, "base", XMLConstants.XML_NS_PREFIX);
-			final SmSimpleType<A> type = cache.getAtomicType(SmNativeType.ANY_URI);
+			final SimpleType<A> type = cache.getAtomicType(NativeType.ANY_URI);
 			XML_BASE = new AttributeDeclTypeImpl<A>(name, ScopeExtent.Global, type);
 			register(XML_BASE);
 		}
 		{
 			final QName name = new QName(XMLConstants.XML_NS_URI, "lang", XMLConstants.XML_NS_PREFIX);
-			final SmSimpleType<A> type = cache.getAtomicType(SmNativeType.LANGUAGE);
+			final SimpleType<A> type = cache.getAtomicType(NativeType.LANGUAGE);
 			XML_LANG = new AttributeDeclTypeImpl<A>(name, ScopeExtent.Global, type);
 			register(XML_LANG);
 		}
 	}
 
-	public SmSimpleType<A> getAtomicType(final QName name)
+	public SimpleType<A> getAtomicType(final QName name)
 	{
-		final SmSimpleType<A> simpleType = getSimpleType(name);
+		final SimpleType<A> simpleType = getSimpleType(name);
 		if (simpleType.isAtomicType())
 		{
 			return simpleType;
@@ -96,12 +96,12 @@ final class XmlSchema<A> implements ComponentBag<A>
 		return m_attributes.values();
 	}
 
-	public SmComplexType<A> getComplexType(final QName name)
+	public ComplexType<A> getComplexType(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<SmComplexType<A>> getComplexTypes()
+	public Iterable<ComplexType<A>> getComplexTypes()
 	{
 		return Collections.emptyList();
 	}
@@ -116,12 +116,12 @@ final class XmlSchema<A> implements ComponentBag<A>
 		return Collections.emptyList();
 	}
 
-	public SmIdentityConstraint<A> getIdentityConstraint(final QName name)
+	public IdentityConstraint<A> getIdentityConstraint(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<SmIdentityConstraint<A>> getIdentityConstraints()
+	public Iterable<IdentityConstraint<A>> getIdentityConstraints()
 	{
 		return Collections.emptyList();
 	}
@@ -146,17 +146,17 @@ final class XmlSchema<A> implements ComponentBag<A>
 		return Collections.emptyList();
 	}
 
-	public SmSimpleType<A> getSimpleType(final QName name)
+	public SimpleType<A> getSimpleType(final QName name)
 	{
 		return m_simpleTypes.get(name);
 	}
 
-	public Iterable<SmSimpleType<A>> getSimpleTypes()
+	public Iterable<SimpleType<A>> getSimpleTypes()
 	{
 		return m_simpleTypes.values();
 	}
 
-	public SmType<A> getType(final QName name)
+	public Type<A> getType(final QName name)
 	{
 		return getSimpleType(name);
 	}

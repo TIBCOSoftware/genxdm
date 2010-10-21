@@ -26,7 +26,7 @@ import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.resolve.LocationInSchema;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SimpleType;
 
 
 /**
@@ -37,17 +37,17 @@ final class IdManager<A>
 	private final HashSet<String> m_definedIds = new HashSet<String>();
 	private final HashMap<String, List<LocationInSchema>> m_danglingIDREFLocations = new HashMap<String, List<LocationInSchema>>();
 
-	public void text(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
+	public void text(final List<? extends A> actualValue, final SimpleType<A> actualType, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		value(actualValue, actualType, locatable, errors, atomBridge);
 	}
 
-	public void attribute(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
+	public void attribute(final List<? extends A> actualValue, final SimpleType<A> actualType, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		value(actualValue, actualType, locatable, errors, atomBridge);
 	}
 
-	private void value(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
+	private void value(final List<? extends A> actualValue, final SimpleType<A> actualType, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		if (actualType.isID())
 		{

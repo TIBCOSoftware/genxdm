@@ -21,12 +21,12 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.exceptions.FacetException;
 import org.genxdm.xs.exceptions.FacetFractionDigitsException;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmFractionDigits;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.FractionDigits;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
 
-public final class FacetFractionDigitsImpl<A> extends FacetImpl<A> implements SmFractionDigits<A>
+public final class FacetFractionDigitsImpl<A> extends FacetImpl<A> implements FractionDigits<A>
 {
 	private final AtomBridge<A> atomBridge;
 	private final int fractionDigits;
@@ -39,9 +39,9 @@ public final class FacetFractionDigitsImpl<A> extends FacetImpl<A> implements Sm
 
 	}
 
-	public SmFacetKind getKind()
+	public FacetKind getKind()
 	{
-		return SmFacetKind.FractionDigits;
+		return FacetKind.FractionDigits;
 	}
 
 	public int getFractionDigits()
@@ -49,7 +49,7 @@ public final class FacetFractionDigitsImpl<A> extends FacetImpl<A> implements Sm
 		return fractionDigits;
 	}
 
-	public void validate(final List<? extends A> actualValue, final SmSimpleType<A> simpleType) throws FacetException
+	public void validate(final List<? extends A> actualValue, final SimpleType<A> simpleType) throws FacetException
 	{
 		for (final A atom : actualValue)
 		{
@@ -63,7 +63,7 @@ public final class FacetFractionDigitsImpl<A> extends FacetImpl<A> implements Sm
 
 	private static <A> int fractionDigits(final A atom, final AtomBridge<A> atomBridge)
 	{
-		final SmNativeType nativeType = atomBridge.getNativeType(atom);
+		final NativeType nativeType = atomBridge.getNativeType(atom);
 		if (nativeType.isInteger())
 		{
 			return 0;

@@ -29,26 +29,26 @@ import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.resolve.PrefixResolver;
-import org.genxdm.xs.types.SmListSimpleType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.ListSimpleType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 
-public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements SmListSimpleType<A>
+public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements ListSimpleType<A>
 {
-	private final SmType<A> baseType;
-	private final SmSimpleType<A> itemType;
+	private final Type<A> baseType;
+	private final SimpleType<A> itemType;
 
-	public ListTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final SmSimpleType<A> itemType, final SmType<A> baseType, final WhiteSpacePolicy whiteSpace, final AtomBridge<A> atomBridge)
+	public ListTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final SimpleType<A> itemType, final Type<A> baseType, final WhiteSpacePolicy whiteSpace, final AtomBridge<A> atomBridge)
 	{
 		super(name, isAnonymous, scope, DerivationMethod.List, whiteSpace, atomBridge);
 		this.itemType = PreCondition.assertArgumentNotNull(itemType, "itemType");
 		this.baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");
 	}
 
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		visitor.visit(this);
 	}
@@ -61,7 +61,7 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements SmListSi
 		final String strval = atomBridge.getC14NString(value);
 
 		final ArrayList<A> compiled = new ArrayList<A>();
-		final SmSimpleType<A> itemType = this.getItemType();
+		final SimpleType<A> itemType = this.getItemType();
 		final StringTokenizer tokenizer = new StringTokenizer(strval, " ");
 		while (tokenizer.hasMoreTokens())
 		{
@@ -87,7 +87,7 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements SmListSi
 		PreCondition.assertArgumentNotNull(initialValue, "value");
 
 		final ArrayList<A> compiled = new ArrayList<A>();
-		final SmSimpleType<A> itemType = this.getItemType();
+		final SimpleType<A> itemType = this.getItemType();
 		final StringTokenizer tokenizer = new StringTokenizer(initialValue, " ");
 		while (tokenizer.hasMoreTokens())
 		{
@@ -114,7 +114,7 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements SmListSi
 		PreCondition.assertArgumentNotNull(initialValue, "value");
 
 		final ArrayList<A> compiled = new ArrayList<A>();
-		final SmSimpleType<A> itemType = this.getItemType();
+		final SimpleType<A> itemType = this.getItemType();
 		final StringTokenizer tokenizer = new StringTokenizer(initialValue, " ");
 		while (tokenizer.hasMoreTokens())
 		{
@@ -136,19 +136,19 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements SmListSi
 		return compiled;
 	}
 
-	public SmType<A> getBaseType()
+	public Type<A> getBaseType()
 	{
 		return baseType;
 	}
 
-	public SmSimpleType<A> getItemType()
+	public SimpleType<A> getItemType()
 	{
 		return itemType;
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.ANY_SIMPLE_TYPE;
+		return NativeType.ANY_SIMPLE_TYPE;
 	}
 
 	public final WhiteSpacePolicy getWhiteSpacePolicy()
@@ -205,7 +205,7 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements SmListSi
 	}
 
 	@Override
-	public SmPrimeType<A> prime()
+	public PrimeType<A> prime()
 	{
 		return itemType.prime();
 	}

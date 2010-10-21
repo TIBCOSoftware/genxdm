@@ -15,11 +15,11 @@
  */
 package org.genxdm.processor.w3c.xs;
 
-import org.genxdm.xs.facets.SmRegExPattern;
+import org.genxdm.xs.facets.RegExPattern;
 
 public interface SmRegExCompiler
 {
-	SmRegExPattern compile(String regex) throws SmRegExCompileException;
+	RegExPattern compile(String regex) throws SmRegExCompileException;
 
-	SmRegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
 }

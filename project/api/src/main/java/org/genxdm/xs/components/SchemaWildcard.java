@@ -15,7 +15,7 @@
  */
 package org.genxdm.xs.components;
 
-import org.genxdm.xs.constraints.SmNamespaceConstraint;
+import org.genxdm.xs.constraints.NamespaceConstraint;
 import org.genxdm.xs.enums.ProcessContentsMode;
 
 /**
@@ -32,7 +32,7 @@ import org.genxdm.xs.enums.ProcessContentsMode;
  */
 public interface SchemaWildcard<A> extends ParticleTerm<A>
 {
-	SmNamespaceConstraint getNamespaceConstraint();
+	NamespaceConstraint getNamespaceConstraint();
 
 	/**
 	 * Returns how this term should be processed once it is matches against this wildcard term.

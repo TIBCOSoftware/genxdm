@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.atoms;
 
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#long">long</a>.
@@ -56,9 +56,9 @@ public final class XmlLong extends XmlAbstractAtom
 		return longValue;
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.LONG;
+		return NativeType.LONG;
 	}
 
 	@Override

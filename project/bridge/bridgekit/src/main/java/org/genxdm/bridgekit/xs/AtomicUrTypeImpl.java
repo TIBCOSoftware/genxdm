@@ -27,20 +27,20 @@ import org.genxdm.xs.components.EnumerationDefinition;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
-import org.genxdm.xs.facets.SmFacet;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmPattern;
+import org.genxdm.xs.facets.Facet;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.Pattern;
 import org.genxdm.xs.resolve.PrefixResolver;
-import org.genxdm.xs.types.SmAtomicType;
-import org.genxdm.xs.types.SmAtomicUrType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmPrimeChoiceType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmPrimeTypeKind;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.AtomicType;
+import org.genxdm.xs.types.AtomicUrType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.PrimeChoiceType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.PrimeTypeKind;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.Type;
 
-final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implements SmAtomicUrType<A>
+final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implements AtomicUrType<A>
 {
 	private final AtomBridge<A> m_atomBridge;
 	private final SimpleUrTypeImpl<A> m_baseType;
@@ -53,19 +53,19 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		this.m_baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");
 	}
 
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		visitor.visit(this);
 	}
 
 	public boolean derivedFrom(final String namespace, final String name, final Set<DerivationMethod> derivationMethods)
 	{
-		return SmSupportImpl.derivedFrom(this, namespace, name, derivationMethods, m_atomBridge.getNameBridge());
+		return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods, m_atomBridge.getNameBridge());
 	}
 
-	public boolean derivedFromType(final SmType<A> ancestorType, final Set<DerivationMethod> derivationMethods)
+	public boolean derivedFromType(final Type<A> ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
-		return SmSupportImpl.derivedFromType(this, ancestorType, derivationMethods, m_atomBridge.getNameBridge());
+		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods, m_atomBridge.getNameBridge());
 	}
 
 	public SimpleUrTypeImpl<A> getBaseType()
@@ -83,12 +83,12 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		throw new AssertionError(getName());
 	}
 
-	public SmFacet<A> getFacetOfKind(final SmFacetKind facetKind)
+	public Facet<A> getFacetOfKind(final FacetKind facetKind)
 	{
 		throw new AssertionError(getName());
 	}
 
-	public Iterable<SmFacet<A>> getFacets()
+	public Iterable<Facet<A>> getFacets()
 	{
 		throw new AssertionError(getName());
 	}
@@ -98,9 +98,9 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return EnumSet.noneOf(DerivationMethod.class);
 	}
 
-	public SmPrimeTypeKind getKind()
+	public PrimeTypeKind getKind()
 	{
-		return SmPrimeTypeKind.ANY_ATOMIC_TYPE;
+		return PrimeTypeKind.ANY_ATOMIC_TYPE;
 	}
 
 	public String getLocalName()
@@ -113,17 +113,17 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return m_name;
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.ANY_ATOMIC_TYPE;
+		return NativeType.ANY_ATOMIC_TYPE;
 	}
 
-	public Iterable<SmPattern> getPatterns()
+	public Iterable<Pattern> getPatterns()
 	{
 		throw new AssertionError(getName());
 	}
 
-	public SmAtomicType<A> getNativeTypeDefinition()
+	public AtomicType<A> getNativeTypeDefinition()
 	{
 		return this;
 	}
@@ -148,7 +148,7 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return false;
 	}
 
-	public boolean hasFacetOfKind(SmFacetKind facetKind)
+	public boolean hasFacetOfKind(FacetKind facetKind)
 	{
 		return false;
 	}
@@ -238,18 +238,18 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return initialValue;
 	}
 
-	public SmAtomicUrType<A> prime()
+	public AtomicUrType<A> prime()
 	{
 		return this;
 	}
 
-	public boolean subtype(final SmPrimeType<A> rhs)
+	public boolean subtype(final PrimeType<A> rhs)
 	{
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final SmPrimeChoiceType<A> choiceType = (SmPrimeChoiceType<A>)rhs;
+				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case ANY_ATOMIC_TYPE:

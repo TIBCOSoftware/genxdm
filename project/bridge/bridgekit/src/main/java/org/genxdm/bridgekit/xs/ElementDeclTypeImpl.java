@@ -25,23 +25,23 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.components.ElementDefinition;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.NodeKind;
 import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.enums.ScopeExtent;
-import org.genxdm.xs.types.SmElementNodeType;
-import org.genxdm.xs.types.SmPrimeChoiceType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmPrimeTypeKind;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.ElementNodeType;
+import org.genxdm.xs.types.PrimeChoiceType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.PrimeTypeKind;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.Type;
 
 public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implements ElementDefinition<A>
 {
 	private final EnumSet<DerivationMethod> m_block = EnumSet.noneOf(DerivationMethod.class);
 	private final Set<DerivationMethod> m_blockUnmodifiable = Collections.unmodifiableSet(m_block);
-	private final HashMap<QName, SmIdentityConstraint<A>> m_constraints = new HashMap<QName, SmIdentityConstraint<A>>();
+	private final HashMap<QName, IdentityConstraint<A>> m_constraints = new HashMap<QName, IdentityConstraint<A>>();
 	private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
 	private final Set<DerivationMethod> m_finalUnmodifiable = Collections.unmodifiableSet(m_final);
 
@@ -65,20 +65,20 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 	/**
 	 * The {type} property is mutable.
 	 */
-	private SmType<A> m_type;
+	private Type<A> m_type;
 
-	public ElementDeclTypeImpl(final QName name, final ScopeExtent scope, final SmType<A> type)
+	public ElementDeclTypeImpl(final QName name, final ScopeExtent scope, final Type<A> type)
 	{
 		super(name, scope);
 		this.m_type = PreCondition.assertArgumentNotNull(type, "type");
 	}
 
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public void addIdentityConstraint(final SmIdentityConstraint<A> identityConstraint)
+	public void addIdentityConstraint(final IdentityConstraint<A> identityConstraint)
 	{
 		PreCondition.assertArgumentNotNull(identityConstraint, "identityConstraint");
 		m_constraints.put(identityConstraint.getName(), identityConstraint);
@@ -96,14 +96,14 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		return m_blockUnmodifiable;
 	}
 
-	public Iterable<SmIdentityConstraint<A>> getIdentityConstraints()
+	public Iterable<IdentityConstraint<A>> getIdentityConstraints()
 	{
 		return m_constraints.values();
 	}
 
-	public SmPrimeTypeKind getKind()
+	public PrimeTypeKind getKind()
 	{
-		return SmPrimeTypeKind.SCHEMA_ELEMENT;
+		return PrimeTypeKind.SCHEMA_ELEMENT;
 	}
 
 	public NodeKind getNodeKind()
@@ -126,7 +126,7 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		return m_substitutionGroupMembers;
 	}
 
-	public SmType<A> getType()
+	public Type<A> getType()
 	{
 		return m_type;
 	}
@@ -177,7 +177,7 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		return false;
 	}
 
-	public SmPrimeType<A> prime()
+	public PrimeType<A> prime()
 	{
 		return this;
 	}
@@ -249,21 +249,21 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		}
 	}
 
-	public void setType(final SmType<A> type)
+	public void setType(final Type<A> type)
 	{
 		assertNotLocked();
 		m_type = PreCondition.assertArgumentNotNull(type, "type");
 	}
 
 	@SuppressWarnings("unchecked")
-	public boolean subtype(final SmPrimeType rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		PreCondition.assertArgumentNotNull(rhs, "rhs");
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final SmPrimeChoiceType choiceType = (SmPrimeChoiceType)rhs;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case SCHEMA_ELEMENT:
@@ -273,7 +273,7 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 			}
 			case ELEMENT:
 			{
-				final SmElementNodeType<A> other = (SmElementNodeType<A>)rhs;
+				final ElementNodeType<A> other = (ElementNodeType<A>)rhs;
 				return getName().equals(other.getName());
 			}
 			case COMPLEX:

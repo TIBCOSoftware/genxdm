@@ -17,21 +17,21 @@ package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.components.SchemaWildcard;
-import org.genxdm.xs.constraints.SmNamespaceConstraint;
+import org.genxdm.xs.constraints.NamespaceConstraint;
 import org.genxdm.xs.enums.ProcessContentsMode;
 
 public final class WildcardImpl<A> implements SchemaWildcard<A>
 {
 	private final ProcessContentsMode m_processContents;
-	private final SmNamespaceConstraint m_namespaceConstraint;
+	private final NamespaceConstraint m_namespaceConstraint;
 
-	public WildcardImpl(final ProcessContentsMode processContents, final SmNamespaceConstraint namespaceConstraint)
+	public WildcardImpl(final ProcessContentsMode processContents, final NamespaceConstraint namespaceConstraint)
 	{
 		m_processContents = PreCondition.assertArgumentNotNull(processContents, "processContents");
 		m_namespaceConstraint = PreCondition.assertArgumentNotNull(namespaceConstraint, "namespaceConstraint");
 	}
 
-	public SmNamespaceConstraint getNamespaceConstraint()
+	public NamespaceConstraint getNamespaceConstraint()
 	{
 		return m_namespaceConstraint;
 	}

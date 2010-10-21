@@ -25,12 +25,12 @@ import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.exception.SrcPrefixNotFoundException;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.ComponentProvider;
-import org.genxdm.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.constraints.RestrictedXPath;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.exceptions.SimpleTypeException;
 import org.genxdm.xs.resolve.PrefixResolver;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
 
 
 final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
@@ -53,7 +53,7 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 	 * 
 	 * @return the parsed model implementing {@link com.tibco.xml.schema.SmIdentityConstraint.Path}
 	 */
-	public SmRestrictedXPath parseXPath(final String xpath, final PrefixResolver prefixes) throws SimpleTypeException
+	public RestrictedXPath parseXPath(final String xpath, final PrefixResolver prefixes) throws SimpleTypeException
 	{
 		PreCondition.assertArgumentNotNull(xpath, "xpath");
 		PreCondition.assertArgumentNotNull(prefixes, "prefixes");
@@ -208,7 +208,7 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 
 	private static <A> String ensureNCName(final String initialValue, final ComponentProvider<A> bootstrap, final AtomBridge<A> atomBridge) throws SimpleTypeException
 	{
-		final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.NCNAME);
+		final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.NCNAME);
 		try
 		{
 			final List<A> atoms = atomicType.validate(initialValue);

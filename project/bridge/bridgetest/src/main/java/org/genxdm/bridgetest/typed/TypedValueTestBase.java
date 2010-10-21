@@ -32,7 +32,7 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 public abstract class TypedValueTestBase<N, A> 
     extends GxTestBase<N>
@@ -126,10 +126,10 @@ public abstract class TypedValueTestBase<N, A>
 			builder.startDocument(new URI("http://www.minimal.com"), null);
 			try
 			{
-				builder.startElement(nameBridge.empty(), "root", XMLConstants.DEFAULT_NS_PREFIX, nameBridge.nativeType(SmNativeType.DOUBLE));
+				builder.startElement(nameBridge.empty(), "root", XMLConstants.DEFAULT_NS_PREFIX, nameBridge.nativeType(NativeType.DOUBLE));
 				try
 				{
-					builder.attribute(nameBridge.empty(), "a", XMLConstants.DEFAULT_NS_PREFIX, atomBridge.wrapAtom(atomBridge.createDouble(1)), nameBridge.nativeType(SmNativeType.DOUBLE));
+					builder.attribute(nameBridge.empty(), "a", XMLConstants.DEFAULT_NS_PREFIX, atomBridge.wrapAtom(atomBridge.createDouble(1)), nameBridge.nativeType(NativeType.DOUBLE));
 					builder.text(atomBridge.wrapAtom(atomBridge.createDouble(123)));
 				}
 				finally

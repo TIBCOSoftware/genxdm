@@ -19,7 +19,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.ElementDefinition;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.Type;
 
 public interface VxMetaBridge<A>
 {
@@ -27,5 +27,5 @@ public interface VxMetaBridge<A>
 
 	ElementDefinition<A> getElementDeclaration(QName elementName);
 
-	SmType<A> getTypeDefinition(QName typeName);
+	Type<A> getTypeDefinition(QName typeName);
 }

@@ -17,7 +17,7 @@ package org.genxdm.bridgekit.xs;
 
 import org.genxdm.typed.types.AtomBridge;
 
-final class OpXMLSchemaCompareShort<A> implements SmValueComp<A>
+final class OpXMLSchemaCompareShort<A> implements ValueComparator<A>
 {
 	private final OpXMLSchemaCompare opcode;
 	private final short operandRHS;

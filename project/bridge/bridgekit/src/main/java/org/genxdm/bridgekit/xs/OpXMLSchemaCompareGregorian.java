@@ -21,7 +21,7 @@ import javax.xml.datatype.DatatypeConstants;
 
 import org.genxdm.typed.types.AtomBridge;
 
-public final class OpXMLSchemaCompareGregorian<A> implements SmValueComp<A>
+public final class OpXMLSchemaCompareGregorian<A> implements ValueComparator<A>
 {
 	private static int FOURTEEN_HOURS_IN_MINUTES = 840;
 

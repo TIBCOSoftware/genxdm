@@ -22,9 +22,9 @@ import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.constraints.IdentityConstraint;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.SimpleType;
 
 public interface Schema<A> extends ComponentBag<A>, ComponentProvider<A>
 {
@@ -36,13 +36,13 @@ public interface Schema<A> extends ComponentBag<A>, ComponentProvider<A>
 
 	void defineAttributeGroup(final AttributeGroupDefinition<A> attributeGroup);
 
-	void defineComplexType(final SmComplexType<A> complexType);
+	void defineComplexType(final ComplexType<A> complexType);
 
-	void defineIdentityConstraint(final SmIdentityConstraint<A> identityConstraint);
+	void defineIdentityConstraint(final IdentityConstraint<A> identityConstraint);
 
 	void defineModelGroup(final ModelGroup<A> modelGroup);
 
-	void defineSimpleType(final SmSimpleType<A> simpleType);
+	void defineSimpleType(final SimpleType<A> simpleType);
 
 	Iterable<String> getNamespaces();
 
