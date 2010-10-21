@@ -21,7 +21,7 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.IllegalNullArgumentException;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * Provides lookups for certain well-known names.
@@ -108,7 +108,7 @@ public class NameSource
 
     protected void initialize()
     {
-        for (final SmNativeType nativeType : SmNativeType.values())
+        for (final NativeType nativeType : NativeType.values())
         {
             final QName name = new QName(W3C_XML_SCHEMA_NS_URI, nativeType.getLocalName());
             nameToNative.put(name, nativeType);
@@ -162,18 +162,18 @@ public class NameSource
     }
 
     /**
-     * Given a name, return a corresponding {@link SmNativeType}. <br/>
+     * Given a name, return a corresponding {@link NativeType}. <br/>
      * If the name is not a built-in type, returns <code>null</code>.
      */
-    public final SmNativeType nativeType(final QName name)
+    public final NativeType nativeType(final QName name)
     {
         return nameToNative.get(name);
     }
 
     /**
-     * Given an {@link SmNativeType}, lookup a corresponding name.
+     * Given an {@link NativeType}, lookup a corresponding name.
      */
-    public final QName nativeType(final SmNativeType nativeType)
+    public final QName nativeType(final NativeType nativeType)
     {
         IllegalNullArgumentException.check(nativeType, "nativeType");
         final QName name = nativeToName.get(nativeType);
@@ -189,8 +189,8 @@ public class NameSource
         return W3C_XML_SCHEMA_NS_URI;
     }
 
-    private final HashMap<QName, SmNativeType> nameToNative = new HashMap<QName, SmNativeType>();
-    private final HashMap<SmNativeType, QName> nativeToName = new HashMap<SmNativeType, QName>();
+    private final HashMap<QName, NativeType> nameToNative = new HashMap<QName, NativeType>();
+    private final HashMap<NativeType, QName> nativeToName = new HashMap<NativeType, QName>();
     private String NULL_NS_URI = XMLConstants.NULL_NS_URI;
     private String W3C_XML_SCHEMA_NS_URI = XMLConstants.W3C_XML_SCHEMA_NS_URI;
     private String XML_NS_URI = XMLConstants.XML_NS_URI;

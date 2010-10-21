@@ -18,7 +18,7 @@ package org.genxdm.bridgekit.atoms;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.IllegalNullArgumentException;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 public final class XmlForeignAtom extends XmlAbstractAtom
 {
@@ -49,7 +49,7 @@ public final class XmlForeignAtom extends XmlAbstractAtom
 		return baseAtom.getC14NForm();
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
 		return baseAtom.getNativeType();
 	}

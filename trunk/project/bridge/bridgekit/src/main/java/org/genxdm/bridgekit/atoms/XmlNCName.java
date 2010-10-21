@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.atoms;
 
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#NCName">NCName</a>.
@@ -59,9 +59,9 @@ public final class XmlNCName extends XmlAbstractAtom
 		return stringValue;
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.NCNAME;
+		return NativeType.NCNAME;
 	}
 
 	@Override

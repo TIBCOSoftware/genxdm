@@ -28,33 +28,33 @@ import org.genxdm.names.NameSource;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.components.SchemaWildcard;
-import org.genxdm.xs.constraints.SmAttributeUse;
-import org.genxdm.xs.constraints.SmNamespaceConstraint;
+import org.genxdm.xs.constraints.AttributeUse;
+import org.genxdm.xs.constraints.NamespaceConstraint;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ProcessContentsMode;
 import org.genxdm.xs.enums.ScopeExtent;
-import org.genxdm.xs.types.SmComplexUrType;
-import org.genxdm.xs.types.SmContentType;
-import org.genxdm.xs.types.SmPrimeChoiceType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmPrimeTypeKind;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.ComplexUrType;
+import org.genxdm.xs.types.ContentType;
+import org.genxdm.xs.types.PrimeChoiceType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.PrimeTypeKind;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.Type;
 
 /**
  * xs:anyType
  */
-final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implements SmComplexUrType<A>
+final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implements ComplexUrType<A>
 {
 	private final SchemaWildcard<A> attributeWildcard;
-	private final SmContentType<A> contentType;
+	private final ContentType<A> contentType;
 	private final QName name;
 
 	public ComplexUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final NameSource nameBridge)
 	{
 		this.name = new QName(W3C_XML_SCHEMA_NS_URI, "anyType");
 
-		final SchemaWildcard<A> anyTerm = new WildcardImpl<A>(ProcessContentsMode.Lax, SmNamespaceConstraint.Any(nameBridge));
+		final SchemaWildcard<A> anyTerm = new WildcardImpl<A>(ProcessContentsMode.Lax, NamespaceConstraint.Any(nameBridge));
 
 		final LinkedList<SchemaParticle<A>> particles = new LinkedList<SchemaParticle<A>>();
 		particles.add(new ParticleWithWildcardTerm<A>(0, anyTerm));
@@ -65,7 +65,7 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		this.attributeWildcard = anyTerm;
 	}
 
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		visitor.visit(this);
 	}
@@ -75,12 +75,12 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		return false;
 	}
 
-	public boolean derivedFromType(final SmType<A> ancestorType, final Set<DerivationMethod> derivationMethods)
+	public boolean derivedFromType(final Type<A> ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
 		return false;
 	}
 
-	public Map<QName, SmAttributeUse<A>> getAttributeUses()
+	public Map<QName, AttributeUse<A>> getAttributeUses()
 	{
 		return Collections.emptyMap();
 	}
@@ -95,7 +95,7 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		return null;
 	}
 
-	public SmContentType<A> getContentType()
+	public ContentType<A> getContentType()
 	{
 		return contentType;
 	}
@@ -110,9 +110,9 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		return EnumSet.noneOf(DerivationMethod.class);
 	}
 
-	public SmPrimeTypeKind getKind()
+	public PrimeTypeKind getKind()
 	{
-		return SmPrimeTypeKind.ANY_TYPE;
+		return PrimeTypeKind.ANY_TYPE;
 	}
 
 	public String getLocalName()
@@ -196,7 +196,7 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		// Ignore.
 	}
 
-	public SmPrimeType<A> prime()
+	public PrimeType<A> prime()
 	{
 		return this;
 	}
@@ -216,7 +216,7 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		throw new AssertionError(getName());
 	}
 
-	public void setContentType(final SmContentType<A> contentType)
+	public void setContentType(final ContentType<A> contentType)
 	{
 		throw new AssertionError(getName());
 	}
@@ -226,14 +226,14 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		throw new AssertionError(getName());
 	}
 
-	public boolean subtype(final SmPrimeType<A> rhs)
+	public boolean subtype(final PrimeType<A> rhs)
 	{
 		PreCondition.assertArgumentNotNull(rhs, "type");
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final SmPrimeChoiceType<A> choiceType = (SmPrimeChoiceType<A>)rhs;
+				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case ANY_TYPE:

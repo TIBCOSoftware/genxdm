@@ -15,9 +15,9 @@
  */
 package org.genxdm.xs.components;
 
-import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.constraints.IdentityConstraint;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.SimpleType;
 
 /**
  * Defines a bag of schema components.
@@ -43,7 +43,7 @@ public interface ComponentBag<A>
 	/**
 	 * Returns the Complex type definitions.
 	 */
-	Iterable<SmComplexType<A>> getComplexTypes();
+	Iterable<ComplexType<A>> getComplexTypes();
 
 	/**
 	 * Returns the Element declarations.
@@ -53,7 +53,7 @@ public interface ComponentBag<A>
 	/**
 	 * Returns the Identity-constraint definitions.
 	 */
-	Iterable<SmIdentityConstraint<A>> getIdentityConstraints();
+	Iterable<IdentityConstraint<A>> getIdentityConstraints();
 
 	/**
 	 * Returns the Model group definitions.
@@ -68,5 +68,5 @@ public interface ComponentBag<A>
 	/**
 	 * Returns the Simple type definitions.
 	 */
-	Iterable<SmSimpleType<A>> getSimpleTypes();
+	Iterable<SimpleType<A>> getSimpleTypes();
 }

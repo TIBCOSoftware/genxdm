@@ -22,27 +22,27 @@ import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.NodeKind;
 import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.enums.ScopeExtent;
-import org.genxdm.xs.types.SmElementNodeType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmPrimeTypeKind;
-import org.genxdm.xs.types.SmSequenceType;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.xs.types.ElementNodeType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.PrimeTypeKind;
+import org.genxdm.xs.types.SequenceType;
+import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class ElementNodeWithParentAxisType<A> implements SmElementNodeType<A>
+final class ElementNodeWithParentAxisType<A> implements ElementNodeType<A>
 {
-	private final SmElementNodeType<A> m_element;
+	private final ElementNodeType<A> m_element;
 
-	public ElementNodeWithParentAxisType(final SmElementNodeType<A> element, final ElementDefinition<A> parentAxis)
+	public ElementNodeWithParentAxisType(final ElementNodeType<A> element, final ElementDefinition<A> parentAxis)
 	{
 		m_element = PreCondition.assertArgumentNotNull(element);
 	}
 
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public SmPrimeTypeKind getKind()
+	public PrimeTypeKind getKind()
 	{
 		return m_element.getKind();
 	}
@@ -72,7 +72,7 @@ final class ElementNodeWithParentAxisType<A> implements SmElementNodeType<A>
 		return m_element.getTargetNamespace();
 	}
 
-	public SmSequenceType<A> getType()
+	public SequenceType<A> getType()
 	{
 		return m_element.getType();
 	}
@@ -102,7 +102,7 @@ final class ElementNodeWithParentAxisType<A> implements SmElementNodeType<A>
 		return m_element.isNone();
 	}
 
-	public SmPrimeType<A> prime()
+	public PrimeType<A> prime()
 	{
 		return this;
 	}
@@ -112,7 +112,7 @@ final class ElementNodeWithParentAxisType<A> implements SmElementNodeType<A>
 		return m_element.quantifier();
 	}
 
-	public boolean subtype(final SmPrimeType<A> rhs)
+	public boolean subtype(final PrimeType<A> rhs)
 	{
 		return m_element.subtype(rhs);
 	}

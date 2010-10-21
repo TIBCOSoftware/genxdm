@@ -15,7 +15,7 @@
  */
 package org.genxdm.processor.w3c.xs;
 
-import org.genxdm.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.constraints.RestrictedXPath;
 import org.genxdm.xs.exceptions.SimpleTypeException;
 import org.genxdm.xs.resolve.PrefixResolver;
 
@@ -25,5 +25,5 @@ import org.genxdm.xs.resolve.PrefixResolver;
  */
 interface SmRestrictedXPathParser
 {
-	SmRestrictedXPath parseXPath(final String xpath, final PrefixResolver prefixes) throws SimpleTypeException;
+	RestrictedXPath parseXPath(final String xpath, final PrefixResolver prefixes) throws SimpleTypeException;
 }

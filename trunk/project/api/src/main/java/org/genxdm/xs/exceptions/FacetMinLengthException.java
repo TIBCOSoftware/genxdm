@@ -17,8 +17,8 @@ package org.genxdm.xs.exceptions;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.enums.ValidationOutcome;
-import org.genxdm.xs.facets.SmLengthFacetUOM;
-import org.genxdm.xs.facets.SmMinLength;
+import org.genxdm.xs.facets.LengthFacetUOM;
+import org.genxdm.xs.facets.MinLength;
 
 
 /**
@@ -27,11 +27,11 @@ import org.genxdm.xs.facets.SmMinLength;
 @SuppressWarnings("serial")
 public final class FacetMinLengthException extends FacetException
 {
-	private final SmMinLength<?> minLength;
+	private final MinLength<?> minLength;
 	private final int actualLength;
-	private final SmLengthFacetUOM uom;
+	private final LengthFacetUOM uom;
 
-	public FacetMinLengthException(final SmMinLength<?> minLength, final int actualLength, final SmLengthFacetUOM uom)
+	public FacetMinLengthException(final MinLength<?> minLength, final int actualLength, final LengthFacetUOM uom)
 	{
 		super(ValidationOutcome.CVC_MinLength);
 		this.minLength = minLength;

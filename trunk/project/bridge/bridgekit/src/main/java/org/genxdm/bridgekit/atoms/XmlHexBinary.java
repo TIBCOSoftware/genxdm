@@ -18,7 +18,7 @@ package org.genxdm.bridgekit.atoms;
 import java.util.Arrays;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#hexBinary">hexBinary</a>.
@@ -58,9 +58,9 @@ public final class XmlHexBinary extends XmlAbstractAtom
 		return HexBinarySupport.encodeHex(bytes);
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.HEX_BINARY;
+		return NativeType.HEX_BINARY;
 	}
 
 	public boolean isWhiteSpace()

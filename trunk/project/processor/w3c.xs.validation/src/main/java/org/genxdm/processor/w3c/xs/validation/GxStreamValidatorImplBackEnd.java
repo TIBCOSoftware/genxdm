@@ -25,8 +25,8 @@ import javax.xml.namespace.QName;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.processor.w3c.xs.validation.api.VxOutputHandler;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 
 
 final class GxStreamValidatorImplBackEnd<A> implements VxOutputHandler<A>
@@ -37,7 +37,7 @@ final class GxStreamValidatorImplBackEnd<A> implements VxOutputHandler<A>
 	public final ArrayList<List<? extends A>> m_attributeAtoms = new ArrayList<List<? extends A>>();
 	public final ArrayList<QName> m_attributeNames = new ArrayList<QName>();
 	public final ArrayList<QName> m_attributeTypes = new ArrayList<QName>();
-	public SmType<A> m_dataType;
+	public Type<A> m_dataType;
 	public String m_elementLN;
 	public String m_elementNS;
 	public String m_elementPH;
@@ -50,7 +50,7 @@ final class GxStreamValidatorImplBackEnd<A> implements VxOutputHandler<A>
 		this.m_atomBridge = atomBridge;
 	}
 
-	public void attribute(final QName name, final List<? extends A> value, final SmSimpleType<A> type) throws IOException
+	public void attribute(final QName name, final List<? extends A> value, final SimpleType<A> type) throws IOException
 	{
 		m_attributeNames.add(name);
 		m_attributeAtoms.add(value);
@@ -105,7 +105,7 @@ final class GxStreamValidatorImplBackEnd<A> implements VxOutputHandler<A>
 		// Ignore.
 	}
 
-	public void startElement(final QName name, final SmType<A> type) throws IOException
+	public void startElement(final QName name, final Type<A> type) throws IOException
 	{
 		m_elementNS = name.getNamespaceURI();
 		m_elementLN = name.getLocalPart();

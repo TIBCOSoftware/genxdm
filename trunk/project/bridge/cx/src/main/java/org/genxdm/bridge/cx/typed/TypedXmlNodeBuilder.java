@@ -28,7 +28,7 @@ import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.io.SequenceBuilder;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.Type;
 
 public class TypedXmlNodeBuilder
     extends XmlNodeBuilder
@@ -52,7 +52,7 @@ public class TypedXmlNodeBuilder
     {
         flushCatch();
         depth++;
-        SmType<XmlAtom> stype = context.getTypeDefinition(type);
+        Type<XmlAtom> stype = context.getTypeDefinition(type);
         if (current != null)
         {
             final XmlAttributeNode attribute = factory.createAttribute(currentDoc, namespaceURI, localName, prefix, data, stype);
@@ -78,7 +78,7 @@ public class TypedXmlNodeBuilder
     {
         flushCatch();
         depth++;
-        SmType<XmlAtom> stype = context.getTypeDefinition(type);
+        Type<XmlAtom> stype = context.getTypeDefinition(type);
         if (current != null)
         {
             final XmlElementNode element = factory.createElement(currentDoc, namespaceURI, localName, prefix, stype);

@@ -22,8 +22,8 @@ import org.genxdm.bridge.dom.DomProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XmlAtomBridge;
 import org.genxdm.bridgekit.tree.CursorOnTypedModel;
-import org.genxdm.bridgekit.xs.GxMetaBridgeOnSmMetaBridgeAdapter;
-import org.genxdm.bridgekit.xs.SmMetaBridgeFactory;
+import org.genxdm.bridgekit.xs.MetaBridgeOnSchemaTypeBridgeAdapter;
+import org.genxdm.bridgekit.xs.SchemaTypeBridgeFactory;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.TypedContext;
@@ -39,15 +39,15 @@ import org.genxdm.xs.components.ComponentBag;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.types.SmAtomicType;
-import org.genxdm.xs.types.SmAtomicUrType;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmComplexUrType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmSimpleUrType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.constraints.IdentityConstraint;
+import org.genxdm.xs.types.AtomicType;
+import org.genxdm.xs.types.AtomicUrType;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.ComplexUrType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.SimpleUrType;
+import org.genxdm.xs.types.Type;
 import org.w3c.dom.Node;
 
 public final class DomSAProcessingContext 
@@ -56,8 +56,8 @@ public final class DomSAProcessingContext
 	public DomSAProcessingContext(DomProcessingContext parent)
 	{
 		this.atomBridge = new XmlAtomBridge(this, new NameSource());
-		this.m_cache = new SmMetaBridgeFactory<XmlAtom>(atomBridge).newMetaBridge();
-		this.m_metaBridge = new GxMetaBridgeOnSmMetaBridgeAdapter<XmlAtom>(m_cache, atomBridge);
+		this.m_cache = new SchemaTypeBridgeFactory<XmlAtom>(atomBridge).newMetaBridge();
+		this.m_metaBridge = new MetaBridgeOnSchemaTypeBridgeAdapter<XmlAtom>(m_cache, atomBridge);
 		this.m_model = new DomSAModel(this);
 		this.parent = PreCondition.assertNotNull(parent);
 	}
@@ -96,14 +96,14 @@ public final class DomSAProcessingContext
 		m_cache.defineAttributeGroup(attributeGroup);
 	}
 	
-	public void defineComplexType(final SmComplexType<XmlAtom> complexType)
+	public void defineComplexType(final ComplexType<XmlAtom> complexType)
 	{
 		PreCondition.assertArgumentNotNull(complexType, "complexType");
 		PreCondition.assertFalse(isLocked(), "isLocked()");
 		m_cache.defineComplexType(complexType);
 	}
 	
-	public void defineIdentityConstraint(final SmIdentityConstraint<XmlAtom> identityConstraint)
+	public void defineIdentityConstraint(final IdentityConstraint<XmlAtom> identityConstraint)
 	{
 		PreCondition.assertArgumentNotNull(identityConstraint, "identityConstraint");
 		PreCondition.assertFalse(isLocked(), "isLocked()");
@@ -117,7 +117,7 @@ public final class DomSAProcessingContext
 		m_cache.defineModelGroup(modelGroup);
 	}
 
-	public void defineSimpleType(final SmSimpleType<XmlAtom> simpleType)
+	public void defineSimpleType(final SimpleType<XmlAtom> simpleType)
 	{
 		PreCondition.assertArgumentNotNull(simpleType, "simpleType");
 		PreCondition.assertFalse(isLocked(), "isLocked()");
@@ -134,17 +134,17 @@ public final class DomSAProcessingContext
 		return atomBridge;
 	}
 
-	public SmAtomicType<XmlAtom> getAtomicType(final QName name)
+	public AtomicType<XmlAtom> getAtomicType(final QName name)
 	{
 		return m_cache.getAtomicType(name);
 	}
 
-	public SmAtomicType<XmlAtom> getAtomicType(final SmNativeType name)
+	public AtomicType<XmlAtom> getAtomicType(final NativeType name)
 	{
 		return m_cache.getAtomicType(name);
 	}
 
-	public SmAtomicUrType<XmlAtom> getAtomicUrType()
+	public AtomicUrType<XmlAtom> getAtomicUrType()
 	{
 		return m_cache.getAtomicUrType();
 	}
@@ -169,17 +169,17 @@ public final class DomSAProcessingContext
 		return m_cache.getAttributes();
 	}
 
-	public SmComplexType<XmlAtom> getComplexType(final QName name)
+	public ComplexType<XmlAtom> getComplexType(final QName name)
 	{
 		return m_cache.getComplexType(name);
 	}
 
-	public Iterable<SmComplexType<XmlAtom>> getComplexTypes()
+	public Iterable<ComplexType<XmlAtom>> getComplexTypes()
 	{
 		return m_cache.getComplexTypes();
 	}
 
-	public SmComplexUrType<XmlAtom> getComplexUrType()
+	public ComplexUrType<XmlAtom> getComplexUrType()
 	{
 		return m_cache.getComplexUrType();
 	}
@@ -194,12 +194,12 @@ public final class DomSAProcessingContext
 		return m_cache.getElements();
 	}
 
-	public SmIdentityConstraint<XmlAtom> getIdentityConstraint(final QName name)
+	public IdentityConstraint<XmlAtom> getIdentityConstraint(final QName name)
 	{
 		return m_cache.getIdentityConstraint(name);
 	}
 
-	public Iterable<SmIdentityConstraint<XmlAtom>> getIdentityConstraints()
+	public Iterable<IdentityConstraint<XmlAtom>> getIdentityConstraints()
 	{
 		return m_cache.getIdentityConstraints();
 	}
@@ -244,32 +244,32 @@ public final class DomSAProcessingContext
 	    return parent;
 	}
 
-	public SmSimpleType<XmlAtom> getSimpleType(final QName name)
+	public SimpleType<XmlAtom> getSimpleType(final QName name)
 	{
 		return m_cache.getSimpleType(name);
 	}
 
-	public SmSimpleType<XmlAtom> getSimpleType(final SmNativeType name)
+	public SimpleType<XmlAtom> getSimpleType(final NativeType name)
 	{
 		return m_cache.getSimpleType(name);
 	}
 
-	public Iterable<SmSimpleType<XmlAtom>> getSimpleTypes()
+	public Iterable<SimpleType<XmlAtom>> getSimpleTypes()
 	{
 		return m_cache.getSimpleTypes();
 	}
 
-	public SmSimpleUrType<XmlAtom> getSimpleUrType()
+	public SimpleUrType<XmlAtom> getSimpleUrType()
 	{
 		return m_cache.getSimpleUrType();
 	}
 	
-	public SmType<XmlAtom> getTypeDefinition(final QName typeName)
+	public Type<XmlAtom> getTypeDefinition(final QName typeName)
 	{
 		return m_cache.getTypeDefinition(typeName);
 	}
 
-	public SmType<XmlAtom> getTypeDefinition(final SmNativeType nativeType)
+	public Type<XmlAtom> getTypeDefinition(final NativeType nativeType)
 	{
 		return m_cache.getTypeDefinition(nativeType);
 	}

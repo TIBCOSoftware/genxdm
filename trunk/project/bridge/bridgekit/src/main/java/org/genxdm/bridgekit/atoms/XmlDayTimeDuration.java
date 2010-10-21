@@ -18,7 +18,7 @@ package org.genxdm.bridgekit.atoms;
 import java.math.BigDecimal;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#dayTimeDuration">dayTimeDuration</a>.
@@ -55,9 +55,9 @@ public final class XmlDayTimeDuration extends XmlAbstractAtom implements Compara
 		return DurationSupport.formatDayTimeDurationC14N(seconds);
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.DURATION_DAYTIME;
+		return NativeType.DURATION_DAYTIME;
 	}
 
 	public boolean isWhiteSpace()

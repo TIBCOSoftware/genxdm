@@ -17,14 +17,14 @@ package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.enums.KeeneQuantifier;
-import org.genxdm.xs.types.SmConcatType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmSequenceType;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.xs.types.ConcatType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.SequenceType;
+import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class ZConcatType<A> implements SmConcatType<A>
+final class ZConcatType<A> implements ConcatType<A>
 {
-	public static <A> SmSequenceType<A> concat(final SmSequenceType<A> lhs, final SmSequenceType<A> rhs)
+	public static <A> SequenceType<A> concat(final SequenceType<A> lhs, final SequenceType<A> rhs)
 	{
 		PreCondition.assertArgumentNotNull(lhs, "lhs");
 		PreCondition.assertArgumentNotNull(rhs, "rhs");
@@ -45,32 +45,32 @@ final class ZConcatType<A> implements SmConcatType<A>
 			return new ZConcatType<A>(lhs, rhs);
 		}
 	}
-	private final SmSequenceType<A> m_lhs;
+	private final SequenceType<A> m_lhs;
 
-	private final SmSequenceType<A> m_rhs;
+	private final SequenceType<A> m_rhs;
 
-	private ZConcatType(final SmSequenceType<A> lhs, final SmSequenceType<A> rhs)
+	private ZConcatType(final SequenceType<A> lhs, final SequenceType<A> rhs)
 	{
 		m_lhs = PreCondition.assertArgumentNotNull(lhs);
 		m_rhs = PreCondition.assertArgumentNotNull(rhs);
 	}
 
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public SmSequenceType<A> getLHS()
+	public SequenceType<A> getLHS()
 	{
 		return m_lhs;
 	}
 
-	public SmSequenceType<A> getRHS()
+	public SequenceType<A> getRHS()
 	{
 		return m_rhs;
 	}
 
-	public SmPrimeType<A> prime()
+	public PrimeType<A> prime()
 	{
 		return ZPrimeChoiceType.choice(m_lhs.prime(), m_rhs.prime());
 	}

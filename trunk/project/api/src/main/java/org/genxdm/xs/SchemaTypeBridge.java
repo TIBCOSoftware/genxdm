@@ -20,17 +20,17 @@ import javax.xml.namespace.QName;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.enums.KeeneQuantifier;
-import org.genxdm.xs.types.SmAttributeNodeType;
-import org.genxdm.xs.types.SmCommentNodeType;
-import org.genxdm.xs.types.SmDocumentNodeType;
-import org.genxdm.xs.types.SmElementNodeType;
-import org.genxdm.xs.types.SmEmptyType;
-import org.genxdm.xs.types.SmNamespaceNodeType;
-import org.genxdm.xs.types.SmNoneType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmProcessingInstructionNodeType;
-import org.genxdm.xs.types.SmSequenceType;
-import org.genxdm.xs.types.SmTextNodeType;
+import org.genxdm.xs.types.AttributeNodeType;
+import org.genxdm.xs.types.CommentNodeType;
+import org.genxdm.xs.types.DocumentNodeType;
+import org.genxdm.xs.types.ElementNodeType;
+import org.genxdm.xs.types.EmptyType;
+import org.genxdm.xs.types.NamespaceNodeType;
+import org.genxdm.xs.types.NoneType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.ProcessingInstructionNodeType;
+import org.genxdm.xs.types.SequenceType;
+import org.genxdm.xs.types.TextNodeType;
 
 /**
  * The metadata interface provided by the schema model implementation.
@@ -40,61 +40,61 @@ import org.genxdm.xs.types.SmTextNodeType;
  */
 public interface SchemaTypeBridge<A> extends Schema<A>
 {
-	SmSequenceType<A> atomSet(SmSequenceType<A> type);
+	SequenceType<A> atomSet(SequenceType<A> type);
 
-	SmSequenceType<A> attributeAxis(SmSequenceType<A> contextType);
+	SequenceType<A> attributeAxis(SequenceType<A> contextType);
 
-	SmAttributeNodeType<A> attributeType(QName name, SmSequenceType<A> type);
+	AttributeNodeType<A> attributeType(QName name, SequenceType<A> type);
 
-	SmAttributeNodeType<A> attributeWild(SmSequenceType<A> type);
+	AttributeNodeType<A> attributeWild(SequenceType<A> type);
 
-	SmSequenceType<A> childAxis(SmSequenceType<A> contextType);
+	SequenceType<A> childAxis(SequenceType<A> contextType);
 
-	SmSequenceType<A> choice(SmSequenceType<A> one, SmSequenceType<A> two);
+	SequenceType<A> choice(SequenceType<A> one, SequenceType<A> two);
 
-	SmCommentNodeType<A> commentType();
+	CommentNodeType<A> commentType();
 
-	SmSequenceType<A> concat(SmSequenceType<A> one, SmSequenceType<A> two);
+	SequenceType<A> concat(SequenceType<A> one, SequenceType<A> two);
 
-	SmDocumentNodeType<A> documentType(SmSequenceType<A> contextType);
+	DocumentNodeType<A> documentType(SequenceType<A> contextType);
 
-	SmElementNodeType<A> elementType(QName name, SmSequenceType<A> type, boolean nillable);
+	ElementNodeType<A> elementType(QName name, SequenceType<A> type, boolean nillable);
 
-	SmElementNodeType<A> elementWild(SmSequenceType<A> type, boolean nillable);
+	ElementNodeType<A> elementWild(SequenceType<A> type, boolean nillable);
 
-	SmEmptyType<A> emptyType();
+	EmptyType<A> emptyType();
 
 	AtomBridge<A> getAtomBridge();
 
-	QName getName(SmSequenceType<A> type);
+	QName getName(SequenceType<A> type);
 
 	NameSource getNameBridge();
 
-	SmSequenceType<A> interleave(SmSequenceType<A> one, SmSequenceType<A> two);
+	SequenceType<A> interleave(SequenceType<A> one, SequenceType<A> two);
 
-	SmPrimeType<A> itemType();
+	PrimeType<A> itemType();
 
-	SmSequenceType<A> multiply(SmSequenceType<A> argument, KeeneQuantifier multiplier);
+	SequenceType<A> multiply(SequenceType<A> argument, KeeneQuantifier multiplier);
 
-	SmNamespaceNodeType<A> namespaceType();
+	NamespaceNodeType<A> namespaceType();
 
-	SmPrimeType<A> nodeType();
+	PrimeType<A> nodeType();
 
-	SmNoneType<A> noneType();
+	NoneType<A> noneType();
 
-	SmNoneType<A> noneType(QName errorCode);
+	NoneType<A> noneType(QName errorCode);
 
-	SmSequenceType<A> oneOrMore(SmSequenceType<A> type);
+	SequenceType<A> oneOrMore(SequenceType<A> type);
 
-	SmSequenceType<A> optional(SmSequenceType<A> type);
+	SequenceType<A> optional(SequenceType<A> type);
 
-	SmProcessingInstructionNodeType<A> processingInstructionType(String name);
+	ProcessingInstructionNodeType<A> processingInstructionType(String name);
 
-	boolean sameAs(SmSequenceType<A> one, SmSequenceType<A> two);
+	boolean sameAs(SequenceType<A> one, SequenceType<A> two);
 
-	boolean subtype(SmSequenceType<A> lhs, SmSequenceType<A> rhs);
+	boolean subtype(SequenceType<A> lhs, SequenceType<A> rhs);
 
-	SmTextNodeType<A> textType();
+	TextNodeType<A> textType();
 
-	SmSequenceType<A> zeroOrMore(SmSequenceType<A> type);
+	SequenceType<A> zeroOrMore(SequenceType<A> type);
 }

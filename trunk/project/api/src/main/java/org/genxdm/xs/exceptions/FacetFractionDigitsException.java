@@ -16,7 +16,7 @@
 package org.genxdm.xs.exceptions;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.facets.SmFractionDigits;
+import org.genxdm.xs.facets.FractionDigits;
 
 /**
  * xs:totalDigits
@@ -25,9 +25,9 @@ import org.genxdm.xs.facets.SmFractionDigits;
 public final class FacetFractionDigitsException extends FacetException
 {
 	private final String value;
-	private final SmFractionDigits<?> fractionDigits;
+	private final FractionDigits<?> fractionDigits;
 
-	public FacetFractionDigitsException(final String value, final SmFractionDigits<?> fractionDigits)
+	public FacetFractionDigitsException(final String value, final FractionDigits<?> fractionDigits)
 	{
 		this.value = PreCondition.assertArgumentNotNull(value, "value");
 		this.fractionDigits = fractionDigits;

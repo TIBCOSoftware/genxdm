@@ -18,7 +18,7 @@ package org.genxdm.processor.w3c.xs.validation.api;
 import javax.xml.namespace.QName;
 
 import org.genxdm.xs.components.ElementDefinition;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.Type;
 
 public interface VxPSVI<A>
 {
@@ -28,7 +28,7 @@ public interface VxPSVI<A>
 
 	VxPSVI<A> getParent();
 
-	SmType<A> getType();
+	Type<A> getType();
 
 	boolean isNilled();
 }

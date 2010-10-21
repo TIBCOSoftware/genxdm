@@ -22,8 +22,8 @@ import javax.xml.XMLConstants;
 import org.genxdm.DtdAttributeKind;
 import org.genxdm.NodeKind;
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.genxdm.xs.types.SmAtomicType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.AtomicType;
+import org.genxdm.xs.types.Type;
 
 public final class XmlAttributeNode
     extends XmlLeafNode
@@ -41,7 +41,7 @@ public final class XmlAttributeNode
     }
     // TODO: add a typed constructor.  but the one we had wasn't right.
     
-    XmlAttributeNode(final XmlRootNode document, final String namespace, final String localName, final String prefix, final SmType<XmlAtom> type, final List<XmlAtom> data)
+    XmlAttributeNode(final XmlRootNode document, final String namespace, final String localName, final String prefix, final Type<XmlAtom> type, final List<XmlAtom> data)
     {
         super(NodeKind.ATTRIBUTE, document, type, data);
         this.namespaceURI = (namespace == null) ? "" : namespace;
@@ -64,7 +64,7 @@ public final class XmlAttributeNode
         // true if type is xs:ID
         if ( (type != null) && type.isNative() && type.isAtomicType() )
         {
-            SmAtomicType<XmlAtom> atomicType = (SmAtomicType<XmlAtom>)type;
+            AtomicType<XmlAtom> atomicType = (AtomicType<XmlAtom>)type;
             if (atomicType.isID())
                 return true;
         }
@@ -78,7 +78,7 @@ public final class XmlAttributeNode
         // true if type is xs:IDREF or xs:IDREFS
         if ( type.isNative() && type.isAtomicType() )
         {
-            SmAtomicType<XmlAtom> atomicType = (SmAtomicType<XmlAtom>)type;
+            AtomicType<XmlAtom> atomicType = (AtomicType<XmlAtom>)type;
             if (atomicType.isIDREF() || atomicType.isIDREFS())
                 return true;
         }

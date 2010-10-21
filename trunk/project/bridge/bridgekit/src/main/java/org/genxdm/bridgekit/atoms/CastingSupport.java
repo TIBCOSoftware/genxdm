@@ -30,9 +30,9 @@ import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
 import org.genxdm.xs.Schema;
 import org.genxdm.xs.exceptions.DatatypeException;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 
 final class CastingSupport
 {
@@ -75,7 +75,7 @@ final class CastingSupport
 	private static final BigInteger UNSIGNED_SHORT_MAX_VALUE = BigInteger.valueOf(65535);
 	private static final QName XPTY0004 = new QName("http://www.w3.org/2005/xqt-errors/", "XPTY0004", "err");
 
-	private static void assertDoubleIsNumber(final double dblval, final SmNativeType target) throws GxmlAtomCastException
+	private static void assertDoubleIsNumber(final double dblval, final NativeType target) throws GxmlAtomCastException
 	{
 		if (Double.isNaN(dblval))
 		{
@@ -83,7 +83,7 @@ final class CastingSupport
 		}
 	}
 
-	private static void assertDoubleNotInfinite(final double dblval, final SmNativeType target) throws GxmlAtomCastException
+	private static void assertDoubleNotInfinite(final double dblval, final NativeType target) throws GxmlAtomCastException
 	{
 		if (Double.isInfinite(dblval))
 		{
@@ -91,7 +91,7 @@ final class CastingSupport
 		}
 	}
 
-	private static void assertFloatIsNumber(final float dblval, final SmNativeType target) throws GxmlAtomCastException
+	private static void assertFloatIsNumber(final float dblval, final NativeType target) throws GxmlAtomCastException
 	{
 		if (Float.isNaN(dblval))
 		{
@@ -99,7 +99,7 @@ final class CastingSupport
 		}
 	}
 
-	private static void assertFloatNotInfinite(final float fltval, final SmNativeType target) throws GxmlAtomCastException
+	private static void assertFloatNotInfinite(final float fltval, final NativeType target) throws GxmlAtomCastException
 	{
 		if (Float.isInfinite(fltval))
 		{
@@ -114,7 +114,7 @@ final class CastingSupport
 		PreCondition.assertArgumentNotNull(castingContext, "castingContext");
 		PreCondition.assertArgumentNotNull(pcx, "pcx");
 		final NameSource nameBridge = atomBridge.getNameBridge();
-		final SmNativeType nativeType = nameBridge.nativeType(targetType);
+		final NativeType nativeType = nameBridge.nativeType(targetType);
 		if (null != nativeType)
 		{
 			return castAs(sourceAtom, nativeType, castingContext, pcx, atomBridge);
@@ -124,12 +124,12 @@ final class CastingSupport
 			PreCondition.assertTrue(false, targetType.toString());
 		}
 
-		final SmType<A> type = pcx.getTypeDefinition(targetType);
+		final Type<A> type = pcx.getTypeDefinition(targetType);
 		if (null != type)
 		{
 			if (type.isAtomicType())
 			{
-				final SmSimpleType<A> atomicType = (SmSimpleType<A>)type;
+				final SimpleType<A> atomicType = (SimpleType<A>)type;
 				try
 				{
 					final List<A> atoms = atomicType.validate(atomBridge.wrapAtom(sourceAtom));
@@ -164,10 +164,10 @@ final class CastingSupport
 		}
 	}
 
-	public static <A> A castAsOrErrors(final A sourceAtom, final SmNativeType sourceType, final SmNativeType targetType, final Schema<A> pcx, final AtomBridge<A> atomBridge, final NameSource nameBridge)
+	public static <A> A castAsOrErrors(final A sourceAtom, final NativeType sourceType, final NativeType targetType, final Schema<A> pcx, final AtomBridge<A> atomBridge, final NameSource nameBridge)
 			throws GxmlAtomCastException
 	{
-		if (sourceType.isString() || sourceType == SmNativeType.UNTYPED_ATOMIC)
+		if (sourceType.isString() || sourceType == NativeType.UNTYPED_ATOMIC)
 		{
 			return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
 		}
@@ -178,14 +178,14 @@ final class CastingSupport
 
 	}
 
-	public static <A> A castAs(final A sourceAtom, final SmNativeType targetType, final CastingContext<A> castingContext, final Schema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+	public static <A> A castAs(final A sourceAtom, final NativeType targetType, final CastingContext<A> castingContext, final Schema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
 		PreCondition.assertArgumentNotNull(castingContext, "castingContext");
 		PreCondition.assertArgumentNotNull(pcx, "pcx");
 		final NameSource nameBridge = atomBridge.getNameBridge();
-		final SmNativeType sourceType = atomBridge.getNativeType(sourceAtom);
+		final NativeType sourceType = atomBridge.getNativeType(sourceAtom);
 
 		final SpillagePolicy spillagePolicy = castingContext.getSpillagePolicy();
 		final boolean checkCapacity = spillagePolicy.checkCapacity();
@@ -1806,7 +1806,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Byte.toString(value), SmNativeType.BYTE.toQName(), SmNativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
 		}
 	}
 
@@ -1818,7 +1818,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Byte.toString(value), SmNativeType.BYTE.toQName(), SmNativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
 		}
 	}
 
@@ -1830,7 +1830,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Byte.toString(value), SmNativeType.BYTE.toQName(), SmNativeType.UNSIGNED_BYTE.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.UNSIGNED_BYTE.toQName(), FORG0001);
 		}
 	}
 
@@ -1842,7 +1842,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Byte.toString(value), SmNativeType.BYTE.toQName(), SmNativeType.UNSIGNED_INT.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.UNSIGNED_INT.toQName(), FORG0001);
 		}
 	}
 
@@ -1854,7 +1854,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Byte.toString(value), SmNativeType.BYTE.toQName(), SmNativeType.UNSIGNED_LONG.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.UNSIGNED_LONG.toQName(), FORG0001);
 		}
 	}
 
@@ -1866,7 +1866,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Byte.toString(value), SmNativeType.BYTE.toQName(), SmNativeType.UNSIGNED_SHORT.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.UNSIGNED_SHORT.toQName(), FORG0001);
 		}
 	}
 
@@ -1884,7 +1884,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(constructionString(decval), SmNativeType.DOUBLE.toQName(), FOAR0002);
+					throw new GxmlAtomCastException(constructionString(decval), NativeType.DOUBLE.toQName(), FOAR0002);
 				}
 				return Double.MAX_VALUE;
 			}
@@ -1892,7 +1892,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(constructionString(decval), SmNativeType.DOUBLE.toQName(), FOAR0002);
+					throw new GxmlAtomCastException(constructionString(decval), NativeType.DOUBLE.toQName(), FOAR0002);
 				}
 				return Double.MIN_VALUE;
 			}
@@ -1909,7 +1909,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(constructionString(decval), SmNativeType.FLOAT.toQName(), FOAR0002);
+					throw new GxmlAtomCastException(constructionString(decval), NativeType.FLOAT.toQName(), FOAR0002);
 				}
 				return Float.MAX_VALUE;
 			}
@@ -1917,7 +1917,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(constructionString(decval), SmNativeType.FLOAT.toQName(), FOAR0002);
+					throw new GxmlAtomCastException(constructionString(decval), NativeType.FLOAT.toQName(), FOAR0002);
 				}
 				return Float.MIN_VALUE;
 			}
@@ -1987,8 +1987,8 @@ final class CastingSupport
 
 	private static byte castDoubleAsByte(final double dblval) throws GxmlAtomCastException
 	{
-		assertDoubleIsNumber(dblval, SmNativeType.BYTE);
-		assertDoubleNotInfinite(dblval, SmNativeType.BYTE);
+		assertDoubleIsNumber(dblval, NativeType.BYTE);
+		assertDoubleNotInfinite(dblval, NativeType.BYTE);
 		final long lval = (long)dblval;
 		if (lval <= Byte.MAX_VALUE && lval >= Byte.MIN_VALUE)
 		{
@@ -1996,14 +1996,14 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(NumericSupport.formatDoubleC14N(dblval), SmNativeType.BYTE.toQName(), FORG0001);
+			throw new GxmlAtomCastException(NumericSupport.formatDoubleC14N(dblval), NativeType.BYTE.toQName(), FORG0001);
 		}
 	}
 
 	private static BigDecimal castDoubleAsDecimal(final double dblval) throws GxmlAtomCastException
 	{
-		assertDoubleIsNumber(dblval, SmNativeType.DECIMAL);
-		assertDoubleNotInfinite(dblval, SmNativeType.DECIMAL);
+		assertDoubleIsNumber(dblval, NativeType.DECIMAL);
+		assertDoubleNotInfinite(dblval, NativeType.DECIMAL);
 		return BigDecimal.valueOf(dblval);
 	}
 
@@ -2022,12 +2022,12 @@ final class CastingSupport
 			// Overflow
 			if (raiseError && Math.abs(dblval) > Float.MAX_VALUE)
 			{
-				throw new GxmlAtomCastException(Double.toString(dblval), SmNativeType.FLOAT.toQName(), FOAR0002);
+				throw new GxmlAtomCastException(Double.toString(dblval), NativeType.FLOAT.toQName(), FOAR0002);
 			}
 			// Underflow
 			if (raiseError && (dblval != 0.0) && Math.abs(dblval) < Float.MIN_VALUE)
 			{
-				throw new GxmlAtomCastException(Double.toString(dblval), SmNativeType.FLOAT.toQName(), FOAR0002);
+				throw new GxmlAtomCastException(Double.toString(dblval), NativeType.FLOAT.toQName(), FOAR0002);
 			}
 		}
 		return (float)dblval;
@@ -2035,8 +2035,8 @@ final class CastingSupport
 
 	private static int castDoubleAsInt(final double dblval) throws GxmlAtomCastException
 	{
-		assertDoubleIsNumber(dblval, SmNativeType.INT);
-		assertDoubleNotInfinite(dblval, SmNativeType.INT);
+		assertDoubleIsNumber(dblval, NativeType.INT);
+		assertDoubleNotInfinite(dblval, NativeType.INT);
 		final long lval = (long)dblval;
 		if (lval <= Integer.MAX_VALUE && lval >= Integer.MIN_VALUE)
 		{
@@ -2044,14 +2044,14 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(NumericSupport.formatDoubleC14N(dblval), SmNativeType.INT.toQName(), FORG0001);
+			throw new GxmlAtomCastException(NumericSupport.formatDoubleC14N(dblval), NativeType.INT.toQName(), FORG0001);
 		}
 	}
 
 	private static BigInteger castDoubleAsInteger(final double dblval) throws GxmlAtomCastException
 	{
-		assertDoubleIsNumber(dblval, SmNativeType.INTEGER);
-		assertDoubleNotInfinite(dblval, SmNativeType.INTEGER);
+		assertDoubleIsNumber(dblval, NativeType.INTEGER);
+		assertDoubleNotInfinite(dblval, NativeType.INTEGER);
 		return BigDecimal.valueOf(dblval).toBigInteger();
 	}
 
@@ -2064,43 +2064,43 @@ final class CastingSupport
 		}
 		catch (final GxmlAtomCastException e)
 		{
-			throw new GxmlAtomCastException(e.getSourceValue(), SmNativeType.LONG.toQName(), e.getErrorCode(), e.getCause());
+			throw new GxmlAtomCastException(e.getSourceValue(), NativeType.LONG.toQName(), e.getErrorCode(), e.getCause());
 		}
 		return castIntegerAsLong(ival, checkCapacity, raiseError);
 	}
 
 	private static BigInteger castDoubleAsNegativeInteger(final double dblval) throws GxmlAtomCastException
 	{
-		assertDoubleIsNumber(dblval, SmNativeType.NEGATIVE_INTEGER);
-		assertDoubleNotInfinite(dblval, SmNativeType.NEGATIVE_INTEGER);
+		assertDoubleIsNumber(dblval, NativeType.NEGATIVE_INTEGER);
+		assertDoubleNotInfinite(dblval, NativeType.NEGATIVE_INTEGER);
 		return castIntegerAsNegativeInteger(BigInteger.valueOf((long)dblval));
 	}
 
 	private static BigInteger castDoubleAsNonNegativeInteger(final double dblval) throws GxmlAtomCastException
 	{
-		assertDoubleIsNumber(dblval, SmNativeType.NON_NEGATIVE_INTEGER);
-		assertDoubleNotInfinite(dblval, SmNativeType.NON_NEGATIVE_INTEGER);
+		assertDoubleIsNumber(dblval, NativeType.NON_NEGATIVE_INTEGER);
+		assertDoubleNotInfinite(dblval, NativeType.NON_NEGATIVE_INTEGER);
 		return castIntegerAsNonNegativeInteger(BigInteger.valueOf((long)dblval));
 	}
 
 	private static BigInteger castDoubleAsNonPositiveInteger(final double dblval) throws GxmlAtomCastException
 	{
-		assertDoubleIsNumber(dblval, SmNativeType.NON_POSITIVE_INTEGER);
-		assertDoubleNotInfinite(dblval, SmNativeType.NON_POSITIVE_INTEGER);
+		assertDoubleIsNumber(dblval, NativeType.NON_POSITIVE_INTEGER);
+		assertDoubleNotInfinite(dblval, NativeType.NON_POSITIVE_INTEGER);
 		return castIntegerAsNonPositiveInteger(BigDecimal.valueOf(dblval).toBigInteger());
 	}
 
 	private static BigInteger castDoubleAsPositiveInteger(final double dblval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
 	{
-		assertDoubleIsNumber(dblval, SmNativeType.POSITIVE_INTEGER);
-		assertDoubleNotInfinite(dblval, SmNativeType.POSITIVE_INTEGER);
+		assertDoubleIsNumber(dblval, NativeType.POSITIVE_INTEGER);
+		assertDoubleNotInfinite(dblval, NativeType.POSITIVE_INTEGER);
 		return castIntegerAsPositiveInteger(BigInteger.valueOf((long)dblval), checkCapacity, raiseError);
 	}
 
 	private static short castDoubleAsShort(final double dblval) throws GxmlAtomCastException
 	{
-		assertDoubleIsNumber(dblval, SmNativeType.SHORT);
-		assertDoubleNotInfinite(dblval, SmNativeType.SHORT);
+		assertDoubleIsNumber(dblval, NativeType.SHORT);
+		assertDoubleNotInfinite(dblval, NativeType.SHORT);
 		final long lval = (long)dblval;
 		if (lval <= Short.MAX_VALUE && lval >= Short.MIN_VALUE)
 		{
@@ -2108,42 +2108,42 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(NumericSupport.formatDoubleC14N(dblval), SmNativeType.SHORT.toQName(), FORG0001);
+			throw new GxmlAtomCastException(NumericSupport.formatDoubleC14N(dblval), NativeType.SHORT.toQName(), FORG0001);
 		}
 	}
 
 	private static short castDoubleAsUnsignedByte(final double dblval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
 	{
-		assertDoubleIsNumber(dblval, SmNativeType.UNSIGNED_BYTE);
-		assertDoubleNotInfinite(dblval, SmNativeType.UNSIGNED_BYTE);
+		assertDoubleIsNumber(dblval, NativeType.UNSIGNED_BYTE);
+		assertDoubleNotInfinite(dblval, NativeType.UNSIGNED_BYTE);
 		return castIntegerAsUnsignedByte(BigInteger.valueOf((long)dblval), checkCapacity, raiseError);
 	}
 
 	private static long castDoubleAsUnsignedInt(final double dblval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
 	{
-		assertDoubleIsNumber(dblval, SmNativeType.UNSIGNED_INT);
-		assertDoubleNotInfinite(dblval, SmNativeType.UNSIGNED_INT);
+		assertDoubleIsNumber(dblval, NativeType.UNSIGNED_INT);
+		assertDoubleNotInfinite(dblval, NativeType.UNSIGNED_INT);
 		return castIntegerAsUnsignedInt(BigInteger.valueOf((long)dblval), checkCapacity, raiseError);
 	}
 
 	private static BigInteger castDoubleAsUnsignedLong(final double dblval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
 	{
-		assertDoubleIsNumber(dblval, SmNativeType.UNSIGNED_LONG);
-		assertDoubleNotInfinite(dblval, SmNativeType.UNSIGNED_LONG);
+		assertDoubleIsNumber(dblval, NativeType.UNSIGNED_LONG);
+		assertDoubleNotInfinite(dblval, NativeType.UNSIGNED_LONG);
 		return castIntegerAsUnsignedLong(BigInteger.valueOf((long)dblval), checkCapacity, raiseError);
 	}
 
 	private static int castDoubleAsUnsignedShort(final double dblval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
 	{
-		assertDoubleIsNumber(dblval, SmNativeType.UNSIGNED_SHORT);
-		assertDoubleNotInfinite(dblval, SmNativeType.UNSIGNED_SHORT);
+		assertDoubleIsNumber(dblval, NativeType.UNSIGNED_SHORT);
+		assertDoubleNotInfinite(dblval, NativeType.UNSIGNED_SHORT);
 		return castIntegerAsUnsignedShort(BigInteger.valueOf((long)dblval), checkCapacity, raiseError);
 	}
 
 	private static byte castFloatAsByte(final float fltval) throws GxmlAtomCastException
 	{
-		assertFloatIsNumber(fltval, SmNativeType.BYTE);
-		assertFloatNotInfinite(fltval, SmNativeType.BYTE);
+		assertFloatIsNumber(fltval, NativeType.BYTE);
+		assertFloatNotInfinite(fltval, NativeType.BYTE);
 		final long lval = (long)fltval;
 		if (lval <= Byte.MAX_VALUE && lval >= Byte.MIN_VALUE)
 		{
@@ -2151,21 +2151,21 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(NumericSupport.formatFloatC14N(fltval), SmNativeType.BYTE.toQName(), FORG0001);
+			throw new GxmlAtomCastException(NumericSupport.formatFloatC14N(fltval), NativeType.BYTE.toQName(), FORG0001);
 		}
 	}
 
 	private static BigDecimal castFloatAsDecimal(final float fltval) throws GxmlAtomCastException
 	{
-		assertFloatIsNumber(fltval, SmNativeType.DECIMAL);
-		assertFloatNotInfinite(fltval, SmNativeType.DECIMAL);
+		assertFloatIsNumber(fltval, NativeType.DECIMAL);
+		assertFloatNotInfinite(fltval, NativeType.DECIMAL);
 		return BigDecimal.valueOf(fltval);
 	}
 
 	private static int castFloatAsInt(final float fltval) throws GxmlAtomCastException
 	{
-		assertFloatIsNumber(fltval, SmNativeType.INT);
-		assertFloatNotInfinite(fltval, SmNativeType.INT);
+		assertFloatIsNumber(fltval, NativeType.INT);
+		assertFloatNotInfinite(fltval, NativeType.INT);
 		final long lval = (long)fltval;
 		if (lval <= Integer.MAX_VALUE && lval >= Integer.MIN_VALUE)
 		{
@@ -2173,14 +2173,14 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(NumericSupport.formatFloatC14N(fltval), SmNativeType.INT.toQName(), FORG0001);
+			throw new GxmlAtomCastException(NumericSupport.formatFloatC14N(fltval), NativeType.INT.toQName(), FORG0001);
 		}
 	}
 
 	private static BigInteger castFloatAsInteger(final float fltval) throws GxmlAtomCastException
 	{
-		assertFloatIsNumber(fltval, SmNativeType.INTEGER);
-		assertFloatNotInfinite(fltval, SmNativeType.INTEGER);
+		assertFloatIsNumber(fltval, NativeType.INTEGER);
+		assertFloatNotInfinite(fltval, NativeType.INTEGER);
 		return BigInteger.valueOf((long)fltval);
 	}
 
@@ -2193,43 +2193,43 @@ final class CastingSupport
 		}
 		catch (final GxmlAtomCastException e)
 		{
-			throw new GxmlAtomCastException(e.getSourceValue(), SmNativeType.LONG.toQName(), e.getErrorCode(), e.getCause());
+			throw new GxmlAtomCastException(e.getSourceValue(), NativeType.LONG.toQName(), e.getErrorCode(), e.getCause());
 		}
 		return castIntegerAsInt(ival, checkCapacity, raiseError);
 	}
 
 	private static BigInteger castFloatAsNegativeInteger(final float fltval) throws GxmlAtomCastException
 	{
-		assertFloatIsNumber(fltval, SmNativeType.NEGATIVE_INTEGER);
-		assertFloatNotInfinite(fltval, SmNativeType.NEGATIVE_INTEGER);
+		assertFloatIsNumber(fltval, NativeType.NEGATIVE_INTEGER);
+		assertFloatNotInfinite(fltval, NativeType.NEGATIVE_INTEGER);
 		return castIntegerAsNegativeInteger(BigInteger.valueOf((long)fltval));
 	}
 
 	private static BigInteger castFloatAsNonNegativeInteger(final float fltval) throws GxmlAtomCastException
 	{
-		assertFloatIsNumber(fltval, SmNativeType.NON_NEGATIVE_INTEGER);
-		assertFloatNotInfinite(fltval, SmNativeType.NON_NEGATIVE_INTEGER);
+		assertFloatIsNumber(fltval, NativeType.NON_NEGATIVE_INTEGER);
+		assertFloatNotInfinite(fltval, NativeType.NON_NEGATIVE_INTEGER);
 		return castIntegerAsNonNegativeInteger(BigInteger.valueOf((long)fltval));
 	}
 
 	private static BigInteger castFloatAsNonPositiveInteger(final float fltval) throws GxmlAtomCastException
 	{
-		assertFloatIsNumber(fltval, SmNativeType.NON_POSITIVE_INTEGER);
-		assertFloatNotInfinite(fltval, SmNativeType.NON_POSITIVE_INTEGER);
+		assertFloatIsNumber(fltval, NativeType.NON_POSITIVE_INTEGER);
+		assertFloatNotInfinite(fltval, NativeType.NON_POSITIVE_INTEGER);
 		return castIntegerAsNonPositiveInteger(BigInteger.valueOf((long)fltval));
 	}
 
 	private static BigInteger castFloatAsPositiveInteger(final float fltval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
 	{
-		assertFloatIsNumber(fltval, SmNativeType.POSITIVE_INTEGER);
-		assertFloatNotInfinite(fltval, SmNativeType.POSITIVE_INTEGER);
+		assertFloatIsNumber(fltval, NativeType.POSITIVE_INTEGER);
+		assertFloatNotInfinite(fltval, NativeType.POSITIVE_INTEGER);
 		return castIntegerAsPositiveInteger(BigInteger.valueOf((long)fltval), checkCapacity, raiseError);
 	}
 
 	private static short castFloatAsShort(final float fltval) throws GxmlAtomCastException
 	{
-		assertFloatIsNumber(fltval, SmNativeType.SHORT);
-		assertFloatNotInfinite(fltval, SmNativeType.SHORT);
+		assertFloatIsNumber(fltval, NativeType.SHORT);
+		assertFloatNotInfinite(fltval, NativeType.SHORT);
 		final long lval = (long)fltval;
 		if (lval <= Short.MAX_VALUE && lval >= Short.MIN_VALUE)
 		{
@@ -2237,49 +2237,49 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(NumericSupport.formatFloatC14N(fltval), SmNativeType.SHORT.toQName(), FORG0001);
+			throw new GxmlAtomCastException(NumericSupport.formatFloatC14N(fltval), NativeType.SHORT.toQName(), FORG0001);
 		}
 	}
 
 	private static short castFloatAsUnsignedByte(final float fltval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
 	{
-		assertFloatIsNumber(fltval, SmNativeType.UNSIGNED_BYTE);
-		assertFloatNotInfinite(fltval, SmNativeType.UNSIGNED_BYTE);
+		assertFloatIsNumber(fltval, NativeType.UNSIGNED_BYTE);
+		assertFloatNotInfinite(fltval, NativeType.UNSIGNED_BYTE);
 		return castIntegerAsUnsignedByte(BigInteger.valueOf((long)fltval), checkCapacity, raiseError);
 	}
 
 	private static long castFloatAsUnsignedInt(final float fltval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
 	{
-		assertFloatIsNumber(fltval, SmNativeType.UNSIGNED_INT);
-		assertFloatNotInfinite(fltval, SmNativeType.UNSIGNED_INT);
+		assertFloatIsNumber(fltval, NativeType.UNSIGNED_INT);
+		assertFloatNotInfinite(fltval, NativeType.UNSIGNED_INT);
 		return castIntegerAsUnsignedInt(BigInteger.valueOf((long)fltval), checkCapacity, raiseError);
 	}
 
 	private static BigInteger castFloatAsUnsignedLong(final float fltval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
 	{
-		assertFloatIsNumber(fltval, SmNativeType.UNSIGNED_LONG);
-		assertFloatNotInfinite(fltval, SmNativeType.UNSIGNED_LONG);
+		assertFloatIsNumber(fltval, NativeType.UNSIGNED_LONG);
+		assertFloatNotInfinite(fltval, NativeType.UNSIGNED_LONG);
 		return castIntegerAsUnsignedLong(BigInteger.valueOf((long)fltval), checkCapacity, raiseError);
 	}
 
 	private static int castFloatAsUnsignedShort(final float fltval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
 	{
-		assertFloatIsNumber(fltval, SmNativeType.UNSIGNED_SHORT);
-		assertFloatNotInfinite(fltval, SmNativeType.UNSIGNED_SHORT);
+		assertFloatIsNumber(fltval, NativeType.UNSIGNED_SHORT);
+		assertFloatNotInfinite(fltval, NativeType.UNSIGNED_SHORT);
 		return castIntegerAsUnsignedShort(BigInteger.valueOf((long)fltval), checkCapacity, raiseError);
 	}
 
-	private static <A> A castFromStringOrUntypedAtomic(final String sourceAtom, final SmNativeType targetType, final Schema<A> pcx) throws GxmlAtomCastException
+	private static <A> A castFromStringOrUntypedAtomic(final String sourceAtom, final NativeType targetType, final Schema<A> pcx) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
 
-		final SmType<A> type = pcx.getTypeDefinition(targetType);
+		final Type<A> type = pcx.getTypeDefinition(targetType);
 		if (null != type)
 		{
 			if (type.isAtomicType())
 			{
-				final SmSimpleType<A> atomicType = (SmSimpleType<A>)type;
+				final SimpleType<A> atomicType = (SimpleType<A>)type;
 				try
 				{
 					final List<A> atoms = atomicType.validate(sourceAtom);
@@ -2322,7 +2322,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(Integer.toString(ival), SmNativeType.BYTE.toQName(), FORG0001);
+					throw new GxmlAtomCastException(Integer.toString(ival), NativeType.BYTE.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2333,7 +2333,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(Integer.toString(ival), SmNativeType.BYTE.toQName(), FORG0001);
+					throw new GxmlAtomCastException(Integer.toString(ival), NativeType.BYTE.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2352,7 +2352,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Integer.toString(ival), SmNativeType.INT.toQName(), SmNativeType.NEGATIVE_INTEGER.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Integer.toString(ival), NativeType.INT.toQName(), NativeType.NEGATIVE_INTEGER.toQName(), FORG0001);
 		}
 	}
 
@@ -2364,7 +2364,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Integer.toString(value), SmNativeType.INT.toQName(), SmNativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Integer.toString(value), NativeType.INT.toQName(), NativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
 		}
 	}
 
@@ -2376,7 +2376,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Integer.toString(ival), SmNativeType.INT.toQName(), SmNativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Integer.toString(ival), NativeType.INT.toQName(), NativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
 		}
 	}
 
@@ -2388,7 +2388,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(Integer.toString(ival), SmNativeType.SHORT.toQName(), FORG0001);
+					throw new GxmlAtomCastException(Integer.toString(ival), NativeType.SHORT.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2399,7 +2399,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(Integer.toString(ival), SmNativeType.SHORT.toQName(), FORG0001);
+					throw new GxmlAtomCastException(Integer.toString(ival), NativeType.SHORT.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2419,7 +2419,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Integer.toString(value), SmNativeType.INT.toQName(), SmNativeType.UNSIGNED_BYTE.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Integer.toString(value), NativeType.INT.toQName(), NativeType.UNSIGNED_BYTE.toQName(), FORG0001);
 		}
 	}
 
@@ -2431,7 +2431,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Integer.toString(value), SmNativeType.INT.toQName(), SmNativeType.UNSIGNED_INT.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Integer.toString(value), NativeType.INT.toQName(), NativeType.UNSIGNED_INT.toQName(), FORG0001);
 		}
 	}
 
@@ -2443,7 +2443,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Integer.toString(ival), SmNativeType.INT.toQName(), SmNativeType.UNSIGNED_LONG.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Integer.toString(ival), NativeType.INT.toQName(), NativeType.UNSIGNED_LONG.toQName(), FORG0001);
 		}
 	}
 
@@ -2455,7 +2455,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Integer.toString(value), SmNativeType.INT.toQName(), SmNativeType.UNSIGNED_SHORT.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Integer.toString(value), NativeType.INT.toQName(), NativeType.UNSIGNED_SHORT.toQName(), FORG0001);
 		}
 	}
 
@@ -2467,7 +2467,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(ival.toString(), SmNativeType.INTEGER.toQName(), SmNativeType.BYTE.toQName(), FORG0001);
+					throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.BYTE.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2478,7 +2478,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(ival.toString(), SmNativeType.INTEGER.toQName(), SmNativeType.BYTE.toQName(), FORG0001);
+					throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.BYTE.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2497,7 +2497,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(integer.toString(), SmNativeType.DOUBLE.toQName(), FOAR0002);
+					throw new GxmlAtomCastException(integer.toString(), NativeType.DOUBLE.toQName(), FOAR0002);
 				}
 				return Double.MAX_VALUE;
 			}
@@ -2505,7 +2505,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(integer.toString(), SmNativeType.DOUBLE.toQName(), FOAR0002);
+					throw new GxmlAtomCastException(integer.toString(), NativeType.DOUBLE.toQName(), FOAR0002);
 				}
 				return Double.MIN_VALUE;
 			}
@@ -2521,7 +2521,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(integer.toString(), SmNativeType.FLOAT.toQName(), FOAR0002);
+					throw new GxmlAtomCastException(integer.toString(), NativeType.FLOAT.toQName(), FOAR0002);
 				}
 				return Float.MAX_VALUE;
 			}
@@ -2529,7 +2529,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(integer.toString(), SmNativeType.FLOAT.toQName(), FOAR0002);
+					throw new GxmlAtomCastException(integer.toString(), NativeType.FLOAT.toQName(), FOAR0002);
 				}
 				return Float.MIN_VALUE;
 			}
@@ -2545,7 +2545,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(ival.toString(), SmNativeType.INTEGER.toQName(), SmNativeType.INT.toQName(), FORG0001);
+					throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.INT.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2556,7 +2556,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(ival.toString(), SmNativeType.INTEGER.toQName(), SmNativeType.INT.toQName(), FORG0001);
+					throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.INT.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2576,7 +2576,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(ival.toString(), SmNativeType.INTEGER.toQName(), SmNativeType.LONG.toQName(), FOCA0003);
+					throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.LONG.toQName(), FOCA0003);
 				}
 				else
 				{
@@ -2587,7 +2587,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(ival.toString(), SmNativeType.INTEGER.toQName(), SmNativeType.LONG.toQName(), FOCA0003);
+					throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.LONG.toQName(), FOCA0003);
 				}
 				else
 				{
@@ -2610,7 +2610,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(ival.toString(), SmNativeType.INTEGER.toQName(), SmNativeType.NEGATIVE_INTEGER.toQName(), FORG0001);
+			throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.NEGATIVE_INTEGER.toQName(), FORG0001);
 		}
 	}
 
@@ -2622,7 +2622,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(ival.toString(), SmNativeType.INTEGER.toQName(), SmNativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
+			throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
 		}
 	}
 
@@ -2634,7 +2634,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(ival.toString(), SmNativeType.INTEGER.toQName(), SmNativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
+			throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
 		}
 	}
 
@@ -2646,7 +2646,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(ival.toString(), SmNativeType.INTEGER.toQName(), SmNativeType.POSITIVE_INTEGER.toQName(), FORG0001);
+			throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.POSITIVE_INTEGER.toQName(), FORG0001);
 		}
 	}
 
@@ -2658,7 +2658,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(ival.toString(), SmNativeType.INTEGER.toQName(), SmNativeType.SHORT.toQName(), FORG0001);
+					throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.SHORT.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2669,7 +2669,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(ival.toString(), SmNativeType.INTEGER.toQName(), SmNativeType.SHORT.toQName(), FORG0001);
+					throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.SHORT.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2688,7 +2688,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(ival.toString(), SmNativeType.INTEGER.toQName(), SmNativeType.UNSIGNED_BYTE.toQName(), FORG0001);
+			throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.UNSIGNED_BYTE.toQName(), FORG0001);
 		}
 	}
 
@@ -2700,7 +2700,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(ival.toString(), SmNativeType.INTEGER.toQName(), SmNativeType.UNSIGNED_INT.toQName(), FORG0001);
+			throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.UNSIGNED_INT.toQName(), FORG0001);
 		}
 	}
 
@@ -2712,7 +2712,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(ival.toString(), SmNativeType.INTEGER.toQName(), SmNativeType.UNSIGNED_LONG.toQName(), FORG0001);
+			throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.UNSIGNED_LONG.toQName(), FORG0001);
 		}
 	}
 
@@ -2724,7 +2724,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(ival.toString(), SmNativeType.INTEGER.toQName(), SmNativeType.UNSIGNED_SHORT.toQName(), FORG0001);
+			throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.UNSIGNED_SHORT.toQName(), FORG0001);
 		}
 	}
 
@@ -2736,7 +2736,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(Long.toString(val), SmNativeType.BYTE.toQName(), FORG0001);
+					throw new GxmlAtomCastException(Long.toString(val), NativeType.BYTE.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2747,7 +2747,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(Long.toString(val), SmNativeType.BYTE.toQName(), FORG0001);
+					throw new GxmlAtomCastException(Long.toString(val), NativeType.BYTE.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2766,7 +2766,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(Long.toString(val), SmNativeType.INT.toQName(), FORG0001);
+					throw new GxmlAtomCastException(Long.toString(val), NativeType.INT.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2777,7 +2777,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(Long.toString(val), SmNativeType.INT.toQName(), FORG0001);
+					throw new GxmlAtomCastException(Long.toString(val), NativeType.INT.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2796,7 +2796,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Long.toString(value), SmNativeType.LONG.toQName(), SmNativeType.NEGATIVE_INTEGER.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.NEGATIVE_INTEGER.toQName(), FORG0001);
 		}
 	}
 
@@ -2808,7 +2808,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Long.toString(value), SmNativeType.LONG.toQName(), SmNativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
 		}
 	}
 
@@ -2820,7 +2820,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Long.toString(value), SmNativeType.LONG.toQName(), SmNativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
 		}
 	}
 
@@ -2832,7 +2832,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Long.toString(value), SmNativeType.LONG.toQName(), SmNativeType.POSITIVE_INTEGER.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.POSITIVE_INTEGER.toQName(), FORG0001);
 		}
 	}
 
@@ -2844,7 +2844,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(Long.toString(val), SmNativeType.SHORT.toQName(), FORG0001);
+					throw new GxmlAtomCastException(Long.toString(val), NativeType.SHORT.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2855,7 +2855,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(Long.toString(val), SmNativeType.SHORT.toQName(), FORG0001);
+					throw new GxmlAtomCastException(Long.toString(val), NativeType.SHORT.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2875,7 +2875,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Long.toString(value), SmNativeType.LONG.toQName(), SmNativeType.UNSIGNED_BYTE.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.UNSIGNED_BYTE.toQName(), FORG0001);
 		}
 	}
 
@@ -2887,7 +2887,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Long.toString(value), SmNativeType.LONG.toQName(), SmNativeType.UNSIGNED_INT.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.UNSIGNED_INT.toQName(), FORG0001);
 		}
 	}
 
@@ -2899,7 +2899,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Long.toString(value), SmNativeType.LONG.toQName(), SmNativeType.UNSIGNED_LONG.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.UNSIGNED_LONG.toQName(), FORG0001);
 		}
 	}
 
@@ -2912,7 +2912,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Long.toString(value), SmNativeType.LONG.toQName(), SmNativeType.UNSIGNED_SHORT.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.UNSIGNED_SHORT.toQName(), FORG0001);
 		}
 	}
 
@@ -2924,7 +2924,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(Short.toString(val), SmNativeType.BYTE.toQName(), FORG0001);
+					throw new GxmlAtomCastException(Short.toString(val), NativeType.BYTE.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2935,7 +2935,7 @@ final class CastingSupport
 			{
 				if (raiseError)
 				{
-					throw new GxmlAtomCastException(Short.toString(val), SmNativeType.BYTE.toQName(), FORG0001);
+					throw new GxmlAtomCastException(Short.toString(val), NativeType.BYTE.toQName(), FORG0001);
 				}
 				else
 				{
@@ -2954,7 +2954,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Short.toString(value), SmNativeType.SHORT.toQName(), SmNativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
 		}
 	}
 
@@ -2966,7 +2966,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Short.toString(value), SmNativeType.SHORT.toQName(), SmNativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
 		}
 	}
 
@@ -2978,7 +2978,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Short.toString(value), SmNativeType.SHORT.toQName(), SmNativeType.UNSIGNED_BYTE.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.UNSIGNED_BYTE.toQName(), FORG0001);
 		}
 	}
 
@@ -2990,7 +2990,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Short.toString(value), SmNativeType.SHORT.toQName(), SmNativeType.UNSIGNED_INT.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.UNSIGNED_INT.toQName(), FORG0001);
 		}
 	}
 
@@ -3002,7 +3002,7 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Short.toString(value), SmNativeType.SHORT.toQName(), SmNativeType.UNSIGNED_LONG.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.UNSIGNED_LONG.toQName(), FORG0001);
 		}
 	}
 
@@ -3014,18 +3014,18 @@ final class CastingSupport
 		}
 		else
 		{
-			throw new GxmlAtomCastException(Short.toString(value), SmNativeType.SHORT.toQName(), SmNativeType.UNSIGNED_SHORT.toQName(), FORG0001);
+			throw new GxmlAtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.UNSIGNED_SHORT.toQName(), FORG0001);
 		}
 	}
 
 	/**
 	 * First cast to xs:string then cast to the target type.
 	 */
-	private static <A> A castThroughString(final A sourceAtom, final SmNativeType targetType, final CastingContext<A> castingContext, final Schema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+	private static <A> A castThroughString(final A sourceAtom, final NativeType targetType, final CastingContext<A> castingContext, final Schema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
 	{
 		try
 		{
-			return castAs(castAs(sourceAtom, SmNativeType.STRING, castingContext, pcx, atomBridge), targetType, castingContext, pcx, atomBridge);
+			return castAs(castAs(sourceAtom, NativeType.STRING, castingContext, pcx, atomBridge), targetType, castingContext, pcx, atomBridge);
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -3034,17 +3034,17 @@ final class CastingSupport
 		}
 	}
 
-	private static <A> A castWithinBranchAs(final A sourceAtom, final SmNativeType targetType, final Schema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+	private static <A> A castWithinBranchAs(final A sourceAtom, final NativeType targetType, final Schema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
 
-		final SmType<A> type = pcx.getTypeDefinition(targetType);
+		final Type<A> type = pcx.getTypeDefinition(targetType);
 		if (null != type)
 		{
 			if (type.isAtomicType())
 			{
-				final SmSimpleType<A> atomicType = (SmSimpleType<A>)type;
+				final SimpleType<A> atomicType = (SimpleType<A>)type;
 				try
 				{
 					final List<A> atoms = atomicType.validate(atomBridge.wrapAtom(sourceAtom));

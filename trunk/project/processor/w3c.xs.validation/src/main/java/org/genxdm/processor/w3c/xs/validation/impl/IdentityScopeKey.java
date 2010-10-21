@@ -20,8 +20,8 @@ import java.util.HashMap;
 
 import org.genxdm.processor.w3c.xs.exception.CvcMissingKeyFieldException;
 import org.genxdm.processor.w3c.xs.exception.SrcDuplicateKeyTargetException;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.constraints.SmIdentityConstraintKind;
+import org.genxdm.xs.constraints.IdentityConstraint;
+import org.genxdm.xs.constraints.IdentityConstraintKind;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.resolve.LocationInSchema;
@@ -39,7 +39,7 @@ final class IdentityScopeKey<A> extends IdentityScope<A>
 {
 	public final HashMap<IdentityTuple<A>, IdentityVariant<A>> m_qualifiedTargets = new HashMap<IdentityTuple<A>, IdentityVariant<A>>();
 
-	public IdentityScopeKey(final int elementIndex, final SmIdentityConstraint<A> constraint, final SchemaExceptionHandler errorHandler, final LocationInSchema location)
+	public IdentityScopeKey(final int elementIndex, final IdentityConstraint<A> constraint, final SchemaExceptionHandler errorHandler, final LocationInSchema location)
 	{
 		super(elementIndex, constraint, errorHandler, location);
 	}
@@ -70,8 +70,8 @@ final class IdentityScopeKey<A> extends IdentityScope<A>
 	@Override
 	protected void onScopeEnd(final int elementIndex, final Locatable locatable) throws AbortException
 	{
-		final SmIdentityConstraint<A> constraint = getConstraint();
-		final SmIdentityConstraintKind category = constraint.getCategory();
+		final IdentityConstraint<A> constraint = getConstraint();
+		final IdentityConstraintKind category = constraint.getCategory();
 		// xs:key must have bound values while xs:unique need not exist.
 		if (category.isKey())
 		{

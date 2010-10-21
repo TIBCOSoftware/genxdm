@@ -28,27 +28,27 @@ import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
 import org.genxdm.xs.exceptions.DatatypeException;
-import org.genxdm.xs.facets.SmFacet;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmPattern;
+import org.genxdm.xs.facets.Facet;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.Pattern;
 import org.genxdm.xs.resolve.PrefixResolver;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.SimpleType;
 
 final class BooleanType<A> extends AbstractAtomType<A>
 {
 	private final List<A> TRUE;
 	private final List<A> FALSE;
 
-	public BooleanType(final QName name, final SmSimpleType<A> baseType, final AtomBridge<A> atomBridge)
+	public BooleanType(final QName name, final SimpleType<A> baseType, final AtomBridge<A> atomBridge)
 	{
 		super(name, baseType, atomBridge);
 		TRUE = atomBridge.wrapAtom(atomBridge.getBooleanTrue());
 		FALSE = atomBridge.wrapAtom(atomBridge.getBooleanFalse());
 	}
 
-	public void accept(SmSequenceTypeVisitor<A> visitor)
+	public void accept(SequenceTypeVisitor<A> visitor)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -66,13 +66,13 @@ final class BooleanType<A> extends AbstractAtomType<A>
 		throw new AssertionError("TODO");
 	}
 
-	public SmFacet<A> getFacetOfKind(SmFacetKind facetKind)
+	public Facet<A> getFacetOfKind(FacetKind facetKind)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public Iterable<SmFacet<A>> getFacets()
+	public Iterable<Facet<A>> getFacets()
 	{
 		return Collections.emptyList();
 	}
@@ -82,12 +82,12 @@ final class BooleanType<A> extends AbstractAtomType<A>
 		return Collections.emptySet();
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.BOOLEAN;
+		return NativeType.BOOLEAN;
 	}
 
-	public Iterable<SmPattern> getPatterns()
+	public Iterable<Pattern> getPatterns()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -109,7 +109,7 @@ final class BooleanType<A> extends AbstractAtomType<A>
 		return false;
 	}
 
-	public boolean hasFacetOfKind(final SmFacetKind facetKind)
+	public boolean hasFacetOfKind(final FacetKind facetKind)
 	{
 		return false;
 	}

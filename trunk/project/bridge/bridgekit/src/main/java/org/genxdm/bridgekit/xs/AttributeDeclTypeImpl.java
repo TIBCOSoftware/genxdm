@@ -22,30 +22,30 @@ import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.NodeKind;
 import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.enums.ScopeExtent;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmPrimeTypeKind;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmSimpleMarkerType;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.PrimeTypeKind;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.SimpleMarkerType;
+import org.genxdm.xs.types.SimpleType;
 
 public final class AttributeDeclTypeImpl<A> extends DataComponentImpl<A> implements AttributeDefinition<A>
 {
-	private SmSimpleMarkerType<A> m_type;
+	private SimpleMarkerType<A> m_type;
 
-	public AttributeDeclTypeImpl(final QName name, final ScopeExtent scope, final SmSimpleMarkerType<A> type)
+	public AttributeDeclTypeImpl(final QName name, final ScopeExtent scope, final SimpleMarkerType<A> type)
 	{
 		super(name, scope);
 		this.m_type = PreCondition.assertArgumentNotNull(type, "type");
 	}
 
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public SmPrimeTypeKind getKind()
+	public PrimeTypeKind getKind()
 	{
-		return SmPrimeTypeKind.SCHEMA_ATTRIBUTE;
+		return PrimeTypeKind.SCHEMA_ATTRIBUTE;
 	}
 
 	public NodeKind getNodeKind()
@@ -53,7 +53,7 @@ public final class AttributeDeclTypeImpl<A> extends DataComponentImpl<A> impleme
 		return NodeKind.ATTRIBUTE;
 	}
 
-	public SmSimpleMarkerType<A> getType()
+	public SimpleMarkerType<A> getType()
 	{
 		return m_type;
 	}
@@ -74,7 +74,7 @@ public final class AttributeDeclTypeImpl<A> extends DataComponentImpl<A> impleme
 		return false;
 	}
 
-	public SmPrimeType<A> prime()
+	public PrimeType<A> prime()
 	{
 		return this;
 	}
@@ -84,13 +84,13 @@ public final class AttributeDeclTypeImpl<A> extends DataComponentImpl<A> impleme
 		return KeeneQuantifier.EXACTLY_ONE;
 	}
 
-	public void setType(final SmSimpleType<A> type)
+	public void setType(final SimpleType<A> type)
 	{
 		assertNotLocked();
 		m_type = PreCondition.assertArgumentNotNull(type, "type");
 	}
 
-	public boolean subtype(final SmPrimeType<A> rhs)
+	public boolean subtype(final PrimeType<A> rhs)
 	{
 		if (rhs instanceof AttributeDefinition<?>)
 		{

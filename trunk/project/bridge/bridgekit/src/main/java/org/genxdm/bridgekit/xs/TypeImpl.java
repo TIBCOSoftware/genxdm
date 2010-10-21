@@ -23,12 +23,12 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.Type;
 
 /**
- * Implementation Note: We're trying to maintain a single implementation of SmType to represent complex and simple types as well as lists and unions. The advantage of this is that the implementation does not have to downcast.
+ * Implementation Note: We're trying to maintain a single implementation of Type to represent complex and simple types as well as lists and unions. The advantage of this is that the implementation does not have to downcast.
  */
-abstract class TypeImpl<A> extends NamedComponentImpl<A> implements SmType<A>
+abstract class TypeImpl<A> extends NamedComponentImpl<A> implements Type<A>
 {
 	private final DerivationMethod derivation;
 	private final QName name;
@@ -44,12 +44,12 @@ abstract class TypeImpl<A> extends NamedComponentImpl<A> implements SmType<A>
 
 	public boolean derivedFrom(final String namespace, final String name, final Set<DerivationMethod> derivationMethods)
 	{
-		return SmSupportImpl.derivedFrom(this, namespace, name, derivationMethods, nameBridge);
+		return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods, nameBridge);
 	}
 
-	public boolean derivedFromType(final SmType<A> ancestorType, final Set<DerivationMethod> derivationMethods)
+	public boolean derivedFromType(final Type<A> ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
-		return SmSupportImpl.derivedFromType(this, ancestorType, derivationMethods, nameBridge);
+		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods, nameBridge);
 	}
 
 	public final DerivationMethod getDerivationMethod()

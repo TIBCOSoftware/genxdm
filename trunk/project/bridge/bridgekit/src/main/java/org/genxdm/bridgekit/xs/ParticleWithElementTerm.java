@@ -16,12 +16,12 @@
 package org.genxdm.bridgekit.xs;
 
 import org.genxdm.xs.components.ElementDefinition;
-import org.genxdm.xs.constraints.SmElementUse;
-import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.constraints.ElementUse;
+import org.genxdm.xs.constraints.ValueConstraint;
 
-public final class ParticleWithElementTerm<A> extends ParticleImpl<A> implements SmElementUse<A>
+public final class ParticleWithElementTerm<A> extends ParticleImpl<A> implements ElementUse<A>
 {
-	private SmValueConstraint<A> m_valueConstraint = null;
+	private ValueConstraint<A> m_valueConstraint = null;
 
 	public ParticleWithElementTerm(final int minOccurs, final int maxOccurs, final ElementDefinition<A> element)
 	{
@@ -33,12 +33,12 @@ public final class ParticleWithElementTerm<A> extends ParticleImpl<A> implements
 		super(minOccurs, -1, true, element);
 	}
 
-	public SmValueConstraint<A> getValueConstraint()
+	public ValueConstraint<A> getValueConstraint()
 	{
 		return m_valueConstraint;
 	}
 
-	public void setValueConstraint(final SmValueConstraint<A> valueConstraint)
+	public void setValueConstraint(final ValueConstraint<A> valueConstraint)
 	{
 		assertNotLocked();
 		this.m_valueConstraint = valueConstraint;
@@ -50,7 +50,7 @@ public final class ParticleWithElementTerm<A> extends ParticleImpl<A> implements
 		return (ElementDefinition<A>)m_term;
 	}
 
-	public SmValueConstraint<A> getEffectiveValueConstraint()
+	public ValueConstraint<A> getEffectiveValueConstraint()
 	{
 		if (null != m_valueConstraint)
 		{

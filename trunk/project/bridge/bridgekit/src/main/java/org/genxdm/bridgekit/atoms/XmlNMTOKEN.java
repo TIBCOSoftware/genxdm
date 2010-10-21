@@ -16,7 +16,7 @@
 package org.genxdm.bridgekit.atoms;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#NMTOKEN">NMTOKEN</a>.
@@ -52,9 +52,9 @@ public final class XmlNMTOKEN extends XmlAbstractAtom
 		return value;
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.NMTOKEN;
+		return NativeType.NMTOKEN;
 	}
 
 	@Override

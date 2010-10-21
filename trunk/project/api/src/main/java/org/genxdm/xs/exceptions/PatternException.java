@@ -17,7 +17,7 @@ package org.genxdm.xs.exceptions;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.enums.ValidationOutcome;
-import org.genxdm.xs.facets.SmPattern;
+import org.genxdm.xs.facets.Pattern;
 
 /**
  * Exception raised by xs:pattern facet validation.
@@ -25,10 +25,10 @@ import org.genxdm.xs.facets.SmPattern;
 @SuppressWarnings("serial")
 public final class PatternException extends SchemaException
 {
-	private final SmPattern regexp;
+	private final Pattern regexp;
 	private final String literal;
 
-	public PatternException(final SmPattern regexp, final String literal)
+	public PatternException(final Pattern regexp, final String literal)
 	{
 		super(ValidationOutcome.CVC_Pattern, "1");
 		this.regexp = PreCondition.assertArgumentNotNull(regexp, "regexp");

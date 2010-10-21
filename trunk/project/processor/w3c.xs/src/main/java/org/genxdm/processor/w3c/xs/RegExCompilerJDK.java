@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.facets.SmRegExPattern;
+import org.genxdm.xs.facets.RegExPattern;
 
 /**
  * Regular Expression implementation using the JDK implementation.
@@ -48,13 +48,13 @@ final class RegExCompilerJDK implements SmRegExCompiler
 		m_flags = flags;
 	}
 
-	public SmRegExPattern compile(final String regex, final String flags) throws SmRegExCompileException
+	public RegExPattern compile(final String regex, final String flags) throws SmRegExCompileException
 	{
 		// TODO: Handle flags.
 		return compile(regex);
 	}
 
-	public SmRegExPattern compile(final String regex) throws SmRegExCompileException
+	public RegExPattern compile(final String regex) throws SmRegExCompileException
 	{
 		PreCondition.assertArgumentNotNull(regex, "regex");
 		try

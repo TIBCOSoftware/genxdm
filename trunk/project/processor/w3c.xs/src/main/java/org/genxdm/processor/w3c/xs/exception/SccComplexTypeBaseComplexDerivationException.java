@@ -19,13 +19,13 @@ import java.util.Set;
 
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.exceptions.ComponentConstraintException;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.Type;
 
 
 @SuppressWarnings("serial")
 public final class SccComplexTypeBaseComplexDerivationException extends SccTypeDerivationOKComplexException
 {
-	public SccComplexTypeBaseComplexDerivationException(final SmType<?> derivedType, final SmType<?> baseType, final Set<DerivationMethod> subset, final ComponentConstraintException cause)
+	public SccComplexTypeBaseComplexDerivationException(final Type<?> derivedType, final Type<?> baseType, final Set<DerivationMethod> subset, final ComponentConstraintException cause)
 	{
 		super(PART_BASE_COMPLEX, derivedType, baseType, subset, cause);
 	}

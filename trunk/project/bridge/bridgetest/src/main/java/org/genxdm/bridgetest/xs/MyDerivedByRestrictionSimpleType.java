@@ -18,9 +18,9 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.IllegalNullArgumentException;
 import org.genxdm.xs.enums.DerivationMethod;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SimpleType;
 
-public abstract class MyDerivedByRestrictionSimpleType<A> implements SmSimpleType<A>
+public abstract class MyDerivedByRestrictionSimpleType<A> implements SimpleType<A>
 {
 	protected final QName baseName;
 

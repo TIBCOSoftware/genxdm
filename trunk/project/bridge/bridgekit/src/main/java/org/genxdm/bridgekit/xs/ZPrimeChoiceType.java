@@ -16,14 +16,14 @@
 package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.types.SmPrimeChoiceType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmPrimeTypeKind;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.xs.types.PrimeChoiceType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.PrimeTypeKind;
+import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class ZPrimeChoiceType<A> extends AbstractPrimeExcludingNoneType<A> implements SmPrimeChoiceType<A>
+final class ZPrimeChoiceType<A> extends AbstractPrimeExcludingNoneType<A> implements PrimeChoiceType<A>
 {
-	public static <A> SmPrimeType<A> choice(final SmPrimeType<A> lhs, final SmPrimeType<A> rhs)
+	public static <A> PrimeType<A> choice(final PrimeType<A> lhs, final PrimeType<A> rhs)
 	{
 		// Make an attempt to simplify, but not approximate the type expression by detecting
 		// "none" type subtrees which are the identity element for choice. However we must use
@@ -50,32 +50,32 @@ final class ZPrimeChoiceType<A> extends AbstractPrimeExcludingNoneType<A> implem
 		}
 	}
 
-	private final SmPrimeType<A> m_lhs;
+	private final PrimeType<A> m_lhs;
 
-	private final SmPrimeType<A> m_rhs;
+	private final PrimeType<A> m_rhs;
 
-	private ZPrimeChoiceType(final SmPrimeType<A> lhs, final SmPrimeType<A> rhs)
+	private ZPrimeChoiceType(final PrimeType<A> lhs, final PrimeType<A> rhs)
 	{
 		m_lhs = PreCondition.assertArgumentNotNull(lhs);
 		m_rhs = PreCondition.assertArgumentNotNull(rhs);
 	}
 
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public SmPrimeTypeKind getKind()
+	public PrimeTypeKind getKind()
 	{
-		return SmPrimeTypeKind.CHOICE;
+		return PrimeTypeKind.CHOICE;
 	}
 
-	public SmPrimeType<A> getLHS()
+	public PrimeType<A> getLHS()
 	{
 		return m_lhs;
 	}
 
-	public SmPrimeType<A> getRHS()
+	public PrimeType<A> getRHS()
 	{
 		return m_rhs;
 	}
@@ -90,12 +90,12 @@ final class ZPrimeChoiceType<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return m_lhs.isNative() && m_rhs.isNative();
 	}
 
-	public SmPrimeChoiceType<A> prime()
+	public PrimeChoiceType<A> prime()
 	{
 		return this;
 	}
 
-	public boolean subtype(final SmPrimeType<A> rhs)
+	public boolean subtype(final PrimeType<A> rhs)
 	{
 		return m_lhs.subtype(rhs) && m_rhs.subtype(rhs);
 	}

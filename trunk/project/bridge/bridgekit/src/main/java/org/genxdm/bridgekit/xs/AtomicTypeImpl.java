@@ -27,14 +27,14 @@ import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.resolve.PrefixResolver;
-import org.genxdm.xs.types.SmAtomicType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmPrimeChoiceType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmPrimeTypeKind;
-import org.genxdm.xs.types.SmSequenceType;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.AtomicType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.PrimeChoiceType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.PrimeTypeKind;
+import org.genxdm.xs.types.SequenceType;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.SimpleType;
 
 /**
  * An atomic type, but not the Atomic Ur-Type.
@@ -42,7 +42,7 @@ import org.genxdm.xs.types.SmSimpleType;
  * This is strictly used for derived atomic values
  * </p>
  */
-public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements SmAtomicType<A>
+public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements AtomicType<A>
 {
 	private static String collapseWhiteSpace(final String text)
 	{
@@ -173,20 +173,20 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements SmAtom
 		return text.replace('\t', ' ').replace('\n', ' ').replace('\r', ' ');
 	}
 
-	private final SmAtomicType<A> baseType;
+	private final AtomicType<A> baseType;
 
-	public AtomicTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final SmAtomicType<A> baseType, final WhiteSpacePolicy whiteSpace, final AtomBridge<A> atomBridge)
+	public AtomicTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final AtomicType<A> baseType, final WhiteSpacePolicy whiteSpace, final AtomBridge<A> atomBridge)
 	{
 		super(name, isAnonymous, scope, DerivationMethod.Restriction, whiteSpace, atomBridge);
 		this.baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");
 	}
 
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public SmSequenceType<A> atomSet()
+	public SequenceType<A> atomSet()
 	{
 		// Atomization has no effect.
 		return this;
@@ -238,22 +238,22 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements SmAtom
 		}
 	}
 
-	public SmSimpleType<A> getBaseType()
+	public SimpleType<A> getBaseType()
 	{
 		return baseType;
 	}
 
-	public SmPrimeTypeKind getKind()
+	public PrimeTypeKind getKind()
 	{
-		return SmPrimeTypeKind.ATOM;
+		return PrimeTypeKind.ATOM;
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
 		return baseType.getNativeType();
 	}
 
-	public SmAtomicType<A> getNativeTypeDefinition()
+	public AtomicType<A> getNativeTypeDefinition()
 	{
 		return baseType.getNativeTypeDefinition();
 	}
@@ -287,12 +287,12 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements SmAtom
 
 	public boolean isID()
 	{
-		return (getNativeType() == SmNativeType.ID);
+		return (getNativeType() == NativeType.ID);
 	}
 
 	public boolean isIDREF()
 	{
-		return (getNativeType() == SmNativeType.IDREF);
+		return (getNativeType() == NativeType.IDREF);
 	}
 
 	public boolean isIDREFS()
@@ -317,20 +317,20 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements SmAtom
 
 	public String normalize(final String initialValue)
 	{
-		final SmNativeType nativeType = getNativeType();
+		final NativeType nativeType = getNativeType();
 		if (nativeType.isToken())
 		{
 			return collapseWhiteSpace(initialValue);
 		}
-		else if (nativeType == SmNativeType.NORMALIZED_STRING)
+		else if (nativeType == NativeType.NORMALIZED_STRING)
 		{
 			return replaceWhiteSpace(initialValue);
 		}
-		else if (nativeType == SmNativeType.STRING)
+		else if (nativeType == NativeType.STRING)
 		{
 			return initialValue;
 		}
-		else if (nativeType == SmNativeType.UNTYPED_ATOMIC)
+		else if (nativeType == NativeType.UNTYPED_ATOMIC)
 		{
 			return initialValue;
 		}
@@ -340,7 +340,7 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements SmAtom
 		}
 	}
 
-	public final SmAtomicType<A> prime()
+	public final AtomicType<A> prime()
 	{
 		return this;
 	}
@@ -350,13 +350,13 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements SmAtom
 		return KeeneQuantifier.EXACTLY_ONE;
 	}
 
-	public boolean subtype(final SmPrimeType<A> rhs)
+	public boolean subtype(final PrimeType<A> rhs)
 	{
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final SmPrimeChoiceType<A> choiceType = (SmPrimeChoiceType<A>)rhs;
+				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case ANY_ATOMIC_TYPE:
@@ -367,8 +367,8 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements SmAtom
 			}
 			case ATOM:
 			{
-				final SmAtomicType<A> atomicType = (SmAtomicType<A>)rhs;
-				return SmSupportImpl.subtype(this, atomicType);
+				final AtomicType<A> atomicType = (AtomicType<A>)rhs;
+				return SchemaSupport.subtype(this, atomicType);
 			}
 			case EMPTY:
 			{

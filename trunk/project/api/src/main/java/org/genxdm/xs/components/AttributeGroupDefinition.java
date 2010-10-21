@@ -15,7 +15,7 @@
  */
 package org.genxdm.xs.components;
 
-import org.genxdm.xs.constraints.SmAttributeUse;
+import org.genxdm.xs.constraints.AttributeUse;
 
 /**
  * An Attribute Group Definition Schema Component.
@@ -31,7 +31,7 @@ public interface AttributeGroupDefinition<A> extends SchemaComponent<A>
 	 * Returns the {attribute uses} property of this Attribute Group Definition. <br/>
 	 * A set of attribute uses.
 	 */
-	Iterable<SmAttributeUse<A>> getAttributeUses();
+	Iterable<AttributeUse<A>> getAttributeUses();
 
 	/**
 	 * Returns the {attribute wildcard} property of this Attribute Group Definition. <br/>

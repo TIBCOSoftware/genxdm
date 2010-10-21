@@ -18,19 +18,19 @@ package org.genxdm.bridgekit.xs;
 import javax.xml.namespace.QName;
 
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
 
 final class YearMonthDurationType<A> extends AbstractDurationType<A>
 {
 
-	public YearMonthDurationType(final QName name, final SmSimpleType<A> baseType, final AtomBridge<A> atomBridge)
+	public YearMonthDurationType(final QName name, final SimpleType<A> baseType, final AtomBridge<A> atomBridge)
 	{
 		super(name, baseType, atomBridge);
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.DURATION_YEARMONTH;
+		return NativeType.DURATION_YEARMONTH;
 	}
 }

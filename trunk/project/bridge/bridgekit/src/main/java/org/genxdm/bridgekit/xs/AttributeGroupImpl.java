@@ -20,16 +20,16 @@ import javax.xml.namespace.QName;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
 import org.genxdm.xs.components.SchemaWildcard;
-import org.genxdm.xs.constraints.SmAttributeUse;
+import org.genxdm.xs.constraints.AttributeUse;
 import org.genxdm.xs.enums.ScopeExtent;
 
 public final class AttributeGroupImpl<A> extends NamedComponentImpl<A> implements AttributeGroupDefinition<A>
 {
-	private final Iterable<SmAttributeUse<A>> m_attributeUses;
+	private final Iterable<AttributeUse<A>> m_attributeUses;
 	private final boolean m_hasAttributeUses;
 	private final SchemaWildcard<A> m_wildcard;
 
-	public AttributeGroupImpl(final QName name, final ScopeExtent scope, final Iterable<SmAttributeUse<A>> attributeUses, final SchemaWildcard<A> wildcard)
+	public AttributeGroupImpl(final QName name, final ScopeExtent scope, final Iterable<AttributeUse<A>> attributeUses, final SchemaWildcard<A> wildcard)
 	{
 		super(name, false, scope);
 		if (null != attributeUses)
@@ -53,7 +53,7 @@ public final class AttributeGroupImpl<A> extends NamedComponentImpl<A> implement
 		m_wildcard = wildcard;
 	}
 
-	public Iterable<SmAttributeUse<A>> getAttributeUses()
+	public Iterable<AttributeUse<A>> getAttributeUses()
 	{
 		PreCondition.assertTrue(m_hasAttributeUses, "hasAttributeUses() -> false");
 		return m_attributeUses;

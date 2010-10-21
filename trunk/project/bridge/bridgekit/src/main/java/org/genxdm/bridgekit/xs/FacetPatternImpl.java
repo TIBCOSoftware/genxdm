@@ -17,15 +17,15 @@ package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.exceptions.PatternException;
-import org.genxdm.xs.facets.SmPattern;
-import org.genxdm.xs.facets.SmRegExPattern;
+import org.genxdm.xs.facets.Pattern;
+import org.genxdm.xs.facets.RegExPattern;
 
-public final class FacetPatternImpl implements SmPattern
+public final class FacetPatternImpl implements Pattern
 {
-	private final SmRegExPattern pattern;
+	private final RegExPattern pattern;
 	private final String regex;
 
-	public FacetPatternImpl(final SmRegExPattern pattern, final String regex)
+	public FacetPatternImpl(final RegExPattern pattern, final String regex)
 	{
 		this.pattern = PreCondition.assertArgumentNotNull(pattern, "pattern");
 		this.regex = PreCondition.assertArgumentNotNull(regex, "regex");

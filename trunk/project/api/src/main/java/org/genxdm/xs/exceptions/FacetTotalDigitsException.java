@@ -16,7 +16,7 @@
 package org.genxdm.xs.exceptions;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.facets.SmTotalDigits;
+import org.genxdm.xs.facets.TotalDigits;
 
 
 /**
@@ -27,9 +27,9 @@ public final class FacetTotalDigitsException extends FacetException
 {
 	private final int actualValue;
 	private final String displayString;
-	private final SmTotalDigits<?> expectedValue;
+	private final TotalDigits<?> expectedValue;
 
-	public FacetTotalDigitsException(final int actualValue, final String value, final SmTotalDigits<?> totalDigits)
+	public FacetTotalDigitsException(final int actualValue, final String value, final TotalDigits<?> totalDigits)
 	{
 		this.actualValue = actualValue;
 		this.displayString = PreCondition.assertArgumentNotNull(value, "value");

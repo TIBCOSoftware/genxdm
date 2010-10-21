@@ -43,18 +43,18 @@ import org.genxdm.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrate
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.SchemaWildcard;
-import org.genxdm.xs.constraints.SmAttributeUse;
-import org.genxdm.xs.constraints.SmNamespaceConstraint;
-import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.constraints.AttributeUse;
+import org.genxdm.xs.constraints.NamespaceConstraint;
+import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.xs.enums.ProcessContentsMode;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.exceptions.SimpleTypeException;
 import org.genxdm.xs.resolve.PrefixResolver;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 
 
 /**
@@ -66,9 +66,9 @@ final class AttributeManager<A>
 	// Keep track of the attributes that we have seen in order to report missing attributes.
 	private final Set<QName> m_attributes = new HashSet<QName>();
 	private Boolean m_localNil = null;
-	private SmType<A> m_localType = null;
-	private final HashMap<QName, Pair<A, SmSimpleType<A>>> m_xsiAtoms = new HashMap<QName, Pair<A, SmSimpleType<A>>>();
-	private final HashMap<QName, Pair<List<? extends A>, SmSimpleType<A>>> m_xsiLists = new HashMap<QName, Pair<List<? extends A>, SmSimpleType<A>>>();
+	private Type<A> m_localType = null;
+	private final HashMap<QName, Pair<A, SimpleType<A>>> m_xsiAtoms = new HashMap<QName, Pair<A, SimpleType<A>>>();
+	private final HashMap<QName, Pair<List<? extends A>, SimpleType<A>>> m_xsiLists = new HashMap<QName, Pair<List<? extends A>, SimpleType<A>>>();
 	private final VxMetaBridge<A> metaBridge;
 	private final NameSource nameBridge;
 	private final String W3C_XML_SCHEMA_INSTANCE_NS_URI;
@@ -91,7 +91,7 @@ final class AttributeManager<A>
 
 	private void attribute(final ModelPSVI<A> elementPSVI, final ValidationItem<A> elementItem, final QName attributeName, final int attributeIndex, final String initialValue, final VxOutputHandler<A> downstream, final SchemaExceptionHandler errors, final IdManager<A> idm, final IdentityConstraintManager<A> icm) throws IOException, AbortException
 	{
-		final SmType<A> elementType = elementPSVI.getType();
+		final Type<A> elementType = elementPSVI.getType();
 		if (null == elementType)
 		{
 			// Short-circuit if we could not assign a type.
@@ -102,19 +102,19 @@ final class AttributeManager<A>
 		}
 		else
 		{
-			if (elementType instanceof SmComplexType<?>)
+			if (elementType instanceof ComplexType<?>)
 			{
-				final SmComplexType<A> complexType = (SmComplexType<A>)elementType;
-				final SmAttributeUse<A> attributeUse = complexType.getAttributeUses().get(attributeName);
+				final ComplexType<A> complexType = (ComplexType<A>)elementType;
+				final AttributeUse<A> attributeUse = complexType.getAttributeUses().get(attributeName);
 				if (null != attributeUse)
 				{
-					final SmValueConstraint<A> valueConstraint = attributeUse.getEffectiveValueConstraint();
+					final ValueConstraint<A> valueConstraint = attributeUse.getEffectiveValueConstraint();
 					final AttributeDefinition<A> attribute = attributeUse.getAttribute();
 
-					final SmType<A> attributeType = attribute.getType();
-					if (attributeType instanceof SmSimpleType<?>)
+					final Type<A> attributeType = attribute.getType();
+					if (attributeType instanceof SimpleType<?>)
 					{
-						final SmSimpleType<A> simpleType = (SmSimpleType<A>)attributeType;
+						final SimpleType<A> simpleType = (SimpleType<A>)attributeType;
 						final List<A> actualValue = validateAttributeWrtAttributeUse(elementItem, valueConstraint, attributeName, simpleType, attributeIndex, initialValue, idm, icm, errors, atomBridge);
 						if (null != downstream)
 						{
@@ -135,7 +135,7 @@ final class AttributeManager<A>
 					if (null != attributeWildcard)
 					{
 						// If we end up here then the attribute was not recognized by {attribute uses}.
-						final SmNamespaceConstraint wildcardNs = attributeWildcard.getNamespaceConstraint();
+						final NamespaceConstraint wildcardNs = attributeWildcard.getNamespaceConstraint();
 						if (wildcardNs == null)
 						{
 							errors.error(new CvcUnexpectedAttributeException(elementPSVI.getName(), attributeName, elementItem.getLocation()));
@@ -161,11 +161,11 @@ final class AttributeManager<A>
 										final AttributeDefinition<A> attribute = metaBridge.getAttributeDeclaration(attributeName);
 										if (null != attribute)
 										{
-											final SmType<A> attributeType = attribute.getType();
-											if (attributeType instanceof SmSimpleType<?>)
+											final Type<A> attributeType = attribute.getType();
+											if (attributeType instanceof SimpleType<?>)
 											{
-												final SmSimpleType<A> simpleType = (SmSimpleType<A>)attributeType;
-												final SmValueConstraint<A> valueConstraint = attribute.getValueConstraint();
+												final SimpleType<A> simpleType = (SimpleType<A>)attributeType;
+												final ValueConstraint<A> valueConstraint = attribute.getValueConstraint();
 												final List<A> actualValue = validateAttributeWrtDeclaration(elementItem, valueConstraint, attributeName, simpleType, initialValue, errors, atomBridge);
 
 												idm.attribute(actualValue, simpleType, elementItem, errors, atomBridge);
@@ -200,11 +200,11 @@ final class AttributeManager<A>
 										final AttributeDefinition<A> attribute = metaBridge.getAttributeDeclaration(attributeName);
 										if (null != attribute)
 										{
-											final SmType<A> attributeType = attribute.getType();
-											if (attributeType instanceof SmSimpleType<?>)
+											final Type<A> attributeType = attribute.getType();
+											if (attributeType instanceof SimpleType<?>)
 											{
-												final SmSimpleType<A> simpleType = (SmSimpleType<A>)attributeType;
-												final SmValueConstraint<A> valueConstraint = attribute.getValueConstraint();
+												final SimpleType<A> simpleType = (SimpleType<A>)attributeType;
+												final ValueConstraint<A> valueConstraint = attribute.getValueConstraint();
 
 												final List<A> actualValue = validateAttributeWrtDeclaration(elementItem, valueConstraint, attributeName, simpleType, initialValue, errors, atomBridge);
 
@@ -254,9 +254,9 @@ final class AttributeManager<A>
 					}
 				}
 			}
-			else if (elementType instanceof SmSimpleType<?>)
+			else if (elementType instanceof SimpleType<?>)
 			{
-				final SmSimpleType<A> simpleType = (SmSimpleType<A>)elementType;
+				final SimpleType<A> simpleType = (SimpleType<A>)elementType;
 				errors.error(new CvcAttributeOnSimpleTypeException(elementPSVI.getName(), attributeName, simpleType, elementItem.getLocation()));
 			}
 			else
@@ -277,18 +277,18 @@ final class AttributeManager<A>
 	private int checkForMissingAttributes(final ModelPSVI<A> elementPSVI, final ValidationItem<A> elementItem, final int lastIndex, final SchemaExceptionHandler errors, final VxOutputHandler<A> downstream, final IdManager<A> idm, final IdentityConstraintManager<A> icm) throws IOException, AbortException
 	{
 		int attributeIndex = lastIndex;
-		final SmType<A> elementType = elementPSVI.getType();
-		if (elementType instanceof SmComplexType<?>)
+		final Type<A> elementType = elementPSVI.getType();
+		if (elementType instanceof ComplexType<?>)
 		{
-			final SmComplexType<A> complexType = (SmComplexType<A>)elementType;
-			for (final SmAttributeUse<A> attributeUse : complexType.getAttributeUses().values())
+			final ComplexType<A> complexType = (ComplexType<A>)elementType;
+			for (final AttributeUse<A> attributeUse : complexType.getAttributeUses().values())
 			{
 				final AttributeDefinition<A> attribute = attributeUse.getAttribute();
 				final QName attributeName = attribute.getName();
 				if (!m_attributes.contains(attributeName))
 				{
 
-					final SmValueConstraint<A> valueConstraint = attributeUse.getEffectiveValueConstraint();
+					final ValueConstraint<A> valueConstraint = attributeUse.getEffectiveValueConstraint();
 					if (null != valueConstraint)
 					{
 						switch (valueConstraint.getVariety())
@@ -299,12 +299,12 @@ final class AttributeManager<A>
 								// Create attribute with the value - a nasty W3C XML Schema side effect!
 								// TODO: I think we need to re-validate here to get the actual type?
 								// TODO: This would then apply to the managers and the downstream.
-								final SmType<A> attributeType = attribute.getType();
+								final Type<A> attributeType = attribute.getType();
 								final List<A> actualValue = valueConstraint.getValue();
 
-								if (attributeType instanceof SmSimpleType<?>)
+								if (attributeType instanceof SimpleType<?>)
 								{
-									final SmSimpleType<A> simpleType = (SmSimpleType<A>)attributeType;
+									final SimpleType<A> simpleType = (SimpleType<A>)attributeType;
 									idm.attribute(actualValue, simpleType, elementItem, errors, atomBridge);
 									icm.attribute(actualValue, simpleType, elementItem, attributeName, attributeIndex, atomBridge);
 
@@ -349,7 +349,7 @@ final class AttributeManager<A>
 		return attributeIndex;
 	}
 
-	private void checkValueAgainstValueConstraint(final SmValueConstraint<A> valueConstraint, final QName attributeName, final List<? extends A> actualValue, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
+	private void checkValueAgainstValueConstraint(final ValueConstraint<A> valueConstraint, final QName attributeName, final List<? extends A> actualValue, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		if (null != valueConstraint)
 		{
@@ -385,7 +385,7 @@ final class AttributeManager<A>
 		return m_localNil;
 	}
 
-	public SmType<A> getLocalType()
+	public Type<A> getLocalType()
 	{
 		return m_localType;
 	}
@@ -419,7 +419,7 @@ final class AttributeManager<A>
 					if (XSI_TYPE == localName)
 					{
 						final AttributeDefinition<A> attribute = metaBridge.getAttributeDeclaration(attributeName);
-						final SmSimpleType<A> attributeType = (SmSimpleType<A>)attribute.getType();
+						final SimpleType<A> attributeType = (SimpleType<A>)attribute.getType();
 						try
 						{
 							final A actualValue = attributeType.validate(data).get(0);
@@ -427,7 +427,7 @@ final class AttributeManager<A>
 							m_localType = metaBridge.getTypeDefinition(typeName);
 							if (null != m_localType)
 							{
-								m_xsiAtoms.put(attributeName, new Pair<A, SmSimpleType<A>>(actualValue, attributeType));
+								m_xsiAtoms.put(attributeName, new Pair<A, SimpleType<A>>(actualValue, attributeType));
 							}
 							else
 							{
@@ -443,12 +443,12 @@ final class AttributeManager<A>
 					else if (XSI_NIL == localName)
 					{
 						final AttributeDefinition<A> attribute = metaBridge.getAttributeDeclaration(attributeName);
-						final SmSimpleType<A> attributeType = (SmSimpleType<A>)attribute.getType();
+						final SimpleType<A> attributeType = (SimpleType<A>)attribute.getType();
 						try
 						{
 							final A actualValue = attributeType.validate(data).get(0);
 							m_localNil = atomBridge.getBoolean(actualValue);
-							m_xsiAtoms.put(attributeName, new Pair<A, SmSimpleType<A>>(actualValue, attributeType));
+							m_xsiAtoms.put(attributeName, new Pair<A, SimpleType<A>>(actualValue, attributeType));
 						}
 						catch (final DatatypeException dte)
 						{
@@ -459,7 +459,7 @@ final class AttributeManager<A>
 					else if (XSI_SCHEMA_LOCATION == localName)
 					{
 						final AttributeDefinition<A> attribute = metaBridge.getAttributeDeclaration(attributeName);
-						final SmSimpleType<A> attributeType = (SmSimpleType<A>)attribute.getType();
+						final SimpleType<A> attributeType = (SimpleType<A>)attribute.getType();
 						try
 						{
 							final List<A> actualValue = attributeType.validate(data);
@@ -483,7 +483,7 @@ final class AttributeManager<A>
 									}
 								}
 							}
-							m_xsiLists.put(attributeName, new Pair<List<? extends A>, SmSimpleType<A>>(actualValue, attributeType));
+							m_xsiLists.put(attributeName, new Pair<List<? extends A>, SimpleType<A>>(actualValue, attributeType));
 						}
 						catch (final DatatypeException dte)
 						{
@@ -494,7 +494,7 @@ final class AttributeManager<A>
 					else if (XSI_NO_NAMESPACE_SCHEMA_LOCATION == localName)
 					{
 						final AttributeDefinition<A> attribute = metaBridge.getAttributeDeclaration(attributeName);
-						final SmSimpleType<A> attributeType = (SmSimpleType<A>)attribute.getType();
+						final SimpleType<A> attributeType = (SimpleType<A>)attribute.getType();
 						try
 						{
 							final A actualValue = attributeType.validate(data).get(0);
@@ -503,7 +503,7 @@ final class AttributeManager<A>
 								final URI schemaLocation = atomBridge.getURI(actualValue);
 								schemaDocumentLocationStrategy.noNamespaceSchemaLocation(baseURI, schemaLocation);
 							}
-							m_xsiAtoms.put(attributeName, new Pair<A, SmSimpleType<A>>(actualValue, attributeType));
+							m_xsiAtoms.put(attributeName, new Pair<A, SimpleType<A>>(actualValue, attributeType));
 						}
 						catch (final DatatypeException dte)
 						{
@@ -607,7 +607,7 @@ final class AttributeManager<A>
 		return checkForMissingAttributes(elementPSVI, elementItem, attributeIndex, errors, downstream, idm, icm);
 	}
 
-	private List<A> validateAttributeWrtAttributeUse(final ValidationItem<A> elementItem, final SmValueConstraint<A> valueConstraint, final QName attributeName, final SmSimpleType<A> attributeType, final int attributeIndex, final String initialValue, final IdManager<A> idm, final IdentityConstraintManager<A> icm, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
+	private List<A> validateAttributeWrtAttributeUse(final ValidationItem<A> elementItem, final ValueConstraint<A> valueConstraint, final QName attributeName, final SimpleType<A> attributeType, final int attributeIndex, final String initialValue, final IdManager<A> idm, final IdentityConstraintManager<A> icm, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		final List<A> actualValue = validateAttributeWrtDeclaration(elementItem, valueConstraint, attributeName, attributeType, initialValue, errors, atomBridge);
 
@@ -619,7 +619,7 @@ final class AttributeManager<A>
 		return actualValue;
 	}
 
-	private List<A> validateAttributeWrtDeclaration(final Locatable location, final SmValueConstraint<A> valueConstraint, final QName attributeName, final SmSimpleType<A> attributeType, final String initialValue, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
+	private List<A> validateAttributeWrtDeclaration(final Locatable location, final ValueConstraint<A> valueConstraint, final QName attributeName, final SimpleType<A> attributeType, final String initialValue, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		final List<A> actualValue = validateWrtType(attributeName, attributeType, initialValue, location, errors, atomBridge);
 
@@ -628,7 +628,7 @@ final class AttributeManager<A>
 		return actualValue;
 	}
 
-	private List<A> validateWrtType(final QName attributeName, final SmSimpleType<A> attributeType, final String initialValue, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
+	private List<A> validateWrtType(final QName attributeName, final SimpleType<A> attributeType, final String initialValue, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		PreCondition.assertArgumentNotNull(attributeName, "attributeName");
 		PreCondition.assertArgumentNotNull(attributeType);
