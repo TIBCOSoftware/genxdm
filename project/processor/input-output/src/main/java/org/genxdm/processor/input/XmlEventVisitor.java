@@ -32,7 +32,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.Comment;
-import javax.xml.stream.events.EndDocument;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.Namespace;
 import javax.xml.stream.events.ProcessingInstruction;
@@ -62,6 +61,17 @@ public class XmlEventVisitor
     public void wrapFragment(URI systemId, String internalSS)
         throws IOException, GxmlMarshalException
     {
+    }
+    
+    /** This guarantees that a document event will be fired.  Thus, there will always
+     * be a single node returned by a FragmentBuilder.
+     * 
+     */
+    public void parse()
+        throws IOException, GxmlMarshalException
+    {
+        // TODO: this probably makes it impossible to read an external parsed entity (fragment).
+        // that needs some consideration.
         boolean manualStart = false;
         try
         {
@@ -69,7 +79,7 @@ public class XmlEventVisitor
             {
                 if (!reader.peek().isStartDocument())
                 {
-                    handler.startDocument(systemId == null ? docURI : systemId, internalSS);
+                    storeEvent(new StoredStartDoc(docURI == null ? null : docURI.toString()));
                     manualStart = true;
                 }
             }
@@ -78,14 +88,19 @@ public class XmlEventVisitor
         {
             throw new GxmlMarshalException(xse);
         }
-        parse();
+        parseFragment();
         if (manualStart)
             handler.endDocument();
     }
     
-    public void parse()
+    /** This does the interesting work, overall.
+     * 
+     */
+    public void parseFragment()
         throws IOException, GxmlMarshalException
     {
+        // TODO: you can't actually call this, right now.
+        // figure out a good way to enable fragment parsing.
         while (reader.hasNext())
         {
             try
@@ -115,6 +130,7 @@ public class XmlEventVisitor
         }
     }
     
+    @SuppressWarnings("unchecked")
     private void processEvent(XMLEvent event)
         throws XMLStreamException
     {
@@ -156,12 +172,14 @@ public class XmlEventVisitor
                 depth++;
                 StartElement selem = event.asStartElement();
                 handler.startElement(selem.getName().getNamespaceURI(), selem.getName().getLocalPart(), selem.getName().getPrefix());
+                // unchecked cast from Iterator to Iterator<Namespace> (with type erasure back)
                 Iterator<Namespace> namespaces = selem.getNamespaces();
                 while (namespaces.hasNext())
                 {
                     Namespace namespace = namespaces.next();
                     handler.namespace(namespace.getPrefix(), namespace.getNamespaceURI());
                 }
+                // unchecked cast from Iterator to Iterator<Attribute> (with type erasure back)
                 Iterator<Attribute> attributes = selem.getAttributes();
                 while (attributes.hasNext())
                 {
@@ -209,13 +227,13 @@ public class XmlEventVisitor
             case END_ELEMENT :
             {
                 depth--;
-                EndElement eelem = (EndElement)event;
+//                EndElement eelem = (EndElement)event;
                 handler.endElement();
                 break;
             }
             case END_DOCUMENT :
             {
-                EndDocument edoc = (EndDocument)event;
+//                EndDocument edoc = (EndDocument)event;
                 handler.endDocument();
                 break;
             }
@@ -322,6 +340,10 @@ public class XmlEventVisitor
             this.type = unstoredEvent.getEventType();
             this.location = unstoredEvent.getLocation();
         }
+        StoredEvent(int t)
+        {
+            this.type = t;
+        }
         public Characters asCharacters()
         {
             throw new ClassCastException();
@@ -407,6 +429,14 @@ public class XmlEventVisitor
             this.sa = sd.isStandalone();
             this.saSet = sd.standaloneSet();
             this.encSet = sd.encodingSet();
+        }
+        StoredStartDoc(String sysID)
+        {
+            super(START_DOCUMENT);
+            this.version = "1.0";
+            this.systemId = sysID;
+            this.encSet = false;
+            this.saSet = false;
         }
         public boolean isStartDocument()
         {
