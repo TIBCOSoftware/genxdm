@@ -22,7 +22,7 @@ import java.util.List;
 import org.genxdm.DtdAttributeKind;
 import org.genxdm.base.mutable.NodeFactory;
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.Type;
 
 public class XmlNodeFactory
     implements NodeFactory<XmlNode>
@@ -38,7 +38,7 @@ public class XmlNodeFactory
         return new XmlAttributeNode(getRoot(owner), namespaceURI, localName, prefix, type, value);
     }
     
-    public XmlAttributeNode createAttribute(XmlNode owner, String namespaceURI, String localName, String prefix, List<? extends XmlAtom> data, SmType<XmlAtom> type)
+    public XmlAttributeNode createAttribute(XmlNode owner, String namespaceURI, String localName, String prefix, List<? extends XmlAtom> data, Type<XmlAtom> type)
     {
         return new XmlAttributeNode(getRoot(owner), namespaceURI, localName, prefix, type, makeList(data));
     }
@@ -58,7 +58,7 @@ public class XmlNodeFactory
         return new XmlElementNode(getRoot(owner), namespaceURI, localName, prefix, null);
     }
     
-    public XmlElementNode createElement(XmlNode owner, String namespaceURI, String localName, String prefix, SmType<XmlAtom> type)
+    public XmlElementNode createElement(XmlNode owner, String namespaceURI, String localName, String prefix, Type<XmlAtom> type)
     {
         return new XmlElementNode(getRoot(owner), namespaceURI, localName, prefix, type);
     }

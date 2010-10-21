@@ -37,7 +37,7 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
 import org.genxdm.typed.types.Emulation;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * Unit Testing for {@link AtomBridge}.
@@ -55,7 +55,7 @@ public abstract class AtomBridgeTestBase<N, A>
 
 	private static final String METHOD_WRAP_ATOM = "wrapAtom(A)";
 
-	private static <A> void assertCastFail(final SmNativeType sourceType, final String sourceString, final SmNativeType targetType, final QName code, final CastingContext<A> castingContext, final AtomBridge<A> atomBridge)
+	private static <A> void assertCastFail(final NativeType sourceType, final String sourceString, final NativeType targetType, final QName code, final CastingContext<A> castingContext, final AtomBridge<A> atomBridge)
 	{
 		PreCondition.assertArgumentNotNull(code, "code");
 		final String message = sourceType.toQName().getLocalPart() + "('" + sourceString + "') -> " + targetType.toQName().getLocalPart();
@@ -82,7 +82,7 @@ public abstract class AtomBridgeTestBase<N, A>
 		}
 	}
 
-	private static <A> void assertCastGood(final SmNativeType sourceType, final String sourceString, final SmNativeType targetType, final String targetString, final CastingContext<A> castingContext, final AtomBridge<A> atomBridge)
+	private static <A> void assertCastGood(final NativeType sourceType, final String sourceString, final NativeType targetType, final String targetString, final CastingContext<A> castingContext, final AtomBridge<A> atomBridge)
 	{
 		final String message = sourceType.toQName().getLocalPart() + "('" + sourceString + "') -> " + targetType.toQName().getLocalPart() + "('" + targetString + "')";
 
@@ -115,14 +115,14 @@ public abstract class AtomBridgeTestBase<N, A>
 	}
 
 	/**
-	 * Type-safe comparison of {@link SmNativeType}.
+	 * Type-safe comparison of {@link NativeType}.
 	 */
-	private static boolean equals(SmNativeType one, SmNativeType two)
+	private static boolean equals(NativeType one, NativeType two)
 	{
 		return one == two;
 	}
 
-	private void assertManagerLookupByAtom(final SmNativeType nativeType, final String strval, final AtomBridge<A> atomBridge)
+	private void assertManagerLookupByAtom(final NativeType nativeType, final String strval, final AtomBridge<A> atomBridge)
 	{
 		try
 		{
@@ -248,13 +248,13 @@ public abstract class AtomBridgeTestBase<N, A>
 		assertNotNull(nameBridge);
 
 		// Get the UberTypes
-		final SmNativeType targetBuiltInType = SmNativeType.getType(targetType);
+		final NativeType targetBuiltInType = NativeType.getType(targetType);
 
 		// Create the source atom.
 		A sourceAtom = null;
 		try
 		{
-			sourceAtom = atomBridge.compile(sourceValue, SmNativeType.getType(sourceType));
+			sourceAtom = atomBridge.compile(sourceValue, NativeType.getType(sourceType));
 		}
 		catch (GxmlAtomCastException e)
 		{
@@ -267,7 +267,7 @@ public abstract class AtomBridgeTestBase<N, A>
 
 			if (expectedSuccess)
 			{
-				final SmNativeType resultType = atomBridge.getNativeType(targetAtom);
+				final NativeType resultType = atomBridge.getNativeType(targetAtom);
 				if (resultType != targetBuiltInType)
 				{
 					// Failed.
@@ -322,22 +322,22 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom = atomBridge.createString(original);
 			assertEquals(original, atomBridge.getString(atom));
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertTrue(nativeType.isA(SmNativeType.STRING));
-			assertFalse(nativeType.isA(SmNativeType.NORMALIZED_STRING));
-			assertFalse(nativeType.isA(SmNativeType.TOKEN));
-			assertFalse(nativeType.isA(SmNativeType.LANGUAGE));
-			assertFalse(nativeType.isA(SmNativeType.NMTOKEN));
-			assertFalse(nativeType.isA(SmNativeType.NAME));
-			assertFalse(nativeType.isA(SmNativeType.NCNAME));
-			assertFalse(nativeType.isA(SmNativeType.ID));
-			assertFalse(nativeType.isA(SmNativeType.IDREF));
-			assertFalse(nativeType.isA(SmNativeType.ENTITY));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertTrue(nativeType.isA(NativeType.STRING));
+			assertFalse(nativeType.isA(NativeType.NORMALIZED_STRING));
+			assertFalse(nativeType.isA(NativeType.TOKEN));
+			assertFalse(nativeType.isA(NativeType.LANGUAGE));
+			assertFalse(nativeType.isA(NativeType.NMTOKEN));
+			assertFalse(nativeType.isA(NativeType.NAME));
+			assertFalse(nativeType.isA(NativeType.NCNAME));
+			assertFalse(nativeType.isA(NativeType.ID));
+			assertFalse(nativeType.isA(NativeType.IDREF));
+			assertFalse(nativeType.isA(NativeType.ENTITY));
 
-			assertFalse(nativeType.isA(SmNativeType.UNTYPED_ATOMIC));
-			assertTrue(nativeType.isA(SmNativeType.ANY_ATOMIC_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_SIMPLE_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_TYPE));
+			assertFalse(nativeType.isA(NativeType.UNTYPED_ATOMIC));
+			assertTrue(nativeType.isA(NativeType.ANY_ATOMIC_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_SIMPLE_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_TYPE));
 		}
 		{
 			final String original = "Hello World";
@@ -345,7 +345,7 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createString(original), SmNativeType.NORMALIZED_STRING, this);
+				atom = atomBridge.castAs(atomBridge.createString(original), NativeType.NORMALIZED_STRING, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
@@ -353,22 +353,22 @@ public abstract class AtomBridgeTestBase<N, A>
 			}
 			assertEquals(original, atomBridge.getString(atom));
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertTrue(nativeType.isA(SmNativeType.STRING));
-			assertTrue(nativeType.isA(SmNativeType.NORMALIZED_STRING));
-			assertFalse(nativeType.isA(SmNativeType.TOKEN));
-			assertFalse(nativeType.isA(SmNativeType.LANGUAGE));
-			assertFalse(nativeType.isA(SmNativeType.NMTOKEN));
-			assertFalse(nativeType.isA(SmNativeType.NAME));
-			assertFalse(nativeType.isA(SmNativeType.NCNAME));
-			assertFalse(nativeType.isA(SmNativeType.ID));
-			assertFalse(nativeType.isA(SmNativeType.IDREF));
-			assertFalse(nativeType.isA(SmNativeType.ENTITY));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertTrue(nativeType.isA(NativeType.STRING));
+			assertTrue(nativeType.isA(NativeType.NORMALIZED_STRING));
+			assertFalse(nativeType.isA(NativeType.TOKEN));
+			assertFalse(nativeType.isA(NativeType.LANGUAGE));
+			assertFalse(nativeType.isA(NativeType.NMTOKEN));
+			assertFalse(nativeType.isA(NativeType.NAME));
+			assertFalse(nativeType.isA(NativeType.NCNAME));
+			assertFalse(nativeType.isA(NativeType.ID));
+			assertFalse(nativeType.isA(NativeType.IDREF));
+			assertFalse(nativeType.isA(NativeType.ENTITY));
 
-			assertFalse(nativeType.isA(SmNativeType.UNTYPED_ATOMIC));
-			assertTrue(nativeType.isA(SmNativeType.ANY_ATOMIC_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_SIMPLE_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_TYPE));
+			assertFalse(nativeType.isA(NativeType.UNTYPED_ATOMIC));
+			assertTrue(nativeType.isA(NativeType.ANY_ATOMIC_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_SIMPLE_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_TYPE));
 		}
 		{
 			final String original = "Hello World";
@@ -376,7 +376,7 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createString(original), SmNativeType.TOKEN, this);
+				atom = atomBridge.castAs(atomBridge.createString(original), NativeType.TOKEN, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
@@ -384,22 +384,22 @@ public abstract class AtomBridgeTestBase<N, A>
 			}
 			assertEquals(original, atomBridge.getString(atom));
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertTrue(nativeType.isA(SmNativeType.STRING));
-			assertTrue(nativeType.isA(SmNativeType.NORMALIZED_STRING));
-			assertTrue(nativeType.isA(SmNativeType.TOKEN));
-			assertFalse(nativeType.isA(SmNativeType.LANGUAGE));
-			assertFalse(nativeType.isA(SmNativeType.NMTOKEN));
-			assertFalse(nativeType.isA(SmNativeType.NAME));
-			assertFalse(nativeType.isA(SmNativeType.NCNAME));
-			assertFalse(nativeType.isA(SmNativeType.ID));
-			assertFalse(nativeType.isA(SmNativeType.IDREF));
-			assertFalse(nativeType.isA(SmNativeType.ENTITY));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertTrue(nativeType.isA(NativeType.STRING));
+			assertTrue(nativeType.isA(NativeType.NORMALIZED_STRING));
+			assertTrue(nativeType.isA(NativeType.TOKEN));
+			assertFalse(nativeType.isA(NativeType.LANGUAGE));
+			assertFalse(nativeType.isA(NativeType.NMTOKEN));
+			assertFalse(nativeType.isA(NativeType.NAME));
+			assertFalse(nativeType.isA(NativeType.NCNAME));
+			assertFalse(nativeType.isA(NativeType.ID));
+			assertFalse(nativeType.isA(NativeType.IDREF));
+			assertFalse(nativeType.isA(NativeType.ENTITY));
 
-			assertFalse(nativeType.isA(SmNativeType.UNTYPED_ATOMIC));
-			assertTrue(nativeType.isA(SmNativeType.ANY_ATOMIC_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_SIMPLE_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_TYPE));
+			assertFalse(nativeType.isA(NativeType.UNTYPED_ATOMIC));
+			assertTrue(nativeType.isA(NativeType.ANY_ATOMIC_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_SIMPLE_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_TYPE));
 		}
 		{
 			final String original = "en";
@@ -407,7 +407,7 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createString(original), SmNativeType.LANGUAGE, this);
+				atom = atomBridge.castAs(atomBridge.createString(original), NativeType.LANGUAGE, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
@@ -415,22 +415,22 @@ public abstract class AtomBridgeTestBase<N, A>
 			}
 			assertEquals(original, atomBridge.getString(atom));
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertTrue(nativeType.isA(SmNativeType.STRING));
-			assertTrue(nativeType.isA(SmNativeType.NORMALIZED_STRING));
-			assertTrue(nativeType.isA(SmNativeType.TOKEN));
-			assertTrue(nativeType.isA(SmNativeType.LANGUAGE));
-			assertFalse(nativeType.isA(SmNativeType.NMTOKEN));
-			assertFalse(nativeType.isA(SmNativeType.NAME));
-			assertFalse(nativeType.isA(SmNativeType.NCNAME));
-			assertFalse(nativeType.isA(SmNativeType.ID));
-			assertFalse(nativeType.isA(SmNativeType.IDREF));
-			assertFalse(nativeType.isA(SmNativeType.ENTITY));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertTrue(nativeType.isA(NativeType.STRING));
+			assertTrue(nativeType.isA(NativeType.NORMALIZED_STRING));
+			assertTrue(nativeType.isA(NativeType.TOKEN));
+			assertTrue(nativeType.isA(NativeType.LANGUAGE));
+			assertFalse(nativeType.isA(NativeType.NMTOKEN));
+			assertFalse(nativeType.isA(NativeType.NAME));
+			assertFalse(nativeType.isA(NativeType.NCNAME));
+			assertFalse(nativeType.isA(NativeType.ID));
+			assertFalse(nativeType.isA(NativeType.IDREF));
+			assertFalse(nativeType.isA(NativeType.ENTITY));
 
-			assertFalse(nativeType.isA(SmNativeType.UNTYPED_ATOMIC));
-			assertTrue(nativeType.isA(SmNativeType.ANY_ATOMIC_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_SIMPLE_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_TYPE));
+			assertFalse(nativeType.isA(NativeType.UNTYPED_ATOMIC));
+			assertTrue(nativeType.isA(NativeType.ANY_ATOMIC_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_SIMPLE_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_TYPE));
 		}
 		{
 			final String original = "Snoopy";
@@ -438,7 +438,7 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createString(original), SmNativeType.NMTOKEN, this);
+				atom = atomBridge.castAs(atomBridge.createString(original), NativeType.NMTOKEN, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
@@ -446,22 +446,22 @@ public abstract class AtomBridgeTestBase<N, A>
 			}
 			assertEquals(original, atomBridge.getString(atom));
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertTrue(nativeType.isA(SmNativeType.STRING));
-			assertTrue(nativeType.isA(SmNativeType.NORMALIZED_STRING));
-			assertTrue(nativeType.isA(SmNativeType.TOKEN));
-			assertFalse(nativeType.isA(SmNativeType.LANGUAGE));
-			assertTrue(nativeType.isA(SmNativeType.NMTOKEN));
-			assertFalse(nativeType.isA(SmNativeType.NAME));
-			assertFalse(nativeType.isA(SmNativeType.NCNAME));
-			assertFalse(nativeType.isA(SmNativeType.ID));
-			assertFalse(nativeType.isA(SmNativeType.IDREF));
-			assertFalse(nativeType.isA(SmNativeType.ENTITY));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertTrue(nativeType.isA(NativeType.STRING));
+			assertTrue(nativeType.isA(NativeType.NORMALIZED_STRING));
+			assertTrue(nativeType.isA(NativeType.TOKEN));
+			assertFalse(nativeType.isA(NativeType.LANGUAGE));
+			assertTrue(nativeType.isA(NativeType.NMTOKEN));
+			assertFalse(nativeType.isA(NativeType.NAME));
+			assertFalse(nativeType.isA(NativeType.NCNAME));
+			assertFalse(nativeType.isA(NativeType.ID));
+			assertFalse(nativeType.isA(NativeType.IDREF));
+			assertFalse(nativeType.isA(NativeType.ENTITY));
 
-			assertFalse(nativeType.isA(SmNativeType.UNTYPED_ATOMIC));
-			assertTrue(nativeType.isA(SmNativeType.ANY_ATOMIC_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_SIMPLE_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_TYPE));
+			assertFalse(nativeType.isA(NativeType.UNTYPED_ATOMIC));
+			assertTrue(nativeType.isA(NativeType.ANY_ATOMIC_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_SIMPLE_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_TYPE));
 		}
 		{
 			final String original = "Snoopy";
@@ -469,7 +469,7 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createString(original), SmNativeType.NAME, this);
+				atom = atomBridge.castAs(atomBridge.createString(original), NativeType.NAME, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
@@ -477,22 +477,22 @@ public abstract class AtomBridgeTestBase<N, A>
 			}
 			assertEquals(original, atomBridge.getString(atom));
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertTrue(nativeType.isA(SmNativeType.STRING));
-			assertTrue(nativeType.isA(SmNativeType.NORMALIZED_STRING));
-			assertTrue(nativeType.isA(SmNativeType.TOKEN));
-			assertFalse(nativeType.isA(SmNativeType.LANGUAGE));
-			assertFalse(nativeType.isA(SmNativeType.NMTOKEN));
-			assertTrue(nativeType.isA(SmNativeType.NAME));
-			assertFalse(nativeType.isA(SmNativeType.NCNAME));
-			assertFalse(nativeType.isA(SmNativeType.ID));
-			assertFalse(nativeType.isA(SmNativeType.IDREF));
-			assertFalse(nativeType.isA(SmNativeType.ENTITY));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertTrue(nativeType.isA(NativeType.STRING));
+			assertTrue(nativeType.isA(NativeType.NORMALIZED_STRING));
+			assertTrue(nativeType.isA(NativeType.TOKEN));
+			assertFalse(nativeType.isA(NativeType.LANGUAGE));
+			assertFalse(nativeType.isA(NativeType.NMTOKEN));
+			assertTrue(nativeType.isA(NativeType.NAME));
+			assertFalse(nativeType.isA(NativeType.NCNAME));
+			assertFalse(nativeType.isA(NativeType.ID));
+			assertFalse(nativeType.isA(NativeType.IDREF));
+			assertFalse(nativeType.isA(NativeType.ENTITY));
 
-			assertFalse(nativeType.isA(SmNativeType.UNTYPED_ATOMIC));
-			assertTrue(nativeType.isA(SmNativeType.ANY_ATOMIC_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_SIMPLE_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_TYPE));
+			assertFalse(nativeType.isA(NativeType.UNTYPED_ATOMIC));
+			assertTrue(nativeType.isA(NativeType.ANY_ATOMIC_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_SIMPLE_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_TYPE));
 		}
 		{
 			final String original = "Snoopy";
@@ -500,7 +500,7 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createString(original), SmNativeType.NCNAME, this);
+				atom = atomBridge.castAs(atomBridge.createString(original), NativeType.NCNAME, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
@@ -508,22 +508,22 @@ public abstract class AtomBridgeTestBase<N, A>
 			}
 			assertEquals(original, atomBridge.getString(atom));
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertTrue(nativeType.isA(SmNativeType.STRING));
-			assertTrue(nativeType.isA(SmNativeType.NORMALIZED_STRING));
-			assertTrue(nativeType.isA(SmNativeType.TOKEN));
-			assertFalse(nativeType.isA(SmNativeType.LANGUAGE));
-			assertFalse(nativeType.isA(SmNativeType.NMTOKEN));
-			assertTrue(nativeType.isA(SmNativeType.NAME));
-			assertTrue(nativeType.isA(SmNativeType.NCNAME));
-			assertFalse(nativeType.isA(SmNativeType.ID));
-			assertFalse(nativeType.isA(SmNativeType.IDREF));
-			assertFalse(nativeType.isA(SmNativeType.ENTITY));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertTrue(nativeType.isA(NativeType.STRING));
+			assertTrue(nativeType.isA(NativeType.NORMALIZED_STRING));
+			assertTrue(nativeType.isA(NativeType.TOKEN));
+			assertFalse(nativeType.isA(NativeType.LANGUAGE));
+			assertFalse(nativeType.isA(NativeType.NMTOKEN));
+			assertTrue(nativeType.isA(NativeType.NAME));
+			assertTrue(nativeType.isA(NativeType.NCNAME));
+			assertFalse(nativeType.isA(NativeType.ID));
+			assertFalse(nativeType.isA(NativeType.IDREF));
+			assertFalse(nativeType.isA(NativeType.ENTITY));
 
-			assertFalse(nativeType.isA(SmNativeType.UNTYPED_ATOMIC));
-			assertTrue(nativeType.isA(SmNativeType.ANY_ATOMIC_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_SIMPLE_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_TYPE));
+			assertFalse(nativeType.isA(NativeType.UNTYPED_ATOMIC));
+			assertTrue(nativeType.isA(NativeType.ANY_ATOMIC_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_SIMPLE_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_TYPE));
 		}
 		{
 			final String original = "Snoopy";
@@ -531,7 +531,7 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createString(original), SmNativeType.ID, this);
+				atom = atomBridge.castAs(atomBridge.createString(original), NativeType.ID, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
@@ -539,22 +539,22 @@ public abstract class AtomBridgeTestBase<N, A>
 			}
 			assertEquals(original, atomBridge.getString(atom));
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertTrue(nativeType.isA(SmNativeType.STRING));
-			assertTrue(nativeType.isA(SmNativeType.NORMALIZED_STRING));
-			assertTrue(nativeType.isA(SmNativeType.TOKEN));
-			assertFalse(nativeType.isA(SmNativeType.LANGUAGE));
-			assertFalse(nativeType.isA(SmNativeType.NMTOKEN));
-			assertTrue(nativeType.isA(SmNativeType.NAME));
-			assertTrue(nativeType.isA(SmNativeType.NCNAME));
-			assertTrue(nativeType.isA(SmNativeType.ID));
-			assertFalse(nativeType.isA(SmNativeType.IDREF));
-			assertFalse(nativeType.isA(SmNativeType.ENTITY));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertTrue(nativeType.isA(NativeType.STRING));
+			assertTrue(nativeType.isA(NativeType.NORMALIZED_STRING));
+			assertTrue(nativeType.isA(NativeType.TOKEN));
+			assertFalse(nativeType.isA(NativeType.LANGUAGE));
+			assertFalse(nativeType.isA(NativeType.NMTOKEN));
+			assertTrue(nativeType.isA(NativeType.NAME));
+			assertTrue(nativeType.isA(NativeType.NCNAME));
+			assertTrue(nativeType.isA(NativeType.ID));
+			assertFalse(nativeType.isA(NativeType.IDREF));
+			assertFalse(nativeType.isA(NativeType.ENTITY));
 
-			assertFalse(nativeType.isA(SmNativeType.UNTYPED_ATOMIC));
-			assertTrue(nativeType.isA(SmNativeType.ANY_ATOMIC_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_SIMPLE_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_TYPE));
+			assertFalse(nativeType.isA(NativeType.UNTYPED_ATOMIC));
+			assertTrue(nativeType.isA(NativeType.ANY_ATOMIC_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_SIMPLE_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_TYPE));
 		}
 		{
 			final String original = "Snoopy";
@@ -562,7 +562,7 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createString(original), SmNativeType.IDREF, this);
+				atom = atomBridge.castAs(atomBridge.createString(original), NativeType.IDREF, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
@@ -570,22 +570,22 @@ public abstract class AtomBridgeTestBase<N, A>
 			}
 			assertEquals(original, atomBridge.getString(atom));
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertTrue(nativeType.isA(SmNativeType.STRING));
-			assertTrue(nativeType.isA(SmNativeType.NORMALIZED_STRING));
-			assertTrue(nativeType.isA(SmNativeType.TOKEN));
-			assertFalse(nativeType.isA(SmNativeType.LANGUAGE));
-			assertFalse(nativeType.isA(SmNativeType.NMTOKEN));
-			assertTrue(nativeType.isA(SmNativeType.NAME));
-			assertTrue(nativeType.isA(SmNativeType.NCNAME));
-			assertFalse(nativeType.isA(SmNativeType.ID));
-			assertTrue(nativeType.isA(SmNativeType.IDREF));
-			assertFalse(nativeType.isA(SmNativeType.ENTITY));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertTrue(nativeType.isA(NativeType.STRING));
+			assertTrue(nativeType.isA(NativeType.NORMALIZED_STRING));
+			assertTrue(nativeType.isA(NativeType.TOKEN));
+			assertFalse(nativeType.isA(NativeType.LANGUAGE));
+			assertFalse(nativeType.isA(NativeType.NMTOKEN));
+			assertTrue(nativeType.isA(NativeType.NAME));
+			assertTrue(nativeType.isA(NativeType.NCNAME));
+			assertFalse(nativeType.isA(NativeType.ID));
+			assertTrue(nativeType.isA(NativeType.IDREF));
+			assertFalse(nativeType.isA(NativeType.ENTITY));
 
-			assertFalse(nativeType.isA(SmNativeType.UNTYPED_ATOMIC));
-			assertTrue(nativeType.isA(SmNativeType.ANY_ATOMIC_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_SIMPLE_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_TYPE));
+			assertFalse(nativeType.isA(NativeType.UNTYPED_ATOMIC));
+			assertTrue(nativeType.isA(NativeType.ANY_ATOMIC_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_SIMPLE_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_TYPE));
 		}
 		{
 			final String original = "Snoopy";
@@ -593,7 +593,7 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createString(original), SmNativeType.ENTITY, this);
+				atom = atomBridge.castAs(atomBridge.createString(original), NativeType.ENTITY, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
@@ -601,35 +601,35 @@ public abstract class AtomBridgeTestBase<N, A>
 			}
 			assertEquals(original, atomBridge.getString(atom));
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertTrue(nativeType.isA(SmNativeType.STRING));
-			assertTrue(nativeType.isA(SmNativeType.NORMALIZED_STRING));
-			assertTrue(nativeType.isA(SmNativeType.TOKEN));
-			assertFalse(nativeType.isA(SmNativeType.LANGUAGE));
-			assertFalse(nativeType.isA(SmNativeType.NMTOKEN));
-			assertTrue(nativeType.isA(SmNativeType.NAME));
-			assertTrue(nativeType.isA(SmNativeType.NCNAME));
-			assertFalse(nativeType.isA(SmNativeType.ID));
-			assertFalse(nativeType.isA(SmNativeType.IDREF));
-			assertTrue(nativeType.isA(SmNativeType.ENTITY));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertTrue(nativeType.isA(NativeType.STRING));
+			assertTrue(nativeType.isA(NativeType.NORMALIZED_STRING));
+			assertTrue(nativeType.isA(NativeType.TOKEN));
+			assertFalse(nativeType.isA(NativeType.LANGUAGE));
+			assertFalse(nativeType.isA(NativeType.NMTOKEN));
+			assertTrue(nativeType.isA(NativeType.NAME));
+			assertTrue(nativeType.isA(NativeType.NCNAME));
+			assertFalse(nativeType.isA(NativeType.ID));
+			assertFalse(nativeType.isA(NativeType.IDREF));
+			assertTrue(nativeType.isA(NativeType.ENTITY));
 
-			assertFalse(nativeType.isA(SmNativeType.UNTYPED_ATOMIC));
-			assertTrue(nativeType.isA(SmNativeType.ANY_ATOMIC_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_SIMPLE_TYPE));
-			assertTrue(nativeType.isA(SmNativeType.ANY_TYPE));
+			assertFalse(nativeType.isA(NativeType.UNTYPED_ATOMIC));
+			assertTrue(nativeType.isA(NativeType.ANY_ATOMIC_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_SIMPLE_TYPE));
+			assertTrue(nativeType.isA(NativeType.ANY_TYPE));
 		}
 		{
 			final byte original = (byte)123;
 
 			final A atom = atomBridge.createByte(original);
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertTrue(nativeType.isA(SmNativeType.BYTE));
-			assertTrue(nativeType.isA(SmNativeType.SHORT));
-			assertTrue(nativeType.isA(SmNativeType.INT));
-			assertTrue(nativeType.isA(SmNativeType.LONG));
-			assertTrue(nativeType.isA(SmNativeType.INTEGER));
-			assertTrue(nativeType.isA(SmNativeType.DECIMAL));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertTrue(nativeType.isA(NativeType.BYTE));
+			assertTrue(nativeType.isA(NativeType.SHORT));
+			assertTrue(nativeType.isA(NativeType.INT));
+			assertTrue(nativeType.isA(NativeType.LONG));
+			assertTrue(nativeType.isA(NativeType.INTEGER));
+			assertTrue(nativeType.isA(NativeType.DECIMAL));
 
 			assertEquals(Byte.valueOf(original).byteValue(), atomBridge.getByte(atom));
 			assertEquals(Short.valueOf(original).shortValue(), atomBridge.getShort(atom));
@@ -643,13 +643,13 @@ public abstract class AtomBridgeTestBase<N, A>
 
 			final A atom = atomBridge.createShort(original);
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertFalse(nativeType.isA(SmNativeType.BYTE));
-			assertTrue(nativeType.isA(SmNativeType.SHORT));
-			assertTrue(nativeType.isA(SmNativeType.INT));
-			assertTrue(nativeType.isA(SmNativeType.LONG));
-			assertTrue(nativeType.isA(SmNativeType.INTEGER));
-			assertTrue(nativeType.isA(SmNativeType.DECIMAL));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertFalse(nativeType.isA(NativeType.BYTE));
+			assertTrue(nativeType.isA(NativeType.SHORT));
+			assertTrue(nativeType.isA(NativeType.INT));
+			assertTrue(nativeType.isA(NativeType.LONG));
+			assertTrue(nativeType.isA(NativeType.INTEGER));
+			assertTrue(nativeType.isA(NativeType.DECIMAL));
 
 			assertEquals(Short.valueOf(original).shortValue(), atomBridge.getShort(atom));
 			assertEquals(Integer.valueOf(original).intValue(), atomBridge.getInt(atom));
@@ -662,13 +662,13 @@ public abstract class AtomBridgeTestBase<N, A>
 
 			final A atom = atomBridge.createInt(original);
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertFalse(nativeType.isA(SmNativeType.BYTE));
-			assertFalse(nativeType.isA(SmNativeType.SHORT));
-			assertTrue(nativeType.isA(SmNativeType.INT));
-			assertTrue(nativeType.isA(SmNativeType.LONG));
-			assertTrue(nativeType.isA(SmNativeType.INTEGER));
-			assertTrue(nativeType.isA(SmNativeType.DECIMAL));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertFalse(nativeType.isA(NativeType.BYTE));
+			assertFalse(nativeType.isA(NativeType.SHORT));
+			assertTrue(nativeType.isA(NativeType.INT));
+			assertTrue(nativeType.isA(NativeType.LONG));
+			assertTrue(nativeType.isA(NativeType.INTEGER));
+			assertTrue(nativeType.isA(NativeType.DECIMAL));
 
 			assertEquals(Integer.valueOf(original).intValue(), atomBridge.getInt(atom));
 			assertEquals(Long.valueOf(original).longValue(), atomBridge.getLong(atom));
@@ -680,13 +680,13 @@ public abstract class AtomBridgeTestBase<N, A>
 
 			final A atom = atomBridge.createLong(original);
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertFalse(nativeType.isA(SmNativeType.BYTE));
-			assertFalse(nativeType.isA(SmNativeType.SHORT));
-			assertFalse(nativeType.isA(SmNativeType.INT));
-			assertTrue(nativeType.isA(SmNativeType.LONG));
-			assertTrue(nativeType.isA(SmNativeType.INTEGER));
-			assertTrue(nativeType.isA(SmNativeType.DECIMAL));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertFalse(nativeType.isA(NativeType.BYTE));
+			assertFalse(nativeType.isA(NativeType.SHORT));
+			assertFalse(nativeType.isA(NativeType.INT));
+			assertTrue(nativeType.isA(NativeType.LONG));
+			assertTrue(nativeType.isA(NativeType.INTEGER));
+			assertTrue(nativeType.isA(NativeType.DECIMAL));
 
 			assertEquals(Long.valueOf(original).longValue(), atomBridge.getLong(atom));
 			assertEquals(BigInteger.valueOf(original), atomBridge.getInteger(atom));
@@ -698,21 +698,21 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createLong(original), SmNativeType.POSITIVE_INTEGER, this);
+				atom = atomBridge.castAs(atomBridge.createLong(original), NativeType.POSITIVE_INTEGER, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
 				throw new AssertionError(e);
 			}
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertEquals(SmNativeType.POSITIVE_INTEGER, nativeType);
-			assertFalse(nativeType.isA(SmNativeType.BYTE));
-			assertFalse(nativeType.isA(SmNativeType.SHORT));
-			assertFalse(nativeType.isA(SmNativeType.INT));
-			assertFalse(nativeType.isA(SmNativeType.LONG));
-			assertTrue(nativeType.isA(SmNativeType.INTEGER));
-			assertTrue(nativeType.isA(SmNativeType.DECIMAL));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertEquals(NativeType.POSITIVE_INTEGER, nativeType);
+			assertFalse(nativeType.isA(NativeType.BYTE));
+			assertFalse(nativeType.isA(NativeType.SHORT));
+			assertFalse(nativeType.isA(NativeType.INT));
+			assertFalse(nativeType.isA(NativeType.LONG));
+			assertTrue(nativeType.isA(NativeType.INTEGER));
+			assertTrue(nativeType.isA(NativeType.DECIMAL));
 
 			assertEquals(BigInteger.valueOf(original), atomBridge.getInteger(atom));
 			assertEquals(BigDecimal.valueOf(original), atomBridge.getDecimal(atom));
@@ -723,21 +723,21 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createLong(original), SmNativeType.NON_NEGATIVE_INTEGER, this);
+				atom = atomBridge.castAs(atomBridge.createLong(original), NativeType.NON_NEGATIVE_INTEGER, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
 				throw new AssertionError(e);
 			}
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertEquals(SmNativeType.NON_NEGATIVE_INTEGER, nativeType);
-			assertFalse(nativeType.isA(SmNativeType.BYTE));
-			assertFalse(nativeType.isA(SmNativeType.SHORT));
-			assertFalse(nativeType.isA(SmNativeType.INT));
-			assertFalse(nativeType.isA(SmNativeType.LONG));
-			assertTrue(nativeType.isA(SmNativeType.INTEGER));
-			assertTrue(nativeType.isA(SmNativeType.DECIMAL));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertEquals(NativeType.NON_NEGATIVE_INTEGER, nativeType);
+			assertFalse(nativeType.isA(NativeType.BYTE));
+			assertFalse(nativeType.isA(NativeType.SHORT));
+			assertFalse(nativeType.isA(NativeType.INT));
+			assertFalse(nativeType.isA(NativeType.LONG));
+			assertTrue(nativeType.isA(NativeType.INTEGER));
+			assertTrue(nativeType.isA(NativeType.DECIMAL));
 
 			assertEquals(BigInteger.valueOf(original), atomBridge.getInteger(atom));
 			assertEquals(BigDecimal.valueOf(original), atomBridge.getDecimal(atom));
@@ -748,21 +748,21 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createLong(original), SmNativeType.NON_POSITIVE_INTEGER, this);
+				atom = atomBridge.castAs(atomBridge.createLong(original), NativeType.NON_POSITIVE_INTEGER, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
 				throw new AssertionError(e);
 			}
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertEquals(SmNativeType.NON_POSITIVE_INTEGER, nativeType);
-			assertFalse(nativeType.isA(SmNativeType.BYTE));
-			assertFalse(nativeType.isA(SmNativeType.SHORT));
-			assertFalse(nativeType.isA(SmNativeType.INT));
-			assertFalse(nativeType.isA(SmNativeType.LONG));
-			assertTrue(nativeType.isA(SmNativeType.INTEGER));
-			assertTrue(nativeType.isA(SmNativeType.DECIMAL));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertEquals(NativeType.NON_POSITIVE_INTEGER, nativeType);
+			assertFalse(nativeType.isA(NativeType.BYTE));
+			assertFalse(nativeType.isA(NativeType.SHORT));
+			assertFalse(nativeType.isA(NativeType.INT));
+			assertFalse(nativeType.isA(NativeType.LONG));
+			assertTrue(nativeType.isA(NativeType.INTEGER));
+			assertTrue(nativeType.isA(NativeType.DECIMAL));
 
 			assertEquals(BigInteger.valueOf(original), atomBridge.getInteger(atom));
 			assertEquals(BigDecimal.valueOf(original), atomBridge.getDecimal(atom));
@@ -773,21 +773,21 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createLong(original), SmNativeType.NEGATIVE_INTEGER, this);
+				atom = atomBridge.castAs(atomBridge.createLong(original), NativeType.NEGATIVE_INTEGER, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
 				throw new AssertionError(e);
 			}
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertEquals(SmNativeType.NEGATIVE_INTEGER, nativeType);
-			assertFalse(nativeType.isA(SmNativeType.BYTE));
-			assertFalse(nativeType.isA(SmNativeType.SHORT));
-			assertFalse(nativeType.isA(SmNativeType.INT));
-			assertFalse(nativeType.isA(SmNativeType.LONG));
-			assertTrue(nativeType.isA(SmNativeType.INTEGER));
-			assertTrue(nativeType.isA(SmNativeType.DECIMAL));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertEquals(NativeType.NEGATIVE_INTEGER, nativeType);
+			assertFalse(nativeType.isA(NativeType.BYTE));
+			assertFalse(nativeType.isA(NativeType.SHORT));
+			assertFalse(nativeType.isA(NativeType.INT));
+			assertFalse(nativeType.isA(NativeType.LONG));
+			assertTrue(nativeType.isA(NativeType.INTEGER));
+			assertTrue(nativeType.isA(NativeType.DECIMAL));
 
 			assertEquals(BigInteger.valueOf(original), atomBridge.getInteger(atom));
 			assertEquals(BigDecimal.valueOf(original), atomBridge.getDecimal(atom));
@@ -798,21 +798,21 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createByte(original), SmNativeType.UNSIGNED_BYTE, this);
+				atom = atomBridge.castAs(atomBridge.createByte(original), NativeType.UNSIGNED_BYTE, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
 				throw new AssertionError(e);
 			}
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertEquals(SmNativeType.UNSIGNED_BYTE, nativeType);
-			assertFalse(nativeType.isA(SmNativeType.BYTE));
-			assertFalse(nativeType.isA(SmNativeType.SHORT));
-			assertFalse(nativeType.isA(SmNativeType.INT));
-			assertFalse(nativeType.isA(SmNativeType.LONG));
-			assertTrue(nativeType.isA(SmNativeType.INTEGER));
-			assertTrue(nativeType.isA(SmNativeType.DECIMAL));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertEquals(NativeType.UNSIGNED_BYTE, nativeType);
+			assertFalse(nativeType.isA(NativeType.BYTE));
+			assertFalse(nativeType.isA(NativeType.SHORT));
+			assertFalse(nativeType.isA(NativeType.INT));
+			assertFalse(nativeType.isA(NativeType.LONG));
+			assertTrue(nativeType.isA(NativeType.INTEGER));
+			assertTrue(nativeType.isA(NativeType.DECIMAL));
 
 			assertEquals(BigInteger.valueOf(original), atomBridge.getInteger(atom));
 			assertEquals(BigDecimal.valueOf(original), atomBridge.getDecimal(atom));
@@ -823,20 +823,20 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createByte(original), SmNativeType.UNSIGNED_SHORT, this);
+				atom = atomBridge.castAs(atomBridge.createByte(original), NativeType.UNSIGNED_SHORT, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
 				throw new AssertionError(e);
 			}
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertFalse(nativeType.isA(SmNativeType.BYTE));
-			assertFalse(nativeType.isA(SmNativeType.SHORT));
-			assertFalse(nativeType.isA(SmNativeType.INT));
-			assertFalse(nativeType.isA(SmNativeType.LONG));
-			assertTrue(nativeType.isA(SmNativeType.INTEGER));
-			assertTrue(nativeType.isA(SmNativeType.DECIMAL));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertFalse(nativeType.isA(NativeType.BYTE));
+			assertFalse(nativeType.isA(NativeType.SHORT));
+			assertFalse(nativeType.isA(NativeType.INT));
+			assertFalse(nativeType.isA(NativeType.LONG));
+			assertTrue(nativeType.isA(NativeType.INTEGER));
+			assertTrue(nativeType.isA(NativeType.DECIMAL));
 
 			assertEquals(BigInteger.valueOf(original), atomBridge.getInteger(atom));
 			assertEquals(BigDecimal.valueOf(original), atomBridge.getDecimal(atom));
@@ -847,20 +847,20 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createByte(original), SmNativeType.UNSIGNED_INT, this);
+				atom = atomBridge.castAs(atomBridge.createByte(original), NativeType.UNSIGNED_INT, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
 				throw new AssertionError(e);
 			}
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertFalse(nativeType.isA(SmNativeType.BYTE));
-			assertFalse(nativeType.isA(SmNativeType.SHORT));
-			assertFalse(nativeType.isA(SmNativeType.INT));
-			assertFalse(nativeType.isA(SmNativeType.LONG));
-			assertTrue(nativeType.isA(SmNativeType.INTEGER));
-			assertTrue(nativeType.isA(SmNativeType.DECIMAL));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertFalse(nativeType.isA(NativeType.BYTE));
+			assertFalse(nativeType.isA(NativeType.SHORT));
+			assertFalse(nativeType.isA(NativeType.INT));
+			assertFalse(nativeType.isA(NativeType.LONG));
+			assertTrue(nativeType.isA(NativeType.INTEGER));
+			assertTrue(nativeType.isA(NativeType.DECIMAL));
 
 			assertEquals(BigInteger.valueOf(original), atomBridge.getInteger(atom));
 			assertEquals(BigDecimal.valueOf(original), atomBridge.getDecimal(atom));
@@ -871,20 +871,20 @@ public abstract class AtomBridgeTestBase<N, A>
 			final A atom;
 			try
 			{
-				atom = atomBridge.castAs(atomBridge.createByte(original), SmNativeType.UNSIGNED_LONG, this);
+				atom = atomBridge.castAs(atomBridge.createByte(original), NativeType.UNSIGNED_LONG, this);
 			}
 			catch (final GxmlAtomCastException e)
 			{
 				throw new AssertionError(e);
 			}
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertFalse(nativeType.isA(SmNativeType.BYTE));
-			assertFalse(nativeType.isA(SmNativeType.SHORT));
-			assertFalse(nativeType.isA(SmNativeType.INT));
-			assertFalse(nativeType.isA(SmNativeType.LONG));
-			assertTrue(nativeType.isA(SmNativeType.INTEGER));
-			assertTrue(nativeType.isA(SmNativeType.DECIMAL));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertFalse(nativeType.isA(NativeType.BYTE));
+			assertFalse(nativeType.isA(NativeType.SHORT));
+			assertFalse(nativeType.isA(NativeType.INT));
+			assertFalse(nativeType.isA(NativeType.LONG));
+			assertTrue(nativeType.isA(NativeType.INTEGER));
+			assertTrue(nativeType.isA(NativeType.DECIMAL));
 
 			assertEquals(BigInteger.valueOf(original), atomBridge.getInteger(atom));
 			assertEquals(BigDecimal.valueOf(original), atomBridge.getDecimal(atom));
@@ -894,13 +894,13 @@ public abstract class AtomBridgeTestBase<N, A>
 
 			final A atom = atomBridge.createInteger(123);
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertFalse(nativeType.isA(SmNativeType.BYTE));
-			assertFalse(nativeType.isA(SmNativeType.SHORT));
-			assertFalse(nativeType.isA(SmNativeType.INT));
-			assertFalse(nativeType.isA(SmNativeType.LONG));
-			assertTrue(nativeType.isA(SmNativeType.INTEGER));
-			assertTrue(nativeType.isA(SmNativeType.DECIMAL));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertFalse(nativeType.isA(NativeType.BYTE));
+			assertFalse(nativeType.isA(NativeType.SHORT));
+			assertFalse(nativeType.isA(NativeType.INT));
+			assertFalse(nativeType.isA(NativeType.LONG));
+			assertTrue(nativeType.isA(NativeType.INTEGER));
+			assertTrue(nativeType.isA(NativeType.DECIMAL));
 
 			assertEquals(original, atomBridge.getInteger(atom));
 			assertEquals(new BigDecimal(original), atomBridge.getDecimal(atom));
@@ -910,13 +910,13 @@ public abstract class AtomBridgeTestBase<N, A>
 
 			final A atom = atomBridge.createDecimal(original);
 
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
-			assertFalse(nativeType.isA(SmNativeType.BYTE));
-			assertFalse(nativeType.isA(SmNativeType.SHORT));
-			assertFalse(nativeType.isA(SmNativeType.INT));
-			assertFalse(nativeType.isA(SmNativeType.LONG));
-			assertFalse(nativeType.isA(SmNativeType.INTEGER));
-			assertTrue(nativeType.isA(SmNativeType.DECIMAL));
+			final NativeType nativeType = atomBridge.getNativeType(atom);
+			assertFalse(nativeType.isA(NativeType.BYTE));
+			assertFalse(nativeType.isA(NativeType.SHORT));
+			assertFalse(nativeType.isA(NativeType.INT));
+			assertFalse(nativeType.isA(NativeType.LONG));
+			assertFalse(nativeType.isA(NativeType.INTEGER));
+			assertTrue(nativeType.isA(NativeType.DECIMAL));
 
 			assertEquals(original, atomBridge.getDecimal(atom));
 		}
@@ -945,91 +945,91 @@ public abstract class AtomBridgeTestBase<N, A>
         final TypedContext<N, A> pcx = newProcessingContext().getTypedContext();
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		assertCastGood(SmNativeType.DECIMAL, "0", SmNativeType.DOUBLE, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-0", SmNativeType.DOUBLE, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "3", SmNativeType.DOUBLE, "3.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-3", SmNativeType.DOUBLE, "-3.0E0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "0", NativeType.DOUBLE, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-0", NativeType.DOUBLE, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "3", NativeType.DOUBLE, "3.0E0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-3", NativeType.DOUBLE, "-3.0E0", this, atomBridge);
 
-		assertCastGood(SmNativeType.DECIMAL, "0", SmNativeType.FLOAT, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-0", SmNativeType.FLOAT, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "3", SmNativeType.FLOAT, "3.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-3", SmNativeType.FLOAT, "-3.0E0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "0", NativeType.FLOAT, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-0", NativeType.FLOAT, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "3", NativeType.FLOAT, "3.0E0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-3", NativeType.FLOAT, "-3.0E0", this, atomBridge);
 
-		assertCastGood(SmNativeType.DECIMAL, "0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "+0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "0.0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "0.0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "3", SmNativeType.BOOLEAN, "true", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-3", SmNativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "+0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "0.0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "0.0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "3", NativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-3", NativeType.BOOLEAN, "true", this, atomBridge);
 
-		assertCastGood(SmNativeType.DECIMAL, "0", SmNativeType.STRING, "0.0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-0", SmNativeType.STRING, "0.0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "3", SmNativeType.STRING, "3.0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-3", SmNativeType.STRING, "-3.0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "0", NativeType.STRING, "0.0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-0", NativeType.STRING, "0.0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "3", NativeType.STRING, "3.0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-3", NativeType.STRING, "-3.0", this, atomBridge);
 
-		assertCastGood(SmNativeType.DECIMAL, "0", SmNativeType.UNTYPED_ATOMIC, "0.0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-0", SmNativeType.UNTYPED_ATOMIC, "0.0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "3", SmNativeType.UNTYPED_ATOMIC, "3.0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-3", SmNativeType.UNTYPED_ATOMIC, "-3.0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "0", NativeType.UNTYPED_ATOMIC, "0.0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-0", NativeType.UNTYPED_ATOMIC, "0.0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "3", NativeType.UNTYPED_ATOMIC, "3.0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-3", NativeType.UNTYPED_ATOMIC, "-3.0", this, atomBridge);
 
-		assertCastGood(SmNativeType.DECIMAL, "0", SmNativeType.DECIMAL, "0.0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-0", SmNativeType.DECIMAL, "0.0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "3", SmNativeType.DECIMAL, "3.0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-3", SmNativeType.DECIMAL, "-3.0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "0", NativeType.DECIMAL, "0.0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-0", NativeType.DECIMAL, "0.0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "3", NativeType.DECIMAL, "3.0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-3", NativeType.DECIMAL, "-3.0", this, atomBridge);
 
-		assertCastGood(SmNativeType.DECIMAL, "0", SmNativeType.INTEGER, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-0", SmNativeType.INTEGER, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "3", SmNativeType.INTEGER, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-3", SmNativeType.INTEGER, "-3", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "3.1456", SmNativeType.INTEGER, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-17.89", SmNativeType.INTEGER, "-17", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "0", NativeType.INTEGER, "0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-0", NativeType.INTEGER, "0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "3", NativeType.INTEGER, "3", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-3", NativeType.INTEGER, "-3", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "3.1456", NativeType.INTEGER, "3", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-17.89", NativeType.INTEGER, "-17", this, atomBridge);
 
-		assertCastGood(SmNativeType.DECIMAL, "0", SmNativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-0", SmNativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
-		assertCastFail(SmNativeType.DECIMAL, "3", SmNativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-3", SmNativeType.NON_POSITIVE_INTEGER, "-3", this, atomBridge);
-		assertCastFail(SmNativeType.DECIMAL, "3.1456", SmNativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-17.89", SmNativeType.NON_POSITIVE_INTEGER, "-17", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "0", NativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-0", NativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
+		assertCastFail(NativeType.DECIMAL, "3", NativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-3", NativeType.NON_POSITIVE_INTEGER, "-3", this, atomBridge);
+		assertCastFail(NativeType.DECIMAL, "3.1456", NativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-17.89", NativeType.NON_POSITIVE_INTEGER, "-17", this, atomBridge);
 
-		assertCastFail(SmNativeType.DECIMAL, "0", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastFail(SmNativeType.DECIMAL, "-0", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastFail(SmNativeType.DECIMAL, "3", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-3", SmNativeType.NEGATIVE_INTEGER, "-3", this, atomBridge);
-		assertCastFail(SmNativeType.DECIMAL, "3.1456", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-17.89", SmNativeType.NEGATIVE_INTEGER, "-17", this, atomBridge);
+		assertCastFail(NativeType.DECIMAL, "0", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastFail(NativeType.DECIMAL, "-0", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastFail(NativeType.DECIMAL, "3", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-3", NativeType.NEGATIVE_INTEGER, "-3", this, atomBridge);
+		assertCastFail(NativeType.DECIMAL, "3.1456", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-17.89", NativeType.NEGATIVE_INTEGER, "-17", this, atomBridge);
 
-		assertCastGood(SmNativeType.DECIMAL, "0", SmNativeType.LONG, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-0", SmNativeType.LONG, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "3", SmNativeType.LONG, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-3", SmNativeType.LONG, "-3", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "3.1456", SmNativeType.LONG, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-17.89", SmNativeType.LONG, "-17", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "0", NativeType.LONG, "0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-0", NativeType.LONG, "0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "3", NativeType.LONG, "3", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-3", NativeType.LONG, "-3", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "3.1456", NativeType.LONG, "3", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-17.89", NativeType.LONG, "-17", this, atomBridge);
 
-		assertCastGood(SmNativeType.DECIMAL, "0", SmNativeType.INT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-0", SmNativeType.INT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "3", SmNativeType.INT, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-3", SmNativeType.INT, "-3", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "3.1456", SmNativeType.INT, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-17.89", SmNativeType.INT, "-17", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "0", NativeType.INT, "0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-0", NativeType.INT, "0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "3", NativeType.INT, "3", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-3", NativeType.INT, "-3", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "3.1456", NativeType.INT, "3", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-17.89", NativeType.INT, "-17", this, atomBridge);
 
-		assertCastGood(SmNativeType.DECIMAL, "0", SmNativeType.SHORT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-0", SmNativeType.SHORT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "3", SmNativeType.SHORT, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-3", SmNativeType.SHORT, "-3", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "3.1456", SmNativeType.SHORT, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-17.89", SmNativeType.SHORT, "-17", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "0", NativeType.SHORT, "0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-0", NativeType.SHORT, "0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "3", NativeType.SHORT, "3", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-3", NativeType.SHORT, "-3", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "3.1456", NativeType.SHORT, "3", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-17.89", NativeType.SHORT, "-17", this, atomBridge);
 
-		assertCastGood(SmNativeType.DECIMAL, "0", SmNativeType.BYTE, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-0", SmNativeType.BYTE, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "3", SmNativeType.BYTE, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-3", SmNativeType.BYTE, "-3", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "3.1456", SmNativeType.BYTE, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DECIMAL, "-17.89", SmNativeType.BYTE, "-17", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "0", NativeType.BYTE, "0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-0", NativeType.BYTE, "0", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "3", NativeType.BYTE, "3", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-3", NativeType.BYTE, "-3", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "3.1456", NativeType.BYTE, "3", this, atomBridge);
+		assertCastGood(NativeType.DECIMAL, "-17.89", NativeType.BYTE, "-17", this, atomBridge);
 
 		for (final TestAtom source : TestAtom.getTestAtoms())
 		{
-			if (equals(SmNativeType.DECIMAL, source.builtInType) && source.isValid)
+			if (equals(NativeType.DECIMAL, source.builtInType) && source.isValid)
 			{
 				for (final TestAtom target : TestAtom.getTestAtoms())
 				{
@@ -1083,156 +1083,156 @@ public abstract class AtomBridgeTestBase<N, A>
         final TypedContext<N, A> pcx = newProcessingContext().getTypedContext();
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MAX_VALUE), SmNativeType.DOUBLE, "1.7976931348623157E308", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MIN_VALUE), SmNativeType.DOUBLE, "4.9E-324", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "NaN", SmNativeType.DOUBLE, "NaN", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-INF", SmNativeType.DOUBLE, "-INF", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "INF", SmNativeType.DOUBLE, "INF", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "0", SmNativeType.DOUBLE, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-0", SmNativeType.DOUBLE, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "3", SmNativeType.DOUBLE, "3.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-3", SmNativeType.DOUBLE, "-3.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MAX_VALUE), NativeType.DOUBLE, "1.7976931348623157E308", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MIN_VALUE), NativeType.DOUBLE, "4.9E-324", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "NaN", NativeType.DOUBLE, "NaN", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-INF", NativeType.DOUBLE, "-INF", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "INF", NativeType.DOUBLE, "INF", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "0", NativeType.DOUBLE, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-0", NativeType.DOUBLE, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "3", NativeType.DOUBLE, "3.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-3", NativeType.DOUBLE, "-3.0E0", this, atomBridge);
 
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MAX_VALUE), SmNativeType.FLOAT, "INF", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MIN_VALUE), SmNativeType.FLOAT, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "NaN", SmNativeType.FLOAT, "NaN", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-INF", SmNativeType.FLOAT, "-INF", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "INF", SmNativeType.FLOAT, "INF", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "0", SmNativeType.FLOAT, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-0", SmNativeType.FLOAT, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "3", SmNativeType.FLOAT, "3.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-3", SmNativeType.FLOAT, "-3.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MAX_VALUE), NativeType.FLOAT, "INF", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MIN_VALUE), NativeType.FLOAT, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "NaN", NativeType.FLOAT, "NaN", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-INF", NativeType.FLOAT, "-INF", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "INF", NativeType.FLOAT, "INF", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "0", NativeType.FLOAT, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-0", NativeType.FLOAT, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "3", NativeType.FLOAT, "3.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-3", NativeType.FLOAT, "-3.0E0", this, atomBridge);
 
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MAX_VALUE), SmNativeType.BOOLEAN, "true", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MIN_VALUE), SmNativeType.BOOLEAN, "true", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "NaN", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-INF", SmNativeType.BOOLEAN, "true", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "INF", SmNativeType.BOOLEAN, "true", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "+0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "0.0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "0.0E0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "3", SmNativeType.BOOLEAN, "true", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-3", SmNativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MAX_VALUE), NativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MIN_VALUE), NativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "NaN", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-INF", NativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "INF", NativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "+0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "0.0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "0.0E0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "3", NativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-3", NativeType.BOOLEAN, "true", this, atomBridge);
 
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MAX_VALUE), SmNativeType.STRING, "1.7976931348623157E308", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MIN_VALUE), SmNativeType.STRING, "4.9E-324", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "NaN", SmNativeType.STRING, "NaN", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-INF", SmNativeType.STRING, "-INF", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "INF", SmNativeType.STRING, "INF", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "0", SmNativeType.STRING, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-0", SmNativeType.STRING, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "3", SmNativeType.STRING, "3.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-3", SmNativeType.STRING, "-3.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MAX_VALUE), NativeType.STRING, "1.7976931348623157E308", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MIN_VALUE), NativeType.STRING, "4.9E-324", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "NaN", NativeType.STRING, "NaN", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-INF", NativeType.STRING, "-INF", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "INF", NativeType.STRING, "INF", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "0", NativeType.STRING, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-0", NativeType.STRING, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "3", NativeType.STRING, "3.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-3", NativeType.STRING, "-3.0E0", this, atomBridge);
 
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MAX_VALUE), SmNativeType.UNTYPED_ATOMIC, "1.7976931348623157E308", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MIN_VALUE), SmNativeType.UNTYPED_ATOMIC, "4.9E-324", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "NaN", SmNativeType.UNTYPED_ATOMIC, "NaN", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-INF", SmNativeType.UNTYPED_ATOMIC, "-INF", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "INF", SmNativeType.UNTYPED_ATOMIC, "INF", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "0", SmNativeType.UNTYPED_ATOMIC, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-0", SmNativeType.UNTYPED_ATOMIC, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "3", SmNativeType.UNTYPED_ATOMIC, "3.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-3", SmNativeType.UNTYPED_ATOMIC, "-3.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MAX_VALUE), NativeType.UNTYPED_ATOMIC, "1.7976931348623157E308", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MIN_VALUE), NativeType.UNTYPED_ATOMIC, "4.9E-324", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "NaN", NativeType.UNTYPED_ATOMIC, "NaN", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-INF", NativeType.UNTYPED_ATOMIC, "-INF", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "INF", NativeType.UNTYPED_ATOMIC, "INF", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "0", NativeType.UNTYPED_ATOMIC, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-0", NativeType.UNTYPED_ATOMIC, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "3", NativeType.UNTYPED_ATOMIC, "3.0E0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-3", NativeType.UNTYPED_ATOMIC, "-3.0E0", this, atomBridge);
 
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MAX_VALUE), SmNativeType.DECIMAL, "179769313486231570000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000.0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MIN_VALUE), SmNativeType.DECIMAL, "0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000049", this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "NaN", SmNativeType.DECIMAL, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "-INF", SmNativeType.DECIMAL, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "INF", SmNativeType.DECIMAL, Err("FOCA0002"), this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "0", SmNativeType.DECIMAL, "0.0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-0", SmNativeType.DECIMAL, "0.0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "3", SmNativeType.DECIMAL, "3.0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-3", SmNativeType.DECIMAL, "-3.0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MAX_VALUE), NativeType.DECIMAL, "179769313486231570000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000.0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MIN_VALUE), NativeType.DECIMAL, "0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000049", this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "NaN", NativeType.DECIMAL, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "-INF", NativeType.DECIMAL, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "INF", NativeType.DECIMAL, Err("FOCA0002"), this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "0", NativeType.DECIMAL, "0.0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-0", NativeType.DECIMAL, "0.0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "3", NativeType.DECIMAL, "3.0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-3", NativeType.DECIMAL, "-3.0", this, atomBridge);
 
-		assertCastGood(SmNativeType.DOUBLE, "0", SmNativeType.INTEGER, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-0", SmNativeType.INTEGER, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "3", SmNativeType.INTEGER, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-3", SmNativeType.INTEGER, "-3", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "3.1456", SmNativeType.INTEGER, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-17.89", SmNativeType.INTEGER, "-17", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MAX_VALUE), SmNativeType.INTEGER, "179769313486231570000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MIN_VALUE), SmNativeType.INTEGER, "0", this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "NaN", SmNativeType.INTEGER, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "-INF", SmNativeType.INTEGER, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "INF", SmNativeType.INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "0", NativeType.INTEGER, "0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-0", NativeType.INTEGER, "0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "3", NativeType.INTEGER, "3", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-3", NativeType.INTEGER, "-3", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "3.1456", NativeType.INTEGER, "3", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-17.89", NativeType.INTEGER, "-17", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MAX_VALUE), NativeType.INTEGER, "179769313486231570000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MIN_VALUE), NativeType.INTEGER, "0", this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "NaN", NativeType.INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "-INF", NativeType.INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "INF", NativeType.INTEGER, Err("FOCA0002"), this, atomBridge);
 
-		assertCastGood(SmNativeType.DOUBLE, "0", SmNativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-0", SmNativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "3", SmNativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-3", SmNativeType.NON_POSITIVE_INTEGER, "-3", this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "3.1456", SmNativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-17.89", SmNativeType.NON_POSITIVE_INTEGER, "-17", this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, Double.toString(Double.MAX_VALUE), SmNativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MIN_VALUE), SmNativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "NaN", SmNativeType.NON_POSITIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "-INF", SmNativeType.NON_POSITIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "INF", SmNativeType.NON_POSITIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "0", NativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-0", NativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "3", NativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-3", NativeType.NON_POSITIVE_INTEGER, "-3", this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "3.1456", NativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-17.89", NativeType.NON_POSITIVE_INTEGER, "-17", this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, Double.toString(Double.MAX_VALUE), NativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MIN_VALUE), NativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "NaN", NativeType.NON_POSITIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "-INF", NativeType.NON_POSITIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "INF", NativeType.NON_POSITIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
 
-		assertCastFail(SmNativeType.DOUBLE, "0", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "-0", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "3", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-3", SmNativeType.NEGATIVE_INTEGER, "-3", this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "3.1456", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-17.89", SmNativeType.NEGATIVE_INTEGER, "-17", this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, Double.toString(Double.MAX_VALUE), SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, Double.toString(Double.MIN_VALUE), SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "NaN", SmNativeType.NEGATIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "-INF", SmNativeType.NEGATIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "INF", SmNativeType.NEGATIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "0", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "-0", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "3", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-3", NativeType.NEGATIVE_INTEGER, "-3", this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "3.1456", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-17.89", NativeType.NEGATIVE_INTEGER, "-17", this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, Double.toString(Double.MAX_VALUE), NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, Double.toString(Double.MIN_VALUE), NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "NaN", NativeType.NEGATIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "-INF", NativeType.NEGATIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "INF", NativeType.NEGATIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
 
-		assertCastGood(SmNativeType.DOUBLE, "0", SmNativeType.LONG, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-0", SmNativeType.LONG, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "3", SmNativeType.LONG, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-3", SmNativeType.LONG, "-3", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "3.1456", SmNativeType.LONG, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-17.89", SmNativeType.LONG, "-17", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MAX_VALUE), SmNativeType.LONG, "9223372036854775807", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MIN_VALUE), SmNativeType.LONG, "0", this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "NaN", SmNativeType.LONG, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "-INF", SmNativeType.LONG, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "INF", SmNativeType.LONG, Err("FOCA0002"), this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "0", NativeType.LONG, "0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-0", NativeType.LONG, "0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "3", NativeType.LONG, "3", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-3", NativeType.LONG, "-3", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "3.1456", NativeType.LONG, "3", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-17.89", NativeType.LONG, "-17", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MAX_VALUE), NativeType.LONG, "9223372036854775807", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MIN_VALUE), NativeType.LONG, "0", this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "NaN", NativeType.LONG, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "-INF", NativeType.LONG, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "INF", NativeType.LONG, Err("FOCA0002"), this, atomBridge);
 
-		assertCastGood(SmNativeType.DOUBLE, "0", SmNativeType.INT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-0", SmNativeType.INT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "3", SmNativeType.INT, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-3", SmNativeType.INT, "-3", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "3.1456", SmNativeType.INT, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-17.89", SmNativeType.INT, "-17", this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, Double.toString(Double.MAX_VALUE), SmNativeType.INT, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MIN_VALUE), SmNativeType.INT, "0", this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "NaN", SmNativeType.INT, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "-INF", SmNativeType.INT, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "INF", SmNativeType.INT, Err("FOCA0002"), this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "0", NativeType.INT, "0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-0", NativeType.INT, "0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "3", NativeType.INT, "3", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-3", NativeType.INT, "-3", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "3.1456", NativeType.INT, "3", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-17.89", NativeType.INT, "-17", this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, Double.toString(Double.MAX_VALUE), NativeType.INT, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MIN_VALUE), NativeType.INT, "0", this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "NaN", NativeType.INT, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "-INF", NativeType.INT, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "INF", NativeType.INT, Err("FOCA0002"), this, atomBridge);
 
-		assertCastGood(SmNativeType.DOUBLE, "0", SmNativeType.SHORT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-0", SmNativeType.SHORT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "3", SmNativeType.SHORT, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-3", SmNativeType.SHORT, "-3", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "3.1456", SmNativeType.SHORT, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-17.89", SmNativeType.SHORT, "-17", this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, Double.toString(Double.MAX_VALUE), SmNativeType.SHORT, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MIN_VALUE), SmNativeType.SHORT, "0", this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "NaN", SmNativeType.SHORT, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "-INF", SmNativeType.SHORT, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "INF", SmNativeType.SHORT, Err("FOCA0002"), this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "0", NativeType.SHORT, "0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-0", NativeType.SHORT, "0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "3", NativeType.SHORT, "3", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-3", NativeType.SHORT, "-3", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "3.1456", NativeType.SHORT, "3", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-17.89", NativeType.SHORT, "-17", this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, Double.toString(Double.MAX_VALUE), NativeType.SHORT, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MIN_VALUE), NativeType.SHORT, "0", this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "NaN", NativeType.SHORT, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "-INF", NativeType.SHORT, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "INF", NativeType.SHORT, Err("FOCA0002"), this, atomBridge);
 
-		assertCastGood(SmNativeType.DOUBLE, "0", SmNativeType.BYTE, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-0", SmNativeType.BYTE, "0", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "3", SmNativeType.BYTE, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-3", SmNativeType.BYTE, "-3", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "3.1456", SmNativeType.BYTE, "3", this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, "-17.89", SmNativeType.BYTE, "-17", this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, Double.toString(Double.MAX_VALUE), SmNativeType.BYTE, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.DOUBLE, Double.toString(Double.MIN_VALUE), SmNativeType.BYTE, "0", this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "NaN", SmNativeType.BYTE, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "-INF", SmNativeType.BYTE, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.DOUBLE, "INF", SmNativeType.BYTE, Err("FOCA0002"), this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "0", NativeType.BYTE, "0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-0", NativeType.BYTE, "0", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "3", NativeType.BYTE, "3", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-3", NativeType.BYTE, "-3", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "3.1456", NativeType.BYTE, "3", this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, "-17.89", NativeType.BYTE, "-17", this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, Double.toString(Double.MAX_VALUE), NativeType.BYTE, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.DOUBLE, Double.toString(Double.MIN_VALUE), NativeType.BYTE, "0", this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "NaN", NativeType.BYTE, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "-INF", NativeType.BYTE, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.DOUBLE, "INF", NativeType.BYTE, Err("FOCA0002"), this, atomBridge);
 
 		for (final TestAtom source : TestAtom.getTestAtoms())
 		{
-			if (equals(SmNativeType.DOUBLE, source.builtInType) && source.isValid)
+			if (equals(NativeType.DOUBLE, source.builtInType) && source.isValid)
 			{
 				for (final TestAtom target : TestAtom.getTestAtoms())
 				{
@@ -1286,156 +1286,156 @@ public abstract class AtomBridgeTestBase<N, A>
         final TypedContext<N, A> pcx = newProcessingContext().getTypedContext();
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MAX_VALUE), SmNativeType.DOUBLE, "3.4028234663852886E38", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MIN_VALUE), SmNativeType.DOUBLE, "1.401298464324817E-45", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "NaN", SmNativeType.DOUBLE, "NaN", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-INF", SmNativeType.DOUBLE, "-INF", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "INF", SmNativeType.DOUBLE, "INF", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "0", SmNativeType.DOUBLE, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-0", SmNativeType.DOUBLE, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "3", SmNativeType.DOUBLE, "3.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-3", SmNativeType.DOUBLE, "-3.0E0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MAX_VALUE), NativeType.DOUBLE, "3.4028234663852886E38", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MIN_VALUE), NativeType.DOUBLE, "1.401298464324817E-45", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "NaN", NativeType.DOUBLE, "NaN", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-INF", NativeType.DOUBLE, "-INF", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "INF", NativeType.DOUBLE, "INF", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "0", NativeType.DOUBLE, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-0", NativeType.DOUBLE, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "3", NativeType.DOUBLE, "3.0E0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-3", NativeType.DOUBLE, "-3.0E0", this, atomBridge);
 
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MAX_VALUE), SmNativeType.FLOAT, "3.4028235E38", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MIN_VALUE), SmNativeType.FLOAT, "1.4E-45", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "NaN", SmNativeType.FLOAT, "NaN", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-INF", SmNativeType.FLOAT, "-INF", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "INF", SmNativeType.FLOAT, "INF", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "0", SmNativeType.FLOAT, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-0", SmNativeType.FLOAT, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "3", SmNativeType.FLOAT, "3.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-3", SmNativeType.FLOAT, "-3.0E0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MAX_VALUE), NativeType.FLOAT, "3.4028235E38", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MIN_VALUE), NativeType.FLOAT, "1.4E-45", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "NaN", NativeType.FLOAT, "NaN", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-INF", NativeType.FLOAT, "-INF", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "INF", NativeType.FLOAT, "INF", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "0", NativeType.FLOAT, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-0", NativeType.FLOAT, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "3", NativeType.FLOAT, "3.0E0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-3", NativeType.FLOAT, "-3.0E0", this, atomBridge);
 
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MAX_VALUE), SmNativeType.BOOLEAN, "true", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MIN_VALUE), SmNativeType.BOOLEAN, "true", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "NaN", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-INF", SmNativeType.BOOLEAN, "true", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "INF", SmNativeType.BOOLEAN, "true", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "+0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "0.0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "0.0E0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "3", SmNativeType.BOOLEAN, "true", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-3", SmNativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MAX_VALUE), NativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MIN_VALUE), NativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "NaN", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-INF", NativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "INF", NativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "+0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "0.0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "0.0E0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "3", NativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-3", NativeType.BOOLEAN, "true", this, atomBridge);
 
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MAX_VALUE), SmNativeType.STRING, "3.4028235E38", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MIN_VALUE), SmNativeType.STRING, "1.4E-45", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "NaN", SmNativeType.STRING, "NaN", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-INF", SmNativeType.STRING, "-INF", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "INF", SmNativeType.STRING, "INF", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "0", SmNativeType.STRING, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-0", SmNativeType.STRING, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "3", SmNativeType.STRING, "3.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-3", SmNativeType.STRING, "-3.0E0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MAX_VALUE), NativeType.STRING, "3.4028235E38", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MIN_VALUE), NativeType.STRING, "1.4E-45", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "NaN", NativeType.STRING, "NaN", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-INF", NativeType.STRING, "-INF", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "INF", NativeType.STRING, "INF", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "0", NativeType.STRING, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-0", NativeType.STRING, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "3", NativeType.STRING, "3.0E0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-3", NativeType.STRING, "-3.0E0", this, atomBridge);
 
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MAX_VALUE), SmNativeType.UNTYPED_ATOMIC, "3.4028235E38", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MIN_VALUE), SmNativeType.UNTYPED_ATOMIC, "1.4E-45", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "NaN", SmNativeType.UNTYPED_ATOMIC, "NaN", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-INF", SmNativeType.UNTYPED_ATOMIC, "-INF", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "INF", SmNativeType.UNTYPED_ATOMIC, "INF", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "0", SmNativeType.UNTYPED_ATOMIC, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-0", SmNativeType.UNTYPED_ATOMIC, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "3", SmNativeType.UNTYPED_ATOMIC, "3.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-3", SmNativeType.UNTYPED_ATOMIC, "-3.0E0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MAX_VALUE), NativeType.UNTYPED_ATOMIC, "3.4028235E38", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MIN_VALUE), NativeType.UNTYPED_ATOMIC, "1.4E-45", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "NaN", NativeType.UNTYPED_ATOMIC, "NaN", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-INF", NativeType.UNTYPED_ATOMIC, "-INF", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "INF", NativeType.UNTYPED_ATOMIC, "INF", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "0", NativeType.UNTYPED_ATOMIC, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-0", NativeType.UNTYPED_ATOMIC, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "3", NativeType.UNTYPED_ATOMIC, "3.0E0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-3", NativeType.UNTYPED_ATOMIC, "-3.0E0", this, atomBridge);
 
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MAX_VALUE), SmNativeType.DECIMAL, "340282346638528860000000000000000000000.0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MIN_VALUE), SmNativeType.DECIMAL, "0.000000000000000000000000000000000000000000001401298464324817", this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "NaN", SmNativeType.DECIMAL, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "-INF", SmNativeType.DECIMAL, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "INF", SmNativeType.DECIMAL, Err("FOCA0002"), this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "0", SmNativeType.DECIMAL, "0.0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-0", SmNativeType.DECIMAL, "0.0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "3", SmNativeType.DECIMAL, "3.0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-3", SmNativeType.DECIMAL, "-3.0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MAX_VALUE), NativeType.DECIMAL, "340282346638528860000000000000000000000.0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MIN_VALUE), NativeType.DECIMAL, "0.000000000000000000000000000000000000000000001401298464324817", this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "NaN", NativeType.DECIMAL, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "-INF", NativeType.DECIMAL, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "INF", NativeType.DECIMAL, Err("FOCA0002"), this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "0", NativeType.DECIMAL, "0.0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-0", NativeType.DECIMAL, "0.0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "3", NativeType.DECIMAL, "3.0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-3", NativeType.DECIMAL, "-3.0", this, atomBridge);
 
-		assertCastGood(SmNativeType.FLOAT, "0", SmNativeType.INTEGER, "0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-0", SmNativeType.INTEGER, "0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "3", SmNativeType.INTEGER, "3", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-3", SmNativeType.INTEGER, "-3", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "3.1456", SmNativeType.INTEGER, "3", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-17.89", SmNativeType.INTEGER, "-17", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MAX_VALUE), SmNativeType.INTEGER, "9223372036854775807", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MIN_VALUE), SmNativeType.INTEGER, "0", this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "NaN", SmNativeType.INTEGER, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "-INF", SmNativeType.INTEGER, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "INF", SmNativeType.INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "0", NativeType.INTEGER, "0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-0", NativeType.INTEGER, "0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "3", NativeType.INTEGER, "3", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-3", NativeType.INTEGER, "-3", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "3.1456", NativeType.INTEGER, "3", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-17.89", NativeType.INTEGER, "-17", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MAX_VALUE), NativeType.INTEGER, "9223372036854775807", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MIN_VALUE), NativeType.INTEGER, "0", this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "NaN", NativeType.INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "-INF", NativeType.INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "INF", NativeType.INTEGER, Err("FOCA0002"), this, atomBridge);
 
-		assertCastGood(SmNativeType.FLOAT, "0", SmNativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-0", SmNativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "3", SmNativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-3", SmNativeType.NON_POSITIVE_INTEGER, "-3", this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "3.1456", SmNativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-17.89", SmNativeType.NON_POSITIVE_INTEGER, "-17", this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, Float.toString(Float.MAX_VALUE), SmNativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MIN_VALUE), SmNativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "NaN", SmNativeType.NON_POSITIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "-INF", SmNativeType.NON_POSITIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "INF", SmNativeType.NON_POSITIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "0", NativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-0", NativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "3", NativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-3", NativeType.NON_POSITIVE_INTEGER, "-3", this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "3.1456", NativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-17.89", NativeType.NON_POSITIVE_INTEGER, "-17", this, atomBridge);
+		assertCastFail(NativeType.FLOAT, Float.toString(Float.MAX_VALUE), NativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MIN_VALUE), NativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "NaN", NativeType.NON_POSITIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "-INF", NativeType.NON_POSITIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "INF", NativeType.NON_POSITIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
 
-		assertCastFail(SmNativeType.FLOAT, "0", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "-0", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "3", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-3", SmNativeType.NEGATIVE_INTEGER, "-3", this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "3.1456", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-17.89", SmNativeType.NEGATIVE_INTEGER, "-17", this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, Float.toString(Float.MAX_VALUE), SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, Float.toString(Float.MIN_VALUE), SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "NaN", SmNativeType.NEGATIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "-INF", SmNativeType.NEGATIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "INF", SmNativeType.NEGATIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "0", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "-0", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "3", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-3", NativeType.NEGATIVE_INTEGER, "-3", this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "3.1456", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-17.89", NativeType.NEGATIVE_INTEGER, "-17", this, atomBridge);
+		assertCastFail(NativeType.FLOAT, Float.toString(Float.MAX_VALUE), NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, Float.toString(Float.MIN_VALUE), NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "NaN", NativeType.NEGATIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "-INF", NativeType.NEGATIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "INF", NativeType.NEGATIVE_INTEGER, Err("FOCA0002"), this, atomBridge);
 
-		assertCastGood(SmNativeType.FLOAT, "0", SmNativeType.LONG, "0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-0", SmNativeType.LONG, "0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "3", SmNativeType.LONG, "3", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-3", SmNativeType.LONG, "-3", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "3.1456", SmNativeType.LONG, "3", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-17.89", SmNativeType.LONG, "-17", this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, Float.toString(Float.MAX_VALUE), SmNativeType.INT, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MIN_VALUE), SmNativeType.INT, "0", this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "NaN", SmNativeType.LONG, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "-INF", SmNativeType.LONG, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "INF", SmNativeType.LONG, Err("FOCA0002"), this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "0", NativeType.LONG, "0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-0", NativeType.LONG, "0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "3", NativeType.LONG, "3", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-3", NativeType.LONG, "-3", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "3.1456", NativeType.LONG, "3", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-17.89", NativeType.LONG, "-17", this, atomBridge);
+		assertCastFail(NativeType.FLOAT, Float.toString(Float.MAX_VALUE), NativeType.INT, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MIN_VALUE), NativeType.INT, "0", this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "NaN", NativeType.LONG, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "-INF", NativeType.LONG, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "INF", NativeType.LONG, Err("FOCA0002"), this, atomBridge);
 
-		assertCastGood(SmNativeType.FLOAT, "0", SmNativeType.INT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-0", SmNativeType.INT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "3", SmNativeType.INT, "3", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-3", SmNativeType.INT, "-3", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "3.1456", SmNativeType.INT, "3", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-17.89", SmNativeType.INT, "-17", this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, Float.toString(Float.MAX_VALUE), SmNativeType.INT, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MIN_VALUE), SmNativeType.INT, "0", this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "NaN", SmNativeType.INT, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "-INF", SmNativeType.INT, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "INF", SmNativeType.INT, Err("FOCA0002"), this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "0", NativeType.INT, "0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-0", NativeType.INT, "0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "3", NativeType.INT, "3", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-3", NativeType.INT, "-3", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "3.1456", NativeType.INT, "3", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-17.89", NativeType.INT, "-17", this, atomBridge);
+		assertCastFail(NativeType.FLOAT, Float.toString(Float.MAX_VALUE), NativeType.INT, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MIN_VALUE), NativeType.INT, "0", this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "NaN", NativeType.INT, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "-INF", NativeType.INT, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "INF", NativeType.INT, Err("FOCA0002"), this, atomBridge);
 
-		assertCastGood(SmNativeType.FLOAT, "0", SmNativeType.SHORT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-0", SmNativeType.SHORT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "3", SmNativeType.SHORT, "3", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-3", SmNativeType.SHORT, "-3", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "3.1456", SmNativeType.SHORT, "3", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-17.89", SmNativeType.SHORT, "-17", this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, Float.toString(Float.MAX_VALUE), SmNativeType.SHORT, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MIN_VALUE), SmNativeType.SHORT, "0", this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "NaN", SmNativeType.SHORT, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "-INF", SmNativeType.SHORT, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "INF", SmNativeType.SHORT, Err("FOCA0002"), this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "0", NativeType.SHORT, "0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-0", NativeType.SHORT, "0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "3", NativeType.SHORT, "3", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-3", NativeType.SHORT, "-3", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "3.1456", NativeType.SHORT, "3", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-17.89", NativeType.SHORT, "-17", this, atomBridge);
+		assertCastFail(NativeType.FLOAT, Float.toString(Float.MAX_VALUE), NativeType.SHORT, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MIN_VALUE), NativeType.SHORT, "0", this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "NaN", NativeType.SHORT, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "-INF", NativeType.SHORT, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "INF", NativeType.SHORT, Err("FOCA0002"), this, atomBridge);
 
-		assertCastGood(SmNativeType.FLOAT, "0", SmNativeType.BYTE, "0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-0", SmNativeType.BYTE, "0", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "3", SmNativeType.BYTE, "3", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-3", SmNativeType.BYTE, "-3", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "3.1456", SmNativeType.BYTE, "3", this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, "-17.89", SmNativeType.BYTE, "-17", this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, Float.toString(Float.MAX_VALUE), SmNativeType.BYTE, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.FLOAT, Float.toString(Float.MIN_VALUE), SmNativeType.BYTE, "0", this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "NaN", SmNativeType.BYTE, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "-INF", SmNativeType.BYTE, Err("FOCA0002"), this, atomBridge);
-		assertCastFail(SmNativeType.FLOAT, "INF", SmNativeType.BYTE, Err("FOCA0002"), this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "0", NativeType.BYTE, "0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-0", NativeType.BYTE, "0", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "3", NativeType.BYTE, "3", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-3", NativeType.BYTE, "-3", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "3.1456", NativeType.BYTE, "3", this, atomBridge);
+		assertCastGood(NativeType.FLOAT, "-17.89", NativeType.BYTE, "-17", this, atomBridge);
+		assertCastFail(NativeType.FLOAT, Float.toString(Float.MAX_VALUE), NativeType.BYTE, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.FLOAT, Float.toString(Float.MIN_VALUE), NativeType.BYTE, "0", this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "NaN", NativeType.BYTE, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "-INF", NativeType.BYTE, Err("FOCA0002"), this, atomBridge);
+		assertCastFail(NativeType.FLOAT, "INF", NativeType.BYTE, Err("FOCA0002"), this, atomBridge);
 
 		for (final TestAtom source : TestAtom.getTestAtoms())
 		{
-			if (equals(SmNativeType.FLOAT, source.builtInType) && source.isValid)
+			if (equals(NativeType.FLOAT, source.builtInType) && source.isValid)
 			{
 				for (final TestAtom target : TestAtom.getTestAtoms())
 				{
@@ -1489,76 +1489,76 @@ public abstract class AtomBridgeTestBase<N, A>
         final TypedContext<N, A> pcx = newProcessingContext().getTypedContext();
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		assertCastGood(SmNativeType.INT, "0", SmNativeType.DOUBLE, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-0", SmNativeType.DOUBLE, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "3", SmNativeType.DOUBLE, "3.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-3", SmNativeType.DOUBLE, "-3.0E0", this, atomBridge);
+		assertCastGood(NativeType.INT, "0", NativeType.DOUBLE, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.INT, "-0", NativeType.DOUBLE, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.INT, "3", NativeType.DOUBLE, "3.0E0", this, atomBridge);
+		assertCastGood(NativeType.INT, "-3", NativeType.DOUBLE, "-3.0E0", this, atomBridge);
 
-		assertCastGood(SmNativeType.INT, "0", SmNativeType.FLOAT, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-0", SmNativeType.FLOAT, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "3", SmNativeType.FLOAT, "3.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-3", SmNativeType.FLOAT, "-3.0E0", this, atomBridge);
+		assertCastGood(NativeType.INT, "0", NativeType.FLOAT, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.INT, "-0", NativeType.FLOAT, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.INT, "3", NativeType.FLOAT, "3.0E0", this, atomBridge);
+		assertCastGood(NativeType.INT, "-3", NativeType.FLOAT, "-3.0E0", this, atomBridge);
 
-		assertCastGood(SmNativeType.INT, "0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "+0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "3", SmNativeType.BOOLEAN, "true", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-3", SmNativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.INT, "0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.INT, "+0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.INT, "-0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.INT, "0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.INT, "3", NativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.INT, "-3", NativeType.BOOLEAN, "true", this, atomBridge);
 
-		assertCastGood(SmNativeType.INT, "0", SmNativeType.STRING, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-0", SmNativeType.STRING, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "3", SmNativeType.STRING, "3", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-3", SmNativeType.STRING, "-3", this, atomBridge);
+		assertCastGood(NativeType.INT, "0", NativeType.STRING, "0", this, atomBridge);
+		assertCastGood(NativeType.INT, "-0", NativeType.STRING, "0", this, atomBridge);
+		assertCastGood(NativeType.INT, "3", NativeType.STRING, "3", this, atomBridge);
+		assertCastGood(NativeType.INT, "-3", NativeType.STRING, "-3", this, atomBridge);
 
-		assertCastGood(SmNativeType.INT, "0", SmNativeType.UNTYPED_ATOMIC, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-0", SmNativeType.UNTYPED_ATOMIC, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "3", SmNativeType.UNTYPED_ATOMIC, "3", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-3", SmNativeType.UNTYPED_ATOMIC, "-3", this, atomBridge);
+		assertCastGood(NativeType.INT, "0", NativeType.UNTYPED_ATOMIC, "0", this, atomBridge);
+		assertCastGood(NativeType.INT, "-0", NativeType.UNTYPED_ATOMIC, "0", this, atomBridge);
+		assertCastGood(NativeType.INT, "3", NativeType.UNTYPED_ATOMIC, "3", this, atomBridge);
+		assertCastGood(NativeType.INT, "-3", NativeType.UNTYPED_ATOMIC, "-3", this, atomBridge);
 
-		assertCastGood(SmNativeType.INT, "0", SmNativeType.DECIMAL, "0.0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-0", SmNativeType.DECIMAL, "0.0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "3", SmNativeType.DECIMAL, "3.0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-3", SmNativeType.DECIMAL, "-3.0", this, atomBridge);
+		assertCastGood(NativeType.INT, "0", NativeType.DECIMAL, "0.0", this, atomBridge);
+		assertCastGood(NativeType.INT, "-0", NativeType.DECIMAL, "0.0", this, atomBridge);
+		assertCastGood(NativeType.INT, "3", NativeType.DECIMAL, "3.0", this, atomBridge);
+		assertCastGood(NativeType.INT, "-3", NativeType.DECIMAL, "-3.0", this, atomBridge);
 
-		assertCastGood(SmNativeType.INT, "0", SmNativeType.INTEGER, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-0", SmNativeType.INTEGER, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "3", SmNativeType.INTEGER, "3", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-3", SmNativeType.INTEGER, "-3", this, atomBridge);
+		assertCastGood(NativeType.INT, "0", NativeType.INTEGER, "0", this, atomBridge);
+		assertCastGood(NativeType.INT, "-0", NativeType.INTEGER, "0", this, atomBridge);
+		assertCastGood(NativeType.INT, "3", NativeType.INTEGER, "3", this, atomBridge);
+		assertCastGood(NativeType.INT, "-3", NativeType.INTEGER, "-3", this, atomBridge);
 
-		assertCastGood(SmNativeType.INT, "0", SmNativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-0", SmNativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
-		assertCastFail(SmNativeType.INT, "3", SmNativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-3", SmNativeType.NON_POSITIVE_INTEGER, "-3", this, atomBridge);
+		assertCastGood(NativeType.INT, "0", NativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
+		assertCastGood(NativeType.INT, "-0", NativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
+		assertCastFail(NativeType.INT, "3", NativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.INT, "-3", NativeType.NON_POSITIVE_INTEGER, "-3", this, atomBridge);
 
-		assertCastFail(SmNativeType.INT, "0", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastFail(SmNativeType.INT, "-0", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastFail(SmNativeType.INT, "3", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-3", SmNativeType.NEGATIVE_INTEGER, "-3", this, atomBridge);
+		assertCastFail(NativeType.INT, "0", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastFail(NativeType.INT, "-0", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastFail(NativeType.INT, "3", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.INT, "-3", NativeType.NEGATIVE_INTEGER, "-3", this, atomBridge);
 
-		assertCastGood(SmNativeType.INT, "0", SmNativeType.LONG, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-0", SmNativeType.LONG, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "3", SmNativeType.LONG, "3", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-3", SmNativeType.LONG, "-3", this, atomBridge);
+		assertCastGood(NativeType.INT, "0", NativeType.LONG, "0", this, atomBridge);
+		assertCastGood(NativeType.INT, "-0", NativeType.LONG, "0", this, atomBridge);
+		assertCastGood(NativeType.INT, "3", NativeType.LONG, "3", this, atomBridge);
+		assertCastGood(NativeType.INT, "-3", NativeType.LONG, "-3", this, atomBridge);
 
-		assertCastGood(SmNativeType.INT, "0", SmNativeType.INT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-0", SmNativeType.INT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "3", SmNativeType.INT, "3", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-3", SmNativeType.INT, "-3", this, atomBridge);
+		assertCastGood(NativeType.INT, "0", NativeType.INT, "0", this, atomBridge);
+		assertCastGood(NativeType.INT, "-0", NativeType.INT, "0", this, atomBridge);
+		assertCastGood(NativeType.INT, "3", NativeType.INT, "3", this, atomBridge);
+		assertCastGood(NativeType.INT, "-3", NativeType.INT, "-3", this, atomBridge);
 
-		assertCastGood(SmNativeType.INT, "0", SmNativeType.SHORT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-0", SmNativeType.SHORT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "3", SmNativeType.SHORT, "3", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-3", SmNativeType.SHORT, "-3", this, atomBridge);
+		assertCastGood(NativeType.INT, "0", NativeType.SHORT, "0", this, atomBridge);
+		assertCastGood(NativeType.INT, "-0", NativeType.SHORT, "0", this, atomBridge);
+		assertCastGood(NativeType.INT, "3", NativeType.SHORT, "3", this, atomBridge);
+		assertCastGood(NativeType.INT, "-3", NativeType.SHORT, "-3", this, atomBridge);
 
-		assertCastGood(SmNativeType.INT, "0", SmNativeType.BYTE, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-0", SmNativeType.BYTE, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "3", SmNativeType.BYTE, "3", this, atomBridge);
-		assertCastGood(SmNativeType.INT, "-3", SmNativeType.BYTE, "-3", this, atomBridge);
+		assertCastGood(NativeType.INT, "0", NativeType.BYTE, "0", this, atomBridge);
+		assertCastGood(NativeType.INT, "-0", NativeType.BYTE, "0", this, atomBridge);
+		assertCastGood(NativeType.INT, "3", NativeType.BYTE, "3", this, atomBridge);
+		assertCastGood(NativeType.INT, "-3", NativeType.BYTE, "-3", this, atomBridge);
 
 		for (final TestAtom source : TestAtom.getTestAtoms())
 		{
-			if (equals(SmNativeType.INT, source.builtInType) && source.isValid)
+			if (equals(NativeType.INT, source.builtInType) && source.isValid)
 			{
 				for (final TestAtom target : TestAtom.getTestAtoms())
 				{
@@ -1612,76 +1612,76 @@ public abstract class AtomBridgeTestBase<N, A>
         final TypedContext<N, A> pcx = newProcessingContext().getTypedContext();
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		assertCastGood(SmNativeType.INTEGER, "0", SmNativeType.DOUBLE, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-0", SmNativeType.DOUBLE, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "3", SmNativeType.DOUBLE, "3.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-3", SmNativeType.DOUBLE, "-3.0E0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "0", NativeType.DOUBLE, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-0", NativeType.DOUBLE, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "3", NativeType.DOUBLE, "3.0E0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-3", NativeType.DOUBLE, "-3.0E0", this, atomBridge);
 
-		assertCastGood(SmNativeType.INTEGER, "0", SmNativeType.FLOAT, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-0", SmNativeType.FLOAT, "0.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "3", SmNativeType.FLOAT, "3.0E0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-3", SmNativeType.FLOAT, "-3.0E0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "0", NativeType.FLOAT, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-0", NativeType.FLOAT, "0.0E0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "3", NativeType.FLOAT, "3.0E0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-3", NativeType.FLOAT, "-3.0E0", this, atomBridge);
 
-		assertCastGood(SmNativeType.INTEGER, "0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "+0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "0", SmNativeType.BOOLEAN, "false", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "3", SmNativeType.BOOLEAN, "true", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-3", SmNativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "+0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "0", NativeType.BOOLEAN, "false", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "3", NativeType.BOOLEAN, "true", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-3", NativeType.BOOLEAN, "true", this, atomBridge);
 
-		assertCastGood(SmNativeType.INTEGER, "0", SmNativeType.STRING, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-0", SmNativeType.STRING, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "3", SmNativeType.STRING, "3", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-3", SmNativeType.STRING, "-3", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "0", NativeType.STRING, "0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-0", NativeType.STRING, "0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "3", NativeType.STRING, "3", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-3", NativeType.STRING, "-3", this, atomBridge);
 
-		assertCastGood(SmNativeType.INTEGER, "0", SmNativeType.UNTYPED_ATOMIC, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-0", SmNativeType.UNTYPED_ATOMIC, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "3", SmNativeType.UNTYPED_ATOMIC, "3", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-3", SmNativeType.UNTYPED_ATOMIC, "-3", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "0", NativeType.UNTYPED_ATOMIC, "0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-0", NativeType.UNTYPED_ATOMIC, "0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "3", NativeType.UNTYPED_ATOMIC, "3", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-3", NativeType.UNTYPED_ATOMIC, "-3", this, atomBridge);
 
-		assertCastGood(SmNativeType.INTEGER, "0", SmNativeType.DECIMAL, "0.0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-0", SmNativeType.DECIMAL, "0.0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "3", SmNativeType.DECIMAL, "3.0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-3", SmNativeType.DECIMAL, "-3.0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "0", NativeType.DECIMAL, "0.0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-0", NativeType.DECIMAL, "0.0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "3", NativeType.DECIMAL, "3.0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-3", NativeType.DECIMAL, "-3.0", this, atomBridge);
 
-		assertCastGood(SmNativeType.INTEGER, "0", SmNativeType.INTEGER, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-0", SmNativeType.INTEGER, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "3", SmNativeType.INTEGER, "3", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-3", SmNativeType.INTEGER, "-3", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "0", NativeType.INTEGER, "0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-0", NativeType.INTEGER, "0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "3", NativeType.INTEGER, "3", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-3", NativeType.INTEGER, "-3", this, atomBridge);
 
-		assertCastGood(SmNativeType.INTEGER, "0", SmNativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-0", SmNativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
-		assertCastFail(SmNativeType.INTEGER, "3", SmNativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-3", SmNativeType.NON_POSITIVE_INTEGER, "-3", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "0", NativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-0", NativeType.NON_POSITIVE_INTEGER, "0", this, atomBridge);
+		assertCastFail(NativeType.INTEGER, "3", NativeType.NON_POSITIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-3", NativeType.NON_POSITIVE_INTEGER, "-3", this, atomBridge);
 
-		assertCastFail(SmNativeType.INTEGER, "0", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastFail(SmNativeType.INTEGER, "-0", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastFail(SmNativeType.INTEGER, "3", SmNativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-3", SmNativeType.NEGATIVE_INTEGER, "-3", this, atomBridge);
+		assertCastFail(NativeType.INTEGER, "0", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastFail(NativeType.INTEGER, "-0", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastFail(NativeType.INTEGER, "3", NativeType.NEGATIVE_INTEGER, Err("FORG0001"), this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-3", NativeType.NEGATIVE_INTEGER, "-3", this, atomBridge);
 
-		assertCastGood(SmNativeType.INTEGER, "0", SmNativeType.LONG, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-0", SmNativeType.LONG, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "3", SmNativeType.LONG, "3", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-3", SmNativeType.LONG, "-3", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "0", NativeType.LONG, "0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-0", NativeType.LONG, "0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "3", NativeType.LONG, "3", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-3", NativeType.LONG, "-3", this, atomBridge);
 
-		assertCastGood(SmNativeType.INTEGER, "0", SmNativeType.INT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-0", SmNativeType.INT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "3", SmNativeType.INT, "3", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-3", SmNativeType.INT, "-3", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "0", NativeType.INT, "0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-0", NativeType.INT, "0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "3", NativeType.INT, "3", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-3", NativeType.INT, "-3", this, atomBridge);
 
-		assertCastGood(SmNativeType.INTEGER, "0", SmNativeType.SHORT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-0", SmNativeType.SHORT, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "3", SmNativeType.SHORT, "3", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-3", SmNativeType.SHORT, "-3", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "0", NativeType.SHORT, "0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-0", NativeType.SHORT, "0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "3", NativeType.SHORT, "3", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-3", NativeType.SHORT, "-3", this, atomBridge);
 
-		assertCastGood(SmNativeType.INTEGER, "0", SmNativeType.BYTE, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-0", SmNativeType.BYTE, "0", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "3", SmNativeType.BYTE, "3", this, atomBridge);
-		assertCastGood(SmNativeType.INTEGER, "-3", SmNativeType.BYTE, "-3", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "0", NativeType.BYTE, "0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-0", NativeType.BYTE, "0", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "3", NativeType.BYTE, "3", this, atomBridge);
+		assertCastGood(NativeType.INTEGER, "-3", NativeType.BYTE, "-3", this, atomBridge);
 
 		for (final TestAtom source : TestAtom.getTestAtoms())
 		{
-			if (equals(SmNativeType.INTEGER, source.builtInType) && source.isValid)
+			if (equals(NativeType.INTEGER, source.builtInType) && source.isValid)
 			{
 				for (final TestAtom target : TestAtom.getTestAtoms())
 				{
@@ -1740,7 +1740,7 @@ public abstract class AtomBridgeTestBase<N, A>
 		{
 			if (target.isValid)
 			{
-				assertCastGood(SmNativeType.STRING, target.strVal, target.builtInType, target.c14nValue, this, atomBridge);
+				assertCastGood(NativeType.STRING, target.strVal, target.builtInType, target.c14nValue, this, atomBridge);
 			}
 		}
 	}
@@ -1752,11 +1752,11 @@ public abstract class AtomBridgeTestBase<N, A>
 
 		// Casting from xs:untypedAtomic to all other types (excepting QName & Notation, which are not legal casts for
 		// untypedAtomic).
-		for (final TestAtom target : TestAtom.excludeTestAtoms(new SmNativeType[] { SmNativeType.QNAME, SmNativeType.NOTATION }, false, false))
+		for (final TestAtom target : TestAtom.excludeTestAtoms(new NativeType[] { NativeType.QNAME, NativeType.NOTATION }, false, false))
 		{
 			if (target.isValid)
 			{
-				assertCastGood(SmNativeType.UNTYPED_ATOMIC, target.strVal, target.builtInType, target.c14nValue, this, atomBridge);
+				assertCastGood(NativeType.UNTYPED_ATOMIC, target.strVal, target.builtInType, target.c14nValue, this, atomBridge);
 			}
 		}
 	}
@@ -1770,7 +1770,7 @@ public abstract class AtomBridgeTestBase<N, A>
 		{
 			final A actual = atomBridge.createBoolean(true);
 
-			assertEquals(SmNativeType.BOOLEAN, atomBridge.getNativeType(actual));
+			assertEquals(NativeType.BOOLEAN, atomBridge.getNativeType(actual));
 			assertEquals("true", atomBridge.getC14NForm(actual));
 		}
 
@@ -1778,7 +1778,7 @@ public abstract class AtomBridgeTestBase<N, A>
 		{
 			final A actual = atomBridge.createBoolean(false);
 
-			assertEquals(SmNativeType.BOOLEAN, atomBridge.getNativeType(actual));
+			assertEquals(NativeType.BOOLEAN, atomBridge.getNativeType(actual));
 			assertEquals("false", atomBridge.getC14NForm(actual));
 		}
 	}
@@ -1796,7 +1796,7 @@ public abstract class AtomBridgeTestBase<N, A>
 			assertTrue(it.hasNext());
 			final A actual = it.next();
 
-			assertEquals(SmNativeType.UNTYPED_ATOMIC, atomBridge.getNativeType(actual));
+			assertEquals(NativeType.UNTYPED_ATOMIC, atomBridge.getNativeType(actual));
 			assertEquals("Hello", atomBridge.getC14NForm(actual));
 			assertFalse(it.hasNext());
 		}
@@ -1825,9 +1825,9 @@ public abstract class AtomBridgeTestBase<N, A>
 		assertNotNull(nameBridge);
 		try
 		{
-			final A example = atomBridge.compile("1964-04-21", SmNativeType.DATE);
+			final A example = atomBridge.compile("1964-04-21", NativeType.DATE);
 
-			assertEquals(SmNativeType.DATE, atomBridge.getNativeType(example));
+			assertEquals(NativeType.DATE, atomBridge.getNativeType(example));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -1836,11 +1836,11 @@ public abstract class AtomBridgeTestBase<N, A>
 
 		try
 		{
-			final A dateAtom = atomBridge.compile("1964-04-21-00:00", SmNativeType.DATE);
+			final A dateAtom = atomBridge.compile("1964-04-21-00:00", NativeType.DATE);
 
 			assertNotNull(dateAtom);
 
-			final A dateString = atomBridge.castAs(dateAtom, SmNativeType.STRING.toQName(), this);
+			final A dateString = atomBridge.castAs(dateAtom, NativeType.STRING.toQName(), this);
 
 			assertEquals("1964-04-21Z", atomBridge.getString(dateString));
 
@@ -1848,14 +1848,14 @@ public abstract class AtomBridgeTestBase<N, A>
 			assertEquals(4, atomBridge.getMonth(dateAtom));
 			assertEquals(21, atomBridge.getDayOfMonth(dateAtom));
 
-			assertEquals(SmNativeType.DATE, atomBridge.getNativeType(dateAtom));
-			assertEquals(SmNativeType.DATE.toQName(), atomBridge.getDataType(dateAtom));
+			assertEquals(NativeType.DATE, atomBridge.getNativeType(dateAtom));
+			assertEquals(NativeType.DATE.toQName(), atomBridge.getDataType(dateAtom));
 
 			// Casting xs:date to xs:dateTime
 			{
-				final A dateTimeAtom = atomBridge.castAs(dateAtom, SmNativeType.DATETIME.toQName(), this);
+				final A dateTimeAtom = atomBridge.castAs(dateAtom, NativeType.DATETIME.toQName(), this);
 				assertNotNull(dateTimeAtom);
-				final A dateTimeString = atomBridge.castAs(dateTimeAtom, SmNativeType.STRING.toQName(), this);
+				final A dateTimeString = atomBridge.castAs(dateTimeAtom, NativeType.STRING.toQName(), this);
 				final String expect = "1964-04-21T00:00:00Z";
 				final String actual = atomBridge.getString(dateTimeString);
 
@@ -1883,11 +1883,11 @@ public abstract class AtomBridgeTestBase<N, A>
 		final NameSource nameBridge = atomBridge.getNameBridge();
 		assertNotNull(nameBridge);
 
-		final QName xsStringName = SmNativeType.STRING.toQName();
+		final QName xsStringName = NativeType.STRING.toQName();
 
 		try
 		{
-			final A dateTimeAtom = atomBridge.compile("1964-04-21T10:00:00-00:00", SmNativeType.DATETIME);
+			final A dateTimeAtom = atomBridge.compile("1964-04-21T10:00:00-00:00", NativeType.DATETIME);
 			assertNotNull(dateTimeAtom);
 			final A dateTimeString = atomBridge.castAs(dateTimeAtom, xsStringName, this);
 
@@ -1897,17 +1897,17 @@ public abstract class AtomBridgeTestBase<N, A>
 			assertEquals(4, atomBridge.getMonth(dateTimeAtom));
 			assertEquals(21, atomBridge.getDayOfMonth(dateTimeAtom));
 
-			assertEquals(SmNativeType.DATETIME, atomBridge.getNativeType(dateTimeAtom));
-			assertEquals(SmNativeType.DATETIME.toQName(), atomBridge.getDataType(dateTimeAtom));
+			assertEquals(NativeType.DATETIME, atomBridge.getNativeType(dateTimeAtom));
+			assertEquals(NativeType.DATETIME.toQName(), atomBridge.getDataType(dateTimeAtom));
 
 			// Casting xs:dateTime to xs:date
-			final A dateAtom = atomBridge.castAs(dateTimeAtom, SmNativeType.DATE.toQName(), this);
+			final A dateAtom = atomBridge.castAs(dateTimeAtom, NativeType.DATE.toQName(), this);
 			assertNotNull(dateAtom);
 			final A dateString = atomBridge.castAs(dateAtom, xsStringName, this);
 			assertEquals("1964-04-21Z", atomBridge.getString(dateString));
 
 			// Casting xs:dateTime to xs:time
-			final A timeAtom = atomBridge.castAs(dateTimeAtom, SmNativeType.TIME.toQName(), new org.genxdm.bridgetest.typed.CastingContext<N, A>(pcx));
+			final A timeAtom = atomBridge.castAs(dateTimeAtom, NativeType.TIME.toQName(), new org.genxdm.bridgetest.typed.CastingContext<N, A>(pcx));
 			assertNotNull(timeAtom);
 			final A timeString = atomBridge.castAs(timeAtom, xsStringName, this);
 			assertEquals("10:00:00Z", atomBridge.getString(timeString));
@@ -1928,17 +1928,17 @@ public abstract class AtomBridgeTestBase<N, A>
 
 		try
 		{
-			final A durationAtom = atomBridge.compile("PT0S", SmNativeType.DURATION_DAYTIME);
+			final A durationAtom = atomBridge.compile("PT0S", NativeType.DURATION_DAYTIME);
 
 			assertNotNull(durationAtom);
-			assertEquals(SmNativeType.DURATION_DAYTIME, atomBridge.getNativeType(durationAtom));
-			assertEquals(SmNativeType.DURATION_DAYTIME.toQName(), atomBridge.getDataType(durationAtom));
+			assertEquals(NativeType.DURATION_DAYTIME, atomBridge.getNativeType(durationAtom));
+			assertEquals(NativeType.DURATION_DAYTIME.toQName(), atomBridge.getDataType(durationAtom));
 
-			final A stringAtom = atomBridge.castAs(durationAtom, SmNativeType.STRING.toQName(), this);
+			final A stringAtom = atomBridge.castAs(durationAtom, NativeType.STRING.toQName(), this);
 
 			assertNotNull(stringAtom);
-			assertEquals(SmNativeType.STRING, atomBridge.getNativeType(stringAtom));
-			assertEquals(SmNativeType.STRING.toQName(), atomBridge.getDataType(stringAtom));
+			assertEquals(NativeType.STRING, atomBridge.getNativeType(stringAtom));
+			assertEquals(NativeType.STRING.toQName(), atomBridge.getDataType(stringAtom));
 
 			assertEquals("PT0S", atomBridge.getString(stringAtom));
 
@@ -1959,20 +1959,20 @@ public abstract class AtomBridgeTestBase<N, A>
 
 		assertNotNull(nameBridge);
 
-		final QName xsStringName = SmNativeType.STRING.toQName();
+		final QName xsStringName = NativeType.STRING.toQName();
 
 		try
 		{
-			final A decimalAtom = atomBridge.compile("123", SmNativeType.DECIMAL);
+			final A decimalAtom = atomBridge.compile("123", NativeType.DECIMAL);
 
 			assertNotNull(decimalAtom);
-			assertEquals(SmNativeType.DECIMAL, atomBridge.getNativeType(decimalAtom));
-			assertEquals(SmNativeType.DECIMAL.toQName(), atomBridge.getDataType(decimalAtom));
+			assertEquals(NativeType.DECIMAL, atomBridge.getNativeType(decimalAtom));
+			assertEquals(NativeType.DECIMAL.toQName(), atomBridge.getDataType(decimalAtom));
 
 			final A stringAtom = atomBridge.castAs(decimalAtom, xsStringName, this);
 			assertNotNull(stringAtom);
-			assertEquals(SmNativeType.STRING, atomBridge.getNativeType(stringAtom));
-			assertEquals(SmNativeType.STRING.toQName(), atomBridge.getDataType(stringAtom));
+			assertEquals(NativeType.STRING, atomBridge.getNativeType(stringAtom));
+			assertEquals(NativeType.STRING.toQName(), atomBridge.getDataType(stringAtom));
 
 			assertEquals("123.0", atomBridge.getString(atomBridge.castAs(decimalAtom, xsStringName, this)));
 
@@ -2000,34 +2000,34 @@ public abstract class AtomBridgeTestBase<N, A>
 
 		assertNotNull(nameBridge);
 
-		final QName xsStringName = SmNativeType.STRING.toQName();
+		final QName xsStringName = NativeType.STRING.toQName();
 
 		try
 		{
-			final A doubleAtom = atomBridge.compile("1234567", SmNativeType.DOUBLE);
+			final A doubleAtom = atomBridge.compile("1234567", NativeType.DOUBLE);
 
 			assertNotNull(doubleAtom);
-			assertEquals(SmNativeType.DOUBLE, atomBridge.getNativeType(doubleAtom));
-			assertEquals(SmNativeType.DOUBLE.toQName(), atomBridge.getDataType(doubleAtom));
+			assertEquals(NativeType.DOUBLE, atomBridge.getNativeType(doubleAtom));
+			assertEquals(NativeType.DOUBLE.toQName(), atomBridge.getDataType(doubleAtom));
 
 			A stringAtom = atomBridge.castAs(doubleAtom, xsStringName, this);
 			assertNotNull(stringAtom);
-			assertEquals(SmNativeType.STRING, atomBridge.getNativeType(stringAtom));
-			assertEquals(SmNativeType.STRING.toQName(), atomBridge.getDataType(stringAtom));
+			assertEquals(NativeType.STRING, atomBridge.getNativeType(stringAtom));
+			assertEquals(NativeType.STRING.toQName(), atomBridge.getDataType(stringAtom));
 
 			assertEquals("1.234567E6", atomBridge.getString(stringAtom));
 
 			stringAtom = atomBridge.castAs(doubleAtom, xsStringName, this);
 			assertNotNull(stringAtom);
-			assertEquals(SmNativeType.STRING, atomBridge.getNativeType(stringAtom));
-			assertEquals(SmNativeType.STRING.toQName(), atomBridge.getDataType(stringAtom));
+			assertEquals(NativeType.STRING, atomBridge.getNativeType(stringAtom));
+			assertEquals(NativeType.STRING.toQName(), atomBridge.getDataType(stringAtom));
 
 			assertEquals("1.234567E6", atomBridge.getString(stringAtom));
 
 			stringAtom = atomBridge.castAs(doubleAtom, xsStringName, this);
 			assertNotNull(stringAtom);
-			assertEquals(SmNativeType.STRING, atomBridge.getNativeType(stringAtom));
-			assertEquals(SmNativeType.STRING.toQName(), atomBridge.getDataType(stringAtom));
+			assertEquals(NativeType.STRING, atomBridge.getNativeType(stringAtom));
+			assertEquals(NativeType.STRING.toQName(), atomBridge.getDataType(stringAtom));
 
 			assertEquals("1.234567E6", atomBridge.getString(stringAtom));
 		}
@@ -2099,11 +2099,11 @@ public abstract class AtomBridgeTestBase<N, A>
 
 		try
 		{
-			final A hexAtom = atomBridge.compile("00", SmNativeType.HEX_BINARY);
+			final A hexAtom = atomBridge.compile("00", NativeType.HEX_BINARY);
 
 			assertNotNull(hexAtom);
 
-			final A strval = atomBridge.castAs(hexAtom, SmNativeType.STRING.toQName(), this);
+			final A strval = atomBridge.castAs(hexAtom, NativeType.STRING.toQName(), this);
 
 			assertEquals("00", atomBridge.getString(strval));
 
@@ -2112,8 +2112,8 @@ public abstract class AtomBridgeTestBase<N, A>
 			 * GxAtomCastException e) { fail(); }
 			 */
 
-			assertEquals(SmNativeType.HEX_BINARY, atomBridge.getNativeType(hexAtom));
-			assertEquals(SmNativeType.HEX_BINARY.toQName(), atomBridge.getDataType(hexAtom));
+			assertEquals(NativeType.HEX_BINARY, atomBridge.getNativeType(hexAtom));
+			assertEquals(NativeType.HEX_BINARY.toQName(), atomBridge.getDataType(hexAtom));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -2131,17 +2131,17 @@ public abstract class AtomBridgeTestBase<N, A>
 
 		try
 		{
-			final A intAtom = atomBridge.compile("123", SmNativeType.INT);
+			final A intAtom = atomBridge.compile("123", NativeType.INT);
 
 			assertNotNull(intAtom);
-			assertEquals(SmNativeType.INT, atomBridge.getNativeType(intAtom));
-			assertEquals(SmNativeType.INT.toQName(), atomBridge.getDataType(intAtom));
+			assertEquals(NativeType.INT, atomBridge.getNativeType(intAtom));
+			assertEquals(NativeType.INT.toQName(), atomBridge.getDataType(intAtom));
 
-			final A stringAtom = atomBridge.castAs(intAtom, SmNativeType.STRING.toQName(), this);
+			final A stringAtom = atomBridge.castAs(intAtom, NativeType.STRING.toQName(), this);
 
 			assertNotNull(stringAtom);
-			assertEquals(SmNativeType.STRING, atomBridge.getNativeType(stringAtom));
-			assertEquals(SmNativeType.STRING.toQName(), atomBridge.getDataType(stringAtom));
+			assertEquals(NativeType.STRING, atomBridge.getNativeType(stringAtom));
+			assertEquals(NativeType.STRING.toQName(), atomBridge.getDataType(stringAtom));
 
 			assertEquals("123", atomBridge.getString(stringAtom));
 
@@ -2169,21 +2169,21 @@ public abstract class AtomBridgeTestBase<N, A>
 
 		assertNotNull(nameBridge);
 
-		final QName xsStringName = SmNativeType.STRING.toQName();
+		final QName xsStringName = NativeType.STRING.toQName();
 
 		try
 		{
-			final A integerAtom = atomBridge.compile("123", SmNativeType.INTEGER);
+			final A integerAtom = atomBridge.compile("123", NativeType.INTEGER);
 
 			assertNotNull(integerAtom);
-			assertEquals(SmNativeType.INTEGER, atomBridge.getNativeType(integerAtom));
-			assertEquals(SmNativeType.INTEGER.toQName(), atomBridge.getDataType(integerAtom));
+			assertEquals(NativeType.INTEGER, atomBridge.getNativeType(integerAtom));
+			assertEquals(NativeType.INTEGER.toQName(), atomBridge.getDataType(integerAtom));
 
 			final A stringAtom = atomBridge.castAs(integerAtom, xsStringName, this);
 
 			assertNotNull(stringAtom);
-			assertEquals(SmNativeType.STRING, atomBridge.getNativeType(stringAtom));
-			assertEquals(SmNativeType.STRING.toQName(), atomBridge.getDataType(stringAtom));
+			assertEquals(NativeType.STRING, atomBridge.getNativeType(stringAtom));
+			assertEquals(NativeType.STRING.toQName(), atomBridge.getDataType(stringAtom));
 
 			assertEquals("123", atomBridge.getString(stringAtom));
 
@@ -2211,21 +2211,21 @@ public abstract class AtomBridgeTestBase<N, A>
 
 		assertNotNull(nameBridge);
 
-		final QName xsStringName = SmNativeType.STRING.toQName();
+		final QName xsStringName = NativeType.STRING.toQName();
 
 		try
 		{
-			final A longAtom = atomBridge.compile("123", SmNativeType.LONG);
+			final A longAtom = atomBridge.compile("123", NativeType.LONG);
 
 			assertNotNull(longAtom);
-			assertEquals(SmNativeType.LONG, atomBridge.getNativeType(longAtom));
-			assertEquals(SmNativeType.LONG.toQName(), atomBridge.getDataType(longAtom));
+			assertEquals(NativeType.LONG, atomBridge.getNativeType(longAtom));
+			assertEquals(NativeType.LONG.toQName(), atomBridge.getDataType(longAtom));
 
 			final A stringAtom = atomBridge.castAs(longAtom, xsStringName, this);
 
 			assertNotNull(stringAtom);
-			assertEquals(SmNativeType.STRING, atomBridge.getNativeType(stringAtom));
-			assertEquals(SmNativeType.STRING.toQName(), atomBridge.getDataType(stringAtom));
+			assertEquals(NativeType.STRING, atomBridge.getNativeType(stringAtom));
+			assertEquals(NativeType.STRING.toQName(), atomBridge.getDataType(stringAtom));
 
 			assertEquals("123", atomBridge.getString(stringAtom));
 
@@ -2266,11 +2266,11 @@ public abstract class AtomBridgeTestBase<N, A>
 		final NameSource nameBridge = atomBridge.getNameBridge();
 		assertNotNull(nameBridge);
 
-		final QName STRING = SmNativeType.STRING.toQName();
+		final QName STRING = NativeType.STRING.toQName();
 
 		try
 		{
-			final A monthAtom = atomBridge.compile("--05", SmNativeType.GMONTH);
+			final A monthAtom = atomBridge.compile("--05", NativeType.GMONTH);
 			assertNotNull(monthAtom);
 			final A monthString = atomBridge.castAs(monthAtom, STRING, this);
 			assertEquals(5, atomBridge.getMonth(monthAtom));
@@ -2293,9 +2293,9 @@ public abstract class AtomBridgeTestBase<N, A>
 
 		try
 		{
-			final A example = atomBridge.compile("abc", SmNativeType.STRING);
+			final A example = atomBridge.compile("abc", NativeType.STRING);
 
-			assertEquals(SmNativeType.STRING, atomBridge.getNativeType(example));
+			assertEquals(NativeType.STRING, atomBridge.getNativeType(example));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -2304,13 +2304,13 @@ public abstract class AtomBridgeTestBase<N, A>
 
 		try
 		{
-			final A atom = atomBridge.compile("Hello", SmNativeType.STRING);
+			final A atom = atomBridge.compile("Hello", NativeType.STRING);
 
 			assertNotNull(atom);
 
 			assertEquals("Hello", atomBridge.getString(atom));
-			assertEquals(SmNativeType.STRING, atomBridge.getNativeType(atom));
-			assertEquals(SmNativeType.STRING.toQName(), atomBridge.getDataType(atom));
+			assertEquals(NativeType.STRING, atomBridge.getNativeType(atom));
+			assertEquals(NativeType.STRING.toQName(), atomBridge.getDataType(atom));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -2330,7 +2330,7 @@ public abstract class AtomBridgeTestBase<N, A>
 		assertNotNull(METHOD_GET_NAME_BRIDGE, nameBridge);
 
 		// Check that there is a manager for each built in atomic type by boty UberType and GxName.
-		for (final SmNativeType builtInType : SmNativeType.values())
+		for (final NativeType builtInType : NativeType.values())
 		{
 			switch (builtInType)
 			{
@@ -2433,9 +2433,9 @@ public abstract class AtomBridgeTestBase<N, A>
 
 		try
 		{
-			final A example = atomBridge.compile("abc", SmNativeType.STRING);
+			final A example = atomBridge.compile("abc", NativeType.STRING);
 
-			assertEquals(SmNativeType.STRING, atomBridge.getNativeType(example));
+			assertEquals(NativeType.STRING, atomBridge.getNativeType(example));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -2444,13 +2444,13 @@ public abstract class AtomBridgeTestBase<N, A>
 
 		try
 		{
-			final A atom = atomBridge.compile("Hello", SmNativeType.STRING);
+			final A atom = atomBridge.compile("Hello", NativeType.STRING);
 
 			assertNotNull(atom);
 
 			assertEquals("Hello", atomBridge.getString(atom));
-			assertEquals(SmNativeType.STRING, atomBridge.getNativeType(atom));
-			assertEquals(SmNativeType.STRING.toQName(), atomBridge.getDataType(atom));
+			assertEquals(NativeType.STRING, atomBridge.getNativeType(atom));
+			assertEquals(NativeType.STRING.toQName(), atomBridge.getDataType(atom));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -2468,9 +2468,9 @@ public abstract class AtomBridgeTestBase<N, A>
 		assertNotNull(nameBridge);
 		try
 		{
-			final A example = atomBridge.compile("10:05:23", SmNativeType.TIME);
+			final A example = atomBridge.compile("10:05:23", NativeType.TIME);
 
-			assertEquals(SmNativeType.TIME, atomBridge.getNativeType(example));
+			assertEquals(NativeType.TIME, atomBridge.getNativeType(example));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -2478,11 +2478,11 @@ public abstract class AtomBridgeTestBase<N, A>
 		}
 		try
 		{
-			final A timeAtom = atomBridge.compile("10:05:23", SmNativeType.TIME);
+			final A timeAtom = atomBridge.compile("10:05:23", NativeType.TIME);
 
 			assertNotNull(timeAtom);
 
-			final A timeString = atomBridge.castAs(timeAtom, SmNativeType.STRING.toQName(), this);
+			final A timeString = atomBridge.castAs(timeAtom, NativeType.STRING.toQName(), this);
 
 			assertEquals("10:05:23", atomBridge.getString(timeString));
 
@@ -2493,8 +2493,8 @@ public abstract class AtomBridgeTestBase<N, A>
 			assertEquals(5, atomBridge.getMinute(timeAtom));
 			assertEquals(BigDecimal.valueOf(23), atomBridge.getSecondsAsBigDecimal(timeAtom));
 
-			assertEquals(SmNativeType.TIME, atomBridge.getNativeType(timeAtom));
-			assertEquals(SmNativeType.TIME.toQName(), atomBridge.getDataType(timeAtom));
+			assertEquals(NativeType.TIME, atomBridge.getNativeType(timeAtom));
+			assertEquals(NativeType.TIME.toQName(), atomBridge.getDataType(timeAtom));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -2540,9 +2540,9 @@ public abstract class AtomBridgeTestBase<N, A>
 
 		try
 		{
-			final A example = atomBridge.compile("P4Y3M", SmNativeType.DURATION_YEARMONTH);
+			final A example = atomBridge.compile("P4Y3M", NativeType.DURATION_YEARMONTH);
 
-			assertEquals(SmNativeType.DURATION_YEARMONTH, atomBridge.getNativeType(example));
+			assertEquals(NativeType.DURATION_YEARMONTH, atomBridge.getNativeType(example));
 		}
 		catch (final GxmlAtomCastException e)
 		{
@@ -2551,18 +2551,18 @@ public abstract class AtomBridgeTestBase<N, A>
 
 		try
 		{
-			final A atom = atomBridge.compile("P4Y1M", SmNativeType.DURATION_YEARMONTH);
+			final A atom = atomBridge.compile("P4Y1M", NativeType.DURATION_YEARMONTH);
 
 			assertNotNull(atom);
 
-			final A strval = atomBridge.castAs(atom, SmNativeType.STRING.toQName(), this);
+			final A strval = atomBridge.castAs(atom, NativeType.STRING.toQName(), this);
 
 			assertEquals("P4Y1M", atomBridge.getString(strval));
 
 			assertEquals(49, atomBridge.getDurationTotalMonths(atom));
 
-			assertEquals(SmNativeType.DURATION_YEARMONTH, atomBridge.getNativeType(atom));
-			assertEquals(SmNativeType.DURATION_YEARMONTH.toQName(), atomBridge.getDataType(atom));
+			assertEquals(NativeType.DURATION_YEARMONTH, atomBridge.getNativeType(atom));
+			assertEquals(NativeType.DURATION_YEARMONTH.toQName(), atomBridge.getDataType(atom));
 		}
 		catch (final GxmlAtomCastException e)
 		{

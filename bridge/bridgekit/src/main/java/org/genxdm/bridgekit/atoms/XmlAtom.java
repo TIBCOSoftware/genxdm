@@ -18,13 +18,13 @@ package org.genxdm.bridgekit.atoms;
 import java.util.List;
 
 import org.genxdm.bridgekit.XmlItem;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 public interface XmlAtom extends XmlItem, List<XmlAtom>
 {
 	String getC14NForm();
 
-	SmNativeType getNativeType();
+	NativeType getNativeType();
 
 	boolean isWhiteSpace();
 }

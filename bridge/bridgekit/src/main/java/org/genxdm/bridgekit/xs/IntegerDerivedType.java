@@ -29,13 +29,13 @@ import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
 import org.genxdm.xs.exceptions.DatatypeException;
-import org.genxdm.xs.facets.SmFacet;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmPattern;
+import org.genxdm.xs.facets.Facet;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.Pattern;
 import org.genxdm.xs.resolve.PrefixResolver;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.SimpleType;
 
 public class IntegerDerivedType<A> extends AbstractAtomType<A>
 {
@@ -43,15 +43,15 @@ public class IntegerDerivedType<A> extends AbstractAtomType<A>
 	private static final BigInteger UNSIGNED_INT_MAX_INCLUSIVE = BigInteger.valueOf(Integer.MAX_VALUE).subtract(BigInteger.valueOf(Integer.MIN_VALUE));
 	private static final BigInteger UNSIGNED_SHORT_MAX_INCLUSIVE = BigInteger.valueOf(Short.MAX_VALUE).subtract(BigInteger.valueOf(Short.MIN_VALUE));
 	private static final BigInteger UNSIGNED_BYTE_MAX_INCLUSIVE = BigInteger.valueOf(Byte.MAX_VALUE).subtract(BigInteger.valueOf(Byte.MIN_VALUE));
-	private final SmNativeType nativeType;
+	private final NativeType nativeType;
 
-	public IntegerDerivedType(final SmNativeType nativeType, final QName name, final SmSimpleType<A> baseType, final AtomBridge<A> atomBridge)
+	public IntegerDerivedType(final NativeType nativeType, final QName name, final SimpleType<A> baseType, final AtomBridge<A> atomBridge)
 	{
 		super(name, baseType, atomBridge);
 		this.nativeType = PreCondition.assertArgumentNotNull(nativeType, "nativeType");
 	}
 
-	public void accept(SmSequenceTypeVisitor<A> visitor)
+	public void accept(SequenceTypeVisitor<A> visitor)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -69,12 +69,12 @@ public class IntegerDerivedType<A> extends AbstractAtomType<A>
 		throw new AssertionError("TODO");
 	}
 
-	public SmFacet<A> getFacetOfKind(final SmFacetKind facetKind)
+	public Facet<A> getFacetOfKind(final FacetKind facetKind)
 	{
 		return null;
 	}
 
-	public Iterable<SmFacet<A>> getFacets()
+	public Iterable<Facet<A>> getFacets()
 	{
 		return Collections.emptyList();
 	}
@@ -84,12 +84,12 @@ public class IntegerDerivedType<A> extends AbstractAtomType<A>
 		return Collections.emptySet();
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
 		return nativeType;
 	}
 
-	public Iterable<SmPattern> getPatterns()
+	public Iterable<Pattern> getPatterns()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -111,7 +111,7 @@ public class IntegerDerivedType<A> extends AbstractAtomType<A>
 		return false;
 	}
 
-	public boolean hasFacetOfKind(final SmFacetKind facetKind)
+	public boolean hasFacetOfKind(final FacetKind facetKind)
 	{
 		return false;
 	}
@@ -209,7 +209,7 @@ public class IntegerDerivedType<A> extends AbstractAtomType<A>
 				{
 					if (integerValue.signum() > 0)
 					{
-						return atomBridge.wrapAtom(atomBridge.createIntegerDerived(integerValue, SmNativeType.POSITIVE_INTEGER));
+						return atomBridge.wrapAtom(atomBridge.createIntegerDerived(integerValue, NativeType.POSITIVE_INTEGER));
 					}
 					else
 					{

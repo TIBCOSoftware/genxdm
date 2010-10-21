@@ -18,7 +18,7 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 import java.util.ArrayList;
 
 import org.genxdm.processor.w3c.xs.exception.CvcDanglingKeyReferenceException;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.resolve.LocationInSchema;
@@ -31,7 +31,7 @@ final class IdentityScopeRef<A> extends IdentityScope<A>
 {
 	private final IdentityScopeKey<A> keyScope;
 
-	public IdentityScopeRef(final int elementIndex, final IdentityScopeKey<A> keyScope, final SmIdentityConstraint<A> constraint, final SchemaExceptionHandler errorHandler, final LocationInSchema location)
+	public IdentityScopeRef(final int elementIndex, final IdentityScopeKey<A> keyScope, final IdentityConstraint<A> constraint, final SchemaExceptionHandler errorHandler, final LocationInSchema location)
 	{
 		super(elementIndex, constraint, errorHandler, location);
 		this.keyScope = keyScope;

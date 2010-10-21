@@ -16,9 +16,9 @@
 package org.genxdm.bridgekit.xs;
 
 import org.genxdm.xs.enums.KeeneQuantifier;
-import org.genxdm.xs.types.SmPrimeType;
+import org.genxdm.xs.types.PrimeType;
 
-abstract class AbstractPrimeExcludingNoneType<A> extends AbstractType<A> implements SmPrimeType<A>
+abstract class AbstractPrimeExcludingNoneType<A> extends AbstractType<A> implements PrimeType<A>
 {
 	public final boolean isNone()
 	{

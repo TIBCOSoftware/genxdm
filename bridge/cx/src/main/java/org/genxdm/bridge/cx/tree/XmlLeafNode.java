@@ -26,19 +26,19 @@ import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XmlAtomBridge;
 import org.genxdm.bridgekit.atoms.XmlUntypedAtomic;
 import org.genxdm.bridgekit.misc.UnaryIterable;
-import org.genxdm.bridgekit.xs.SmMetaBridgeFactory;
+import org.genxdm.bridgekit.xs.SchemaTypeBridgeFactory;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.names.NamespaceBinding;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.Type;
 
 // since there are only two container nodes, it follows that there are five leaf nodes:
 // attribute, namespace, text, comment, pi
 public class XmlLeafNode
     extends XmlNode
 {
-    protected XmlLeafNode(final NodeKind nodeKind, final XmlRootNode document, final SmType<XmlAtom> type, final List<? extends XmlAtom> data)
+    protected XmlLeafNode(final NodeKind nodeKind, final XmlRootNode document, final Type<XmlAtom> type, final List<? extends XmlAtom> data)
     {
         super(nodeKind, document);
         if (type == null)
@@ -150,7 +150,7 @@ public class XmlLeafNode
         return getUntypedValue();
     }
     
-    public SmType<XmlAtom> getType()
+    public Type<XmlAtom> getType()
     {
         return type;
     }
@@ -233,6 +233,6 @@ public class XmlLeafNode
     }
 
     protected List<XmlAtom> atoms;
-    protected final SmType<XmlAtom> type;
-    private static final SmType<XmlAtom> UNTYPED_ATOMIC_TYPE = new SmMetaBridgeFactory<XmlAtom>(new XmlAtomBridge(null, new NameSource())).newMetaBridge().getAtomicType(SmNativeType.UNTYPED_ATOMIC);
+    protected final Type<XmlAtom> type;
+    private static final Type<XmlAtom> UNTYPED_ATOMIC_TYPE = new SchemaTypeBridgeFactory<XmlAtom>(new XmlAtomBridge(null, new NameSource())).newMetaBridge().getAtomicType(NativeType.UNTYPED_ATOMIC);
 }

@@ -17,10 +17,10 @@ package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.components.AttributeDefinition;
-import org.genxdm.xs.constraints.SmAttributeUse;
-import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.constraints.AttributeUse;
+import org.genxdm.xs.constraints.ValueConstraint;
 
-public final class AttributeUseImpl<A> extends LockableImpl implements SmAttributeUse<A>
+public final class AttributeUseImpl<A> extends LockableImpl implements AttributeUse<A>
 {
 	private final AttributeDefinition<A> m_attribute;
 	private final boolean m_isRequired;
@@ -28,7 +28,7 @@ public final class AttributeUseImpl<A> extends LockableImpl implements SmAttribu
 	/**
 	 * {value constraint} is mutable and default to <code>null</code>/
 	 */
-	private SmValueConstraint<A> m_valueConstraint = null;
+	private ValueConstraint<A> m_valueConstraint = null;
 
 	public AttributeUseImpl(final boolean isRequired, final AttributeDefinition<A> attribute)
 	{
@@ -41,7 +41,7 @@ public final class AttributeUseImpl<A> extends LockableImpl implements SmAttribu
 		return m_attribute;
 	}
 
-	public SmValueConstraint<A> getEffectiveValueConstraint()
+	public ValueConstraint<A> getEffectiveValueConstraint()
 	{
 		if (null != m_valueConstraint)
 		{
@@ -53,7 +53,7 @@ public final class AttributeUseImpl<A> extends LockableImpl implements SmAttribu
 		}
 	}
 
-	public SmValueConstraint<A> getValueConstraint()
+	public ValueConstraint<A> getValueConstraint()
 	{
 		return m_valueConstraint;
 	}
@@ -63,7 +63,7 @@ public final class AttributeUseImpl<A> extends LockableImpl implements SmAttribu
 		return m_isRequired;
 	}
 
-	public void setValueConstraint(final SmValueConstraint<A> valueConstraint)
+	public void setValueConstraint(final ValueConstraint<A> valueConstraint)
 	{
 		assertNotLocked();
 		m_valueConstraint = valueConstraint;

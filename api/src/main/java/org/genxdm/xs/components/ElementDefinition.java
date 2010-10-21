@@ -17,18 +17,18 @@ package org.genxdm.xs.components;
 
 import java.util.Set;
 
-import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
-import org.genxdm.xs.types.SmElementNodeType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.ElementNodeType;
+import org.genxdm.xs.types.Type;
 
 /**
  * The {@link ElementDefinition} interface models an element declaration, which could be global within the schema or
  * local to some other element. <br/>
  * An element declaration is an association between a name and a type.
  */
-public interface ElementDefinition<A> extends SmElementNodeType<A>, SchemaDataComponent<A>, ParticleTerm<A>
+public interface ElementDefinition<A> extends ElementNodeType<A>, SchemaDataComponent<A>, ParticleTerm<A>
 {
 	/**
 	 * {disallowed substitutions} property. <br/>
@@ -42,7 +42,7 @@ public interface ElementDefinition<A> extends SmElementNodeType<A>, SchemaDataCo
 	/**
 	 * Returns the {identity-constraints definitions} for this element.
 	 */
-	Iterable<SmIdentityConstraint<A>> getIdentityConstraints();
+	Iterable<IdentityConstraint<A>> getIdentityConstraints();
 
 	/**
 	 * The {scope} property.
@@ -75,7 +75,7 @@ public interface ElementDefinition<A> extends SmElementNodeType<A>, SchemaDataCo
 	/**
 	 * The {type definition} property.
 	 */
-	SmType<A> getType();
+	Type<A> getType();
 
 	/**
 	 * Determines (quickly) whether this element has {identity-constraints definitions}.

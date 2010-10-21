@@ -19,7 +19,7 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.genxdm.names.NameSource;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 // TODO: this test should not be in bridgetest.
 // at this point, it only tests NameSource.  Move it or lose it.
@@ -76,7 +76,7 @@ public abstract class NameBridgeTestBase<N>
 	{
 		final NameSource nameBridge = new NameSource();
 
-		for (final SmNativeType nativeType : SmNativeType.values())
+		for (final NativeType nativeType : NativeType.values())
 		{
 			switch (nativeType)
 			{

@@ -17,35 +17,35 @@ package org.genxdm.processor.w3c.xs;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.types.SmEmptyType;
-import org.genxdm.xs.types.SmNamespaceNodeType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmSequenceType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.EmptyType;
+import org.genxdm.xs.types.NamespaceNodeType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.SequenceType;
+import org.genxdm.xs.types.Type;
 
 /**
  * Keep private. This will go away.
  */
 interface SmSequenceTypeFactory<A>
 {
-	SmPrimeType<A> comment();
+	PrimeType<A> comment();
 
-	SmEmptyType<A> empty();
+	EmptyType<A> empty();
 
-	SmType<A> getTypeDefinition(QName dataType);
+	Type<A> getTypeDefinition(QName dataType);
 
-	SmType<A> getTypeDefinition(SmNativeType nativeType);
+	Type<A> getTypeDefinition(NativeType nativeType);
 
-	SmPrimeType<A> item();
+	PrimeType<A> item();
 
-	SmSequenceType<A> itemSet();
+	SequenceType<A> itemSet();
 
-	SmNamespaceNodeType<A> namespace();
+	NamespaceNodeType<A> namespace();
 
-	SmPrimeType<A> node();
+	PrimeType<A> node();
 
-	SmPrimeType<A> processingInstruction(String name);
+	PrimeType<A> processingInstruction(String name);
 
-	SmPrimeType<A> text();
+	PrimeType<A> text();
 }

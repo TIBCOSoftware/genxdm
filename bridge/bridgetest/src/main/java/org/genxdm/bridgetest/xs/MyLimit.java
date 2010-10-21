@@ -22,9 +22,9 @@ import org.genxdm.exceptions.IllegalNullArgumentException;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.exceptions.FacetException;
 import org.genxdm.xs.exceptions.FacetMinMaxException;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmLimit;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.Limit;
+import org.genxdm.xs.types.SimpleType;
 
 /**
  * This facet has been designed with generality in mind rather than efficiency.
@@ -32,13 +32,13 @@ import org.genxdm.xs.types.SmSimpleType;
  * @param <A>
  *            The atom handle.
  */
-public final class MyLimit<A> implements SmLimit<A>
+public final class MyLimit<A> implements Limit<A>
 {
-	private final SmFacetKind kind;
+	private final FacetKind kind;
 	private final A limitValue;
 	private final AtomBridge<A> atomBridge;
 
-	public MyLimit(final SmFacetKind kind, final A value, final AtomBridge<A> atomBridge)
+	public MyLimit(final FacetKind kind, final A value, final AtomBridge<A> atomBridge)
 	{
 		this.kind = IllegalNullArgumentException.check(kind, "kind");
 		this.limitValue = IllegalNullArgumentException.check(value, "value");
@@ -50,7 +50,7 @@ public final class MyLimit<A> implements SmLimit<A>
 		return limitValue;
 	}
 
-	public void validate(final A atom, final SmSimpleType<A> simpleType) throws FacetMinMaxException
+	public void validate(final A atom, final SimpleType<A> simpleType) throws FacetMinMaxException
 	{
 		IllegalNullArgumentException.check(atom, "atom");
 		IllegalNullArgumentException.check(simpleType, "simpleType");
@@ -92,7 +92,7 @@ public final class MyLimit<A> implements SmLimit<A>
 		}
 	}
 
-	public SmFacetKind getKind()
+	public FacetKind getKind()
 	{
 		return kind;
 	}
@@ -103,7 +103,7 @@ public final class MyLimit<A> implements SmLimit<A>
 		throw new AssertionError("TODO");
 	}
 
-	public void validate(final List<? extends A> actualValue, final SmSimpleType<A> simpleType) throws FacetException
+	public void validate(final List<? extends A> actualValue, final SimpleType<A> simpleType) throws FacetException
 	{
 		IllegalNullArgumentException.check(actualValue, "actualValue");
 		IllegalNullArgumentException.check(simpleType, "simpleType");

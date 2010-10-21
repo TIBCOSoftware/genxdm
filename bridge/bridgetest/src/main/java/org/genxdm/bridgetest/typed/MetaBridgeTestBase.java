@@ -24,8 +24,8 @@ import org.genxdm.names.NamespaceResolver;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.types.MetaBridge;
 import org.genxdm.typed.types.Quantifier;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSequenceType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SequenceType;
 
 public abstract class MetaBridgeTestBase<N, A> 
     extends GxTestBase<N>
@@ -42,7 +42,7 @@ public abstract class MetaBridgeTestBase<N, A>
 		final QName starFoo = new QName(ESCAPE, "foo");
 		final QName fooStar = new QName("http://www.foo.com", ESCAPE);
 		final QName star = new QName(ESCAPE, ESCAPE);
-		final SmSequenceType<A> stringType = metaBridge.getType(SmNativeType.STRING);
+		final SequenceType<A> stringType = metaBridge.getType(NativeType.STRING);
 
 		assertToString("empty-sequence()", metaBridge.emptyType(), pcx);
 
@@ -91,17 +91,17 @@ public abstract class MetaBridgeTestBase<N, A>
 		assertToString("empty-sequence()", metaBridge.multiply(metaBridge.itemType(), Quantifier.EMPTY), pcx);
 		assertToString("none", metaBridge.multiply(metaBridge.itemType(), Quantifier.NONE), pcx);
 
-		final SmSequenceType<A> documentType = metaBridge.documentType(null);
-		final SmSequenceType<A> elementType = metaBridge.elementType(null, null, false);
+		final SequenceType<A> documentType = metaBridge.documentType(null);
+		final SequenceType<A> elementType = metaBridge.elementType(null, null, false);
 
-		// final SmSequenceType<A> ed = metaBridge.choice(elementType, documentType);
+		// final SequenceType<A> ed = metaBridge.choice(elementType, documentType);
 
 		assertToString("element(*)", elementType, pcx);
 		assertToString("element(*)", metaBridge.choice(elementType, elementType), pcx);
 		assertToString("element(*) | document-node()", metaBridge.choice(elementType, documentType), pcx);
 	}
 
-	public void assertToString(final String expression, final SmSequenceType<A> type, final TypedContext<N, A> pcx)
+	public void assertToString(final String expression, final SequenceType<A> type, final TypedContext<N, A> pcx)
 	{
 		final MetaBridge<A> metaBridge = pcx.getMetaBridge();
 
@@ -132,7 +132,7 @@ public abstract class MetaBridgeTestBase<N, A>
 
 		final MetaBridge<A> metaBridge = pcx.getMetaBridge();
 
-		final SmSequenceType<A> error = metaBridge.noneType();
+		final SequenceType<A> error = metaBridge.noneType();
 		assertNotNull(error);
 		assertNotNull(metaBridge.prime(error));
 		assertEquals(Quantifier.EXACTLY_ONE, metaBridge.quantifier(error));
@@ -147,7 +147,7 @@ public abstract class MetaBridgeTestBase<N, A>
 
 		final MetaBridge<A> metaBridge = pcx.getMetaBridge();
 
-		final SmSequenceType<A> empty = metaBridge.emptyType();
+		final SequenceType<A> empty = metaBridge.emptyType();
 		assertNotNull(empty);
 		assertNotNull(metaBridge.prime(empty));
 		assertEquals(Quantifier.OPTIONAL, metaBridge.quantifier(empty));
@@ -162,11 +162,11 @@ public abstract class MetaBridgeTestBase<N, A>
 
 		final MetaBridge<A> metaBridge = pcx.getMetaBridge();
 
-		final SmSequenceType<A> anyAtomicType = metaBridge.getType(SmNativeType.ANY_ATOMIC_TYPE);
+		final SequenceType<A> anyAtomicType = metaBridge.getType(NativeType.ANY_ATOMIC_TYPE);
 		assertNotNull(anyAtomicType);
-		final SmSequenceType<A> doubleType = metaBridge.getType(SmNativeType.DOUBLE);
+		final SequenceType<A> doubleType = metaBridge.getType(NativeType.DOUBLE);
 		assertNotNull(doubleType);
-		final SmSequenceType<A> floatType = metaBridge.getType(SmNativeType.FLOAT);
+		final SequenceType<A> floatType = metaBridge.getType(NativeType.FLOAT);
 		assertNotNull(floatType);
 
 		assertTrue(metaBridge.subtype(anyAtomicType, anyAtomicType));
@@ -188,13 +188,13 @@ public abstract class MetaBridgeTestBase<N, A>
 
 		final MetaBridge<A> metaBridge = pcx.getMetaBridge();
 
-		final SmSequenceType<A> attributeType = metaBridge.attributeType(null, null);
-		final SmSequenceType<A> commentType = metaBridge.commentType();
-		final SmSequenceType<A> documentType = metaBridge.documentType(null);
-		final SmSequenceType<A> elementType = metaBridge.elementType(null, null, true);
-		final SmSequenceType<A> namespaceType = metaBridge.namespaceType();
-		final SmSequenceType<A> textType = metaBridge.textType();
-		final SmSequenceType<A> piType = metaBridge.processingInstructionType(null);
+		final SequenceType<A> attributeType = metaBridge.attributeType(null, null);
+		final SequenceType<A> commentType = metaBridge.commentType();
+		final SequenceType<A> documentType = metaBridge.documentType(null);
+		final SequenceType<A> elementType = metaBridge.elementType(null, null, true);
+		final SequenceType<A> namespaceType = metaBridge.namespaceType();
+		final SequenceType<A> textType = metaBridge.textType();
+		final SequenceType<A> piType = metaBridge.processingInstructionType(null);
 
 		assertSubtypePositive(attributeType, attributeType, metaBridge);
 		assertSubtypeNegative(attributeType, commentType, metaBridge);
@@ -275,7 +275,7 @@ public abstract class MetaBridgeTestBase<N, A>
 		assertSubtypePositive(textType, metaBridge.choice(commentType, textType), metaBridge);
 		assertSubtypePositive(textType, metaBridge.choice(textType, textType), metaBridge);
 
-		final SmSequenceType<A> nodeType = metaBridge.nodeType();
+		final SequenceType<A> nodeType = metaBridge.nodeType();
 
 		assertSubtypePositive(attributeType, nodeType, metaBridge);
 		assertSubtypePositive(commentType, nodeType, metaBridge);
@@ -295,7 +295,7 @@ public abstract class MetaBridgeTestBase<N, A>
 
 		assertSubtypePositive(nodeType, nodeType, metaBridge);
 
-		final SmSequenceType<A> itemType = metaBridge.itemType();
+		final SequenceType<A> itemType = metaBridge.itemType();
 
 		assertSubtypePositive(attributeType, itemType, metaBridge);
 		assertSubtypePositive(commentType, itemType, metaBridge);
@@ -326,9 +326,9 @@ public abstract class MetaBridgeTestBase<N, A>
 
 		final MetaBridge<A> metaBridge = pcx.getMetaBridge();
 
-		final SmSequenceType<A> piType = metaBridge.processingInstructionType(null);
-		final SmSequenceType<A> piTypeA = metaBridge.processingInstructionType("a");
-		final SmSequenceType<A> piTypeB = metaBridge.processingInstructionType("b");
+		final SequenceType<A> piType = metaBridge.processingInstructionType(null);
+		final SequenceType<A> piTypeA = metaBridge.processingInstructionType("a");
+		final SequenceType<A> piTypeB = metaBridge.processingInstructionType("b");
 
 		assertSubtypePositive(piType, piType, metaBridge);
 		assertSubtypeNegative(piType, piTypeA, metaBridge);
@@ -359,13 +359,13 @@ public abstract class MetaBridgeTestBase<N, A>
 		doQuantifier(metaBridge.textType(), metaBridge);
 	}
 
-	public void doQuantifier(final SmSequenceType<A> nodeEins, final MetaBridge<A> metaBridge)
+	public void doQuantifier(final SequenceType<A> nodeEins, final MetaBridge<A> metaBridge)
 	{
-		final SmSequenceType<A> nodeNone = metaBridge.multiply(nodeEins, Quantifier.NONE);
-		final SmSequenceType<A> nodeZero = metaBridge.multiply(nodeEins, Quantifier.EMPTY);
-		final SmSequenceType<A> nodeQmrk = metaBridge.optional(nodeEins);
-		final SmSequenceType<A> nodePlus = metaBridge.oneOrMore(nodeEins);
-		final SmSequenceType<A> nodeStar = metaBridge.zeroOrMore(nodeEins);
+		final SequenceType<A> nodeNone = metaBridge.multiply(nodeEins, Quantifier.NONE);
+		final SequenceType<A> nodeZero = metaBridge.multiply(nodeEins, Quantifier.EMPTY);
+		final SequenceType<A> nodeQmrk = metaBridge.optional(nodeEins);
+		final SequenceType<A> nodePlus = metaBridge.oneOrMore(nodeEins);
+		final SequenceType<A> nodeStar = metaBridge.zeroOrMore(nodeEins);
 
 		assertEquals(Quantifier.NONE, metaBridge.quantifier(nodeNone));
 		assertEquals(Quantifier.EXACTLY_ONE, metaBridge.quantifier(nodeEins));
@@ -393,7 +393,7 @@ public abstract class MetaBridgeTestBase<N, A>
 		assertNotNull(metaBridge);
 
 		// Make sure they are all present and correct.
-		for (final SmNativeType builtInType : SmNativeType.values())
+		for (final NativeType builtInType : NativeType.values())
 		{
 			switch (builtInType)
 			{
@@ -409,19 +409,19 @@ public abstract class MetaBridgeTestBase<N, A>
 				break;
 				default:
 				{
-					final SmSequenceType<A> atomicType = metaBridge.getType(builtInType);
+					final SequenceType<A> atomicType = metaBridge.getType(builtInType);
 					assertNotNull(builtInType.name(), atomicType);
 				}
 			}
 		}
 
-		final SmSequenceType<A> stringType = metaBridge.getType(SmNativeType.STRING);
-		// final SmSequenceType<A> doubleType = metaBridge.getType(BuiltInType.DOUBLE);
-		// final SmSequenceType<A> floatType = metaBridge.getType(BuiltInType.FLOAT);
-		// final SmSequenceType<A> decimalType = metaBridge.getType(BuiltInType.DECIMAL);
-		final SmSequenceType<A> integerType = metaBridge.getType(SmNativeType.INTEGER);
-		final SmSequenceType<A> dateType = metaBridge.getType(SmNativeType.DATE);
-		final SmSequenceType<A> choiceType = metaBridge.choice(integerType, dateType);
+		final SequenceType<A> stringType = metaBridge.getType(NativeType.STRING);
+		// final SequenceType<A> doubleType = metaBridge.getType(BuiltInType.DOUBLE);
+		// final SequenceType<A> floatType = metaBridge.getType(BuiltInType.FLOAT);
+		// final SequenceType<A> decimalType = metaBridge.getType(BuiltInType.DECIMAL);
+		final SequenceType<A> integerType = metaBridge.getType(NativeType.INTEGER);
+		final SequenceType<A> dateType = metaBridge.getType(NativeType.DATE);
+		final SequenceType<A> choiceType = metaBridge.choice(integerType, dateType);
 
 		assertTrue(metaBridge.subtype(stringType, stringType));
 		assertFalse(metaBridge.subtype(choiceType, integerType));
@@ -442,19 +442,19 @@ public abstract class MetaBridgeTestBase<N, A>
 
 		final MetaBridge<A> metaBridge = pcx.getMetaBridge();
 
-		final SmSequenceType<A> attributeType = metaBridge.attributeType(null, null);
-		final SmSequenceType<A> commentType = metaBridge.commentType();
-		final SmSequenceType<A> documentType = metaBridge.documentType(null);
-		final SmSequenceType<A> elementType = metaBridge.elementType(null, null, true);
-		final SmSequenceType<A> namespaceType = metaBridge.namespaceType();
-		final SmSequenceType<A> textType = metaBridge.textType();
-		final SmSequenceType<A> piType = metaBridge.processingInstructionType(null);
+		final SequenceType<A> attributeType = metaBridge.attributeType(null, null);
+		final SequenceType<A> commentType = metaBridge.commentType();
+		final SequenceType<A> documentType = metaBridge.documentType(null);
+		final SequenceType<A> elementType = metaBridge.elementType(null, null, true);
+		final SequenceType<A> namespaceType = metaBridge.namespaceType();
+		final SequenceType<A> textType = metaBridge.textType();
+		final SequenceType<A> piType = metaBridge.processingInstructionType(null);
 
-		final SmSequenceType<A> stringType = metaBridge.getType(SmNativeType.STRING);
+		final SequenceType<A> stringType = metaBridge.getType(NativeType.STRING);
 
-		final SmSequenceType<A> nodeType = metaBridge.nodeType();
+		final SequenceType<A> nodeType = metaBridge.nodeType();
 
-		final SmSequenceType<A> itemType = metaBridge.itemType();
+		final SequenceType<A> itemType = metaBridge.itemType();
 
 		assertFalse(metaBridge.subtype(stringType, attributeType));
 		assertFalse(metaBridge.subtype(attributeType, stringType));
@@ -477,7 +477,7 @@ public abstract class MetaBridgeTestBase<N, A>
 		assertTrue(metaBridge.subtype(stringType, itemType));
 		assertFalse(metaBridge.subtype(itemType, stringType));
 
-		final SmSequenceType<A> anyAtomicType = metaBridge.getType(SmNativeType.ANY_ATOMIC_TYPE);
+		final SequenceType<A> anyAtomicType = metaBridge.getType(NativeType.ANY_ATOMIC_TYPE);
 
 		assertFalse(metaBridge.subtype(anyAtomicType, attributeType));
 		assertFalse(metaBridge.subtype(attributeType, anyAtomicType));
@@ -505,7 +505,7 @@ public abstract class MetaBridgeTestBase<N, A>
 	 * Asserts that the lhs type is a subtype of the rhs type. <br/>
 	 * Using indirection here in case the API signature changes.
 	 */
-	private void assertSubtypePositive(final SmSequenceType<A> lhsType, final SmSequenceType<A> rhsType, final MetaBridge<A> metaBridge)
+	private void assertSubtypePositive(final SequenceType<A> lhsType, final SequenceType<A> rhsType, final MetaBridge<A> metaBridge)
 	{
 		final NameSource nameBridge = metaBridge.getNameBridge();
 		final NamespaceResolver mappings = null;
@@ -523,7 +523,7 @@ public abstract class MetaBridgeTestBase<N, A>
 	 * Asserts that the lhs type is not a subtype of the rhs type. <br/>
 	 * Using indirection here in case the API signature changes.
 	 */
-	private void assertSubtypeNegative(final SmSequenceType<A> lhsType, final SmSequenceType<A> rhsType, final MetaBridge<A> metaBridge)
+	private void assertSubtypeNegative(final SequenceType<A> lhsType, final SequenceType<A> rhsType, final MetaBridge<A> metaBridge)
 	{
 		assertFalse(metaBridge.subtype(lhsType, rhsType));
 	}

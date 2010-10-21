@@ -22,10 +22,10 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.ElementDefinition;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SimpleType;
 
 /**
  * This manager has overall resposibility for checking identity constraints. <br/>
@@ -68,7 +68,7 @@ final class IdentityConstraintManager<A>
 		{
 			// Handle xs:unique, xs:key and xs:keyref in order so that
 			// xs:keyref scopes can be fixed up to xs:key scopes.
-			for (final SmIdentityConstraint<A> constraint : declaration.getIdentityConstraints())
+			for (final IdentityConstraint<A> constraint : declaration.getIdentityConstraints())
 			{
 				switch (constraint.getCategory())
 				{
@@ -94,7 +94,7 @@ final class IdentityConstraintManager<A>
 					}
 				}
 			}
-			for (final SmIdentityConstraint<A> constraint : declaration.getIdentityConstraints())
+			for (final IdentityConstraint<A> constraint : declaration.getIdentityConstraints())
 			{
 				switch (constraint.getCategory())
 				{
@@ -128,7 +128,7 @@ final class IdentityConstraintManager<A>
 		}
 	}
 
-	public void attribute(final List<? extends A> actualValue, final SmSimpleType<A> attributeType, final ValidationItem<A> elementItem, final QName attributeName, final int attributeIndex, final AtomBridge<A> atomBridge) throws AbortException
+	public void attribute(final List<? extends A> actualValue, final SimpleType<A> attributeType, final ValidationItem<A> elementItem, final QName attributeName, final int attributeIndex, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		if (m_totalScopes > 0)
 		{
@@ -142,7 +142,7 @@ final class IdentityConstraintManager<A>
 		}
 	}
 
-	public void text(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final ValidationItem<A> elementItem, final int textIndex, final AtomBridge<A> atomBridge) throws AbortException
+	public void text(final List<? extends A> actualValue, final SimpleType<A> actualType, final ValidationItem<A> elementItem, final int textIndex, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		if (m_totalScopes > 0)
 		{

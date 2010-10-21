@@ -30,7 +30,7 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
 import org.genxdm.typed.types.Emulation;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * TODO: This should be expanded for all native types.
@@ -59,11 +59,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A nativeAtom = atomBridge.createBoolean(value);
-		assertEquals(SmNativeType.BOOLEAN, atomBridge.getNativeType(nativeAtom));
+		assertEquals(NativeType.BOOLEAN, atomBridge.getNativeType(nativeAtom));
 
 		final A derivedAtom = atomBridge.makeForeignAtom(new QName("derived"), nativeAtom);
 
-		assertEquals(SmNativeType.BOOLEAN, atomBridge.getNativeType(derivedAtom));
+		assertEquals(NativeType.BOOLEAN, atomBridge.getNativeType(derivedAtom));
 		assertEquals(value, atomBridge.getBoolean(derivedAtom));
 
 		assertEquals(value, atomBridge.getBoolean(derivedAtom));
@@ -75,7 +75,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(derivedAtom, SmNativeType.BOOLEAN, castingContext());
+			final A actual = atomBridge.castAs(derivedAtom, NativeType.BOOLEAN, castingContext());
 			assertEquals(nativeAtom.getClass() + ".equals(" + actual.getClass() + ")", nativeAtom, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -89,11 +89,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A number = atomBridge.createByte(value);
-		assertEquals(SmNativeType.BYTE, atomBridge.getNativeType(number));
+		assertEquals(NativeType.BYTE, atomBridge.getNativeType(number));
 
 		final A shoeSize = atomBridge.makeForeignAtom(new QName("shoe-size"), number);
 
-		assertEquals(SmNativeType.BYTE, atomBridge.getNativeType(shoeSize));
+		assertEquals(NativeType.BYTE, atomBridge.getNativeType(shoeSize));
 
 		assertEquals(value, atomBridge.getByte(shoeSize));
 
@@ -104,7 +104,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(shoeSize, SmNativeType.BYTE, castingContext());
+			final A actual = atomBridge.castAs(shoeSize, NativeType.BYTE, castingContext());
 			assertEquals(number.getClass() + ".equals(" + actual.getClass() + ")", number, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -118,11 +118,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A nativeAtom = atomBridge.createDateTime(2009, 10, 18, 8, 3, 19, 0, BigDecimal.ZERO, 0);
-		assertEquals(SmNativeType.DATETIME, atomBridge.getNativeType(nativeAtom));
+		assertEquals(NativeType.DATETIME, atomBridge.getNativeType(nativeAtom));
 
 		final A derivedAtom = atomBridge.makeForeignAtom(new QName("derived"), nativeAtom);
 
-		assertEquals(SmNativeType.DATETIME, atomBridge.getNativeType(derivedAtom));
+		assertEquals(NativeType.DATETIME, atomBridge.getNativeType(derivedAtom));
 		assertEquals("2009-10-18T08:03:19Z", atomBridge.getC14NForm(derivedAtom));
 		assertEquals(atomBridge.getYear(nativeAtom), atomBridge.getYear(derivedAtom));
 		assertEquals(atomBridge.getMonth(nativeAtom), atomBridge.getMonth(derivedAtom));
@@ -141,7 +141,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(derivedAtom, SmNativeType.DATETIME, castingContext());
+			final A actual = atomBridge.castAs(derivedAtom, NativeType.DATETIME, castingContext());
 			assertEquals(nativeAtom.getClass() + ".equals(" + actual.getClass() + ")", nativeAtom, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -155,11 +155,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A number = atomBridge.createDecimal(value);
-		assertEquals(SmNativeType.DECIMAL, atomBridge.getNativeType(number));
+		assertEquals(NativeType.DECIMAL, atomBridge.getNativeType(number));
 
 		final A shoeSize = atomBridge.makeForeignAtom(new QName("shoe-size"), number);
 
-		assertEquals(SmNativeType.DECIMAL, atomBridge.getNativeType(shoeSize));
+		assertEquals(NativeType.DECIMAL, atomBridge.getNativeType(shoeSize));
 
 		assertEquals(value, atomBridge.getDecimal(shoeSize));
 
@@ -175,7 +175,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(shoeSize, SmNativeType.DECIMAL, castingContext());
+			final A actual = atomBridge.castAs(shoeSize, NativeType.DECIMAL, castingContext());
 			assertEquals(number.getClass() + ".equals(" + actual.getClass() + ")", number, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -189,11 +189,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A number = atomBridge.createDouble(value);
-		assertEquals(SmNativeType.DOUBLE, atomBridge.getNativeType(number));
+		assertEquals(NativeType.DOUBLE, atomBridge.getNativeType(number));
 
 		final A shoeSize = atomBridge.makeForeignAtom(new QName("shoe-size"), number);
 
-		assertEquals(SmNativeType.DOUBLE, atomBridge.getNativeType(shoeSize));
+		assertEquals(NativeType.DOUBLE, atomBridge.getNativeType(shoeSize));
 
 		assertEquals(value, atomBridge.getDouble(shoeSize));
 
@@ -209,7 +209,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(shoeSize, SmNativeType.DOUBLE, castingContext());
+			final A actual = atomBridge.castAs(shoeSize, NativeType.DOUBLE, castingContext());
 			assertEquals(number.getClass() + ".equals(" + actual.getClass() + ")", number, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -223,11 +223,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A nativeAtom = atomBridge.createDuration(3, BigDecimal.valueOf(13));
-		assertEquals(SmNativeType.DURATION, atomBridge.getNativeType(nativeAtom));
+		assertEquals(NativeType.DURATION, atomBridge.getNativeType(nativeAtom));
 
 		final A derivedAtom = atomBridge.makeForeignAtom(new QName("derived"), nativeAtom);
 
-		assertEquals(SmNativeType.DURATION, atomBridge.getNativeType(derivedAtom));
+		assertEquals(NativeType.DURATION, atomBridge.getNativeType(derivedAtom));
 
 		assertEquals(atomBridge.getDurationTotalMonths(nativeAtom), atomBridge.getDurationTotalMonths(derivedAtom));
 		assertEquals(atomBridge.getDurationTotalSeconds(nativeAtom), atomBridge.getDurationTotalSeconds(derivedAtom));
@@ -244,7 +244,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(derivedAtom, SmNativeType.DURATION, castingContext());
+			final A actual = atomBridge.castAs(derivedAtom, NativeType.DURATION, castingContext());
 			assertEquals(nativeAtom.getClass() + ".equals(" + actual.getClass() + ")", nativeAtom, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -258,11 +258,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A number = atomBridge.createFloat(value);
-		assertEquals(SmNativeType.FLOAT, atomBridge.getNativeType(number));
+		assertEquals(NativeType.FLOAT, atomBridge.getNativeType(number));
 
 		final A shoeSize = atomBridge.makeForeignAtom(new QName("shoe-size"), number);
 
-		assertEquals(SmNativeType.FLOAT, atomBridge.getNativeType(shoeSize));
+		assertEquals(NativeType.FLOAT, atomBridge.getNativeType(shoeSize));
 
 		assertEquals(value, atomBridge.getFloat(shoeSize));
 
@@ -278,7 +278,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(shoeSize, SmNativeType.FLOAT, castingContext());
+			final A actual = atomBridge.castAs(shoeSize, NativeType.FLOAT, castingContext());
 			assertEquals(number.getClass() + ".equals(" + actual.getClass() + ")", number, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -292,11 +292,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A number = atomBridge.createInt(10);
-		assertEquals(SmNativeType.INT, atomBridge.getNativeType(number));
+		assertEquals(NativeType.INT, atomBridge.getNativeType(number));
 
 		final A shoeSize = atomBridge.makeForeignAtom(new QName("shoe-size"), number);
 
-		assertEquals(SmNativeType.INT, atomBridge.getNativeType(shoeSize));
+		assertEquals(NativeType.INT, atomBridge.getNativeType(shoeSize));
 
 		final int x = atomBridge.getInt(shoeSize);
 
@@ -309,7 +309,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(shoeSize, SmNativeType.INT, castingContext());
+			final A actual = atomBridge.castAs(shoeSize, NativeType.INT, castingContext());
 			assertEquals(number.getClass() + ".equals(" + actual.getClass() + ")", number, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -323,11 +323,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A number = atomBridge.createInteger(10);
-		assertEquals(SmNativeType.INTEGER, atomBridge.getNativeType(number));
+		assertEquals(NativeType.INTEGER, atomBridge.getNativeType(number));
 
 		final A shoeSize = atomBridge.makeForeignAtom(new QName("shoe-size"), number);
 
-		assertEquals(SmNativeType.INTEGER, atomBridge.getNativeType(shoeSize));
+		assertEquals(NativeType.INTEGER, atomBridge.getNativeType(shoeSize));
 		assertEquals("10", atomBridge.getC14NForm(shoeSize));
 
 		final BigInteger x = atomBridge.getInteger(shoeSize);
@@ -341,7 +341,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(shoeSize, SmNativeType.INTEGER, castingContext());
+			final A actual = atomBridge.castAs(shoeSize, NativeType.INTEGER, castingContext());
 			assertEquals(number.getClass() + ".equals(" + actual.getClass() + ")", number, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -350,7 +350,7 @@ public abstract class ForeignAtomTestBase<N, A>
 		}
 	}
 
-	public void checkIntegerDerived(final BigInteger value, final SmNativeType nativeType, final TypedContext<N, A> pcx)
+	public void checkIntegerDerived(final BigInteger value, final NativeType nativeType, final TypedContext<N, A> pcx)
 	{
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
@@ -386,11 +386,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A number = atomBridge.createLong(10);
-		assertEquals(SmNativeType.LONG, atomBridge.getNativeType(number));
+		assertEquals(NativeType.LONG, atomBridge.getNativeType(number));
 
 		final A shoeSize = atomBridge.makeForeignAtom(new QName("shoe-size"), number);
 
-		assertEquals(SmNativeType.LONG, atomBridge.getNativeType(shoeSize));
+		assertEquals(NativeType.LONG, atomBridge.getNativeType(shoeSize));
 
 		final long x = atomBridge.getLong(shoeSize);
 
@@ -403,7 +403,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(shoeSize, SmNativeType.LONG, castingContext());
+			final A actual = atomBridge.castAs(shoeSize, NativeType.LONG, castingContext());
 			assertEquals(number.getClass() + ".equals(" + actual.getClass() + ")", number, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -417,11 +417,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A nativeAtom = atomBridge.createQName("http://www.x.com", "foo", "x");
-		assertEquals(SmNativeType.QNAME, atomBridge.getNativeType(nativeAtom));
+		assertEquals(NativeType.QNAME, atomBridge.getNativeType(nativeAtom));
 
 		final A derivedAtom = atomBridge.makeForeignAtom(new QName("derived"), nativeAtom);
 
-		assertEquals(SmNativeType.QNAME, atomBridge.getNativeType(derivedAtom));
+		assertEquals(NativeType.QNAME, atomBridge.getNativeType(derivedAtom));
 		assertEquals("x:foo", atomBridge.getC14NForm(derivedAtom));
 
 		assertEquals(atomBridge.getNamespaceFromQName(nativeAtom), atomBridge.getNamespaceFromQName(derivedAtom));
@@ -440,7 +440,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(derivedAtom, SmNativeType.QNAME, castingContext());
+			final A actual = atomBridge.castAs(derivedAtom, NativeType.QNAME, castingContext());
 			assertEquals(nativeAtom.getClass() + ".equals(" + actual.getClass() + ")", nativeAtom, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -454,11 +454,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A nativeAtom = atomBridge.createNOTATION("http://www.x.com", "foo", "x");
-		assertEquals(SmNativeType.NOTATION, atomBridge.getNativeType(nativeAtom));
+		assertEquals(NativeType.NOTATION, atomBridge.getNativeType(nativeAtom));
 
 		final A derivedAtom = atomBridge.makeForeignAtom(new QName("derived"), nativeAtom);
 
-		assertEquals(SmNativeType.NOTATION, atomBridge.getNativeType(derivedAtom));
+		assertEquals(NativeType.NOTATION, atomBridge.getNativeType(derivedAtom));
 		assertEquals("x:foo", atomBridge.getC14NForm(derivedAtom));
 
 		assertEquals(atomBridge.getNotation(nativeAtom), atomBridge.getNotation(derivedAtom));
@@ -472,11 +472,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A number = atomBridge.createShort(value);
-		assertEquals(SmNativeType.SHORT, atomBridge.getNativeType(number));
+		assertEquals(NativeType.SHORT, atomBridge.getNativeType(number));
 
 		final A shoeSize = atomBridge.makeForeignAtom(new QName("shoe-size"), number);
 
-		assertEquals(SmNativeType.SHORT, atomBridge.getNativeType(shoeSize));
+		assertEquals(NativeType.SHORT, atomBridge.getNativeType(shoeSize));
 
 		assertEquals(value, atomBridge.getShort(shoeSize));
 
@@ -488,7 +488,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(shoeSize, SmNativeType.SHORT, castingContext());
+			final A actual = atomBridge.castAs(shoeSize, NativeType.SHORT, castingContext());
 			assertEquals(number.getClass() + ".equals(" + actual.getClass() + ")", number, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -502,11 +502,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A nativeAtom = atomBridge.createHexBinary("Hello".getBytes());
-		assertEquals(SmNativeType.HEX_BINARY, atomBridge.getNativeType(nativeAtom));
+		assertEquals(NativeType.HEX_BINARY, atomBridge.getNativeType(nativeAtom));
 
 		final A derivedAtom = atomBridge.makeForeignAtom(new QName("derived"), nativeAtom);
 
-		assertEquals(SmNativeType.HEX_BINARY, atomBridge.getNativeType(derivedAtom));
+		assertEquals(NativeType.HEX_BINARY, atomBridge.getNativeType(derivedAtom));
 
 		assertEquals(atomBridge.getHexBinary(nativeAtom), atomBridge.getHexBinary(derivedAtom));
 		assertEquals(nativeAtom, atomBridge.upCast(derivedAtom));
@@ -517,7 +517,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(derivedAtom, SmNativeType.HEX_BINARY, castingContext());
+			final A actual = atomBridge.castAs(derivedAtom, NativeType.HEX_BINARY, castingContext());
 			assertEquals(nativeAtom.getClass() + ".equals(" + actual.getClass() + ")", nativeAtom, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -531,11 +531,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A nativeAtom = atomBridge.createBase64Binary("Hello".getBytes());
-		assertEquals(SmNativeType.BASE64_BINARY, atomBridge.getNativeType(nativeAtom));
+		assertEquals(NativeType.BASE64_BINARY, atomBridge.getNativeType(nativeAtom));
 
 		final A derivedAtom = atomBridge.makeForeignAtom(new QName("derived"), nativeAtom);
 
-		assertEquals(SmNativeType.BASE64_BINARY, atomBridge.getNativeType(derivedAtom));
+		assertEquals(NativeType.BASE64_BINARY, atomBridge.getNativeType(derivedAtom));
 
 		assertEquals(atomBridge.getBase64Binary(nativeAtom), atomBridge.getBase64Binary(derivedAtom));
 		assertEquals(nativeAtom, atomBridge.upCast(derivedAtom));
@@ -546,7 +546,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(derivedAtom, SmNativeType.BASE64_BINARY, castingContext());
+			final A actual = atomBridge.castAs(derivedAtom, NativeType.BASE64_BINARY, castingContext());
 			assertEquals(nativeAtom.getClass() + ".equals(" + actual.getClass() + ")", nativeAtom, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -559,12 +559,12 @@ public abstract class ForeignAtomTestBase<N, A>
 	{
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		final A number = atomBridge.createIntegerDerived(5, SmNativeType.UNSIGNED_SHORT);
-		assertEquals(SmNativeType.UNSIGNED_SHORT, atomBridge.getNativeType(number));
+		final A number = atomBridge.createIntegerDerived(5, NativeType.UNSIGNED_SHORT);
+		assertEquals(NativeType.UNSIGNED_SHORT, atomBridge.getNativeType(number));
 
 		final A shoeSize = atomBridge.makeForeignAtom(new QName("shoe-size"), number);
 
-		assertEquals(SmNativeType.UNSIGNED_SHORT, atomBridge.getNativeType(shoeSize));
+		assertEquals(NativeType.UNSIGNED_SHORT, atomBridge.getNativeType(shoeSize));
 
 		assertEquals(5, atomBridge.getUnsignedShort(shoeSize));
 
@@ -576,7 +576,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(shoeSize, SmNativeType.UNSIGNED_SHORT, castingContext());
+			final A actual = atomBridge.castAs(shoeSize, NativeType.UNSIGNED_SHORT, castingContext());
 			assertEquals(number.getClass() + ".equals(" + actual.getClass() + ")", number, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -589,12 +589,12 @@ public abstract class ForeignAtomTestBase<N, A>
 	{
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		final A number = atomBridge.createIntegerDerived(5, SmNativeType.UNSIGNED_INT);
-		assertEquals(SmNativeType.UNSIGNED_INT, atomBridge.getNativeType(number));
+		final A number = atomBridge.createIntegerDerived(5, NativeType.UNSIGNED_INT);
+		assertEquals(NativeType.UNSIGNED_INT, atomBridge.getNativeType(number));
 
 		final A shoeSize = atomBridge.makeForeignAtom(new QName("shoe-size"), number);
 
-		assertEquals(SmNativeType.UNSIGNED_INT, atomBridge.getNativeType(shoeSize));
+		assertEquals(NativeType.UNSIGNED_INT, atomBridge.getNativeType(shoeSize));
 
 		assertEquals(5, atomBridge.getUnsignedInt(shoeSize));
 
@@ -606,7 +606,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(shoeSize, SmNativeType.UNSIGNED_INT, castingContext());
+			final A actual = atomBridge.castAs(shoeSize, NativeType.UNSIGNED_INT, castingContext());
 			assertEquals(number.getClass() + ".equals(" + actual.getClass() + ")", number, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -619,12 +619,12 @@ public abstract class ForeignAtomTestBase<N, A>
 	{
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
-		final A number = atomBridge.createIntegerDerived(5, SmNativeType.UNSIGNED_BYTE);
-		assertEquals(SmNativeType.UNSIGNED_BYTE, atomBridge.getNativeType(number));
+		final A number = atomBridge.createIntegerDerived(5, NativeType.UNSIGNED_BYTE);
+		assertEquals(NativeType.UNSIGNED_BYTE, atomBridge.getNativeType(number));
 
 		final A shoeSize = atomBridge.makeForeignAtom(new QName("shoe-size"), number);
 
-		assertEquals(SmNativeType.UNSIGNED_BYTE, atomBridge.getNativeType(shoeSize));
+		assertEquals(NativeType.UNSIGNED_BYTE, atomBridge.getNativeType(shoeSize));
 
 		assertEquals(5, atomBridge.getUnsignedByte(shoeSize));
 
@@ -636,7 +636,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(shoeSize, SmNativeType.UNSIGNED_BYTE, castingContext());
+			final A actual = atomBridge.castAs(shoeSize, NativeType.UNSIGNED_BYTE, castingContext());
 			assertEquals(number.getClass() + ".equals(" + actual.getClass() + ")", number, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -650,11 +650,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A nativeAtom = atomBridge.createString(value);
-		assertEquals(SmNativeType.STRING, atomBridge.getNativeType(nativeAtom));
+		assertEquals(NativeType.STRING, atomBridge.getNativeType(nativeAtom));
 
 		final A derivedAtom = atomBridge.makeForeignAtom(new QName("derived"), nativeAtom);
 
-		assertEquals(SmNativeType.STRING, atomBridge.getNativeType(derivedAtom));
+		assertEquals(NativeType.STRING, atomBridge.getNativeType(derivedAtom));
 		assertEquals(value, atomBridge.getString(derivedAtom));
 		assertEquals(value, atomBridge.getC14NForm(derivedAtom));
 		assertEquals(value, atomBridge.getXPath10Form(derivedAtom));
@@ -669,7 +669,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(derivedAtom, SmNativeType.STRING, castingContext());
+			final A actual = atomBridge.castAs(derivedAtom, NativeType.STRING, castingContext());
 			assertEquals(nativeAtom.getClass() + ".equals(" + actual.getClass() + ")", nativeAtom, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -683,11 +683,11 @@ public abstract class ForeignAtomTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 
 		final A nativeAtom = atomBridge.createURI(value);
-		assertEquals(SmNativeType.ANY_URI, atomBridge.getNativeType(nativeAtom));
+		assertEquals(NativeType.ANY_URI, atomBridge.getNativeType(nativeAtom));
 
 		final A derivedAtom = atomBridge.makeForeignAtom(new QName("derived"), nativeAtom);
 
-		assertEquals(SmNativeType.ANY_URI, atomBridge.getNativeType(derivedAtom));
+		assertEquals(NativeType.ANY_URI, atomBridge.getNativeType(derivedAtom));
 		assertEquals(value, atomBridge.getURI(derivedAtom));
 
 		assertEquals(atomBridge.createURI(value), atomBridge.upCast(derivedAtom));
@@ -697,7 +697,7 @@ public abstract class ForeignAtomTestBase<N, A>
 
 		try
 		{
-			final A actual = atomBridge.castAs(derivedAtom, SmNativeType.ANY_URI, castingContext());
+			final A actual = atomBridge.castAs(derivedAtom, NativeType.ANY_URI, castingContext());
 			assertEquals(nativeAtom.getClass() + ".equals(" + actual.getClass() + ")", nativeAtom, actual);
 		}
 		catch (final GxmlAtomCastException e)
@@ -743,14 +743,14 @@ public abstract class ForeignAtomTestBase<N, A>
 		checkDecimal(BigDecimal.ONE, pcx);
 		checkDecimal(BigDecimal.TEN, pcx);
 
-		checkIntegerDerived(BigInteger.valueOf(-1), SmNativeType.NON_POSITIVE_INTEGER, pcx);
-		checkIntegerDerived(BigInteger.valueOf(-1), SmNativeType.NEGATIVE_INTEGER, pcx);
-		checkIntegerDerived(BigInteger.valueOf(+1), SmNativeType.UNSIGNED_LONG, pcx);
-		checkIntegerDerived(BigInteger.valueOf(+1), SmNativeType.UNSIGNED_INT, pcx);
-		checkIntegerDerived(BigInteger.valueOf(+1), SmNativeType.UNSIGNED_SHORT, pcx);
-		checkIntegerDerived(BigInteger.valueOf(+1), SmNativeType.UNSIGNED_BYTE, pcx);
-		checkIntegerDerived(BigInteger.valueOf(+1), SmNativeType.NON_NEGATIVE_INTEGER, pcx);
-		checkIntegerDerived(BigInteger.valueOf(+1), SmNativeType.POSITIVE_INTEGER, pcx);
+		checkIntegerDerived(BigInteger.valueOf(-1), NativeType.NON_POSITIVE_INTEGER, pcx);
+		checkIntegerDerived(BigInteger.valueOf(-1), NativeType.NEGATIVE_INTEGER, pcx);
+		checkIntegerDerived(BigInteger.valueOf(+1), NativeType.UNSIGNED_LONG, pcx);
+		checkIntegerDerived(BigInteger.valueOf(+1), NativeType.UNSIGNED_INT, pcx);
+		checkIntegerDerived(BigInteger.valueOf(+1), NativeType.UNSIGNED_SHORT, pcx);
+		checkIntegerDerived(BigInteger.valueOf(+1), NativeType.UNSIGNED_BYTE, pcx);
+		checkIntegerDerived(BigInteger.valueOf(+1), NativeType.NON_NEGATIVE_INTEGER, pcx);
+		checkIntegerDerived(BigInteger.valueOf(+1), NativeType.POSITIVE_INTEGER, pcx);
 
 		checkUnsignedShort(pcx);
 		checkUnsignedInt(pcx);

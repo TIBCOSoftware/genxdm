@@ -26,13 +26,13 @@ import javax.xml.namespace.QName;
 import org.genxdm.processor.w3c.xs.exception.CvcIdentityConstraintFieldNodeNotSimpleTypeException;
 import org.genxdm.processor.w3c.xs.exception.SmDuplicateKeyFieldException;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.constraints.RestrictedXPath;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.resolve.LocationInSchema;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 
 
 /**
@@ -54,7 +54,7 @@ final class IdentityField<A>
 
 	// a List of branches, representing a parsed identity (selector or field)
 	// XPath expression
-	private SmRestrictedXPath m_branches[];
+	private RestrictedXPath m_branches[];
 
 	private final ArrayList<LinkedList<IdentityXPathStatus>> m_active;
 
@@ -67,7 +67,7 @@ final class IdentityField<A>
 	 * @param xpath
 	 *            representing the parsed attribute xpath
 	 */
-	public IdentityField(final SmRestrictedXPath xpath, final int contextIndex, final IdentityScope<A> scope, final SchemaExceptionHandler errorHandler)
+	public IdentityField(final RestrictedXPath xpath, final int contextIndex, final IdentityScope<A> scope, final SchemaExceptionHandler errorHandler)
 	{
 		m_contextIndex = contextIndex;
 		m_scope = PreCondition.assertArgumentNotNull(scope, "scope");
@@ -76,7 +76,7 @@ final class IdentityField<A>
 		// Count the number of branches, that is, the number of XPath
 		// expressions separated by "|".
 		int size = 0;
-		for (SmRestrictedXPath branch = xpath; branch != null; branch = branch.getAlternate())
+		for (RestrictedXPath branch = xpath; branch != null; branch = branch.getAlternate())
 		{
 			// System.out.println("IdentityPathEvaluation.<init> Branch = " +
 			// branch);
@@ -84,9 +84,9 @@ final class IdentityField<A>
 		}
 
 		m_relocatable = new boolean[size];
-		m_branches = (SmRestrictedXPath[])Array.newInstance(SmRestrictedXPath.class, size);
+		m_branches = (RestrictedXPath[])Array.newInstance(RestrictedXPath.class, size);
 		m_active = new ArrayList<LinkedList<IdentityXPathStatus>>(size);
-		SmRestrictedXPath branch = xpath;
+		RestrictedXPath branch = xpath;
 		for (int i = size - 1; i >= 0; i--)
 		{
 			// put them backwards
@@ -124,7 +124,7 @@ final class IdentityField<A>
 		return m_branches[branchIdx].getStepLength() - 1;
 	}
 
-	public void startElement(final QName elementName, final int elementIndex, final SmType<A> elementType, final Locatable locatable) throws AbortException
+	public void startElement(final QName elementName, final int elementIndex, final Type<A> elementType, final Locatable locatable) throws AbortException
 	{
 		m_depth++;
 
@@ -223,7 +223,7 @@ final class IdentityField<A>
 		}
 	}
 
-	public void attribute(final QName name, final List<? extends A> actualValue, final int attributeIndex, final SmSimpleType<A> attributeType, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
+	public void attribute(final QName name, final List<? extends A> actualValue, final int attributeIndex, final SimpleType<A> attributeType, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		// System.out.println(StripQualifiers.strip(getClass().getName()) + "["
 		// + hashCode() + "].attribute(name=" + name + ", value=" +
@@ -262,7 +262,7 @@ final class IdentityField<A>
 		}
 	}
 
-	public void text(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final int textIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
+	public void text(final List<? extends A> actualValue, final SimpleType<A> actualType, final int textIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		for (int branchIdx = m_branches.length - 1; branchIdx >= 0; branchIdx--)
 		{
@@ -303,7 +303,7 @@ final class IdentityField<A>
 	/**
 	 * Determine whether the (QName,isAttribute) combination matches the XPath expression at the specified step index.
 	 */
-	private boolean matches(final SmRestrictedXPath xpath, final int idxStep, final QName name)
+	private boolean matches(final RestrictedXPath xpath, final int idxStep, final QName name)
 	{
 		if (xpath.isAttribute())
 		{
@@ -330,7 +330,7 @@ final class IdentityField<A>
 		}
 	}
 
-	private boolean matchesText(final SmRestrictedXPath xpath, final int idxStep)
+	private boolean matchesText(final RestrictedXPath xpath, final int idxStep)
 	{
 		// System.out.println(StripQualifiers.strip(getClass().getName()) + "["
 		// + hashCode() + "].matchesText(idxStep=" + idxStep + ")");
@@ -345,7 +345,7 @@ final class IdentityField<A>
 	/**
 	 * Determine whether the (QName,isAttribute) combination matches the XPath expression at the specified step index.
 	 */
-	private boolean matchesAttribute(final SmRestrictedXPath xpath, final int idxStep, final QName name)
+	private boolean matchesAttribute(final RestrictedXPath xpath, final int idxStep, final QName name)
 	{
 		// System.out.println(StripQualifiers.strip(getClass().getName()) + "["
 		// + hashCode() + "].matchesAttribute(" + xpath + ", idxStep=" + idxStep
@@ -414,17 +414,17 @@ final class IdentityField<A>
 	/**
 	 * A safe test of whether a type is simple or complex with simple content that is resilient to null.
 	 */
-	private static <A> boolean isSimpleTypeOrSimpleContent(final SmType<A> type)
+	private static <A> boolean isSimpleTypeOrSimpleContent(final Type<A> type)
 	{
 		if (null != type)
 		{
-			if (type instanceof SmSimpleType<?>)
+			if (type instanceof SimpleType<?>)
 			{
 				return true;
 			}
-			else if (type instanceof SmComplexType<?>)
+			else if (type instanceof ComplexType<?>)
 			{
-				final SmComplexType<A> complexType = (SmComplexType<A>)type;
+				final ComplexType<A> complexType = (ComplexType<A>)type;
 				return complexType.getContentType().isSimple();
 			}
 			else

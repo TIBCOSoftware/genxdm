@@ -29,13 +29,13 @@ import org.genxdm.bridgekit.names.DefaultNamespaceBinding;
 import org.genxdm.bridgekit.names.QNameComparator;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NamespaceBinding;
-import org.genxdm.xs.types.SmAtomicType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.AtomicType;
+import org.genxdm.xs.types.Type;
 
 public final class XmlElementNode
     extends XmlContainerNode
 {
-    XmlElementNode(final XmlRootNode document, final String namespace, final String localName, final String prefix, final SmType<XmlAtom> type)
+    XmlElementNode(final XmlRootNode document, final String namespace, final String localName, final String prefix, final Type<XmlAtom> type)
     {
         super(NodeKind.ELEMENT, document);
         this.type = type;
@@ -155,7 +155,7 @@ public final class XmlElementNode
         return names;
     }
 
-    public SmType<XmlAtom> getType()
+    public Type<XmlAtom> getType()
     {
         return type;
     }
@@ -186,7 +186,7 @@ public final class XmlElementNode
     {
         if ( (type != null) && type.isNative() && type.isAtomicType() )
         {
-            SmAtomicType<XmlAtom> atomicType = (SmAtomicType<XmlAtom>)type;
+            AtomicType<XmlAtom> atomicType = (AtomicType<XmlAtom>)type;
             if (atomicType.isID())
                 return true;
         }
@@ -197,7 +197,7 @@ public final class XmlElementNode
     {
         if ( (type != null) && type.isNative() && type.isAtomicType() )
         {
-            SmAtomicType<XmlAtom> atomicType = (SmAtomicType<XmlAtom>)type;
+            AtomicType<XmlAtom> atomicType = (AtomicType<XmlAtom>)type;
             if (atomicType.isIDREF() || atomicType.isIDREFS())
                 return true;
         }
@@ -350,5 +350,5 @@ public final class XmlElementNode
     protected XmlAttributeNode firstAttribute;
     protected XmlNamespaceNode firstNamespace;
     
-    private SmType<XmlAtom> type;
+    private Type<XmlAtom> type;
 }

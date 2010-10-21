@@ -22,31 +22,31 @@ import org.genxdm.names.NameSource;
 import org.genxdm.xs.SchemaTypeBridge;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.ElementDefinition;
-import org.genxdm.xs.types.SmAttributeNodeType;
-import org.genxdm.xs.types.SmChoiceType;
-import org.genxdm.xs.types.SmCommentNodeType;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmComplexUrType;
-import org.genxdm.xs.types.SmConcatType;
-import org.genxdm.xs.types.SmDocumentNodeType;
-import org.genxdm.xs.types.SmElementNodeType;
-import org.genxdm.xs.types.SmEmptyType;
-import org.genxdm.xs.types.SmInterleaveType;
-import org.genxdm.xs.types.SmListSimpleType;
-import org.genxdm.xs.types.SmMultiplyType;
-import org.genxdm.xs.types.SmNamespaceNodeType;
-import org.genxdm.xs.types.SmNodeUrType;
-import org.genxdm.xs.types.SmNoneType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmProcessingInstructionNodeType;
-import org.genxdm.xs.types.SmSequenceType;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmSimpleUrType;
-import org.genxdm.xs.types.SmTextNodeType;
-import org.genxdm.xs.types.SmUnionSimpleType;
+import org.genxdm.xs.types.AttributeNodeType;
+import org.genxdm.xs.types.ChoiceType;
+import org.genxdm.xs.types.CommentNodeType;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.ComplexUrType;
+import org.genxdm.xs.types.ConcatType;
+import org.genxdm.xs.types.DocumentNodeType;
+import org.genxdm.xs.types.ElementNodeType;
+import org.genxdm.xs.types.EmptyType;
+import org.genxdm.xs.types.InterleaveType;
+import org.genxdm.xs.types.ListSimpleType;
+import org.genxdm.xs.types.MultiplyType;
+import org.genxdm.xs.types.NamespaceNodeType;
+import org.genxdm.xs.types.NodeUrType;
+import org.genxdm.xs.types.NoneType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.ProcessingInstructionNodeType;
+import org.genxdm.xs.types.SequenceType;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.SimpleUrType;
+import org.genxdm.xs.types.TextNodeType;
+import org.genxdm.xs.types.UnionSimpleType;
 
-final class PrintSequenceTypeVisitor<A> implements SmSequenceTypeVisitor<A>
+final class PrintSequenceTypeVisitor<A> implements SequenceTypeVisitor<A>
 {
 	private final StringBuilder m_sb = new StringBuilder();
 	private final SchemaTypeBridge<A> m_metaBridge;
@@ -62,12 +62,12 @@ final class PrintSequenceTypeVisitor<A> implements SmSequenceTypeVisitor<A>
 		m_defaultElementAndTypeNamespace = PreCondition.assertArgumentNotNull(defaultElementAndTypeNamespace, "defaultElementAndTypeNamespace");
 	}
 
-	public void visit(final SmNodeUrType<A> nodeType)
+	public void visit(final NodeUrType<A> nodeType)
 	{
 		m_sb.append("node()");
 	}
 
-	public void visit(final SmDocumentNodeType<A> documentNodeType)
+	public void visit(final DocumentNodeType<A> documentNodeType)
 	{
 		if (!m_metaBridge.sameAs(documentNodeType, m_metaBridge.documentType(null)))
 		{
@@ -81,12 +81,12 @@ final class PrintSequenceTypeVisitor<A> implements SmSequenceTypeVisitor<A>
 		}
 	}
 
-	public void visit(final SmCommentNodeType<A> commentNodeType)
+	public void visit(final CommentNodeType<A> commentNodeType)
 	{
 		m_sb.append("comment()");
 	}
 
-	public void visit(final SmProcessingInstructionNodeType<A> processingInstructionNodeType)
+	public void visit(final ProcessingInstructionNodeType<A> processingInstructionNodeType)
 	{
 		final String name = processingInstructionNodeType.getName();
 		if (null != name)
@@ -99,22 +99,22 @@ final class PrintSequenceTypeVisitor<A> implements SmSequenceTypeVisitor<A>
 		}
 	}
 
-	public void visit(final SmNamespaceNodeType<A> namespaceNodeType)
+	public void visit(final NamespaceNodeType<A> namespaceNodeType)
 	{
 		m_sb.append("namespace()");
 	}
 
-	public void visit(SmTextNodeType<A> textNodeType)
+	public void visit(TextNodeType<A> textNodeType)
 	{
 		m_sb.append("text()");
 	}
 
-	public void visit(final SmElementNodeType<A> elementNodeType)
+	public void visit(final ElementNodeType<A> elementNodeType)
 	{
 		m_sb.append("element(");
 		m_sb.append(getLexicalQName(elementNodeType.getName(), m_namespaces, m_defaultElementAndTypeNamespace, m_nameBridge));
-		final SmSequenceType<A> dataType = elementNodeType.getType();
-		if (!(dataType instanceof SmComplexUrType<?>))
+		final SequenceType<A> dataType = elementNodeType.getType();
+		if (!(dataType instanceof ComplexUrType<?>))
 		{
 			if (null != dataType)
 			{
@@ -196,17 +196,17 @@ final class PrintSequenceTypeVisitor<A> implements SmSequenceTypeVisitor<A>
 		}
 	}
 
-	public void visit(final SmSimpleType<A> simpleType)
+	public void visit(final SimpleType<A> simpleType)
 	{
 		m_sb.append(getLexicalQName(simpleType.getName(), m_namespaces, m_defaultElementAndTypeNamespace, m_nameBridge));
 	}
 
-	public void visit(final SmAttributeNodeType<A> attributeNodeType)
+	public void visit(final AttributeNodeType<A> attributeNodeType)
 	{
 		m_sb.append("attribute(");
 		m_sb.append(getLexicalQName(attributeNodeType.getName(), m_namespaces, null, m_nameBridge));
-		final SmSequenceType<A> dataType = attributeNodeType.getType();
-		if (!(dataType instanceof SmSimpleUrType<?>))
+		final SequenceType<A> dataType = attributeNodeType.getType();
+		if (!(dataType instanceof SimpleUrType<?>))
 		{
 			if (null != dataType)
 			{
@@ -225,17 +225,17 @@ final class PrintSequenceTypeVisitor<A> implements SmSequenceTypeVisitor<A>
 		m_sb.append(")");
 	}
 
-	public void visit(SmNoneType<A> noneType)
+	public void visit(NoneType<A> noneType)
 	{
 		m_sb.append("none");
 	}
 
-	public void visit(final SmEmptyType<A> emptyType)
+	public void visit(final EmptyType<A> emptyType)
 	{
 		m_sb.append("empty-sequence()");
 	}
 
-	public void visit(final SmChoiceType<A> choiceType)
+	public void visit(final ChoiceType<A> choiceType)
 	{
 		if (m_metaBridge.sameAs(m_metaBridge.itemType(), choiceType))
 		{
@@ -253,28 +253,28 @@ final class PrintSequenceTypeVisitor<A> implements SmSequenceTypeVisitor<A>
 		}
 	}
 
-	public void visit(final SmConcatType<A> concatType)
+	public void visit(final ConcatType<A> concatType)
 	{
 		concatType.getLHS().accept(this);
 		m_sb.append(" , ");
 		concatType.getRHS().accept(this);
 	}
 
-	public void visit(final SmInterleaveType<A> interleaveType)
+	public void visit(final InterleaveType<A> interleaveType)
 	{
 		interleaveType.getLHS().accept(this);
 		m_sb.append(" & ");
 		interleaveType.getRHS().accept(this);
 	}
 
-	public void visit(final SmUnionSimpleType<A> unionType)
+	public void visit(final UnionSimpleType<A> unionType)
 	{
 		throw new UnsupportedOperationException("visit");
 	}
 
-	public void visit(final SmMultiplyType<A> multiplyType)
+	public void visit(final MultiplyType<A> multiplyType)
 	{
-		final SmPrimeType<A> primeType = multiplyType.prime();
+		final PrimeType<A> primeType = multiplyType.prime();
 		switch (multiplyType.quantifier())
 		{
 			case EXACTLY_ONE:
@@ -312,7 +312,7 @@ final class PrintSequenceTypeVisitor<A> implements SmSequenceTypeVisitor<A>
 		}
 	}
 
-	private void acceptWithParens(final SmPrimeType<A> primeType)
+	private void acceptWithParens(final PrimeType<A> primeType)
 	{
 		switch (primeType.getKind())
 		{
@@ -341,22 +341,22 @@ final class PrintSequenceTypeVisitor<A> implements SmSequenceTypeVisitor<A>
 		}
 	}
 
-	public void visit(final SmComplexType<A> complexType)
+	public void visit(final ComplexType<A> complexType)
 	{
 		m_sb.append(getLexicalQName(complexType.getName(), m_namespaces, m_defaultElementAndTypeNamespace, m_nameBridge));
 	}
 
-	public void visit(final SmSimpleUrType<A> simpleUrType)
+	public void visit(final SimpleUrType<A> simpleUrType)
 	{
 		m_sb.append(getLexicalQName(simpleUrType.getName(), m_namespaces, m_defaultElementAndTypeNamespace, m_nameBridge));
 	}
 
-	public void visit(final SmComplexUrType<A> complexUrType)
+	public void visit(final ComplexUrType<A> complexUrType)
 	{
 		m_sb.append(getLexicalQName(complexUrType.getName(), m_namespaces, m_defaultElementAndTypeNamespace, m_nameBridge));
 	}
 
-	public void visit(final SmListSimpleType<A> atomicType)
+	public void visit(final ListSimpleType<A> atomicType)
 	{
 		throw new UnsupportedOperationException("visit");
 	}

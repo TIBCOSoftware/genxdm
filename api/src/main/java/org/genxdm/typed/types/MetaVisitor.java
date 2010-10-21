@@ -17,7 +17,7 @@ package org.genxdm.typed.types;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.types.SmSequenceType;
+import org.genxdm.xs.types.SequenceType;
 
 /**
  * Visitor pattern for types.
@@ -27,43 +27,43 @@ import org.genxdm.xs.types.SmSequenceType;
  */
 public interface MetaVisitor<A>
 {
-	void atomicType(SmSequenceType<A> node, QName name, SmSequenceType<A> baseType);
+	void atomicType(SequenceType<A> node, QName name, SequenceType<A> baseType);
 
-	void atomicUrType(SmSequenceType<A> node);
+	void atomicUrType(SequenceType<A> node);
 
-	void attributeType(SmSequenceType<A> node, QName name, SmSequenceType<A> type);
+	void attributeType(SequenceType<A> node, QName name, SequenceType<A> type);
 
-	void choiceType(SmSequenceType<A> node, SmSequenceType<A> lhs, SmSequenceType<A> rhs);
+	void choiceType(SequenceType<A> node, SequenceType<A> lhs, SequenceType<A> rhs);
 
-	void commentType(SmSequenceType<A> node);
+	void commentType(SequenceType<A> node);
 
-	void complexType(SmSequenceType<A> node, QName name, SmSequenceType<A> baseType);
+	void complexType(SequenceType<A> node, QName name, SequenceType<A> baseType);
 
-	void complexUrType(SmSequenceType<A> node);
+	void complexUrType(SequenceType<A> node);
 
-	void concatType(SmSequenceType<A> node, SmSequenceType<A> lhs, SmSequenceType<A> rhs);
+	void concatType(SequenceType<A> node, SequenceType<A> lhs, SequenceType<A> rhs);
 
-	void documentType(SmSequenceType<A> node, SmSequenceType<A> contentType);
+	void documentType(SequenceType<A> node, SequenceType<A> contentType);
 
-	void elementType(SmSequenceType<A> node, QName name, SmSequenceType<A> type, boolean nillable);
+	void elementType(SequenceType<A> node, QName name, SequenceType<A> type, boolean nillable);
 
-	void emptyType(SmSequenceType<A> node);
+	void emptyType(SequenceType<A> node);
 
-	void interleaveType(SmSequenceType<A> node, SmSequenceType<A> lhs, SmSequenceType<A> rhs);
+	void interleaveType(SequenceType<A> node, SequenceType<A> lhs, SequenceType<A> rhs);
 
-	void multiplyType(SmSequenceType<A> node, SmSequenceType<A> argument, Quantifier multiplier);
+	void multiplyType(SequenceType<A> node, SequenceType<A> argument, Quantifier multiplier);
 
-	void namespaceType(SmSequenceType<A> node);
+	void namespaceType(SequenceType<A> node);
 
-	void noneType(SmSequenceType<A> node);
+	void noneType(SequenceType<A> node);
 
-	void processingInstructionType(SmSequenceType<A> node, String name);
+	void processingInstructionType(SequenceType<A> node, String name);
 
-	void schemaAttributeType(SmSequenceType<A> node, QName name);
+	void schemaAttributeType(SequenceType<A> node, QName name);
 
-	void schemaElementType(SmSequenceType<A> type, QName name);
+	void schemaElementType(SequenceType<A> type, QName name);
 
-	void simpleUrType(SmSequenceType<A> node);
+	void simpleUrType(SequenceType<A> node);
 
-	void textType(SmSequenceType<A> node);
+	void textType(SequenceType<A> node);
 }

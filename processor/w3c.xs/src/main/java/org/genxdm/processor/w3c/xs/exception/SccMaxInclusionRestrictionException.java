@@ -16,14 +16,14 @@
 package org.genxdm.processor.w3c.xs.exception;
 
 import org.genxdm.xs.enums.ValidationOutcome;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmLimit;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.Limit;
 
 @SuppressWarnings("serial")
 public class SccMaxInclusionRestrictionException extends SccLimitRestrictionException
 {
-	public SccMaxInclusionRestrictionException(final SmFacetKind parentFacetKind, final SmLimit<?> restrictingLimit, final SmLimit<?> parentLimit)
+	public SccMaxInclusionRestrictionException(final FacetKind parentFacetKind, final Limit<?> restrictingLimit, final Limit<?> parentLimit)
 	{
-		super(ValidationOutcome.SCC_MaxInclusiveValidRestriction, parentFacetKind == SmFacetKind.MaxInclusive ? "1" : parentFacetKind == SmFacetKind.MaxExclusive ? "2" : parentFacetKind == SmFacetKind.MinInclusive ? "3" : "4", SmFacetKind.MaxInclusive, parentFacetKind, restrictingLimit, parentLimit);
+		super(ValidationOutcome.SCC_MaxInclusiveValidRestriction, parentFacetKind == FacetKind.MaxInclusive ? "1" : parentFacetKind == FacetKind.MaxExclusive ? "2" : parentFacetKind == FacetKind.MinInclusive ? "3" : "4", FacetKind.MaxInclusive, parentFacetKind, restrictingLimit, parentLimit);
 	}
 }

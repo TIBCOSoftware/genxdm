@@ -32,9 +32,9 @@ import org.genxdm.typed.types.CastingContext;
 import org.genxdm.xs.Schema;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.resolve.PrefixResolver;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 
 public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 {
@@ -92,22 +92,22 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 		return CastingSupport.castAs(sourceAtom, targetType, castingContext, schema, this);
 	}
 
-	public XmlAtom castAs(final XmlAtom sourceAtom, final SmNativeType targetType, final CastingContext<XmlAtom> castingContext) throws GxmlAtomCastException
+	public XmlAtom castAs(final XmlAtom sourceAtom, final NativeType targetType, final CastingContext<XmlAtom> castingContext) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(castingContext, "castingContext");
 		return CastingSupport.castAs(getNativeAtom(sourceAtom), targetType, castingContext, schema, this);
 	}
 
-	public XmlAtom compile(final String sourceValue, final SmNativeType targetType) throws GxmlAtomCastException
+	public XmlAtom compile(final String sourceValue, final NativeType targetType) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
-		final SmType<XmlAtom> type = schema.getTypeDefinition(targetType);
+		final Type<XmlAtom> type = schema.getTypeDefinition(targetType);
 		if (null != type)
 		{
 			if (type.isAtomicType())
 			{
-				final SmSimpleType<XmlAtom> atomicType = (SmSimpleType<XmlAtom>)type;
+				final SimpleType<XmlAtom> atomicType = (SimpleType<XmlAtom>)type;
 				try
 				{
 					final List<XmlAtom> atoms = atomicType.validate(sourceValue);
@@ -142,7 +142,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 		}
 	}
 
-	public XmlAtom compile(final String sourceValue, final SmNativeType targetType, final PrefixResolver resolver) throws GxmlAtomCastException
+	public XmlAtom compile(final String sourceValue, final NativeType targetType, final PrefixResolver resolver) throws GxmlAtomCastException
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO: compile");
@@ -165,17 +165,17 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 
 	public XmlGregorian createDate(final int year, final int month, final int dayOfMonth, final int timezone)
 	{
-		return new XmlGregorian(year, month, dayOfMonth, 0, 0, 0, BigDecimal.ZERO, timezone, SmNativeType.DATE);
+		return new XmlGregorian(year, month, dayOfMonth, 0, 0, 0, BigDecimal.ZERO, timezone, NativeType.DATE);
 	}
 
 	public XmlGregorian createDateTime(final int year, final int month, final int dayOfMonth, final int hour, final int minute, final int second, final int millis, final BigDecimal remainderSecond, final int offsetInMinutes)
 	{
-		return new XmlGregorian(year, month, dayOfMonth, hour, minute, second, remainderSecond, offsetInMinutes, SmNativeType.DATETIME);
+		return new XmlGregorian(year, month, dayOfMonth, hour, minute, second, remainderSecond, offsetInMinutes, NativeType.DATETIME);
 	}
 
 	public XmlGregorian createDay(final int dayOfMonth, final int timezone)
 	{
-		return new XmlGregorian(EPOCH_YEAR, EPOCH_MONTH, dayOfMonth, 0, 0, 0, BigDecimal.ZERO, timezone, SmNativeType.GDAY);
+		return new XmlGregorian(EPOCH_YEAR, EPOCH_MONTH, dayOfMonth, 0, 0, 0, BigDecimal.ZERO, timezone, NativeType.GDAY);
 	}
 
 	public XmlDayTimeDuration createDayTimeDuration(final BigDecimal seconds)
@@ -228,7 +228,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 		return XmlInteger.valueOf(value);
 	}
 
-	public XmlIntegerDerived createIntegerDerived(final BigInteger value, final SmNativeType nativeType)
+	public XmlIntegerDerived createIntegerDerived(final BigInteger value, final NativeType nativeType)
 	{
 		switch (nativeType)
 		{
@@ -250,7 +250,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 		}
 	}
 
-	public XmlAtom createIntegerDerived(final long value, final SmNativeType nativeType)
+	public XmlAtom createIntegerDerived(final long value, final NativeType nativeType)
 	{
 		switch (nativeType)
 		{
@@ -304,22 +304,22 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 
 	public XmlGregorian createMonth(final int month, final int timezone)
 	{
-		return new XmlGregorian(EPOCH_YEAR, month, EPOCH_DAY, 0, 0, 0, BigDecimal.ZERO, timezone, SmNativeType.GMONTH);
+		return new XmlGregorian(EPOCH_YEAR, month, EPOCH_DAY, 0, 0, 0, BigDecimal.ZERO, timezone, NativeType.GMONTH);
 	}
 
 	public XmlGregorian createMonthDay(final int month, final int dayOfMonth, final int timezone)
 	{
-		return new XmlGregorian(EPOCH_YEAR, month, dayOfMonth, 0, 0, 0, BigDecimal.ZERO, timezone, SmNativeType.GMONTHDAY);
+		return new XmlGregorian(EPOCH_YEAR, month, dayOfMonth, 0, 0, 0, BigDecimal.ZERO, timezone, NativeType.GMONTHDAY);
 	}
 
 	public XmlIntegerDerived createNonNegativeInteger(final BigInteger value)
 	{
-		return XmlIntegerDerived.valueOf(value, SmNativeType.NON_NEGATIVE_INTEGER);
+		return XmlIntegerDerived.valueOf(value, NativeType.NON_NEGATIVE_INTEGER);
 	}
 
 	public XmlIntegerDerived createNonPositiveInteger(final BigInteger value)
 	{
-		return XmlIntegerDerived.valueOf(value, SmNativeType.NON_POSITIVE_INTEGER);
+		return XmlIntegerDerived.valueOf(value, NativeType.NON_POSITIVE_INTEGER);
 	}
 
 	public XmlNOTATION createNOTATION(final String namespaceURI, final String localName, final String prefix)
@@ -350,7 +350,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 		}
 	}
 
-	public XmlAtom createStringDerived(final String initialValue, final SmNativeType nativeType)
+	public XmlAtom createStringDerived(final String initialValue, final NativeType nativeType)
 	{
 		if (null != initialValue)
 		{
@@ -408,7 +408,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 
 	public XmlGregorian createTime(final int hourOfDay, final int minute, final int second, final int millis, final BigDecimal fractionalSecond, final int timezone)
 	{
-		return new XmlGregorian(1970, 1, 1, hourOfDay, minute, second, fractionalSecond, timezone, SmNativeType.TIME);
+		return new XmlGregorian(1970, 1, 1, hourOfDay, minute, second, fractionalSecond, timezone, NativeType.TIME);
 	}
 
 	public XmlUntypedAtomic createUntypedAtomic(final String strval)
@@ -430,12 +430,12 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 
 	public XmlGregorian createYear(final int year, final int timezone)
 	{
-		return new XmlGregorian(year, EPOCH_MONTH, EPOCH_DAY, 0, 0, 0, BigDecimal.ZERO, timezone, SmNativeType.GYEAR);
+		return new XmlGregorian(year, EPOCH_MONTH, EPOCH_DAY, 0, 0, 0, BigDecimal.ZERO, timezone, NativeType.GYEAR);
 	}
 
 	public XmlGregorian createYearMonth(final int year, final int month, final int timezone)
 	{
-		return new XmlGregorian(year, month, EPOCH_DAY, 0, 0, 0, BigDecimal.ZERO, timezone, SmNativeType.GYEARMONTH);
+		return new XmlGregorian(year, month, EPOCH_DAY, 0, 0, 0, BigDecimal.ZERO, timezone, NativeType.GYEARMONTH);
 	}
 
 	public XmlYearMonthDuration createYearMonthDuration(final int months)
@@ -950,7 +950,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 		return atom;
 	}
 
-	public SmNativeType getNativeType(final XmlAtom atom)
+	public NativeType getNativeType(final XmlAtom atom)
 	{
 		return atom.getNativeType();
 	}
@@ -1101,7 +1101,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 		if (atom instanceof XmlIntegerDerived)
 		{
 			final XmlIntegerDerived integer = (XmlIntegerDerived)atom;
-			if (integer.getNativeType() == SmNativeType.UNSIGNED_BYTE)
+			if (integer.getNativeType() == NativeType.UNSIGNED_BYTE)
 			{
 				return integer.shortValue();
 			}
@@ -1126,7 +1126,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 		if (atom instanceof XmlIntegerDerived)
 		{
 			final XmlIntegerDerived integer = (XmlIntegerDerived)atom;
-			if (integer.getNativeType().isA(SmNativeType.UNSIGNED_INT))
+			if (integer.getNativeType().isA(NativeType.UNSIGNED_INT))
 			{
 				return integer.longValue();
 			}
@@ -1151,7 +1151,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 		if (atom instanceof XmlIntegerDerived)
 		{
 			final XmlIntegerDerived integer = (XmlIntegerDerived)atom;
-			if (integer.getNativeType().isA(SmNativeType.UNSIGNED_SHORT))
+			if (integer.getNativeType().isA(NativeType.UNSIGNED_SHORT))
 			{
 				return integer.intValue();
 			}
@@ -1267,9 +1267,9 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 		return new XmlForeignAtom(atomType, baseAtom);
 	}
 
-	private String normalize(final String initialValue, final SmNativeType nativeType)
+	private String normalize(final String initialValue, final NativeType nativeType)
 	{
-		final SmSimpleType<XmlAtom> simpleType = (SmSimpleType<XmlAtom>)schema.getTypeDefinition(nativeType);
+		final SimpleType<XmlAtom> simpleType = (SimpleType<XmlAtom>)schema.getTypeDefinition(nativeType);
 		return simpleType.normalize(initialValue);
 	}
 

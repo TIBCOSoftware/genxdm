@@ -23,16 +23,16 @@ import org.genxdm.exceptions.IllegalNullArgumentException;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.Schema;
 import org.genxdm.xs.components.ElementDefinition;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.constraints.IdentityConstraint;
+import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.NodeKind;
 import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.enums.ScopeExtent;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmPrimeTypeKind;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.PrimeTypeKind;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.Type;
 
 public final class MyElementDeclaration<A> implements ElementDefinition<A>
 {
@@ -51,7 +51,7 @@ public final class MyElementDeclaration<A> implements ElementDefinition<A>
 		this.name = new QName(namespaceURI, localName);
 	}
 
-	public void accept(SmSequenceTypeVisitor<A> visitor)
+	public void accept(SequenceTypeVisitor<A> visitor)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -63,13 +63,13 @@ public final class MyElementDeclaration<A> implements ElementDefinition<A>
 		throw new AssertionError("TODO");
 	}
 
-	public Iterable<SmIdentityConstraint<A>> getIdentityConstraints()
+	public Iterable<IdentityConstraint<A>> getIdentityConstraints()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public SmPrimeTypeKind getKind()
+	public PrimeTypeKind getKind()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -121,13 +121,13 @@ public final class MyElementDeclaration<A> implements ElementDefinition<A>
 		return name.getNamespaceURI();
 	}
 
-	public SmType<A> getType()
+	public Type<A> getType()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public SmValueConstraint<A> getValueConstraint()
+	public ValueConstraint<A> getValueConstraint()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -186,7 +186,7 @@ public final class MyElementDeclaration<A> implements ElementDefinition<A>
 		throw new AssertionError("TODO");
 	}
 
-	public SmPrimeType<A> prime()
+	public PrimeType<A> prime()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -198,7 +198,7 @@ public final class MyElementDeclaration<A> implements ElementDefinition<A>
 		throw new AssertionError("TODO");
 	}
 
-	public boolean subtype(SmPrimeType<A> rhs)
+	public boolean subtype(PrimeType<A> rhs)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");

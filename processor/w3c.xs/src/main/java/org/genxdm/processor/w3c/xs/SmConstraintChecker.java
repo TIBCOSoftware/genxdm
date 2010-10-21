@@ -92,10 +92,10 @@ import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.components.ParticleTerm;
 import org.genxdm.xs.components.SchemaWildcard;
-import org.genxdm.xs.constraints.SmAttributeUse;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.constraints.SmModelGroupUse;
-import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.constraints.AttributeUse;
+import org.genxdm.xs.constraints.IdentityConstraint;
+import org.genxdm.xs.constraints.ModelGroupUse;
+import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
@@ -103,21 +103,21 @@ import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.ComponentConstraintException;
 import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.exceptions.FacetMinMaxException;
-import org.genxdm.xs.facets.SmFacet;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmFractionDigits;
-import org.genxdm.xs.facets.SmLength;
-import org.genxdm.xs.facets.SmLimit;
-import org.genxdm.xs.facets.SmMaxLength;
-import org.genxdm.xs.facets.SmMinLength;
-import org.genxdm.xs.facets.SmTotalDigits;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmContentType;
-import org.genxdm.xs.types.SmListSimpleType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
-import org.genxdm.xs.types.SmUnionSimpleType;
+import org.genxdm.xs.facets.Facet;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.FractionDigits;
+import org.genxdm.xs.facets.Length;
+import org.genxdm.xs.facets.Limit;
+import org.genxdm.xs.facets.MaxLength;
+import org.genxdm.xs.facets.MinLength;
+import org.genxdm.xs.facets.TotalDigits;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.ContentType;
+import org.genxdm.xs.types.ListSimpleType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
+import org.genxdm.xs.types.UnionSimpleType;
 
 
 /**
@@ -141,7 +141,7 @@ final class SmConstraintChecker
 		buffer.append("')");
 	}
 
-	private static <A> A castUp(final A sourceAtom, final SmNativeType targetType, final AtomBridge<A> atomBridge)
+	private static <A> A castUp(final A sourceAtom, final NativeType targetType, final AtomBridge<A> atomBridge)
 	{
 		// TODO: This has the hallmark of a helper function?
 		switch (targetType)
@@ -180,7 +180,7 @@ final class SmConstraintChecker
 
 	private static <A> void checkAttributeDeclarationPropertiesCorrect(final AttributeDefinition<A> attribute, final SmConstraintHandler<A> errors, NameSource nameBridge) throws AbortException
 	{
-		final SmSimpleType<A> attributeType = (SmSimpleType<A>)attribute.getType();
+		final SimpleType<A> attributeType = (SimpleType<A>)attribute.getType();
 		if (null != attributeType)
 		{
 			if (null != attribute.getValueConstraint())
@@ -197,12 +197,12 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkAttributeDerivationRestrictionComplexType(final SmComplexType<A> complexType, final SmComplexType<A> baseType, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
+	private static <A> void checkAttributeDerivationRestrictionComplexType(final ComplexType<A> complexType, final ComplexType<A> baseType, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		final NameSource nameBridge = atomBridge.getNameBridge();
 
-		final HashMap<QName, SmAttributeUse<A>> attributes = new HashMap<QName, SmAttributeUse<A>>();
-		for (final SmAttributeUse<A> attributeUse : complexType.getAttributeUses().values())
+		final HashMap<QName, AttributeUse<A>> attributes = new HashMap<QName, AttributeUse<A>>();
+		for (final AttributeUse<A> attributeUse : complexType.getAttributeUses().values())
 		{
 			final AttributeDefinition<A> attribute = attributeUse.getAttribute();
 			final QName attributeName = attribute.getName();
@@ -222,25 +222,25 @@ final class SmConstraintChecker
 			}
 		}
 
-		for (final SmAttributeUse<A> B : baseType.getAttributeUses().values())
+		for (final AttributeUse<A> B : baseType.getAttributeUses().values())
 		{
 			final QName attributeName = B.getAttribute().getName();
 			if (attributes.containsKey(attributeName))
 			{
-				final SmAttributeUse<A> R = attributes.get(attributeName);
+				final AttributeUse<A> R = attributes.get(attributeName);
 				if (!R.isRequired() && B.isRequired())
 				{
 					errors.error(complexType, new SccAttributeDerivationRequiredConflictException(complexType.getName(), attributeName));
 				}
 
-				final SmValueConstraint<A> vcB = B.getEffectiveValueConstraint();
+				final ValueConstraint<A> vcB = B.getEffectiveValueConstraint();
 				if (null == vcB || vcB.getVariety().isDefault())
 				{
 					// OK
 				}
 				else
 				{
-					final SmValueConstraint<A> vcR = R.getEffectiveValueConstraint();
+					final ValueConstraint<A> vcR = R.getEffectiveValueConstraint();
 					if (null != vcR)
 					{
 						if (vcR.getVariety().isFixed())
@@ -289,7 +289,7 @@ final class SmConstraintChecker
 		if (attributeGroup.hasAttributeUses())
 		{
 			final HashSet<QName> unique = new HashSet<QName>();
-			for (final SmAttributeUse<A> attributeUse : attributeGroup.getAttributeUses())
+			for (final AttributeUse<A> attributeUse : attributeGroup.getAttributeUses())
 			{
 				final AttributeDefinition<A> attribute = attributeUse.getAttribute();
 				final QName attributeName = attribute.getName();
@@ -311,13 +311,13 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkAttributeUses(final SmComplexType<A> complexType, final SmConstraintHandler<A> errors, final AtomBridge<A> atomBridge) throws AbortException
+	private static <A> void checkAttributeUses(final ComplexType<A> complexType, final SmConstraintHandler<A> errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		final NameSource nameBridge = atomBridge.getNameBridge();
 		// Check that the attribute names are unique, and check each local
 		// attribute declaration.
 		final HashSet<QName> unique = new HashSet<QName>();
-		for (final SmAttributeUse<A> attributeUse : complexType.getAttributeUses().values())
+		for (final AttributeUse<A> attributeUse : complexType.getAttributeUses().values())
 		{
 			final AttributeDefinition<A> attribute = attributeUse.getAttribute();
 			final QName attributeName = attribute.getName();
@@ -333,10 +333,10 @@ final class SmConstraintChecker
 
 			// Check that any value constraint on the attribute use is
 			// consistent with the attribute declaration.
-			final SmValueConstraint<A> valueConstraintUse = attributeUse.getValueConstraint();
+			final ValueConstraint<A> valueConstraintUse = attributeUse.getValueConstraint();
 			if (null != valueConstraintUse && valueConstraintUse.getVariety().isFixed())
 			{
-				final SmValueConstraint<A> valueConstraintAtt = attribute.getValueConstraint();
+				final ValueConstraint<A> valueConstraintAtt = attribute.getValueConstraint();
 				if (null != valueConstraintAtt && valueConstraintAtt.getVariety().isFixed())
 				{
 					final String valueUse = atomBridge.getC14NString(valueConstraintUse.getValue());
@@ -355,7 +355,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkClause5(final SmComplexType<A> complexType, final SmComplexType<A> baseType, final SmConstraintHandler<A> errors, NameSource nameBridge) throws AbortException
+	private static <A> void checkClause5(final ComplexType<A> complexType, final ComplexType<A> baseType, final SmConstraintHandler<A> errors, NameSource nameBridge) throws AbortException
 	{
 		if (baseType.isComplexUrType())
 		{
@@ -370,8 +370,8 @@ final class SmConstraintChecker
 			}
 			else
 			{
-				final SmContentType<A> contentTypeR = complexType.getContentType();
-				final SmContentType<A> contentTypeB = baseType.getContentType();
+				final ContentType<A> contentTypeR = complexType.getContentType();
+				final ContentType<A> contentTypeB = baseType.getContentType();
 
 				if (contentTypeR.isElementOnly() || (contentTypeR.isMixed() && contentTypeB.isMixed()))
 				{
@@ -385,7 +385,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkComplexType(final SmComplexType<A> complexType, final SmComponentBagImpl<A> components, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
+	private static <A> void checkComplexType(final ComplexType<A> complexType, final SmComponentBagImpl<A> components, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		final NameSource nameBridge = atomBridge.getNameBridge();
 		checkComplexTypeDefinitionProperties(complexType, errors);
@@ -402,14 +402,14 @@ final class SmConstraintChecker
 		checkAttributeUses(complexType, errors, atomBridge);
 	}
 
-	private static <A> void checkComplexTypeDefinitionProperties(final SmComplexType<A> complexType, final SmConstraintHandler<A> errors) throws AbortException
+	private static <A> void checkComplexTypeDefinitionProperties(final ComplexType<A> complexType, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		complexType.getName();
 
-		final SmContentType<A> contentType = complexType.getContentType();
+		final ContentType<A> contentType = complexType.getContentType();
 		if (contentType.isMixed() || contentType.isElementOnly())
 		{
-			final SmModelGroupUse<A> contentModel = contentType.getContentModel();
+			final ModelGroupUse<A> contentModel = contentType.getContentModel();
 			checkOccurrences(contentModel, errors);
 
 			final ModelGroup<A> modelGroup = contentModel.getTerm();
@@ -420,11 +420,11 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkDerivationValidExtensionComplexType(final SmComplexType<A> complexType, final SmConstraintHandler<A> errors, NameSource nameBridge) throws AbortException
+	private static <A> void checkDerivationValidExtensionComplexType(final ComplexType<A> complexType, final SmConstraintHandler<A> errors, NameSource nameBridge) throws AbortException
 	{
-		if (complexType.getBaseType() instanceof SmComplexType<?>)
+		if (complexType.getBaseType() instanceof ComplexType<?>)
 		{
-			final SmComplexType<A> baseType = (SmComplexType<A>)complexType.getBaseType();
+			final ComplexType<A> baseType = (ComplexType<A>)complexType.getBaseType();
 			// The {final} of the {base type definition} must not contain
 			// extension.
 			if (baseType.isFinal(DerivationMethod.Extension))
@@ -441,10 +441,10 @@ final class SmConstraintChecker
 				errors.error(complexType, new SccDerivationExtensionContentTypeException(qname(complexType.getName())));
 			}
 		}
-		else if (complexType.getBaseType() instanceof SmSimpleType<?>)
+		else if (complexType.getBaseType() instanceof SimpleType<?>)
 		{
-			final SmSimpleType<A> simpleTypeB = (SmSimpleType<A>)complexType.getBaseType();
-			final SmContentType<A> contentTypeD = complexType.getContentType();
+			final SimpleType<A> simpleTypeB = (SimpleType<A>)complexType.getBaseType();
+			final ContentType<A> contentTypeD = complexType.getContentType();
 
 			if (!clause21(contentTypeD, simpleTypeB))
 			{
@@ -462,14 +462,14 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkDerivationValidRestrictionComplexType(final SmComplexType<A> complexType, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
+	private static <A> void checkDerivationValidRestrictionComplexType(final ComplexType<A> complexType, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		final NameSource nameBridge = atomBridge.getNameBridge();
 
 		// The {base type definition} must be a complex type definition.
-		if (complexType.getBaseType() instanceof SmComplexType<?>)
+		if (complexType.getBaseType() instanceof ComplexType<?>)
 		{
-			final SmComplexType<A> baseType = (SmComplexType<A>)complexType.getBaseType();
+			final ComplexType<A> baseType = (ComplexType<A>)complexType.getBaseType();
 
 			// The {final} of the {base type definition} must not contain
 			// restriction.
@@ -517,19 +517,19 @@ final class SmConstraintChecker
 
 		// 5. If the {type definition} or {type definition}'s {content type} is
 		// or is derived from ID then there must not be a {value constraint}.
-		final SmValueConstraint<A> valueConstraint = element.getValueConstraint();
+		final ValueConstraint<A> valueConstraint = element.getValueConstraint();
 		if (null != valueConstraint)
 		{
-			final SmType<A> elementType = element.getType();
-			if (elementType instanceof SmSimpleType<?>)
+			final Type<A> elementType = element.getType();
+			if (elementType instanceof SimpleType<?>)
 			{
 				@SuppressWarnings("unused")
-				final SmSimpleType<A> simpleType = (SmSimpleType<A>)elementType;
+				final SimpleType<A> simpleType = (SimpleType<A>)elementType;
 			}
-			else if (elementType instanceof SmComplexType<?>)
+			else if (elementType instanceof ComplexType<?>)
 			{
-				final SmComplexType<A> complexType = (SmComplexType<A>)elementType;
-				final SmContentType<A> contentType = complexType.getContentType();
+				final ComplexType<A> complexType = (ComplexType<A>)elementType;
+				final ContentType<A> contentType = complexType.getContentType();
 				if (contentType.isSimple())
 				{
 
@@ -553,7 +553,7 @@ final class SmConstraintChecker
 				case Fixed:
 				case Default:
 				{
-					if (isDerivedFrom(elementType, nameBridge.nativeType(SmNativeType.ID)))
+					if (isDerivedFrom(elementType, nameBridge.nativeType(NativeType.ID)))
 					{
 						errors.error(element, new SccElementDeclarationDerivedFromIDWithValueConstraintException(qname(element.getName())));
 					}
@@ -567,7 +567,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkIdentityConstraint(final SmIdentityConstraint<A> constraint, final SmConstraintHandler<A> errors) throws AbortException
+	private static <A> void checkIdentityConstraint(final IdentityConstraint<A> constraint, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		switch (constraint.getCategory())
 		{
@@ -579,7 +579,7 @@ final class SmConstraintChecker
 			break;
 			case KeyRef:
 			{
-				final SmIdentityConstraint<A> referencedKey = constraint.getKeyConstraint();
+				final IdentityConstraint<A> referencedKey = constraint.getKeyConstraint();
 				switch (referencedKey.getCategory())
 				{
 					case Key:
@@ -609,8 +609,8 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkLimitRestriction(final SmLimit<A> restrictingLimit, final SmLimit<A> parentMaxInclusive, final SmLimit<A> parentMaxExclusive, final SmLimit<A> parentMinInclusive, final SmLimit<A> parentMinExclusive,
-			final SmSimpleType<A> simpleType, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
+	private static <A> void checkLimitRestriction(final Limit<A> restrictingLimit, final Limit<A> parentMaxInclusive, final Limit<A> parentMaxExclusive, final Limit<A> parentMinInclusive, final Limit<A> parentMinExclusive,
+			final SimpleType<A> simpleType, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		final A derivedAtom = restrictingLimit.getLimit();
 
@@ -626,12 +626,12 @@ final class SmConstraintChecker
 						final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
 						if (!result.isDeterminate() || result != SmCompareKind.BEFORE)
 						{
-							errors.error(simpleType, new SccMinInclusionRestrictionException(SmFacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
+							errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
 						}
 					}
 					catch (final GxmlAtomCastException e)
 					{
-						errors.error(simpleType, new SccMinInclusionRestrictionException(SmFacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
+						errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
 					}
 				}
 				if (parentMaxInclusive != null)
@@ -642,12 +642,12 @@ final class SmConstraintChecker
 						final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
 						if (!result.isDeterminate() || result == SmCompareKind.AFTER)
 						{
-							errors.error(simpleType, new SccMinInclusionRestrictionException(SmFacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
+							errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
 						}
 					}
 					catch (final GxmlAtomCastException e)
 					{
-						errors.error(simpleType, new SccMinInclusionRestrictionException(SmFacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
+						errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
 					}
 				}
 				if (parentMinInclusive != null)
@@ -658,12 +658,12 @@ final class SmConstraintChecker
 						final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
 						if (!result.isDeterminate() || result == SmCompareKind.BEFORE)
 						{
-							errors.error(simpleType, new SccMinInclusionRestrictionException(SmFacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
+							errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
 						}
 					}
 					catch (final GxmlAtomCastException e)
 					{
-						errors.error(simpleType, new SccMinInclusionRestrictionException(SmFacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
+						errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
 					}
 				}
 				if (parentMinExclusive != null)
@@ -674,12 +674,12 @@ final class SmConstraintChecker
 						final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
 						if (!result.isDeterminate() || result != SmCompareKind.AFTER)
 						{
-							errors.error(simpleType, new SccMinInclusionRestrictionException(SmFacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+							errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
 						}
 					}
 					catch (final GxmlAtomCastException e)
 					{
-						errors.error(simpleType, new SccMinInclusionRestrictionException(SmFacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+						errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
 					}
 				}
 			}
@@ -694,12 +694,12 @@ final class SmConstraintChecker
 						final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
 						if (!result.isDeterminate() || result != SmCompareKind.BEFORE)
 						{
-							errors.error(simpleType, new SccMaxInclusionRestrictionException(SmFacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
+							errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
 						}
 					}
 					catch (final GxmlAtomCastException e)
 					{
-						errors.error(simpleType, new SccMaxInclusionRestrictionException(SmFacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
+						errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
 					}
 				}
 				if (parentMaxInclusive != null)
@@ -710,12 +710,12 @@ final class SmConstraintChecker
 						final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
 						if (!result.isDeterminate() || result == SmCompareKind.AFTER)
 						{
-							errors.error(simpleType, new SccMaxInclusionRestrictionException(SmFacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
+							errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
 						}
 					}
 					catch (final GxmlAtomCastException e)
 					{
-						errors.error(simpleType, new SccMaxInclusionRestrictionException(SmFacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
+						errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
 					}
 				}
 				if (parentMinInclusive != null)
@@ -726,12 +726,12 @@ final class SmConstraintChecker
 						final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
 						if (!result.isDeterminate() || result == SmCompareKind.BEFORE)
 						{
-							errors.error(simpleType, new SccMaxInclusionRestrictionException(SmFacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
+							errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
 						}
 					}
 					catch (final GxmlAtomCastException e)
 					{
-						errors.error(simpleType, new SccMaxInclusionRestrictionException(SmFacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
+						errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
 					}
 				}
 				if (parentMinExclusive != null)
@@ -742,12 +742,12 @@ final class SmConstraintChecker
 						final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
 						if (!result.isDeterminate() || result != SmCompareKind.AFTER)
 						{
-							errors.error(simpleType, new SccMaxInclusionRestrictionException(SmFacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+							errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
 						}
 					}
 					catch (final GxmlAtomCastException e)
 					{
-						errors.error(simpleType, new SccMaxInclusionRestrictionException(SmFacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+						errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
 					}
 				}
 			}
@@ -762,12 +762,12 @@ final class SmConstraintChecker
 						final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
 						if (!result.isDeterminate() || result != SmCompareKind.BEFORE)
 						{
-							errors.error(simpleType, new SccMinExclusionRestrictionException(SmFacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
+							errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
 						}
 					}
 					catch (final GxmlAtomCastException e)
 					{
-						errors.error(simpleType, new SccMinExclusionRestrictionException(SmFacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
+						errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
 					}
 				}
 				if (parentMaxInclusive != null)
@@ -778,12 +778,12 @@ final class SmConstraintChecker
 						final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
 						if (!result.isDeterminate() || result == SmCompareKind.AFTER)
 						{
-							errors.error(simpleType, new SccMinExclusionRestrictionException(SmFacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
+							errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
 						}
 					}
 					catch (final GxmlAtomCastException e)
 					{
-						errors.error(simpleType, new SccMinExclusionRestrictionException(SmFacetKind.MaxInclusive, restrictingLimit, parentMaxExclusive));
+						errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxExclusive));
 					}
 				}
 				if (parentMinInclusive != null)
@@ -794,12 +794,12 @@ final class SmConstraintChecker
 						final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
 						if (!result.isDeterminate() || result == SmCompareKind.BEFORE)
 						{
-							errors.error(simpleType, new SccMinExclusionRestrictionException(SmFacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
+							errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
 						}
 					}
 					catch (final GxmlAtomCastException e)
 					{
-						errors.error(simpleType, new SccMinExclusionRestrictionException(SmFacetKind.MinExclusive, restrictingLimit, parentMinInclusive));
+						errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinInclusive));
 					}
 				}
 				if (parentMinExclusive != null)
@@ -810,12 +810,12 @@ final class SmConstraintChecker
 						final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
 						if (!result.isDeterminate() || result == SmCompareKind.BEFORE)
 						{
-							errors.error(simpleType, new SccMinExclusionRestrictionException(SmFacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+							errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
 						}
 					}
 					catch (final GxmlAtomCastException e)
 					{
-						errors.error(simpleType, new SccMinExclusionRestrictionException(SmFacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+						errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
 					}
 				}
 			}
@@ -830,12 +830,12 @@ final class SmConstraintChecker
 						final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
 						if (!result.isDeterminate() || result == SmCompareKind.AFTER)
 						{
-							errors.error(simpleType, new SccMaxExclusionRestrictionException(SmFacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
+							errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
 						}
 					}
 					catch (final GxmlAtomCastException e)
 					{
-						errors.error(simpleType, new SccMaxExclusionRestrictionException(SmFacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
+						errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
 					}
 				}
 				if (parentMaxInclusive != null)
@@ -846,12 +846,12 @@ final class SmConstraintChecker
 						final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
 						if (!result.isDeterminate() || result == SmCompareKind.AFTER)
 						{
-							errors.error(simpleType, new SccMaxExclusionRestrictionException(SmFacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
+							errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
 						}
 					}
 					catch (final GxmlAtomCastException e)
 					{
-						errors.error(simpleType, new SccMaxExclusionRestrictionException(SmFacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
+						errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
 					}
 				}
 				if (parentMinInclusive != null)
@@ -862,12 +862,12 @@ final class SmConstraintChecker
 						final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
 						if (!result.isDeterminate() || result != SmCompareKind.AFTER)
 						{
-							errors.error(simpleType, new SccMaxExclusionRestrictionException(SmFacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
+							errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
 						}
 					}
 					catch (final GxmlAtomCastException e)
 					{
-						errors.error(simpleType, new SccMaxExclusionRestrictionException(SmFacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+						errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
 					}
 				}
 				if (parentMinExclusive != null)
@@ -878,12 +878,12 @@ final class SmConstraintChecker
 						final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
 						if (!result.isDeterminate() || result != SmCompareKind.AFTER)
 						{
-							errors.error(simpleType, new SccMaxExclusionRestrictionException(SmFacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+							errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
 						}
 					}
 					catch (final GxmlAtomCastException e)
 					{
-						errors.error(simpleType, new SccMaxExclusionRestrictionException(SmFacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+						errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
 					}
 				}
 			}
@@ -895,7 +895,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkMinExclusiveLessThanEqualToMaxExclusive(final SmLimit<A> minExclusive, final SmLimit<A> maxExclusive, final SmSimpleType<A> simpleType, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors)
+	private static <A> void checkMinExclusiveLessThanEqualToMaxExclusive(final Limit<A> minExclusive, final Limit<A> maxExclusive, final SimpleType<A> simpleType, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors)
 			throws AbortException
 	{
 		final A min = minExclusive.getLimit();
@@ -917,9 +917,9 @@ final class SmConstraintChecker
 		{
 			checkOccurrences(particle, errors);
 
-			if (particle instanceof SmModelGroupUse<?>)
+			if (particle instanceof ModelGroupUse<?>)
 			{
-				final SmModelGroupUse<A> modelGroupUse = (SmModelGroupUse<A>)particle;
+				final ModelGroupUse<A> modelGroupUse = (ModelGroupUse<A>)particle;
 
 				final ModelGroup<A> term = modelGroupUse.getTerm();
 				if (term.getCompositor().isAll())
@@ -934,7 +934,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkModelGroupUseValidRestriction(final SmComplexType<A> complexType, final SmModelGroupUse<A> R, final SmModelGroupUse<A> B, final SmConstraintHandler<A> errors) throws AbortException
+	private static <A> void checkModelGroupUseValidRestriction(final ComplexType<A> complexType, final ModelGroupUse<A> R, final ModelGroupUse<A> B, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		if (equalBounds(R, B) && (R.getTerm() == B.getTerm()))
 		{
@@ -1015,7 +1015,7 @@ final class SmConstraintChecker
 	{
 	}
 
-	private static <A> void checkOccurrenceRangeOK(final SmComplexType<A> complexType, final SchemaParticle<A> one, final SchemaParticle<A> two, final SmConstraintHandler<A> errors) throws AbortException
+	private static <A> void checkOccurrenceRangeOK(final ComplexType<A> complexType, final SchemaParticle<A> one, final SchemaParticle<A> two, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		if (one.getMinOccurs() < two.getMinOccurs())
 		{
@@ -1058,7 +1058,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkParticleDerivationOKAllAllSequenceSequence(final SmComplexType<A> complexType, final SmModelGroupUse<A> R, final SmModelGroupUse<A> B, final SmConstraintHandler<A> errors) throws AbortException
+	private static <A> void checkParticleDerivationOKAllAllSequenceSequence(final ComplexType<A> complexType, final ModelGroupUse<A> R, final ModelGroupUse<A> B, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		checkOccurrenceRangeOK(complexType, R, B, errors);
 
@@ -1083,7 +1083,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkParticleValidRestriction(final SmComplexType<A> complexType, final SchemaParticle<A> R, final SchemaParticle<A> B, final SmConstraintHandler<A> errors) throws AbortException
+	private static <A> void checkParticleValidRestriction(final ComplexType<A> complexType, final SchemaParticle<A> R, final SchemaParticle<A> B, final SmConstraintHandler<A> errors) throws AbortException
 	{
 
 	}
@@ -1095,11 +1095,11 @@ final class SmConstraintChecker
 	public static <A> void checkSchemaComponentConstraints(final SmComponentBagImpl<A> bag, final ComponentProvider<A> existing, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		final NameSource nameBridge = atomBridge.getNameBridge();
-		for (final SmSimpleType<A> simpleType : bag.getSimpleTypes())
+		for (final SimpleType<A> simpleType : bag.getSimpleTypes())
 		{
 			checkSimpleType(simpleType, bag, existing, atomBridge, errors);
 		}
-		for (final SmComplexType<A> complexType : bag.getComplexTypes())
+		for (final ComplexType<A> complexType : bag.getComplexTypes())
 		{
 			checkComplexType(complexType, bag, atomBridge, errors);
 		}
@@ -1115,7 +1115,7 @@ final class SmConstraintChecker
 		{
 			checkAttributeGroup(attributeGroup, errors, nameBridge);
 		}
-		for (final SmIdentityConstraint<A> constraint : bag.getIdentityConstraints())
+		for (final IdentityConstraint<A> constraint : bag.getIdentityConstraints())
 		{
 			checkIdentityConstraint(constraint, errors);
 		}
@@ -1129,7 +1129,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkSimpleType(final SmSimpleType<A> simpleType, final ComponentBag<A> bag, final ComponentProvider<A> existing, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
+	private static <A> void checkSimpleType(final SimpleType<A> simpleType, final ComponentBag<A> bag, final ComponentProvider<A> existing, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		final NameSource nameBridge = atomBridge.getNameBridge();
 		final WhiteSpacePolicy whiteSpace = simpleType.getWhiteSpacePolicy();
@@ -1139,51 +1139,51 @@ final class SmConstraintChecker
 		}
 		if (simpleType.hasFacets())
 		{
-			SmLength<A> length = null;
-			SmMinLength<A> minLength = null;
-			SmMaxLength<A> maxLength = null;
-			SmLimit<A> minExclusive = null;
-			SmLimit<A> maxExclusive = null;
-			SmLimit<A> minInclusive = null;
-			SmLimit<A> maxInclusive = null;
-			SmTotalDigits<A> totalDigits = null;
-			SmFractionDigits<A> fractionDigits = null;
-			for (final SmFacet<A> facet : simpleType.getFacets())
+			Length<A> length = null;
+			MinLength<A> minLength = null;
+			MaxLength<A> maxLength = null;
+			Limit<A> minExclusive = null;
+			Limit<A> maxExclusive = null;
+			Limit<A> minInclusive = null;
+			Limit<A> maxInclusive = null;
+			TotalDigits<A> totalDigits = null;
+			FractionDigits<A> fractionDigits = null;
+			for (final Facet<A> facet : simpleType.getFacets())
 			{
-				if (facet instanceof SmLength<?>)
+				if (facet instanceof Length<?>)
 				{
-					length = (SmLength<A>)facet;
-					final SmLength<A> parentLength = (SmLength<A>)(getParentFacet(SmFacetKind.Length, simpleType));
+					length = (Length<A>)facet;
+					final Length<A> parentLength = (Length<A>)(getParentFacet(FacetKind.Length, simpleType));
 					if (parentLength != null && parentLength.getValue() != length.getValue())
 					{
 						errors.error(simpleType, new SccLengthRestrictionException(length.getValue(), parentLength.getValue()));
 					}
 				}
-				else if (facet instanceof SmMinLength<?>)
+				else if (facet instanceof MinLength<?>)
 				{
-					minLength = (SmMinLength<A>)facet;
-					final SmMinLength<A> parentMinLength = (SmMinLength<A>)(getParentFacet(SmFacetKind.MinLength, simpleType));
+					minLength = (MinLength<A>)facet;
+					final MinLength<A> parentMinLength = (MinLength<A>)(getParentFacet(FacetKind.MinLength, simpleType));
 					if (parentMinLength != null && parentMinLength.getMinLength() > minLength.getMinLength())
 					{
 						errors.error(simpleType, new SccMinLengthRestrictionException(minLength.getMinLength(), parentMinLength.getMinLength()));
 					}
 				}
-				else if (facet instanceof SmMaxLength<?>)
+				else if (facet instanceof MaxLength<?>)
 				{
-					maxLength = (SmMaxLength<A>)facet;
-					final SmMaxLength<A> parentMaxLength = (SmMaxLength<A>)(getParentFacet(SmFacetKind.MaxLength, simpleType));
+					maxLength = (MaxLength<A>)facet;
+					final MaxLength<A> parentMaxLength = (MaxLength<A>)(getParentFacet(FacetKind.MaxLength, simpleType));
 					if (parentMaxLength != null && parentMaxLength.getMaxLength() < maxLength.getMaxLength())
 					{
 						errors.error(simpleType, new SccMaxLengthRestrictionException(maxLength.getMaxLength(), parentMaxLength.getMaxLength()));
 					}
 				}
-				else if (facet instanceof SmLimit<?>)
+				else if (facet instanceof Limit<?>)
 				{
-					final SmLimit<A> parentMinInclusive = (SmLimit<A>)(getParentFacet(SmFacetKind.MinInclusive, simpleType));
-					final SmLimit<A> parentMaxInclusive = (SmLimit<A>)(getParentFacet(SmFacetKind.MaxInclusive, simpleType));
-					final SmLimit<A> parentMinExclusive = (SmLimit<A>)(getParentFacet(SmFacetKind.MinExclusive, simpleType));
-					final SmLimit<A> parentMaxExclusive = (SmLimit<A>)(getParentFacet(SmFacetKind.MaxExclusive, simpleType));
-					final SmLimit<A> limit = (SmLimit<A>)facet;
+					final Limit<A> parentMinInclusive = (Limit<A>)(getParentFacet(FacetKind.MinInclusive, simpleType));
+					final Limit<A> parentMaxInclusive = (Limit<A>)(getParentFacet(FacetKind.MaxInclusive, simpleType));
+					final Limit<A> parentMinExclusive = (Limit<A>)(getParentFacet(FacetKind.MinExclusive, simpleType));
+					final Limit<A> parentMaxExclusive = (Limit<A>)(getParentFacet(FacetKind.MaxExclusive, simpleType));
+					final Limit<A> limit = (Limit<A>)facet;
 
 					switch (limit.getKind())
 					{
@@ -1214,19 +1214,19 @@ final class SmConstraintChecker
 					}
 					checkLimitRestriction(limit, parentMaxInclusive, parentMaxExclusive, parentMinInclusive, parentMinExclusive, simpleType, atomBridge, errors);
 				}
-				else if (facet instanceof SmTotalDigits<?>)
+				else if (facet instanceof TotalDigits<?>)
 				{
-					totalDigits = (SmTotalDigits<A>)facet;
-					final SmTotalDigits<A> parentTotalDigits = (SmTotalDigits<A>)(getParentFacet(SmFacetKind.TotalDigits, simpleType));
+					totalDigits = (TotalDigits<A>)facet;
+					final TotalDigits<A> parentTotalDigits = (TotalDigits<A>)(getParentFacet(FacetKind.TotalDigits, simpleType));
 					if (parentTotalDigits != null && parentTotalDigits.getTotalDigits() < totalDigits.getTotalDigits())
 					{
 						errors.error(simpleType, new SccTotalDigitsRestrictionException(totalDigits.getTotalDigits(), parentTotalDigits.getTotalDigits()));
 					}
 				}
-				else if (facet instanceof SmFractionDigits<?>)
+				else if (facet instanceof FractionDigits<?>)
 				{
-					fractionDigits = (SmFractionDigits<A>)facet;
-					final SmFractionDigits<A> parentFractionDigits = (SmFractionDigits<A>)(getParentFacet(SmFacetKind.FractionDigits, simpleType));
+					fractionDigits = (FractionDigits<A>)facet;
+					final FractionDigits<A> parentFractionDigits = (FractionDigits<A>)(getParentFacet(FacetKind.FractionDigits, simpleType));
 					if (parentFractionDigits != null && parentFractionDigits.getFractionDigits() < fractionDigits.getFractionDigits())
 					{
 						errors.error(simpleType, new SccFractionDigitsRestrictionException(fractionDigits.getFractionDigits(), parentFractionDigits.getFractionDigits()));
@@ -1316,7 +1316,7 @@ final class SmConstraintChecker
 				}
 			}
 		}
-		final SmSimpleType<A> notationType = existing.getAtomicType(SmNativeType.NOTATION);
+		final SimpleType<A> notationType = existing.getAtomicType(NativeType.NOTATION);
 		if (simpleType.derivedFromType(notationType, EnumSet.of(DerivationMethod.Restriction)))
 		{
 			for (final EnumerationDefinition<A> enumeration : simpleType.getEnumerations())
@@ -1344,15 +1344,15 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkTypeDerivationOK(final SmType<A> D, final SmType<A> B, final Set<DerivationMethod> subset, NameSource nameBridge) throws ComponentConstraintException
+	private static <A> void checkTypeDerivationOK(final Type<A> D, final Type<A> B, final Set<DerivationMethod> subset, NameSource nameBridge) throws ComponentConstraintException
 	{
-		if (D instanceof SmSimpleType<?>)
+		if (D instanceof SimpleType<?>)
 		{
-			checkTypeDerivationOKSimple((SmSimpleType<A>)D, B, subset, nameBridge);
+			checkTypeDerivationOKSimple((SimpleType<A>)D, B, subset, nameBridge);
 		}
-		else if (D instanceof SmComplexType<?>)
+		else if (D instanceof ComplexType<?>)
 		{
-			checkTypeDerivationOKComplex((SmComplexType<A>)D, B, subset, nameBridge);
+			checkTypeDerivationOKComplex((ComplexType<A>)D, B, subset, nameBridge);
 		}
 		else
 		{
@@ -1360,7 +1360,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	public static <A> void checkTypeDerivationOKComplex(final SmComplexType<A> D, final SmType<A> B, final Set<DerivationMethod> subset, NameSource nameBridge) throws ComponentConstraintException
+	public static <A> void checkTypeDerivationOKComplex(final ComplexType<A> D, final Type<A> B, final Set<DerivationMethod> subset, NameSource nameBridge) throws ComponentConstraintException
 	{
 		if (D == B)
 		{
@@ -1377,7 +1377,7 @@ final class SmConstraintChecker
 				throw new SccComplexTypeDerivationMethodException(D, B, subset);
 			}
 
-			final SmType<A> deeBaseType = D.getBaseType();
+			final Type<A> deeBaseType = D.getBaseType();
 			if (deeBaseType == B)
 			{
 				// B is D's {base type definition}
@@ -1390,7 +1390,7 @@ final class SmConstraintChecker
 				}
 				else
 				{
-					if (deeBaseType instanceof SmComplexType<?>)
+					if (deeBaseType instanceof ComplexType<?>)
 					{
 						try
 						{
@@ -1401,11 +1401,11 @@ final class SmConstraintChecker
 							throw new SccComplexTypeBaseComplexDerivationException(D, B, subset, e);
 						}
 					}
-					else if (deeBaseType instanceof SmSimpleType<?>)
+					else if (deeBaseType instanceof SimpleType<?>)
 					{
 						try
 						{
-							checkTypeDerivationOKSimple((SmSimpleType<A>)deeBaseType, B, subset, nameBridge);
+							checkTypeDerivationOKSimple((SimpleType<A>)deeBaseType, B, subset, nameBridge);
 						}
 						catch (final ComponentConstraintException e)
 						{
@@ -1424,7 +1424,7 @@ final class SmConstraintChecker
 	/**
 	 * Type Derivation OK (Simple) (3.14.6)
 	 */
-	public static <A> void checkTypeDerivationOKSimple(final SmSimpleType<A> D, final SmType<A> B, final Set<DerivationMethod> subset, final NameSource nameBridge) throws ComponentConstraintException
+	public static <A> void checkTypeDerivationOKSimple(final SimpleType<A> D, final Type<A> B, final Set<DerivationMethod> subset, final NameSource nameBridge) throws ComponentConstraintException
 	{
 		if (D == B)
 		{
@@ -1446,14 +1446,14 @@ final class SmConstraintChecker
 			{
 				isOK = true;
 			}
-			else if ((D instanceof SmListSimpleType<?> || D instanceof SmUnionSimpleType<?>) && B.isSimpleUrType())
+			else if ((D instanceof ListSimpleType<?> || D instanceof UnionSimpleType<?>) && B.isSimpleUrType())
 			{
 				isOK = true;
 			}
-			else if (B instanceof SmUnionSimpleType<?>)
+			else if (B instanceof UnionSimpleType<?>)
 			{
-				final SmUnionSimpleType<A> unionType = (SmUnionSimpleType<A>)B;
-				for (final SmSimpleType<A> memberType : unionType.getMemberTypes())
+				final UnionSimpleType<A> unionType = (UnionSimpleType<A>)B;
+				for (final SimpleType<A> memberType : unionType.getMemberTypes())
 				{
 					if (isTypeDerivationOK(D, memberType, subset, nameBridge))
 					{
@@ -1469,12 +1469,12 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkWhitespaceValidRestriction(final WhiteSpacePolicy ws, final SmSimpleType<A> simpleType, final SmConstraintHandler<A> errors, final NameSource nameBridge) throws AbortException
+	private static <A> void checkWhitespaceValidRestriction(final WhiteSpacePolicy ws, final SimpleType<A> simpleType, final SmConstraintHandler<A> errors, final NameSource nameBridge) throws AbortException
 	{
-		final SmType<A> baseType = simpleType.getBaseType();
-		if (baseType instanceof SmSimpleType<?>)
+		final Type<A> baseType = simpleType.getBaseType();
+		if (baseType instanceof SimpleType<?>)
 		{
-			final SmSimpleType<A> parent = (SmSimpleType<A>)baseType;
+			final SimpleType<A> parent = (SimpleType<A>)baseType;
 			final WhiteSpacePolicy pws = parent.getWhiteSpacePolicy();
 			if (null != pws)
 			{
@@ -1496,16 +1496,16 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> boolean clause14(final SmComplexType<A> complexType, final SmComplexType<A> baseType)
+	private static <A> boolean clause14(final ComplexType<A> complexType, final ComplexType<A> baseType)
 	{
 		// 1.4 One of the following must be true.
-		final SmContentType<A> contentTypeD = complexType.getContentType();
-		final SmContentType<A> contentTypeB = baseType.getContentType();
+		final ContentType<A> contentTypeD = complexType.getContentType();
+		final ContentType<A> contentTypeB = baseType.getContentType();
 
 		return clause141(contentTypeD, contentTypeB) || clause142(contentTypeD, contentTypeB) || clause143(contentTypeD, contentTypeB);
 	}
 
-	private static <A> boolean clause141(final SmContentType<A> contentTypeD, final SmContentType<A> contentTypeB)
+	private static <A> boolean clause141(final ContentType<A> contentTypeD, final ContentType<A> contentTypeB)
 	{
 		if (contentTypeD.isSimple() && contentTypeB.isSimple())
 		{
@@ -1517,12 +1517,12 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> boolean clause142(final SmContentType<A> contentTypeD, final SmContentType<A> contentTypeB)
+	private static <A> boolean clause142(final ContentType<A> contentTypeD, final ContentType<A> contentTypeB)
 	{
 		return contentTypeD.isEmpty() && contentTypeB.isEmpty();
 	}
 
-	private static <A> boolean clause143(final SmContentType<A> contentTypeD, final SmContentType<A> contentTypeB)
+	private static <A> boolean clause143(final ContentType<A> contentTypeD, final ContentType<A> contentTypeB)
 	{
 		if (clause1431(contentTypeD))
 		{
@@ -1534,27 +1534,27 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> boolean clause1431(final SmContentType<A> contentTypeD)
+	private static <A> boolean clause1431(final ContentType<A> contentTypeD)
 	{
 		return contentTypeD.isMixed() || contentTypeD.isElementOnly();
 	}
 
-	private static <A> boolean clause1432(final SmContentType<A> contentTypeD, final SmContentType<A> contentTypeB)
+	private static <A> boolean clause1432(final ContentType<A> contentTypeD, final ContentType<A> contentTypeB)
 	{
 		return clause14321(contentTypeB) || clause14322(contentTypeD, contentTypeB);
 	}
 
-	private static <A> boolean clause14321(final SmContentType<A> contentTypeB)
+	private static <A> boolean clause14321(final ContentType<A> contentTypeB)
 	{
 		return contentTypeB.isEmpty();
 	}
 
-	private static <A> boolean clause14322(final SmContentType<A> contentTypeD, final SmContentType<A> contentTypeB)
+	private static <A> boolean clause14322(final ContentType<A> contentTypeD, final ContentType<A> contentTypeB)
 	{
 		if (clause143221(contentTypeD, contentTypeB))
 		{
-			final SmModelGroupUse<A> contentModelD = contentTypeD.getContentModel();
-			final SmModelGroupUse<A> contentModelB = contentTypeB.getContentModel();
+			final ModelGroupUse<A> contentModelD = contentTypeD.getContentModel();
+			final ModelGroupUse<A> contentModelB = contentTypeB.getContentModel();
 			return clause143222(contentModelD, contentModelB);
 		}
 		else
@@ -1563,7 +1563,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> boolean clause143221(final SmContentType<A> contentTypeD, final SmContentType<A> contentTypeB)
+	private static <A> boolean clause143221(final ContentType<A> contentTypeD, final ContentType<A> contentTypeB)
 	{
 		if (contentTypeD.isMixed() && contentTypeB.isMixed())
 		{
@@ -1576,12 +1576,12 @@ final class SmConstraintChecker
 		return false;
 	}
 
-	private static <A> boolean clause143222(final SmModelGroupUse<A> contentModelD, final SmModelGroupUse<A> contentModelB)
+	private static <A> boolean clause143222(final ModelGroupUse<A> contentModelD, final ModelGroupUse<A> contentModelB)
 	{
 		return isValidParticleExtension(contentModelD, contentModelB);
 	}
 
-	private static <A> boolean clause21(final SmContentType<A> contentTypeD, final SmSimpleType<A> simpleTypeB)
+	private static <A> boolean clause21(final ContentType<A> contentTypeD, final SimpleType<A> simpleTypeB)
 	{
 		if (contentTypeD.isSimple())
 		{
@@ -1593,30 +1593,30 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> boolean clause22(final SmSimpleType<A> simpleTypeB)
+	private static <A> boolean clause22(final SimpleType<A> simpleTypeB)
 	{
 		return !simpleTypeB.isFinal(DerivationMethod.Extension);
 	}
 
-	private static <A> boolean clause52(final SmComplexType<A> complexType, final SmComplexType<A> baseType)
+	private static <A> boolean clause52(final ComplexType<A> complexType, final ComplexType<A> baseType)
 	{
 		// 5.2 All the following must be true.
 		return contentTypeMustBeSimple521(complexType) && clause522(complexType, baseType);
 	}
 
-	private static <A> boolean clause522(final SmComplexType<A> complexType, final SmComplexType<A> baseType)
+	private static <A> boolean clause522(final ComplexType<A> complexType, final ComplexType<A> baseType)
 	{
 		return clause5221(complexType, baseType) || isMixedWithEmptiableParticle5222(baseType);
 
 	}
 
-	private static <A> boolean clause5221(final SmComplexType<A> complexType, final SmComplexType<A> baseType)
+	private static <A> boolean clause5221(final ComplexType<A> complexType, final ComplexType<A> baseType)
 	{
 		// 5.2.2.1 The {content type} of the {base type definition} must be a
 		// simple type definition from which the
 		// {content type} is validly derived given the empty set as defined in
 		// Type Derivation OK (Simple) (3.14.6).
-		final SmContentType<A> contentType = baseType.getContentType();
+		final ContentType<A> contentType = baseType.getContentType();
 		if (contentType.isSimple())
 		{
 			return isSimpleDerivationOK(complexType, baseType);
@@ -1627,24 +1627,24 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> boolean clause53(final SmComplexType<A> complexType, final SmComplexType<A> baseType)
+	private static <A> boolean clause53(final ComplexType<A> complexType, final ComplexType<A> baseType)
 	{
 		return complexType.getContentType().isEmpty() && clause532(baseType);
 	}
 
-	private static <A> boolean clause532(final SmComplexType<A> baseType)
+	private static <A> boolean clause532(final ComplexType<A> baseType)
 	{
 		return clause5321(baseType) || clause5322(baseType);
 	}
 
-	private static <A> boolean clause5321(final SmComplexType<A> baseType)
+	private static <A> boolean clause5321(final ComplexType<A> baseType)
 	{
 		return baseType.getContentType().isEmpty();
 	}
 
-	private static <A> boolean clause5322(final SmComplexType<A> baseType)
+	private static <A> boolean clause5322(final ComplexType<A> baseType)
 	{
-		final SmContentType<A> contentType = baseType.getContentType();
+		final ContentType<A> contentType = baseType.getContentType();
 		if (contentType.isElementOnly() || contentType.isMixed())
 		{
 			return contentType.getContentModel().isEmptiable();
@@ -1657,11 +1657,11 @@ final class SmConstraintChecker
 
 	private static <A> SmCompareKind compare(final A lhsAtom, final A rhsAtom, final AtomBridge<A> atomBridge)
 	{
-		final SmNativeType lhsNativeType = atomBridge.getNativeType(lhsAtom);
+		final NativeType lhsNativeType = atomBridge.getNativeType(lhsAtom);
 		if (lhsNativeType.isInt())
 		{
 			final int lhs = atomBridge.getInt(lhsAtom);
-			final int rhs = atomBridge.getInt(castUp(rhsAtom, SmNativeType.INT, atomBridge));
+			final int rhs = atomBridge.getInt(castUp(rhsAtom, NativeType.INT, atomBridge));
 			if (lhs > rhs)
 			{
 				return SmCompareKind.AFTER;
@@ -1678,21 +1678,21 @@ final class SmConstraintChecker
 		else if (lhsNativeType.isInteger())
 		{
 			final BigInteger lhs = atomBridge.getInteger(lhsAtom);
-			final BigInteger rhs = atomBridge.getInteger(castUp(rhsAtom, SmNativeType.INTEGER, atomBridge));
+			final BigInteger rhs = atomBridge.getInteger(castUp(rhsAtom, NativeType.INTEGER, atomBridge));
 			return SmCompareKind.lookup(lhs.compareTo(rhs));
 		}
-		else if (lhsNativeType == SmNativeType.DECIMAL)
+		else if (lhsNativeType == NativeType.DECIMAL)
 		{
 			final BigDecimal lhs = atomBridge.getDecimal(lhsAtom);
-			final BigDecimal rhs = atomBridge.getDecimal(castUp(rhsAtom, SmNativeType.DECIMAL, atomBridge));
+			final BigDecimal rhs = atomBridge.getDecimal(castUp(rhsAtom, NativeType.DECIMAL, atomBridge));
 			return SmCompareKind.lookup(lhs.compareTo(rhs));
 		}
-		else if (lhsNativeType == SmNativeType.FLOAT)
+		else if (lhsNativeType == NativeType.FLOAT)
 		{
 			final float lhs = atomBridge.getFloat(lhsAtom);
 			// final float lhs = atomBridge.getFloat(castUp(lhsAtom,
-			// SmNativeType.FLOAT, atomBridge));
-			final float rhs = atomBridge.getFloat(castUp(rhsAtom, SmNativeType.FLOAT, atomBridge));
+			// NativeType.FLOAT, atomBridge));
+			final float rhs = atomBridge.getFloat(castUp(rhsAtom, NativeType.FLOAT, atomBridge));
 			if (lhs > rhs)
 			{
 				return SmCompareKind.AFTER;
@@ -1706,7 +1706,7 @@ final class SmConstraintChecker
 				return SmCompareKind.EQUAL;
 			}
 		}
-		else if (lhsNativeType == SmNativeType.DOUBLE)
+		else if (lhsNativeType == NativeType.DOUBLE)
 		{
 			final double lhs = atomBridge.getDouble(lhsAtom);
 			final double rhs = atomBridge.getDouble(rhsAtom);
@@ -1727,10 +1727,10 @@ final class SmConstraintChecker
 				throw new AssertionError("lhs=" + lhs + ", rhs=" + rhs);
 			}
 		}
-		else if (lhsNativeType == SmNativeType.DATE)
+		else if (lhsNativeType == NativeType.DATE)
 		{
-			final Gregorian P = normalize(Gregorian.dateTime(castUp(lhsAtom, SmNativeType.DATE, atomBridge), atomBridge));
-			final Gregorian Q = normalize(Gregorian.dateTime(castUp(rhsAtom, SmNativeType.DATE, atomBridge), atomBridge));
+			final Gregorian P = normalize(Gregorian.dateTime(castUp(lhsAtom, NativeType.DATE, atomBridge), atomBridge));
+			final Gregorian Q = normalize(Gregorian.dateTime(castUp(rhsAtom, NativeType.DATE, atomBridge), atomBridge));
 			if (P.hasGmtOffset())
 			{
 				if (Q.hasGmtOffset())
@@ -1880,7 +1880,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> boolean contentTypeMustBeSimple521(final SmComplexType<A> complexType)
+	private static <A> boolean contentTypeMustBeSimple521(final ComplexType<A> complexType)
 	{
 		return complexType.getContentType().isSimple();
 	}
@@ -1931,16 +1931,16 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> boolean existsTypeDerivedByRestrictionWithMaxLength(final SmSimpleType<A> simpleType, int maxLength)
+	private static <A> boolean existsTypeDerivedByRestrictionWithMaxLength(final SimpleType<A> simpleType, int maxLength)
 	{
 		if (simpleType.getDerivationMethod().isRestriction())
 		{
-			SmType<A> currentType = simpleType.getBaseType();
+			Type<A> currentType = simpleType.getBaseType();
 			while (!currentType.isComplexUrType())
 			{
-				if (currentType instanceof SmSimpleType<?>)
+				if (currentType instanceof SimpleType<?>)
 				{
-					if (hasMaxLengthAndNoLength((SmSimpleType<A>)currentType, maxLength))
+					if (hasMaxLengthAndNoLength((SimpleType<A>)currentType, maxLength))
 					{
 						return true;
 					}
@@ -1969,16 +1969,16 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> boolean existsTypeDerivedByRestrictionWithMinLength(final SmSimpleType<A> simpleType, int minLength)
+	private static <A> boolean existsTypeDerivedByRestrictionWithMinLength(final SimpleType<A> simpleType, int minLength)
 	{
 		if (simpleType.getDerivationMethod().isRestriction())
 		{
-			SmType<A> currentType = simpleType.getBaseType();
+			Type<A> currentType = simpleType.getBaseType();
 			while (!currentType.isComplexUrType())
 			{
-				if (currentType instanceof SmSimpleType<?>)
+				if (currentType instanceof SimpleType<?>)
 				{
-					if (hasMinLengthAndNoLength((SmSimpleType<A>)currentType, minLength))
+					if (hasMinLengthAndNoLength((SimpleType<A>)currentType, minLength))
 					{
 						return true;
 					}
@@ -2078,13 +2078,13 @@ final class SmConstraintChecker
 	 * @param simpleType
 	 * @return the requested, inherited facet or null if no such facet exists
 	 */
-	private static <A> SmFacet<A> getParentFacet(final SmFacetKind facetKind, final SmSimpleType<A> simpleType)
+	private static <A> Facet<A> getParentFacet(final FacetKind facetKind, final SimpleType<A> simpleType)
 	{
-		SmType<A> baseType = simpleType.getBaseType();
-		SmFacet<A> parentFacet = null;
-		while (baseType instanceof SmSimpleType<?> && parentFacet == null)
+		Type<A> baseType = simpleType.getBaseType();
+		Facet<A> parentFacet = null;
+		while (baseType instanceof SimpleType<?> && parentFacet == null)
 		{
-			final SmSimpleType<A> parent = (SmSimpleType<A>)baseType;
+			final SimpleType<A> parent = (SimpleType<A>)baseType;
 			if (parent.hasFacets())
 			{
 				parentFacet = parent.getFacetOfKind(facetKind);
@@ -2097,17 +2097,17 @@ final class SmConstraintChecker
 		return parentFacet;
 	}
 
-	private static <A> boolean hasMaxLengthAndNoLength(final SmSimpleType<A> simpleType, final int maxLength)
+	private static <A> boolean hasMaxLengthAndNoLength(final SimpleType<A> simpleType, final int maxLength)
 	{
 		if (simpleType.hasFacets())
 		{
-			if (simpleType.getFacetOfKind(SmFacetKind.Length) != null)
+			if (simpleType.getFacetOfKind(FacetKind.Length) != null)
 			{
 				return false;
 			}
 			else
 			{
-				SmMaxLength<A> facet = (SmMaxLength<A>)(simpleType.getFacetOfKind(SmFacetKind.MaxLength));
+				MaxLength<A> facet = (MaxLength<A>)(simpleType.getFacetOfKind(FacetKind.MaxLength));
 				if (facet != null)
 				{
 					return facet.getMaxLength() == maxLength;
@@ -2123,17 +2123,17 @@ final class SmConstraintChecker
 
 	}
 
-	private static <A> boolean hasMinLengthAndNoLength(final SmSimpleType<A> simpleType, final int minLength)
+	private static <A> boolean hasMinLengthAndNoLength(final SimpleType<A> simpleType, final int minLength)
 	{
 		if (simpleType.hasFacets())
 		{
-			if (simpleType.getFacetOfKind(SmFacetKind.Length) != null)
+			if (simpleType.getFacetOfKind(FacetKind.Length) != null)
 			{
 				return false;
 			}
 			else
 			{
-				SmMinLength<A> facet = (SmMinLength<A>)(simpleType.getFacetOfKind(SmFacetKind.MinLength));
+				MinLength<A> facet = (MinLength<A>)(simpleType.getFacetOfKind(FacetKind.MinLength));
 				if (facet != null)
 				{
 					return facet.getMinLength() == minLength;
@@ -2148,9 +2148,9 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> boolean isDerivedFrom(final SmType<A> type, final QName typeName)
+	private static <A> boolean isDerivedFrom(final Type<A> type, final QName typeName)
 	{
-		SmType<A> currentType = type;
+		Type<A> currentType = type;
 		while (!currentType.isComplexUrType())
 		{
 			if (currentType.getName().equals(typeName))
@@ -2162,9 +2162,9 @@ final class SmConstraintChecker
 		return false;
 	}
 
-	private static <A> boolean isMixedWithEmptiableParticle5222(final SmComplexType<A> type)
+	private static <A> boolean isMixedWithEmptiableParticle5222(final ComplexType<A> type)
 	{
-		final SmContentType<A> contentType = type.getContentType();
+		final ContentType<A> contentType = type.getContentType();
 		if (contentType.isMixed())
 		{
 			return contentType.getContentModel().isEmptiable();
@@ -2175,7 +2175,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> boolean isSimpleDerivationOK(final SmType<A> complexType, final SmType<A> baseType)
+	private static <A> boolean isSimpleDerivationOK(final Type<A> complexType, final Type<A> baseType)
 	{
 		// TODO See checkTypeDerivationSimple
 		complexType.getName();
@@ -2184,7 +2184,7 @@ final class SmConstraintChecker
 		return true;
 	}
 
-	private static <A> boolean isTypeDerivationOK(final SmType<A> D, final SmType<A> B, final Set<DerivationMethod> subset, NameSource nameBridge)
+	private static <A> boolean isTypeDerivationOK(final Type<A> D, final Type<A> B, final Set<DerivationMethod> subset, NameSource nameBridge)
 	{
 		try
 		{
@@ -2205,7 +2205,7 @@ final class SmConstraintChecker
 	 * @param B
 	 *            The base particle.
 	 */
-	private static <A> boolean isValidParticleExtension(final SmModelGroupUse<A> E, final SmModelGroupUse<A> B)
+	private static <A> boolean isValidParticleExtension(final ModelGroupUse<A> E, final ModelGroupUse<A> B)
 	{
 		final int minOccurs = E.getMinOccurs();
 		final int maxOccurs = E.getMaxOccurs();
@@ -2225,9 +2225,9 @@ final class SmConstraintChecker
 				if (particles.hasNext())
 				{
 					final SchemaParticle<A> firstMember = particles.next();
-					if (firstMember instanceof SmModelGroupUse<?>)
+					if (firstMember instanceof ModelGroupUse<?>)
 					{
-						final SmModelGroupUse<A> F = (SmModelGroupUse<A>)firstMember;
+						final ModelGroupUse<A> F = (ModelGroupUse<A>)firstMember;
 						return recursivelyIdenticalProperties(F, B);
 					}
 					else
@@ -2347,7 +2347,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> boolean recursivelyIdenticalProperties(final SmModelGroupUse<A> one, final SmModelGroupUse<A> two)
+	private static <A> boolean recursivelyIdenticalProperties(final ModelGroupUse<A> one, final ModelGroupUse<A> two)
 	{
 		if (one == two)
 		{

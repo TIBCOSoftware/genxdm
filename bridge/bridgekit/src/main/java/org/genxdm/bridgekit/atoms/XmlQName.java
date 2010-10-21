@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.atoms;
 
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 public class XmlQName extends XmlAbstractAtom
 {
@@ -89,9 +89,9 @@ public class XmlQName extends XmlAbstractAtom
 		return namespaceURI;
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.QNAME;
+		return NativeType.QNAME;
 	}
 
 	public String getPrefix()

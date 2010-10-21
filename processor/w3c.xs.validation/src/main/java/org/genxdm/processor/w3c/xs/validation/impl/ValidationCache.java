@@ -34,8 +34,8 @@ import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.components.ParticleTerm;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmContentType;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.ContentType;
 
 
 final class ValidationCache<A> implements VxValidatorCache<A>
@@ -45,7 +45,7 @@ final class ValidationCache<A> implements VxValidatorCache<A>
 	private final VxValidationHost<A> host;
 	private final VxSchemaDocumentLocationStrategy sdl;
 
-	private final ConcurrentHashMap<SmComplexType<A>, RegExPattern<ValidationExpr<A, ParticleTerm<A>>, QName>> m_patterns = new ConcurrentHashMap<SmComplexType<A>, RegExPattern<ValidationExpr<A, ParticleTerm<A>>, QName>>();
+	private final ConcurrentHashMap<ComplexType<A>, RegExPattern<ValidationExpr<A, ParticleTerm<A>>, QName>> m_patterns = new ConcurrentHashMap<ComplexType<A>, RegExPattern<ValidationExpr<A, ParticleTerm<A>>, QName>>();
 
 	private final RegExBridge<ValidationExpr<A, ParticleTerm<A>>, QName> m_regexb;
 
@@ -62,9 +62,9 @@ final class ValidationCache<A> implements VxValidatorCache<A>
 		return new ValidationKernel<A>(host, this, sdl);
 	}
 
-	SmContentFiniteStateMachine<A> getMachine(final SmComplexType<A> complexType)
+	SmContentFiniteStateMachine<A> getMachine(final ComplexType<A> complexType)
 	{
-		final SmComplexType<A> itemType = (SmComplexType<A>)complexType;
+		final ComplexType<A> itemType = (ComplexType<A>)complexType;
 		final RegExPattern<ValidationExpr<A, ParticleTerm<A>>, QName> pattern = ensurePattern(itemType);
 
 		final List<ValidationExpr<A, ParticleTerm<A>>> expectedFollowers = new LinkedList<ValidationExpr<A, ParticleTerm<A>>>();
@@ -73,7 +73,7 @@ final class ValidationCache<A> implements VxValidatorCache<A>
 		return new SmMachineImpl<A>(regexm);
 	}
 
-	private RegExPattern<ValidationExpr<A, ParticleTerm<A>>, QName> ensurePattern(final SmComplexType<A> complexType)
+	private RegExPattern<ValidationExpr<A, ParticleTerm<A>>, QName> ensurePattern(final ComplexType<A> complexType)
 	{
 		final RegExPattern<ValidationExpr<A, ParticleTerm<A>>, QName> cachedPattern = m_patterns.get(complexType);
 		if (null != cachedPattern)
@@ -82,7 +82,7 @@ final class ValidationCache<A> implements VxValidatorCache<A>
 		}
 		else
 		{
-			final SmContentType<A> contentType = complexType.getContentType();
+			final ContentType<A> contentType = complexType.getContentType();
 
 			final SchemaParticle<A> contentModel = contentType.getContentModel();
 			final ValidationExpr<A, ParticleTerm<A>> expression = expression(contentModel);

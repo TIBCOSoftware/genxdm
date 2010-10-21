@@ -20,16 +20,16 @@ import java.util.LinkedList;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.constraints.SmIdentityConstraintKind;
-import org.genxdm.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.constraints.IdentityConstraintKind;
+import org.genxdm.xs.constraints.RestrictedXPath;
 
 final class XMLIdentityConstraint<A> extends XMLComponent<A>
 {
 	private final QName name;
-	public SmIdentityConstraintKind category;
-	public SmRestrictedXPath selector;
+	public IdentityConstraintKind category;
+	public RestrictedXPath selector;
 	public XMLIdentityConstraint<A> keyConstraint;
-	public final LinkedList<SmRestrictedXPath> fields = new LinkedList<SmRestrictedXPath>();
+	public final LinkedList<RestrictedXPath> fields = new LinkedList<RestrictedXPath>();
 
 	public XMLIdentityConstraint(final QName name, final XMLScope<A> global)
 	{

@@ -16,21 +16,21 @@
 package org.genxdm.bridgekit.xs;
 
 import org.genxdm.xs.enums.KeeneQuantifier;
-import org.genxdm.xs.types.SmEmptyType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmPrimeTypeKind;
-import org.genxdm.xs.types.SmSequenceType;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.xs.types.EmptyType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.PrimeTypeKind;
+import org.genxdm.xs.types.SequenceType;
+import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class ZEmptyType<A> implements SmEmptyType<A>
+final class ZEmptyType<A> implements EmptyType<A>
 {
 	public ZEmptyType()
 	{
 	}
 
-	public SmPrimeType<A> prime()
+	public PrimeType<A> prime()
 	{
-		return new NoneType<A>();
+		return new NoneTypeImpl<A>();
 	}
 
 	public KeeneQuantifier quantifier()
@@ -43,14 +43,14 @@ final class ZEmptyType<A> implements SmEmptyType<A>
 		return false;
 	}
 
-	public boolean subtype(final SmPrimeType<A> rhs)
+	public boolean subtype(final PrimeType<A> rhs)
 	{
 		return rhs.quantifier().contains(KeeneQuantifier.EMPTY);
 	}
 
-	public SmPrimeTypeKind getKind()
+	public PrimeTypeKind getKind()
 	{
-		return SmPrimeTypeKind.EMPTY;
+		return PrimeTypeKind.EMPTY;
 	}
 
 	public boolean isNative()
@@ -63,7 +63,7 @@ final class ZEmptyType<A> implements SmEmptyType<A>
 		return false;
 	}
 
-	public SmSequenceType<A> atomSet()
+	public SequenceType<A> atomSet()
 	{
 		return this;
 	}
@@ -74,7 +74,7 @@ final class ZEmptyType<A> implements SmEmptyType<A>
 		return "empty";
 	}
 
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		visitor.visit(this);
 	}

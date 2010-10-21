@@ -27,22 +27,22 @@ import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
 import org.genxdm.xs.exceptions.DatatypeException;
-import org.genxdm.xs.facets.SmFacet;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmPattern;
+import org.genxdm.xs.facets.Facet;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.Pattern;
 import org.genxdm.xs.resolve.PrefixResolver;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.SimpleType;
 
 final class HexBinaryType<A> extends AbstractAtomType<A>
 {
-	public HexBinaryType(final QName name, final SmSimpleType<A> baseType, final AtomBridge<A> atomBridge)
+	public HexBinaryType(final QName name, final SimpleType<A> baseType, final AtomBridge<A> atomBridge)
 	{
 		super(name, baseType, atomBridge);
 	}
 
-	public void accept(SmSequenceTypeVisitor<A> visitor)
+	public void accept(SequenceTypeVisitor<A> visitor)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -60,13 +60,13 @@ final class HexBinaryType<A> extends AbstractAtomType<A>
 		throw new AssertionError("TODO");
 	}
 
-	public SmFacet<A> getFacetOfKind(SmFacetKind facetKind)
+	public Facet<A> getFacetOfKind(FacetKind facetKind)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public Iterable<SmFacet<A>> getFacets()
+	public Iterable<Facet<A>> getFacets()
 	{
 		return Collections.emptyList();
 	}
@@ -76,12 +76,12 @@ final class HexBinaryType<A> extends AbstractAtomType<A>
 		return Collections.emptySet();
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.HEX_BINARY;
+		return NativeType.HEX_BINARY;
 	}
 
-	public Iterable<SmPattern> getPatterns()
+	public Iterable<Pattern> getPatterns()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -103,7 +103,7 @@ final class HexBinaryType<A> extends AbstractAtomType<A>
 		return false;
 	}
 
-	public boolean hasFacetOfKind(final SmFacetKind facetKind)
+	public boolean hasFacetOfKind(final FacetKind facetKind)
 	{
 		return false;
 	}
@@ -146,13 +146,13 @@ final class HexBinaryType<A> extends AbstractAtomType<A>
 		}
 	}
 
-	private static void illegal(final String s, final char c, final SmSimpleType<?> type) throws DatatypeException
+	private static void illegal(final String s, final char c, final SimpleType<?> type) throws DatatypeException
 	{
 		throw new DatatypeException(s, type);
 		// throw new DatatypeException(s, type, new IllegalArgumentException("Illegal hex character:" + c));
 	}
 
-	public static byte[] parseHexBinary(final String s, final SmSimpleType<?> type) throws DatatypeException
+	public static byte[] parseHexBinary(final String s, final SimpleType<?> type) throws DatatypeException
 	{
 		final char[] buf = s.toCharArray();
 

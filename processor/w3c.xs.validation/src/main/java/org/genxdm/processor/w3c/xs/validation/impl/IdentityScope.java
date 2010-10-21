@@ -22,13 +22,13 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.constraints.IdentityConstraint;
+import org.genxdm.xs.constraints.RestrictedXPath;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.resolve.LocationInSchema;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 
 /**
  * {@link IdentityScope} corresponds to an identity-constraint. An {@link IdentityScope} is created for each constraint
@@ -39,7 +39,7 @@ import org.genxdm.xs.types.SmType;
  */
 abstract class IdentityScope<A>
 {
-	private final SmIdentityConstraint<A> m_constraint;
+	private final IdentityConstraint<A> m_constraint;
 	protected final SchemaExceptionHandler m_errorHandler;
 
 	/**
@@ -65,7 +65,7 @@ abstract class IdentityScope<A>
 	// m_qualifiedTargets;
 	protected final LocationInSchema m_location;
 
-	protected IdentityScope(final int elementIndex, final SmIdentityConstraint<A> constraint, final SchemaExceptionHandler errorHandler, final LocationInSchema location)
+	protected IdentityScope(final int elementIndex, final IdentityConstraint<A> constraint, final SchemaExceptionHandler errorHandler, final LocationInSchema location)
 	{
 		m_elementIndex = elementIndex;
 		m_constraint = PreCondition.assertArgumentNotNull(constraint);
@@ -94,7 +94,7 @@ abstract class IdentityScope<A>
 	 */
 	protected abstract void onScopeEnd(final int elementIndex, final Locatable location) throws AbortException;
 
-	public void startElement(final QName elementName, final int elementIndex, final SmType<A> elementType, final Locatable locatable) throws AbortException
+	public void startElement(final QName elementName, final int elementIndex, final Type<A> elementType, final Locatable locatable) throws AbortException
 	{
 		for (final ArrayList<IdentityField<A>> contextFields : m_fieldEvals.values())
 		{
@@ -107,7 +107,7 @@ abstract class IdentityScope<A>
 		m_selectorEval.startElement(elementName, elementIndex);
 	}
 
-	public void attribute(final QName attributeName, final List<? extends A> actualValue, final int attributeIndex, final SmSimpleType<A> attributeType, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
+	public void attribute(final QName attributeName, final List<? extends A> actualValue, final int attributeIndex, final SimpleType<A> attributeType, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		for (final ArrayList<IdentityField<A>> contextFields : m_fieldEvals.values())
 		{
@@ -118,7 +118,7 @@ abstract class IdentityScope<A>
 		}
 	}
 
-	public void text(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final int textIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
+	public void text(final List<? extends A> actualValue, final SimpleType<A> actualType, final int textIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		for (final ArrayList<IdentityField<A>> contextFields : m_fieldEvals.values())
 		{
@@ -142,7 +142,7 @@ abstract class IdentityScope<A>
 		}
 	}
 
-	public SmIdentityConstraint<A> getConstraint()
+	public IdentityConstraint<A> getConstraint()
 	{
 		return m_constraint;
 	}
@@ -166,7 +166,7 @@ abstract class IdentityScope<A>
 			m_boundFields.put(elementIndex, 0);
 
 			final ArrayList<IdentityField<A>> fieldEvals = new ArrayList<IdentityField<A>>();
-			for (final SmRestrictedXPath path : getConstraint().getFields())
+			for (final RestrictedXPath path : getConstraint().getFields())
 			{
 				fieldEvals.add(new IdentityField<A>(path, elementIndex, this, m_errorHandler));
 			}

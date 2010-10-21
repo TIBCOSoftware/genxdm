@@ -17,15 +17,15 @@ package org.genxdm.xs.components;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.types.SmAtomicType;
-import org.genxdm.xs.types.SmAtomicUrType;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmComplexUrType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmSimpleUrType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.constraints.IdentityConstraint;
+import org.genxdm.xs.types.AtomicType;
+import org.genxdm.xs.types.AtomicUrType;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.ComplexUrType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.SimpleUrType;
+import org.genxdm.xs.types.Type;
 
 /**
  * A collection of schema components accessible through their expanded-QName.
@@ -42,11 +42,11 @@ public interface ComponentProvider<A> extends ComponentDetector
 	 *            The name of the Atomic type definition to be retrieved.
 	 * @return The atomic type identified by the name, or <code>null</code> if it does not exist.
 	 */
-	SmAtomicType<A> getAtomicType(QName name);
+	AtomicType<A> getAtomicType(QName name);
 
-	SmAtomicType<A> getAtomicType(SmNativeType name);
+	AtomicType<A> getAtomicType(NativeType name);
 
-	SmAtomicUrType<A> getAtomicUrType();
+	AtomicUrType<A> getAtomicUrType();
 
 	/**
 	 * Returns the {@link org.genxdm.xs.components.AttributeDefinition} if it exists by the given name, otherwise <code>null</code>. If an
@@ -70,16 +70,16 @@ public interface ComponentProvider<A> extends ComponentDetector
 	AttributeGroupDefinition<A> getAttributeGroup(QName name);
 
 	/**
-	 * Returns the {@link SmComplexType} if it exists by the given name, otherwise <code>null</code>. If an error
+	 * Returns the {@link ComplexType} if it exists by the given name, otherwise <code>null</code>. If an error
 	 * occurs, an implementation-defined unchecked exception will be thrown.
 	 * 
 	 * @param name
 	 *            The name of the Complex type definition to be retrieved.
-	 * @return The {@link org.genxdm.xs.types.SmComplexType} identified by the name, or <code>null</code> if it does not exist.
+	 * @return The {@link org.genxdm.xs.types.ComplexType} identified by the name, or <code>null</code> if it does not exist.
 	 */
-	SmComplexType<A> getComplexType(QName name);
+	ComplexType<A> getComplexType(QName name);
 
-	SmComplexUrType<A> getComplexUrType();
+	ComplexUrType<A> getComplexUrType();
 
 	/**
 	 * Returns the {@link org.genxdm.xs.components.ElementDefinition} if it exists by the given name, otherwise <code>null</code>. If an
@@ -92,14 +92,14 @@ public interface ComponentProvider<A> extends ComponentDetector
 	ElementDefinition<A> getElementDeclaration(QName name);
 
 	/**
-	 * Returns the {@link SmIdentityConstraint} if it exists by the given name, otherwise <code>null</code>. If an error
+	 * Returns the {@link IdentityConstraint} if it exists by the given name, otherwise <code>null</code>. If an error
 	 * occurs, an implementation-defined unchecked exception will be thrown.
 	 * 
 	 * @param name
 	 *            The name of the Identity-constraint definition to be retrieved.
-	 * @return The {@link SmIdentityConstraint} identified by the name, or <code>null</code> if it does not exist.
+	 * @return The {@link IdentityConstraint} identified by the name, or <code>null</code> if it does not exist.
 	 */
-	SmIdentityConstraint<A> getIdentityConstraint(QName name);
+	IdentityConstraint<A> getIdentityConstraint(QName name);
 
 	/**
 	 * Returns the {@link org.genxdm.xs.components.ModelGroup} if it exists by the given name, otherwise <code>null</code>. If an
@@ -122,28 +122,28 @@ public interface ComponentProvider<A> extends ComponentDetector
 	NotationDefinition<A> getNotationDeclaration(QName name);
 
 	/**
-	 * Returns the {@link org.genxdm.xs.types.SmSimpleType} if it exists by the given name, otherwise <code>null</code>. If an
+	 * Returns the {@link org.genxdm.xs.types.SimpleType} if it exists by the given name, otherwise <code>null</code>. If an
 	 * error occurs, an implementation-defined unchecked exception will be thrown.
 	 * 
 	 * @param name
 	 *            The name of the Simple type definition to be retrieved.
-	 * @return The {@link org.genxdm.xs.types.SmSimpleType} identified by the name, or <code>null</code> if it does not exist.
+	 * @return The {@link org.genxdm.xs.types.SimpleType} identified by the name, or <code>null</code> if it does not exist.
 	 */
-	SmSimpleType<A> getSimpleType(QName name);
+	SimpleType<A> getSimpleType(QName name);
 
-	SmSimpleType<A> getSimpleType(SmNativeType name);
+	SimpleType<A> getSimpleType(NativeType name);
 
-	SmSimpleUrType<A> getSimpleUrType();
+	SimpleUrType<A> getSimpleUrType();
 
 	/**
-	 * Returns the {@link org.genxdm.xs.types.SmType} if it exists by the given name, otherwise <code>null</code>. If an error
+	 * Returns the {@link org.genxdm.xs.types.Type} if it exists by the given name, otherwise <code>null</code>. If an error
 	 * occurs, an implementation-defined unchecked exception will be thrown.
 	 * 
 	 * @param name
 	 *            The name of the type to be retrieved.
-	 * @return The {@link org.genxdm.xs.types.SmType} identified by the name, or <code>null</code> if it does not exist.
+	 * @return The {@link org.genxdm.xs.types.Type} identified by the name, or <code>null</code> if it does not exist.
 	 */
-	SmType<A> getTypeDefinition(QName name);
+	Type<A> getTypeDefinition(QName name);
 
 	/**
 	 * Returns the specified type definition.
@@ -151,5 +151,5 @@ public interface ComponentProvider<A> extends ComponentDetector
 	 * @param nativeType
 	 *            The name of the native type definition.
 	 */
-	SmType<A> getTypeDefinition(SmNativeType nativeType);
+	Type<A> getTypeDefinition(NativeType nativeType);
 }

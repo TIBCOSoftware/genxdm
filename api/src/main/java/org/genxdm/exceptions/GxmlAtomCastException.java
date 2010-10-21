@@ -17,7 +17,7 @@ package org.genxdm.exceptions;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * Exception arising during the casting or parsing of atomic values.
@@ -36,7 +36,7 @@ public final class GxmlAtomCastException extends Exception
 
 	public GxmlAtomCastException(final String sourceValue, final QName targetType, final QName errorCode)
 	{
-		this(sourceValue, SmNativeType.UNTYPED_ATOMIC.toQName(), targetType, errorCode);
+		this(sourceValue, NativeType.UNTYPED_ATOMIC.toQName(), targetType, errorCode);
 	}
 
 	public GxmlAtomCastException(final String sourceValue, final QName sourceType, final QName targetType, final QName errorCode)
@@ -58,7 +58,7 @@ public final class GxmlAtomCastException extends Exception
 
 	public GxmlAtomCastException(final String sourceValue, final QName targetType, final QName errorCode, final Throwable cause)
 	{
-		this(sourceValue, SmNativeType.UNTYPED_ATOMIC.toQName(), targetType, errorCode, cause);
+		this(sourceValue, NativeType.UNTYPED_ATOMIC.toQName(), targetType, errorCode, cause);
 	}
 
 	/**

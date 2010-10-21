@@ -25,8 +25,8 @@ import org.genxdm.bridgekit.atoms.XmlAtomBridge;
 import org.genxdm.bridgekit.tree.CoreModelDecoration;
 import org.genxdm.bridgekit.tree.CoreModelDecorator;
 import org.genxdm.bridgekit.tree.CursorOnTypedModel;
-import org.genxdm.bridgekit.xs.GxMetaBridgeOnSmMetaBridgeAdapter;
-import org.genxdm.bridgekit.xs.SmMetaBridgeFactory;
+import org.genxdm.bridgekit.xs.MetaBridgeOnSchemaTypeBridgeAdapter;
+import org.genxdm.bridgekit.xs.SchemaTypeBridgeFactory;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
@@ -42,15 +42,15 @@ import org.genxdm.xs.components.ComponentBag;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.types.SmAtomicType;
-import org.genxdm.xs.types.SmAtomicUrType;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmComplexUrType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmSimpleUrType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.constraints.IdentityConstraint;
+import org.genxdm.xs.types.AtomicType;
+import org.genxdm.xs.types.AtomicUrType;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.ComplexUrType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.SimpleUrType;
+import org.genxdm.xs.types.Type;
 
 public final class AxiomSAProcessingContext 
     implements TypedContext<Object, XmlAtom>
@@ -59,9 +59,9 @@ public final class AxiomSAProcessingContext
 	{
 	    this.context = PreCondition.assertNotNull(context, "context");
 		this.atomBridge = new XmlAtomBridge(this, context.getNameBridge());
-		final SmMetaBridgeFactory<XmlAtom> cacheFactory = new SmMetaBridgeFactory<XmlAtom>(atomBridge);
+		final SchemaTypeBridgeFactory<XmlAtom> cacheFactory = new SchemaTypeBridgeFactory<XmlAtom>(atomBridge);
 		cache = cacheFactory.newMetaBridge();
-		this.metaBridge = new GxMetaBridgeOnSmMetaBridgeAdapter<XmlAtom>(cache, atomBridge);
+		this.metaBridge = new MetaBridgeOnSchemaTypeBridgeAdapter<XmlAtom>(cache, atomBridge);
 		EnumSet<CoreModelDecoration> delegations = EnumSet.noneOf(CoreModelDecoration.class);
 		delegations.add(CoreModelDecoration.CHILD_AXIS);
 		delegations.add(CoreModelDecoration.CHILD_ELEMENTS);
@@ -103,13 +103,13 @@ public final class AxiomSAProcessingContext
 		throw new AssertionError("TODO");
 	}
 	
-	public void defineComplexType(final SmComplexType<XmlAtom> complexType)
+	public void defineComplexType(final ComplexType<XmlAtom> complexType)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 	
-	public void defineIdentityConstraint(SmIdentityConstraint<XmlAtom> identityConstraint)
+	public void defineIdentityConstraint(IdentityConstraint<XmlAtom> identityConstraint)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -121,7 +121,7 @@ public final class AxiomSAProcessingContext
 		throw new AssertionError("TODO");
 	}
 
-	public void defineSimpleType(final SmSimpleType<XmlAtom> simpleType)
+	public void defineSimpleType(final SimpleType<XmlAtom> simpleType)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -138,19 +138,19 @@ public final class AxiomSAProcessingContext
 		return atomBridge;
 	}
 
-	public SmAtomicType<XmlAtom> getAtomicType(QName name)
+	public AtomicType<XmlAtom> getAtomicType(QName name)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public SmAtomicType<XmlAtom> getAtomicType(SmNativeType name)
+	public AtomicType<XmlAtom> getAtomicType(NativeType name)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public SmAtomicUrType<XmlAtom> getAtomicUrType()
+	public AtomicUrType<XmlAtom> getAtomicUrType()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -180,19 +180,19 @@ public final class AxiomSAProcessingContext
 		throw new AssertionError("TODO");
 	}
 
-	public SmComplexType<XmlAtom> getComplexType(QName name)
+	public ComplexType<XmlAtom> getComplexType(QName name)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Iterable<SmComplexType<XmlAtom>> getComplexTypes()
+	public Iterable<ComplexType<XmlAtom>> getComplexTypes()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public SmComplexUrType<XmlAtom> getComplexUrType()
+	public ComplexUrType<XmlAtom> getComplexUrType()
 	{
 		// TODO Auto-generated method stub
 		return null;
@@ -210,13 +210,13 @@ public final class AxiomSAProcessingContext
 		throw new AssertionError("TODO");
 	}
 
-	public SmIdentityConstraint<XmlAtom> getIdentityConstraint(QName name)
+	public IdentityConstraint<XmlAtom> getIdentityConstraint(QName name)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Iterable<SmIdentityConstraint<XmlAtom>> getIdentityConstraints()
+	public Iterable<IdentityConstraint<XmlAtom>> getIdentityConstraints()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -267,37 +267,37 @@ public final class AxiomSAProcessingContext
 	    return context;
 	}
 
-	public SmSimpleType<XmlAtom> getSimpleType(QName name)
+	public SimpleType<XmlAtom> getSimpleType(QName name)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public SmSimpleType<XmlAtom> getSimpleType(SmNativeType name)
+	public SimpleType<XmlAtom> getSimpleType(NativeType name)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Iterable<SmSimpleType<XmlAtom>> getSimpleTypes()
+	public Iterable<SimpleType<XmlAtom>> getSimpleTypes()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public SmSimpleUrType<XmlAtom> getSimpleUrType()
+	public SimpleUrType<XmlAtom> getSimpleUrType()
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public SmType<XmlAtom> getTypeDefinition(QName typeName)
+	public Type<XmlAtom> getTypeDefinition(QName typeName)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public SmType<XmlAtom> getTypeDefinition(final SmNativeType nativeType)
+	public Type<XmlAtom> getTypeDefinition(final NativeType nativeType)
 	{
 		return cache.getTypeDefinition(nativeType);
 	}

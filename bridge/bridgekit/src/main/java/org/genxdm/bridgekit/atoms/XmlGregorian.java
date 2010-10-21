@@ -18,7 +18,7 @@ package org.genxdm.bridgekit.atoms;
 import java.math.BigDecimal;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 public final class XmlGregorian extends XmlAbstractAtom
 {
@@ -27,12 +27,12 @@ public final class XmlGregorian extends XmlAbstractAtom
 	private final int hour;
 	private final int minute;
 	private final int month;
-	private final SmNativeType nativeType;
+	private final NativeType nativeType;
 	private final int second;
 	private final int timezone;
 	private final int year;
 
-	public XmlGregorian(final int year, final int month, final int day, final int hour, final int minute, final int second, final BigDecimal fractionalSecond, final int timezone, final SmNativeType nativeType)
+	public XmlGregorian(final int year, final int month, final int day, final int hour, final int minute, final int second, final BigDecimal fractionalSecond, final int timezone, final NativeType nativeType)
 	{
 		this.year = year;
 		this.month = month;
@@ -133,7 +133,7 @@ public final class XmlGregorian extends XmlAbstractAtom
 		return month;
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
 		return nativeType;
 	}
