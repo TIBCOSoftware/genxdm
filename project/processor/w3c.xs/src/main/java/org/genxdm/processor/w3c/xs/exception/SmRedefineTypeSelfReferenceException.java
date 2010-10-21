@@ -18,7 +18,7 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 
 @SuppressWarnings("serial")
@@ -27,7 +27,7 @@ public final class SmRedefineTypeSelfReferenceException extends SrcRedefinitionE
 	private final QName expectName;
 	private final QName actualName;
 
-	public SmRedefineTypeSelfReferenceException(final QName expectName, final QName actualName, final SmLocation location)
+	public SmRedefineTypeSelfReferenceException(final QName expectName, final QName actualName, final LocationInSchema location)
 	{
 		super(PART_TYPE_SELF_REFERENCE, location);
 		this.expectName = PreCondition.assertArgumentNotNull(expectName, "expectName");

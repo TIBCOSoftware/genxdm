@@ -15,35 +15,35 @@
  */
 package org.genxdm.processor.w3c.xs;
 
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmAttributeGroup;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.components.SmNotation;
-import org.genxdm.xs.components.SmParticle;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.NotationDefinition;
+import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmException;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.types.SmComplexType;
 import org.genxdm.xs.types.SmSimpleType;
 
 public interface SmConstraintHandler<A>
 {
-	void error(SmSimpleType<A> simpleType, SmException exception) throws SmAbortException;
+	void error(SmSimpleType<A> simpleType, SchemaException exception) throws AbortException;
 
-	void error(SmComplexType<A> complexType, SmException exception) throws SmAbortException;
+	void error(SmComplexType<A> complexType, SchemaException exception) throws AbortException;
 
-	void error(SmAttribute<A> attribute, SmException exception) throws SmAbortException;
+	void error(AttributeDefinition<A> attribute, SchemaException exception) throws AbortException;
 
-	void error(SmElement<A> element, SmException exception) throws SmAbortException;
+	void error(ElementDefinition<A> element, SchemaException exception) throws AbortException;
 
-	void error(SmModelGroup<A> modelGroup, SmException exception) throws SmAbortException;
+	void error(ModelGroup<A> modelGroup, SchemaException exception) throws AbortException;
 
-	void error(SmAttributeGroup<A> attributeGroup, SmException exception) throws SmAbortException;
+	void error(AttributeGroupDefinition<A> attributeGroup, SchemaException exception) throws AbortException;
 
-	void error(SmIdentityConstraint<A> constraint, SmException exception) throws SmAbortException;
+	void error(SmIdentityConstraint<A> constraint, SchemaException exception) throws AbortException;
 
-	void error(SmNotation<A> notation, SmException exception) throws SmAbortException;
+	void error(NotationDefinition<A> notation, SchemaException exception) throws AbortException;
 
-	void error(SmParticle<A> particle, SmException exception) throws SmAbortException;
+	void error(SchemaParticle<A> particle, SchemaException exception) throws AbortException;
 }

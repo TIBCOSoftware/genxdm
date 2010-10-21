@@ -18,9 +18,9 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 /**
  * Validation Rule: Element Locally Valid (Complex Type)
@@ -45,15 +45,15 @@ public abstract class SmComplexTypeException extends SmLocationException
 		return elementName;
 	}
 
-	public SmComplexTypeException(final String partNumber, final QName elementName, final SmLocation elementLocation)
+	public SmComplexTypeException(final String partNumber, final QName elementName, final LocationInSchema elementLocation)
 	{
-		super(SmOutcome.CVC_Complex_Type, partNumber, elementLocation);
+		super(ValidationOutcome.CVC_Complex_Type, partNumber, elementLocation);
 		this.elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
 	}
 
-	public SmComplexTypeException(final String partNumber, final QName elementName, final SmLocation elementLocation, final SmException cause)
+	public SmComplexTypeException(final String partNumber, final QName elementName, final LocationInSchema elementLocation, final SchemaException cause)
 	{
-		super(SmOutcome.CVC_Complex_Type, partNumber, elementLocation, PreCondition.assertArgumentNotNull(cause, "cause"));
+		super(ValidationOutcome.CVC_Complex_Type, partNumber, elementLocation, PreCondition.assertArgumentNotNull(cause, "cause"));
 		this.elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
 	}
 }

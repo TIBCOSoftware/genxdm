@@ -74,36 +74,36 @@ import org.genxdm.processor.w3c.xs.exception.SrcBaseMustHaveSimpleOrMixedContent
 import org.genxdm.processor.w3c.xs.exception.SrcBaseTypeMustBeComplexTypeException;
 import org.genxdm.processor.w3c.xs.exception.SrcSimpleTypeAmongChildrenOfRestrictionException;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmAttributeGroup;
-import org.genxdm.xs.components.SmComponentProvider;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmEnumeration;
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.components.SmNotation;
-import org.genxdm.xs.components.SmParticle;
-import org.genxdm.xs.components.SmWildcard;
-import org.genxdm.xs.components.SmWildcardUse;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.EnumerationDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.NotationDefinition;
+import org.genxdm.xs.components.SchemaParticle;
+import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.SmAttributeUse;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
 import org.genxdm.xs.constraints.SmModelGroupUse;
 import org.genxdm.xs.constraints.SmNamespaceConstraint;
 import org.genxdm.xs.constraints.SmValueConstraint;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmProcessContentsMode;
-import org.genxdm.xs.enums.SmScopeExtent;
-import org.genxdm.xs.enums.SmWhiteSpacePolicy;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmDatatypeException;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
-import org.genxdm.xs.exceptions.SmSimpleTypeException;
+import org.genxdm.xs.constraints.SmWildcardUse;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.ProcessContentsMode;
+import org.genxdm.xs.enums.ScopeExtent;
+import org.genxdm.xs.enums.WhiteSpacePolicy;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.DatatypeException;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
+import org.genxdm.xs.exceptions.SimpleTypeException;
 import org.genxdm.xs.facets.SmFacet;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmLimit;
 import org.genxdm.xs.facets.SmPattern;
 import org.genxdm.xs.facets.SmRegExPattern;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.SmAtomicType;
 import org.genxdm.xs.types.SmComplexType;
 import org.genxdm.xs.types.SmComplexUrType;
@@ -130,7 +130,7 @@ final class XMLSchemaConverter<A>
 	 */
 	private static final BigInteger MAX_INT_SIZE = BigInteger.valueOf(Integer.MAX_VALUE);
 
-	public static <A> Pair<SmComponentBagImpl<A>, XMLComponentLocator<A>> convert(final SmRegExCompiler regexc, final SmComponentProvider<A> rtmCache, final AtomBridge<A> atomBridge, final XMLSchemaCache<A> xmlCache, final SmExceptionHandler errors) throws SmAbortException
+	public static <A> Pair<SmComponentBagImpl<A>, XMLComponentLocator<A>> convert(final SmRegExCompiler regexc, final ComponentProvider<A> rtmCache, final AtomBridge<A> atomBridge, final XMLSchemaCache<A> xmlCache, final SchemaExceptionHandler errors) throws AbortException
 	{
 		final SmComponentBagImpl<A> schema = new SmComponentBagImpl<A>();
 		final XMLComponentLocator<A> locations = new XMLComponentLocator<A>();
@@ -243,9 +243,9 @@ final class XMLSchemaConverter<A>
 	private final SmContentType<A> EMPTY_CONTENT = new ContentTypeImpl<A>();
 	private final XMLCycles<A> m_cycles;
 
-	private final SmExceptionHandler m_errors;
+	private final SchemaExceptionHandler m_errors;
 
-	private final SmComponentProvider<A> m_existingCache;
+	private final ComponentProvider<A> m_existingCache;
 
 	private final XMLSchemaCache<A> m_inCache;
 
@@ -256,7 +256,7 @@ final class XMLSchemaConverter<A>
 
 	private final SmRegExCompiler regexc;
 
-	private XMLSchemaConverter(final SmRegExCompiler regexc, final SmComponentProvider<A> outCache, final AtomBridge<A> atomBridge, final XMLSchemaCache<A> inCache, final SmComponentBagImpl<A> schema, final XMLComponentLocator<A> locations, final SmExceptionHandler errors)
+	private XMLSchemaConverter(final SmRegExCompiler regexc, final ComponentProvider<A> outCache, final AtomBridge<A> atomBridge, final XMLSchemaCache<A> inCache, final SmComponentBagImpl<A> schema, final XMLComponentLocator<A> locations, final SchemaExceptionHandler errors)
 	{
 		this.regexc = regexc;
 		this.m_existingCache = outCache;
@@ -269,12 +269,12 @@ final class XMLSchemaConverter<A>
 		this.m_cycles = new XMLCycles<A>();
 	}
 
-	private SmWildcard<A> attributeWildcard(final SmType<A> baseType)
+	private SchemaWildcard<A> attributeWildcard(final SmType<A> baseType)
 	{
 		if (baseType instanceof SmComplexType<?>)
 		{
 			final SmComplexType<A> complexBase = (SmComplexType<A>)baseType;
-			final SmWildcard<A> attributeWildcard = complexBase.getAttributeWildcard();
+			final SchemaWildcard<A> attributeWildcard = complexBase.getAttributeWildcard();
 			if (null != attributeWildcard)
 			{
 				return attributeWildcard;
@@ -294,11 +294,11 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SmWildcard<A> attributeWildcard(final XMLType<A> complexType) throws SmAbortException, SmException
+	private SchemaWildcard<A> attributeWildcard(final XMLType<A> complexType) throws AbortException, SchemaException
 	{
 		final XMLWildcard<A> localWildcard = complexType.attributeWildcard;
 
-		final SmDerivationMethod derivation = complexType.getDerivationMethod();
+		final DerivationMethod derivation = complexType.getDerivationMethod();
 		switch (derivation)
 		{
 			case Restriction:
@@ -307,10 +307,10 @@ final class XMLSchemaConverter<A>
 			}
 			case Extension:
 			{
-				final SmWildcard<A> baseWildcard = attributeWildcard(complexType.getBaseRef());
+				final SchemaWildcard<A> baseWildcard = attributeWildcard(complexType.getBaseRef());
 				if (null != baseWildcard)
 				{
-					final SmWildcard<A> completeWildcard = completeWildcard(complexType.getAttributeGroups(), localWildcard);
+					final SchemaWildcard<A> completeWildcard = completeWildcard(complexType.getAttributeGroups(), localWildcard);
 					if (null == completeWildcard)
 					{
 						return baseWildcard;
@@ -337,25 +337,25 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SmWildcard<A> attributeWildcard(final XMLTypeRef<A> typeRef) throws SmAbortException, SmException
+	private SchemaWildcard<A> attributeWildcard(final XMLTypeRef<A> typeRef) throws AbortException, SchemaException
 	{
 		final SmType<A> type = convertType(typeRef);
 		return attributeWildcard(type);
 	}
 
-	private SmWildcard<A> completeWildcard(final Iterable<XMLAttributeGroup<A>> attributeGroups, final XMLWildcard<A> localWildcard) throws SmAbortException, SmException
+	private SchemaWildcard<A> completeWildcard(final Iterable<XMLAttributeGroup<A>> attributeGroups, final XMLWildcard<A> localWildcard) throws AbortException, SchemaException
 	{
 		SmNamespaceConstraint constraint = null;
 
 		// Remember the first {process contents} within the
 		// <attributeGroup>[children].
-		SmProcessContentsMode processContents = null;
+		ProcessContentsMode processContents = null;
 		if (null != attributeGroups)
 		{
 			for (final XMLAttributeGroup<A> xmlAttributeGroup : attributeGroups)
 			{
-				final SmAttributeGroup<A> attributeGroup = convertAttributeGroup(xmlAttributeGroup);
-				final SmWildcard<A> groupWildcard = attributeGroup.getWildcard();
+				final AttributeGroupDefinition<A> attributeGroup = convertAttributeGroup(xmlAttributeGroup);
+				final SchemaWildcard<A> groupWildcard = attributeGroup.getWildcard();
 				if (null != groupWildcard)
 				{
 					if (null == constraint)
@@ -406,7 +406,7 @@ final class XMLSchemaConverter<A>
 	/**
 	 * Expand temporary variables used to hold syntactic constructs for attribute uses and wildcards.
 	 */
-	private Map<QName, SmAttributeUse<A>> computeAttributeUses(final XMLType<A> complexType) throws SmAbortException, SmException
+	private Map<QName, SmAttributeUse<A>> computeAttributeUses(final XMLType<A> complexType) throws AbortException, SchemaException
 	{
 		final HashMap<QName, SmAttributeUse<A>> attributeUses = new HashMap<QName, SmAttributeUse<A>>();
 
@@ -424,7 +424,7 @@ final class XMLSchemaConverter<A>
 					m_errors.error(new SccAttributeGroupMemberNamesException());
 				}
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				m_errors.error(e);
 			}
@@ -432,12 +432,12 @@ final class XMLSchemaConverter<A>
 
 		for (final XMLAttributeGroup<A> xmlAttributeGroup : complexType.getAttributeGroups())
 		{
-			final SmAttributeGroup<A> attributeGroup = convertAttributeGroup(xmlAttributeGroup);
+			final AttributeGroupDefinition<A> attributeGroup = convertAttributeGroup(xmlAttributeGroup);
 			if (attributeGroup.hasAttributeUses())
 			{
 				for (final SmAttributeUse<A> attributeUse : attributeGroup.getAttributeUses())
 				{
-					final SmAttribute<A> attribute = attributeUse.getAttribute();
+					final AttributeDefinition<A> attribute = attributeUse.getAttribute();
 					final QName attributeName = attribute.getName();
 					if (!attributeUses.containsKey(attributeName))
 					{
@@ -507,7 +507,7 @@ final class XMLSchemaConverter<A>
 	 * Compile the enumeration facets for this type. <br/>
 	 * Enumeration facets are not inherited during compilation, but must be subsets of base types.
 	 */
-	private void computeEnumerations(final SmSimpleType<A> baseType, final XMLType<A> type, final SimpleTypeImpl<A> target) throws SmAbortException
+	private void computeEnumerations(final SmSimpleType<A> baseType, final XMLType<A> type, final SimpleTypeImpl<A> target) throws AbortException
 	{
 		if (type.getEnumerations().size() > 0)
 		{
@@ -525,7 +525,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private void computeFacets(final SmSimpleType<A> baseType, final XMLType<A> type, final SimpleTypeImpl<A> target) throws SmAbortException, SmException
+	private void computeFacets(final SmSimpleType<A> baseType, final XMLType<A> type, final SimpleTypeImpl<A> target) throws AbortException, SchemaException
 	{
 		for (final XMLTotalDigitsFacet<A> xmlFacet : type.getTotalDigitsFacets())
 		{
@@ -552,7 +552,7 @@ final class XMLSchemaConverter<A>
 				{
 					target.addFacet(minmax(xmlFacet, (SmSimpleType<A>)baseType));
 				}
-				catch (final SmException e)
+				catch (final SchemaException e)
 				{
 					m_errors.error(e);
 				}
@@ -560,9 +560,9 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SmContentType<A> computeLocallyEmptyContent(final XMLType<A> complexType) throws SmException, SmAbortException
+	private SmContentType<A> computeLocallyEmptyContent(final XMLType<A> complexType) throws SchemaException, AbortException
 	{
-		final SmDerivationMethod derivation = complexType.getDerivationMethod();
+		final DerivationMethod derivation = complexType.getDerivationMethod();
 		switch (derivation)
 		{
 			case Restriction:
@@ -598,7 +598,7 @@ final class XMLSchemaConverter<A>
 	 * Compile the pattern facets for this type. <br/>
 	 * Pattern facets are not inherited during compilation.
 	 */
-	private void computePatterns(final LinkedList<XMLPatternFacet<A>> xmlFacets, final SimpleTypeImpl<A> target) throws SmAbortException
+	private void computePatterns(final LinkedList<XMLPatternFacet<A>> xmlFacets, final SimpleTypeImpl<A> target) throws AbortException
 	{
 		if (xmlFacets.size() > 0)
 		{
@@ -659,11 +659,11 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SmAttribute<A> convertAttribute(final XMLAttribute<A> xmlAttribute) throws SmAbortException, SmException
+	private AttributeDefinition<A> convertAttribute(final XMLAttribute<A> xmlAttribute) throws AbortException, SchemaException
 	{
 		final QName name = xmlAttribute.getName();
-		final SmScopeExtent scope = convertScope(xmlAttribute.getScope());
-		if (scope == SmScopeExtent.Global)
+		final ScopeExtent scope = convertScope(xmlAttribute.getScope());
+		if (scope == ScopeExtent.Global)
 		{
 			if (m_outBag.hasAttribute(name))
 			{
@@ -686,7 +686,7 @@ final class XMLSchemaConverter<A>
 		try
 		{
 			attribute = new AttributeDeclTypeImpl<A>(name, scope, m_existingCache.getSimpleUrType());
-			if (scope == SmScopeExtent.Global)
+			if (scope == ScopeExtent.Global)
 			{
 				m_outBag.add(attribute);
 			}
@@ -694,7 +694,7 @@ final class XMLSchemaConverter<A>
 		}
 		finally
 		{
-			if (scope == SmScopeExtent.Global)
+			if (scope == ScopeExtent.Global)
 			{
 				m_cycles.attributes.pop();
 			}
@@ -714,7 +714,7 @@ final class XMLSchemaConverter<A>
 			{
 				attribute.setValueConstraint(convertValueConstraint(XMLRepresentation.LN_ATTRIBUTE, xmlAttribute.m_valueConstraint, (SmSimpleType<A>)attribute.getType()));
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				m_errors.error(e);
 			}
@@ -722,11 +722,11 @@ final class XMLSchemaConverter<A>
 		return attribute;
 	}
 
-	private SmAttributeGroup<A> convertAttributeGroup(final XMLAttributeGroup<A> xmlAttributeGroup) throws SmAbortException, SmException
+	private AttributeGroupDefinition<A> convertAttributeGroup(final XMLAttributeGroup<A> xmlAttributeGroup) throws AbortException, SchemaException
 	{
 		final QName agName = PreCondition.assertArgumentNotNull(xmlAttributeGroup.getName(), "name");
-		final SmScopeExtent scope = convertScope(xmlAttributeGroup.getScope());
-		if (scope == SmScopeExtent.Global)
+		final ScopeExtent scope = convertScope(xmlAttributeGroup.getScope());
+		if (scope == ScopeExtent.Global)
 		{
 			if (m_outBag.hasAttributeGroup(agName))
 			{
@@ -750,7 +750,7 @@ final class XMLSchemaConverter<A>
 			final HashMap<QName, SmAttributeUse<A>> attributeUses = new HashMap<QName, SmAttributeUse<A>>();
 			for (final XMLAttributeGroup<A> group : xmlAttributeGroup.getGroups())
 			{
-				final SmAttributeGroup<A> attributeGroup = convertAttributeGroup(group);
+				final AttributeGroupDefinition<A> attributeGroup = convertAttributeGroup(group);
 				if (attributeGroup.hasAttributeUses())
 				{
 					for (final SmAttributeUse<A> attributeUse : attributeGroup.getAttributeUses())
@@ -766,13 +766,13 @@ final class XMLSchemaConverter<A>
 				{
 					attributeUses.put(name, convertAttributeUse(attributeUse));
 				}
-				catch (final SmException e)
+				catch (final SchemaException e)
 				{
 					m_errors.error(e);
 				}
 			}
-			final SmWildcard<A> completeWildcard = completeWildcard(xmlAttributeGroup.getGroups(), xmlAttributeGroup.wildcard);
-			final SmAttributeGroup<A> attributeGroup;
+			final SchemaWildcard<A> completeWildcard = completeWildcard(xmlAttributeGroup.getGroups(), xmlAttributeGroup.wildcard);
+			final AttributeGroupDefinition<A> attributeGroup;
 			if (null != attributeUses)
 			{
 				attributeGroup = new AttributeGroupImpl<A>(agName, scope, attributeUses.values(), completeWildcard);
@@ -782,7 +782,7 @@ final class XMLSchemaConverter<A>
 				attributeGroup = new AttributeGroupImpl<A>(agName, scope, null, completeWildcard);
 			}
 
-			if (attributeGroup.getScopeExtent() == SmScopeExtent.Global)
+			if (attributeGroup.getScopeExtent() == ScopeExtent.Global)
 			{
 				m_outBag.add(attributeGroup);
 			}
@@ -791,14 +791,14 @@ final class XMLSchemaConverter<A>
 		}
 		finally
 		{
-			if (scope == SmScopeExtent.Global)
+			if (scope == ScopeExtent.Global)
 			{
 				m_cycles.attributeGroups.pop();
 			}
 		}
 	}
 
-	private void convertAttributeGroups() throws SmAbortException
+	private void convertAttributeGroups() throws AbortException
 	{
 		for (final XMLAttributeGroup<A> source : m_inCache.m_attributeGroups.values())
 		{
@@ -806,14 +806,14 @@ final class XMLSchemaConverter<A>
 			{
 				convertAttributeGroup(source);
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				m_errors.error(e);
 			}
 		}
 	}
 
-	private void convertAttributes() throws SmAbortException
+	private void convertAttributes() throws AbortException
 	{
 		for (final XMLAttribute<A> source : m_inCache.m_attributes.values())
 		{
@@ -821,16 +821,16 @@ final class XMLSchemaConverter<A>
 			{
 				convertAttribute(source);
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				m_errors.error(e);
 			}
 		}
 	}
 
-	private SmAttributeUse<A> convertAttributeUse(final XMLAttributeUse<A> xmlAttributeUse) throws SmAbortException, SmException
+	private SmAttributeUse<A> convertAttributeUse(final XMLAttributeUse<A> xmlAttributeUse) throws AbortException, SchemaException
 	{
-		final SmAttribute<A> attribute = convertAttribute(xmlAttributeUse.getDeclaration());
+		final AttributeDefinition<A> attribute = convertAttribute(xmlAttributeUse.getDeclaration());
 		final AttributeUseImpl<A> attributeUse = new AttributeUseImpl<A>(xmlAttributeUse.isRequired(), attribute);
 		if (null != xmlAttributeUse.getValueConstraint())
 		{
@@ -842,7 +842,7 @@ final class XMLSchemaConverter<A>
 				{
 					attributeUse.setValueConstraint(convertValueConstraint(XMLRepresentation.LN_ATTRIBUTE, xmlAttributeUse.getValueConstraint(), simpleType));
 				}
-				catch (final SmException e)
+				catch (final SchemaException e)
 				{
 					m_errors.error(e);
 				}
@@ -859,10 +859,10 @@ final class XMLSchemaConverter<A>
 		return attributeUse;
 	}
 
-	private SmComplexType<A> convertComplexType(final QName outName, final boolean isAnonymous, final XMLType<A> xmlComplexType) throws SmAbortException, SmException
+	private SmComplexType<A> convertComplexType(final QName outName, final boolean isAnonymous, final XMLType<A> xmlComplexType) throws AbortException, SchemaException
 	{
-		final SmScopeExtent scope = convertScope(xmlComplexType.getScope());
-		if (scope == SmScopeExtent.Global)
+		final ScopeExtent scope = convertScope(xmlComplexType.getScope());
+		if (scope == ScopeExtent.Global)
 		{
 			if (m_outBag.hasComplexType(outName))
 			{
@@ -904,12 +904,12 @@ final class XMLSchemaConverter<A>
 			complexType.setAbstract(xmlComplexType.isAbstract());
 			complexType.setAttributeWildcard(attributeWildcard(xmlComplexType));
 
-			for (final SmDerivationMethod derivation : xmlComplexType.getBlock())
+			for (final DerivationMethod derivation : xmlComplexType.getBlock())
 			{
 				complexType.setBlock(derivation, true);
 			}
 
-			for (final SmDerivationMethod derivation : xmlComplexType.getFinal())
+			for (final DerivationMethod derivation : xmlComplexType.getFinal())
 			{
 				if (derivation.isExtension() || derivation.isRestriction())
 				{
@@ -926,16 +926,16 @@ final class XMLSchemaConverter<A>
 		}
 		finally
 		{
-			if (scope == SmScopeExtent.Global)
+			if (scope == ScopeExtent.Global)
 			{
 				m_cycles.types.pop();
 			}
 		}
 	}
 
-	private SmContentType<A> convertContentType(final XMLType<A> xmlComplexType) throws SmAbortException, SmException
+	private SmContentType<A> convertContentType(final XMLType<A> xmlComplexType) throws AbortException, SchemaException
 	{
-		final SmDerivationMethod derivation = xmlComplexType.getDerivationMethod();
+		final DerivationMethod derivation = xmlComplexType.getDerivationMethod();
 
 		if (xmlComplexType.m_contentKind.isComplex())
 		{
@@ -990,7 +990,7 @@ final class XMLSchemaConverter<A>
 						final LinkedList<SmModelGroupUse<A>> particles = new LinkedList<SmModelGroupUse<A>>();
 						particles.add(contentTypeB.getContentModel());
 						particles.add(effectiveContent);
-						final SmModelGroup<A> modelGroup = new ModelGroupImpl<A>(SmModelGroup.SmCompositor.Sequence, particles, null, true, SmScopeExtent.Local);
+						final ModelGroup<A> modelGroup = new ModelGroupImpl<A>(ModelGroup.SmCompositor.Sequence, particles, null, true, ScopeExtent.Local);
 						final SmModelGroupUse<A> particle = new ParticleWithModelGroupTerm<A>(1, 1, modelGroup);
 						return new ContentTypeImpl<A>(mixed, particle);
 					}
@@ -1098,11 +1098,11 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SmElement<A> convertElement(final XMLElement<A> xmlElement) throws SmException, SmAbortException
+	private ElementDefinition<A> convertElement(final XMLElement<A> xmlElement) throws SchemaException, AbortException
 	{
 		final QName name = PreCondition.assertArgumentNotNull(xmlElement.getName(), "name");
-		final SmScopeExtent scope = convertScope(xmlElement.getScope());
-		if (scope == SmScopeExtent.Global)
+		final ScopeExtent scope = convertScope(xmlElement.getScope());
+		if (scope == ScopeExtent.Global)
 		{
 			if (m_outBag.hasElement(name))
 			{
@@ -1151,13 +1151,13 @@ final class XMLSchemaConverter<A>
 		}
 		finally
 		{
-			if (scope == SmScopeExtent.Global)
+			if (scope == ScopeExtent.Global)
 			{
 				m_cycles.elements.pop();
 			}
 		}
 
-		if (element.getScopeExtent() == SmScopeExtent.Global)
+		if (element.getScopeExtent() == ScopeExtent.Global)
 		{
 			m_outBag.add(element);
 		}
@@ -1179,7 +1179,7 @@ final class XMLSchemaConverter<A>
 				{
 					element.setValueConstraint(convertValueConstraint(XMLRepresentation.LN_ELEMENT, xmlElement.m_valueConstraint, elementType));
 				}
-				catch (final SmException e)
+				catch (final SchemaException e)
 				{
 					m_errors.error(e);
 				}
@@ -1195,7 +1195,7 @@ final class XMLSchemaConverter<A>
 					{
 						element.setValueConstraint(convertValueConstraint(XMLRepresentation.LN_ELEMENT, xmlElement.m_valueConstraint, simpleType));
 					}
-					catch (final SmException e)
+					catch (final SchemaException e)
 					{
 						m_errors.error(e);
 					}
@@ -1214,13 +1214,13 @@ final class XMLSchemaConverter<A>
 		}
 
 		// {disallowed substitutions}
-		for (final SmDerivationMethod derivation : xmlElement.getBlock())
+		for (final DerivationMethod derivation : xmlElement.getBlock())
 		{
 			element.setBlock(derivation, true);
 		}
 
 		// {substitution group exclusions}
-		for (final SmDerivationMethod derivation : xmlElement.getFinal())
+		for (final DerivationMethod derivation : xmlElement.getFinal())
 		{
 			element.setFinal(derivation, true);
 		}
@@ -1234,7 +1234,7 @@ final class XMLSchemaConverter<A>
 		return element;
 	}
 
-	private void convertElements() throws SmAbortException
+	private void convertElements() throws AbortException
 	{
 		for (final XMLElement<A> source : m_inCache.m_elements.values())
 		{
@@ -1242,17 +1242,17 @@ final class XMLSchemaConverter<A>
 			{
 				convertElement(source);
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				m_errors.error(e);
 			}
 		}
 	}
 
-	private SmParticle<A> convertElementUse(final XMLParticleWithElementTerm<A> particle) throws SmException, SmAbortException
+	private SchemaParticle<A> convertElementUse(final XMLParticleWithElementTerm<A> particle) throws SchemaException, AbortException
 	{
 		final XMLElement<A> xmlElement = particle.getTerm();
-		final SmElement<A> element = convertElement(xmlElement);
+		final ElementDefinition<A> element = convertElement(xmlElement);
 
 		final ParticleWithElementTerm<A> elementUse;
 		if (isMaxOccursUnbounded(particle.getMaxOccurs()))
@@ -1275,7 +1275,7 @@ final class XMLSchemaConverter<A>
 		return elementUse;
 	}
 
-	private SmValueConstraint<A> convertElementValueConstraint(final XMLValueConstraint xmlValueConstraint, final SmType<A> type) throws SmException
+	private SmValueConstraint<A> convertElementValueConstraint(final XMLValueConstraint xmlValueConstraint, final SmType<A> type) throws SchemaException
 	{
 		if (null != xmlValueConstraint)
 		{
@@ -1311,7 +1311,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SmIdentityConstraint<A> convertIdentityConstraint(final XMLIdentityConstraint<A> xmlConstraint) throws SmException
+	private SmIdentityConstraint<A> convertIdentityConstraint(final XMLIdentityConstraint<A> xmlConstraint) throws SchemaException
 	{
 		final QName name = xmlConstraint.getName();
 		if (m_outBag.hasIdentityConstraint(name))
@@ -1351,7 +1351,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private void convertIdentityConstraints() throws SmAbortException
+	private void convertIdentityConstraints() throws AbortException
 	{
 		for (final XMLIdentityConstraint<A> source : m_inCache.m_constraints.values())
 		{
@@ -1359,14 +1359,14 @@ final class XMLSchemaConverter<A>
 			{
 				convertIdentityConstraint(source);
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				m_errors.error(e);
 			}
 		}
 	}
 
-	private SmSimpleType<A> convertItemType(final QName simpleType, final XMLTypeRef<A> typeRef) throws SmAbortException, SmException
+	private SmSimpleType<A> convertItemType(final QName simpleType, final XMLTypeRef<A> typeRef) throws AbortException, SchemaException
 	{
 		final SmType<A> itemType = convertType(typeRef);
 		if (itemType.isAtomicType())
@@ -1383,7 +1383,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SmSimpleType<A> convertMemberType(final QName simpleType, final XMLTypeRef<A> typeRef) throws SmAbortException, SmException
+	private SmSimpleType<A> convertMemberType(final QName simpleType, final XMLTypeRef<A> typeRef) throws AbortException, SchemaException
 	{
 		final SmType<A> memberType = convertType(typeRef);
 		if (memberType.isAtomicType())
@@ -1404,12 +1404,12 @@ final class XMLSchemaConverter<A>
 		throw new SccMemberTypeMustBeAtomicOrListException(simpleType);
 	}
 
-	private SmModelGroup<A> convertModelGroup(final XMLModelGroup<A> xmlModelGroup) throws SmAbortException, SmException
+	private ModelGroup<A> convertModelGroup(final XMLModelGroup<A> xmlModelGroup) throws AbortException, SchemaException
 	{
-		final SmScopeExtent scope = convertScope(xmlModelGroup.getScope());
+		final ScopeExtent scope = convertScope(xmlModelGroup.getScope());
 		final QName name;
 		final boolean isAnonymous;
-		if (scope == SmScopeExtent.Global)
+		if (scope == ScopeExtent.Global)
 		{
 			name = xmlModelGroup.getName();
 			isAnonymous = false;
@@ -1438,8 +1438,8 @@ final class XMLSchemaConverter<A>
 
 		try
 		{
-			final SmModelGroup.SmCompositor compositor = xmlModelGroup.getCompositor();
-			final LinkedList<SmParticle<A>> particles = new LinkedList<SmParticle<A>>();
+			final ModelGroup.SmCompositor compositor = xmlModelGroup.getCompositor();
+			final LinkedList<SchemaParticle<A>> particles = new LinkedList<SchemaParticle<A>>();
 			for (final XMLParticle<A> xmlParticle : xmlModelGroup.getParticles())
 			{
 				try
@@ -1462,13 +1462,13 @@ final class XMLSchemaConverter<A>
 					}
 
 				}
-				catch (final SmException e)
+				catch (final SchemaException e)
 				{
 					m_errors.error(e);
 				}
 			}
-			final SmModelGroup<A> modelGroup = new ModelGroupImpl<A>(compositor, particles, name, isAnonymous, scope);
-			if (modelGroup.getScopeExtent() == SmScopeExtent.Global)
+			final ModelGroup<A> modelGroup = new ModelGroupImpl<A>(compositor, particles, name, isAnonymous, scope);
+			if (modelGroup.getScopeExtent() == ScopeExtent.Global)
 			{
 				m_outBag.add(modelGroup);
 			}
@@ -1477,14 +1477,14 @@ final class XMLSchemaConverter<A>
 		}
 		finally
 		{
-			if (scope == SmScopeExtent.Global)
+			if (scope == ScopeExtent.Global)
 			{
 				m_cycles.groups.pop();
 			}
 		}
 	}
 
-	private void convertModelGroups() throws SmAbortException
+	private void convertModelGroups() throws AbortException
 	{
 		for (final XMLModelGroup<A> source : m_inCache.m_modelGroups.values())
 		{
@@ -1492,16 +1492,16 @@ final class XMLSchemaConverter<A>
 			{
 				convertModelGroup(source);
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				m_errors.error(e);
 			}
 		}
 	}
 
-	private SmModelGroupUse<A> convertModelGroupUse(final XMLParticleWithModelGroupTerm<A> particle) throws SmAbortException, SmException
+	private SmModelGroupUse<A> convertModelGroupUse(final XMLParticleWithModelGroupTerm<A> particle) throws AbortException, SchemaException
 	{
-		final SmModelGroup<A> modelGroup = convertModelGroup(particle.getTerm());
+		final ModelGroup<A> modelGroup = convertModelGroup(particle.getTerm());
 
 		final SmModelGroupUse<A> modelGroupUse;
 		if (isMaxOccursUnbounded(particle.getMaxOccurs()))
@@ -1519,9 +1519,9 @@ final class XMLSchemaConverter<A>
 		return modelGroupUse;
 	}
 
-	private SmNotation<A> convertNotation(final XMLNotation<A> xmlNotation)
+	private NotationDefinition<A> convertNotation(final XMLNotation<A> xmlNotation)
 	{
-		final SmNotation<A> notation = new NotationImpl<A>(xmlNotation.getName(), xmlNotation.publicId, xmlNotation.systemId);
+		final NotationDefinition<A> notation = new NotationImpl<A>(xmlNotation.getName(), xmlNotation.publicId, xmlNotation.systemId);
 		m_outBag.add(notation);
 		m_locations.m_notationLocations.put(notation, xmlNotation.getLocation());
 		return notation;
@@ -1535,22 +1535,22 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SmScopeExtent convertScope(final XMLScope<A> scope)
+	private ScopeExtent convertScope(final XMLScope<A> scope)
 	{
 		PreCondition.assertArgumentNotNull(scope, "scope");
 
-		return scope.isGlobal() ? SmScopeExtent.Global : SmScopeExtent.Local;
+		return scope.isGlobal() ? ScopeExtent.Global : ScopeExtent.Local;
 	}
 
 	/**
 	 * Applies the Schema Component Constraints to this Simple Type.
 	 */
-	private SmSimpleType<A> convertSimpleType(final QName name, final boolean isAnonymous, final XMLType<A> xmlSimpleType) throws SmAbortException, SmException
+	private SmSimpleType<A> convertSimpleType(final QName name, final boolean isAnonymous, final XMLType<A> xmlSimpleType) throws AbortException, SchemaException
 	{
 		PreCondition.assertTrue(xmlSimpleType.isSimple(), "expecting a simple type for " + name);
 
-		final SmScopeExtent scope = convertScope(xmlSimpleType.getScope());
-		if (scope == SmScopeExtent.Global)
+		final ScopeExtent scope = convertScope(xmlSimpleType.getScope());
+		if (scope == ScopeExtent.Global)
 		{
 			if (m_outBag.hasSimpleType(name))
 			{
@@ -1580,8 +1580,8 @@ final class XMLSchemaConverter<A>
 			}
 
 			final SimpleTypeImpl<A> simpleType;
-			final SmDerivationMethod derivation = PreCondition.assertNotNull(xmlSimpleType.getDerivationMethod(), "{type definition} with base " + simpleBaseType.getName());
-			final SmWhiteSpacePolicy whiteSpace = xmlSimpleType.getWhiteSpacePolicy();
+			final DerivationMethod derivation = PreCondition.assertNotNull(xmlSimpleType.getDerivationMethod(), "{type definition} with base " + simpleBaseType.getName());
+			final WhiteSpacePolicy whiteSpace = xmlSimpleType.getWhiteSpacePolicy();
 			if (derivation.isUnion())
 			{
 				final LinkedList<SmSimpleType<A>> memberTypes = new LinkedList<SmSimpleType<A>>();
@@ -1616,14 +1616,14 @@ final class XMLSchemaConverter<A>
 		}
 		finally
 		{
-			if (scope == SmScopeExtent.Global)
+			if (scope == ScopeExtent.Global)
 			{
 				m_cycles.types.pop();
 			}
 		}
 	}
 
-	private SmSimpleType<A> convertSimpleTypeBase(final QName simpleType, final XMLTypeRef<A> baseRef) throws SmAbortException, SmException
+	private SmSimpleType<A> convertSimpleTypeBase(final QName simpleType, final XMLTypeRef<A> baseRef) throws AbortException, SchemaException
 	{
 		final SmType<A> baseType = convertType(baseRef);
 		if (baseType instanceof SmSimpleType<?>)
@@ -1636,7 +1636,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SmType<A> convertType(final QName name, final boolean isAnonymous) throws SmException, SmAbortException
+	private SmType<A> convertType(final QName name, final boolean isAnonymous) throws SchemaException, AbortException
 	{
 		if (m_outBag.hasSimpleType(name))
 		{
@@ -1679,7 +1679,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SmType<A> convertType(final QName name, final boolean isAnonymous, final XMLType<A> type) throws SmAbortException, SmException
+	private SmType<A> convertType(final QName name, final boolean isAnonymous, final XMLType<A> type) throws AbortException, SchemaException
 	{
 		if (type.isSimple())
 		{
@@ -1695,7 +1695,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SmType<A> convertType(final XMLTypeRef<A> typeRef) throws SmAbortException, SmException
+	private SmType<A> convertType(final XMLTypeRef<A> typeRef) throws AbortException, SchemaException
 	{
 		if (typeRef.isGlobal())
 		{
@@ -1707,7 +1707,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private void convertTypes() throws SmAbortException
+	private void convertTypes() throws AbortException
 	{
 		for (final XMLType<A> sourceType : m_inCache.m_globalTypes.values())
 		{
@@ -1729,14 +1729,14 @@ final class XMLSchemaConverter<A>
 					throw new AssertionError(sourceType);
 				}
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				m_errors.error(e);
 			}
 		}
 	}
 
-	private SmValueConstraint<A> convertValueConstraint(final String elementName, final XMLValueConstraint xmlValueConstraint, final SmSimpleType<A> simpleType) throws SmException
+	private SmValueConstraint<A> convertValueConstraint(final String elementName, final XMLValueConstraint xmlValueConstraint, final SmSimpleType<A> simpleType) throws SchemaException
 	{
 		if (null != xmlValueConstraint)
 		{
@@ -1746,9 +1746,9 @@ final class XMLSchemaConverter<A>
 				final List<A> value = simpleType.validate(initialValue);
 				return new SmValueConstraint<A>(xmlValueConstraint.kind, value, initialValue);
 			}
-			catch (final SmDatatypeException dte)
+			catch (final DatatypeException dte)
 			{
-				final SmSimpleTypeException ste = new SmSimpleTypeException(initialValue, simpleType, dte);
+				final SimpleTypeException ste = new SimpleTypeException(initialValue, simpleType, dte);
 				throw new SmAttributeUseException(new QName(elementName), xmlValueConstraint.getAttributeName(), xmlValueConstraint.getLocation(), ste);
 			}
 		}
@@ -1758,7 +1758,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SmWildcard<A> convertWildcard(final XMLWildcard<A> wildcard)
+	private SchemaWildcard<A> convertWildcard(final XMLWildcard<A> wildcard)
 	{
 		if (null != wildcard)
 		{
@@ -1770,9 +1770,9 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SmParticle<A> convertWildcardUse(final XMLParticleWithWildcardTerm<A> particle) throws SicOversizedIntegerException
+	private SchemaParticle<A> convertWildcardUse(final XMLParticleWithWildcardTerm<A> particle) throws SicOversizedIntegerException
 	{
-		final SmWildcard<A> wildcard = convertWildcard(particle.getTerm());
+		final SchemaWildcard<A> wildcard = convertWildcard(particle.getTerm());
 
 		final SmWildcardUse<A> wildcardUse;
 		if (isMaxOccursUnbounded(particle.getMaxOccurs()))
@@ -1790,7 +1790,7 @@ final class XMLSchemaConverter<A>
 		return wildcardUse;
 	}
 
-	private SimpleTypeImpl<A> deriveSimpleType(final QName name, final boolean isAnonymous, final SmScopeExtent scope, final SmSimpleType<A> simpleBaseType, final SmWhiteSpacePolicy whiteSpace, final SrcFrozenLocation location) throws SmException
+	private SimpleTypeImpl<A> deriveSimpleType(final QName name, final boolean isAnonymous, final ScopeExtent scope, final SmSimpleType<A> simpleBaseType, final WhiteSpacePolicy whiteSpace, final SrcFrozenLocation location) throws SchemaException
 	{
 		final SimpleTypeImpl<A> simpleType;
 		if (simpleBaseType.isAtomicType())
@@ -1825,14 +1825,14 @@ final class XMLSchemaConverter<A>
 		return simpleType;
 	}
 
-	private SmModelGroupUse<A> effectiveContent(final boolean mixed, final XMLParticleWithModelGroupTerm<A> contentModel) throws SmAbortException, SmException
+	private SmModelGroupUse<A> effectiveContent(final boolean mixed, final XMLParticleWithModelGroupTerm<A> contentModel) throws AbortException, SchemaException
 	{
 		if (null == contentModel)
 		{
 			if (mixed)
 			{
-				final List<SmParticle<A>> particles = Collections.emptyList();
-				final SmModelGroup<A> modelGroup = new ModelGroupImpl<A>(SmModelGroup.SmCompositor.Sequence, particles, null, true, SmScopeExtent.Local);
+				final List<SchemaParticle<A>> particles = Collections.emptyList();
+				final ModelGroup<A> modelGroup = new ModelGroupImpl<A>(ModelGroup.SmCompositor.Sequence, particles, null, true, ScopeExtent.Local);
 				return new ParticleWithModelGroupTerm<A>(1, 1, modelGroup);
 			}
 			else
@@ -1846,14 +1846,14 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SmEnumeration<A> enumeration(final SmSimpleType<A> type, final SmSimpleType<A> baseType, final XMLEnumeration<A> sourceEnum) throws SmAttributeUseException
+	private EnumerationDefinition<A> enumeration(final SmSimpleType<A> type, final SmSimpleType<A> baseType, final XMLEnumeration<A> sourceEnum) throws SmAttributeUseException
 	{
 		try
 		{
 			final SmSimpleType<A> notationType = m_existingCache.getAtomicType(SmNativeType.NOTATION);
-			if (baseType.getName().equals(notationType.getName()) || baseType.derivedFromType(notationType, EnumSet.of(SmDerivationMethod.Restriction)))
+			if (baseType.getName().equals(notationType.getName()) || baseType.derivedFromType(notationType, EnumSet.of(DerivationMethod.Restriction)))
 			{
-				final SmPrefixResolver resolver = sourceEnum.getPrefixResolver();
+				final PrefixResolver resolver = sourceEnum.getPrefixResolver();
 				final List<A> value = baseType.validate(sourceEnum.getValue(), resolver);
 				return new FacetEnumerationImpl<A>(value, atomBridge);
 			}
@@ -1863,16 +1863,16 @@ final class XMLSchemaConverter<A>
 				return new FacetEnumerationImpl<A>(value, atomBridge);
 			}
 		}
-		catch (final SmDatatypeException dte)
+		catch (final DatatypeException dte)
 		{
-			final SmSimpleTypeException ste = new SmSimpleTypeException(sourceEnum.getValue(), baseType, dte);
+			final SimpleTypeException ste = new SimpleTypeException(sourceEnum.getValue(), baseType, dte);
 			final QName elementName = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, XMLRepresentation.LN_ENUMERATION);
 			final QName attributeName = new QName(XMLRepresentation.LN_VALUE);
 			throw new SmAttributeUseException(elementName, attributeName, sourceEnum.getLocation(), ste);
 		}
 	}
 
-	private SmSimpleType<A> extractSimpleType(final XMLTypeRef<A> typeRef) throws SmAbortException, SmException
+	private SmSimpleType<A> extractSimpleType(final XMLTypeRef<A> typeRef) throws AbortException, SchemaException
 	{
 		final SmType<A> type = convertType(typeRef);
 		if (type instanceof SmSimpleType<?>)
@@ -2002,7 +2002,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SmFacet<A> minmax(final XMLMinMaxFacet<A> xmlFacet, final SmSimpleType<A> baseType) throws SmException
+	private SmFacet<A> minmax(final XMLMinMaxFacet<A> xmlFacet, final SmSimpleType<A> baseType) throws SchemaException
 	{
 		final List<A> value;
 		{
@@ -2011,9 +2011,9 @@ final class XMLSchemaConverter<A>
 			{
 				value = baseType.validate(initialValue);
 			}
-			catch (final SmDatatypeException dte)
+			catch (final DatatypeException dte)
 			{
-				final SmSimpleTypeException ste = new SmSimpleTypeException(initialValue, baseType, dte);
+				final SimpleTypeException ste = new SimpleTypeException(initialValue, baseType, dte);
 				final QName elementName = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, xmlFacet.elementName);
 				final QName attributeName = new QName(XMLRepresentation.LN_VALUE);
 				final SrcFrozenLocation location = xmlFacet.getLocation();
@@ -2042,11 +2042,11 @@ final class XMLSchemaConverter<A>
 			}
 			catch (final SmRegExCompileException e)
 			{
-				final SmDatatypeException dte = new SmDatatypeException(regex, null);
-				throw new SmSimpleTypeException(regex, null, dte);
+				final DatatypeException dte = new DatatypeException(regex, null);
+				throw new SimpleTypeException(regex, null, dte);
 			}
 		}
-		catch (final SmSimpleTypeException ste)
+		catch (final SimpleTypeException ste)
 		{
 			final QName elementName = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, XMLRepresentation.LN_PATTERN);
 			final QName attributeName = new QName(XMLRepresentation.LN_VALUE);
@@ -2054,12 +2054,12 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SmContentType<A> simpleContent(final XMLType<A> simpleType, final SmSimpleType<A> simpleBaseType) throws SmAbortException, SmException
+	private SmContentType<A> simpleContent(final XMLType<A> simpleType, final SmSimpleType<A> simpleBaseType) throws AbortException, SchemaException
 	{
 		final QName name;
 		final boolean isAnonymous;
-		final SmScopeExtent scope = convertScope(simpleType.getScope());
-		if (scope == SmScopeExtent.Global)
+		final ScopeExtent scope = convertScope(simpleType.getScope());
+		if (scope == ScopeExtent.Global)
 		{
 			name = simpleType.getName();
 			isAnonymous = false;
@@ -2069,7 +2069,7 @@ final class XMLSchemaConverter<A>
 			name = m_existingCache.generateUniqueName();
 			isAnonymous = true;
 		}
-		final SmWhiteSpacePolicy whiteSpace = simpleType.getWhiteSpacePolicy();
+		final WhiteSpacePolicy whiteSpace = simpleType.getWhiteSpacePolicy();
 		final SimpleTypeImpl<A> simpleTypeD = deriveSimpleType(name, isAnonymous, scope, simpleBaseType, whiteSpace, simpleType.getLocation());
 		computePatterns(simpleType.getPatternFacets(), simpleTypeD);
 		computeFacets(simpleBaseType, simpleType, simpleTypeD);

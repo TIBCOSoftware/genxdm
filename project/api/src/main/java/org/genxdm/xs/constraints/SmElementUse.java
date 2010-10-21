@@ -15,8 +15,8 @@
  */
 package org.genxdm.xs.constraints;
 
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmParticle;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.SchemaParticle;
 
 /**
  * Describes the use of an element declaration.
@@ -24,9 +24,9 @@ import org.genxdm.xs.components.SmParticle;
  * @param <A>
  *            The atom handle.
  */
-public interface SmElementUse<A> extends SmParticle<A>/* , SmHasValueConstraint<A> */
+public interface SmElementUse<A> extends SchemaParticle<A>/* , SmHasValueConstraint<A> */
 {
-	SmElement<A> getTerm();
+	ElementDefinition<A> getTerm();
 
 	/**
 	 * Returns the effective value constraint, may be <code>null</code>. [Definition:] Let the effective value

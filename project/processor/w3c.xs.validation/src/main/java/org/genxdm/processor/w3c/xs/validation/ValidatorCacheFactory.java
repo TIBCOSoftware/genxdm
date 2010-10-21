@@ -22,7 +22,7 @@ import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCacheFactory;
 import org.genxdm.processor.w3c.xs.validation.impl.ValidationFactoryImpl;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.ElementDefinition;
 
 
 public final class ValidatorCacheFactory<N, A> implements GxValidatorCacheFactory<A>
@@ -45,7 +45,7 @@ public final class ValidatorCacheFactory<N, A> implements GxValidatorCacheFactor
 		return new ValidatorCache<A>(validation, atomBridge, nameBridge);
 	}
 
-	public GxValidatorCache<A> newValidatorCache(final SmElement<A> elementDeclaration)
+	public GxValidatorCache<A> newValidatorCache(final ElementDefinition<A> elementDeclaration)
 	{
 		final VxValidatorCache<A> validation = factory.newValidatorCache(elementDeclaration);
 

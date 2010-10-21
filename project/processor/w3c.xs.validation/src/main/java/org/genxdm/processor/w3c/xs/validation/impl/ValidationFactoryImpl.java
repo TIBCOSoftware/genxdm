@@ -19,7 +19,7 @@ import org.genxdm.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrate
 import org.genxdm.processor.w3c.xs.validation.api.VxValidationHost;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCache;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCacheFactory;
-import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.ElementDefinition;
 
 
 public final class ValidationFactoryImpl<A> implements VxValidatorCacheFactory<A>
@@ -37,7 +37,7 @@ public final class ValidationFactoryImpl<A> implements VxValidatorCacheFactory<A
 		return new ValidationCache<A>(null, host, sdl);
 	}
 
-	public VxValidatorCache<A> newValidatorCache(final SmElement<A> elementDeclaration)
+	public VxValidatorCache<A> newValidatorCache(final ElementDefinition<A> elementDeclaration)
 	{
 		PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration");
 		return new ValidationCache<A>(elementDeclaration, host, sdl);

@@ -18,13 +18,13 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
-import org.genxdm.xs.exceptions.SmSimpleTypeException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
+import org.genxdm.xs.exceptions.SimpleTypeException;
 
 
 @SuppressWarnings("serial")
-public abstract class SccAttributeDeclarationException extends SmComponentConstraintException
+public abstract class SccAttributeDeclarationException extends ComponentConstraintException
 {
 	private final QName m_attributeName;
 
@@ -34,13 +34,13 @@ public abstract class SccAttributeDeclarationException extends SmComponentConstr
 
 	public SccAttributeDeclarationException(final String partNumber, final QName attributeName)
 	{
-		super(SmOutcome.SCC_Attribute_Declaration_Properties_Correct, partNumber);
+		super(ValidationOutcome.SCC_Attribute_Declaration_Properties_Correct, partNumber);
 		m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
 	}
 
-	public SccAttributeDeclarationException(final String partNumber, final QName attributeName, final SmSimpleTypeException cause)
+	public SccAttributeDeclarationException(final String partNumber, final QName attributeName, final SimpleTypeException cause)
 	{
-		super(SmOutcome.SCC_Attribute_Declaration_Properties_Correct, partNumber, cause);
+		super(ValidationOutcome.SCC_Attribute_Declaration_Properties_Correct, partNumber, cause);
 		m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
 	}
 

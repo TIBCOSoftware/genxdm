@@ -15,7 +15,7 @@
  */
 package org.genxdm.xs.facets;
 
-import org.genxdm.xs.exceptions.SmFacetMinMaxException;
+import org.genxdm.xs.exceptions.FacetMinMaxException;
 import org.genxdm.xs.types.SmSimpleType;
 
 /**
@@ -38,8 +38,8 @@ public interface SmLimit<A> extends SmFacet<A>
 	 *            The atom to be validated.
 	 * @param simpleType
 	 *            The type of the atom.
-	 * @throws SmFacetMinMaxException
+	 * @throws FacetMinMaxException
 	 *             if the atom does not comply with the facet.
 	 */
-	void validate(A atom, SmSimpleType<A> simpleType) throws SmFacetMinMaxException;
+	void validate(A atom, SmSimpleType<A> simpleType) throws FacetMinMaxException;
 }

@@ -15,8 +15,8 @@
  */
 package org.genxdm.xs.constraints;
 
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.components.SmParticle;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.SchemaParticle;
 
 /**
  * Describes the use of a model group.
@@ -24,12 +24,12 @@ import org.genxdm.xs.components.SmParticle;
  * @param <A>
  *            The atom handle.
  */
-public interface SmModelGroupUse<A> extends SmParticle<A>
+public interface SmModelGroupUse<A> extends SchemaParticle<A>
 {
 	/**
 	 * Returns the {particle term} property for this usage which is a model group.
 	 */
-	SmModelGroup<A> getTerm();
+	ModelGroup<A> getTerm();
 
 	/**
 	 * Determines whether this particle is Emptiable (See W3C XML Schema Definition Language (XSD) Part 1: Structures).

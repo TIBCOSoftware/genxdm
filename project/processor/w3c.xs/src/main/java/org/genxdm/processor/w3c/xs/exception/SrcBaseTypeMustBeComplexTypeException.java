@@ -15,12 +15,12 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class SrcBaseTypeMustBeComplexTypeException extends SmSourceComplexTypeException
 {
-	public SrcBaseTypeMustBeComplexTypeException(final SmLocation location)
+	public SrcBaseTypeMustBeComplexTypeException(final LocationInSchema location)
 	{
 		super(PART_BASE_TYPE_MUST_BE_COMPLEX_TYPE, location);
 	}

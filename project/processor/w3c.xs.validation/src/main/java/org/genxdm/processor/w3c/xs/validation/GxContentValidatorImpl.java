@@ -30,8 +30,8 @@ import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.Emulation;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
 
 final class GxContentValidatorImpl<A> implements GxContentValidator<A>
@@ -129,7 +129,7 @@ final class GxContentValidatorImpl<A> implements GxContentValidator<A>
 		kernel.reset();
 	}
 
-	public void setExceptionHandler(final SmExceptionHandler handler)
+	public void setExceptionHandler(final SchemaExceptionHandler handler)
 	{
 		kernel.setExceptionHandler(handler);
 	}
@@ -174,7 +174,7 @@ final class GxContentValidatorImpl<A> implements GxContentValidator<A>
 		{
 			throw new GxmlException(e);
 		}
-		catch (final SmAbortException e)
+		catch (final AbortException e)
 		{
 			throw new GxmlException(e);
 		}
@@ -191,7 +191,7 @@ final class GxContentValidatorImpl<A> implements GxContentValidator<A>
 		{
 			throw new GxmlException(e);
 		}
-		catch (final SmAbortException e)
+		catch (final AbortException e)
 		{
 			throw new GxmlException(e);
 		}

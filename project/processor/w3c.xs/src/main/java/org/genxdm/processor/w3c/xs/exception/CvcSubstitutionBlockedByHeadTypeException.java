@@ -16,18 +16,18 @@
 package org.genxdm.processor.w3c.xs.exception;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class CvcSubstitutionBlockedByHeadTypeException extends SmLocationException
 {
-	private final SmElement<?> elementDeclaration;
+	private final ElementDefinition<?> elementDeclaration;
 
-	public CvcSubstitutionBlockedByHeadTypeException(final SmElement<?> elementDeclaration, final SmLocation location)
+	public CvcSubstitutionBlockedByHeadTypeException(final ElementDefinition<?> elementDeclaration, final LocationInSchema location)
 	{
-		super(SmOutcome.SCC_Substitution_Group_OK_Transitive, "2.1", location);
+		super(ValidationOutcome.SCC_Substitution_Group_OK_Transitive, "2.1", location);
 		this.elementDeclaration = PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration");
 	}
 

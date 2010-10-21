@@ -18,18 +18,18 @@ package org.genxdm.bridgekit.xs;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmAttributeGroup;
-import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.SmAttributeUse;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.enums.ScopeExtent;
 
-public final class AttributeGroupImpl<A> extends NamedComponentImpl<A> implements SmAttributeGroup<A>
+public final class AttributeGroupImpl<A> extends NamedComponentImpl<A> implements AttributeGroupDefinition<A>
 {
 	private final Iterable<SmAttributeUse<A>> m_attributeUses;
 	private final boolean m_hasAttributeUses;
-	private final SmWildcard<A> m_wildcard;
+	private final SchemaWildcard<A> m_wildcard;
 
-	public AttributeGroupImpl(final QName name, final SmScopeExtent scope, final Iterable<SmAttributeUse<A>> attributeUses, final SmWildcard<A> wildcard)
+	public AttributeGroupImpl(final QName name, final ScopeExtent scope, final Iterable<SmAttributeUse<A>> attributeUses, final SchemaWildcard<A> wildcard)
 	{
 		super(name, false, scope);
 		if (null != attributeUses)
@@ -59,7 +59,7 @@ public final class AttributeGroupImpl<A> extends NamedComponentImpl<A> implement
 		return m_attributeUses;
 	}
 
-	public SmWildcard<A> getWildcard()
+	public SchemaWildcard<A> getWildcard()
 	{
 		return m_wildcard;
 	}

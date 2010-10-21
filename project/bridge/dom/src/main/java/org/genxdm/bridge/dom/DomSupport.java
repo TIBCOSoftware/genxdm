@@ -34,7 +34,7 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.Emulation;
 import org.genxdm.typed.types.MetaBridge;
-import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.SmSimpleType;
 import org.genxdm.xs.types.SmType;
 import org.w3c.dom.Attr;
@@ -841,7 +841,7 @@ public final class DomSupport implements DomConstants
 					{
 						return simpleType.validate(stringValue);
 					}
-					catch (final SmDatatypeException e)
+					catch (final DatatypeException e)
 					{
 						throw new GxmlException(e);
 					}

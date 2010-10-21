@@ -18,9 +18,9 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmSimpleTypeException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.SimpleTypeException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public abstract class CvcAttributeException extends SmLocationException
@@ -32,15 +32,15 @@ public abstract class CvcAttributeException extends SmLocationException
 	public static final String PART_NORMALIZED_VALUE = "3";
 	public static final String PART_VALUE_CONSTRAINT = "4";
 
-	public CvcAttributeException(final String partNumber, final QName attributeName, final SmLocation location)
+	public CvcAttributeException(final String partNumber, final QName attributeName, final LocationInSchema location)
 	{
-		super(SmOutcome.CVC_Attribute, partNumber, location);
+		super(ValidationOutcome.CVC_Attribute, partNumber, location);
 		this.m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
 	}
 
-	public CvcAttributeException(final String partNumber, final QName attributeName, final SmLocation location, final SmSimpleTypeException cause)
+	public CvcAttributeException(final String partNumber, final QName attributeName, final LocationInSchema location, final SimpleTypeException cause)
 	{
-		super(SmOutcome.CVC_Attribute, partNumber, location, cause);
+		super(ValidationOutcome.CVC_Attribute, partNumber, location, cause);
 		m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
 	}
 

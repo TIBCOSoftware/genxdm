@@ -18,14 +18,14 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class SmUnexpectedElementException extends SmComplexTypeException
 {
 	private final QName m_childName;
 
-	public SmUnexpectedElementException(final QName elementName, final SmLocation location, final QName childName, final SmLocation childLocation)
+	public SmUnexpectedElementException(final QName elementName, final LocationInSchema location, final QName childName, final LocationInSchema childLocation)
 	{
 		super(PART_CONTENT_TYPE_AND_CHILD_SEQUENCE, elementName, location);
 		m_childName = PreCondition.assertArgumentNotNull(childName, "childName");

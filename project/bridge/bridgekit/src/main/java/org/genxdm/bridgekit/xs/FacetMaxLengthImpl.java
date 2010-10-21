@@ -17,8 +17,8 @@ package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.exceptions.SmFacetException;
-import org.genxdm.xs.exceptions.SmFacetMaxLengthException;
+import org.genxdm.xs.exceptions.FacetException;
+import org.genxdm.xs.exceptions.FacetMaxLengthException;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmLengthFacetUOM;
 import org.genxdm.xs.facets.SmMaxLength;
@@ -34,11 +34,11 @@ public final class FacetMaxLengthImpl<A> extends FacetLengthCommonImpl<A> implem
 		this.maxLength = maxLength;
 	}
 
-	protected void checkLength(final int length, final SmLengthFacetUOM uom) throws SmFacetException
+	protected void checkLength(final int length, final SmLengthFacetUOM uom) throws FacetException
 	{
 		if (length > this.maxLength)
 		{
-			throw new SmFacetMaxLengthException(this, length, uom);
+			throw new FacetMaxLengthException(this, length, uom);
 		}
 	}
 

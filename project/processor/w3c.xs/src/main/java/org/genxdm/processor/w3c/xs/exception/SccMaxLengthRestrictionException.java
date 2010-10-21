@@ -15,21 +15,21 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 /**
  * Date: Mar 11, 2008
  */
 @SuppressWarnings("serial")
-final public class SccMaxLengthRestrictionException extends SmComponentConstraintException
+final public class SccMaxLengthRestrictionException extends ComponentConstraintException
 {
     private final int m_maxLength;
     private final int m_restrictedMaxLength;
 
     public SccMaxLengthRestrictionException(final int maxLength, final int restrictedMaxLength)
     {
-        super(SmOutcome.SCC_FractionDigitsValidRestriction, "4.3.3.4");
+        super(ValidationOutcome.SCC_FractionDigitsValidRestriction, "4.3.3.4");
         m_maxLength = maxLength;
         m_restrictedMaxLength = restrictedMaxLength;
     }

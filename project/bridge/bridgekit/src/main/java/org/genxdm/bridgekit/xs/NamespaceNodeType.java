@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.xs;
 
-import org.genxdm.xs.enums.SmNodeKind;
+import org.genxdm.NodeKind;
 import org.genxdm.xs.types.SmNamespaceNodeType;
 import org.genxdm.xs.types.SmPrimeChoiceType;
 import org.genxdm.xs.types.SmPrimeType;
@@ -26,7 +26,7 @@ final class NamespaceNodeType<A> extends AbstractLeafNodeType<A> implements SmNa
 {
 	NamespaceNodeType(final SmCacheImpl<A> cache)
 	{
-		super(SmNodeKind.NAMESPACE, cache);
+		super(NodeKind.NAMESPACE, cache);
 	}
 
 	public void accept(final SmSequenceTypeVisitor<A> visitor)

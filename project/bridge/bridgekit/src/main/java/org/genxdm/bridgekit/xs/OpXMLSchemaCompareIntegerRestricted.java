@@ -18,7 +18,7 @@ package org.genxdm.bridgekit.xs;
 import java.math.BigInteger;
 
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.exceptions.SmAtomCastException;
+import org.genxdm.xs.exceptions.AtomCastException;
 import org.genxdm.xs.types.SmNativeType;
 
 final class OpXMLSchemaCompareIntegerRestricted<A> implements SmValueComp<A>
@@ -34,7 +34,7 @@ final class OpXMLSchemaCompareIntegerRestricted<A> implements SmValueComp<A>
 		operandRHS = atomBridge.getInteger(rhsAtom);
 	}
 
-	public boolean compare(final A lhsAtom) throws SmAtomCastException
+	public boolean compare(final A lhsAtom) throws AtomCastException
 	{
 		final BigInteger operandLHS = atomBridge.getInteger(lhsAtom);
 		switch (opcode)

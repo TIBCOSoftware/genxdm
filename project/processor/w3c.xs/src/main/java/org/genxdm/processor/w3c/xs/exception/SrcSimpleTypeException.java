@@ -16,9 +16,9 @@
 package org.genxdm.processor.w3c.xs.exception;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public abstract class SrcSimpleTypeException extends SmLocationException
@@ -28,13 +28,13 @@ public abstract class SrcSimpleTypeException extends SmLocationException
 	public static final String PART_LIST = "3";
 	public static final String PART_UNION = "4";
 
-	public SrcSimpleTypeException(final String partNumber, final SmLocation location)
+	public SrcSimpleTypeException(final String partNumber, final LocationInSchema location)
 	{
-		super(SmOutcome.SRC_SimpleType, partNumber, location);
+		super(ValidationOutcome.SRC_SimpleType, partNumber, location);
 	}
 
-	public SrcSimpleTypeException(final String partNumber, final SmLocation location, final SmException cause)
+	public SrcSimpleTypeException(final String partNumber, final LocationInSchema location, final SchemaException cause)
 	{
-		super(SmOutcome.SRC_SimpleType, partNumber, location, PreCondition.assertArgumentNotNull(cause, "cause"));
+		super(ValidationOutcome.SRC_SimpleType, partNumber, location, PreCondition.assertArgumentNotNull(cause, "cause"));
 	}
 }

@@ -20,18 +20,18 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 
 @SuppressWarnings("serial")
-public final class SccCyclicSubstitutionGroupException extends SmComponentConstraintException
+public final class SccCyclicSubstitutionGroupException extends ComponentConstraintException
 {
 	private final List<QName> m_names;
 
 	public SccCyclicSubstitutionGroupException(final List<QName> names)
 	{
-		super(SmOutcome.TODO, "?");
+		super(ValidationOutcome.TODO, "?");
 		m_names = PreCondition.assertArgumentNotNull(names, "names");
 	}
 

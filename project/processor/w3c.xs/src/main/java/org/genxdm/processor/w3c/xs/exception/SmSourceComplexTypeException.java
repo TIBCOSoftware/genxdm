@@ -16,9 +16,9 @@
 package org.genxdm.processor.w3c.xs.exception;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public abstract class SmSourceComplexTypeException extends SmLocationException
@@ -28,13 +28,13 @@ public abstract class SmSourceComplexTypeException extends SmLocationException
 	public static final String PART_SIMPLE_TYPE_AMONG_CHILDREN_OF_RESTRICTION = "2.2";
 	public static final String PART_BASE_CONTENT_CANNOT_BE_SIMPLE = "?";
 
-	public SmSourceComplexTypeException(final String partNumber, final SmLocation location)
+	public SmSourceComplexTypeException(final String partNumber, final LocationInSchema location)
 	{
-		super(SmOutcome.SRC_ComplexType, partNumber, location);
+		super(ValidationOutcome.SRC_ComplexType, partNumber, location);
 	}
 
-	public SmSourceComplexTypeException(final String partNumber, final SmLocation location, final SmException cause)
+	public SmSourceComplexTypeException(final String partNumber, final LocationInSchema location, final SchemaException cause)
 	{
-		super(SmOutcome.SRC_ComplexType, partNumber, location, PreCondition.assertArgumentNotNull(cause, "cause"));
+		super(ValidationOutcome.SRC_ComplexType, partNumber, location, PreCondition.assertArgumentNotNull(cause, "cause"));
 	}
 }

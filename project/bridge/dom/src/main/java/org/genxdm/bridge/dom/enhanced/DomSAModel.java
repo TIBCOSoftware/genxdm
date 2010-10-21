@@ -36,7 +36,7 @@ import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
-import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.SmSimpleType;
 import org.genxdm.xs.types.SmType;
 import org.w3c.dom.NamedNodeMap;
@@ -283,7 +283,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 							// m_nameBridge));
 							return simpleType.validate(stringValue);
 						}
-						catch (final SmDatatypeException e)
+						catch (final DatatypeException e)
 						{
 							throw new GxmlException(e);
 						}
@@ -348,7 +348,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 //						// m_nameBridge));
 //						return simpleType.validate(stringValue);
 //					}
-//					catch (final SmDatatypeException e)
+//					catch (final DatatypeException e)
 //					{
 //						throw new GxmlException(e);
 //					}

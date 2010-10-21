@@ -15,11 +15,11 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 @SuppressWarnings("serial")
-public abstract class SccAttributeGroupPropertiesException extends SmComponentConstraintException
+public abstract class SccAttributeGroupPropertiesException extends ComponentConstraintException
 {
     public static final String PART_PROPERTIES = "1";
     public static final String PART_MEMBER_NAMES = "2";
@@ -27,6 +27,6 @@ public abstract class SccAttributeGroupPropertiesException extends SmComponentCo
 
     public SccAttributeGroupPropertiesException(final String partNumber)
     {
-        super(SmOutcome.SCC_Attribute_Group_Definition_Properties_Correct, partNumber);
+        super(ValidationOutcome.SCC_Attribute_Group_Definition_Properties_Correct, partNumber);
     }
 }

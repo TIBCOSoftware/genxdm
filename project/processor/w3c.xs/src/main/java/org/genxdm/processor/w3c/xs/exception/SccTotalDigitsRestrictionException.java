@@ -15,18 +15,18 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 @SuppressWarnings("serial")
-final public class SccTotalDigitsRestrictionException extends SmComponentConstraintException
+final public class SccTotalDigitsRestrictionException extends ComponentConstraintException
 {
 	private final int m_totalDigits;
 	private final int m_restrictedTotalDigits;
 
 	public SccTotalDigitsRestrictionException(final int totalDigits, final int restrictedTotalDigits)
 	{
-		super(SmOutcome.SCC_TotalDigitsValidRestriction, "0");
+		super(ValidationOutcome.SCC_TotalDigitsValidRestriction, "0");
 		m_totalDigits = totalDigits;
 		m_restrictedTotalDigits = restrictedTotalDigits;
 	}

@@ -15,9 +15,9 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 /**
  * Used for reporting problems with included schemas.
@@ -28,13 +28,13 @@ public abstract class SmInclusionException extends SmLocationException
 	public static final String PART_NOT_WELL_FORMED = "1";
 	public static final String PART_INCLUSION_NAMESPACE_MISMATCH = "2.1";
 
-	public SmInclusionException(final String partNumber, final SmLocation location)
+	public SmInclusionException(final String partNumber, final LocationInSchema location)
 	{
-		super(SmOutcome.SRC_Include, partNumber, location);
+		super(ValidationOutcome.SRC_Include, partNumber, location);
 	}
 
-	public SmInclusionException(final String partNumber, final SmLocation location, final SmException cause)
+	public SmInclusionException(final String partNumber, final LocationInSchema location, final SchemaException cause)
 	{
-		super(SmOutcome.SRC_Include, partNumber, location, cause);
+		super(ValidationOutcome.SRC_Include, partNumber, location, cause);
 	}
 }

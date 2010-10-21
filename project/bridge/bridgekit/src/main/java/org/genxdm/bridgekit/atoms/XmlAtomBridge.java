@@ -29,9 +29,9 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
-import org.genxdm.xs.SmSchema;
-import org.genxdm.xs.exceptions.SmDatatypeException;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.Schema;
+import org.genxdm.xs.exceptions.DatatypeException;
+import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.SmNativeType;
 import org.genxdm.xs.types.SmSimpleType;
 import org.genxdm.xs.types.SmType;
@@ -44,15 +44,15 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 	private static final QName FORG0001 = new QName("http://www.w3.org/2005/xqt-errors/", "FORG0001", "err");
 
 	private final NameSource nameBridge;
-	private SmSchema<XmlAtom> schema;
+	private Schema<XmlAtom> schema;
 
-	public XmlAtomBridge(final SmSchema<XmlAtom> schema, final NameSource nameBridge)
+	public XmlAtomBridge(final Schema<XmlAtom> schema, final NameSource nameBridge)
 	{
 		this.schema = schema;
 		this.nameBridge = IllegalNullArgumentException.check(nameBridge, "nameBridge");
 	}
 
-	public void setProcessingContext(final SmSchema<XmlAtom> schema)
+	public void setProcessingContext(final Schema<XmlAtom> schema)
 	{
 		this.schema = PreCondition.assertArgumentNotNull(schema, "schema");
 	}
@@ -126,7 +126,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 						throw new AssertionError();
 					}
 				}
-				catch (final SmDatatypeException e)
+				catch (final DatatypeException e)
 				{
 					throw new GxmlAtomCastException(sourceValue, e.getType().getName(), FORG0001, e);
 				}
@@ -142,7 +142,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 		}
 	}
 
-	public XmlAtom compile(final String sourceValue, final SmNativeType targetType, final SmPrefixResolver resolver) throws GxmlAtomCastException
+	public XmlAtom compile(final String sourceValue, final SmNativeType targetType, final PrefixResolver resolver) throws GxmlAtomCastException
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO: compile");

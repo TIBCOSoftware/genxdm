@@ -15,12 +15,12 @@
  */
 package org.genxdm.bridgekit.xs;
 
-import org.genxdm.xs.exceptions.SmAtomCastException;
+import org.genxdm.xs.exceptions.AtomCastException;
 
 /**
  * Internal implementation interface for organizing value comparisons.
  */
 interface SmValueComp<A>
 {
-	boolean compare(A lhsAtom) throws SmAtomCastException;
+	boolean compare(A lhsAtom) throws AtomCastException;
 }

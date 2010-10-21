@@ -19,14 +19,14 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 
 @SuppressWarnings("serial")
 public final class CvcDanglingKeyReferenceException extends CvcIdentityConstraintException
 {
 	@SuppressWarnings("unchecked")
-	public CvcDanglingKeyReferenceException(final QName constraintName, List fields, final SmLocation location)
+	public CvcDanglingKeyReferenceException(final QName constraintName, List fields, final LocationInSchema location)
 	{
 		super(constraintName, PART_TODO, location);
 	}

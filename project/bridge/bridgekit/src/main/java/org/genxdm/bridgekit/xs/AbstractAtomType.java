@@ -22,9 +22,9 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmQuantifier;
-import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.SmAtomicType;
 import org.genxdm.xs.types.SmNativeType;
 import org.genxdm.xs.types.SmPrimeChoiceType;
@@ -86,7 +86,7 @@ abstract class AbstractAtomType<A> implements SmAtomicType<A>
 		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge);
 	}
 
-	public final boolean derivedFromType(final SmType<A> ancestorType, final Set<SmDerivationMethod> derivationMethods)
+	public final boolean derivedFromType(final SmType<A> ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
 		return SmSupportImpl.derivedFromType(this, ancestorType, derivationMethods, atomBridge.getNameBridge());
 	}
@@ -96,9 +96,9 @@ abstract class AbstractAtomType<A> implements SmAtomicType<A>
 		return baseType;
 	}
 
-	public final SmDerivationMethod getDerivationMethod()
+	public final DerivationMethod getDerivationMethod()
 	{
-		return SmDerivationMethod.Restriction;
+		return DerivationMethod.Restriction;
 	}
 
 	public final SmPrimeTypeKind getKind()
@@ -151,7 +151,7 @@ abstract class AbstractAtomType<A> implements SmAtomicType<A>
 		return false;
 	}
 
-	public final boolean isFinal(final SmDerivationMethod derivation)
+	public final boolean isFinal(final DerivationMethod derivation)
 	{
 		switch (derivation)
 		{
@@ -206,9 +206,9 @@ abstract class AbstractAtomType<A> implements SmAtomicType<A>
 		return this;
 	}
 
-	public final SmQuantifier quantifier()
+	public final KeeneQuantifier quantifier()
 	{
-		return SmQuantifier.EXACTLY_ONE;
+		return KeeneQuantifier.EXACTLY_ONE;
 	}
 
 	public final boolean subtype(final SmPrimeType<A> rhs)
@@ -252,7 +252,7 @@ abstract class AbstractAtomType<A> implements SmAtomicType<A>
 		return name.toString();
 	}
 
-	public final List<A> validate(final List<? extends A> atoms) throws SmDatatypeException
+	public final List<A> validate(final List<? extends A> atoms) throws DatatypeException
 	{
 		final int size = atoms.size();
 		switch (size)

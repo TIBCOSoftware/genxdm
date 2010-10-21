@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.xs;
 
-import org.genxdm.xs.enums.SmNodeKind;
+import org.genxdm.NodeKind;
 import org.genxdm.xs.types.SmPrimeChoiceType;
 import org.genxdm.xs.types.SmPrimeType;
 import org.genxdm.xs.types.SmPrimeTypeKind;
@@ -28,7 +28,7 @@ final class ProcessingInstructionNodeType<A> extends AbstractLeafNodeType<A> imp
 
 	public ProcessingInstructionNodeType(final String name, final SmCache<A> cache)
 	{
-		super(SmNodeKind.PROCESSING_INSTRUCTION, cache);
+		super(NodeKind.PROCESSING_INSTRUCTION, cache);
 		m_name = name;
 	}
 

@@ -16,9 +16,9 @@
 package org.genxdm.processor.w3c.xs.exception;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public abstract class SrcRedefinitionException extends SmLocationException
@@ -28,13 +28,13 @@ public abstract class SrcRedefinitionException extends SmLocationException
 	public static final String PART_REDEFINTION_NAMESPACE_MISMATCH = "3.1";
 	public static final String PART_TYPE_SELF_REFERENCE = "5";
 
-	public SrcRedefinitionException(final String partNumber, final SmLocation location)
+	public SrcRedefinitionException(final String partNumber, final LocationInSchema location)
 	{
-		super(SmOutcome.SRC_Redefine, partNumber, location);
+		super(ValidationOutcome.SRC_Redefine, partNumber, location);
 	}
 
-	public SrcRedefinitionException(final String partNumber, final SmLocation location, final SmException cause)
+	public SrcRedefinitionException(final String partNumber, final LocationInSchema location, final SchemaException cause)
 	{
-		super(SmOutcome.SRC_Redefine, partNumber, location, PreCondition.assertArgumentNotNull(cause, "cause"));
+		super(ValidationOutcome.SRC_Redefine, partNumber, location, PreCondition.assertArgumentNotNull(cause, "cause"));
 	}
 }

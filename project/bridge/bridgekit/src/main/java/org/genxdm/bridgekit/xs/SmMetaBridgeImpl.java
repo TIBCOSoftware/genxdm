@@ -23,22 +23,22 @@ import javax.xml.namespace.QName;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.SmMetaBridge;
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmAttributeGroup;
-import org.genxdm.xs.components.SmComponentBag;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.components.SmNotation;
-import org.genxdm.xs.components.SmParticle;
-import org.genxdm.xs.components.SmWildcard;
-import org.genxdm.xs.components.SmWildcardUse;
+import org.genxdm.xs.SchemaTypeBridge;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.ComponentBag;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.NotationDefinition;
+import org.genxdm.xs.components.SchemaParticle;
+import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.SmAttributeUse;
 import org.genxdm.xs.constraints.SmElementUse;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
 import org.genxdm.xs.constraints.SmModelGroupUse;
 import org.genxdm.xs.constraints.SmNamespaceConstraint;
-import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.constraints.SmWildcardUse;
+import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.types.SmAtomicType;
 import org.genxdm.xs.types.SmAtomicUrType;
 import org.genxdm.xs.types.SmAttributeNodeType;
@@ -61,7 +61,7 @@ import org.genxdm.xs.types.SmSimpleUrType;
 import org.genxdm.xs.types.SmTextNodeType;
 import org.genxdm.xs.types.SmType;
 
-final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
+final class SmMetaBridgeImpl<A> implements SchemaTypeBridge<A>
 {
 	private final SmAtomicUrType<A> ANY_ATOMIC_TYPE;
 	private final SmComplexUrType<A> ANY_COMPLEX_TYPE;
@@ -130,7 +130,7 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		}
 		case SCHEMA_ELEMENT:
 		{
-			final SmElement<A> elementDecl = (SmElement<A>) prime;
+			final ElementDefinition<A> elementDecl = (ElementDefinition<A>) prime;
 			final SmType<A> smType = elementDecl.getType();
 			if (smType instanceof SmComplexType)
 			{
@@ -163,7 +163,7 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		}
 	}
 
-	private SmSequenceType<A> attributeAxisFromComplexType(final SmComplexType<A> complexType, final SmElement<A> parentAxis)
+	private SmSequenceType<A> attributeAxisFromComplexType(final SmComplexType<A> complexType, final ElementDefinition<A> parentAxis)
 	{
 		final ArrayList<SmAttributeUse<A>> attributeUses = ensureAttributeUses(complexType);
 		SmSequenceType<A> result = null;
@@ -194,16 +194,16 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		}
 	}
 
-	private SmSequenceType<A> attributeUseType(final SmAttributeUse<A> attributeUse, final SmElement<A> parentAxis)
+	private SmSequenceType<A> attributeUseType(final SmAttributeUse<A> attributeUse, final ElementDefinition<A> parentAxis)
 	{
-		final SmAttribute<A> attribute = attributeUse.getAttribute();
+		final AttributeDefinition<A> attribute = attributeUse.getAttribute();
 		if (null != parentAxis)
 		{
-			return multiply(new AttributeDeclWithParentAxisType<A>(attribute, parentAxis), attributeUse.isRequired() ? SmQuantifier.EXACTLY_ONE : SmQuantifier.OPTIONAL);
+			return multiply(new AttributeDeclWithParentAxisType<A>(attribute, parentAxis), attributeUse.isRequired() ? KeeneQuantifier.EXACTLY_ONE : KeeneQuantifier.OPTIONAL);
 		}
 		else
 		{
-			return multiply(attribute, attributeUse.isRequired() ? SmQuantifier.EXACTLY_ONE : SmQuantifier.OPTIONAL);
+			return multiply(attribute, attributeUse.isRequired() ? KeeneQuantifier.EXACTLY_ONE : KeeneQuantifier.OPTIONAL);
 		}
 	}
 
@@ -261,7 +261,7 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		}
 		case SCHEMA_ELEMENT:
 		{
-			final SmElement<A> elementDecl = (SmElement<A>) prime;
+			final ElementDefinition<A> elementDecl = (ElementDefinition<A>) prime;
 			final SmType<A> type = elementDecl.getType();
 			if (type instanceof SmComplexType)
 			{
@@ -297,7 +297,7 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 
 	// TODO: The suggestion here is that we can factor out this function, maybe embed in the
 	// complex type so that it can be cached.
-	private SmSequenceType<A> childAxisFromComplexType(final SmComplexType<A> complexType, final SmElement<A> parentDecl)
+	private SmSequenceType<A> childAxisFromComplexType(final SmComplexType<A> complexType, final ElementDefinition<A> parentDecl)
 	{
 		final SmContentType<A> contentType = complexType.getContentType();
 		if (contentType.isMixed() || contentType.isElementOnly())
@@ -326,25 +326,25 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		return ZConcatType.concat(lhs, rhs);
 	}
 
-	public void declareAttribute(final SmAttribute<A> attribute)
+	public void declareAttribute(final AttributeDefinition<A> attribute)
 	{
 		assertNotLocked();
 		m_cache.declareAttribute(attribute);
 	}
 
-	public void declareElement(final SmElement<A> element)
+	public void declareElement(final ElementDefinition<A> element)
 	{
 		assertNotLocked();
 		m_cache.declareElement(element);
 	}
 
-	public void declareNotation(final SmNotation<A> notation)
+	public void declareNotation(final NotationDefinition<A> notation)
 	{
 		assertNotLocked();
 		m_cache.declareNotation(notation);
 	}
 
-	public void defineAttributeGroup(final SmAttributeGroup<A> attributeGroup)
+	public void defineAttributeGroup(final AttributeGroupDefinition<A> attributeGroup)
 	{
 		assertNotLocked();
 		m_cache.defineAttributeGroup(attributeGroup);
@@ -362,7 +362,7 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		m_cache.defineIdentityConstraint(identityConstraint);
 	}
 
-	public void defineModelGroup(final SmModelGroup<A> modelGroup)
+	public void defineModelGroup(final ModelGroup<A> modelGroup)
 	{
 		assertNotLocked();
 		m_cache.defineModelGroup(modelGroup);
@@ -391,18 +391,18 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		}
 	}
 
-	private SmSequenceType<A> elementUseType(final SmElementUse<A> elementUse, final SmElement<A> parentDecl)
+	private SmSequenceType<A> elementUseType(final SmElementUse<A> elementUse, final ElementDefinition<A> parentDecl)
 	{
 		final int minOccurs = elementUse.getMinOccurs();
 		final int maxOccurs = elementUse.getMaxOccurs();
-		final SmElement<A> elementDecl = elementUse.getTerm();
+		final ElementDefinition<A> elementDecl = elementUse.getTerm();
 		if (null != parentDecl)
 		{
-			return multiply(new ElementDeclWithParentAxisType<A>(elementDecl, parentDecl), SmQuantifier.approximate(minOccurs, maxOccurs));
+			return multiply(new ElementDeclWithParentAxisType<A>(elementDecl, parentDecl), KeeneQuantifier.approximate(minOccurs, maxOccurs));
 		}
 		else
 		{
-			return multiply(elementDecl, SmQuantifier.approximate(minOccurs, maxOccurs));
+			return multiply(elementDecl, KeeneQuantifier.approximate(minOccurs, maxOccurs));
 		}
 	}
 
@@ -460,22 +460,22 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		return ANY_ATOMIC_TYPE;
 	}
 
-	public SmAttribute<A> getAttributeDeclaration(final QName attributeName)
+	public AttributeDefinition<A> getAttributeDeclaration(final QName attributeName)
 	{
 		return m_cache.getAttributeDeclaration(attributeName);
 	}
 
-	public SmAttributeGroup<A> getAttributeGroup(final QName name)
+	public AttributeGroupDefinition<A> getAttributeGroup(final QName name)
 	{
 		return m_cache.getAttributeGroup(name);
 	}
 
-	public Iterable<SmAttributeGroup<A>> getAttributeGroups()
+	public Iterable<AttributeGroupDefinition<A>> getAttributeGroups()
 	{
 		return m_cache.getAttributeGroups();
 	}
 
-	public Iterable<SmAttribute<A>> getAttributes()
+	public Iterable<AttributeDefinition<A>> getAttributes()
 	{
 		return m_cache.getAttributes();
 	}
@@ -495,12 +495,12 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		return ANY_COMPLEX_TYPE;
 	}
 
-	public SmElement<A> getElementDeclaration(final QName elementName)
+	public ElementDefinition<A> getElementDeclaration(final QName elementName)
 	{
 		return m_cache.getElementDeclaration(elementName);
 	}
 
-	public Iterable<SmElement<A>> getElements()
+	public Iterable<ElementDefinition<A>> getElements()
 	{
 		return m_cache.getElements();
 	}
@@ -515,12 +515,12 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		return m_cache.getIdentityConstraints();
 	}
 
-	public SmModelGroup<A> getModelGroup(final QName name)
+	public ModelGroup<A> getModelGroup(final QName name)
 	{
 		return m_cache.getModelGroup(name);
 	}
 
-	public Iterable<SmModelGroup<A>> getModelGroups()
+	public Iterable<ModelGroup<A>> getModelGroups()
 	{
 		return m_cache.getModelGroups();
 	}
@@ -532,9 +532,9 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 			final SmType<A> itemType = (SmType<A>) type;
 			return itemType.getName();
 		}
-		else if (type instanceof SmAttribute<?>)
+		else if (type instanceof AttributeDefinition<?>)
 		{
-			final SmAttribute<A> attType = (SmAttribute<A>) type;
+			final AttributeDefinition<A> attType = (AttributeDefinition<A>) type;
 			return attType.getName();
 		}
 		else if (type instanceof SmAttributeNodeType<?>)
@@ -577,12 +577,12 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		}
 	}
 
-	public SmNotation<A> getNotationDeclaration(final QName name)
+	public NotationDefinition<A> getNotationDeclaration(final QName name)
 	{
 		return m_cache.getNotationDeclaration(name);
 	}
 
-	public Iterable<SmNotation<A>> getNotations()
+	public Iterable<NotationDefinition<A>> getNotations()
 	{
 		return m_cache.getNotations();
 	}
@@ -734,15 +734,15 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		m_cache.lock();
 	}
 
-	private SmSequenceType<A> modelGroupUseType(final SmModelGroupUse<A> modelGroupUse, final SmElement<A> parentDecl)
+	private SmSequenceType<A> modelGroupUseType(final SmModelGroupUse<A> modelGroupUse, final ElementDefinition<A> parentDecl)
 	{
 		final int minOccurs = modelGroupUse.getMinOccurs();
 		final int maxOccurs = modelGroupUse.getMaxOccurs();
-		final SmModelGroup<A> modelGroup = modelGroupUse.getTerm();
-		final SmModelGroup.SmCompositor compositor = modelGroup.getCompositor();
+		final ModelGroup<A> modelGroup = modelGroupUse.getTerm();
+		final ModelGroup.SmCompositor compositor = modelGroup.getCompositor();
 
 		SmSequenceType<A> contentModel = null;
-		for (final SmParticle<A> particle : modelGroup.getParticles())
+		for (final SchemaParticle<A> particle : modelGroup.getParticles())
 		{
 			final SmSequenceType<A> type = particle(particle, parentDecl);
 			if (null != contentModel)
@@ -778,7 +778,7 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		}
 		if (null != contentModel)
 		{
-			return multiply(contentModel, SmQuantifier.approximate(minOccurs, maxOccurs));
+			return multiply(contentModel, KeeneQuantifier.approximate(minOccurs, maxOccurs));
 		}
 		else
 		{
@@ -786,7 +786,7 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		}
 	}
 
-	public SmSequenceType<A> multiply(final SmSequenceType<A> argument, final SmQuantifier multiplier)
+	public SmSequenceType<A> multiply(final SmSequenceType<A> argument, final KeeneQuantifier multiplier)
 	{
 		PreCondition.assertArgumentNotNull(argument, "argument");
 		if (null != argument)
@@ -837,14 +837,14 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 
 	public SmSequenceType<A> oneOrMore(final SmSequenceType<A> type)
 	{
-		return multiply(type, SmQuantifier.ONE_OR_MORE);
+		return multiply(type, KeeneQuantifier.ONE_OR_MORE);
 	}
 
 	public SmSequenceType<A> optional(final SmSequenceType<A> type)
 	{
 		if (null != type)
 		{
-			return multiply(type, SmQuantifier.OPTIONAL);
+			return multiply(type, KeeneQuantifier.OPTIONAL);
 		}
 		else
 		{
@@ -852,7 +852,7 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		}
 	}
 
-	private SmSequenceType<A> particle(final SmParticle<A> particle, final SmElement<A> parentDecl)
+	private SmSequenceType<A> particle(final SchemaParticle<A> particle, final ElementDefinition<A> parentDecl)
 	{
 		if (particle instanceof SmElementUse<?>)
 		{
@@ -885,7 +885,7 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		}
 	}
 
-	public void register(final SmComponentBag<A> components)
+	public void register(final ComponentBag<A> components)
 	{
 		assertNotLocked();
 		m_cache.register(components);
@@ -898,12 +898,12 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		return subtype(one, two) && subtype(two, one);
 	}
 
-	public SmAttribute<A> schemaAttribute(final QName attributeName)
+	public AttributeDefinition<A> schemaAttribute(final QName attributeName)
 	{
 		return m_cache.getAttributeDeclaration(attributeName);
 	}
 
-	public SmElement<A> schemaElement(final QName elementName)
+	public ElementDefinition<A> schemaElement(final QName elementName)
 	{
 		return m_cache.getElementDeclaration(elementName);
 	}
@@ -931,18 +931,18 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 		return new SmSequenceType[size];
 	}
 
-	private SmSequenceType<A> wildcardUseType(final SmWildcardUse<A> wildcardUse, final SmElement<A> parentDecl)
+	private SmSequenceType<A> wildcardUseType(final SmWildcardUse<A> wildcardUse, final ElementDefinition<A> parentDecl)
 	{
 		final int minOccurs = wildcardUse.getMinOccurs();
 		final int maxOccurs = wildcardUse.getMaxOccurs();
-		final SmWildcard<A> term = wildcardUse.getTerm();
+		final SchemaWildcard<A> term = wildcardUse.getTerm();
 		// final ProcessContentsMode processContents = term.getProcessContents();
 		final SmNamespaceConstraint namespaceConstraint = term.getNamespaceConstraint();
 		switch (namespaceConstraint.getMode())
 		{
 		case Any:
 		{
-			return multiply(new ElementNodeWithParentAxisType<A>(elementWild(null, true), parentDecl), SmQuantifier.approximate(minOccurs, maxOccurs));
+			return multiply(new ElementNodeWithParentAxisType<A>(elementWild(null, true), parentDecl), KeeneQuantifier.approximate(minOccurs, maxOccurs));
 		}
 		case Include:
 		{
@@ -960,13 +960,13 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 					type = append;
 				}
 			}
-			return multiply(type, SmQuantifier.approximate(minOccurs, maxOccurs));
+			return multiply(type, KeeneQuantifier.approximate(minOccurs, maxOccurs));
 		}
 		case Exclude:
 		{
 			// TODO: How do we define a regular expression type that excludes certain namespaces?
 			// TODO: We don't even have the concept of AND.
-			return multiply(new ElementNodeWithParentAxisType<A>(new ElementNodeType<A>(WILDNAME, null, true, m_cache), parentDecl), SmQuantifier.approximate(minOccurs,
+			return multiply(new ElementNodeWithParentAxisType<A>(new ElementNodeType<A>(WILDNAME, null, true, m_cache), parentDecl), KeeneQuantifier.approximate(minOccurs,
 					maxOccurs));
 		}
 		default:
@@ -978,6 +978,6 @@ final class SmMetaBridgeImpl<A> implements SmMetaBridge<A>
 
 	public SmSequenceType<A> zeroOrMore(final SmSequenceType<A> type)
 	{
-		return multiply(type, SmQuantifier.ZERO_OR_MORE);
+		return multiply(type, KeeneQuantifier.ZERO_OR_MORE);
 	}
 }

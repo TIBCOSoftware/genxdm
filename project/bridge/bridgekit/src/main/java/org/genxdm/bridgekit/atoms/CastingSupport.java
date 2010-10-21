@@ -28,8 +28,8 @@ import org.genxdm.exceptions.SpillagePolicy;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
-import org.genxdm.xs.SmSchema;
-import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.Schema;
+import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.SmNativeType;
 import org.genxdm.xs.types.SmSimpleType;
 import org.genxdm.xs.types.SmType;
@@ -107,7 +107,7 @@ final class CastingSupport
 		}
 	}
 
-	public static <A> A castAs(final A sourceAtom, final QName targetType, final CastingContext<A> castingContext, final SmSchema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+	public static <A> A castAs(final A sourceAtom, final QName targetType, final CastingContext<A> castingContext, final Schema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
@@ -148,7 +148,7 @@ final class CastingSupport
 						throw new AssertionError();
 					}
 				}
-				catch (final SmDatatypeException e)
+				catch (final DatatypeException e)
 				{
 					throw new GxmlAtomCastException(atomBridge.getC14NForm(sourceAtom), e.getType().getName(), FORG0001, e);
 				}
@@ -164,7 +164,7 @@ final class CastingSupport
 		}
 	}
 
-	public static <A> A castAsOrErrors(final A sourceAtom, final SmNativeType sourceType, final SmNativeType targetType, final SmSchema<A> pcx, final AtomBridge<A> atomBridge, final NameSource nameBridge)
+	public static <A> A castAsOrErrors(final A sourceAtom, final SmNativeType sourceType, final SmNativeType targetType, final Schema<A> pcx, final AtomBridge<A> atomBridge, final NameSource nameBridge)
 			throws GxmlAtomCastException
 	{
 		if (sourceType.isString() || sourceType == SmNativeType.UNTYPED_ATOMIC)
@@ -178,7 +178,7 @@ final class CastingSupport
 
 	}
 
-	public static <A> A castAs(final A sourceAtom, final SmNativeType targetType, final CastingContext<A> castingContext, final SmSchema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+	public static <A> A castAs(final A sourceAtom, final SmNativeType targetType, final CastingContext<A> castingContext, final Schema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
@@ -2269,7 +2269,7 @@ final class CastingSupport
 		return castIntegerAsUnsignedShort(BigInteger.valueOf((long)fltval), checkCapacity, raiseError);
 	}
 
-	private static <A> A castFromStringOrUntypedAtomic(final String sourceAtom, final SmNativeType targetType, final SmSchema<A> pcx) throws GxmlAtomCastException
+	private static <A> A castFromStringOrUntypedAtomic(final String sourceAtom, final SmNativeType targetType, final Schema<A> pcx) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
@@ -2298,7 +2298,7 @@ final class CastingSupport
 						throw new AssertionError();
 					}
 				}
-				catch (final SmDatatypeException e)
+				catch (final DatatypeException e)
 				{
 					throw new GxmlAtomCastException(sourceAtom, e.getType().getName(), FORG0001, e);
 				}
@@ -3021,7 +3021,7 @@ final class CastingSupport
 	/**
 	 * First cast to xs:string then cast to the target type.
 	 */
-	private static <A> A castThroughString(final A sourceAtom, final SmNativeType targetType, final CastingContext<A> castingContext, final SmSchema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+	private static <A> A castThroughString(final A sourceAtom, final SmNativeType targetType, final CastingContext<A> castingContext, final Schema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
 	{
 		try
 		{
@@ -3034,7 +3034,7 @@ final class CastingSupport
 		}
 	}
 
-	private static <A> A castWithinBranchAs(final A sourceAtom, final SmNativeType targetType, final SmSchema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+	private static <A> A castWithinBranchAs(final A sourceAtom, final SmNativeType targetType, final Schema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
@@ -3063,7 +3063,7 @@ final class CastingSupport
 						throw new AssertionError();
 					}
 				}
-				catch (final SmDatatypeException e)
+				catch (final DatatypeException e)
 				{
 					throw new GxmlAtomCastException(atomBridge.getC14NForm(sourceAtom), atomBridge.getDataType(sourceAtom), e.getType().getName(), FORG0001, e);
 				}

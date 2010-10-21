@@ -17,14 +17,14 @@ package org.genxdm.processor.w3c.xs;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmComponentProvider;
-import org.genxdm.xs.resolve.SmCatalog;
-import org.genxdm.xs.resolve.SmResolver;
+import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.resolve.SchemaCatalog;
+import org.genxdm.xs.resolve.CatalogResolver;
 
 final class SmParserFactory<A>
 {
-	private SmCatalog m_catalog = DefaultSmCatalog.SINGLETON;
-	private SmResolver m_resolver = DefaultSmResolver.SINGLETON;
+	private SchemaCatalog m_catalog = DefaultSmCatalog.SINGLETON;
+	private CatalogResolver m_resolver = DefaultSmResolver.SINGLETON;
 	private SmRegExCompiler m_regexc = new RegExCompilerJDK();
 	private boolean m_processRepeatedNamespaces = true;
 
@@ -32,12 +32,12 @@ final class SmParserFactory<A>
 	{
 	}
 
-	public void setCatalog(final SmCatalog catalog)
+	public void setCatalog(final SchemaCatalog catalog)
 	{
 		m_catalog = PreCondition.assertArgumentNotNull(catalog, "catalog");
 	}
 
-	public void setResolver(final SmResolver resolver)
+	public void setResolver(final CatalogResolver resolver)
 	{
 		m_resolver = PreCondition.assertArgumentNotNull(resolver, "resolver");
 	}
@@ -60,7 +60,7 @@ final class SmParserFactory<A>
 		m_processRepeatedNamespaces = processRepeatedNamespaces;
 	}
 
-	public XMLParserImpl<A> newInstance(final SmComponentProvider<A> cache, final AtomBridge<A> atomBridge)
+	public XMLParserImpl<A> newInstance(final ComponentProvider<A> cache, final AtomBridge<A> atomBridge)
 	{
 		final XMLParserImpl<A> parser = new XMLParserImpl<A>(cache, atomBridge);
 		parser.setCatalog(m_catalog);

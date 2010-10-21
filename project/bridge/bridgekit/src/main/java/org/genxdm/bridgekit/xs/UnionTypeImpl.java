@@ -21,12 +21,12 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmQuantifier;
-import org.genxdm.xs.enums.SmScopeExtent;
-import org.genxdm.xs.enums.SmWhiteSpacePolicy;
-import org.genxdm.xs.exceptions.SmDatatypeException;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.xs.enums.ScopeExtent;
+import org.genxdm.xs.enums.WhiteSpacePolicy;
+import org.genxdm.xs.exceptions.DatatypeException;
+import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.SmNativeType;
 import org.genxdm.xs.types.SmPrimeType;
 import org.genxdm.xs.types.SmSequenceTypeVisitor;
@@ -38,9 +38,9 @@ public final class UnionTypeImpl<A> extends SimpleTypeImpl<A> implements SmUnion
 	private final SmSimpleType<A> m_baseType;
 	private final Iterable<SmSimpleType<A>> m_memberTypes;
 
-	public UnionTypeImpl(final QName name, final boolean isAnonymous, final SmScopeExtent scope, final SmSimpleType<A> baseType, final Iterable<SmSimpleType<A>> memberTypes, final SmWhiteSpacePolicy whiteSpace, final AtomBridge<A> atomBridge)
+	public UnionTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final SmSimpleType<A> baseType, final Iterable<SmSimpleType<A>> memberTypes, final WhiteSpacePolicy whiteSpace, final AtomBridge<A> atomBridge)
 	{
-		super(name, isAnonymous, scope, SmDerivationMethod.Union, whiteSpace, atomBridge);
+		super(name, isAnonymous, scope, DerivationMethod.Union, whiteSpace, atomBridge);
 		m_baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");
 		m_memberTypes = PreCondition.assertArgumentNotNull(memberTypes, "memberTypes");
 	}
@@ -52,7 +52,7 @@ public final class UnionTypeImpl<A> extends SimpleTypeImpl<A> implements SmUnion
 	}
 
 	@SuppressWarnings("unused")
-	private List<A> compile(final List<? extends A> value) throws SmDatatypeException
+	private List<A> compile(final List<? extends A> value) throws DatatypeException
 	{
 		for (final SmSimpleType<A> memberType : getMemberTypes())
 		{
@@ -60,16 +60,16 @@ public final class UnionTypeImpl<A> extends SimpleTypeImpl<A> implements SmUnion
 			{
 				return memberType.validate(value);
 			}
-			catch (final SmDatatypeException e)
+			catch (final DatatypeException e)
 			{
 				// Try the next one.
 			}
 		}
 		final String strval = atomBridge.getC14NString(value);
-		throw new SmDatatypeException(strval, this);
+		throw new DatatypeException(strval, this);
 	}
 
-	protected List<A> compile(final String initialValue) throws SmDatatypeException
+	protected List<A> compile(final String initialValue) throws DatatypeException
 	{
 		for (final SmSimpleType<A> memberType : getMemberTypes())
 		{
@@ -77,15 +77,15 @@ public final class UnionTypeImpl<A> extends SimpleTypeImpl<A> implements SmUnion
 			{
 				return memberType.validate(initialValue);
 			}
-			catch (final SmDatatypeException e)
+			catch (final DatatypeException e)
 			{
 				// Try the next one.
 			}
 		}
-		throw new SmDatatypeException(initialValue, this);
+		throw new DatatypeException(initialValue, this);
 	}
 
-	protected List<A> compile(final String initialValue, final SmPrefixResolver resolver) throws SmDatatypeException
+	protected List<A> compile(final String initialValue, final PrefixResolver resolver) throws DatatypeException
 	{
 		for (final SmSimpleType<A> memberType : getMemberTypes())
 		{
@@ -93,12 +93,12 @@ public final class UnionTypeImpl<A> extends SimpleTypeImpl<A> implements SmUnion
 			{
 				return memberType.validate(initialValue, resolver);
 			}
-			catch (final SmDatatypeException e)
+			catch (final DatatypeException e)
 			{
 				// Try the next one.
 			}
 		}
-		throw new SmDatatypeException(initialValue, this);
+		throw new DatatypeException(initialValue, this);
 	}
 
 	public SmSimpleType<A> getBaseType()
@@ -116,7 +116,7 @@ public final class UnionTypeImpl<A> extends SimpleTypeImpl<A> implements SmUnion
 		return SmNativeType.ANY_SIMPLE_TYPE;
 	}
 
-	public final SmWhiteSpacePolicy getWhiteSpacePolicy()
+	public final WhiteSpacePolicy getWhiteSpacePolicy()
 	{
 		if (null != m_whiteSpace)
 		{
@@ -165,7 +165,7 @@ public final class UnionTypeImpl<A> extends SimpleTypeImpl<A> implements SmUnion
 
 	public String normalize(final String initialValue)
 	{
-		return SmWhiteSpacePolicy.COLLAPSE.apply(initialValue);
+		return WhiteSpacePolicy.COLLAPSE.apply(initialValue);
 	}
 
 	public SmPrimeType<A> prime()
@@ -185,8 +185,8 @@ public final class UnionTypeImpl<A> extends SimpleTypeImpl<A> implements SmUnion
 		return result;
 	}
 
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
-		return SmQuantifier.EXACTLY_ONE;
+		return KeeneQuantifier.EXACTLY_ONE;
 	}
 }

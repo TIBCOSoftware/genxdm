@@ -19,17 +19,17 @@ import java.util.Collections;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmParticleTerm;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ParticleTerm;
 
-final class ParticleElementExpression<A> implements ValidationExpr<A, SmParticleTerm<A>>
+final class ParticleElementExpression<A> implements ValidationExpr<A, ParticleTerm<A>>
 {
 	private final boolean isMaxOccursUnbounded;
-	private final SmElement<A> m_element;
+	private final ElementDefinition<A> m_element;
 	private final int m_maxOccurs;
 	private final int m_minOccurs;
 
-	public ParticleElementExpression(final int minOccurs, final int maxOccurs, final SmElement<A> element)
+	public ParticleElementExpression(final int minOccurs, final int maxOccurs, final ElementDefinition<A> element)
 	{
 		this.m_minOccurs = minOccurs;
 		this.m_maxOccurs = maxOccurs;
@@ -37,7 +37,7 @@ final class ParticleElementExpression<A> implements ValidationExpr<A, SmParticle
 		this.m_element = PreCondition.assertArgumentNotNull(element, "element");
 	}
 
-	public ParticleElementExpression(final int minOccurs, final SmElement<A> element)
+	public ParticleElementExpression(final int minOccurs, final ElementDefinition<A> element)
 	{
 		this.m_minOccurs = minOccurs;
 		this.m_maxOccurs = -1;
@@ -45,17 +45,17 @@ final class ParticleElementExpression<A> implements ValidationExpr<A, SmParticle
 		this.m_element = PreCondition.assertArgumentNotNull(element, "element");
 	}
 
-	public SmElement<A> getParticleTerm()
+	public ElementDefinition<A> getParticleTerm()
 	{
 		return m_element;
 	}
 
-	public Iterable<ValidationExpr<A, SmParticleTerm<A>>> getSubTerms()
+	public Iterable<ValidationExpr<A, ParticleTerm<A>>> getSubTerms()
 	{
 		return Collections.emptyList();
 	}
 
-	public boolean intersects(final ValidationExpr<A, SmParticleTerm<A>> other)
+	public boolean intersects(final ValidationExpr<A, ParticleTerm<A>> other)
 	{
 		if (other.isGroup())
 		{
@@ -63,10 +63,10 @@ final class ParticleElementExpression<A> implements ValidationExpr<A, SmParticle
 		}
 		else
 		{
-			final SmParticleTerm<A> term = other.getParticleTerm();
-			if (term instanceof SmElement<?>)
+			final ParticleTerm<A> term = other.getParticleTerm();
+			if (term instanceof ElementDefinition<?>)
 			{
-				final SmElement<A> element = (SmElement<A>)term;
+				final ElementDefinition<A> element = (ElementDefinition<A>)term;
 				return matches(element.getName());
 			}
 			else

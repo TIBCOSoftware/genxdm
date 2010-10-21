@@ -15,15 +15,15 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class CvcNoRootElementException extends SmLocationException
 {
-	public CvcNoRootElementException(final SmLocation location)
+	public CvcNoRootElementException(final LocationInSchema location)
 	{
-		super(SmOutcome.TODO, "?", location);
+		super(ValidationOutcome.TODO, "?", location);
 	}
 
 	public String getPatternKey()

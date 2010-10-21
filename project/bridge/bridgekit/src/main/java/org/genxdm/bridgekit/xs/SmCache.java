@@ -19,10 +19,10 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmAttributeGroup;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmModelGroup;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
 import org.genxdm.xs.types.SmAtomicType;
 import org.genxdm.xs.types.SmAtomicUrType;
@@ -52,19 +52,19 @@ interface SmCache<A> extends SmSequenceTypeFactory<A>
 
 	SmAtomicUrType<A> getAtomicUrType();
 
-	SmAttribute<A> getAttributeDeclaration(QName name);
+	AttributeDefinition<A> getAttributeDeclaration(QName name);
 
-	SmAttributeGroup<A> getAttributeGroup(QName name);
+	AttributeGroupDefinition<A> getAttributeGroup(QName name);
 
 	SmComplexType<A> getComplexType(QName name);
 
 	SmComplexUrType<A> getComplexUrType();
 
-	SmElement<A> getElementDeclaration(QName name);
+	ElementDefinition<A> getElementDeclaration(QName name);
 
 	SmIdentityConstraint<A> getIdentityConstraint(QName name);
 
-	SmModelGroup<A> getModelGroup(QName name);
+	ModelGroup<A> getModelGroup(QName name);
 
 	NameSource getNameBridge();
 

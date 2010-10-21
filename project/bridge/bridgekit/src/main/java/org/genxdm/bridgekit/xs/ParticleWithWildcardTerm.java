@@ -15,24 +15,24 @@
  */
 package org.genxdm.bridgekit.xs;
 
-import org.genxdm.xs.components.SmWildcard;
-import org.genxdm.xs.components.SmWildcardUse;
+import org.genxdm.xs.components.SchemaWildcard;
+import org.genxdm.xs.constraints.SmWildcardUse;
 
 public final class ParticleWithWildcardTerm<A> extends ParticleImpl<A> implements SmWildcardUse<A>
 {
-	public ParticleWithWildcardTerm(final int minOccurs, final int maxOccurs, final SmWildcard<A> wildcard)
+	public ParticleWithWildcardTerm(final int minOccurs, final int maxOccurs, final SchemaWildcard<A> wildcard)
 	{
 		super(minOccurs, maxOccurs, false, wildcard);
 	}
 
-	public ParticleWithWildcardTerm(final int minOccurs, final SmWildcard<A> wildcard)
+	public ParticleWithWildcardTerm(final int minOccurs, final SchemaWildcard<A> wildcard)
 	{
 		super(minOccurs, -1, true, wildcard);
 	}
 
-	public SmWildcard<A> getTerm()
+	public SchemaWildcard<A> getTerm()
 	{
 		// We know this is safe by construction.
-		return (SmWildcard<A>)m_term;
+		return (SchemaWildcard<A>)m_term;
 	}
 }

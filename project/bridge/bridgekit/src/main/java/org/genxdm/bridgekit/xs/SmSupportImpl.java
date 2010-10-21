@@ -19,8 +19,8 @@ import java.util.Set;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.types.SmPrimeType;
 import org.genxdm.xs.types.SmSequenceType;
 import org.genxdm.xs.types.SmType;
@@ -69,7 +69,7 @@ public final class SmSupportImpl
 	/**
 	 * Determines whether the candidateType is derived from the ancestorTYpe based upon walking up from lhs towards the complex Ur-type.
 	 */
-	public static <A> boolean derivedFromType(final SmType<A> candidateType, final SmType<A> ancestorType, final Set<SmDerivationMethod> derivationMethods, final NameSource nameBridge)
+	public static <A> boolean derivedFromType(final SmType<A> candidateType, final SmType<A> ancestorType, final Set<DerivationMethod> derivationMethods, final NameSource nameBridge)
 	{
 		PreCondition.assertArgumentNotNull(candidateType, "candidateType");
 		PreCondition.assertArgumentNotNull(ancestorType, "ancestorType");
@@ -79,7 +79,7 @@ public final class SmSupportImpl
 		return derivedFrom(candidateType, ancestorType.getTargetNamespace(), ancestorType.getLocalName(), derivationMethods, nameBridge);
 	}
 
-	public static <A> boolean derivedFrom(final SmType<A> candidateType, final String namespace, final String localName, final Set<SmDerivationMethod> derivationMethods, final NameSource nameBridge)
+	public static <A> boolean derivedFrom(final SmType<A> candidateType, final String namespace, final String localName, final Set<DerivationMethod> derivationMethods, final NameSource nameBridge)
 	{
 		PreCondition.assertArgumentNotNull(candidateType, "candidateType");
 		PreCondition.assertArgumentNotNull(namespace, "namespace");
@@ -136,8 +136,8 @@ public final class SmSupportImpl
 		PreCondition.assertArgumentNotNull(lhs, "lhs");
 		PreCondition.assertArgumentNotNull(rhs, "rhs");
 
-		final SmQuantifier qLHS = lhs.quantifier();
-		final SmQuantifier qRHS = rhs.quantifier();
+		final KeeneQuantifier qLHS = lhs.quantifier();
+		final KeeneQuantifier qRHS = rhs.quantifier();
 		if (qLHS.isOptional() && lhs.prime().isNone())
 		{
 			return qRHS.contains(qLHS);

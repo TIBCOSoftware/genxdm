@@ -15,17 +15,17 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 @SuppressWarnings("serial")
-abstract public class SccOccurrenceRangeException extends SmComponentConstraintException
+abstract public class SccOccurrenceRangeException extends ComponentConstraintException
 {
     public static final String PART_MIN_OCCURS = "1";
     public static final String PART_MAX_OCCURS = "2";
 
     public SccOccurrenceRangeException(final String partNumber)
     {
-        super(SmOutcome.SCC_Occurrence_Range, partNumber);
+        super(ValidationOutcome.SCC_Occurrence_Range, partNumber);
     }
 }

@@ -21,54 +21,54 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmAttributeGroup;
-import org.genxdm.xs.components.SmComponentBag;
-import org.genxdm.xs.components.SmComponentProvider;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.components.SmNotation;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.ComponentBag;
+import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.SmComplexType;
 import org.genxdm.xs.types.SmSimpleType;
 import org.genxdm.xs.types.SmType;
 
 /**
- * A bag for storing of {@link org.genxdm.xs.components.SmComponent}(s).
+ * A bag for storing of {@link org.genxdm.xs.components.SchemaComponent}(s).
  */
-final class SmComponentBagImpl<A> implements SmComponentBag<A>
+final class SmComponentBagImpl<A> implements ComponentBag<A>
 {
-	private final Map<QName, SmAttributeGroup<A>> m_attributeGroups = new HashMap<QName, SmAttributeGroup<A>>();
+	private final Map<QName, AttributeGroupDefinition<A>> m_attributeGroups = new HashMap<QName, AttributeGroupDefinition<A>>();
 
-	private final Map<QName, SmAttribute<A>> m_attributes = new HashMap<QName, SmAttribute<A>>();
+	private final Map<QName, AttributeDefinition<A>> m_attributes = new HashMap<QName, AttributeDefinition<A>>();
 	private final Map<QName, SmComplexType<A>> m_complexTypes = new HashMap<QName, SmComplexType<A>>();
-	private final Map<QName, SmElement<A>> m_elements = new HashMap<QName, SmElement<A>>();
+	private final Map<QName, ElementDefinition<A>> m_elements = new HashMap<QName, ElementDefinition<A>>();
 	private final Map<QName, SmIdentityConstraint<A>> m_identityConstraints = new HashMap<QName, SmIdentityConstraint<A>>();
-	private final Map<QName, SmModelGroup<A>> m_modelGroups = new HashMap<QName, SmModelGroup<A>>();
-	private final Map<QName, SmNotation<A>> m_notations = new HashMap<QName, SmNotation<A>>();
+	private final Map<QName, ModelGroup<A>> m_modelGroups = new HashMap<QName, ModelGroup<A>>();
+	private final Map<QName, NotationDefinition<A>> m_notations = new HashMap<QName, NotationDefinition<A>>();
 	private final Map<QName, SmSimpleType<A>> m_simpleTypes = new HashMap<QName, SmSimpleType<A>>();
 
-	public void add(final SmElement<A> element)
+	public void add(final ElementDefinition<A> element)
 	{
 		PreCondition.assertArgumentNotNull(element, "element");
-		PreCondition.assertTrue(element.getScopeExtent() == SmScopeExtent.Global, "{scope} of element must be global");
+		PreCondition.assertTrue(element.getScopeExtent() == ScopeExtent.Global, "{scope} of element must be global");
 		PreCondition.assertFalse(m_elements.containsKey(element.getName()), "element must only be added once");
 		m_elements.put(element.getName(), element);
 	}
 
-	public void add(final SmAttribute<A> attribute)
+	public void add(final AttributeDefinition<A> attribute)
 	{
 		PreCondition.assertArgumentNotNull(attribute, "attribute");
-		PreCondition.assertTrue(attribute.getScopeExtent() == SmScopeExtent.Global, "{scope} of attribute must be global");
+		PreCondition.assertTrue(attribute.getScopeExtent() == ScopeExtent.Global, "{scope} of attribute must be global");
 		PreCondition.assertFalse(m_attributes.containsKey(attribute.getName()), "attribute must only be added once");
 		m_attributes.put(attribute.getName(), attribute);
 	}
 
-	public void add(final SmAttributeGroup<A> attributeGroup)
+	public void add(final AttributeGroupDefinition<A> attributeGroup)
 	{
 		PreCondition.assertArgumentNotNull(attributeGroup, "attributeGroup");
-		PreCondition.assertTrue(attributeGroup.getScopeExtent() == SmScopeExtent.Global, "{scope} of attribute group must be global");
+		PreCondition.assertTrue(attributeGroup.getScopeExtent() == ScopeExtent.Global, "{scope} of attribute group must be global");
 		PreCondition.assertFalse(m_attributeGroups.containsKey(attributeGroup.getName()), "attribute group must only be added once");
 		m_attributeGroups.put(attributeGroup.getName(), attributeGroup);
 	}
@@ -84,23 +84,23 @@ final class SmComponentBagImpl<A> implements SmComponentBag<A>
 	public void add(final SmIdentityConstraint<A> identityConstraint)
 	{
 		PreCondition.assertArgumentNotNull(identityConstraint, "identity-constraint");
-		PreCondition.assertTrue(identityConstraint.getScopeExtent() == SmScopeExtent.Global, "{scope} of identity-constraint must be global");
+		PreCondition.assertTrue(identityConstraint.getScopeExtent() == ScopeExtent.Global, "{scope} of identity-constraint must be global");
 		PreCondition.assertFalse(m_identityConstraints.containsKey(identityConstraint.getName()), "identity-constraint must only be added once");
 		m_identityConstraints.put(identityConstraint.getName(), identityConstraint);
 	}
 
-	public void add(final SmModelGroup<A> group)
+	public void add(final ModelGroup<A> group)
 	{
 		PreCondition.assertArgumentNotNull(group, "group");
-		PreCondition.assertTrue(group.getScopeExtent() == SmScopeExtent.Global, "{scope} of group must be global");
+		PreCondition.assertTrue(group.getScopeExtent() == ScopeExtent.Global, "{scope} of group must be global");
 		PreCondition.assertFalse(m_modelGroups.containsKey(group.getName()), "group must only be added once");
 		m_modelGroups.put(group.getName(), group);
 	}
 
-	public void add(final SmNotation<A> notation)
+	public void add(final NotationDefinition<A> notation)
 	{
 		PreCondition.assertArgumentNotNull(notation, "notation");
-		PreCondition.assertTrue(notation.getScopeExtent() == SmScopeExtent.Global, "{scope} of notation must be global");
+		PreCondition.assertTrue(notation.getScopeExtent() == ScopeExtent.Global, "{scope} of notation must be global");
 		PreCondition.assertFalse(m_notations.containsKey(notation.getName()), "notation must only be added once");
 		m_notations.put(notation.getName(), notation);
 	}
@@ -113,7 +113,7 @@ final class SmComponentBagImpl<A> implements SmComponentBag<A>
 		m_simpleTypes.put(simpleType.getName(), simpleType);
 	}
 
-	public SmComplexType<A> dereferenceComplexType(final QName name, final SmComponentProvider<A> existing)
+	public SmComplexType<A> dereferenceComplexType(final QName name, final ComponentProvider<A> existing)
 	{
 		PreCondition.assertArgumentNotNull(name);
 
@@ -135,7 +135,7 @@ final class SmComponentBagImpl<A> implements SmComponentBag<A>
 		}
 	}
 
-	public SmSimpleType<A> dereferenceSimpleType(final QName name, final SmComponentProvider<A> existing)
+	public SmSimpleType<A> dereferenceSimpleType(final QName name, final ComponentProvider<A> existing)
 	{
 		PreCondition.assertArgumentNotNull(name);
 
@@ -170,22 +170,22 @@ final class SmComponentBagImpl<A> implements SmComponentBag<A>
 		}
 	}
 
-	public SmAttribute<A> getAttribute(final QName name)
+	public AttributeDefinition<A> getAttribute(final QName name)
 	{
 		return m_attributes.get(name);
 	}
 
-	public SmAttributeGroup<A> getAttributeGroup(final QName name)
+	public AttributeGroupDefinition<A> getAttributeGroup(final QName name)
 	{
 		return m_attributeGroups.get(name);
 	}
 
-	public Iterable<SmAttributeGroup<A>> getAttributeGroups()
+	public Iterable<AttributeGroupDefinition<A>> getAttributeGroups()
 	{
 		return m_attributeGroups.values();
 	}
 
-	public Iterable<SmAttribute<A>> getAttributes()
+	public Iterable<AttributeDefinition<A>> getAttributes()
 	{
 		return m_attributes.values();
 	}
@@ -200,12 +200,12 @@ final class SmComponentBagImpl<A> implements SmComponentBag<A>
 		return m_complexTypes.values();
 	}
 
-	public SmElement<A> getElement(final QName name)
+	public ElementDefinition<A> getElement(final QName name)
 	{
 		return m_elements.get(name);
 	}
 
-	public Iterable<SmElement<A>> getElements()
+	public Iterable<ElementDefinition<A>> getElements()
 	{
 		return m_elements.values();
 	}
@@ -220,22 +220,22 @@ final class SmComponentBagImpl<A> implements SmComponentBag<A>
 		return m_identityConstraints.values();
 	}
 
-	public SmModelGroup<A> getModelGroup(final QName name)
+	public ModelGroup<A> getModelGroup(final QName name)
 	{
 		return m_modelGroups.get(name);
 	}
 
-	public Iterable<SmModelGroup<A>> getModelGroups()
+	public Iterable<ModelGroup<A>> getModelGroups()
 	{
 		return m_modelGroups.values();
 	}
 
-	public SmNotation<A> getNotation(final QName name)
+	public NotationDefinition<A> getNotation(final QName name)
 	{
 		return m_notations.get(name);
 	}
 
-	public Iterable<SmNotation<A>> getNotations()
+	public Iterable<NotationDefinition<A>> getNotations()
 	{
 		return m_notations.values();
 	}
@@ -311,7 +311,7 @@ final class SmComponentBagImpl<A> implements SmComponentBag<A>
 		return hasSimpleType(name) || hasComplexType(name);
 	}
 
-	public boolean isComplexType(final QName name, final SmComponentProvider<A> existing)
+	public boolean isComplexType(final QName name, final ComponentProvider<A> existing)
 	{
 		PreCondition.assertArgumentNotNull(name);
 
@@ -326,7 +326,7 @@ final class SmComponentBagImpl<A> implements SmComponentBag<A>
 		}
 	}
 
-	public boolean isSimpleType(final QName name, final SmComponentProvider<A> existing)
+	public boolean isSimpleType(final QName name, final ComponentProvider<A> existing)
 	{
 		PreCondition.assertArgumentNotNull(name);
 

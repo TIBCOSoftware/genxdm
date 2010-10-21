@@ -15,7 +15,7 @@
  */
 package org.genxdm.xs.types;
 
-import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.enums.KeeneQuantifier;
 
 /**
  * Root interface for a hierarchy of sequence types.
@@ -42,5 +42,5 @@ public interface SmSequenceType<A>
 	 * The quantifier method approximates the possible number of items in this type with the occurrence indicators
 	 * supported by the [XPath/XQuery] type system (?, +, *).
 	 */
-	SmQuantifier quantifier();
+	KeeneQuantifier quantifier();
 }

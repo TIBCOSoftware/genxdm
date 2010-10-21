@@ -15,7 +15,7 @@
  */
 package org.genxdm.xs.types;
 
-import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.components.SchemaWildcard;
 
 /**
  * Marker interface for the Complex Ur-Type (xs:anyType).
@@ -30,7 +30,7 @@ public interface SmComplexUrType<A> extends SmComplexType<A>
 	/**
 	 * Returns the {attribute wildcard} property for a complex type.
 	 */
-	SmWildcard<A> getAttributeWildcard();
+	SchemaWildcard<A> getAttributeWildcard();
 
 	/**
 	 * Returns the {content type} property.

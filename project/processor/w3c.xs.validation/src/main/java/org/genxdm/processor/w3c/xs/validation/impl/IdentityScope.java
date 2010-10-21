@@ -24,9 +24,9 @@ import javax.xml.namespace.QName;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
 import org.genxdm.xs.constraints.SmRestrictedXPath;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
+import org.genxdm.xs.resolve.LocationInSchema;
 import org.genxdm.xs.types.SmSimpleType;
 import org.genxdm.xs.types.SmType;
 
@@ -40,7 +40,7 @@ import org.genxdm.xs.types.SmType;
 abstract class IdentityScope<A>
 {
 	private final SmIdentityConstraint<A> m_constraint;
-	protected final SmExceptionHandler m_errorHandler;
+	protected final SchemaExceptionHandler m_errorHandler;
 
 	/**
 	 * The element information that is the context element for the xs:selector.
@@ -63,9 +63,9 @@ abstract class IdentityScope<A>
 	 */
 	// protected HashMap<IdentityTuple<A>, IdentityVariant<A>>
 	// m_qualifiedTargets;
-	protected final SmLocation m_location;
+	protected final LocationInSchema m_location;
 
-	protected IdentityScope(final int elementIndex, final SmIdentityConstraint<A> constraint, final SmExceptionHandler errorHandler, final SmLocation location)
+	protected IdentityScope(final int elementIndex, final SmIdentityConstraint<A> constraint, final SchemaExceptionHandler errorHandler, final LocationInSchema location)
 	{
 		m_elementIndex = elementIndex;
 		m_constraint = PreCondition.assertArgumentNotNull(constraint);
@@ -84,7 +84,7 @@ abstract class IdentityScope<A>
 	 * @param keyValues
 	 *            The key values.
 	 */
-	protected abstract void onKeysComplete(final ArrayList<IdentityKey<A>> keyValues, final int elementIndex) throws SmAbortException;
+	protected abstract void onKeysComplete(final ArrayList<IdentityKey<A>> keyValues, final int elementIndex) throws AbortException;
 
 	/**
 	 * Called when the selector goes out of scope.
@@ -92,9 +92,9 @@ abstract class IdentityScope<A>
 	 * @param elementIndex
 	 *            The index of the element that is the context for xs:field evaluation.
 	 */
-	protected abstract void onScopeEnd(final int elementIndex, final Locatable location) throws SmAbortException;
+	protected abstract void onScopeEnd(final int elementIndex, final Locatable location) throws AbortException;
 
-	public void startElement(final QName elementName, final int elementIndex, final SmType<A> elementType, final Locatable locatable) throws SmAbortException
+	public void startElement(final QName elementName, final int elementIndex, final SmType<A> elementType, final Locatable locatable) throws AbortException
 	{
 		for (final ArrayList<IdentityField<A>> contextFields : m_fieldEvals.values())
 		{
@@ -107,7 +107,7 @@ abstract class IdentityScope<A>
 		m_selectorEval.startElement(elementName, elementIndex);
 	}
 
-	public void attribute(final QName attributeName, final List<? extends A> actualValue, final int attributeIndex, final SmSimpleType<A> attributeType, final Locatable locatable, final AtomBridge<A> atomBridge) throws SmAbortException
+	public void attribute(final QName attributeName, final List<? extends A> actualValue, final int attributeIndex, final SmSimpleType<A> attributeType, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		for (final ArrayList<IdentityField<A>> contextFields : m_fieldEvals.values())
 		{
@@ -118,7 +118,7 @@ abstract class IdentityScope<A>
 		}
 	}
 
-	public void text(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final int textIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws SmAbortException
+	public void text(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final int textIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		for (final ArrayList<IdentityField<A>> contextFields : m_fieldEvals.values())
 		{
@@ -129,7 +129,7 @@ abstract class IdentityScope<A>
 		}
 	}
 
-	public void endElement(final QName elementName, final int elementIndex, final Locatable locatable) throws SmAbortException
+	public void endElement(final QName elementName, final int elementIndex, final Locatable locatable) throws AbortException
 	{
 		m_selectorEval.endElement(elementName, elementIndex, locatable);
 
@@ -179,7 +179,7 @@ abstract class IdentityScope<A>
 		}
 	}
 
-	public void endSelectorElement(final QName elementName, final int elementIndex, final Locatable location) throws SmAbortException
+	public void endSelectorElement(final QName elementName, final int elementIndex, final Locatable location) throws AbortException
 	{
 		if (m_boundFields.containsKey(elementIndex))
 		{
@@ -206,7 +206,7 @@ abstract class IdentityScope<A>
 	 * @param changedField
 	 *            The {@link IdentityField} that had its value set.
 	 */
-	void onFieldValueSet(final IdentityField<A> changedField, final int elementIndex, final AtomBridge<A> atomBridge) throws SmAbortException
+	void onFieldValueSet(final IdentityField<A> changedField, final int elementIndex, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		// Note: We don't currently use the "changedField" parameter.
 		final ArrayList<IdentityField<A>> elementHandlers = m_fieldEvals.get(elementIndex);

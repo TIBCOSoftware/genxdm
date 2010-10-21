@@ -21,10 +21,10 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.types.SmSimpleType;
 
 /**
@@ -45,7 +45,7 @@ final class IdentityConstraintManager<A>
 		m_totalScopes = 0;
 	}
 
-	public void startElement(final ModelPSVI<A> elementPSVI, final ValidationItem<A> elementItem, final SmExceptionHandler errors) throws SmAbortException
+	public void startElement(final ModelPSVI<A> elementPSVI, final ValidationItem<A> elementItem, final SchemaExceptionHandler errors) throws AbortException
 	{
 		// Notify existing scopes of the current event (start of element)
 		if (m_totalScopes > 0)
@@ -63,7 +63,7 @@ final class IdentityConstraintManager<A>
 		// identity constraints, and if so creates an IdentityScope object for
 		// it...
 		PreCondition.assertArgumentNotNull(elementPSVI, "elementPSVI");
-		final SmElement<A> declaration = elementPSVI.getDeclaration();
+		final ElementDefinition<A> declaration = elementPSVI.getDeclaration();
 		if (null != declaration && declaration.hasIdentityConstraints())
 		{
 			// Handle xs:unique, xs:key and xs:keyref in order so that
@@ -128,7 +128,7 @@ final class IdentityConstraintManager<A>
 		}
 	}
 
-	public void attribute(final List<? extends A> actualValue, final SmSimpleType<A> attributeType, final ValidationItem<A> elementItem, final QName attributeName, final int attributeIndex, final AtomBridge<A> atomBridge) throws SmAbortException
+	public void attribute(final List<? extends A> actualValue, final SmSimpleType<A> attributeType, final ValidationItem<A> elementItem, final QName attributeName, final int attributeIndex, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		if (m_totalScopes > 0)
 		{
@@ -142,7 +142,7 @@ final class IdentityConstraintManager<A>
 		}
 	}
 
-	public void text(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final ValidationItem<A> elementItem, final int textIndex, final AtomBridge<A> atomBridge) throws SmAbortException
+	public void text(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final ValidationItem<A> elementItem, final int textIndex, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		if (m_totalScopes > 0)
 		{
@@ -156,7 +156,7 @@ final class IdentityConstraintManager<A>
 		}
 	}
 
-	public void endElement(final ModelPSVI<A> elementPSVI, final ValidationItem<A> elementItem) throws SmAbortException
+	public void endElement(final ModelPSVI<A> elementPSVI, final ValidationItem<A> elementItem) throws AbortException
 	{
 		if (m_totalScopes > 0)
 		{

@@ -23,7 +23,7 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
 import org.genxdm.xs.constraints.SmIdentityConstraintKind;
 import org.genxdm.xs.constraints.SmRestrictedXPath;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.enums.ScopeExtent;
 
 public final class IdentityConstraintImpl<A> extends NamedComponentImpl<A> implements SmIdentityConstraint<A>
 {
@@ -35,7 +35,7 @@ public final class IdentityConstraintImpl<A> extends NamedComponentImpl<A> imple
 
 	public IdentityConstraintImpl(final QName name, final SmIdentityConstraintKind category, final SmRestrictedXPath selector, final List<SmRestrictedXPath> fields, final SmIdentityConstraint<A> keyConstraint)
 	{
-		super(name, false, SmScopeExtent.Global);
+		super(name, false, ScopeExtent.Global);
 		m_name = PreCondition.assertArgumentNotNull(name, "name");
 		m_category = PreCondition.assertArgumentNotNull(category, "category");
 		m_selector = PreCondition.assertArgumentNotNull(selector, "selector");

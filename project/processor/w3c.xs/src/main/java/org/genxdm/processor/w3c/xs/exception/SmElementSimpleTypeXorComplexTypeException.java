@@ -15,12 +15,12 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class SmElementSimpleTypeXorComplexTypeException extends SrcElementException
 {
-	public SmElementSimpleTypeXorComplexTypeException(final SmLocation location)
+	public SmElementSimpleTypeXorComplexTypeException(final LocationInSchema location)
 	{
 		super(PART_SIMPLE_XOR_COMPLEX, location);
 	}

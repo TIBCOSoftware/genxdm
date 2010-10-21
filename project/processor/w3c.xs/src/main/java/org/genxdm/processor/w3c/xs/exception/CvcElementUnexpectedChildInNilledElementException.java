@@ -18,8 +18,8 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 
 @SuppressWarnings("serial")
@@ -29,7 +29,7 @@ public final class CvcElementUnexpectedChildInNilledElementException extends Cvc
 	 * The child node could be an element indormation item or a chacater information item, so we report the parent name
 	 * and location.
 	 */
-	public CvcElementUnexpectedChildInNilledElementException(final SmElement<?> elementName, final SmLocation location)
+	public CvcElementUnexpectedChildInNilledElementException(final ElementDefinition<?> elementName, final LocationInSchema location)
 	{
 		super(CvcElementException.PART_NO_CHILDREN, elementName, location);
 	}

@@ -18,21 +18,21 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.exceptions.SmSimpleTypeException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.exceptions.SimpleTypeException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class SmAttributeUseException extends SmComplexTypeException
 {
 	private final QName attributeName;
 
-	public SmAttributeUseException(final QName elementName, final QName attributeName, final SmLocation location, final SmSimpleTypeException cause)
+	public SmAttributeUseException(final QName elementName, final QName attributeName, final LocationInSchema location, final SimpleTypeException cause)
 	{
 		super(PART_ATTRIBUTE_VALID, elementName, location, cause);
 		this.attributeName = PreCondition.assertArgumentNotNull(attributeName, "name");
 	}
 
-	public SmAttributeUseException(final QName elementName, final QName attributeName, final SmLocation location, final CvcIDException cause)
+	public SmAttributeUseException(final QName elementName, final QName attributeName, final LocationInSchema location, final CvcIDException cause)
 	{
 		super(PART_ATTRIBUTE_VALID, elementName, location, cause);
 		this.attributeName = PreCondition.assertArgumentNotNull(attributeName, "name");

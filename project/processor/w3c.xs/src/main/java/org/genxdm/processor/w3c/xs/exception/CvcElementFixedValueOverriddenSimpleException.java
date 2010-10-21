@@ -16,8 +16,8 @@
 package org.genxdm.processor.w3c.xs.exception;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class CvcElementFixedValueOverriddenSimpleException extends CvcElementException
@@ -25,7 +25,7 @@ public final class CvcElementFixedValueOverriddenSimpleException extends CvcElem
 	private final String m_expectValue;
 	private final String m_actualValue;
 
-	public CvcElementFixedValueOverriddenSimpleException(final SmElement<?> elementDeclaration, final String expectValue, final String actualValue, final SmLocation location)
+	public CvcElementFixedValueOverriddenSimpleException(final ElementDefinition<?> elementDeclaration, final String expectValue, final String actualValue, final LocationInSchema location)
 	{
 		super(PART_VALUE_CONSTRAINT_SIMPLE, elementDeclaration, location);
 		this.m_expectValue = PreCondition.assertArgumentNotNull(expectValue, "expectValue");

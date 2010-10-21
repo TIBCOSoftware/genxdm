@@ -15,18 +15,18 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class SmInclusionNotWellFormedException extends SmInclusionException
 {
-	public SmInclusionNotWellFormedException(final SmLocation location)
+	public SmInclusionNotWellFormedException(final LocationInSchema location)
 	{
 		super(PART_NOT_WELL_FORMED, location);
 	}
 
-	public SmInclusionNotWellFormedException(final SmLocation location, final SmException cause)
+	public SmInclusionNotWellFormedException(final LocationInSchema location, final SchemaException cause)
 	{
 		super(PART_NOT_WELL_FORMED, location, cause);
 	}

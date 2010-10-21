@@ -22,41 +22,41 @@ import java.net.URI;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmComponentBag;
-import org.genxdm.xs.components.SmComponentProvider;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.exceptions.SmExceptionCatcher;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
-import org.genxdm.xs.resolve.SmCatalog;
-import org.genxdm.xs.resolve.SmResolver;
+import org.genxdm.xs.components.ComponentBag;
+import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.exceptions.SchemaExceptionCatcher;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
+import org.genxdm.xs.resolve.SchemaCatalog;
+import org.genxdm.xs.resolve.CatalogResolver;
 
 final class XMLParserImpl<A>
 {
 	/**
 	 * Injected during initialization, already contains native and xsi schema components.
 	 */
-	private final SmComponentProvider<A> cache;
+	private final ComponentProvider<A> cache;
 	private final AtomBridge<A> atomBridge;
 
-	private SmCatalog m_catalog;
-	private SmResolver m_resolver;
+	private SchemaCatalog m_catalog;
+	private CatalogResolver m_resolver;
 	private SmRegExCompiler m_regexc;
 	private boolean m_processRepeatedNamespaces = true;
 
-	public XMLParserImpl(final SmComponentProvider<A> cache, final AtomBridge<A> atomBridge)
+	public XMLParserImpl(final ComponentProvider<A> cache, final AtomBridge<A> atomBridge)
 	{
 		this.cache = PreCondition.assertArgumentNotNull(cache, "cache");
 		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
 	}
 
-	public SmComponentBag<A> parse(final URI schemaLocation, final InputStream istream, final URI systemId) throws SmException
+	public ComponentBag<A> parse(final URI schemaLocation, final InputStream istream, final URI systemId) throws SchemaException
 	{
 		// This convenience routine is implemented in terms of the more general routine.
-		final SmExceptionCatcher errors = new SmExceptionCatcher();
+		final SchemaExceptionCatcher errors = new SchemaExceptionCatcher();
 		try
 		{
-			final SmComponentBag<A> components = parse(schemaLocation, istream, systemId, errors);
+			final ComponentBag<A> components = parse(schemaLocation, istream, systemId, errors);
 			if (errors.size() > 0)
 			{
 				// Only the first error is reported.
@@ -67,14 +67,14 @@ final class XMLParserImpl<A>
 				return components;
 			}
 		}
-		catch (final SmAbortException e)
+		catch (final AbortException e)
 		{
 			// This should not happen because the errors are reported to a catcher.
 			throw new AssertionError(e);
 		}
 	}
 
-	public SmComponentBag<A> parse(final URI schemaLocation, final InputStream istream, final URI systemId, final SmExceptionHandler errors) throws SmAbortException
+	public ComponentBag<A> parse(final URI schemaLocation, final InputStream istream, final URI systemId, final SchemaExceptionHandler errors) throws AbortException
 	{
 		PreCondition.assertArgumentNotNull(istream, "istream");
 		// PreCondition.assertArgumentNotNull(systemId, "systemId");
@@ -87,7 +87,7 @@ final class XMLParserImpl<A>
 		final XMLSchemaModule<A> module = new XMLSchemaModule<A>(null, schemaLocation, systemId);
 
 		// Catch the reported exceptions in order to maximize the amount of feedback.
-		final SmExceptionCatcher caught = new SmExceptionCatcher();
+		final SchemaExceptionCatcher caught = new SchemaExceptionCatcher();
 
 		// Delegate the parsing into an XML representation (that has no coupling to the parameters A and S)
 		final XMLSchemaParser<A> parser = new XMLSchemaParser<A>(this.atomBridge, this.cache, caught, getCatalog(), m_resolver, processRepeatedNamespaces());
@@ -126,9 +126,9 @@ final class XMLParserImpl<A>
 		}
 	}
 
-	private void reportErrors(final SmExceptionCatcher caught, final SmExceptionHandler errors) throws SmAbortException
+	private void reportErrors(final SchemaExceptionCatcher caught, final SchemaExceptionHandler errors) throws AbortException
 	{
-		for (final SmException error : caught)
+		for (final SchemaException error : caught)
 		{
 			if (null != errors)
 			{
@@ -136,7 +136,7 @@ final class XMLParserImpl<A>
 			}
 			else
 			{
-				throw new SmAbortException(error);
+				throw new AbortException(error);
 			}
 		}
 	}
@@ -144,13 +144,13 @@ final class XMLParserImpl<A>
 	/**
 	 * Converts the XML cache into a compiled schema.
 	 */
-	private Pair<SmComponentBagImpl<A>, XMLComponentLocator<A>> convert(final XMLSchemaCache<A> cache, final SmExceptionHandler errors) throws SmAbortException
+	private Pair<SmComponentBagImpl<A>, XMLComponentLocator<A>> convert(final XMLSchemaCache<A> cache, final SchemaExceptionHandler errors) throws AbortException
 	{
 		try
 		{
 			cache.checkReferences();
 		}
-		catch (final SmException e)
+		catch (final SchemaException e)
 		{
 			errors.error(e);
 			return null;
@@ -159,22 +159,22 @@ final class XMLParserImpl<A>
 		return XMLSchemaConverter.convert(m_regexc, this.cache, atomBridge, cache, errors);
 	}
 
-	public void setResolver(final SmResolver resolver)
+	public void setResolver(final CatalogResolver resolver)
 	{
 		m_resolver = resolver;
 	}
 
-	public SmResolver getResolver()
+	public CatalogResolver getResolver()
 	{
 		return m_resolver;
 	}
 
-	public void setCatalog(final SmCatalog catalog)
+	public void setCatalog(final SchemaCatalog catalog)
 	{
 		m_catalog = catalog;
 	}
 
-	public SmCatalog getCatalog()
+	public SchemaCatalog getCatalog()
 	{
 		return m_catalog;
 	}

@@ -16,9 +16,9 @@
 package org.genxdm.processor.w3c.xs.exception;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public abstract class SmSourceAttributeException extends SmLocationException
@@ -30,13 +30,13 @@ public abstract class SmSourceAttributeException extends SmLocationException
 	public static final String PART_TYPE_XOR_SIMPLE_TYPE = "4";
 	public static final String PART_DECLARATIONS = "5";
 
-	public SmSourceAttributeException(final String partNumber, final SmLocation location)
+	public SmSourceAttributeException(final String partNumber, final LocationInSchema location)
 	{
-		super(SmOutcome.SRC_Attribute, partNumber, location);
+		super(ValidationOutcome.SRC_Attribute, partNumber, location);
 	}
 
-	public SmSourceAttributeException(final String partNumber, final SmLocation location, final SmException cause)
+	public SmSourceAttributeException(final String partNumber, final LocationInSchema location, final SchemaException cause)
 	{
-		super(SmOutcome.SRC_Attribute, partNumber, location, PreCondition.assertArgumentNotNull(cause, "cause"));
+		super(ValidationOutcome.SRC_Attribute, partNumber, location, PreCondition.assertArgumentNotNull(cause, "cause"));
 	}
 }

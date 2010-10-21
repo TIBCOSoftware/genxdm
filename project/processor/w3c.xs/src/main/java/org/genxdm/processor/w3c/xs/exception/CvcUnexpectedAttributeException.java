@@ -18,14 +18,14 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class CvcUnexpectedAttributeException extends SmComplexTypeException
 {
 	private final QName attributeName;
 
-	public CvcUnexpectedAttributeException(final QName elementName, final QName attributeName, final SmLocation location)
+	public CvcUnexpectedAttributeException(final QName elementName, final QName attributeName, final LocationInSchema location)
 	{
 		super("?", elementName, location);
 		this.attributeName = PreCondition.assertArgumentNotNull(attributeName, "name");

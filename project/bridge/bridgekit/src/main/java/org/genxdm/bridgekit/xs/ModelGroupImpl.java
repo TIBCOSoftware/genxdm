@@ -22,20 +22,20 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.components.SmParticle;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.SchemaParticle;
+import org.genxdm.xs.enums.ScopeExtent;
 
-public final class ModelGroupImpl<A> extends NamedComponentImpl<A> implements SmModelGroup<A>
+public final class ModelGroupImpl<A> extends NamedComponentImpl<A> implements ModelGroup<A>
 {
-	private final SmModelGroup.SmCompositor compositor;
-	private final List<SmParticle<A>> particles;
+	private final ModelGroup.SmCompositor compositor;
+	private final List<SchemaParticle<A>> particles;
 
-	public ModelGroupImpl(final SmModelGroup.SmCompositor compositor, final List<? extends SmParticle<A>> particles, final QName name, final boolean isAnonymous, final SmScopeExtent scope)
+	public ModelGroupImpl(final ModelGroup.SmCompositor compositor, final List<? extends SchemaParticle<A>> particles, final QName name, final boolean isAnonymous, final ScopeExtent scope)
 	{
 		super(name, isAnonymous, scope);
 		this.compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
-		this.particles = Collections.unmodifiableList(new ArrayList<SmParticle<A>>(particles));
+		this.particles = Collections.unmodifiableList(new ArrayList<SchemaParticle<A>>(particles));
 	}
 
 	public SmCompositor getCompositor()
@@ -43,7 +43,7 @@ public final class ModelGroupImpl<A> extends NamedComponentImpl<A> implements Sm
 		return compositor;
 	}
 
-	public List<SmParticle<A>> getParticles()
+	public List<SchemaParticle<A>> getParticles()
 	{
 		return particles;
 	}
