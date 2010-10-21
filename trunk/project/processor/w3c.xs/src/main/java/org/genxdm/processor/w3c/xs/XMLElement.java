@@ -21,12 +21,12 @@ import java.util.LinkedList;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.enums.DerivationMethod;
 
 final class XMLElement<A> extends XMLDeclaration<A> implements XMLParticleTerm<A>
 {
-	private final EnumSet<SmDerivationMethod> m_block = EnumSet.noneOf(SmDerivationMethod.class);
-	private final EnumSet<SmDerivationMethod> m_final = EnumSet.noneOf(SmDerivationMethod.class);
+	private final EnumSet<DerivationMethod> m_block = EnumSet.noneOf(DerivationMethod.class);
+	private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
 	private boolean m_isAbstract = false;
 	private boolean m_isNillable = false;
 	public XMLElement<A> substitutionGroup;
@@ -42,12 +42,12 @@ final class XMLElement<A> extends XMLDeclaration<A> implements XMLParticleTerm<A
 		super(PreCondition.assertArgumentNotNull(name, "name"), scope, anyType);
 	}
 
-	public EnumSet<SmDerivationMethod> getBlock()
+	public EnumSet<DerivationMethod> getBlock()
 	{
 		return m_block;
 	}
 
-	public EnumSet<SmDerivationMethod> getFinal()
+	public EnumSet<DerivationMethod> getFinal()
 	{
 		return m_final;
 	}

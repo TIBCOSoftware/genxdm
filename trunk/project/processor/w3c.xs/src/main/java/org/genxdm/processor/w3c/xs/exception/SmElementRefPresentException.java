@@ -15,12 +15,12 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class SmElementRefPresentException extends SrcElementException
 {
-	public SmElementRefPresentException(final SmLocation location)
+	public SmElementRefPresentException(final LocationInSchema location)
 	{
 		super(PART_REF_PRESENT, location);
 	}

@@ -18,15 +18,15 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.exceptions.SmSimpleTypeException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.exceptions.SimpleTypeException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class CvcAttributeNormalizedValueException extends CvcAttributeException
 {
 	private final String normalizedValue;
 
-	public CvcAttributeNormalizedValueException(final QName attributeName, final String normalizedValue, final SmLocation location, final SmSimpleTypeException cause)
+	public CvcAttributeNormalizedValueException(final QName attributeName, final String normalizedValue, final LocationInSchema location, final SimpleTypeException cause)
 	{
 		super(PART_NORMALIZED_VALUE, attributeName, location, cause);
 		this.normalizedValue = PreCondition.assertArgumentNotNull(normalizedValue, "normalizedValue");

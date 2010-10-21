@@ -25,8 +25,8 @@ import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
 import org.genxdm.typed.types.MetaVisitor;
 import org.genxdm.typed.types.Quantifier;
-import org.genxdm.xs.SmMetaBridge;
-import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.SchemaTypeBridge;
+import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.types.SmAttributeNodeType;
 import org.genxdm.xs.types.SmChoiceType;
 import org.genxdm.xs.types.SmCommentNodeType;
@@ -47,33 +47,33 @@ import org.genxdm.xs.types.SmType;
 
 public final class GxMetaBridgeOnSmMetaBridgeAdapter<A> implements MetaBridge<A>
 {
-	private static SmQuantifier convert(final Quantifier gq)
+	private static KeeneQuantifier convert(final Quantifier gq)
 	{
 		switch (gq)
 		{
 			case NONE:
 			{
-				return SmQuantifier.NONE;
+				return KeeneQuantifier.NONE;
 			}
 			case EMPTY:
 			{
-				return SmQuantifier.EMPTY;
+				return KeeneQuantifier.EMPTY;
 			}
 			case EXACTLY_ONE:
 			{
-				return SmQuantifier.EXACTLY_ONE;
+				return KeeneQuantifier.EXACTLY_ONE;
 			}
 			case OPTIONAL:
 			{
-				return SmQuantifier.OPTIONAL;
+				return KeeneQuantifier.OPTIONAL;
 			}
 			case ONE_OR_MORE:
 			{
-				return SmQuantifier.ONE_OR_MORE;
+				return KeeneQuantifier.ONE_OR_MORE;
 			}
 			case ZERO_OR_MORE:
 			{
-				return SmQuantifier.ZERO_OR_MORE;
+				return KeeneQuantifier.ZERO_OR_MORE;
 			}
 			default:
 			{
@@ -82,7 +82,7 @@ public final class GxMetaBridgeOnSmMetaBridgeAdapter<A> implements MetaBridge<A>
 		}
 	}
 
-	private static Quantifier convert(final SmQuantifier sq)
+	private static Quantifier convert(final KeeneQuantifier sq)
 	{
 		switch (sq)
 		{
@@ -119,9 +119,9 @@ public final class GxMetaBridgeOnSmMetaBridgeAdapter<A> implements MetaBridge<A>
 
 	private final AtomBridge<A> atomBridge;
 
-	private final SmMetaBridge<A> metaBridge;
+	private final SchemaTypeBridge<A> metaBridge;
 
-	public GxMetaBridgeOnSmMetaBridgeAdapter(final SmMetaBridge<A> metaBridge, final AtomBridge<A> atomBridge)
+	public GxMetaBridgeOnSmMetaBridgeAdapter(final SchemaTypeBridge<A> metaBridge, final AtomBridge<A> atomBridge)
 	{
 		this.metaBridge = PreCondition.assertArgumentNotNull(metaBridge, "metaBridge");
 		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");

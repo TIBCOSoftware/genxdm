@@ -18,13 +18,13 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
-import org.genxdm.xs.exceptions.SmException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
+import org.genxdm.xs.exceptions.SchemaException;
 
 
 @SuppressWarnings("serial")
-public abstract class SccElementDeclarationException extends SmComponentConstraintException
+public abstract class SccElementDeclarationException extends ComponentConstraintException
 {
 	private final QName m_elementName;
 
@@ -33,13 +33,13 @@ public abstract class SccElementDeclarationException extends SmComponentConstrai
 
 	public SccElementDeclarationException(final String partNumber, final QName elementName)
 	{
-		super(SmOutcome.SCC_Element_Declaration_Properties_Correct, partNumber);
+		super(ValidationOutcome.SCC_Element_Declaration_Properties_Correct, partNumber);
 		m_elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
 	}
 
-	public SccElementDeclarationException(final String partNumber, final QName elementName, final SmException cause)
+	public SccElementDeclarationException(final String partNumber, final QName elementName, final SchemaException cause)
 	{
-		super(SmOutcome.SCC_Element_Declaration_Properties_Correct, partNumber, cause);
+		super(ValidationOutcome.SCC_Element_Declaration_Properties_Correct, partNumber, cause);
 		m_elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
 	}
 

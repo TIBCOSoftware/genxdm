@@ -17,14 +17,14 @@ package org.genxdm.processor.w3c.xs;
 
 import java.util.HashMap;
 
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmAttributeGroup;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.components.SmNotation;
-import org.genxdm.xs.components.SmParticle;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.NotationDefinition;
+import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 import org.genxdm.xs.types.SmComplexType;
 import org.genxdm.xs.types.SmSimpleType;
 
@@ -34,13 +34,13 @@ import org.genxdm.xs.types.SmSimpleType;
  */
 final class XMLComponentLocator<A>
 {
-	public final HashMap<SmSimpleType<A>, SmLocation> m_simpleTypeLocations = new HashMap<SmSimpleType<A>, SmLocation>();
-	public final HashMap<SmComplexType<A>, SmLocation> m_complexTypeLocations = new HashMap<SmComplexType<A>, SmLocation>();
-	public final HashMap<SmElement<A>, SmLocation> m_elementLocations = new HashMap<SmElement<A>, SmLocation>();
-	public final HashMap<SmAttribute<A>, SmLocation> m_attributeLocations = new HashMap<SmAttribute<A>, SmLocation>();
-	public final HashMap<SmModelGroup<A>, SmLocation> m_modelGroupLocations = new HashMap<SmModelGroup<A>, SmLocation>();
-	public final HashMap<SmAttributeGroup<A>, SmLocation> m_attributeGroupLocations = new HashMap<SmAttributeGroup<A>, SmLocation>();
-	public final HashMap<SmIdentityConstraint<A>, SmLocation> m_constraintLocations = new HashMap<SmIdentityConstraint<A>, SmLocation>();
-	public final HashMap<SmNotation<A>, SmLocation> m_notationLocations = new HashMap<SmNotation<A>, SmLocation>();
-	public final HashMap<SmParticle<A>, SmLocation> m_particleLocations = new HashMap<SmParticle<A>, SmLocation>();
+	public final HashMap<SmSimpleType<A>, LocationInSchema> m_simpleTypeLocations = new HashMap<SmSimpleType<A>, LocationInSchema>();
+	public final HashMap<SmComplexType<A>, LocationInSchema> m_complexTypeLocations = new HashMap<SmComplexType<A>, LocationInSchema>();
+	public final HashMap<ElementDefinition<A>, LocationInSchema> m_elementLocations = new HashMap<ElementDefinition<A>, LocationInSchema>();
+	public final HashMap<AttributeDefinition<A>, LocationInSchema> m_attributeLocations = new HashMap<AttributeDefinition<A>, LocationInSchema>();
+	public final HashMap<ModelGroup<A>, LocationInSchema> m_modelGroupLocations = new HashMap<ModelGroup<A>, LocationInSchema>();
+	public final HashMap<AttributeGroupDefinition<A>, LocationInSchema> m_attributeGroupLocations = new HashMap<AttributeGroupDefinition<A>, LocationInSchema>();
+	public final HashMap<SmIdentityConstraint<A>, LocationInSchema> m_constraintLocations = new HashMap<SmIdentityConstraint<A>, LocationInSchema>();
+	public final HashMap<NotationDefinition<A>, LocationInSchema> m_notationLocations = new HashMap<NotationDefinition<A>, LocationInSchema>();
+	public final HashMap<SchemaParticle<A>, LocationInSchema> m_particleLocations = new HashMap<SchemaParticle<A>, LocationInSchema>();
 }

@@ -15,9 +15,9 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 /**
  * Used for reporting problems with imported schemas.
@@ -27,14 +27,14 @@ public abstract class SrcImportException extends SmLocationException
 {
 	public static final String PART_NOT_WELL_FORMED = "2";
 
-	public SrcImportException(final String partNumber, final SmLocation location)
+	public SrcImportException(final String partNumber, final LocationInSchema location)
 	{
-		super(SmOutcome.SRC_Import, partNumber, location);
+		super(ValidationOutcome.SRC_Import, partNumber, location);
 	}
 
-	public SrcImportException(final String partNumber, final SmLocation location, final SmException cause)
+	public SrcImportException(final String partNumber, final LocationInSchema location, final SchemaException cause)
 	{
-		super(SmOutcome.SRC_Import, partNumber, location, cause);
+		super(ValidationOutcome.SRC_Import, partNumber, location, cause);
 	}
 
 }

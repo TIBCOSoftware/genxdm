@@ -21,8 +21,8 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.SmType;
 
 /**
@@ -30,11 +30,11 @@ import org.genxdm.xs.types.SmType;
  */
 abstract class TypeImpl<A> extends NamedComponentImpl<A> implements SmType<A>
 {
-	private final SmDerivationMethod derivation;
+	private final DerivationMethod derivation;
 	private final QName name;
 	private final NameSource nameBridge;
 
-	public TypeImpl(final QName name, final boolean isAnonymous, final SmScopeExtent scope, final SmDerivationMethod derivation, final NameSource nameBridge)
+	public TypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final DerivationMethod derivation, final NameSource nameBridge)
 	{
 		super(name, isAnonymous, scope);
 		this.name = PreCondition.assertArgumentNotNull(name, "name");
@@ -42,17 +42,17 @@ abstract class TypeImpl<A> extends NamedComponentImpl<A> implements SmType<A>
 		this.derivation = PreCondition.assertArgumentNotNull(derivation, "derivation");
 	}
 
-	public boolean derivedFrom(final String namespace, final String name, final Set<SmDerivationMethod> derivationMethods)
+	public boolean derivedFrom(final String namespace, final String name, final Set<DerivationMethod> derivationMethods)
 	{
 		return SmSupportImpl.derivedFrom(this, namespace, name, derivationMethods, nameBridge);
 	}
 
-	public boolean derivedFromType(final SmType<A> ancestorType, final Set<SmDerivationMethod> derivationMethods)
+	public boolean derivedFromType(final SmType<A> ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
 		return SmSupportImpl.derivedFromType(this, ancestorType, derivationMethods, nameBridge);
 	}
 
-	public final SmDerivationMethod getDerivationMethod()
+	public final DerivationMethod getDerivationMethod()
 	{
 		return derivation;
 	}

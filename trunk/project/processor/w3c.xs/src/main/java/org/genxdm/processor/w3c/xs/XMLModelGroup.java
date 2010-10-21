@@ -20,12 +20,12 @@ import java.util.LinkedList;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmModelGroup;
+import org.genxdm.xs.components.ModelGroup;
 
 final class XMLModelGroup<A> extends XMLComponent<A> implements XMLParticleTerm<A>
 {
 	private final QName m_name;
-	private SmModelGroup.SmCompositor m_compositor;
+	private ModelGroup.SmCompositor m_compositor;
 	private final LinkedList<XMLParticle<A>> m_particles = new LinkedList<XMLParticle<A>>();
 
 	public XMLModelGroup(final QName name, final XMLScope<A> scope, final SrcFrozenLocation location)
@@ -56,7 +56,7 @@ final class XMLModelGroup<A> extends XMLComponent<A> implements XMLParticleTerm<
 		}
 	}
 
-	public XMLModelGroup(final SmModelGroup.SmCompositor compositor, final XMLScope<A> scope, final SrcFrozenLocation location)
+	public XMLModelGroup(final ModelGroup.SmCompositor compositor, final XMLScope<A> scope, final SrcFrozenLocation location)
 	{
 		super(scope, location);
 		m_compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
@@ -64,7 +64,7 @@ final class XMLModelGroup<A> extends XMLComponent<A> implements XMLParticleTerm<
 		m_name = null;
 	}
 
-	public XMLModelGroup(final SmModelGroup.SmCompositor compositor, final XMLScope<A> scope)
+	public XMLModelGroup(final ModelGroup.SmCompositor compositor, final XMLScope<A> scope)
 	{
 		super(scope);
 		m_compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
@@ -84,12 +84,12 @@ final class XMLModelGroup<A> extends XMLComponent<A> implements XMLParticleTerm<
 		}
 	}
 
-	public SmModelGroup.SmCompositor getCompositor()
+	public ModelGroup.SmCompositor getCompositor()
 	{
 		return m_compositor;
 	}
 
-	public void setCompositor(final SmModelGroup.SmCompositor compositor)
+	public void setCompositor(final ModelGroup.SmCompositor compositor)
 	{
 		m_compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
 	}

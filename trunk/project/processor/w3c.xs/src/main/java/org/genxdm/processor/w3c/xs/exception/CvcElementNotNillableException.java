@@ -15,13 +15,13 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class CvcElementNotNillableException extends CvcElementException
 {
-	public CvcElementNotNillableException(final SmElement<?> decl, final SmLocation location)
+	public CvcElementNotNillableException(final ElementDefinition<?> decl, final LocationInSchema location)
 	{
 		super(PART_NOT_NILLABLE, decl, location);
 	}

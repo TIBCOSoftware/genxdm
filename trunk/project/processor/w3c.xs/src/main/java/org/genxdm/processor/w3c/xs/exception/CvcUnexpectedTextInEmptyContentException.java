@@ -18,14 +18,14 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class CvcUnexpectedTextInEmptyContentException extends SmComplexTypeException
 {
 	private final String m_text;
 
-	public CvcUnexpectedTextInEmptyContentException(final QName elementName, final String text, final SmLocation location)
+	public CvcUnexpectedTextInEmptyContentException(final QName elementName, final String text, final LocationInSchema location)
 	{
 		super(PART_CONTENT_TYPE_IS_EMPTY, elementName, location);
 		m_text = PreCondition.assertArgumentNotNull(text, "text");

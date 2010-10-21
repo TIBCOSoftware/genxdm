@@ -24,12 +24,12 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
-import org.genxdm.xs.components.SmComponentProvider;
-import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.SmAttributeUse;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmQuantifier;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.SmComplexType;
 import org.genxdm.xs.types.SmContentType;
 import org.genxdm.xs.types.SmElementNodeType;
@@ -46,7 +46,7 @@ import org.genxdm.xs.types.SmType;
  */
 public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexType<A>, SmPrimeType<A>
 {
-	private static <A> SmWildcard<A> computeAttributeWildcard(final SmType<A> baseType, final SmDerivationMethod derivation)
+	private static <A> SchemaWildcard<A> computeAttributeWildcard(final SmType<A> baseType, final DerivationMethod derivation)
 	{
 		if (derivation.isRestriction())
 		{
@@ -74,14 +74,14 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 	/**
 	 * {attribute wildcard} is mutable
 	 */
-	private SmWildcard<A> m_attributeWildcard = null;
+	private SchemaWildcard<A> m_attributeWildcard = null;
 	private final SmType<A> m_baseType;
 
-	private final Set<SmDerivationMethod> m_block;
+	private final Set<DerivationMethod> m_block;
 
-	private final Set<SmDerivationMethod> m_blockUnmodifiable;
+	private final Set<DerivationMethod> m_blockUnmodifiable;
 
-	private final SmComponentProvider<A> m_cache;
+	private final ComponentProvider<A> m_cache;
 
 	/**
 	 * {content type} is mutable.
@@ -91,15 +91,15 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 	/**
 	 * {final} is mutable.
 	 */
-	private final EnumSet<SmDerivationMethod> m_final = EnumSet.noneOf(SmDerivationMethod.class);
+	private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
 
 	/**
 	 * {abstract} is mutable and defaults to <code>false</code>.
 	 */
 	private boolean m_isAbstract = false;
 
-	public ComplexTypeImpl(final QName name, final boolean isNative, final boolean isAnonymous, final SmScopeExtent scope, final SmType<A> baseType, final SmDerivationMethod derivation, final Map<QName, SmAttributeUse<A>> attributeUses,
-			final SmContentType<A> contentType, final Set<SmDerivationMethod> block, final NameSource nameBridge, final SmComponentProvider<A> cache)
+	public ComplexTypeImpl(final QName name, final boolean isNative, final boolean isAnonymous, final ScopeExtent scope, final SmType<A> baseType, final DerivationMethod derivation, final Map<QName, SmAttributeUse<A>> attributeUses,
+			final SmContentType<A> contentType, final Set<DerivationMethod> block, final NameSource nameBridge, final ComponentProvider<A> cache)
 	{
 		super(PreCondition.assertArgumentNotNull(name, "name"), isAnonymous, scope, derivation, nameBridge);
 		this.isNative = isNative;
@@ -127,7 +127,7 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 		return m_attributeUses;
 	}
 
-	public SmWildcard<A> getAttributeWildcard()
+	public SchemaWildcard<A> getAttributeWildcard()
 	{
 		return m_attributeWildcard;
 	}
@@ -142,7 +142,7 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 		return m_contentType;
 	}
 
-	public final Set<SmDerivationMethod> getFinal()
+	public final Set<DerivationMethod> getFinal()
 	{
 		return m_final;
 	}
@@ -152,7 +152,7 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 		return SmPrimeTypeKind.COMPLEX;
 	}
 
-	public Set<SmDerivationMethod> getProhibitedSubstitutions()
+	public Set<DerivationMethod> getProhibitedSubstitutions()
 	{
 		return m_blockUnmodifiable;
 	}
@@ -182,7 +182,7 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 		return false;
 	}
 
-	public boolean isFinal(final SmDerivationMethod derivation)
+	public boolean isFinal(final DerivationMethod derivation)
 	{
 		PreCondition.assertArgumentNotNull(derivation, "derivation");
 		return m_final.contains(derivation);
@@ -208,9 +208,9 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 		return this;
 	}
 
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
-		return SmQuantifier.EXACTLY_ONE;
+		return KeeneQuantifier.EXACTLY_ONE;
 	}
 
 	public void setAbstract(final boolean isAbstract)
@@ -219,13 +219,13 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 		m_isAbstract = isAbstract;
 	}
 
-	public void setAttributeWildcard(final SmWildcard<A> attributeWildcard)
+	public void setAttributeWildcard(final SchemaWildcard<A> attributeWildcard)
 	{
 		assertNotLocked();
 		m_attributeWildcard = attributeWildcard;
 	}
 
-	public void setBlock(final SmDerivationMethod derivation, final boolean enabled)
+	public void setBlock(final DerivationMethod derivation, final boolean enabled)
 	{
 		assertNotLocked();
 		if (enabled)
@@ -244,7 +244,7 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements SmComplexTy
 		m_contentType = PreCondition.assertArgumentNotNull(contentType, "name");
 	}
 
-	public void setFinal(final SmDerivationMethod derivation, final boolean enabled)
+	public void setFinal(final DerivationMethod derivation, final boolean enabled)
 	{
 		assertNotLocked();
 		PreCondition.assertArgumentNotNull(derivation, "derivation");

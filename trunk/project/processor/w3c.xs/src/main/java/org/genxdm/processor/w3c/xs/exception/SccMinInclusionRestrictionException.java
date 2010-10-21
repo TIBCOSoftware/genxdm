@@ -15,7 +15,7 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
+import org.genxdm.xs.enums.ValidationOutcome;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmLimit;
 
@@ -24,6 +24,6 @@ public class SccMinInclusionRestrictionException extends SccLimitRestrictionExce
 {
 	public SccMinInclusionRestrictionException(final SmFacetKind parentFacetKind, final SmLimit<?> restrictingLimit, final SmLimit<?> parentLimit)
 	{
-		super(SmOutcome.SCC_MinInclusiveValidRestriction, parentFacetKind == SmFacetKind.MinInclusive ? "1" : parentFacetKind == SmFacetKind.MaxInclusive ? "2" : parentFacetKind == SmFacetKind.MinExclusive ? "3" : "4", SmFacetKind.MinInclusive, parentFacetKind, restrictingLimit, parentLimit);
+		super(ValidationOutcome.SCC_MinInclusiveValidRestriction, parentFacetKind == SmFacetKind.MinInclusive ? "1" : parentFacetKind == SmFacetKind.MaxInclusive ? "2" : parentFacetKind == SmFacetKind.MinExclusive ? "3" : "4", SmFacetKind.MinInclusive, parentFacetKind, restrictingLimit, parentLimit);
 	}
 }

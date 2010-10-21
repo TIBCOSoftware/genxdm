@@ -15,14 +15,14 @@
  */
 package org.genxdm.processor.w3c.xs.validation;
 
-import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.ElementDefinition;
 
 
 public interface GxValidatorCacheFactory<A>
 {
 	GxValidatorCache<A> newValidatorCache();
 
-	GxValidatorCache<A> newValidatorCache(SmElement<A> elementName);
+	GxValidatorCache<A> newValidatorCache(ElementDefinition<A> elementName);
 
 	GxValidatorCacheFactory<A> schemaDocumentLocationStrategy(GxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy);
 }

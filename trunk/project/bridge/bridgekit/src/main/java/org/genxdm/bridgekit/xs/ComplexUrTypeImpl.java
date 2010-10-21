@@ -25,14 +25,14 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.components.SmParticle;
-import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.SchemaParticle;
+import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.SmAttributeUse;
 import org.genxdm.xs.constraints.SmNamespaceConstraint;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmProcessContentsMode;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.ProcessContentsMode;
+import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.SmComplexUrType;
 import org.genxdm.xs.types.SmContentType;
 import org.genxdm.xs.types.SmPrimeChoiceType;
@@ -46,7 +46,7 @@ import org.genxdm.xs.types.SmType;
  */
 final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implements SmComplexUrType<A>
 {
-	private final SmWildcard<A> attributeWildcard;
+	private final SchemaWildcard<A> attributeWildcard;
 	private final SmContentType<A> contentType;
 	private final QName name;
 
@@ -54,12 +54,12 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 	{
 		this.name = new QName(W3C_XML_SCHEMA_NS_URI, "anyType");
 
-		final SmWildcard<A> anyTerm = new WildcardImpl<A>(SmProcessContentsMode.Lax, SmNamespaceConstraint.Any(nameBridge));
+		final SchemaWildcard<A> anyTerm = new WildcardImpl<A>(ProcessContentsMode.Lax, SmNamespaceConstraint.Any(nameBridge));
 
-		final LinkedList<SmParticle<A>> particles = new LinkedList<SmParticle<A>>();
+		final LinkedList<SchemaParticle<A>> particles = new LinkedList<SchemaParticle<A>>();
 		particles.add(new ParticleWithWildcardTerm<A>(0, anyTerm));
 
-		final SmModelGroup<A> modelGroup = new ModelGroupImpl<A>(SmModelGroup.SmCompositor.Sequence, particles, null, true, SmScopeExtent.Local);
+		final ModelGroup<A> modelGroup = new ModelGroupImpl<A>(ModelGroup.SmCompositor.Sequence, particles, null, true, ScopeExtent.Local);
 
 		this.contentType = new ContentTypeImpl<A>(true, new ParticleWithModelGroupTerm<A>(1, 1, modelGroup));
 		this.attributeWildcard = anyTerm;
@@ -70,12 +70,12 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		visitor.visit(this);
 	}
 
-	public boolean derivedFrom(final String namespace, final String name, final Set<SmDerivationMethod> derivationMethods)
+	public boolean derivedFrom(final String namespace, final String name, final Set<DerivationMethod> derivationMethods)
 	{
 		return false;
 	}
 
-	public boolean derivedFromType(final SmType<A> ancestorType, final Set<SmDerivationMethod> derivationMethods)
+	public boolean derivedFromType(final SmType<A> ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
 		return false;
 	}
@@ -85,7 +85,7 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		return Collections.emptyMap();
 	}
 
-	public SmWildcard<A> getAttributeWildcard()
+	public SchemaWildcard<A> getAttributeWildcard()
 	{
 		return attributeWildcard;
 	}
@@ -100,14 +100,14 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		return contentType;
 	}
 
-	public SmDerivationMethod getDerivationMethod()
+	public DerivationMethod getDerivationMethod()
 	{
-		return SmDerivationMethod.Restriction;
+		return DerivationMethod.Restriction;
 	}
 
-	public Set<SmDerivationMethod> getFinal()
+	public Set<DerivationMethod> getFinal()
 	{
-		return EnumSet.noneOf(SmDerivationMethod.class);
+		return EnumSet.noneOf(DerivationMethod.class);
 	}
 
 	public SmPrimeTypeKind getKind()
@@ -125,15 +125,15 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		return name;
 	}
 
-	public Set<SmDerivationMethod> getProhibitedSubstitutions()
+	public Set<DerivationMethod> getProhibitedSubstitutions()
 	{
 		// TODO: Is this immutable? If not, wrap it with Collections.unmod
-		return EnumSet.noneOf(SmDerivationMethod.class);
+		return EnumSet.noneOf(DerivationMethod.class);
 	}
 
-	public SmScopeExtent getScopeExtent()
+	public ScopeExtent getScopeExtent()
 	{
-		return SmScopeExtent.Global;
+		return ScopeExtent.Global;
 	}
 
 	public String getTargetNamespace()
@@ -171,7 +171,7 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		return true;
 	}
 
-	public boolean isFinal(final SmDerivationMethod derivation)
+	public boolean isFinal(final DerivationMethod derivation)
 	{
 		return false;
 	}
@@ -206,12 +206,12 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		throw new AssertionError(getName());
 	}
 
-	public void setAttributeWildcard(final SmWildcard<A> attributeWildcard)
+	public void setAttributeWildcard(final SchemaWildcard<A> attributeWildcard)
 	{
 		throw new AssertionError(getName());
 	}
 
-	public void setBlock(final SmDerivationMethod derivation, final boolean enabled)
+	public void setBlock(final DerivationMethod derivation, final boolean enabled)
 	{
 		throw new AssertionError(getName());
 	}
@@ -221,7 +221,7 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		throw new AssertionError(getName());
 	}
 
-	public void setFinal(final SmDerivationMethod derivation, final boolean enabled)
+	public void setFinal(final DerivationMethod derivation, final boolean enabled)
 	{
 		throw new AssertionError(getName());
 	}

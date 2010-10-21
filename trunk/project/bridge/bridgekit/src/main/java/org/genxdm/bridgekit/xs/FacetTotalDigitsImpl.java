@@ -20,8 +20,8 @@ import java.util.List;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.exceptions.SmFacetException;
-import org.genxdm.xs.exceptions.SmFacetTotalDigitsException;
+import org.genxdm.xs.exceptions.FacetException;
+import org.genxdm.xs.exceptions.FacetTotalDigitsException;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmTotalDigits;
 import org.genxdm.xs.types.SmNativeType;
@@ -212,14 +212,14 @@ public final class FacetTotalDigitsImpl<A> extends FacetImpl<A> implements SmTot
 		return totalDigits;
 	}
 
-	public void validate(final List<? extends A> actualValue, final SmSimpleType<A> simpleType) throws SmFacetException
+	public void validate(final List<? extends A> actualValue, final SmSimpleType<A> simpleType) throws FacetException
 	{
 		for (final A atom : actualValue)
 		{
 			if (totalDigits(atom, atomBridge) > this.totalDigits)
 			{
 				final String displayString = atomBridge.getC14NString(actualValue);
-				throw new SmFacetTotalDigitsException(this.totalDigits, displayString, this);
+				throw new FacetTotalDigitsException(this.totalDigits, displayString, this);
 			}
 		}
 	}

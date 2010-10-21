@@ -19,17 +19,17 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.components.SmComponent;
-import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.components.SchemaComponent;
+import org.genxdm.xs.enums.DerivationMethod;
 
 /**
  * Represents all types in a schema, both simple types and complex types.
  */
-public interface SmType<A> extends SmComponent<A>, SmSequenceType<A>
+public interface SmType<A> extends SchemaComponent<A>, SmSequenceType<A>
 {
-	boolean derivedFrom(String namespace, String name, Set<SmDerivationMethod> derivationMethods);
+	boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods);
 
-	boolean derivedFromType(SmType<A> ancestorType, Set<SmDerivationMethod> derivationMethods);
+	boolean derivedFromType(SmType<A> ancestorType, Set<DerivationMethod> derivationMethods);
 
 	/**
 	 * Returns the {base type definition} of this type. This may be a simple type or a complex type.
@@ -39,14 +39,14 @@ public interface SmType<A> extends SmComponent<A>, SmSequenceType<A>
 	/**
 	 * Returns the {derivation method} property of this type from its base type.
 	 */
-	SmDerivationMethod getDerivationMethod();
+	DerivationMethod getDerivationMethod();
 
 	/**
 	 * Returns the {final} property. Applies to both simple types and complex types. This is a design-time constraint on
 	 * types. For simple types, this is a subset of {list, union, restriction}. For complex types, this is a subset of
 	 * {extension, restriction}.
 	 */
-	Set<SmDerivationMethod> getFinal();
+	Set<DerivationMethod> getFinal();
 
 	/**
 	 * The {name} property, which is in fact the local-name part of an expanded-QName.
@@ -92,7 +92,7 @@ public interface SmType<A> extends SmComponent<A>, SmSequenceType<A>
 	 * @param derivation
 	 *            The derivation method.
 	 */
-	boolean isFinal(SmDerivationMethod derivation);
+	boolean isFinal(DerivationMethod derivation);
 
 	/**
 	 * Returns whether this type is a built-in type.

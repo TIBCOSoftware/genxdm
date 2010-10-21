@@ -19,7 +19,7 @@ import org.genxdm.base.ProcessingContext;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
-import org.genxdm.xs.SmSchema;
+import org.genxdm.xs.Schema;
 
 /**
  * A context for schema-related processing and state.
@@ -30,7 +30,7 @@ import org.genxdm.xs.SmSchema;
  *            The atom handle.
  */
 public interface TypedContext<N, A> 
-    extends SmSchema<A>
+    extends Schema<A>
 {
 	/**
 	 * Returns the bridge used for atom interaction.

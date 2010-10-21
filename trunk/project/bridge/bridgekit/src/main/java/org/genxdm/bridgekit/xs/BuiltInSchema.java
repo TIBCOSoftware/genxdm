@@ -24,16 +24,16 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmAttributeGroup;
-import org.genxdm.xs.components.SmComponentBag;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.components.SmNotation;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.ComponentBag;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.constraints.SmAttributeUse;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.SmAtomicType;
 import org.genxdm.xs.types.SmAtomicUrType;
 import org.genxdm.xs.types.SmComplexType;
@@ -43,7 +43,7 @@ import org.genxdm.xs.types.SmSimpleType;
 import org.genxdm.xs.types.SmSimpleUrType;
 import org.genxdm.xs.types.SmType;
 
-final class BuiltInSchema<A> implements SmComponentBag<A>
+final class BuiltInSchema<A> implements ComponentBag<A>
 {
 	private final SmAtomicUrType<A> ANY_ATOMIC_TYPE;
 	private final SmSimpleUrType<A> ANY_SIMPLE_TYPE;
@@ -114,8 +114,8 @@ final class BuiltInSchema<A> implements SmComponentBag<A>
 		ANY_ATOMIC_TYPE = cache.getAtomicUrType();
 
 		final Map<QName, SmAttributeUse<A>> EMPTY_ATTRIBUTE_USES = Collections.emptyMap();
-		UNTYPED = new ComplexTypeImpl<A>(name(W3C_XML_SCHEMA_NS_URI, "untyped"), true, false, SmScopeExtent.Global, ANY_COMPLEX_TYPE, SmDerivationMethod.Restriction, EMPTY_ATTRIBUTE_USES, ANY_COMPLEX_TYPE.getContentType(), EnumSet
-				.noneOf(SmDerivationMethod.class), nameBridge, cache);
+		UNTYPED = new ComplexTypeImpl<A>(name(W3C_XML_SCHEMA_NS_URI, "untyped"), true, false, ScopeExtent.Global, ANY_COMPLEX_TYPE, DerivationMethod.Restriction, EMPTY_ATTRIBUTE_USES, ANY_COMPLEX_TYPE.getContentType(), EnumSet
+				.noneOf(DerivationMethod.class), nameBridge, cache);
 		UNTYPED.setAttributeWildcard(ANY_COMPLEX_TYPE.getAttributeWildcard());
 		UNTYPED_ATOMIC = new UntypedAtomicType<A>(name(W3C_XML_SCHEMA_NS_URI, "untypedAtomic"), ANY_ATOMIC_TYPE, atomBridge);
 
@@ -212,9 +212,9 @@ final class BuiltInSchema<A> implements SmComponentBag<A>
 		register(DURATION_YEARMONTH);
 		register(DURATION_DAYTIME);
 
-		IDREFS = new ListTypeImpl<A>(name(W3C_XML_SCHEMA_NS_URI, "IDREFS"), false, SmScopeExtent.Global, IDREF, ANY_SIMPLE_TYPE, null, cache.getAtomBridge());
-		NMTOKENS = new ListTypeImpl<A>(name(W3C_XML_SCHEMA_NS_URI, "NMTOKENS"), false, SmScopeExtent.Global, NMTOKEN, ANY_SIMPLE_TYPE, null, cache.getAtomBridge());
-		ENTITIES = new ListTypeImpl<A>(name(W3C_XML_SCHEMA_NS_URI, "ENTITIES"), false, SmScopeExtent.Global, ENTITY, ANY_SIMPLE_TYPE, null, cache.getAtomBridge());
+		IDREFS = new ListTypeImpl<A>(name(W3C_XML_SCHEMA_NS_URI, "IDREFS"), false, ScopeExtent.Global, IDREF, ANY_SIMPLE_TYPE, null, cache.getAtomBridge());
+		NMTOKENS = new ListTypeImpl<A>(name(W3C_XML_SCHEMA_NS_URI, "NMTOKENS"), false, ScopeExtent.Global, NMTOKEN, ANY_SIMPLE_TYPE, null, cache.getAtomBridge());
+		ENTITIES = new ListTypeImpl<A>(name(W3C_XML_SCHEMA_NS_URI, "ENTITIES"), false, ScopeExtent.Global, ENTITY, ANY_SIMPLE_TYPE, null, cache.getAtomBridge());
 
 		register(IDREFS);
 		register(NMTOKENS);
@@ -234,22 +234,22 @@ final class BuiltInSchema<A> implements SmComponentBag<A>
 		}
 	}
 
-	public SmAttribute<A> getAttribute(final QName name)
+	public AttributeDefinition<A> getAttribute(final QName name)
 	{
 		return null;
 	}
 
-	public SmAttributeGroup<A> getAttributeGroup(final QName name)
+	public AttributeGroupDefinition<A> getAttributeGroup(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<SmAttributeGroup<A>> getAttributeGroups()
+	public Iterable<AttributeGroupDefinition<A>> getAttributeGroups()
 	{
 		return Collections.emptyList();
 	}
 
-	public Iterable<SmAttribute<A>> getAttributes()
+	public Iterable<AttributeDefinition<A>> getAttributes()
 	{
 		return Collections.emptyList();
 	}
@@ -264,12 +264,12 @@ final class BuiltInSchema<A> implements SmComponentBag<A>
 		return m_complexTypes.values();
 	}
 
-	public SmElement<A> getElement(final QName name)
+	public ElementDefinition<A> getElement(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<SmElement<A>> getElements()
+	public Iterable<ElementDefinition<A>> getElements()
 	{
 		return Collections.emptyList();
 	}
@@ -284,22 +284,22 @@ final class BuiltInSchema<A> implements SmComponentBag<A>
 		return Collections.emptyList();
 	}
 
-	public SmModelGroup<A> getModelGroup(final QName name)
+	public ModelGroup<A> getModelGroup(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<SmModelGroup<A>> getModelGroups()
+	public Iterable<ModelGroup<A>> getModelGroups()
 	{
 		return Collections.emptyList();
 	}
 
-	public SmNotation<A> getNotation(final QName name)
+	public NotationDefinition<A> getNotation(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<SmNotation<A>> getNotations()
+	public Iterable<NotationDefinition<A>> getNotations()
 	{
 		return Collections.emptyList();
 	}

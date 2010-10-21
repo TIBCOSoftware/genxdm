@@ -36,7 +36,7 @@ import org.genxdm.processor.w3c.xs.exception.SmDuplicateNotationException;
 import org.genxdm.processor.w3c.xs.exception.SmDuplicateTypeException;
 import org.genxdm.processor.w3c.xs.exception.SmUndeclaredReferenceException;
 import org.genxdm.xs.constraints.SmIdentityConstraintKind;
-import org.genxdm.xs.exceptions.SmException;
+import org.genxdm.xs.exceptions.SchemaException;
 
 
 /**
@@ -104,7 +104,7 @@ final class XMLSchemaCache<A>
 	/**
 	 * Expand temporary variables used to hold syntactic constructs.
 	 */
-	public void checkReferences() throws SmException
+	public void checkReferences() throws SchemaException
 	{
 		if (!m_elementsUnresolved.isEmpty())
 		{
@@ -234,7 +234,7 @@ final class XMLSchemaCache<A>
 		}
 	}
 
-	public XMLAttributeGroup<A> dereferenceAttributeGroup(final QName name, final Location reference, final boolean mustExist) throws SmException
+	public XMLAttributeGroup<A> dereferenceAttributeGroup(final QName name, final Location reference, final boolean mustExist) throws SchemaException
 	{
 		PreCondition.assertArgumentNotNull(name);
 
@@ -342,7 +342,7 @@ final class XMLSchemaCache<A>
 		return new XMLType<A>(null, scope, location);
 	}
 
-	public XMLType<A> dereferenceType(final QName name, final Location reference, final boolean mustExist) throws SmException
+	public XMLType<A> dereferenceType(final QName name, final Location reference, final boolean mustExist) throws SchemaException
 	{
 		PreCondition.assertArgumentNotNull(name);
 
@@ -392,7 +392,7 @@ final class XMLSchemaCache<A>
 		}
 	}
 
-	public XMLModelGroup<A> dereferenceModelGroup(final QName name, final Location reference, final boolean mustExist) throws SmException
+	public XMLModelGroup<A> dereferenceModelGroup(final QName name, final Location reference, final boolean mustExist) throws SchemaException
 	{
 		PreCondition.assertArgumentNotNull(name);
 

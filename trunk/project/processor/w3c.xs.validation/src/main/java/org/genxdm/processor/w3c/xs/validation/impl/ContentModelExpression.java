@@ -21,38 +21,38 @@ import java.util.Stack;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.components.SmParticle;
-import org.genxdm.xs.components.SmParticleTerm;
-import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.SchemaParticle;
+import org.genxdm.xs.components.ParticleTerm;
+import org.genxdm.xs.components.SchemaWildcard;
 
-final class ContentModelExpression<A> implements ValidationExpr<A, SmParticleTerm<A>>
+final class ContentModelExpression<A> implements ValidationExpr<A, ParticleTerm<A>>
 {
-	private static <A> void compile(final SmParticle<A> particle, final ArrayList<ValidationExpr<A, SmParticleTerm<A>>> subTerms)
+	private static <A> void compile(final SchemaParticle<A> particle, final ArrayList<ValidationExpr<A, ParticleTerm<A>>> subTerms)
 	{
-		final SmParticleTerm<A> term = particle.getTerm();
+		final ParticleTerm<A> term = particle.getTerm();
 
-		if (term instanceof SmElement<?>)
+		if (term instanceof ElementDefinition<?>)
 		{
-			final SmElement<A> element = (SmElement<A>)term;
+			final ElementDefinition<A> element = (ElementDefinition<A>)term;
 			if (element.hasSubstitutionGroupMembers())
 			{
 				// Build a set of substitution element choices (which includes the original element).
-				final Stack<SmElement<A>> stack = new Stack<SmElement<A>>();
+				final Stack<ElementDefinition<A>> stack = new Stack<ElementDefinition<A>>();
 				stack.push(element);
-				final HashSet<SmElement<A>> choices = new HashSet<SmElement<A>>();
+				final HashSet<ElementDefinition<A>> choices = new HashSet<ElementDefinition<A>>();
 				while (!stack.isEmpty())
 				{
-					final SmElement<A> popped = stack.pop();
+					final ElementDefinition<A> popped = stack.pop();
 
 					if (!popped.isAbstract())
 					{
 						choices.add(popped);
 					}
 
-					for (final SmElement<A> substitution : popped.getSubstitutionGroupMembers())
+					for (final ElementDefinition<A> substitution : popped.getSubstitutionGroupMembers())
 					{
 						stack.push(substitution);
 					}
@@ -78,19 +78,19 @@ final class ContentModelExpression<A> implements ValidationExpr<A, SmParticleTer
 				}
 			}
 		}
-		else if (term instanceof SmAttribute<?>)
+		else if (term instanceof AttributeDefinition<?>)
 		{
 			throw new AssertionError(term);
 		}
-		else if (term instanceof SmModelGroup<?>)
+		else if (term instanceof ModelGroup<?>)
 		{
 			throw new RuntimeException();
-			// subTerms.add(new ModelGroupExpression<A>(particle, (SmModelGroup<A>)term));
+			// subTerms.add(new ModelGroupExpression<A>(particle, (ModelGroup<A>)term));
 		}
-		else if (term instanceof SmWildcard<?>)
+		else if (term instanceof SchemaWildcard<?>)
 		{
 			throw new RuntimeException();
-			// subTerms.add(new ParticleWildcardExpression<A>(particle, (SmWildcard<A>)term));
+			// subTerms.add(new ParticleWildcardExpression<A>(particle, (SchemaWildcard<A>)term));
 		}
 		else
 		{
@@ -98,34 +98,34 @@ final class ContentModelExpression<A> implements ValidationExpr<A, SmParticleTer
 		}
 	}
 
-	private static <A> Iterable<ValidationExpr<A, SmParticleTerm<A>>> compileSubTerms(final SmParticle<A> particle)
+	private static <A> Iterable<ValidationExpr<A, ParticleTerm<A>>> compileSubTerms(final SchemaParticle<A> particle)
 	{
-		final ArrayList<ValidationExpr<A, SmParticleTerm<A>>> subTerms = new ArrayList<ValidationExpr<A, SmParticleTerm<A>>>();
+		final ArrayList<ValidationExpr<A, ParticleTerm<A>>> subTerms = new ArrayList<ValidationExpr<A, ParticleTerm<A>>>();
 		compile(particle, subTerms);
 		return subTerms;
 	}
 
-	private final SmParticle<A> m_particle;
+	private final SchemaParticle<A> m_particle;
 
-	private final Iterable<ValidationExpr<A, SmParticleTerm<A>>> m_subTerms;
+	private final Iterable<ValidationExpr<A, ParticleTerm<A>>> m_subTerms;
 
-	public ContentModelExpression(final SmParticle<A> particle)
+	public ContentModelExpression(final SchemaParticle<A> particle)
 	{
 		m_particle = PreCondition.assertArgumentNotNull(particle, "particle");
 		m_subTerms = compileSubTerms(particle);
 	}
 
-	public SmParticleTerm<A> getParticleTerm()
+	public ParticleTerm<A> getParticleTerm()
 	{
 		return m_particle.getTerm();
 	}
 
-	public Iterable<ValidationExpr<A, SmParticleTerm<A>>> getSubTerms()
+	public Iterable<ValidationExpr<A, ParticleTerm<A>>> getSubTerms()
 	{
 		return m_subTerms;
 	}
 
-	public boolean intersects(final ValidationExpr<A, SmParticleTerm<A>> other)
+	public boolean intersects(final ValidationExpr<A, ParticleTerm<A>> other)
 	{
 		throw new RuntimeException();
 	}

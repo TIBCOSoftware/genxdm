@@ -21,11 +21,11 @@ import org.genxdm.processor.w3c.xs.exception.CvcNoRootElementException;
 import org.genxdm.processor.w3c.xs.exception.SrcFrozenLocation;
 import org.genxdm.processor.w3c.xs.validation.api.VxMetaBridge;
 import org.genxdm.processor.w3c.xs.validation.api.VxPSVI;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.enums.SmProcessContentsMode;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.enums.ProcessContentsMode;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.types.SmComplexType;
 import org.genxdm.xs.types.SmSimpleType;
 import org.genxdm.xs.types.SmType;
@@ -35,14 +35,14 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 {
 	private ModelPSVI<A> m_currentPSVI;
 	private final ModelPSVI<A> m_documentPSVI;
-	private SmExceptionHandler m_errors = SmExceptionThrower.SINGLETON;
+	private SchemaExceptionHandler m_errors = SmExceptionThrower.SINGLETON;
 
 	// Document state flag. Have we received the document element?
 	private boolean m_rootStartDone;
 
 	public ModelAnalyzerImpl(final VxMetaBridge<A> metaBridge, final ValidationCache<A> cache)
 	{
-		this.m_currentPSVI = this.m_documentPSVI = new ModelPSVI<A>(SmProcessContentsMode.Strict, metaBridge, cache);
+		this.m_currentPSVI = this.m_documentPSVI = new ModelPSVI<A>(ProcessContentsMode.Strict, metaBridge, cache);
 	}
 
 	public void attribute(final QName name, final SmSimpleType<A> type, final A value)
@@ -50,7 +50,7 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 		// TODO: shall we keep track of which attributes are passed to us between startElement calls?
 	}
 
-	public void endDocument() throws SmAbortException
+	public void endDocument() throws AbortException
 	{
 		if (!m_rootStartDone)
 		{
@@ -58,7 +58,7 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 		}
 	}
 
-	public VxPSVI<A> endElement() throws SmAbortException
+	public VxPSVI<A> endElement() throws AbortException
 	{
 		final ModelPSVI<A> elementItem = m_currentPSVI;
 		try
@@ -72,7 +72,7 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 		return elementItem;
 	}
 
-	public void setExceptionHandler(SmExceptionHandler handler)
+	public void setExceptionHandler(SchemaExceptionHandler handler)
 	{
 		m_errors = PreCondition.assertArgumentNotNull(handler, "handler");
 	}
@@ -85,7 +85,7 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 		m_rootStartDone = false;
 	}
 
-	public ModelPSVI<A> startElement(final QName elementName, final SmType<A> localType, final Boolean explicitNil) throws SmAbortException
+	public ModelPSVI<A> startElement(final QName elementName, final SmType<A> localType, final Boolean explicitNil) throws AbortException
 	{
 		final ModelPSVI<A> parentItem = m_currentPSVI;
 		m_currentPSVI = parentItem.push(elementName);
@@ -97,7 +97,7 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 			{
 				m_currentPSVI.recoverPSVI(localType, m_errors);
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				m_errors.error(e);
 			}
@@ -106,7 +106,7 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 		}
 		else
 		{
-			final SmElement<A> declaration = parentItem.getDeclaration();
+			final ElementDefinition<A> declaration = parentItem.getDeclaration();
 			if (null != declaration)
 			{
 				ValidationRules.checkValueConstraintAllowsElementChild(declaration, m_currentPSVI.getName(), m_currentPSVI, m_errors);
@@ -120,7 +120,7 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 					// This assignment includes parts of the Validation Rule: Element Locally Valid (Element).
 					ModelPSVI.assignPSVI(m_currentPSVI, localType, m_errors);
 				}
-				catch (final SmException e)
+				catch (final SchemaException e)
 				{
 					m_errors.error(e);
 				}
@@ -134,7 +134,7 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 					{
 						m_currentPSVI.recoverPSVI(localType, m_errors);
 					}
-					catch (final SmException e)
+					catch (final SchemaException e)
 					{
 						m_errors.error(e);
 					}

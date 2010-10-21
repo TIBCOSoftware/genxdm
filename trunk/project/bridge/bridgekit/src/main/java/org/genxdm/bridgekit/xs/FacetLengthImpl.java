@@ -17,8 +17,8 @@ package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.exceptions.SmFacetException;
-import org.genxdm.xs.exceptions.SmFacetLengthException;
+import org.genxdm.xs.exceptions.FacetException;
+import org.genxdm.xs.exceptions.FacetLengthException;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmLength;
 import org.genxdm.xs.facets.SmLengthFacetUOM;
@@ -34,11 +34,11 @@ public final class FacetLengthImpl<A> extends FacetLengthCommonImpl<A> implement
 		this.length = length;
 	}
 
-	protected void checkLength(final int length, final SmLengthFacetUOM uom) throws SmFacetException
+	protected void checkLength(final int length, final SmLengthFacetUOM uom) throws FacetException
 	{
 		if (length != this.length)
 		{
-			throw new SmFacetLengthException(this, length);
+			throw new FacetLengthException(this, length);
 		}
 	}
 

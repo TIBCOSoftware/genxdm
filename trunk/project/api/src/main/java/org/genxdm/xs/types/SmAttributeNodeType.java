@@ -15,7 +15,7 @@
  */
 package org.genxdm.xs.types;
 
-import org.genxdm.xs.components.SmComponent;
+import org.genxdm.xs.components.SchemaComponent;
 
 /**
  * Describes something that is an attribute node type with schema value constraints.
@@ -23,7 +23,7 @@ import org.genxdm.xs.components.SmComponent;
  * @param <A>
  *            The atom handle.
  */
-public interface SmAttributeNodeType<A> extends SmComponent<A>, SmNodeType<A>
+public interface SmAttributeNodeType<A> extends SchemaComponent<A>, SmNodeType<A>
 {
 	/**
 	 * The {type definition} property.

@@ -17,8 +17,8 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.SchemaWildcard;
 
 /**
  * State-machine abstraction used for XML content model validation of a child axis.
@@ -35,12 +35,12 @@ interface SmContentFiniteStateMachine<A>
 	/**
 	 * Returns an element declaration if an element is matched.
 	 */
-	SmElement<A> getElement();
+	ElementDefinition<A> getElement();
 
 	/**
 	 * Returns a wildcard if a wildcard is matched.
 	 */
-	SmWildcard<A> getWildcard();
+	SchemaWildcard<A> getWildcard();
 
 	/**
 	 * Determines whether the last step matched an element declaration.

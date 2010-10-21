@@ -18,15 +18,15 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class CvcElementInSimpleTypeException extends CvcTypeException
 {
 	private final QName m_childName;
-	private final SmLocation m_childLocation;
+	private final LocationInSchema m_childLocation;
 
-	public CvcElementInSimpleTypeException(final QName elementName, final SmLocation elementLocation, final QName childName, final SmLocation childLocation)
+	public CvcElementInSimpleTypeException(final QName elementName, final LocationInSchema elementLocation, final QName childName, final LocationInSchema childLocation)
 	{
 		super(PART_SIMPLE_TYPE_NO_CHILDREN, elementName, elementLocation);
 		m_childName = PreCondition.assertArgumentNotNull(childName, "childName");
@@ -38,7 +38,7 @@ public final class CvcElementInSimpleTypeException extends CvcTypeException
 		return m_childName;
 	}
 
-	public SmLocation getChildLocation()
+	public LocationInSchema getChildLocation()
 	{
 		return m_childLocation;
 	}

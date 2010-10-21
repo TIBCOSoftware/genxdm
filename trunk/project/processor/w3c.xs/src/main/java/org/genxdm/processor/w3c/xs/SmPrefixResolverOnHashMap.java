@@ -18,9 +18,9 @@ package org.genxdm.processor.w3c.xs;
 import java.util.HashMap;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.resolve.PrefixResolver;
 
-final class SmPrefixResolverOnHashMap implements SmPrefixResolver
+final class SmPrefixResolverOnHashMap implements PrefixResolver
 {
 	private final HashMap<String, String> m_map;
 

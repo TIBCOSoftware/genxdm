@@ -24,15 +24,15 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmEnumeration;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmScopeExtent;
-import org.genxdm.xs.enums.SmWhiteSpacePolicy;
-import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.components.EnumerationDefinition;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.ScopeExtent;
+import org.genxdm.xs.enums.WhiteSpacePolicy;
+import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.facets.SmFacet;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmPattern;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.SmNativeType;
 import org.genxdm.xs.types.SmSequenceTypeVisitor;
 import org.genxdm.xs.types.SmType;
@@ -95,13 +95,13 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		throw new AssertionError("TODO");
 	}
 
-	public final boolean derivedFrom(String namespace, String name, Set<SmDerivationMethod> derivationMethods)
+	public final boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public final Iterable<SmEnumeration<A>> getEnumerations()
+	public final Iterable<EnumerationDefinition<A>> getEnumerations()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -118,7 +118,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		return Collections.emptyList();
 	}
 
-	public final Set<SmDerivationMethod> getFinal()
+	public final Set<DerivationMethod> getFinal()
 	{
 		return Collections.emptySet();
 	}
@@ -129,15 +129,15 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		throw new AssertionError("TODO");
 	}
 
-	public final SmScopeExtent getScopeExtent()
+	public final ScopeExtent getScopeExtent()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public final SmWhiteSpacePolicy getWhiteSpacePolicy()
+	public final WhiteSpacePolicy getWhiteSpacePolicy()
 	{
-		return SmWhiteSpacePolicy.COLLAPSE;
+		return WhiteSpacePolicy.COLLAPSE;
 	}
 
 	public final boolean hasEnumerations()
@@ -175,7 +175,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		return false;
 	}
 
-	private final A parseDuration(final String srcval, final SmNativeType targetType) throws SmDatatypeException
+	private final A parseDuration(final String srcval, final SmNativeType targetType) throws DatatypeException
 	{
 		PreCondition.assertArgumentNotNull(srcval, "srcval");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
@@ -184,7 +184,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		final int length = srcval.length();
 		if (length == 0)
 		{
-			throw new SmDatatypeException(srcval, this);
+			throw new DatatypeException(srcval, this);
 		}
 
 		int fromIndex = 0;
@@ -211,7 +211,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		}
 		else
 		{
-			throw new SmDatatypeException(srcval, this);
+			throw new DatatypeException(srcval, this);
 		}
 
 		int indexP = srcval.indexOf((int)'P', fromIndex);
@@ -223,7 +223,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		else
 		{
 			// "must start with 'P' (period)";
-			throw new SmDatatypeException(srcval, this);
+			throw new DatatypeException(srcval, this);
 		}
 
 		// Determine the position of the date/time separator, if any, so that we can check that
@@ -239,7 +239,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 				if (indexY >= indexT)
 				{
 					// 'Y' designator cannot be in the time area;
-					throw new SmDatatypeException(srcval, this);
+					throw new DatatypeException(srcval, this);
 				}
 			}
 
@@ -249,7 +249,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 			}
 			catch (final NumberFormatException e)
 			{
-				throw new SmDatatypeException(srcval, this);
+				throw new DatatypeException(srcval, this);
 			}
 
 			fromIndex = indexY + 1;
@@ -272,7 +272,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 				}
 				catch (final NumberFormatException e)
 				{
-					throw new SmDatatypeException(srcval, this);
+					throw new DatatypeException(srcval, this);
 				}
 
 				fromIndex = indexMo + 1;
@@ -288,7 +288,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 				if (indexD >= indexT)
 				{
 					// 'D' designator cannot be in the time area";
-					throw new SmDatatypeException(srcval, this);
+					throw new DatatypeException(srcval, this);
 				}
 			}
 
@@ -298,7 +298,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 			}
 			catch (final NumberFormatException e)
 			{
-				throw new SmDatatypeException(srcval, this);
+				throw new DatatypeException(srcval, this);
 			}
 
 			fromIndex = indexD + 1;
@@ -319,7 +319,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 			}
 			catch (final NumberFormatException e)
 			{
-				throw new SmDatatypeException(srcval, this);
+				throw new DatatypeException(srcval, this);
 			}
 
 			fromIndex = indexH + 1;
@@ -335,7 +335,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 			}
 			catch (final NumberFormatException e)
 			{
-				throw new SmDatatypeException(srcval, this);
+				throw new DatatypeException(srcval, this);
 			}
 
 			fromIndex = indexMi + 1;
@@ -351,7 +351,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 			}
 			catch (final RuntimeException e)
 			{
-				throw new SmDatatypeException(srcval, this);
+				throw new DatatypeException(srcval, this);
 			}
 
 			fromIndex = indexS + 1;
@@ -368,7 +368,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 			// Make sure that if the 'T" separator is present then we have at least one hour,minute or second component.
 			if (indexT >= 0 && !hasHMS)
 			{
-				throw new SmDatatypeException(srcval, this);
+				throw new DatatypeException(srcval, this);
 			}
 			final boolean hasYearMonth = (indexY >= 0) || (indexMo >= 0);
 			final boolean hasDayTime = (indexD >= 0) || hasHMS;
@@ -387,7 +387,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 						case DURATION_DAYTIME:
 						case DURATION_YEARMONTH:
 						{
-							throw new SmDatatypeException(srcval, this);
+							throw new DatatypeException(srcval, this);
 						}
 						default:
 						{
@@ -410,7 +410,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 						}
 						case DURATION_DAYTIME:
 						{
-							throw new SmDatatypeException(srcval, this);
+							throw new DatatypeException(srcval, this);
 						}
 						default:
 						{
@@ -436,7 +436,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 						}
 						case DURATION_YEARMONTH:
 						{
-							throw new SmDatatypeException(srcval, this);
+							throw new DatatypeException(srcval, this);
 						}
 						default:
 						{
@@ -446,18 +446,18 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 				}
 				else
 				{
-					throw new SmDatatypeException(srcval, this);
+					throw new DatatypeException(srcval, this);
 				}
 			}
 		}
 		else
 		{
 			// Gibberish on the end.
-			throw new SmDatatypeException(srcval, this);
+			throw new DatatypeException(srcval, this);
 		}
 	}
 
-	public final List<A> validate(final String initialValue) throws SmDatatypeException
+	public final List<A> validate(final String initialValue) throws DatatypeException
 	{
 		try
 		{
@@ -467,11 +467,11 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		}
 		catch (final NumberFormatException e)
 		{
-			throw new SmDatatypeException(initialValue, this);
+			throw new DatatypeException(initialValue, this);
 		}
 	}
 
-	public final List<A> validate(String initialValue, SmPrefixResolver resolver) throws SmDatatypeException
+	public final List<A> validate(String initialValue, PrefixResolver resolver) throws DatatypeException
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");

@@ -18,17 +18,17 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class CvcElementUnresolvedLocalTypeException extends SmLocationException
 {
 	private final QName m_localType;
 
-	public CvcElementUnresolvedLocalTypeException(final QName localType, final QName elementName, final SmLocation location)
+	public CvcElementUnresolvedLocalTypeException(final QName localType, final QName elementName, final LocationInSchema location)
 	{
-		super(SmOutcome.CVC_Element_Locally_Valid, "", location);
+		super(ValidationOutcome.CVC_Element_Locally_Valid, "", location);
 		m_localType = PreCondition.assertArgumentNotNull(localType, "localType");
 	}
 

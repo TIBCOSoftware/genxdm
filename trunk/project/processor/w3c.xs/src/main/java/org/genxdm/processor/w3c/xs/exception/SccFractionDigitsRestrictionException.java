@@ -15,21 +15,21 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 /**
  * Date: Mar 11, 2008
  */
 @SuppressWarnings("serial")
-final public class SccFractionDigitsRestrictionException extends SmComponentConstraintException
+final public class SccFractionDigitsRestrictionException extends ComponentConstraintException
 {
     private final int m_fractionDigits;
     private final int m_restrictedFractionDigits;
 
     public SccFractionDigitsRestrictionException(final int fractionDigits, final int restrictedFractionDigits)
     {
-        super(SmOutcome.SCC_FractionDigitsValidRestriction, "0");
+        super(ValidationOutcome.SCC_FractionDigitsValidRestriction, "0");
         m_fractionDigits = fractionDigits;
         m_restrictedFractionDigits = restrictedFractionDigits;
     }

@@ -18,22 +18,22 @@ package org.genxdm.bridgekit.xs;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.SmValueConstraint;
-import org.genxdm.xs.enums.SmNodeKind;
-import org.genxdm.xs.enums.SmQuantifier;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.NodeKind;
+import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.SmPrimeType;
 import org.genxdm.xs.types.SmPrimeTypeKind;
 import org.genxdm.xs.types.SmSequenceTypeVisitor;
 import org.genxdm.xs.types.SmSimpleMarkerType;
 
-final class AttributeDeclWithParentAxisType<A> implements SmAttribute<A>
+final class AttributeDeclWithParentAxisType<A> implements AttributeDefinition<A>
 {
-	private final SmAttribute<A> m_attribute;
+	private final AttributeDefinition<A> m_attribute;
 
-	public AttributeDeclWithParentAxisType(final SmAttribute<A> element, final SmElement<A> parentAxis)
+	public AttributeDeclWithParentAxisType(final AttributeDefinition<A> element, final ElementDefinition<A> parentAxis)
 	{
 		m_attribute = PreCondition.assertArgumentNotNull(element);
 	}
@@ -58,12 +58,12 @@ final class AttributeDeclWithParentAxisType<A> implements SmAttribute<A>
 		return m_attribute.getName();
 	}
 
-	public SmNodeKind getNodeKind()
+	public NodeKind getNodeKind()
 	{
 		return m_attribute.getNodeKind();
 	}
 
-	public SmScopeExtent getScopeExtent()
+	public ScopeExtent getScopeExtent()
 	{
 		return m_attribute.getScopeExtent();
 	}
@@ -108,7 +108,7 @@ final class AttributeDeclWithParentAxisType<A> implements SmAttribute<A>
 		return this;
 	}
 
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
 		return m_attribute.quantifier();
 	}

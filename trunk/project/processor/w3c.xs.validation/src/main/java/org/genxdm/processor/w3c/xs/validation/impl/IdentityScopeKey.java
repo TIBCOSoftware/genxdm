@@ -22,9 +22,9 @@ import org.genxdm.processor.w3c.xs.exception.CvcMissingKeyFieldException;
 import org.genxdm.processor.w3c.xs.exception.SrcDuplicateKeyTargetException;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
 import org.genxdm.xs.constraints.SmIdentityConstraintKind;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 
 /**
@@ -39,13 +39,13 @@ final class IdentityScopeKey<A> extends IdentityScope<A>
 {
 	public final HashMap<IdentityTuple<A>, IdentityVariant<A>> m_qualifiedTargets = new HashMap<IdentityTuple<A>, IdentityVariant<A>>();
 
-	public IdentityScopeKey(final int elementIndex, final SmIdentityConstraint<A> constraint, final SmExceptionHandler errorHandler, final SmLocation location)
+	public IdentityScopeKey(final int elementIndex, final SmIdentityConstraint<A> constraint, final SchemaExceptionHandler errorHandler, final LocationInSchema location)
 	{
 		super(elementIndex, constraint, errorHandler, location);
 	}
 
 	@Override
-	protected void onKeysComplete(final ArrayList<IdentityKey<A>> keyValues, final int elementIndex) throws SmAbortException
+	protected void onKeysComplete(final ArrayList<IdentityKey<A>> keyValues, final int elementIndex) throws AbortException
 	{
 		final IdentityTuple<A> key = new IdentityTuple<A>(keyValues);
 
@@ -68,7 +68,7 @@ final class IdentityScopeKey<A> extends IdentityScope<A>
 	}
 
 	@Override
-	protected void onScopeEnd(final int elementIndex, final Locatable locatable) throws SmAbortException
+	protected void onScopeEnd(final int elementIndex, final Locatable locatable) throws AbortException
 	{
 		final SmIdentityConstraint<A> constraint = getConstraint();
 		final SmIdentityConstraintKind category = constraint.getCategory();
@@ -79,7 +79,7 @@ final class IdentityScopeKey<A> extends IdentityScope<A>
 			PreCondition.assertArgumentNotNull(elementHandlers, "elementHandlers");
 			if (m_boundFields.get(elementIndex) < elementHandlers.size())
 			{
-				final SmLocation frozenLocation = locatable.getLocation();
+				final LocationInSchema frozenLocation = locatable.getLocation();
 				for (int i = 0; i < elementHandlers.size(); i++)
 				{
 					m_errorHandler.error(new CvcMissingKeyFieldException(constraint.getName(), i + 1, frozenLocation));

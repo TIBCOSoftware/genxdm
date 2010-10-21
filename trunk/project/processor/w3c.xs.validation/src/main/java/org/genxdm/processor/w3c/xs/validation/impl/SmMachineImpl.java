@@ -20,20 +20,20 @@ import java.util.LinkedList;
 import javax.xml.namespace.QName;
 
 import org.genxdm.processor.w3c.xs.validation.regex.api.RegExMachine;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmParticleTerm;
-import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ParticleTerm;
+import org.genxdm.xs.components.SchemaWildcard;
 
 
 
 final class SmMachineImpl<A> implements SmContentFiniteStateMachine<A>
 {
-	private SmElement<A> m_element;
-	private final LinkedList<ValidationExpr<A, SmParticleTerm<A>>> m_matchers = new LinkedList<ValidationExpr<A, SmParticleTerm<A>>>();
-	private final RegExMachine<ValidationExpr<A, SmParticleTerm<A>>, QName> m_regexm;
-	private SmWildcard<A> m_wildcard;
+	private ElementDefinition<A> m_element;
+	private final LinkedList<ValidationExpr<A, ParticleTerm<A>>> m_matchers = new LinkedList<ValidationExpr<A, ParticleTerm<A>>>();
+	private final RegExMachine<ValidationExpr<A, ParticleTerm<A>>, QName> m_regexm;
+	private SchemaWildcard<A> m_wildcard;
 
-	public SmMachineImpl(final RegExMachine<ValidationExpr<A, SmParticleTerm<A>>, QName> regexm)
+	public SmMachineImpl(final RegExMachine<ValidationExpr<A, ParticleTerm<A>>, QName> regexm)
 	{
 		m_regexm = PreCondition.assertArgumentNotNull(regexm, "regexm");
 	}
@@ -43,17 +43,17 @@ final class SmMachineImpl<A> implements SmContentFiniteStateMachine<A>
 		return m_regexm.step(null, null);
 	}
 
-	public SmElement<A> getElement()
+	public ElementDefinition<A> getElement()
 	{
 		return m_element;
 	}
 
-	private SmParticleTerm<A> getParticleTerm()
+	private ParticleTerm<A> getParticleTerm()
 	{
 		final int size = m_matchers.size();
 		if (size > 0)
 		{
-			final ValidationExpr<A, SmParticleTerm<A>> expr = m_matchers.get(0);
+			final ValidationExpr<A, ParticleTerm<A>> expr = m_matchers.get(0);
 			return expr.getParticleTerm();
 		}
 		else
@@ -62,7 +62,7 @@ final class SmMachineImpl<A> implements SmContentFiniteStateMachine<A>
 		}
 	}
 
-	public SmWildcard<A> getWildcard()
+	public SchemaWildcard<A> getWildcard()
 	{
 		return m_wildcard;
 	}
@@ -83,16 +83,16 @@ final class SmMachineImpl<A> implements SmContentFiniteStateMachine<A>
 		final boolean stepped = m_regexm.step(name, m_matchers);
 		if (stepped)
 		{
-			final SmParticleTerm<A> term = getParticleTerm();
-			if (term instanceof SmElement<?>)
+			final ParticleTerm<A> term = getParticleTerm();
+			if (term instanceof ElementDefinition<?>)
 			{
-				m_element = (SmElement<A>)term;
+				m_element = (ElementDefinition<A>)term;
 				m_wildcard = null;
 			}
-			else if (term instanceof SmWildcard<?>)
+			else if (term instanceof SchemaWildcard<?>)
 			{
 				m_element = null;
-				m_wildcard = (SmWildcard<A>)term;
+				m_wildcard = (SchemaWildcard<A>)term;
 			}
 			else
 			{

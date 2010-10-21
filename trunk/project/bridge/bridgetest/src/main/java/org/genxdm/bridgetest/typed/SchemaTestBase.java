@@ -31,10 +31,10 @@ import org.genxdm.bridgetest.xs.MyIntegerType;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.facets.SmFacet;
 import org.genxdm.xs.facets.SmLimit;
 import org.genxdm.xs.types.SmComplexType;
@@ -72,9 +72,9 @@ public abstract class SchemaTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final Map<QName, SmAttribute<A>> attributes = new HashMap<QName, SmAttribute<A>>();
+		final Map<QName, AttributeDefinition<A>> attributes = new HashMap<QName, AttributeDefinition<A>>();
 		int count = 0;
-		for (final SmAttribute<A> attribute : pcx.getAttributes())
+		for (final AttributeDefinition<A> attribute : pcx.getAttributes())
 		{
 			count++;
 			attributes.put(attribute.getName(), attribute);
@@ -95,8 +95,8 @@ public abstract class SchemaTestBase<N, A>
         final ProcessingContext<N> ctx = newProcessingContext();
         final TypedContext<N, A> pcx = ctx.getTypedContext();
 
-		final Map<QName, SmElement<A>> elements = new HashMap<QName, SmElement<A>>();
-		for (final SmElement<A> element : pcx.getElements())
+		final Map<QName, ElementDefinition<A>> elements = new HashMap<QName, ElementDefinition<A>>();
+		for (final ElementDefinition<A> element : pcx.getElements())
 		{
 			elements.put(element.getName(), element);
 		}
@@ -163,7 +163,7 @@ public abstract class SchemaTestBase<N, A>
 		final MyIntegerType<A> atomicType = new MyIntegerType<A>(copy("http://www.example.com"), copy("myInteger"), pcx, atomBridge);
 		// final SmAtomicType<A> atomicType = type;
 
-		assertEquals(SmDerivationMethod.Restriction, atomicType.getDerivationMethod());
+		assertEquals(DerivationMethod.Restriction, atomicType.getDerivationMethod());
 		// {name}
 		assertEquals(copy("myInteger"), atomicType.getLocalName());
 		// {target namespace}
@@ -204,7 +204,7 @@ public abstract class SchemaTestBase<N, A>
 		// {fundamental facets}
 		// TODO: Does anyone care?
 		// {final}
-		final Set<SmDerivationMethod> f = atomicType.getFinal();
+		final Set<DerivationMethod> f = atomicType.getFinal();
 		assertNotNull(f);
 		// {variety}
 		assertTrue(atomicType.isAtomicType());
@@ -222,7 +222,7 @@ public abstract class SchemaTestBase<N, A>
 			atomicType.validate(atomBridge.wrapAtom(atomBridge.createInteger(3)));
 			atomicType.validate(atomBridge.wrapAtom(atomBridge.createInteger(4)));
 		}
-		catch (final SmDatatypeException e)
+		catch (final DatatypeException e)
 		{
 			fail();
 		}
@@ -231,7 +231,7 @@ public abstract class SchemaTestBase<N, A>
 			atomicType.validate(atomBridge.wrapAtom(atomBridge.createInteger(-3)));
 			fail();
 		}
-		catch (final SmDatatypeException e)
+		catch (final DatatypeException e)
 		{
 			// Expected
 		}
@@ -240,7 +240,7 @@ public abstract class SchemaTestBase<N, A>
 			atomicType.validate(atomBridge.wrapAtom(atomBridge.createInteger(5)));
 			fail();
 		}
-		catch (final SmDatatypeException e)
+		catch (final DatatypeException e)
 		{
 			// Expected
 		}
@@ -248,7 +248,7 @@ public abstract class SchemaTestBase<N, A>
 		{
 			atomicType.validate(atomBridge.wrapAtom(atomBridge.createUntypedAtomic("-2")));
 		}
-		catch (final SmDatatypeException e)
+		catch (final DatatypeException e)
 		{
 			fail();
 		}
@@ -256,7 +256,7 @@ public abstract class SchemaTestBase<N, A>
 		{
 			atomicType.validate("-2");
 		}
-		catch (final SmDatatypeException e)
+		catch (final DatatypeException e)
 		{
 			fail();
 		}
@@ -293,7 +293,7 @@ public abstract class SchemaTestBase<N, A>
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 		final NameSource nameBridge = new NameSource();
 
-		final SmElement<A> e = new MyElementDeclaration<A>(nameBridge.empty(), "root", pcx, atomBridge);
+		final ElementDefinition<A> e = new MyElementDeclaration<A>(nameBridge.empty(), "root", pcx, atomBridge);
 		final SmSimpleType<A> st = new MyIntegerType<A>(copy("http://www.example.com"), copy("myInteger"), pcx, atomBridge);
 
 		pcx.declareElement(e);

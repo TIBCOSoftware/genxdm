@@ -36,9 +36,9 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
 import org.genxdm.typed.types.Emulation;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmQuantifier;
-import org.genxdm.xs.enums.SmWhiteSpacePolicy;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.xs.enums.WhiteSpacePolicy;
 import org.genxdm.xs.facets.SmFacet;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmFractionDigits;
@@ -124,7 +124,7 @@ public abstract class NativeTypeTestBase<N, A>
 		// final SmAtomicType<A> prime = atomicType.prime();
 		// assertEquals(prime.getName(), atomicType.getName());
 		// assertFalse(atomicType.isNone());
-		assertEquals(SmQuantifier.EXACTLY_ONE, atomicType.quantifier());
+		assertEquals(KeeneQuantifier.EXACTLY_ONE, atomicType.quantifier());
 		// assertEquals(SmPrimeTypeKind.ATOM, atomicType.getKind());
 
 		final NameSource nameBridge = atomBridge.getNameBridge();
@@ -554,7 +554,7 @@ public abstract class NativeTypeTestBase<N, A>
 				assertNotNull(baseType);
 				assertFalse(atomicType.hasPatterns());
 				assertFalse(atomicType.hasEnumerations());
-				assertFalse(atomicType.derivedFromType(pcx.getTypeDefinition(SmNativeType.NOTATION), EnumSet.of(SmDerivationMethod.Restriction)));
+				assertFalse(atomicType.derivedFromType(pcx.getTypeDefinition(SmNativeType.NOTATION), EnumSet.of(DerivationMethod.Restriction)));
 				assertFalse(atomicType.isIDREFS());
 				assertEquals(nativeType.name() + ".getNativeTypeDefinition()", nativeType, atomicType.getNativeTypeDefinition().getNativeType());
 				assertFalse(atomicType.isAnonymous());
@@ -575,7 +575,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		final String initial = " http://www.example.com  ";
 		final String mangled = "http://www.example.com";
@@ -629,7 +629,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("6", atomicType.normalize("   6     "));
 		assertFalse(atomicType.isID());
@@ -671,7 +671,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("true", atomicType.normalize("   true     "));
 		assertFalse(atomicType.isID());
@@ -711,7 +711,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("short", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("6", atomicType.normalize("   6     "));
 		assertFalse(atomicType.isID());
@@ -777,7 +777,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("2009-10-18", atomicType.normalize("   2009-10-18     "));
 		assertFalse(atomicType.isID());
@@ -828,7 +828,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("2009-10-18T08:00:00", atomicType.normalize("   2009-10-18T08:00:00     "));
 		assertFalse(atomicType.isID());
@@ -907,7 +907,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("duration", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("PT1S", atomicType.normalize("   PT1S     "));
 		assertFalse(atomicType.isID());
@@ -1015,7 +1015,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("6", atomicType.normalize("   6     "));
 		assertFalse(atomicType.isID());
@@ -1051,7 +1051,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("6", atomicType.normalize("   6     "));
 		assertFalse(atomicType.isID());
@@ -1091,7 +1091,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("P3YT1S", atomicType.normalize("   P3YT1S     "));
 		assertFalse(atomicType.isID());
@@ -1128,7 +1128,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("NCName", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		final String initial = " Snoopy  ";
 		final String mangled = "Snoopy";
@@ -1164,7 +1164,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("6", atomicType.normalize("   6     "));
 		assertFalse(atomicType.isID());
@@ -1198,7 +1198,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("---01", atomicType.normalize("   ---01     "));
 		assertFalse(atomicType.isID());
@@ -1249,7 +1249,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("--10", atomicType.normalize("   --10     "));
 		assertFalse(atomicType.isID());
@@ -1301,7 +1301,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("--10-18", atomicType.normalize("   --10-18     "));
 		assertFalse(atomicType.isID());
@@ -1352,7 +1352,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("2009", atomicType.normalize("   2009     "));
 		assertFalse(atomicType.isID());
@@ -1413,7 +1413,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("2009-10", atomicType.normalize("   2009-10     "));
 		assertFalse(atomicType.isID());
@@ -1464,7 +1464,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("6", atomicType.normalize("   6     "));
 		assertFalse(atomicType.isID());
@@ -1506,7 +1506,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("NCName", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		final String initial = " Snoopy  ";
 		final String mangled = "Snoopy";
@@ -1542,7 +1542,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("NCName", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		final String initial = " Snoopy  ";
 		final String mangled = "Snoopy";
@@ -1578,7 +1578,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("long", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("6", atomicType.normalize("   6     "));
 		assertFalse(atomicType.isID());
@@ -1615,7 +1615,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("decimal", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("6", atomicType.normalize("   6     "));
 		assertFalse(atomicType.isID());
@@ -1697,7 +1697,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("token", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		final String initial = " en-GB  ";
 		final String mangled = "en-GB";
@@ -1733,7 +1733,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("integer", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("6", atomicType.normalize("   6     "));
 		assertFalse(atomicType.isID());
@@ -1769,7 +1769,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("token", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		final String initial = " _1950-10-04_10:00  ";
 		final String mangled = "_1950-10-04_10:00";
@@ -1805,7 +1805,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("Name", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		final String initial = " Snoopy  ";
 		final String mangled = "Snoopy";
@@ -1841,7 +1841,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("nonPositiveInteger", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("-123", atomicType.normalize("   -123     "));
 		assertFalse(atomicType.isID());
@@ -1891,7 +1891,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("token", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		final String initial = " 007  ";
 		final String mangled = "007";
@@ -1927,7 +1927,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("integer", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("123", atomicType.normalize("   123     "));
 		assertFalse(atomicType.isID());
@@ -1969,7 +1969,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("integer", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("-123", atomicType.normalize("   -123     "));
 		assertFalse(atomicType.isID());
@@ -2011,7 +2011,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("string", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.REPLACE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.REPLACE, atomicType.getWhiteSpacePolicy());
 
 		final String initial = " 1\t2\r3\n4  5  ";
 		final String mangled = " 1 2 3 4  5  ";
@@ -2062,7 +2062,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("p:foo", atomicType.normalize("   p:foo     "));
 		assertFalse(atomicType.isID());
@@ -2103,7 +2103,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("nonNegativeInteger", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("123", atomicType.normalize("   123     "));
 		assertFalse(atomicType.isID());
@@ -2145,7 +2145,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals(copy("anyAtomicType"), baseType.getLocalName());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("p:foo", atomicType.normalize("   p:foo     "));
 		assertFalse(atomicType.isID());
@@ -2188,7 +2188,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("int", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("6", atomicType.normalize("   6     "));
 		assertFalse(atomicType.isID());
@@ -2226,7 +2226,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.PRESERVE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.PRESERVE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("   6     ", atomicType.normalize("   6     "));
 		assertFalse(atomicType.isID());
@@ -2263,7 +2263,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("08:00:00", atomicType.normalize("   08:00:00     "));
 		assertFalse(atomicType.isID());
@@ -2314,7 +2314,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("normalizedString", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		final String initial = " 1\t2\r3\n4  5  ";
 		final String mangled = "1 2 3 4 5";
@@ -2373,7 +2373,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("unsignedShort", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("+005", atomicType.normalize("   +005     "));
 		assertFalse(atomicType.isID());
@@ -2442,7 +2442,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("unsignedLong", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("+004294967295", atomicType.normalize("   +004294967295     "));
 		assertFalse(atomicType.isID());
@@ -2491,7 +2491,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("nonNegativeInteger", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("+004294967295", atomicType.normalize("   +004294967295     "));
 		assertFalse(atomicType.isID());
@@ -2529,7 +2529,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("unsignedInt", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("+0065535", atomicType.normalize("   +0065535     "));
 		assertFalse(atomicType.isID());
@@ -2575,7 +2575,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("anyAtomicType", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.PRESERVE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.PRESERVE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("   6     ", atomicType.normalize("   6     "));
 		assertFalse(atomicType.isID());
@@ -2609,7 +2609,7 @@ public abstract class NativeTypeTestBase<N, A>
 		final SmType<A> baseType = atomicType.getBaseType();
 		assertNotNull(baseType);
 		assertEquals("duration", baseType.getLocalName().toString());
-		assertEquals(SmWhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
+		assertEquals(WhiteSpacePolicy.COLLAPSE, atomicType.getWhiteSpacePolicy());
 
 		assertEquals("P3Y4M", atomicType.normalize("   P3Y4M     "));
 		assertFalse(atomicType.isID());

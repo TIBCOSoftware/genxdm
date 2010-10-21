@@ -15,12 +15,12 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class SmSimpleTypeRestrictionException extends SrcSimpleTypeException
 {
-	public SmSimpleTypeRestrictionException(final SmLocation location)
+	public SmSimpleTypeRestrictionException(final LocationInSchema location)
 	{
 		super(PART_RESTRICTION, location);
 	}

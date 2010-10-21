@@ -16,19 +16,19 @@
 package org.genxdm.processor.w3c.xs;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.resolve.PrefixResolver;
 
 final class XMLEnumeration<A> extends XMLFacet<A>
 {
 	private String value;
-	private SmPrefixResolver snapshot;
+	private PrefixResolver snapshot;
 
 	public XMLEnumeration(final XMLType<A> simpleType, final SrcFrozenLocation location)
 	{
 		super(simpleType, location);
 	}
 
-	public void setValue(final String value, final SmPrefixResolver snapshot)
+	public void setValue(final String value, final PrefixResolver snapshot)
 	{
 		this.value = PreCondition.assertArgumentNotNull(value, "value");
 		this.snapshot = PreCondition.assertArgumentNotNull(snapshot, "snapshot");
@@ -39,7 +39,7 @@ final class XMLEnumeration<A> extends XMLFacet<A>
 		return value;
 	}
 
-	public SmPrefixResolver getPrefixResolver()
+	public PrefixResolver getPrefixResolver()
 	{
 		return snapshot;
 	}

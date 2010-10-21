@@ -17,12 +17,12 @@ package org.genxdm.processor.w3c.xs.exception;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 @SuppressWarnings("serial")
 public final class SccElementDeclarationSubstitutionGroupTypeDerivationException extends SccElementDeclarationException
 {
-    public SccElementDeclarationSubstitutionGroupTypeDerivationException(final QName elementName, final SmComponentConstraintException cause)
+    public SccElementDeclarationSubstitutionGroupTypeDerivationException(final QName elementName, final ComponentConstraintException cause)
     {
         super(PART_SUBSTITUTION_GROUP_TYPE_DERIVATION, elementName, cause);
     }

@@ -32,13 +32,13 @@ import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
-import org.genxdm.xs.SmMetaBridge;
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmAttributeGroup;
-import org.genxdm.xs.components.SmComponentBag;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.components.SmNotation;
+import org.genxdm.xs.SchemaTypeBridge;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.ComponentBag;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
 import org.genxdm.xs.types.SmAtomicType;
 import org.genxdm.xs.types.SmAtomicUrType;
@@ -68,28 +68,28 @@ public final class DomSAProcessingContext
 		return atomBridge.atom(item);
 	}
 	
-	public void declareAttribute(final SmAttribute<XmlAtom> attribute)
+	public void declareAttribute(final AttributeDefinition<XmlAtom> attribute)
 	{
 		PreCondition.assertArgumentNotNull(attribute, "attribute");
 		PreCondition.assertFalse(isLocked(), "isLocked()");
 		m_cache.declareAttribute(attribute);
 	}
 	
-	public void declareElement(final SmElement<XmlAtom> element)
+	public void declareElement(final ElementDefinition<XmlAtom> element)
 	{
 		PreCondition.assertArgumentNotNull(element, "element");
 		PreCondition.assertFalse(isLocked(), "isLocked()");
 		m_cache.declareElement(element);
 	}
 	
-	public void declareNotation(final SmNotation<XmlAtom> notation)
+	public void declareNotation(final NotationDefinition<XmlAtom> notation)
 	{
 		PreCondition.assertArgumentNotNull(notation, "notation");
 		PreCondition.assertFalse(isLocked(), "isLocked()");
 		m_cache.declareNotation(notation);
 	}
 	
-	public void defineAttributeGroup(final SmAttributeGroup<XmlAtom> attributeGroup)
+	public void defineAttributeGroup(final AttributeGroupDefinition<XmlAtom> attributeGroup)
 	{
 		PreCondition.assertArgumentNotNull(attributeGroup, "attributeGroup");
 		PreCondition.assertFalse(isLocked(), "isLocked()");
@@ -110,7 +110,7 @@ public final class DomSAProcessingContext
 		m_cache.defineIdentityConstraint(identityConstraint);
 	}
 
-	public void defineModelGroup(final SmModelGroup<XmlAtom> modelGroup)
+	public void defineModelGroup(final ModelGroup<XmlAtom> modelGroup)
 	{
 		PreCondition.assertArgumentNotNull(modelGroup, "modelGroup");
 		PreCondition.assertFalse(isLocked(), "isLocked()");
@@ -149,22 +149,22 @@ public final class DomSAProcessingContext
 		return m_cache.getAtomicUrType();
 	}
 
-	public SmAttribute<XmlAtom> getAttributeDeclaration(final QName attributeName)
+	public AttributeDefinition<XmlAtom> getAttributeDeclaration(final QName attributeName)
 	{
 		return m_cache.getAttributeDeclaration(attributeName);
 	}
 
-	public SmAttributeGroup<XmlAtom> getAttributeGroup(final QName name)
+	public AttributeGroupDefinition<XmlAtom> getAttributeGroup(final QName name)
 	{
 		return m_cache.getAttributeGroup(name);
 	}
 
-	public Iterable<SmAttributeGroup<XmlAtom>> getAttributeGroups()
+	public Iterable<AttributeGroupDefinition<XmlAtom>> getAttributeGroups()
 	{
 		return m_cache.getAttributeGroups();
 	}
 
-	public Iterable<SmAttribute<XmlAtom>> getAttributes()
+	public Iterable<AttributeDefinition<XmlAtom>> getAttributes()
 	{
 		return m_cache.getAttributes();
 	}
@@ -184,12 +184,12 @@ public final class DomSAProcessingContext
 		return m_cache.getComplexUrType();
 	}
 	
-	public SmElement<XmlAtom> getElementDeclaration(final QName elementName)
+	public ElementDefinition<XmlAtom> getElementDeclaration(final QName elementName)
 	{
 		return m_cache.getElementDeclaration(elementName);
 	}
 
-	public Iterable<SmElement<XmlAtom>> getElements()
+	public Iterable<ElementDefinition<XmlAtom>> getElements()
 	{
 		return m_cache.getElements();
 	}
@@ -214,12 +214,12 @@ public final class DomSAProcessingContext
 		return m_model;
 	}
 
-	public SmModelGroup<XmlAtom> getModelGroup(final QName name)
+	public ModelGroup<XmlAtom> getModelGroup(final QName name)
 	{
 		return m_cache.getModelGroup(name);
 	}
 
-	public Iterable<SmModelGroup<XmlAtom>> getModelGroups()
+	public Iterable<ModelGroup<XmlAtom>> getModelGroups()
 	{
 		return m_cache.getModelGroups();
 	}
@@ -229,12 +229,12 @@ public final class DomSAProcessingContext
 		return m_cache.getNamespaces();
 	}
 
-	public SmNotation<XmlAtom> getNotationDeclaration(final QName name)
+	public NotationDefinition<XmlAtom> getNotationDeclaration(final QName name)
 	{
 		return m_cache.getNotationDeclaration(name);
 	}
 	
-	public Iterable<SmNotation<XmlAtom>> getNotations()
+	public Iterable<NotationDefinition<XmlAtom>> getNotations()
 	{
 		return m_cache.getNotations();
 	}
@@ -345,7 +345,7 @@ public final class DomSAProcessingContext
 		return new DomSequenceBuilder<XmlAtom>(parent.getDocumentBuilderFactory(), this);
 	}
 
-	public void register(final SmComponentBag<XmlAtom> components)
+	public void register(final ComponentBag<XmlAtom> components)
 	{
 		PreCondition.assertFalse(isLocked(), "isLocked()");
 		m_cache.register(components);
@@ -353,7 +353,7 @@ public final class DomSAProcessingContext
 
 	private final DomProcessingContext parent;
     private final XmlAtomBridge atomBridge;
-	private final SmMetaBridge<XmlAtom> m_cache;
+	private final SchemaTypeBridge<XmlAtom> m_cache;
 	private final MetaBridge<XmlAtom> m_metaBridge;
 
 	private final DomSAModel m_model;

@@ -20,11 +20,11 @@ import java.net.URI;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.SmMetaLoadArgs;
-import org.genxdm.xs.components.SmComponentBag;
-import org.genxdm.xs.components.SmComponentProvider;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.SchemaLoadOptions;
+import org.genxdm.xs.components.ComponentBag;
+import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
 public final class W3cXmlSchemaParser<A>
 {
@@ -42,7 +42,7 @@ public final class W3cXmlSchemaParser<A>
 		this.regexc = DEFAULT_REGEX_COMPILER;
 	}
 
-	public SmComponentBag<A> parse(final URI schemaLocation, final InputStream istream, final URI systemId, final SmExceptionHandler errors, final SmMetaLoadArgs args, final SmComponentProvider<A> components) throws SmAbortException
+	public ComponentBag<A> parse(final URI schemaLocation, final InputStream istream, final URI systemId, final SchemaExceptionHandler errors, final SchemaLoadOptions args, final ComponentProvider<A> components) throws AbortException
 	{
 		PreCondition.assertArgumentNotNull(istream, "istream");
 		PreCondition.assertArgumentNotNull(components, "components");

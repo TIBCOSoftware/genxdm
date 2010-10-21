@@ -18,7 +18,7 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 import org.genxdm.xs.types.SmSimpleType;
 
 @SuppressWarnings("serial")
@@ -27,7 +27,7 @@ public final class CvcAttributeOnSimpleTypeException extends CvcAttributeExcepti
 	private final QName elementName;
 	private final SmSimpleType<?> simpleType;
 
-	public CvcAttributeOnSimpleTypeException(final QName elementName, final QName attributeName, final SmSimpleType<?> simpleType, final SmLocation location)
+	public CvcAttributeOnSimpleTypeException(final QName elementName, final QName attributeName, final SmSimpleType<?> simpleType, final LocationInSchema location)
 	{
 		super("?", attributeName, location);
 		this.elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");

@@ -15,12 +15,12 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class SmAttributeDefaultAndUseImpliesOptionalException extends SmSourceAttributeException
 {
-	public SmAttributeDefaultAndUseImpliesOptionalException(final SmLocation location)
+	public SmAttributeDefaultAndUseImpliesOptionalException(final LocationInSchema location)
 	{
 		super(PART_DEFAULT_AND_USE_IMPLIES_OPTIONAL, location);
 	}

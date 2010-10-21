@@ -18,12 +18,12 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 
 @SuppressWarnings("serial")
-public abstract class SccIdentityConstraintDefinitionException extends SmComponentConstraintException
+public abstract class SccIdentityConstraintDefinitionException extends ComponentConstraintException
 {
 	public static final String PART_REFER_IS_KEY_OR_UNIQUE = "?";
 	public static final String PART_KEYREF_FIELDS_CARDINALITY = "2";
@@ -32,7 +32,7 @@ public abstract class SccIdentityConstraintDefinitionException extends SmCompone
 
 	public SccIdentityConstraintDefinitionException(final QName constraintName, final String partNumber)
 	{
-		super(SmOutcome.SCC_Identity_Constraint_Definition_Properties_Correct, partNumber);
+		super(ValidationOutcome.SCC_Identity_Constraint_Definition_Properties_Correct, partNumber);
 		m_constraintName = PreCondition.assertArgumentNotNull(constraintName, "constraintName");
 	}
 

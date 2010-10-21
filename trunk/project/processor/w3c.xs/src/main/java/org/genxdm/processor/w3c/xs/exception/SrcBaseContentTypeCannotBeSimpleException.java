@@ -18,7 +18,7 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class SrcBaseContentTypeCannotBeSimpleException extends SmSourceComplexTypeException
@@ -26,7 +26,7 @@ public final class SrcBaseContentTypeCannotBeSimpleException extends SmSourceCom
 	private final QName baseType;
 	private final QName derivedType;
 
-	public SrcBaseContentTypeCannotBeSimpleException(final QName derivedType, final QName baseType, final SmLocation location)
+	public SrcBaseContentTypeCannotBeSimpleException(final QName derivedType, final QName baseType, final LocationInSchema location)
 	{
 		super(PART_BASE_CONTENT_CANNOT_BE_SIMPLE, location);
 		this.derivedType = PreCondition.assertArgumentNotNull(derivedType, "derivedType");

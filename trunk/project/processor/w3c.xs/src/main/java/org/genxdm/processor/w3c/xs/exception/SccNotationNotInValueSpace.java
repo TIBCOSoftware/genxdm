@@ -19,18 +19,18 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 @SuppressWarnings("serial")
-public final class SccNotationNotInValueSpace extends SmComponentConstraintException
+public final class SccNotationNotInValueSpace extends ComponentConstraintException
 {
 	private final QName notation;
 	private final Set<QName> values;
 
 	public SccNotationNotInValueSpace(final QName notation, final Set<QName> values)
 	{
-		super(SmOutcome.TODO, "");
+		super(ValidationOutcome.TODO, "");
 		this.notation = notation;
 		this.values = values;
 	}

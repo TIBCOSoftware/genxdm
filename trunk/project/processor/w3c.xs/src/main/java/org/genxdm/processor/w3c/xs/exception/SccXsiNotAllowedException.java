@@ -34,18 +34,18 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 
 @SuppressWarnings("serial")
-public final class SccXsiNotAllowedException extends SmComponentConstraintException
+public final class SccXsiNotAllowedException extends ComponentConstraintException
 {
 	private final QName m_attributeName;
 
 	public SccXsiNotAllowedException(final QName attributeName)
 	{
-		super(SmOutcome.SCC_xsi_Not_Allowed, ""/* no part number */);
+		super(ValidationOutcome.SCC_xsi_Not_Allowed, ""/* no part number */);
 		m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
 	}
 

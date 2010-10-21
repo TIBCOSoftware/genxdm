@@ -18,18 +18,18 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 
 @SuppressWarnings("serial")
-public final class SmCyclicTypeException extends SmComponentConstraintException
+public final class SmCyclicTypeException extends ComponentConstraintException
 {
 	private final QName name;
 
 	public SmCyclicTypeException(final QName name)
 	{
-		super(SmOutcome.TODO, "?");
+		super(ValidationOutcome.TODO, "?");
 		this.name = PreCondition.assertArgumentNotNull(name, "name");
 	}
 

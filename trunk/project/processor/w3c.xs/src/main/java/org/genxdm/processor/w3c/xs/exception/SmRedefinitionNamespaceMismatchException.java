@@ -15,18 +15,18 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public class SmRedefinitionNamespaceMismatchException extends SrcRedefinitionException
 {
-	public SmRedefinitionNamespaceMismatchException(final SmLocation location)
+	public SmRedefinitionNamespaceMismatchException(final LocationInSchema location)
 	{
 		super(PART_REDEFINTION_NAMESPACE_MISMATCH, location);
 	}
 
-	public SmRedefinitionNamespaceMismatchException(final SmLocation location, final SmException cause)
+	public SmRedefinitionNamespaceMismatchException(final LocationInSchema location, final SchemaException cause)
 	{
 		super(PART_REDEFINTION_NAMESPACE_MISMATCH, location, cause);
 	}

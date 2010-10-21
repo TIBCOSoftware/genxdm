@@ -18,13 +18,13 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
-import org.genxdm.xs.exceptions.SmSimpleTypeException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
+import org.genxdm.xs.exceptions.SimpleTypeException;
 
 
 @SuppressWarnings("serial")
-public abstract class SccComplexTypeDerivationRestrictionException extends SmComponentConstraintException
+public abstract class SccComplexTypeDerivationRestrictionException extends ComponentConstraintException
 {
 	private final QName m_typeName;
 
@@ -33,13 +33,13 @@ public abstract class SccComplexTypeDerivationRestrictionException extends SmCom
 
 	public SccComplexTypeDerivationRestrictionException(final String partNumber, final QName typeName)
 	{
-		super(SmOutcome.SCC_Derivation_Valid_Restriction_Complex, partNumber);
+		super(ValidationOutcome.SCC_Derivation_Valid_Restriction_Complex, partNumber);
 		m_typeName = PreCondition.assertArgumentNotNull(typeName, "typeName");
 	}
 
-	public SccComplexTypeDerivationRestrictionException(final String partNumber, final QName attributeName, final SmSimpleTypeException cause)
+	public SccComplexTypeDerivationRestrictionException(final String partNumber, final QName attributeName, final SimpleTypeException cause)
 	{
-		super(SmOutcome.SCC_Derivation_Valid_Restriction_Complex, partNumber, cause);
+		super(ValidationOutcome.SCC_Derivation_Valid_Restriction_Complex, partNumber, cause);
 		m_typeName = PreCondition.assertArgumentNotNull(attributeName, "typeName");
 	}
 

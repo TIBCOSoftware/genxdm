@@ -22,26 +22,26 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
 public interface VxValidator<A>
 {
-	void characters(char ch[], int start, int length) throws IOException, SmAbortException;
+	void characters(char ch[], int start, int length) throws IOException, AbortException;
 
-	void endDocument() throws IOException, SmAbortException;
+	void endDocument() throws IOException, AbortException;
 
-	VxPSVI<A> endElement() throws IOException, SmAbortException;
+	VxPSVI<A> endElement() throws IOException, AbortException;
 
 	void reset();
 
-	void setExceptionHandler(final SmExceptionHandler handler);
+	void setExceptionHandler(final SchemaExceptionHandler handler);
 
 	void setOutputHandler(VxOutputHandler<A> handler);
 
-	void startDocument(URI documentURI) throws IOException, SmAbortException;
+	void startDocument(URI documentURI) throws IOException, AbortException;
 
-	void startElement(final QName elementName, final LinkedList<VxMapping<String, String>> namespaces, final LinkedList<VxMapping<QName, String>> attributes) throws IOException, SmAbortException;
+	void startElement(final QName elementName, final LinkedList<VxMapping<String, String>> namespaces, final LinkedList<VxMapping<QName, String>> attributes) throws IOException, AbortException;
 
-	void text(List<? extends A> value) throws IOException, SmAbortException;
+	void text(List<? extends A> value) throws IOException, AbortException;
 }
