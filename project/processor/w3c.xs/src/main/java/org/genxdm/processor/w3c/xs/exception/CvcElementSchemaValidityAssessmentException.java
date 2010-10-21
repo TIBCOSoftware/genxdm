@@ -18,8 +18,8 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 /**
  * Corresponds to the <b>Schema-Validity Assessment (Element)</b> validation rule.
@@ -32,9 +32,9 @@ public abstract class CvcElementSchemaValidityAssessmentException extends SmLoca
 	public static final String PART_ONE = "1";
 	public static final String PART_TWO = "1";
 
-	public CvcElementSchemaValidityAssessmentException(final String partNumber, final QName elementName, final SmLocation location)
+	public CvcElementSchemaValidityAssessmentException(final String partNumber, final QName elementName, final LocationInSchema location)
 	{
-		super(SmOutcome.CVC_Schema_Validity_Assessment_Element, partNumber, location);
+		super(ValidationOutcome.CVC_Schema_Validity_Assessment_Element, partNumber, location);
 		this.elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
 	}
 

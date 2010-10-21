@@ -17,8 +17,8 @@ package org.genxdm.processor.w3c.xs.exception;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class CvcElementChildElementWithFixedException extends CvcElementException
@@ -26,7 +26,7 @@ public final class CvcElementChildElementWithFixedException extends CvcElementEx
 	@SuppressWarnings("unused")
 	private final QName childName;
 
-	public CvcElementChildElementWithFixedException(final SmElement<?> elementDeclaration, final QName childName, final SmLocation location)
+	public CvcElementChildElementWithFixedException(final ElementDefinition<?> elementDeclaration, final QName childName, final LocationInSchema location)
 	{
 		super(PART_VALUE_CONSTRAINT_WITH_CHILD_ELEMENT, elementDeclaration, location);
 		this.childName = childName;

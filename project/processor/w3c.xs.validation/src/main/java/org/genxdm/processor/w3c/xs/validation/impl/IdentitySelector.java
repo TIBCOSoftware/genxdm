@@ -23,7 +23,7 @@ import java.util.LinkedList;
 import javax.xml.namespace.QName;
 
 import org.genxdm.xs.constraints.SmRestrictedXPath;
-import org.genxdm.xs.exceptions.SmAbortException;
+import org.genxdm.xs.exceptions.AbortException;
 
 /**
  * Provides a streaming evaluation of a restricted XPath expression. <br/>
@@ -147,7 +147,7 @@ final class IdentitySelector<A>
 		}
 	}
 
-	public void endElement(final QName elementName, final int elementIndex, final Locatable location) throws SmAbortException
+	public void endElement(final QName elementName, final int elementIndex, final Locatable location) throws AbortException
 	{
 		m_depth--;
 		for (int unionIdx = m_xpath.length - 1; unionIdx >= 0; unionIdx--)

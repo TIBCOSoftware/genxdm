@@ -18,15 +18,15 @@ package org.genxdm.processor.w3c.xs;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmWhiteSpacePolicy;
+import org.genxdm.xs.enums.WhiteSpacePolicy;
 
 final class ForeignAtomManager<A>
 {
 	public final QName atomType;
 	public final QName baseType;
-	public final SmWhiteSpacePolicy ws;
+	public final WhiteSpacePolicy ws;
 
-	ForeignAtomManager(final QName atomType, final QName baseType, final SmWhiteSpacePolicy ws)
+	ForeignAtomManager(final QName atomType, final QName baseType, final WhiteSpacePolicy ws)
 	{
 		this.atomType = PreCondition.assertArgumentNotNull(atomType, "atomType");
 		this.baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");

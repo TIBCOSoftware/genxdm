@@ -15,10 +15,10 @@
  */
 package org.genxdm.xs.types;
 
-import org.genxdm.xs.SmMetaBridge;
+import org.genxdm.xs.SchemaTypeBridge;
 
 /**
- * The following enumerated constants are used by {@link SmMetaBridge} to classify the sequence type instance.
+ * The following enumerated constants are used by {@link SchemaTypeBridge} to classify the sequence type instance.
  */
 public enum SmPrimeTypeKind
 {

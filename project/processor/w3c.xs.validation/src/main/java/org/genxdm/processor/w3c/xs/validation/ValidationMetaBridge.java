@@ -19,8 +19,8 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.processor.w3c.xs.validation.api.VxMetaBridge;
 import org.genxdm.typed.TypedContext;
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.types.SmType;
 
 
@@ -33,12 +33,12 @@ final class ValidationMetaBridge<N, A> implements VxMetaBridge<A>
 		this.pcx = PreCondition.assertArgumentNotNull(pcx, "pcx");
 	}
 
-	public SmAttribute<A> getAttributeDeclaration(final QName attributeName)
+	public AttributeDefinition<A> getAttributeDeclaration(final QName attributeName)
 	{
 		return pcx.getAttributeDeclaration(attributeName);
 	}
 
-	public SmElement<A> getElementDeclaration(final QName elementName)
+	public ElementDefinition<A> getElementDeclaration(final QName elementName)
 	{
 		return pcx.getElementDeclaration(elementName);
 	}

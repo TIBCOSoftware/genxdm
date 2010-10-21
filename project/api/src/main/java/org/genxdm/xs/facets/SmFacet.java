@@ -17,7 +17,7 @@ package org.genxdm.xs.facets;
 
 import java.util.List;
 
-import org.genxdm.xs.exceptions.SmFacetException;
+import org.genxdm.xs.exceptions.FacetException;
 import org.genxdm.xs.types.SmSimpleType;
 
 /**
@@ -40,5 +40,5 @@ public interface SmFacet<A>
 	 * @param simpleType
 	 *            The type that validated the actual value.
 	 */
-	void validate(List<? extends A> actualValue, SmSimpleType<A> simpleType) throws SmFacetException;
+	void validate(List<? extends A> actualValue, SmSimpleType<A> simpleType) throws FacetException;
 }

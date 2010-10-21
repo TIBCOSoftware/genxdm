@@ -15,7 +15,7 @@
  */
 package org.genxdm.xs.types;
 
-import org.genxdm.xs.enums.SmNodeKind;
+import org.genxdm.NodeKind;
 
 /**
  * Indicates that this type is one of the XQuery Data Model node types.
@@ -25,5 +25,5 @@ public interface SmNodeType<A> extends SmPrimeType<A>
 	/**
 	 * Returns the node type .
 	 */
-	SmNodeKind getNodeKind();
+	NodeKind getNodeKind();
 }

@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.xs;
 
-import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.types.SmEmptyType;
 import org.genxdm.xs.types.SmPrimeType;
 import org.genxdm.xs.types.SmPrimeTypeKind;
@@ -33,9 +33,9 @@ final class ZEmptyType<A> implements SmEmptyType<A>
 		return new NoneType<A>();
 	}
 
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
-		return SmQuantifier.OPTIONAL;
+		return KeeneQuantifier.OPTIONAL;
 	}
 
 	public boolean isNone()
@@ -45,7 +45,7 @@ final class ZEmptyType<A> implements SmEmptyType<A>
 
 	public boolean subtype(final SmPrimeType<A> rhs)
 	{
-		return rhs.quantifier().contains(SmQuantifier.EMPTY);
+		return rhs.quantifier().contains(KeeneQuantifier.EMPTY);
 	}
 
 	public SmPrimeTypeKind getKind()

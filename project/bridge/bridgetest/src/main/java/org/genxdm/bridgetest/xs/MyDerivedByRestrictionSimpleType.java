@@ -17,7 +17,7 @@ package org.genxdm.bridgetest.xs;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.IllegalNullArgumentException;
-import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.types.SmSimpleType;
 
 public abstract class MyDerivedByRestrictionSimpleType<A> implements SmSimpleType<A>
@@ -29,8 +29,8 @@ public abstract class MyDerivedByRestrictionSimpleType<A> implements SmSimpleTyp
 		this.baseName = IllegalNullArgumentException.check(baseName, "baseName");
 	}
 
-	public final SmDerivationMethod getDerivationMethod()
+	public final DerivationMethod getDerivationMethod()
 	{
-		return SmDerivationMethod.Restriction;
+		return DerivationMethod.Restriction;
 	}
 }

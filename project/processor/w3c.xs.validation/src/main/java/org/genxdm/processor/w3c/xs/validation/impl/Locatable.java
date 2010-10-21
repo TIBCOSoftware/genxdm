@@ -15,12 +15,12 @@
  */
 package org.genxdm.processor.w3c.xs.validation.impl;
 
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 /**
  * Internal abstraction for avoiding the construction of a location object unless it is needed.
  */
 interface Locatable
 {
-	SmLocation getLocation();
+	LocationInSchema getLocation();
 }

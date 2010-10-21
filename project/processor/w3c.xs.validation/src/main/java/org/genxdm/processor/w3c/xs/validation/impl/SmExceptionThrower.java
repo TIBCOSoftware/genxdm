@@ -15,16 +15,16 @@
  */
 package org.genxdm.processor.w3c.xs.validation.impl;
 
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
-public enum SmExceptionThrower implements SmExceptionHandler
+public enum SmExceptionThrower implements SchemaExceptionHandler
 {
 	SINGLETON;
 
-	public void error(final SmException exception) throws SmAbortException
+	public void error(final SchemaException exception) throws AbortException
 	{
-		throw new SmAbortException(exception);
+		throw new AbortException(exception);
 	}
 }

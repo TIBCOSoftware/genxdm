@@ -19,8 +19,8 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.names.QNameAsSet;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmNodeKind;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.NodeKind;
+import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.SmElementNodeType;
 import org.genxdm.xs.types.SmNativeType;
 import org.genxdm.xs.types.SmPrimeChoiceType;
@@ -37,7 +37,7 @@ final class ElementNodeType<A> extends AbstractBranchNodeType<A> implements SmEl
 
 	public ElementNodeType(final QName name, final SmSequenceType<A> dataType, final boolean nillable, final SmCache<A> cache)
 	{
-		super(SmNodeKind.ELEMENT, cache);
+		super(NodeKind.ELEMENT, cache);
 		this.name = PreCondition.assertArgumentNotNull(name, "name");
 		if (null != dataType)
 		{
@@ -79,9 +79,9 @@ final class ElementNodeType<A> extends AbstractBranchNodeType<A> implements SmEl
 		return name;
 	}
 
-	public SmScopeExtent getScopeExtent()
+	public ScopeExtent getScopeExtent()
 	{
-		return SmScopeExtent.Global;
+		return ScopeExtent.Global;
 	}
 
 	public String getTargetNamespace()

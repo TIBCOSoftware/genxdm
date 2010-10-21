@@ -18,22 +18,22 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 import java.util.ArrayList;
 
 import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 final class IdentityDanglingReference<A>
 {
 	private final SmIdentityConstraint<A> m_constraint;
 	private final ArrayList<IdentityKey<A>> m_keys;
-	private final SmLocation m_location;
+	private final LocationInSchema m_location;
 
-	public IdentityDanglingReference(final SmIdentityConstraint<A> constraint, final ArrayList<IdentityKey<A>> keys, final SmLocation location)
+	public IdentityDanglingReference(final SmIdentityConstraint<A> constraint, final ArrayList<IdentityKey<A>> keys, final LocationInSchema location)
 	{
 		m_constraint = PreCondition.assertArgumentNotNull(constraint, "constraint");
 		m_keys = PreCondition.assertArgumentNotNull(keys, "keys");
 		m_location = location;
 	}
 
-	public SmLocation getLocationContext()
+	public LocationInSchema getLocationContext()
 	{
 		return m_location;
 	}

@@ -36,11 +36,11 @@ import org.genxdm.processor.w3c.xs.validation.GxContentValidator;
 import org.genxdm.processor.w3c.xs.validation.GxValidatorCache;
 import org.genxdm.processor.w3c.xs.validation.ValidatorCacheFactory;
 import org.genxdm.typed.TypedContext;
-import org.genxdm.xs.SmMetaLoadArgs;
-import org.genxdm.xs.components.SmComponentBag;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.exceptions.SmExceptionCatcher;
+import org.genxdm.xs.SchemaLoadOptions;
+import org.genxdm.xs.components.ComponentBag;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.exceptions.SchemaExceptionCatcher;
 
 /**
  * This sample illustrates a simple, serialization.  
@@ -78,7 +78,7 @@ public abstract class BridgePerformance<N, A> extends BasePerformance implements
 			loadSchema(tpcx, new URI(schemaFilePath));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
-		} catch (SmAbortException e) {
+		} catch (AbortException e) {
 			throw new RuntimeException(e);
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
@@ -176,7 +176,7 @@ public abstract class BridgePerformance<N, A> extends BasePerformance implements
 	final void validate(TaskTimer ttValidate)
 	{
 		try {
-			final SmExceptionCatcher errors = new SmExceptionCatcher();
+			final SchemaExceptionCatcher errors = new SchemaExceptionCatcher();
 			m_validator.setExceptionHandler(errors);
 			ttValidate.startTimer();
 	        
@@ -187,7 +187,7 @@ public abstract class BridgePerformance<N, A> extends BasePerformance implements
 			{
 				ttValidate.addNote(errors.size() + " validation errors.");
 				int errorCnt = 0;
-				for (SmException ex : errors)
+				for (SchemaException ex : errors)
 				{
 					if(errorCnt == 10)
 					{
@@ -202,20 +202,20 @@ public abstract class BridgePerformance<N, A> extends BasePerformance implements
 			throw new RuntimeException(e);
 		}
 	}
-	final void loadSchema(TypedContext<N, A> tpcx, URI uri) throws IOException, SmAbortException, URISyntaxException
+	final void loadSchema(TypedContext<N, A> tpcx, URI uri) throws IOException, AbortException, URISyntaxException
 	{
 		Resolver resolver = new SampleResolver(new URI(m_baseURI));
 		// Load a top-level schema into the processing context.
 		final List<Resolved<InputStream>> resources = new LinkedList<Resolved<InputStream>>();
 		resources.add(resolver.resolveInputStream(uri));
 
-		final SmExceptionCatcher errors = new SmExceptionCatcher();
-		final SmMetaLoadArgs args = new SmMetaLoadArgs();
+		final SchemaExceptionCatcher errors = new SchemaExceptionCatcher();
+		final SchemaLoadOptions args = new SchemaLoadOptions();
 		final W3cXmlSchemaParser<A> parser = new W3cXmlSchemaParser<A>(tpcx.getAtomBridge());
 
 		for (final Resolved<InputStream> resource : resources)
 		{
-			SmComponentBag<A> scBag = parser.parse(resource.getLocation(), resource.getResource(), resource.getSystemId(), errors, args, tpcx);
+			ComponentBag<A> scBag = parser.parse(resource.getLocation(), resource.getResource(), resource.getSystemId(), errors, args, tpcx);
 			tpcx.register(scBag);
 		}
 	}

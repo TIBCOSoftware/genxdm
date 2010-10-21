@@ -34,13 +34,13 @@ import org.genxdm.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrate
 import org.genxdm.processor.w3c.xs.validation.api.VxValidationHost;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.SmValueConstraint;
-import org.genxdm.xs.enums.SmProcessContentsMode;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmDatatypeException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
-import org.genxdm.xs.exceptions.SmSimpleTypeException;
+import org.genxdm.xs.enums.ProcessContentsMode;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.DatatypeException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
+import org.genxdm.xs.exceptions.SimpleTypeException;
 import org.genxdm.xs.types.SmComplexMarkerType;
 import org.genxdm.xs.types.SmComplexType;
 import org.genxdm.xs.types.SmContentType;
@@ -58,7 +58,7 @@ import org.genxdm.xs.types.SmType;
 final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 {
 	// Set by reset method. Preconditions guarantee that it is never null.
-	// private final SmParticleTerm STRICT_WILDCARD = new StrictWildcard<A>();
+	// private final ParticleTerm STRICT_WILDCARD = new StrictWildcard<A>();
 
 	private static boolean isWhiteSpace(final String strval)
 	{
@@ -95,7 +95,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 	// Set by reset method. Preconditions guarantee that it is never null.
 	private VxOutputHandler<A> m_downstream;
 	// private Location m_location;
-	private SmExceptionHandler m_errors = SmExceptionThrower.SINGLETON;
+	private SchemaExceptionHandler m_errors = SmExceptionThrower.SINGLETON;
 	private final VxSchemaDocumentLocationStrategy sdl;
 
 	private final IdentityConstraintManager<A> m_icm = new IdentityConstraintManager<A>();
@@ -123,7 +123,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		m_currentItem = m_documentItem = new ValidationItem<A>();
 		// A strict start is necessary to ensure that the root element has a declaration.
 		// However, the specification does not seem very clear on what should be the starting mode.
-		m_currentPSVI = m_documentPSVI = new ModelPSVI<A>(SmProcessContentsMode.Strict, host.getMetaBridge(), cache);
+		m_currentPSVI = m_documentPSVI = new ModelPSVI<A>(ProcessContentsMode.Strict, host.getMetaBridge(), cache);
 
 		m_mac = new ModelAnalyzerImpl<A>(host.getMetaBridge(), cache);
 		this.sdl = sdl;
@@ -134,7 +134,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		m_text.append(ch, start, length);
 	}
 
-	private void checkValueConstraintForElement(final SmElement<A> elementDeclaration, final SmSimpleType<A> simpleType, final List<? extends A> actualValue) throws SmAbortException
+	private void checkValueConstraintForElement(final ElementDefinition<A> elementDeclaration, final SmSimpleType<A> simpleType, final List<? extends A> actualValue) throws AbortException
 	{
 		final SmValueConstraint<A> valueConstraint = elementDeclaration.getValueConstraint();
 		if (null != valueConstraint)
@@ -155,10 +155,10 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 							m_errors.error(new CvcElementFixedValueOverriddenSimpleException(elementDeclaration, fixedC14N, actualC14N, m_currentItem.getLocation()));
 						}
 					}
-					catch (final SmDatatypeException e)
+					catch (final DatatypeException e)
 					{
 						final String lexicalValue = m_atomBridge.getC14NString(initialFixed);
-						m_errors.error(new SmSimpleTypeException(lexicalValue, simpleType, e));
+						m_errors.error(new SimpleTypeException(lexicalValue, simpleType, e));
 					}
 				}
 				break;
@@ -175,7 +175,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		}
 	}
 
-	public void endDocument() throws IOException, SmAbortException
+	public void endDocument() throws IOException, AbortException
 	{
 		m_mac.endDocument();
 
@@ -188,7 +188,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		}
 	}
 
-	public VxPSVI<A> endElement() throws IOException, SmAbortException
+	public VxPSVI<A> endElement() throws IOException, AbortException
 	{
 		if (m_text.length() > 0)
 		{
@@ -230,7 +230,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		}
 	}
 
-	private void handleNoTextCalls() throws IOException, SmAbortException
+	private void handleNoTextCalls() throws IOException, AbortException
 	{
 		final SmType<A> elementType = m_currentPSVI.getType();
 		if (null != elementType)
@@ -266,7 +266,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		}
 	}
 
-	private void handleNoTextCallsForSimpleContentModel(final SmSimpleType<A> simpleType) throws IOException, SmAbortException
+	private void handleNoTextCallsForSimpleContentModel(final SmSimpleType<A> simpleType) throws IOException, AbortException
 	{
 		if (m_currentPSVI.isNilled())
 		{
@@ -275,7 +275,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		else
 		{
 			// any default or fixed values.
-			final SmElement<A> declaration = m_currentPSVI.getDeclaration();
+			final ElementDefinition<A> declaration = m_currentPSVI.getDeclaration();
 			final SmValueConstraint<A> valueConstraint = (null != declaration) ? declaration.getValueConstraint() : null;
 			if (null != valueConstraint)
 			{
@@ -297,10 +297,10 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 								m_downstream.text(actualValue);
 							}
 						}
-						catch (final SmDatatypeException e)
+						catch (final DatatypeException e)
 						{
 							final String lexicalValue = m_atomBridge.getC14NString(initialValue);
-							m_errors.error(new SmSimpleTypeException(lexicalValue, simpleType, e));
+							m_errors.error(new SimpleTypeException(lexicalValue, simpleType, e));
 
 							m_idm.text(initialValue, simpleType, m_currentItem, m_errors, m_atomBridge);
 							m_icm.text(initialValue, simpleType, m_currentItem, m_nodeIndex, m_atomBridge);
@@ -334,15 +334,15 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 						m_downstream.text(actualValue);
 					}
 				}
-				catch (final SmDatatypeException e)
+				catch (final DatatypeException e)
 				{
-					m_errors.error(new SmSimpleTypeException("", simpleType, e));
+					m_errors.error(new SimpleTypeException("", simpleType, e));
 				}
 			}
 		}
 	}
 
-	private void handleText(final String initialValue) throws IOException, SmAbortException
+	private void handleText(final String initialValue) throws IOException, AbortException
 	{
 		m_nodeIndex++;
 
@@ -363,7 +363,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 			case Strict:
 			case Lax:
 			{
-				final SmElement<A> declaration = m_currentPSVI.getDeclaration();
+				final ElementDefinition<A> declaration = m_currentPSVI.getDeclaration();
 				if (m_currentPSVI.isNilled() && (null != declaration))
 				{
 					m_errors.error(new CvcElementUnexpectedChildInNilledElementException(declaration, m_currentItem.getLocation()));
@@ -394,9 +394,9 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 									m_downstream.text(actualValue);
 								}
 							}
-							catch (final SmDatatypeException e)
+							catch (final DatatypeException e)
 							{
-								m_errors.error(new SmSimpleTypeException(initialValue, simpleType, e));
+								m_errors.error(new SimpleTypeException(initialValue, simpleType, e));
 								if (null != m_downstream)
 								{
 									m_downstream.text(initialValue);
@@ -441,9 +441,9 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 										m_downstream.text(actualValue);
 									}
 								}
-								catch (final SmDatatypeException e)
+								catch (final DatatypeException e)
 								{
-									m_errors.error(new SmSimpleTypeException(initialValue, simpleType, e));
+									m_errors.error(new SimpleTypeException(initialValue, simpleType, e));
 									if (null != m_downstream)
 									{
 										m_downstream.text(initialValue);
@@ -524,7 +524,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		m_icm.reset();
 	}
 
-	public void setExceptionHandler(final SmExceptionHandler handler)
+	public void setExceptionHandler(final SchemaExceptionHandler handler)
 	{
 		m_errors = PreCondition.assertArgumentNotNull(handler, "handler");
 		m_mac.setExceptionHandler(handler);
@@ -553,7 +553,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		}
 	}
 
-	public void startElement(final QName elementName, final LinkedList<VxMapping<String, String>> namespaces, final LinkedList<VxMapping<QName, String>> attributes) throws IOException, SmAbortException
+	public void startElement(final QName elementName, final LinkedList<VxMapping<String, String>> namespaces, final LinkedList<VxMapping<QName, String>> attributes) throws IOException, AbortException
 	{
 		m_text.setLength(0);
 
@@ -595,7 +595,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		m_nodeIndex = m_attributes.attributes(m_currentPSVI, m_currentItem, attributes, m_downstream, m_errors, m_idm, m_icm);
 	}
 
-	public void text(final List<? extends A> initialValue) throws IOException, SmAbortException
+	public void text(final List<? extends A> initialValue) throws IOException, AbortException
 	{
 		m_nodeIndex++;
 
@@ -616,7 +616,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 			case Strict:
 			case Lax:
 			{
-				final SmElement<A> declaration = m_currentPSVI.getDeclaration();
+				final ElementDefinition<A> declaration = m_currentPSVI.getDeclaration();
 				if (m_currentPSVI.isNilled())
 				{
 					m_errors.error(new CvcElementUnexpectedChildInNilledElementException(declaration, m_currentItem.getLocation()));
@@ -645,9 +645,9 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 								m_downstream.text(actualValue);
 							}
 						}
-						catch (final SmDatatypeException e)
+						catch (final DatatypeException e)
 						{
-							m_errors.error(new SmSimpleTypeException(m_atomBridge.getC14NString(initialValue), simpleType, e));
+							m_errors.error(new SimpleTypeException(m_atomBridge.getC14NString(initialValue), simpleType, e));
 							if (null != m_downstream)
 							{
 								m_downstream.text(initialValue);
@@ -677,9 +677,9 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 										m_downstream.text(actualValue);
 									}
 								}
-								catch (final SmDatatypeException e)
+								catch (final DatatypeException e)
 								{
-									m_errors.error(new SmSimpleTypeException(m_atomBridge.getC14NString(initialValue), simpleType, e));
+									m_errors.error(new SimpleTypeException(m_atomBridge.getC14NString(initialValue), simpleType, e));
 									if (null != m_downstream)
 									{
 										m_downstream.text(initialValue);

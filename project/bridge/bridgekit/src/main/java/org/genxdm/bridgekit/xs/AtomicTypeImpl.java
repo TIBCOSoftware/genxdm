@@ -21,12 +21,12 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmQuantifier;
-import org.genxdm.xs.enums.SmScopeExtent;
-import org.genxdm.xs.enums.SmWhiteSpacePolicy;
-import org.genxdm.xs.exceptions.SmDatatypeException;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.xs.enums.ScopeExtent;
+import org.genxdm.xs.enums.WhiteSpacePolicy;
+import org.genxdm.xs.exceptions.DatatypeException;
+import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.SmAtomicType;
 import org.genxdm.xs.types.SmNativeType;
 import org.genxdm.xs.types.SmPrimeChoiceType;
@@ -175,9 +175,9 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements SmAtom
 
 	private final SmAtomicType<A> baseType;
 
-	public AtomicTypeImpl(final QName name, final boolean isAnonymous, final SmScopeExtent scope, final SmAtomicType<A> baseType, final SmWhiteSpacePolicy whiteSpace, final AtomBridge<A> atomBridge)
+	public AtomicTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final SmAtomicType<A> baseType, final WhiteSpacePolicy whiteSpace, final AtomBridge<A> atomBridge)
 	{
-		super(name, isAnonymous, scope, SmDerivationMethod.Restriction, whiteSpace, atomBridge);
+		super(name, isAnonymous, scope, DerivationMethod.Restriction, whiteSpace, atomBridge);
 		this.baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");
 	}
 
@@ -192,7 +192,7 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements SmAtom
 		return this;
 	}
 
-	protected List<A> compile(final String initialValue) throws SmDatatypeException
+	protected List<A> compile(final String initialValue) throws DatatypeException
 	{
 		final String normalizedValue = normalize(initialValue);
 		try
@@ -209,13 +209,13 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements SmAtom
 				throw new AssertionError();
 			}
 		}
-		catch (final SmDatatypeException e)
+		catch (final DatatypeException e)
 		{
-			throw new SmDatatypeException(normalizedValue, this, e);
+			throw new DatatypeException(normalizedValue, this, e);
 		}
 	}
 
-	protected List<A> compile(final String initialValue, final SmPrefixResolver resolver) throws SmDatatypeException
+	protected List<A> compile(final String initialValue, final PrefixResolver resolver) throws DatatypeException
 	{
 		final String normalizedValue = normalize(initialValue);
 		try
@@ -232,9 +232,9 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements SmAtom
 				throw new AssertionError();
 			}
 		}
-		catch (final SmDatatypeException e)
+		catch (final DatatypeException e)
 		{
-			throw new SmDatatypeException(normalizedValue, this, e);
+			throw new DatatypeException(normalizedValue, this, e);
 		}
 	}
 
@@ -258,7 +258,7 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements SmAtom
 		return baseType.getNativeTypeDefinition();
 	}
 
-	public final SmWhiteSpacePolicy getWhiteSpacePolicy()
+	public final WhiteSpacePolicy getWhiteSpacePolicy()
 	{
 		if (null != m_whiteSpace)
 		{
@@ -345,9 +345,9 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements SmAtom
 		return this;
 	}
 
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
-		return SmQuantifier.EXACTLY_ONE;
+		return KeeneQuantifier.EXACTLY_ONE;
 	}
 
 	public boolean subtype(final SmPrimeType<A> rhs)

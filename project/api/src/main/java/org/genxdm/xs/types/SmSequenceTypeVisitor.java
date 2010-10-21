@@ -15,8 +15,8 @@
  */
 package org.genxdm.xs.types;
 
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.ElementDefinition;
 
 /**
  * Visitor pattern for {@link SmSequenceType}.
@@ -26,7 +26,7 @@ import org.genxdm.xs.components.SmElement;
  */
 public interface SmSequenceTypeVisitor<A>
 {
-	void visit(SmAttribute<A> schemaAttribute);
+	void visit(AttributeDefinition<A> schemaAttribute);
 
 	void visit(SmAttributeNodeType<A> attributeType);
 
@@ -42,7 +42,7 @@ public interface SmSequenceTypeVisitor<A>
 
 	void visit(SmDocumentNodeType<A> documentNodeType);
 
-	void visit(SmElement<A> schemaElement);
+	void visit(ElementDefinition<A> schemaElement);
 
 	void visit(SmElementNodeType<A> elementNodeType);
 

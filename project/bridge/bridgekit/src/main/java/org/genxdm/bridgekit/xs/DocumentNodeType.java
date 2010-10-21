@@ -16,7 +16,7 @@
 package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmNodeKind;
+import org.genxdm.NodeKind;
 import org.genxdm.xs.types.SmDocumentNodeType;
 import org.genxdm.xs.types.SmPrimeChoiceType;
 import org.genxdm.xs.types.SmPrimeType;
@@ -30,7 +30,7 @@ final class DocumentNodeType<A> extends AbstractBranchNodeType<A> implements SmD
 
 	public DocumentNodeType(final SmSequenceType<A> contentType, final SmCache<A> cache)
 	{
-		super(SmNodeKind.DOCUMENT, cache);
+		super(NodeKind.DOCUMENT, cache);
 		m_contentType = PreCondition.assertArgumentNotNull(contentType, "contentType");
 	}
 

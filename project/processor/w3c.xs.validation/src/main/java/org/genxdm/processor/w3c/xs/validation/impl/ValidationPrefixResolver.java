@@ -22,9 +22,9 @@ import java.util.Enumeration;
 import javax.xml.XMLConstants;
 
 import org.genxdm.names.NameSource;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.resolve.PrefixResolver;
 
-final class ValidationPrefixResolver implements SmPrefixResolver
+final class ValidationPrefixResolver implements PrefixResolver
 {
 	private static final Iterable<String> UNARY_DEFAULT_NS_PREFIX_ITERABLE = new UnaryIterable<String>(XMLConstants.DEFAULT_NS_PREFIX);
 	private static final Iterable<String> UNARY_XML_NS_PREFIX_ITERABLE = new UnaryIterable<String>(XMLConstants.XML_NS_PREFIX);

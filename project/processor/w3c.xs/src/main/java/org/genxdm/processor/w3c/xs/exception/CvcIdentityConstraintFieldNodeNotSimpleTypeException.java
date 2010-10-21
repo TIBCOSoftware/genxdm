@@ -17,12 +17,12 @@ package org.genxdm.processor.w3c.xs.exception;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class CvcIdentityConstraintFieldNodeNotSimpleTypeException extends CvcIdentityConstraintException
 {
-	public CvcIdentityConstraintFieldNodeNotSimpleTypeException(final QName constraintName, final SmLocation location)
+	public CvcIdentityConstraintFieldNodeNotSimpleTypeException(final QName constraintName, final LocationInSchema location)
 	{
 		super(constraintName, PART_THREE, location);
 	}

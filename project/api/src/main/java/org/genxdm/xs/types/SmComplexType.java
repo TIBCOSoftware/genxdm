@@ -20,9 +20,9 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.SmAttributeUse;
-import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.enums.DerivationMethod;
 
 /**
  * A Complex Type Definition.
@@ -40,7 +40,7 @@ public interface SmComplexType<A> extends SmComplexMarkerType<A>
 	/**
 	 * Returns the {attribute wildcard} property for a complex type.
 	 */
-	SmWildcard<A> getAttributeWildcard();
+	SchemaWildcard<A> getAttributeWildcard();
 
 	/**
 	 * Returns the {content type} property.
@@ -51,5 +51,5 @@ public interface SmComplexType<A> extends SmComplexMarkerType<A>
 	 * Returns the {prohibited substitutions} property. This is a run-time constraint on the types. A subset of
 	 * {extension, restriction}.
 	 */
-	Set<SmDerivationMethod> getProhibitedSubstitutions();
+	Set<DerivationMethod> getProhibitedSubstitutions();
 }

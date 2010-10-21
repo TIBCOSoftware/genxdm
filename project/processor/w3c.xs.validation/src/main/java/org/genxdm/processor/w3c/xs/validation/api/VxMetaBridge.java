@@ -17,15 +17,15 @@ package org.genxdm.processor.w3c.xs.validation.api;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.types.SmType;
 
 public interface VxMetaBridge<A>
 {
-	SmAttribute<A> getAttributeDeclaration(QName attributeName);
+	AttributeDefinition<A> getAttributeDeclaration(QName attributeName);
 
-	SmElement<A> getElementDeclaration(QName elementName);
+	ElementDefinition<A> getElementDeclaration(QName elementName);
 
 	SmType<A> getTypeDefinition(QName typeName);
 }

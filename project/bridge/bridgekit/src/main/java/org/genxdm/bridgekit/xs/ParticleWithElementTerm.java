@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.xs;
 
-import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.SmElementUse;
 import org.genxdm.xs.constraints.SmValueConstraint;
 
@@ -23,12 +23,12 @@ public final class ParticleWithElementTerm<A> extends ParticleImpl<A> implements
 {
 	private SmValueConstraint<A> m_valueConstraint = null;
 
-	public ParticleWithElementTerm(final int minOccurs, final int maxOccurs, final SmElement<A> element)
+	public ParticleWithElementTerm(final int minOccurs, final int maxOccurs, final ElementDefinition<A> element)
 	{
 		super(minOccurs, maxOccurs, false, element);
 	}
 
-	public ParticleWithElementTerm(final int minOccurs, final SmElement<A> element)
+	public ParticleWithElementTerm(final int minOccurs, final ElementDefinition<A> element)
 	{
 		super(minOccurs, -1, true, element);
 	}
@@ -44,10 +44,10 @@ public final class ParticleWithElementTerm<A> extends ParticleImpl<A> implements
 		this.m_valueConstraint = valueConstraint;
 	}
 
-	public SmElement<A> getTerm()
+	public ElementDefinition<A> getTerm()
 	{
 		// We know this is safe by construction.
-		return (SmElement<A>)m_term;
+		return (ElementDefinition<A>)m_term;
 	}
 
 	public SmValueConstraint<A> getEffectiveValueConstraint()

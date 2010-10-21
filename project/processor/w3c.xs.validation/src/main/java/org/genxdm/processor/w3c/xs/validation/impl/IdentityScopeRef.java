@@ -19,9 +19,9 @@ import java.util.ArrayList;
 
 import org.genxdm.processor.w3c.xs.exception.CvcDanglingKeyReferenceException;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 
 /**
@@ -31,14 +31,14 @@ final class IdentityScopeRef<A> extends IdentityScope<A>
 {
 	private final IdentityScopeKey<A> keyScope;
 
-	public IdentityScopeRef(final int elementIndex, final IdentityScopeKey<A> keyScope, final SmIdentityConstraint<A> constraint, final SmExceptionHandler errorHandler, final SmLocation location)
+	public IdentityScopeRef(final int elementIndex, final IdentityScopeKey<A> keyScope, final SmIdentityConstraint<A> constraint, final SchemaExceptionHandler errorHandler, final LocationInSchema location)
 	{
 		super(elementIndex, constraint, errorHandler, location);
 		this.keyScope = keyScope;
 	}
 
 	@Override
-	protected void onKeysComplete(final ArrayList<IdentityKey<A>> keyValues, final int elementIndex) throws SmAbortException
+	protected void onKeysComplete(final ArrayList<IdentityKey<A>> keyValues, final int elementIndex) throws AbortException
 	{
 		final IdentityTuple<A> key = new IdentityTuple<A>(keyValues);
 
@@ -69,7 +69,7 @@ final class IdentityScopeRef<A> extends IdentityScope<A>
 	/**
 	 * This method should only be called on scopes that correspond to xs:keyref.
 	 */
-	public void reportUnmatchedRefs() throws SmAbortException
+	public void reportUnmatchedRefs() throws AbortException
 	{
 		for (final IdentityVariant<A> next : keyScope.m_qualifiedTargets.values())
 		{

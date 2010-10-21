@@ -67,23 +67,23 @@ import org.genxdm.processor.w3c.xs.exception.SmUnexpectedEndException;
 import org.genxdm.processor.w3c.xs.exception.SrcAttributeTypeAndSimpleTypePresentException;
 import org.genxdm.processor.w3c.xs.exception.SrcPrefixNotFoundException;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmComponentProvider;
-import org.genxdm.xs.components.SmModelGroup;
+import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.constraints.SmIdentityConstraintKind;
 import org.genxdm.xs.constraints.SmNamespaceConstraint;
 import org.genxdm.xs.constraints.SmRestrictedXPath;
 import org.genxdm.xs.constraints.SmValueConstraint;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmProcessContentsMode;
-import org.genxdm.xs.enums.SmWhiteSpacePolicy;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmDatatypeException;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
-import org.genxdm.xs.exceptions.SmSimpleTypeException;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.ProcessContentsMode;
+import org.genxdm.xs.enums.WhiteSpacePolicy;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.DatatypeException;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
+import org.genxdm.xs.exceptions.SimpleTypeException;
 import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.resolve.SmCatalog;
-import org.genxdm.xs.resolve.SmResolver;
+import org.genxdm.xs.resolve.SchemaCatalog;
+import org.genxdm.xs.resolve.CatalogResolver;
 import org.genxdm.xs.types.SmNativeType;
 import org.genxdm.xs.types.SmSimpleType;
 
@@ -484,17 +484,17 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 	private final AtomBridge<A> atomBridge;
 
-	private final SmComponentProvider<A> bootstrap;
+	private final ComponentProvider<A> bootstrap;
 
-	private final SmCatalog m_catalog;
+	private final SchemaCatalog m_catalog;
 
-	private final SmExceptionHandler m_errors;
+	private final SchemaExceptionHandler m_errors;
 
 	private final SmPrefixMappingSupport m_pms;
 
 	private final boolean m_processRepeatedNamespaces;
 
-	private final SmResolver m_resolver;
+	private final CatalogResolver m_resolver;
 
 	/**
 	 * Factory is required for
@@ -503,7 +503,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 	private final NameSource nameBridge;
 
-	public XMLSchemaParser(final AtomBridge<A> atomBridge, final SmComponentProvider<A> bootstrap, final SmExceptionHandler errors, final SmCatalog catalog, final SmResolver resolver, boolean processRepeatedNamespaces)
+	public XMLSchemaParser(final AtomBridge<A> atomBridge, final ComponentProvider<A> bootstrap, final SchemaExceptionHandler errors, final SchemaCatalog catalog, final CatalogResolver resolver, boolean processRepeatedNamespaces)
 	{
 		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
 		this.nameBridge = atomBridge.getNameBridge();
@@ -518,7 +518,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		ANY_TYPE = new XMLTypeRef<A>(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anyType"));
 	}
 
-	private void annotationContent(final String contextName, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, SmAbortException
+	private void annotationContent(final String contextName, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
 	{
 		boolean firstElement = true;
 		boolean done = false;
@@ -587,7 +587,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void annotationTag(final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, SmAbortException
+	private void annotationTag(final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
 	{
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
@@ -678,9 +678,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:anyAttribute.
 	 */
-	private XMLWildcard<A> anyAttributeTag(final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, SmAbortException
+	private XMLWildcard<A> anyAttributeTag(final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
 	{
-		SmProcessContentsMode processContents = SmProcessContentsMode.Strict;
+		ProcessContentsMode processContents = ProcessContentsMode.Strict;
 		SmNamespaceConstraint namespaceConstraint = SmNamespaceConstraint.Any(nameSource);
 
 		final int attributeCount = reader.getAttributeCount();
@@ -700,7 +700,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						namespaceConstraint = namespaces(reader.getAttributeValue(i), targetNamespace);
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -711,7 +711,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						processContents = processContents(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -794,9 +794,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:any
 	 */
-	private XMLParticle<A> anyElementTag(final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, SmAbortException
+	private XMLParticle<A> anyElementTag(final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
 	{
-		SmProcessContentsMode processContents = SmProcessContentsMode.Strict;
+		ProcessContentsMode processContents = ProcessContentsMode.Strict;
 		SmNamespaceConstraint namespaceConstraint = SmNamespaceConstraint.Any(nameSource);
 
 		BigInteger minOccurs = BigInteger.ONE;
@@ -827,7 +827,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						namespaceConstraint = namespaces(reader.getAttributeValue(i), targetNamespace);
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -838,7 +838,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						processContents = processContents(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -919,7 +919,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return new XMLParticleWithWildcardTerm<A>(minOccurs, maxOccurs, wildcard, getFrozenLocation(reader.getLocation()));
 	}
 
-	private URI anyURI(final String initialValue) throws SmSimpleTypeException
+	private URI anyURI(final String initialValue) throws SimpleTypeException
 	{
 		final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.ANY_URI);
 		try
@@ -934,13 +934,13 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				return null;
 			}
 		}
-		catch (final SmDatatypeException e)
+		catch (final DatatypeException e)
 		{
-			throw new SmSimpleTypeException(initialValue, atomicType, e);
+			throw new SimpleTypeException(initialValue, atomicType, e);
 		}
 	}
 
-	private void appinfoTag(final XMLStreamReader reader) throws XMLStreamException, SmAbortException
+	private void appinfoTag(final XMLStreamReader reader) throws XMLStreamException, AbortException
 	{
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
@@ -955,7 +955,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						/* final URI source = */anyURI(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -1015,7 +1015,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void assertRefAbsent(final QName ref, final Location location) throws SmAbortException
+	private void assertRefAbsent(final QName ref, final Location location) throws AbortException
 	{
 		if (null != ref)
 		{
@@ -1026,7 +1026,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:attributeGroup (reference)
 	 */
-	private XMLAttributeGroup<A> attribGroupRefTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final String targetNamespace) throws XMLStreamException, XMLAttributeGroupException, SmAbortException
+	private XMLAttributeGroup<A> attribGroupRefTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final String targetNamespace) throws XMLStreamException, XMLAttributeGroupException, AbortException
 	{
 		final QName ref;
 		try
@@ -1073,7 +1073,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		{
 			attributeGroup = cache.dereferenceAttributeGroup(ref, reader.getLocation(), false);
 		}
-		catch (final SmException e)
+		catch (final SchemaException e)
 		{
 			skipTag(reader);
 			throw new XMLAttributeGroupException(e);
@@ -1143,7 +1143,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:attributeGroup (global definition)
 	 */
-	private XMLAttributeGroup<A> attribGroupTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLAttributeGroupException, SmAbortException
+	private XMLAttributeGroup<A> attribGroupTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLAttributeGroupException, AbortException
 	{
 		final XMLAttributeGroup<A> attributeGroup;
 		final LinkedList<XMLAttributeUse<A>> savedLocalAttributes;
@@ -1156,7 +1156,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			{
 				attributeGroup = cache.registerAttributeGroup(requiredNCName(LN_NAME, targetNamespace, reader), getFrozenLocation(reader.getLocation()));
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				skipTag(reader);
 				throw new XMLAttributeGroupException(e);
@@ -1175,7 +1175,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 																																			 * exist
 																																			 */);
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				skipTag(reader);
 				throw new XMLAttributeGroupException(e);
@@ -1339,7 +1339,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:attribute (reference or local definition)
 	 */
-	private void attributeLocalTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace, final LinkedList<XMLAttributeUse<A>> attributeUses, final HashSet<QName> prohibited, final XMLScope<A> scope) throws XMLStreamException, SmAbortException
+	private void attributeLocalTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace, final LinkedList<XMLAttributeUse<A>> attributeUses, final HashSet<QName> prohibited, final XMLScope<A> scope) throws XMLStreamException, AbortException
 	{
 		String name = null;
 		XMLTypeRef<A> type = null;
@@ -1389,7 +1389,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						qualified = qualified(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -1404,7 +1404,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						name = name(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -1430,7 +1430,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						use = use(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -1471,7 +1471,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		{
 			attribute = determineLocalAttribute(name, qualified, ref, cache, reader, targetNamespace, scope);
 		}
-		catch (final SmException e)
+		catch (final SchemaException e)
 		{
 			m_errors.error(e);
 			skipTag(reader);
@@ -1581,14 +1581,14 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:attribute (global definition).
 	 */
-	private XMLAttribute<A> attributeTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final String targetNamespace) throws XMLStreamException, XMLAttributeException, SmAbortException
+	private XMLAttribute<A> attributeTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final String targetNamespace) throws XMLStreamException, XMLAttributeException, AbortException
 	{
 		final XMLAttribute<A> attribute;
 		try
 		{
 			attribute = cache.registerAttribute(requiredNCName(LN_NAME, targetNamespace, reader), getFrozenLocation(reader.getLocation()));
 		}
-		catch (final SmException e)
+		catch (final SchemaException e)
 		{
 			skipTag(reader);
 			throw new XMLAttributeException(e);
@@ -1740,7 +1740,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * This function is common to extension and restriction of simple content.
 	 */
-	private QName baseTypeDefinitionInComplexContent(final XMLType<A> complexType, final SmDerivationMethod derivation, final XMLStreamReader reader, final boolean redefine, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final String targetNamespace) throws SmException, SmAbortException
+	private QName baseTypeDefinitionInComplexContent(final XMLType<A> complexType, final DerivationMethod derivation, final XMLStreamReader reader, final boolean redefine, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final String targetNamespace) throws SchemaException, AbortException
 	{
 		final QName baseName = requiredQName(LN_BASE, module.isChameleon(), targetNamespace, reader);
 		ensureReferenceType(baseName, reader.getLocation(), redefine, cache);
@@ -1755,7 +1755,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * Used to ensure that a child xs:annotation occurs a maximumn number of once.
 	 */
-	private boolean checkAnnotationMaxOccursUnity(final boolean allowed, final String contextName, final Location location) throws SmAbortException
+	private boolean checkAnnotationMaxOccursUnity(final boolean allowed, final String contextName, final Location location) throws AbortException
 	{
 		return checkWxsElementMaxOccursUnity(allowed, contextName, LN_ANNOTATION, location);
 	}
@@ -1774,13 +1774,13 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 *            The module being parsed - used to record the xs:ID values to ensure uniqueness.
 	 * @return The xs:ID value as a String.
 	 */
-	private A checkID(final String attributeValue, final Location location, final QName elementName, final XMLSchemaModule<A> module) throws SmAbortException
+	private A checkID(final String attributeValue, final Location location, final QName elementName, final XMLSchemaModule<A> module) throws AbortException
 	{
 		try
 		{
 			return checkIDValue(attributeValue, location, module);
 		}
-		catch (final SmSimpleTypeException e)
+		catch (final SimpleTypeException e)
 		{
 			reportAttributeUseError(elementName, new QName(LN_ID), location, e);
 		}
@@ -1793,7 +1793,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return null;
 	}
 
-	private A checkIDValue(final String strval, final Location location, final XMLSchemaModule<A> module) throws SmSimpleTypeException, SmDuplicateIDException
+	private A checkIDValue(final String strval, final Location location, final XMLSchemaModule<A> module) throws SimpleTypeException, SmDuplicateIDException
 	{
 		PreCondition.assertArgumentNotNull(strval, LN_ID);
 
@@ -1804,9 +1804,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		{
 			value = idType.validate(strval);
 		}
-		catch (final SmDatatypeException cause)
+		catch (final DatatypeException cause)
 		{
-			throw new SmSimpleTypeException(strval, idType, cause);
+			throw new SimpleTypeException(strval, idType, cause);
 		}
 		if (value.size() > 0)
 		{
@@ -1827,20 +1827,20 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void checkPrefixBound(final String prefix, final String namespaceURI, final String initialValue) throws SmSimpleTypeException
+	private void checkPrefixBound(final String prefix, final String namespaceURI, final String initialValue) throws SimpleTypeException
 	{
 		if (!isBoundPrefix(prefix, namespaceURI))
 		{
 			final SrcPrefixNotFoundException cause = new SrcPrefixNotFoundException(prefix);
-			final SmDatatypeException dte = new SmDatatypeException(initialValue, null, cause);
-			throw new SmSimpleTypeException(initialValue, null, dte);
+			final DatatypeException dte = new DatatypeException(initialValue, null, cause);
+			throw new SimpleTypeException(initialValue, null, dte);
 		}
 	}
 
 	/**
 	 * Used to ensure that a particular child element occurs a maximum number of once.
 	 */
-	private boolean checkWxsElementMaxOccursUnity(final boolean missing, final String contextName, final String unexpectedName, final Location location) throws SmAbortException
+	private boolean checkWxsElementMaxOccursUnity(final boolean missing, final String contextName, final String unexpectedName, final Location location) throws AbortException
 	{
 		if (!missing)
 		{
@@ -1853,7 +1853,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * xs:complexContent <br/>
 	 * We don't return anything because this affects multiple aspects of the complex type.
 	 */
-	private void complexContentTag(final XMLType<A> complexType, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, SmAbortException
+	private void complexContentTag(final XMLType<A> complexType, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		// System.out.println(StripQualifiers.strip(getClass().getName()) +
 		// ".complexContentTag(complexType=" + complexType + ", mixed=" + mixed
@@ -1880,7 +1880,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							complexType.m_contentKind = XMLContentTypeKind.Mixed;
 						}
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -1980,7 +1980,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * This does not correspond to a specific tag. <br/>
 	 * Used to parse the content of xs:complexType (global and local), but not the same as xs:complexContent.
 	 */
-	private void complexTypeContent(final XMLType<A> complexType, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLStreamReader reader, final boolean redefine, final String targetNamespace) throws XMLStreamException, SmAbortException
+	private void complexTypeContent(final XMLType<A> complexType, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLStreamReader reader, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		final CmMachine<String> machine = new CmMachine<String>(complexTypeTable, EPSILON);
 		boolean done = false;
@@ -2023,7 +2023,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 									try
 									{
-										complexType.m_contentModel = compositorOutsideGroupTag(SmModelGroup.SmCompositor.All, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.All, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
 									}
 									catch (final XMLCompositorOutsideGroupException e)
 									{
@@ -2035,7 +2035,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 									try
 									{
-										complexType.m_contentModel = compositorOutsideGroupTag(SmModelGroup.SmCompositor.Choice, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Choice, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
 									}
 									catch (final XMLCompositorOutsideGroupException e)
 									{
@@ -2047,7 +2047,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 									try
 									{
-										complexType.m_contentModel = compositorOutsideGroupTag(SmModelGroup.SmCompositor.Sequence, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Sequence, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
 									}
 									catch (final XMLCompositorOutsideGroupException e)
 									{
@@ -2129,7 +2129,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:complexType (global definition)
 	 */
-	private XMLType<A> complexTypeGlobalTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLComplexTypeException, SmAbortException
+	private XMLType<A> complexTypeGlobalTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLComplexTypeException, AbortException
 	{
 		final XMLType<A> complexType;
 		if (!redefine)
@@ -2138,14 +2138,14 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			{
 				complexType = cache.registerType(requiredNCName(LN_NAME, targetNamespace, reader), getFrozenLocation(reader.getLocation()));
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				skipTag(reader);
 				throw new XMLComplexTypeException(e);
 			}
 
 			complexType.setComplexFlag();
-			complexType.setBase(ANY_TYPE, SmDerivationMethod.Restriction);
+			complexType.setBase(ANY_TYPE, DerivationMethod.Restriction);
 			complexType.getBlock().addAll(module.blockDefault);
 		}
 		else
@@ -2154,7 +2154,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			{
 				complexType = cache.dereferenceType(requiredNCName(LN_NAME, targetNamespace, reader), reader.getLocation(), redefine);
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				skipTag(reader);
 				throw new XMLComplexTypeException(e);
@@ -2181,7 +2181,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							complexType.m_contentKind = XMLContentTypeKind.Mixed;
 						}
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -2192,7 +2192,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						complexType.setAbstractFlag(trueOrFalse(reader.getAttributeValue(i)));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -2201,9 +2201,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				{
 					try
 					{
-						control(reader.getAttributeValue(i), EnumSet.of(SmDerivationMethod.Extension, SmDerivationMethod.Restriction), complexType.getBlock());
+						control(reader.getAttributeValue(i), EnumSet.of(DerivationMethod.Extension, DerivationMethod.Restriction), complexType.getBlock());
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -2212,9 +2212,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				{
 					try
 					{
-						control(reader.getAttributeValue(i), EnumSet.of(SmDerivationMethod.Extension, SmDerivationMethod.Restriction), complexType.getFinal());
+						control(reader.getAttributeValue(i), EnumSet.of(DerivationMethod.Extension, DerivationMethod.Restriction), complexType.getFinal());
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -2254,11 +2254,11 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:complexType (local definition)
 	 */
-	private XMLTypeRef<A> complexTypeLocalTag(final XMLScope<A> scope, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, SmAbortException
+	private XMLTypeRef<A> complexTypeLocalTag(final XMLScope<A> scope, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		final XMLType<A> complexType = cache.registerAnonymousType(scope, getFrozenLocation(reader.getLocation()));
 		complexType.setComplexFlag();
-		complexType.setBase(ANY_TYPE, SmDerivationMethod.Restriction);
+		complexType.setBase(ANY_TYPE, DerivationMethod.Restriction);
 
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
@@ -2276,7 +2276,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							complexType.m_contentKind = XMLContentTypeKind.Mixed;
 						}
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -2308,7 +2308,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:sequence, xs:choice or xs:all (outside a group)
 	 */
-	private XMLParticleWithModelGroupTerm<A> compositorOutsideGroupTag(final SmModelGroup.SmCompositor compositor, final XMLScope<A> compositorScope, final String contextName, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLCompositorOutsideGroupException, SmAbortException
+	private XMLParticleWithModelGroupTerm<A> compositorOutsideGroupTag(final ModelGroup.SmCompositor compositor, final XMLScope<A> compositorScope, final String contextName, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLCompositorOutsideGroupException, AbortException
 	{
 		final XMLModelGroup<A> group = new XMLModelGroup<A>(compositor, compositorScope, getFrozenLocation(reader.getLocation()));
 
@@ -2450,12 +2450,12 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							}
 							else if (LN_CHOICE.equals(localName))
 							{
-								group.getParticles().add(PreCondition.assertNotNull(compositorOutsideGroupTag(SmModelGroup.SmCompositor.Choice, new XMLScope<A>(group), contextName, reader, cache, module, redefine, targetNamespace)));
+								group.getParticles().add(PreCondition.assertNotNull(compositorOutsideGroupTag(ModelGroup.SmCompositor.Choice, new XMLScope<A>(group), contextName, reader, cache, module, redefine, targetNamespace)));
 								firstElement = false;
 							}
 							else if (LN_SEQUENCE.equals(localName))
 							{
-								group.getParticles().add(PreCondition.assertNotNull(compositorOutsideGroupTag(SmModelGroup.SmCompositor.Sequence, new XMLScope<A>(group), contextName, reader, cache, module, redefine, targetNamespace)));
+								group.getParticles().add(PreCondition.assertNotNull(compositorOutsideGroupTag(ModelGroup.SmCompositor.Sequence, new XMLScope<A>(group), contextName, reader, cache, module, redefine, targetNamespace)));
 								firstElement = false;
 							}
 							else if (LN_ANY.equals(localName))
@@ -2509,7 +2509,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:sequence, xs:choice or xs:all (within a group)
 	 */
-	private XMLModelGroup<A> compositorWithinGroupTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLModelGroup<A> group, final String contextName, final boolean redefine, final String targetNamespace) throws XMLStreamException, SmAbortException
+	private XMLModelGroup<A> compositorWithinGroupTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLModelGroup<A> group, final String contextName, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
@@ -2649,7 +2649,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									{
 										try
 										{
-											group.getParticles().add(PreCondition.assertNotNull(compositorOutsideGroupTag(SmModelGroup.SmCompositor.Choice, new XMLScope<A>(group), localName, reader, cache, module, redefine, targetNamespace)));
+											group.getParticles().add(PreCondition.assertNotNull(compositorOutsideGroupTag(ModelGroup.SmCompositor.Choice, new XMLScope<A>(group), localName, reader, cache, module, redefine, targetNamespace)));
 										}
 										catch (final XMLCompositorOutsideGroupException e)
 										{
@@ -2679,7 +2679,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									{
 										try
 										{
-											group.getParticles().add(PreCondition.assertNotNull(compositorOutsideGroupTag(SmModelGroup.SmCompositor.Sequence, new XMLScope<A>(group), localName, reader, cache, module, redefine, targetNamespace)));
+											group.getParticles().add(PreCondition.assertNotNull(compositorOutsideGroupTag(ModelGroup.SmCompositor.Sequence, new XMLScope<A>(group), localName, reader, cache, module, redefine, targetNamespace)));
 										}
 										catch (final XMLCompositorOutsideGroupException e)
 										{
@@ -2774,7 +2774,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * Use to parse the LN_BLOCK and LN_FINAL attributes that control substitution and derivation.
 	 */
-	private void control(final String strval, final EnumSet<SmDerivationMethod> allValue, final EnumSet<SmDerivationMethod> resultSet) throws SmSimpleTypeException
+	private void control(final String strval, final EnumSet<DerivationMethod> allValue, final EnumSet<DerivationMethod> resultSet) throws SimpleTypeException
 	{
 		resultSet.clear();
 
@@ -2790,69 +2790,69 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				final String token = tokenizer.nextToken();
 				if (token.equals("extension"))
 				{
-					if (allValue.contains(SmDerivationMethod.Extension))
+					if (allValue.contains(DerivationMethod.Extension))
 					{
-						resultSet.add(SmDerivationMethod.Extension);
+						resultSet.add(DerivationMethod.Extension);
 					}
 					else
 					{
-						final SmDatatypeException cause = new SmDatatypeException(token, null);
-						throw new SmSimpleTypeException(strval, null, cause);
+						final DatatypeException cause = new DatatypeException(token, null);
+						throw new SimpleTypeException(strval, null, cause);
 					}
 				}
 				else if (token.equals("restriction"))
 				{
-					if (allValue.contains(SmDerivationMethod.Restriction))
+					if (allValue.contains(DerivationMethod.Restriction))
 					{
-						resultSet.add(SmDerivationMethod.Restriction);
+						resultSet.add(DerivationMethod.Restriction);
 					}
 					else
 					{
-						final SmDatatypeException cause = new SmDatatypeException(token, null);
-						throw new SmSimpleTypeException(strval, null, cause);
+						final DatatypeException cause = new DatatypeException(token, null);
+						throw new SimpleTypeException(strval, null, cause);
 					}
 				}
 				else if (token.equals("substitution"))
 				{
-					if (allValue.contains(SmDerivationMethod.Substitution))
+					if (allValue.contains(DerivationMethod.Substitution))
 					{
-						resultSet.add(SmDerivationMethod.Substitution);
+						resultSet.add(DerivationMethod.Substitution);
 					}
 					else
 					{
-						final SmDatatypeException cause = new SmDatatypeException(token, null);
-						throw new SmSimpleTypeException(strval, null, cause);
+						final DatatypeException cause = new DatatypeException(token, null);
+						throw new SimpleTypeException(strval, null, cause);
 					}
 				}
 				else if (token.equals("union"))
 				{
-					if (allValue.contains(SmDerivationMethod.Union))
+					if (allValue.contains(DerivationMethod.Union))
 					{
-						resultSet.add(SmDerivationMethod.Union);
+						resultSet.add(DerivationMethod.Union);
 					}
 					else
 					{
-						final SmDatatypeException cause = new SmDatatypeException(token, null);
-						throw new SmSimpleTypeException(strval, null, cause);
+						final DatatypeException cause = new DatatypeException(token, null);
+						throw new SimpleTypeException(strval, null, cause);
 					}
 				}
 				else if (token.equals("list"))
 				{
-					if (allValue.contains(SmDerivationMethod.List))
+					if (allValue.contains(DerivationMethod.List))
 					{
-						resultSet.add(SmDerivationMethod.List);
+						resultSet.add(DerivationMethod.List);
 					}
 					else
 					{
-						final SmDatatypeException cause = new SmDatatypeException(token, null);
-						throw new SmSimpleTypeException(strval, null, cause);
+						final DatatypeException cause = new DatatypeException(token, null);
+						throw new SimpleTypeException(strval, null, cause);
 					}
 				}
 				else
 				{
 					final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.UNTYPED_ATOMIC);
-					final SmDatatypeException cause = new SmDatatypeException(token, atomicType);
-					throw new SmSimpleTypeException(strval, atomicType, cause);
+					final DatatypeException cause = new DatatypeException(token, atomicType);
+					throw new SimpleTypeException(strval, atomicType, cause);
 				}
 			}
 		}
@@ -2883,7 +2883,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private XMLAttribute<A> determineLocalAttribute(final String name, final boolean qualified, final QName ref, final XMLSchemaCache<A> cache, final XMLStreamReader parser, final String targetNamespace, final XMLScope<A> scope) throws SmException
+	private XMLAttribute<A> determineLocalAttribute(final String name, final boolean qualified, final QName ref, final XMLSchemaCache<A> cache, final XMLStreamReader parser, final String targetNamespace, final XMLScope<A> scope) throws SchemaException
 	{
 		if (null != name)
 		{
@@ -2922,7 +2922,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * Determines whether the local element is a local definition or a reference. <br/>
 	 * Imposes the constraint that one of the ref and name must be present, but not both.
 	 */
-	private XMLElement<A> determineLocalElement(final String name, final boolean qualified, final XMLTypeRef<A> typeRef, final QName ref, final XMLSchemaCache<A> cache, final XMLStreamReader parser, final String targetNamespace, final XMLScope<A> scope) throws SmException
+	private XMLElement<A> determineLocalElement(final String name, final boolean qualified, final XMLTypeRef<A> typeRef, final QName ref, final XMLSchemaCache<A> cache, final XMLStreamReader parser, final String targetNamespace, final XMLScope<A> scope) throws SchemaException
 	{
 		if ((null != name) && (null == ref))
 		{
@@ -2953,7 +2953,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void documentationTag(final XMLStreamReader reader) throws XMLStreamException, SmAbortException
+	private void documentationTag(final XMLStreamReader reader) throws XMLStreamException, AbortException
 	{
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
@@ -2968,7 +2968,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						/* final URI source = */anyURI(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -2987,7 +2987,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						/* final String language = */lang(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -3047,7 +3047,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void elementContent(final XMLElement<A> element, final QName ref, final XMLSchemaModule<A> module, final XMLSchemaCache<A> cache, final XMLStreamReader reader, final boolean redefine, final String targetNamespace, final boolean seenType) throws XMLStreamException, SmAbortException
+	private void elementContent(final XMLElement<A> element, final QName ref, final XMLSchemaModule<A> module, final XMLSchemaCache<A> cache, final XMLStreamReader reader, final boolean redefine, final String targetNamespace, final boolean seenType) throws XMLStreamException, AbortException
 	{
 		boolean firstElement = true;
 		boolean done = false;
@@ -3171,7 +3171,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:element (reference or local definition)
 	 */
-	private XMLParticle<A> elementLocalTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace, final XMLScope<A> scope) throws XMLStreamException, XMLElementException, SmAbortException
+	private XMLParticle<A> elementLocalTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace, final XMLScope<A> scope) throws XMLStreamException, XMLElementException, AbortException
 	{
 		String name = null;
 		XMLTypeRef<A> typeRef = null;
@@ -3179,7 +3179,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		BigInteger minOccurs = BigInteger.ONE;
 		BigInteger maxOccurs = BigInteger.ONE;
 		boolean nillable = false;
-		final EnumSet<SmDerivationMethod> block = EnumSet.copyOf(module.blockDefault);
+		final EnumSet<DerivationMethod> block = EnumSet.copyOf(module.blockDefault);
 		boolean qualified = module.elementQualified;
 		XMLValueConstraint valueConstraint = null;
 
@@ -3195,9 +3195,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					assertRefAbsent(ref, reader.getLocation());
 					try
 					{
-						control(reader.getAttributeValue(i), EnumSet.of(SmDerivationMethod.Extension, SmDerivationMethod.Restriction, SmDerivationMethod.Substitution), block);
+						control(reader.getAttributeValue(i), EnumSet.of(DerivationMethod.Extension, DerivationMethod.Restriction, DerivationMethod.Substitution), block);
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -3233,7 +3233,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						qualified = qualified(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -3256,7 +3256,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						name = name(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -3268,7 +3268,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						nillable = trueOrFalse(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -3310,7 +3310,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		{
 			element = determineLocalElement(name, qualified, typeRef, ref, cache, reader, targetNamespace, scope);
 		}
-		catch (final SmException e)
+		catch (final SchemaException e)
 		{
 			skipTag(reader);
 			throw new XMLElementException(e);
@@ -3335,20 +3335,20 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:element (global definition)
 	 */
-	private XMLElement<A> elementTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final String targetNamespace) throws XMLStreamException, XMLElementException, SmAbortException
+	private XMLElement<A> elementTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final String targetNamespace) throws XMLStreamException, XMLElementException, AbortException
 	{
 		final XMLElement<A> element;
 		try
 		{
 			element = cache.registerElement(requiredNCName(LN_NAME, targetNamespace, reader), getFrozenLocation(reader.getLocation()));
 		}
-		catch (final SmException e)
+		catch (final SchemaException e)
 		{
 			skipTag(reader);
 			throw new XMLElementException(e);
 		}
 
-		for (final SmDerivationMethod derivation : module.blockDefault)
+		for (final DerivationMethod derivation : module.blockDefault)
 		{
 			// Note: blockDefault may contain other values than extension,
 			// restriction or substitution.
@@ -3358,7 +3358,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			}
 		}
 
-		for (final SmDerivationMethod derivation : module.finalDefault)
+		for (final DerivationMethod derivation : module.finalDefault)
 		{
 			// Note: finalDefault may contain other values than extension or
 			// restriction.
@@ -3383,7 +3383,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						element.setAbstractFlag(trueOrFalse(reader.getAttributeValue(i)));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -3392,9 +3392,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				{
 					try
 					{
-						control(reader.getAttributeValue(i), EnumSet.of(SmDerivationMethod.Extension, SmDerivationMethod.Restriction, SmDerivationMethod.Substitution), element.getBlock());
+						control(reader.getAttributeValue(i), EnumSet.of(DerivationMethod.Extension, DerivationMethod.Restriction, DerivationMethod.Substitution), element.getBlock());
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -3425,9 +3425,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				{
 					try
 					{
-						control(reader.getAttributeValue(i), EnumSet.of(SmDerivationMethod.Extension, SmDerivationMethod.Restriction), element.getFinal());
+						control(reader.getAttributeValue(i), EnumSet.of(DerivationMethod.Extension, DerivationMethod.Restriction), element.getFinal());
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -3446,7 +3446,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						element.setNillableFlag(trueOrFalse(reader.getAttributeValue(i)));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -3458,7 +3458,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 						final QName elemName = resolveUsingXMLNamespaces(reader.getAttributeValue(i), reader.getNamespaceContext());
 						element.substitutionGroup = cache.dereferenceElement(elemName, reader.getLocation());
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -3501,7 +3501,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * Reference to a global element declaration or local definition (local definitions cannot be referenced). The
 	 * number of occurrences can only be zero or one when xs:element is used within xs:all.
 	 */
-	private XMLParticle<A> elementWithinAllTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace, final XMLScope<A> scope) throws XMLStreamException, XMLElementException, SmAbortException
+	private XMLParticle<A> elementWithinAllTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace, final XMLScope<A> scope) throws XMLStreamException, XMLElementException, AbortException
 	{
 		String name = null;
 		XMLTypeRef<A> typeRef = null;
@@ -3509,7 +3509,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		BigInteger minOccurs = BigInteger.ONE;
 		BigInteger maxOccurs = BigInteger.ONE;
 		boolean nillable = false;
-		final EnumSet<SmDerivationMethod> block = EnumSet.copyOf(module.blockDefault);
+		final EnumSet<DerivationMethod> block = EnumSet.copyOf(module.blockDefault);
 		boolean qualified = module.elementQualified;
 		XMLValueConstraint valueConstraint = null;
 
@@ -3525,9 +3525,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					assertRefAbsent(ref, reader.getLocation());
 					try
 					{
-						control(reader.getAttributeValue(i), EnumSet.of(SmDerivationMethod.Extension, SmDerivationMethod.Restriction, SmDerivationMethod.Substitution), block);
+						control(reader.getAttributeValue(i), EnumSet.of(DerivationMethod.Extension, DerivationMethod.Restriction, DerivationMethod.Substitution), block);
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -3563,7 +3563,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						qualified = qualified(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -3574,7 +3574,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						name = name(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -3611,7 +3611,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						nillable = trueOrFalse(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -3636,7 +3636,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		{
 			element = determineLocalElement(name, qualified, typeRef, ref, cache, reader, targetNamespace, scope);
 		}
-		catch (final SmException e)
+		catch (final SchemaException e)
 		{
 			skipTag(reader);
 			throw new XMLElementException(e);
@@ -3650,7 +3650,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return new XMLParticleWithElementTerm<A>(minOccurs, maxOccurs, element, valueConstraint, getFrozenLocation(reader.getLocation()));
 	}
 
-	private void ensureReferenceType(final QName name, final Location location, final boolean mustExist, final XMLSchemaCache<A> cache) throws SmAbortException
+	private void ensureReferenceType(final QName name, final Location location, final boolean mustExist, final XMLSchemaCache<A> cache) throws AbortException
 	{
 		PreCondition.assertArgumentNotNull(name);
 
@@ -3665,7 +3665,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			{
 				cache.dereferenceType(name, location, mustExist);
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				m_errors.error(e);
 			}
@@ -3675,7 +3675,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:enumeration
 	 */
-	private XMLEnumeration<A> enumerationTag(final XMLType<A> simpleType, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, SmAbortException
+	private XMLEnumeration<A> enumerationTag(final XMLType<A> simpleType, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
 	{
 		final XMLEnumeration<A> enumeration = new XMLEnumeration<A>(simpleType, getFrozenLocation(reader.getLocation()));
 
@@ -3777,7 +3777,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * private ParticleWithModelGroupTerm<A> mangleCompositor(final boolean effectiveMixed, final
 	 * ParticleWithModelGroupTerm<A> particle) { final ModelGroupImpl<A> term = particle.getTerm(); switch
 	 * (term.getCompositor()) { case All: { if (term.getParticles().isEmpty()) { if (effectiveMixed) {
-	 * particle.setMinOccurs(1); particle.setMaxOccurs(1); term.m_compositor = SmModelGroup.Compositor.Sequence; return
+	 * particle.setMinOccurs(1); particle.setMaxOccurs(1); term.m_compositor = ModelGroup.Compositor.Sequence; return
 	 * particle; } else { return null; } } else { return particle; } } case Sequence: { if
 	 * (term.getParticles().isEmpty()) { if (effectiveMixed) { particle.setMinOccurs(1); particle.setMaxOccurs(1);
 	 * return particle; } else { return null; } } else { return particle; } } case Choice: { if
@@ -3795,7 +3795,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * xs:extension (complex content) <br/>
 	 * We don't return anything because this affects multiple aspects of the complex type.
 	 */
-	private void extensionInComplexContentTag(final XMLType<A> complexType, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, SmAbortException
+	private void extensionInComplexContentTag(final XMLType<A> complexType, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		// System.out.println(StripQualifiers.strip(getClass().getName()) +
 		// ".extensionInComplexContentTag(complexType=" + complexType +
@@ -3806,7 +3806,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			if (!redefine)
 			{
 				redefineType = null;
-				baseTypeDefinitionInComplexContent(complexType, SmDerivationMethod.Extension, reader, redefine, cache, module, targetNamespace);
+				baseTypeDefinitionInComplexContent(complexType, DerivationMethod.Extension, reader, redefine, cache, module, targetNamespace);
 			}
 			else
 			{
@@ -3890,7 +3890,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 										complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 										try
 										{
-											complexType.m_contentModel = compositorOutsideGroupTag(SmModelGroup.SmCompositor.All, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+											complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.All, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
 										}
 										catch (final XMLCompositorOutsideGroupException e)
 										{
@@ -3902,7 +3902,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 										complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 										try
 										{
-											complexType.m_contentModel = compositorOutsideGroupTag(SmModelGroup.SmCompositor.Choice, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+											complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Choice, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
 										}
 										catch (final XMLCompositorOutsideGroupException e)
 										{
@@ -3913,7 +3913,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									{
 										try
 										{
-											final XMLParticleWithModelGroupTerm<A> contentModel = compositorOutsideGroupTag(SmModelGroup.SmCompositor.Sequence, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+											final XMLParticleWithModelGroupTerm<A> contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Sequence, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
 											if (!redefine)
 											{
 												complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
@@ -4001,7 +4001,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				}
 			}
 		}
-		catch (final SmException e)
+		catch (final SchemaException e)
 		{
 			m_errors.error(e);
 		}
@@ -4010,7 +4010,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:extension (simple content)
 	 */
-	private void extensionInSimpleContentTag(final XMLType<A> complexType, final XMLSchemaModule<A> module, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, SmAbortException
+	private void extensionInSimpleContentTag(final XMLType<A> complexType, final XMLSchemaModule<A> module, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		// When extending simple content we're adding attributes to this complex
 		// type.
@@ -4018,9 +4018,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		{
 			final QName baseName = requiredQName(LN_BASE, module.isChameleon(), targetNamespace, reader);
 			ensureReferenceType(baseName, reader.getLocation(), redefine, cache);
-			complexType.setBase(new XMLTypeRef<A>(baseName), SmDerivationMethod.Extension);
+			complexType.setBase(new XMLTypeRef<A>(baseName), DerivationMethod.Extension);
 		}
-		catch (final SmException e)
+		catch (final SchemaException e)
 		{
 			m_errors.error(e);
 		}
@@ -4143,7 +4143,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private SmRestrictedXPath fieldTag(final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, XMLFieldException, SmAbortException
+	private SmRestrictedXPath fieldTag(final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, XMLFieldException, AbortException
 	{
 		SmRestrictedXPath xpath = null;
 		final int attributeCount = reader.getAttributeCount();
@@ -4250,7 +4250,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		{
 			return trueOrFalse(strval);
 		}
-		catch (final SmSimpleTypeException e)
+		catch (final SimpleTypeException e)
 		{
 			throw new SmAttributeUseException(elementName, new QName(LN_FIXED), getFrozenLocation(location), e);
 		}
@@ -4259,7 +4259,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:fractionDigits
 	 */
-	private XMLFractionDigitsFacet<A> fractionDigitsTag(final XMLType<A> simpleType, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, SmComplexTypeException, SmAbortException
+	private XMLFractionDigitsFacet<A> fractionDigitsTag(final XMLType<A> simpleType, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, SmComplexTypeException, AbortException
 	{
 		final XMLFractionDigitsFacet<A> facet = new XMLFractionDigitsFacet<A>(simpleType, getFrozenLocation(reader.getLocation()));
 
@@ -4285,7 +4285,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						facet.value = nonNegativeInteger(strval);
 					}
-					catch (final SmSimpleTypeException ignore)
+					catch (final SimpleTypeException ignore)
 					{
 						throw new SmAttributeUseException(reader.getName(), reader.getAttributeName(i), getFrozenLocation(reader.getLocation()), ignore);
 					}
@@ -4368,7 +4368,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:group (reference)
 	 */
-	private XMLParticleWithModelGroupTerm<A> groupParticleTag(final XMLScope<A> localScope, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLModelGroupUseException, SmAbortException
+	private XMLParticleWithModelGroupTerm<A> groupParticleTag(final XMLScope<A> localScope, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLModelGroupUseException, AbortException
 	{
 		final QName ref;
 		BigInteger minOccurs = BigInteger.ONE;
@@ -4428,7 +4428,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			{
 				modelGroup = cache.dereferenceModelGroup(ref, reader.getLocation(), redefine);
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				skipTag(reader);
 				throw new XMLModelGroupUseException(e);
@@ -4436,7 +4436,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 		else
 		{
-			modelGroup = new XMLModelGroup<A>(SmModelGroup.SmCompositor.Sequence, localScope, getFrozenLocation(reader.getLocation()));
+			modelGroup = new XMLModelGroup<A>(ModelGroup.SmCompositor.Sequence, localScope, getFrozenLocation(reader.getLocation()));
 		}
 
 		boolean firstElement = true;
@@ -4504,7 +4504,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:group (definition)
 	 */
-	private XMLModelGroup<A> groupTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLModelGroupException, SmAbortException
+	private XMLModelGroup<A> groupTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLModelGroupException, AbortException
 	{
 		final XMLModelGroup<A> modelGroup;
 		if (!redefine)
@@ -4513,7 +4513,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			{
 				modelGroup = cache.registerModelGroup(requiredNCName(LN_NAME, targetNamespace, reader), getFrozenLocation(reader.getLocation()));
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				skipTag(reader);
 				throw new XMLModelGroupException(e);
@@ -4525,7 +4525,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			{
 				modelGroup = cache.dereferenceModelGroup(requiredNCName(LN_NAME, targetNamespace, reader), reader.getLocation(), redefine);
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				skipTag(reader);
 				throw new XMLModelGroupException(e);
@@ -4579,21 +4579,21 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							if (LN_SEQUENCE.equals(localName))
 							{
 								missingACS = checkWxsElementMaxOccursUnity(missingACS, LN_GROUP, LN_SEQUENCE, reader.getLocation());
-								modelGroup.setCompositor(SmModelGroup.SmCompositor.Sequence);
+								modelGroup.setCompositor(ModelGroup.SmCompositor.Sequence);
 								compositorWithinGroupTag(reader, cache, module, modelGroup, localName, redefine, targetNamespace);
 								firstElement = false;
 							}
 							else if (LN_CHOICE.equals(localName))
 							{
 								missingACS = checkWxsElementMaxOccursUnity(missingACS, LN_GROUP, LN_CHOICE, reader.getLocation());
-								modelGroup.setCompositor(SmModelGroup.SmCompositor.Choice);
+								modelGroup.setCompositor(ModelGroup.SmCompositor.Choice);
 								compositorWithinGroupTag(reader, cache, module, modelGroup, localName, redefine, targetNamespace);
 								firstElement = false;
 							}
 							else if (LN_ALL.equals(localName))
 							{
 								missingACS = checkWxsElementMaxOccursUnity(missingACS, LN_GROUP, LN_ALL, reader.getLocation());
-								modelGroup.setCompositor(SmModelGroup.SmCompositor.All);
+								modelGroup.setCompositor(ModelGroup.SmCompositor.All);
 								compositorWithinGroupTag(reader, cache, module, modelGroup, localName, redefine, targetNamespace);
 								firstElement = false;
 							}
@@ -4648,7 +4648,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return modelGroup;
 	}
 
-	private void importTag(final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLStreamReader reader, final String targetNamespace) throws XMLStreamException, SmAbortException
+	private void importTag(final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLStreamReader reader, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		PreCondition.assertArgumentNotNull(module, "module");
 		try
@@ -4668,7 +4668,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 						{
 							schemaLocation = anyURI(reader.getAttributeValue(i));
 						}
-						catch (final SmSimpleTypeException e)
+						catch (final SimpleTypeException e)
 						{
 							throw new SmAttributeUseException(reader.getName(), reader.getAttributeName(i), getFrozenLocation(reader.getLocation()), e);
 						}
@@ -4679,7 +4679,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 						{
 							namespace = anyURI(reader.getAttributeValue(i));
 						}
-						catch (final SmSimpleTypeException e)
+						catch (final SimpleTypeException e)
 						{
 							throw new SmAttributeUseException(reader.getName(), reader.getAttributeName(i), getFrozenLocation(reader.getLocation()), e);
 						}
@@ -4746,7 +4746,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void includeTag(final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLStreamReader reader) throws XMLStreamException, SmAbortException
+	private void includeTag(final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLStreamReader reader) throws XMLStreamException, AbortException
 	{
 		final int attributeCount = reader.getAttributeCount();
 		URI schemaLocation = null;
@@ -4762,7 +4762,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						schemaLocation = anyURI(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -4858,7 +4858,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return XMLConstants.W3C_XML_SCHEMA_NS_URI.equals(namespaceURI);
 	}
 
-	private XMLIdentityConstraint<A> keyrefTag(final XMLSchemaCache<A> cache, final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, XMLIdentityConstraintException, SmAbortException
+	private XMLIdentityConstraint<A> keyrefTag(final XMLSchemaCache<A> cache, final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, XMLIdentityConstraintException, AbortException
 	{
 		final XMLIdentityConstraint<A> keyref;
 		try
@@ -4869,7 +4869,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 			keyref = cache.registerIdentityConstraint(SmIdentityConstraintKind.KeyRef, name, getFrozenLocation(reader.getLocation()));
 		}
-		catch (final SmException e)
+		catch (final SchemaException e)
 		{
 			skipTag(reader);
 			throw new XMLIdentityConstraintException(e);
@@ -4894,7 +4894,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 						final QName reference = resolveUsingXMLNamespaces(reader.getAttributeValue(i), reader.getNamespaceContext());
 						keyref.keyConstraint = cache.dereferenceIdentityConstraint(reference, reader.getLocation());
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -5014,7 +5014,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return keyref;
 	}
 
-	private XMLIdentityConstraint<A> keyTag(final XMLSchemaCache<A> cache, final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, XMLIdentityConstraintException, SmAbortException
+	private XMLIdentityConstraint<A> keyTag(final XMLSchemaCache<A> cache, final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, XMLIdentityConstraintException, AbortException
 	{
 		final XMLIdentityConstraint<A> constraint;
 		try
@@ -5025,7 +5025,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 			constraint = cache.registerIdentityConstraint(SmIdentityConstraintKind.Key, name, getFrozenLocation(reader.getLocation()));
 		}
-		catch (final SmException e)
+		catch (final SchemaException e)
 		{
 			skipTag(reader);
 			throw new XMLIdentityConstraintException(e);
@@ -5157,7 +5157,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return constraint;
 	}
 
-	private String lang(final String initialValue) throws SmSimpleTypeException
+	private String lang(final String initialValue) throws SimpleTypeException
 	{
 		return validateString(initialValue, SmNativeType.LANGUAGE);
 	}
@@ -5165,7 +5165,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:length, xs:maxLength, xs:minLength
 	 */
-	private XMLLength<A> lengthTag(final XMLType<A> type, final boolean minimum, final boolean maximum, final String contextName, final XMLSchemaModule<A> module, final XMLStreamReader reader) throws XMLStreamException, SmComplexTypeException, SmAbortException
+	private XMLLength<A> lengthTag(final XMLType<A> type, final boolean minimum, final boolean maximum, final String contextName, final XMLSchemaModule<A> module, final XMLStreamReader reader) throws XMLStreamException, SmComplexTypeException, AbortException
 	{
 		final XMLLength<A> length = new XMLLength<A>(type, getFrozenLocation(reader.getLocation()));
 		final int attributeCount = reader.getAttributeCount();
@@ -5183,7 +5183,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 						{
 							length.minLength = nonNegativeInteger(reader.getAttributeValue(i));
 						}
-						catch (final SmSimpleTypeException e)
+						catch (final SimpleTypeException e)
 						{
 							reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 						}
@@ -5194,7 +5194,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 						{
 							length.maxLength = nonNegativeInteger(reader.getAttributeValue(i));
 						}
-						catch (final SmSimpleTypeException e)
+						catch (final SimpleTypeException e)
 						{
 							reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 						}
@@ -5286,9 +5286,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:list
 	 */
-	private void listTag(final XMLType<A> listType, final XMLSchemaModule<A> module, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, SmAbortException
+	private void listTag(final XMLType<A> listType, final XMLSchemaModule<A> module, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
-		listType.setBase(ANY_SIMPLE_TYPE, SmDerivationMethod.List);
+		listType.setBase(ANY_SIMPLE_TYPE, DerivationMethod.List);
 
 		// Use this to detect missing both itemType attribute and <simpleType>
 		// child.
@@ -5426,7 +5426,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * @param elementName
 	 *            The element name containing the attribute.
 	 */
-	private BigInteger maxOccurs(final String strval, final boolean unbounded, final Location location, final QName elementName) throws SmAbortException
+	private BigInteger maxOccurs(final String strval, final boolean unbounded, final Location location, final QName elementName) throws AbortException
 	{
 		if (unbounded)
 		{
@@ -5439,7 +5439,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		{
 			return nonNegativeInteger(strval);
 		}
-		catch (final SmSimpleTypeException e)
+		catch (final SimpleTypeException e)
 		{
 			reportAttributeUseError(elementName, new QName(LN_MAX_OCCURS), location, e);
 			return BigInteger.ONE;
@@ -5449,7 +5449,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:maxExclusive, xs:maxInclusive, xs:minExclusive, xs:minInclusive
 	 */
-	private XMLMinMaxFacet<A> minmaxTag(final XMLType<A> simpleType, final SmFacetKind kind, final String elementName, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, SmComplexTypeException, SmAbortException
+	private XMLMinMaxFacet<A> minmaxTag(final XMLType<A> simpleType, final SmFacetKind kind, final String elementName, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, SmComplexTypeException, AbortException
 	{
 		final XMLMinMaxFacet<A> minmax = new XMLMinMaxFacet<A>(kind, elementName, simpleType, getFrozenLocation(reader.getLocation()));
 
@@ -5557,20 +5557,20 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * @param elementName
 	 *            The element name containing the attribute.
 	 */
-	private BigInteger minOccurs(final String strval, final Location location, QName elementName) throws SmAbortException
+	private BigInteger minOccurs(final String strval, final Location location, QName elementName) throws AbortException
 	{
 		try
 		{
 			return nonNegativeInteger(strval);
 		}
-		catch (final SmSimpleTypeException e)
+		catch (final SimpleTypeException e)
 		{
 			m_errors.error(new SmAttributeUseException(elementName, new QName(LN_MIN_OCCURS), getFrozenLocation(location), e));
 			return BigInteger.ONE;
 		}
 	}
 
-	private String name(final String initialValue) throws SmSimpleTypeException
+	private String name(final String initialValue) throws SimpleTypeException
 	{
 		final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.NCNAME);
 		try
@@ -5585,13 +5585,13 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				return null;
 			}
 		}
-		catch (final SmDatatypeException cause)
+		catch (final DatatypeException cause)
 		{
-			throw new SmSimpleTypeException(initialValue, atomicType, cause);
+			throw new SimpleTypeException(initialValue, atomicType, cause);
 		}
 	}
 
-	private SmNamespaceConstraint namespaces(final String initialValue, final String targetNamespace) throws SmSimpleTypeException
+	private SmNamespaceConstraint namespaces(final String initialValue, final String targetNamespace) throws SimpleTypeException
 	{
 		final String strval = initialValue.trim();
 
@@ -5634,15 +5634,15 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				}
 				else
 				{
-					final SmDatatypeException cause = new SmDatatypeException(strval, null);
-					throw new SmSimpleTypeException(strval, null, cause);
+					final DatatypeException cause = new DatatypeException(strval, null);
+					throw new SimpleTypeException(strval, null, cause);
 				}
 			}
 			return SmNamespaceConstraint.include(namespaces, nameSource);
 		}
 	}
 
-	private BigInteger nonNegativeInteger(final String initialValue) throws SmSimpleTypeException
+	private BigInteger nonNegativeInteger(final String initialValue) throws SimpleTypeException
 	{
 		final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.NON_NEGATIVE_INTEGER);
 		try
@@ -5657,23 +5657,23 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				return null;
 			}
 		}
-		catch (final SmDatatypeException cause)
+		catch (final DatatypeException cause)
 		{
-			throw new SmSimpleTypeException(initialValue, atomicType, cause);
+			throw new SimpleTypeException(initialValue, atomicType, cause);
 		}
 	}
 
 	/**
 	 * xs:notation
 	 */
-	private XMLNotation<A> notationTag(final XMLSchemaCache<A> cache, final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, XMLNotationException, SmAbortException
+	private XMLNotation<A> notationTag(final XMLSchemaCache<A> cache, final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, XMLNotationException, AbortException
 	{
 		final XMLNotation<A> notation;
 		try
 		{
 			notation = cache.registerNotation(requiredNCName(LN_NAME, targetNamespace, reader), getFrozenLocation(reader.getLocation()));
 		}
-		catch (final SmException e)
+		catch (final SchemaException e)
 		{
 			skipTag(reader);
 			throw new XMLNotationException(e);
@@ -5696,7 +5696,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						notation.publicId = token(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -5707,7 +5707,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						notation.systemId = anyURI(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -5752,7 +5752,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				{
 					return resolveUsingTargetNamespace(initialValue, targetNamespace, reader.getNamespaceContext());
 				}
-				catch (final SmSimpleTypeException e)
+				catch (final SimpleTypeException e)
 				{
 					throw new SmAttributeUseException(reader.getName(), new QName(attributeName), getFrozenLocation(reader.getLocation()), e);
 				}
@@ -5763,7 +5763,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				{
 					return resolveUsingXMLNamespaces(initialValue, reader.getNamespaceContext());
 				}
-				catch (final SmSimpleTypeException e)
+				catch (final SimpleTypeException e)
 				{
 					throw new SmAttributeUseException(reader.getName(), new QName(attributeName), getFrozenLocation(reader.getLocation()), e);
 				}
@@ -5772,7 +5772,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return null;
 	}
 
-	public void parse(final URI systemId, final InputStream istream, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module) throws SmAbortException
+	public void parse(final URI systemId, final InputStream istream, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module) throws AbortException
 	{
 		PreCondition.assertArgumentNotNull(cache, "cache");
 		PreCondition.assertArgumentNotNull(module, "module");
@@ -5889,7 +5889,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void parseExternalModule(final XMLSchemaCache<A> cache, final XMLSchemaModule<A> parent, final Location location, final URI namespace, final URI schemaLocation, final ModuleKind moduleKind) throws SmAbortException
+	private void parseExternalModule(final XMLSchemaCache<A> cache, final XMLSchemaModule<A> parent, final Location location, final URI namespace, final URI schemaLocation, final ModuleKind moduleKind) throws AbortException
 	{
 		PreCondition.assertArgumentNotNull(schemaLocation, "schemaLocation");
 
@@ -5947,7 +5947,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:pattern
 	 */
-	private XMLPatternFacet<A> patternTag(final XMLType<A> simpleType, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, SmAbortException
+	private XMLPatternFacet<A> patternTag(final XMLType<A> simpleType, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
 	{
 		final XMLPatternFacet<A> pattern = new XMLPatternFacet<A>(simpleType, getFrozenLocation(reader.getLocation()));
 
@@ -6041,7 +6041,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return pattern;
 	}
 
-	private BigInteger positiveInteger(final String initialValue) throws SmSimpleTypeException
+	private BigInteger positiveInteger(final String initialValue) throws SimpleTypeException
 	{
 		final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.POSITIVE_INTEGER);
 		try
@@ -6056,34 +6056,34 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				return null;
 			}
 		}
-		catch (final SmDatatypeException cause)
+		catch (final DatatypeException cause)
 		{
-			throw new SmSimpleTypeException(initialValue, atomicType, cause);
+			throw new SimpleTypeException(initialValue, atomicType, cause);
 		}
 	}
 
-	private SmProcessContentsMode processContents(final String strval) throws SmSimpleTypeException
+	private ProcessContentsMode processContents(final String strval) throws SimpleTypeException
 	{
 		if ("lax".equals(strval))
 		{
-			return SmProcessContentsMode.Lax;
+			return ProcessContentsMode.Lax;
 		}
 		else if ("skip".equals(strval))
 		{
-			return SmProcessContentsMode.Skip;
+			return ProcessContentsMode.Skip;
 		}
 		else if ("strict".equals(strval))
 		{
-			return SmProcessContentsMode.Strict;
+			return ProcessContentsMode.Strict;
 		}
 		else
 		{
-			final SmDatatypeException cause = new SmDatatypeException(strval, null);
-			throw new SmSimpleTypeException(strval, null, cause);
+			final DatatypeException cause = new DatatypeException(strval, null);
+			throw new SimpleTypeException(strval, null, cause);
 		}
 	}
 
-	private boolean qualified(final String strval) throws SmSimpleTypeException
+	private boolean qualified(final String strval) throws SimpleTypeException
 	{
 		if ("qualified".equals(strval))
 		{
@@ -6095,12 +6095,12 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 		else
 		{
-			final SmDatatypeException cause = new SmDatatypeException(strval, null);
-			throw new SmSimpleTypeException(strval, null, cause);
+			final DatatypeException cause = new DatatypeException(strval, null);
+			throw new SimpleTypeException(strval, null, cause);
 		}
 	}
 
-	private void redefineTag(final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLStreamReader reader, final String targetNamespace) throws XMLStreamException, SmAbortException
+	private void redefineTag(final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLStreamReader reader, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		{
 			URI schemaLocation = null;
@@ -6117,7 +6117,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 						{
 							schemaLocation = anyURI(reader.getAttributeValue(i));
 						}
-						catch (final SmSimpleTypeException e)
+						catch (final SimpleTypeException e)
 						{
 							reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 						}
@@ -6258,7 +6258,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private QName referenceOptional(final XMLStreamReader reader, final String localName, final XMLSchemaModule<A> module, final String targetNamespace) throws SmAbortException
+	private QName referenceOptional(final XMLStreamReader reader, final String localName, final XMLSchemaModule<A> module, final String targetNamespace) throws AbortException
 	{
 		final String srcval = reader.getAttributeValue(null, localName);
 		if (null != srcval)
@@ -6269,7 +6269,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				{
 					return resolveUsingTargetNamespace(srcval, targetNamespace, reader.getNamespaceContext());
 				}
-				catch (final SmSimpleTypeException e)
+				catch (final SimpleTypeException e)
 				{
 					m_errors.error(new SmAttributeUseException(reader.getName(), new QName(localName), getFrozenLocation(reader.getLocation()), e));
 					return null;
@@ -6281,7 +6281,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				{
 					return resolveUsingXMLNamespaces(srcval, reader.getNamespaceContext());
 				}
-				catch (final SmSimpleTypeException e)
+				catch (final SimpleTypeException e)
 				{
 					m_errors.error(new SmAttributeUseException(reader.getName(), new QName(localName), getFrozenLocation(reader.getLocation()), e));
 					return null;
@@ -6294,37 +6294,37 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void reportAttributeInGlobalNamespace(final QName elementName, final QName attributeName, final SrcFrozenLocation location) throws SmAbortException
+	private void reportAttributeInGlobalNamespace(final QName elementName, final QName attributeName, final SrcFrozenLocation location) throws AbortException
 	{
 		m_errors.error(new CvcUnexpectedAttributeException(elementName, attributeName, location));
 	}
 
-	private void reportAttributeInWxsNamespace(final QName elementName, final QName attributeName, final SrcFrozenLocation location) throws SmAbortException
+	private void reportAttributeInWxsNamespace(final QName elementName, final QName attributeName, final SrcFrozenLocation location) throws AbortException
 	{
 		m_errors.error(new CvcUnexpectedAttributeException(elementName, attributeName, location));
 	}
 
-	private void reportAttributeInXmlNamespace(final QName elementName, final QName attributeName, final SrcFrozenLocation location) throws SmAbortException
+	private void reportAttributeInXmlNamespace(final QName elementName, final QName attributeName, final SrcFrozenLocation location) throws AbortException
 	{
 		m_errors.error(new CvcUnexpectedAttributeException(elementName, attributeName, location));
 	}
 
-	private void reportAttributeUseError(final QName elementName, final QName attributeName, final Location location, final SmSimpleTypeException cause) throws SmAbortException
+	private void reportAttributeUseError(final QName elementName, final QName attributeName, final Location location, final SimpleTypeException cause) throws AbortException
 	{
 		m_errors.error(new SmAttributeUseException(elementName, attributeName, getFrozenLocation(location), cause));
 	}
 
-	private void reportUnexpectedElementTag(final String contextName, final QName unexpectedName, final Location location) throws SmAbortException
+	private void reportUnexpectedElementTag(final String contextName, final QName unexpectedName, final Location location) throws AbortException
 	{
 		m_errors.error(new SmUnexpectedElementException(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, contextName), getFrozenLocation(location), unexpectedName, getFrozenLocation(location)));
 	}
 
-	private void reportUnexpectedEnd(final String contextName, final Location location) throws SmAbortException
+	private void reportUnexpectedEnd(final String contextName, final Location location) throws AbortException
 	{
 		m_errors.error(new SmUnexpectedEndException(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, contextName), getFrozenLocation(location)));
 	}
 
-	private void reportUnexpectedNonWhiteSpaceTextInElementOnlyContent(final String contextName, final String text, final Location location) throws SmAbortException
+	private void reportUnexpectedNonWhiteSpaceTextInElementOnlyContent(final String contextName, final String text, final Location location) throws AbortException
 	{
 		m_errors.error(new CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, contextName), text, getFrozenLocation(location)));
 	}
@@ -6352,9 +6352,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					throw new AssertionError();
 				}
 			}
-			catch (final SmDatatypeException e)
+			catch (final DatatypeException e)
 			{
-				final SmSimpleTypeException ste = new SmSimpleTypeException(name, atomicType, e);
+				final SimpleTypeException ste = new SimpleTypeException(name, atomicType, e);
 				throw new SmAttributeUseException(reader.getName(), new QName(attributeName), getFrozenLocation(reader.getLocation()), ste);
 			}
 		}
@@ -6380,7 +6380,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private QName resolveUsingTargetNamespace(final String name, final String targetNamespace, final NamespaceContext ctxt) throws SmSimpleTypeException
+	private QName resolveUsingTargetNamespace(final String name, final String targetNamespace, final NamespaceContext ctxt) throws SimpleTypeException
 	{
 		PreCondition.assertArgumentNotNull(name);
 		final String prefix = getPrefix(name);
@@ -6396,7 +6396,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private QName resolveUsingXMLNamespaces(final String initialValue, final NamespaceContext ctxt) throws SmSimpleTypeException
+	private QName resolveUsingXMLNamespaces(final String initialValue, final NamespaceContext ctxt) throws SimpleTypeException
 	{
 		PreCondition.assertArgumentNotNull(initialValue);
 		final String prefix = getPrefix(initialValue);
@@ -6418,7 +6418,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * xs:restriction (in xs:complexContent) <br/>
 	 * We don't return anything because this affects multiple aspects of the complex type.
 	 */
-	private void restrictionInComplexContentTag(final XMLType<A> complexType, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, SmAbortException
+	private void restrictionInComplexContentTag(final XMLType<A> complexType, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		if (redefine)
 		{
@@ -6427,7 +6427,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				final QName baseName = requiredQName(LN_BASE, module.isChameleon(), targetNamespace, reader);
 				ensureReferenceType(baseName, reader.getLocation(), redefine, cache);
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				m_errors.error(e.getCause());
 			}
@@ -6436,9 +6436,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		{
 			try
 			{
-				baseTypeDefinitionInComplexContent(complexType, SmDerivationMethod.Restriction, reader, redefine, cache, module, targetNamespace);
+				baseTypeDefinitionInComplexContent(complexType, DerivationMethod.Restriction, reader, redefine, cache, module, targetNamespace);
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				m_errors.error(e);
 			}
@@ -6515,7 +6515,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 									try
 									{
-										complexType.m_contentModel = compositorOutsideGroupTag(SmModelGroup.SmCompositor.All, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.All, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
 									}
 									catch (final XMLCompositorOutsideGroupException e)
 									{
@@ -6527,7 +6527,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 									try
 									{
-										complexType.m_contentModel = compositorOutsideGroupTag(SmModelGroup.SmCompositor.Choice, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Choice, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
 									}
 									catch (final XMLCompositorOutsideGroupException e)
 									{
@@ -6539,7 +6539,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 									try
 									{
-										complexType.m_contentModel = compositorOutsideGroupTag(SmModelGroup.SmCompositor.Sequence, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Sequence, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
 									}
 									catch (final XMLCompositorOutsideGroupException e)
 									{
@@ -6613,7 +6613,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:restriction (simple content)
 	 */
-	private void restrictionInSimpleContentTag(final XMLType<A> complexType, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, SmAbortException
+	private void restrictionInSimpleContentTag(final XMLType<A> complexType, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		// We're restriction a simple type by adding facets so it makes sense
 		// that we are going to need an
@@ -6626,9 +6626,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			final QName baseName = requiredQName(LN_BASE, module.isChameleon(), targetNamespace, reader);
 			ensureReferenceType(baseName, reader.getLocation(), redefine, cache);
 			final XMLTypeRef<A> baseType = new XMLTypeRef<A>(baseName);
-			complexType.setBase(baseType, SmDerivationMethod.Restriction);
+			complexType.setBase(baseType, DerivationMethod.Restriction);
 		}
-		catch (final SmException e)
+		catch (final SchemaException e)
 		{
 			m_errors.error(e);
 		}
@@ -6695,7 +6695,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							{
 								if (LN_SIMPLE_TYPE.equals(localName))
 								{
-									complexType.simpleType.setBase(simpleTypeLocalTag(new XMLScope<A>(complexType), cache, module, reader, redefine, targetNamespace), SmDerivationMethod.Restriction);
+									complexType.simpleType.setBase(simpleTypeLocalTag(new XMLScope<A>(complexType), cache, module, reader, redefine, targetNamespace), DerivationMethod.Restriction);
 								}
 								else if (LN_ENUMERATION.equals(localName))
 								{
@@ -6880,7 +6880,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:restriction (simple type)
 	 */
-	private void restrictionTag(final XMLType<A> simpleType, final XMLSchemaModule<A> module, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, SmAbortException
+	private void restrictionTag(final XMLType<A> simpleType, final XMLSchemaModule<A> module, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		if (!redefine)
 		{
@@ -6904,7 +6904,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 						if (!redefine)
 						{
 							ensureReferenceType(name, reader.getLocation(), redefine, cache);
-							simpleType.setBase(new XMLTypeRef<A>(name), SmDerivationMethod.Restriction);
+							simpleType.setBase(new XMLTypeRef<A>(name), DerivationMethod.Restriction);
 						}
 					}
 					catch (final SmComplexTypeException e)
@@ -6961,7 +6961,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 								if (null == simpleType.getBaseRef())
 								{
 									final XMLTypeRef<A> baseType = simpleTypeLocalTag(new XMLScope<A>(simpleType), cache, module, reader, redefine, targetNamespace);
-									simpleType.setBase(baseType, SmDerivationMethod.Restriction);
+									simpleType.setBase(baseType, DerivationMethod.Restriction);
 								}
 								else
 								{
@@ -7143,7 +7143,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void schemaTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module) throws XMLStreamException, SmAbortException
+	private void schemaTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
 	{
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
@@ -7164,7 +7164,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							return;
 						}
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -7175,7 +7175,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						module.elementQualified = qualified(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -7186,7 +7186,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						module.attributeQualified = qualified(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -7195,9 +7195,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				{
 					try
 					{
-						control(reader.getAttributeValue(i), EnumSet.of(SmDerivationMethod.Extension, SmDerivationMethod.Restriction, SmDerivationMethod.Substitution), module.blockDefault);
+						control(reader.getAttributeValue(i), EnumSet.of(DerivationMethod.Extension, DerivationMethod.Restriction, DerivationMethod.Substitution), module.blockDefault);
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -7206,9 +7206,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				{
 					try
 					{
-						control(reader.getAttributeValue(i), EnumSet.of(SmDerivationMethod.Extension, SmDerivationMethod.Restriction), module.finalDefault);
+						control(reader.getAttributeValue(i), EnumSet.of(DerivationMethod.Extension, DerivationMethod.Restriction), module.finalDefault);
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -7223,7 +7223,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						module.m_version = token(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -7242,7 +7242,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						module.m_lang = lang(reader.getAttributeValue(i));
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -7444,7 +7444,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private SmRestrictedXPath selectorTag(final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, XMLSelectorException, SmAbortException
+	private SmRestrictedXPath selectorTag(final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, XMLSelectorException, AbortException
 	{
 		SmRestrictedXPath xpath = null;
 		final int attributeCount = reader.getAttributeCount();
@@ -7468,8 +7468,8 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					}
 					if (xpath.isAttribute())
 					{
-						final SmDatatypeException dte = new SmDatatypeException(original, null);
-						final SmSimpleTypeException ste = new SmSimpleTypeException(original, null, dte);
+						final DatatypeException dte = new DatatypeException(original, null);
+						final SimpleTypeException ste = new SimpleTypeException(original, null, dte);
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), ste);
 					}
 				}
@@ -7555,7 +7555,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:simpleContent
 	 */
-	private void simpleContentTag(final XMLType<A> complexType, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, SmAbortException
+	private void simpleContentTag(final XMLType<A> complexType, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		complexType.m_contentKind = XMLContentTypeKind.Simple;
 
@@ -7665,7 +7665,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * Content for an xs:simpleType (either global or local definition). <br>
 	 * Content: (xs:annotation?, (xs:restriction | xs:list | xs:union))
 	 */
-	private void simpleTypeContentTag(final XMLType<A> simpleType, final XMLSchemaModule<A> module, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, SmAbortException
+	private void simpleTypeContentTag(final XMLType<A> simpleType, final XMLSchemaModule<A> module, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		// Derivation property must be null so that we check that we got the
 		// required child elements.
@@ -7764,7 +7764,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:simpleType (global definition)
 	 */
-	private XMLType<A> simpleTypeGlobalTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLSimpleTypeException, SmAbortException
+	private XMLType<A> simpleTypeGlobalTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLSimpleTypeException, AbortException
 	{
 		final XMLType<A> simpleType;
 		if (!redefine)
@@ -7773,7 +7773,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			{
 				simpleType = cache.registerType(requiredNCName(LN_NAME, targetNamespace, reader), getFrozenLocation(reader.getLocation()));
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				skipTag(reader);
 				throw new XMLSimpleTypeException(e);
@@ -7785,7 +7785,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			{
 				simpleType = cache.dereferenceType(requiredNCName(LN_NAME, targetNamespace, reader), reader.getLocation(), redefine);
 			}
-			catch (final SmException e)
+			catch (final SchemaException e)
 			{
 				skipTag(reader);
 				throw new XMLSimpleTypeException(e);
@@ -7804,9 +7804,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				{
 					try
 					{
-						control(reader.getAttributeValue(i), EnumSet.of(SmDerivationMethod.List, SmDerivationMethod.Union, SmDerivationMethod.Restriction), simpleType.getFinal());
+						control(reader.getAttributeValue(i), EnumSet.of(DerivationMethod.List, DerivationMethod.Union, DerivationMethod.Restriction), simpleType.getFinal());
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -7847,7 +7847,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:simpleType (local definition)
 	 */
-	private XMLTypeRef<A> simpleTypeLocalTag(final XMLScope<A> scope, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLStreamReader reader, final boolean redefine, final String targetNamespace) throws XMLStreamException, SmAbortException
+	private XMLTypeRef<A> simpleTypeLocalTag(final XMLScope<A> scope, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLStreamReader reader, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		final XMLType<A> simpleType = cache.registerAnonymousType(scope, getFrozenLocation(reader.getLocation()));
 		simpleType.setSimpleFlag();
@@ -7926,7 +7926,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private String token(final String initialValue) throws SmSimpleTypeException
+	private String token(final String initialValue) throws SimpleTypeException
 	{
 		final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.TOKEN);
 		try
@@ -7935,16 +7935,16 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			final A atom = atoms.get(0);
 			return atomBridge.getString(atom);
 		}
-		catch (final SmDatatypeException cause)
+		catch (final DatatypeException cause)
 		{
-			throw new SmSimpleTypeException(initialValue, atomicType, cause);
+			throw new SimpleTypeException(initialValue, atomicType, cause);
 		}
 	}
 
 	/**
 	 * xs:totalDigits
 	 */
-	private XMLTotalDigitsFacet<A> totalDigitsTag(final XMLType<A> simpleType, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, SmAbortException
+	private XMLTotalDigitsFacet<A> totalDigitsTag(final XMLType<A> simpleType, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
 	{
 		final XMLTotalDigitsFacet<A> facet = new XMLTotalDigitsFacet<A>(simpleType, getFrozenLocation(reader.getLocation()));
 
@@ -7977,7 +7977,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					{
 						facet.value = positiveInteger(strval);
 					}
-					catch (final SmSimpleTypeException e)
+					catch (final SimpleTypeException e)
 					{
 						reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
 					}
@@ -8057,7 +8057,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return facet;
 	}
 
-	private boolean trueOrFalse(final String initialValue) throws SmSimpleTypeException
+	private boolean trueOrFalse(final String initialValue) throws SimpleTypeException
 	{
 		final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.BOOLEAN);
 		try
@@ -8072,9 +8072,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				throw new AssertionError();
 			}
 		}
-		catch (final SmDatatypeException cause)
+		catch (final DatatypeException cause)
 		{
-			throw new SmSimpleTypeException(initialValue, atomicType, cause);
+			throw new SimpleTypeException(initialValue, atomicType, cause);
 		}
 	}
 
@@ -8094,9 +8094,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void unionTag(final XMLType<A> unionType, final XMLSchemaModule<A> module, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, SmAbortException
+	private void unionTag(final XMLType<A> unionType, final XMLSchemaModule<A> module, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
-		unionType.setBase(ANY_SIMPLE_TYPE, SmDerivationMethod.Union);
+		unionType.setBase(ANY_SIMPLE_TYPE, DerivationMethod.Union);
 
 		// Use this to detect missing both memberTypes attribute and
 		// <simpleType> child.
@@ -8218,7 +8218,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private XMLIdentityConstraint<A> uniqueTag(final XMLSchemaCache<A> cache, final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, XMLIdentityConstraintException, SmAbortException
+	private XMLIdentityConstraint<A> uniqueTag(final XMLSchemaCache<A> cache, final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, XMLIdentityConstraintException, AbortException
 	{
 		final XMLIdentityConstraint<A> unique;
 		try
@@ -8227,7 +8227,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			module.registerIdentityConstraintName(name, reader.getLocation());
 			unique = cache.registerIdentityConstraint(SmIdentityConstraintKind.Unique, name, getFrozenLocation(reader.getLocation()));
 		}
-		catch (final SmException e)
+		catch (final SchemaException e)
 		{
 			skipTag(reader);
 			throw new XMLIdentityConstraintException(e);
@@ -8359,7 +8359,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return unique;
 	}
 
-	private XMLCardinality use(final String strval) throws SmSimpleTypeException
+	private XMLCardinality use(final String strval) throws SimpleTypeException
 	{
 		if ("optional".equals(strval))
 		{
@@ -8375,12 +8375,12 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 		else
 		{
-			final SmDatatypeException dte = new SmDatatypeException(strval, null);
-			throw new SmSimpleTypeException(strval, null, dte);
+			final DatatypeException dte = new DatatypeException(strval, null);
+			throw new SimpleTypeException(strval, null, dte);
 		}
 	}
 
-	private String validateString(final String initialValue, final SmNativeType derivedType) throws SmSimpleTypeException
+	private String validateString(final String initialValue, final SmNativeType derivedType) throws SimpleTypeException
 	{
 		final SmSimpleType<A> atomicType = bootstrap.getAtomicType(derivedType);
 		try
@@ -8395,15 +8395,15 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				return null;
 			}
 		}
-		catch (final SmDatatypeException cause)
+		catch (final DatatypeException cause)
 		{
-			throw new SmSimpleTypeException(initialValue, atomicType, cause);
+			throw new SimpleTypeException(initialValue, atomicType, cause);
 		}
 	}
 
-	private SmWhiteSpacePolicy whiteSpaceTag(final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, SmComplexTypeException, SmAbortException
+	private WhiteSpacePolicy whiteSpaceTag(final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, SmComplexTypeException, AbortException
 	{
-		SmWhiteSpacePolicy policy = SmWhiteSpacePolicy.PRESERVE;
+		WhiteSpacePolicy policy = WhiteSpacePolicy.PRESERVE;
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
 		{
@@ -8416,20 +8416,20 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					final String value = reader.getAttributeValue(i);
 					if ("preserve".equals(value))
 					{
-						policy = SmWhiteSpacePolicy.PRESERVE;
+						policy = WhiteSpacePolicy.PRESERVE;
 					}
 					else if ("replace".equals(value))
 					{
-						policy = SmWhiteSpacePolicy.REPLACE;
+						policy = WhiteSpacePolicy.REPLACE;
 					}
 					else if ("collapse".equals(value))
 					{
-						policy = SmWhiteSpacePolicy.COLLAPSE;
+						policy = WhiteSpacePolicy.COLLAPSE;
 					}
 					else
 					{
-						final SmDatatypeException dte = new SmDatatypeException(value, null);
-						final SmSimpleTypeException ste = new SmSimpleTypeException(value, null, dte);
+						final DatatypeException dte = new DatatypeException(value, null);
+						final SimpleTypeException ste = new SimpleTypeException(value, null, dte);
 						throw new SmAttributeUseException(reader.getName(), reader.getAttributeName(i), getFrozenLocation(reader.getLocation()), ste);
 					}
 				}
@@ -8515,7 +8515,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			final String token = token(strval);
 			return m_xp.parseXPath(token, m_pms);
 		}
-		catch (final SmSimpleTypeException e)
+		catch (final SimpleTypeException e)
 		{
 			throw new SmAttributeUseException(elementName, new QName(LN_XPATH), getFrozenLocation(location), e);
 		}

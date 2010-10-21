@@ -15,18 +15,18 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 @SuppressWarnings("serial")
-public final class SccMaxInclusiveAndMaxExclusiveException extends SmComponentConstraintException
+public final class SccMaxInclusiveAndMaxExclusiveException extends ComponentConstraintException
 {
 	private final String m_maxInclusive;
 	private final String m_maxExclusive;
 
 	public SccMaxInclusiveAndMaxExclusiveException(final String maxInclusive, final String maxExclusive)
 	{
-		super(SmOutcome.SCC_MaxInclusiveAndMaxExclusive, "4.3.8.4");
+		super(ValidationOutcome.SCC_MaxInclusiveAndMaxExclusive, "4.3.8.4");
 		m_maxInclusive = maxInclusive;
 		m_maxExclusive = maxExclusive;
 	}

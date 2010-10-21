@@ -16,9 +16,9 @@
 package org.genxdm.processor.w3c.xs.exception;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
+import org.genxdm.xs.resolve.LocationInSchema;
 import org.genxdm.xs.types.SmType;
 
 @SuppressWarnings("serial")
@@ -26,7 +26,7 @@ public final class CvcElementLocalTypeDerivationException extends CvcElementExce
 {
 	private final SmType<?> m_localType;
 
-	public CvcElementLocalTypeDerivationException(final SmType<?> localType, final SmElement<?> elementDeclaration, final SmComponentConstraintException cause, final SmLocation location)
+	public CvcElementLocalTypeDerivationException(final SmType<?> localType, final ElementDefinition<?> elementDeclaration, final ComponentConstraintException cause, final LocationInSchema location)
 	{
 		super(PART_LOCAL_TYPE_DERIVATION, elementDeclaration, location, cause);
 		m_localType = PreCondition.assertArgumentNotNull(localType, "localType");

@@ -19,7 +19,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 
 @SuppressWarnings("serial")
@@ -29,7 +29,7 @@ public final class SrcDuplicateKeyTargetException extends CvcIdentityConstraintE
 	private final List fields;
 
 	@SuppressWarnings("unchecked")
-	public SrcDuplicateKeyTargetException(final QName constraintName, final List fields, final SmLocation location)
+	public SrcDuplicateKeyTargetException(final QName constraintName, final List fields, final LocationInSchema location)
 	{
 		super(constraintName, PART_TODO, location);
 		this.fields = fields;

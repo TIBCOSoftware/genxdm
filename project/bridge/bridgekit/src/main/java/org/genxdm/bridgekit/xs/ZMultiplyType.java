@@ -16,7 +16,7 @@
 package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.types.SmMultiplyType;
 import org.genxdm.xs.types.SmPrimeType;
 import org.genxdm.xs.types.SmSequenceType;
@@ -24,7 +24,7 @@ import org.genxdm.xs.types.SmSequenceTypeVisitor;
 
 final class ZMultiplyType<A> extends AbstractType<A> implements SmMultiplyType<A>
 {
-	public static <A> SmSequenceType<A> multiply(final SmSequenceType<A> argument, final SmQuantifier multiplier)
+	public static <A> SmSequenceType<A> multiply(final SmSequenceType<A> argument, final KeeneQuantifier multiplier)
 	{
 		switch (multiplier)
 		{
@@ -53,19 +53,19 @@ final class ZMultiplyType<A> extends AbstractType<A> implements SmMultiplyType<A
 
 	public static <A> SmSequenceType<A> optional(final SmSequenceType<A> argument)
 	{
-		return multiply(argument, SmQuantifier.OPTIONAL);
+		return multiply(argument, KeeneQuantifier.OPTIONAL);
 	}
 
 	public static <A> SmSequenceType<A> zeroOrMore(final SmSequenceType<A> argument)
 	{
-		return multiply(argument, SmQuantifier.ZERO_OR_MORE);
+		return multiply(argument, KeeneQuantifier.ZERO_OR_MORE);
 	}
 
 	private final SmSequenceType<A> m_argument;
 
-	private final SmQuantifier m_multiplier;
+	private final KeeneQuantifier m_multiplier;
 
-	private ZMultiplyType(final SmSequenceType<A> argument, final SmQuantifier multiplier)
+	private ZMultiplyType(final SmSequenceType<A> argument, final KeeneQuantifier multiplier)
 	{
 		this.m_argument = PreCondition.assertArgumentNotNull(argument, "argument");
 		this.m_multiplier = PreCondition.assertArgumentNotNull(multiplier, "multiplier");
@@ -81,7 +81,7 @@ final class ZMultiplyType<A> extends AbstractType<A> implements SmMultiplyType<A
 		return m_argument;
 	}
 
-	public SmQuantifier getMultiplier()
+	public KeeneQuantifier getMultiplier()
 	{
 		return m_multiplier;
 	}
@@ -100,7 +100,7 @@ final class ZMultiplyType<A> extends AbstractType<A> implements SmMultiplyType<A
 		return m_argument.prime();
 	}
 
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
 		// Formal Semantics...
 		// quantifier(Type?) = quantifier(Type).?
@@ -124,7 +124,7 @@ final class ZMultiplyType<A> extends AbstractType<A> implements SmMultiplyType<A
 	@Override
 	public String toString()
 	{
-		final SmQuantifier card = quantifier();
+		final KeeneQuantifier card = quantifier();
 		if (card.isNone())
 		{
 			return "none";

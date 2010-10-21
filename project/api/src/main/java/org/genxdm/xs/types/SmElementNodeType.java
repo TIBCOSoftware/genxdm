@@ -15,7 +15,7 @@
  */
 package org.genxdm.xs.types;
 
-import org.genxdm.xs.components.SmComponent;
+import org.genxdm.xs.components.SchemaComponent;
 
 /**
  * Indicates that this type is a element node.
@@ -23,7 +23,7 @@ import org.genxdm.xs.components.SmComponent;
  * @param <A>
  *            The atom handle.
  */
-public interface SmElementNodeType<A> extends SmComponent<A>, SmNodeType<A>
+public interface SmElementNodeType<A> extends SchemaComponent<A>, SmNodeType<A>
 {
 	/**
 	 * The {type definition} property.

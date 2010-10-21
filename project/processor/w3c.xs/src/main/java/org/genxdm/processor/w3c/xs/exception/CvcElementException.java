@@ -16,10 +16,10 @@
 package org.genxdm.processor.w3c.xs.exception;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 /**
  * Corresponds to the <b>Element Locally Valid</b> validation rule.
@@ -27,7 +27,7 @@ import org.genxdm.xs.resolve.SmLocation;
 @SuppressWarnings("serial")
 public abstract class CvcElementException extends SmLocationException
 {
-	private final SmElement<?> elementDeclaration;
+	private final ElementDefinition<?> elementDeclaration;
 
 	public static final String PART_ABSTRACT = "2";
 	public static final String PART_NOT_NILLABLE = "3.1";
@@ -39,19 +39,19 @@ public abstract class CvcElementException extends SmLocationException
 	public static final String PART_VALUE_CONSTRAINT_MIXED = "5.2.2.2.1";
 	public static final String PART_VALUE_CONSTRAINT_SIMPLE = "5.2.2.2.2";
 
-	public CvcElementException(final String partNumber, final SmElement<?> elementDeclaration, final SmLocation location)
+	public CvcElementException(final String partNumber, final ElementDefinition<?> elementDeclaration, final LocationInSchema location)
 	{
-		super(SmOutcome.CVC_Element_Locally_Valid, partNumber, location);
+		super(ValidationOutcome.CVC_Element_Locally_Valid, partNumber, location);
 		this.elementDeclaration = PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration");
 	}
 
-	public CvcElementException(final String partNumber, final SmElement<?> elementDeclaration, final SmLocation location, final SmComponentConstraintException cause)
+	public CvcElementException(final String partNumber, final ElementDefinition<?> elementDeclaration, final LocationInSchema location, final ComponentConstraintException cause)
 	{
-		super(SmOutcome.CVC_Element_Locally_Valid, partNumber, location, cause);
+		super(ValidationOutcome.CVC_Element_Locally_Valid, partNumber, location, cause);
 		this.elementDeclaration = PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration");
 	}
 
-	public final SmElement<?> getElementDeclaration()
+	public final ElementDefinition<?> getElementDeclaration()
 	{
 		return elementDeclaration;
 	}

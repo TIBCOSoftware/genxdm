@@ -16,16 +16,16 @@
 package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.SmNamespaceConstraint;
-import org.genxdm.xs.enums.SmProcessContentsMode;
+import org.genxdm.xs.enums.ProcessContentsMode;
 
-public final class WildcardImpl<A> implements SmWildcard<A>
+public final class WildcardImpl<A> implements SchemaWildcard<A>
 {
-	private final SmProcessContentsMode m_processContents;
+	private final ProcessContentsMode m_processContents;
 	private final SmNamespaceConstraint m_namespaceConstraint;
 
-	public WildcardImpl(final SmProcessContentsMode processContents, final SmNamespaceConstraint namespaceConstraint)
+	public WildcardImpl(final ProcessContentsMode processContents, final SmNamespaceConstraint namespaceConstraint)
 	{
 		m_processContents = PreCondition.assertArgumentNotNull(processContents, "processContents");
 		m_namespaceConstraint = PreCondition.assertArgumentNotNull(namespaceConstraint, "namespaceConstraint");
@@ -36,7 +36,7 @@ public final class WildcardImpl<A> implements SmWildcard<A>
 		return m_namespaceConstraint;
 	}
 
-	public SmProcessContentsMode getProcessContents()
+	public ProcessContentsMode getProcessContents()
 	{
 		return m_processContents;
 	}

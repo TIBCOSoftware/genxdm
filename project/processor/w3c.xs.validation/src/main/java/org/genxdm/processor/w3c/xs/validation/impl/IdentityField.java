@@ -27,9 +27,9 @@ import org.genxdm.processor.w3c.xs.exception.CvcIdentityConstraintFieldNodeNotSi
 import org.genxdm.processor.w3c.xs.exception.SmDuplicateKeyFieldException;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.constraints.SmRestrictedXPath;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
+import org.genxdm.xs.resolve.LocationInSchema;
 import org.genxdm.xs.types.SmComplexType;
 import org.genxdm.xs.types.SmSimpleType;
 import org.genxdm.xs.types.SmType;
@@ -46,11 +46,11 @@ final class IdentityField<A>
 	 */
 	private final int m_contextIndex;
 	private final IdentityScope<A> m_scope;
-	private final SmExceptionHandler m_errorHandler;
+	private final SchemaExceptionHandler m_errorHandler;
 
 	private List<? extends A> m_value = null;
 	private int m_nodeIndex = -1;
-	private SmLocation m_location = null;
+	private LocationInSchema m_location = null;
 
 	// a List of branches, representing a parsed identity (selector or field)
 	// XPath expression
@@ -67,7 +67,7 @@ final class IdentityField<A>
 	 * @param xpath
 	 *            representing the parsed attribute xpath
 	 */
-	public IdentityField(final SmRestrictedXPath xpath, final int contextIndex, final IdentityScope<A> scope, final SmExceptionHandler errorHandler)
+	public IdentityField(final SmRestrictedXPath xpath, final int contextIndex, final IdentityScope<A> scope, final SchemaExceptionHandler errorHandler)
 	{
 		m_contextIndex = contextIndex;
 		m_scope = PreCondition.assertArgumentNotNull(scope, "scope");
@@ -114,7 +114,7 @@ final class IdentityField<A>
 		return m_value;
 	}
 
-	public SmLocation getLocation()
+	public LocationInSchema getLocation()
 	{
 		return m_location;
 	}
@@ -124,7 +124,7 @@ final class IdentityField<A>
 		return m_branches[branchIdx].getStepLength() - 1;
 	}
 
-	public void startElement(final QName elementName, final int elementIndex, final SmType<A> elementType, final Locatable locatable) throws SmAbortException
+	public void startElement(final QName elementName, final int elementIndex, final SmType<A> elementType, final Locatable locatable) throws AbortException
 	{
 		m_depth++;
 
@@ -223,7 +223,7 @@ final class IdentityField<A>
 		}
 	}
 
-	public void attribute(final QName name, final List<? extends A> actualValue, final int attributeIndex, final SmSimpleType<A> attributeType, final Locatable locatable, final AtomBridge<A> atomBridge) throws SmAbortException
+	public void attribute(final QName name, final List<? extends A> actualValue, final int attributeIndex, final SmSimpleType<A> attributeType, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		// System.out.println(StripQualifiers.strip(getClass().getName()) + "["
 		// + hashCode() + "].attribute(name=" + name + ", value=" +
@@ -262,7 +262,7 @@ final class IdentityField<A>
 		}
 	}
 
-	public void text(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final int textIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws SmAbortException
+	public void text(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final int textIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		for (int branchIdx = m_branches.length - 1; branchIdx >= 0; branchIdx--)
 		{
@@ -375,7 +375,7 @@ final class IdentityField<A>
 		}
 	}
 
-	private void attributeMatched(final QName name, final List<? extends A> actualValue, final int attributeIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws SmAbortException
+	private void attributeMatched(final QName name, final List<? extends A> actualValue, final int attributeIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		if (m_value == null)
 		{
@@ -393,7 +393,7 @@ final class IdentityField<A>
 		}
 	}
 
-	private void textMatched(final List<? extends A> actualValue, final int textIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws SmAbortException
+	private void textMatched(final List<? extends A> actualValue, final int textIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		if (m_value == null)
 		{

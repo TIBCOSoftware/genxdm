@@ -18,8 +18,8 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 /**
  * Corresponds to the <b>Identity-constraint Satisfied</b> validation rule.
@@ -32,9 +32,9 @@ public abstract class CvcIdentityConstraintException extends SmLocationException
 	public static final String PART_TODO = "?";
 	public static final String PART_THREE = "3";
 
-	public CvcIdentityConstraintException(final QName constraintName, final String partNumber, final SmLocation location)
+	public CvcIdentityConstraintException(final QName constraintName, final String partNumber, final LocationInSchema location)
 	{
-		super(SmOutcome.CVC_IdentityConstraint, partNumber, location);
+		super(ValidationOutcome.CVC_IdentityConstraint, partNumber, location);
 		m_constraintName = PreCondition.assertArgumentNotNull(constraintName, "constraintName");
 	}
 

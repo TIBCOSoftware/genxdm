@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.xs;
 
-import org.genxdm.xs.enums.SmNodeKind;
+import org.genxdm.NodeKind;
 import org.genxdm.xs.types.SmCommentNodeType;
 import org.genxdm.xs.types.SmPrimeChoiceType;
 import org.genxdm.xs.types.SmPrimeType;
@@ -26,7 +26,7 @@ final class CommentNodeType<A> extends AbstractLeafNodeType<A> implements SmComm
 {
 	public CommentNodeType(final SmCache<A> cache)
 	{
-		super(SmNodeKind.COMMENT, cache);
+		super(NodeKind.COMMENT, cache);
 	}
 
 	public void accept(final SmSequenceTypeVisitor<A> visitor)

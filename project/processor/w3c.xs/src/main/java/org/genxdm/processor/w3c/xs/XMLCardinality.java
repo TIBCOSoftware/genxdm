@@ -15,7 +15,7 @@
  */
 package org.genxdm.processor.w3c.xs;
 
-import org.genxdm.xs.components.SmParticle;
+import org.genxdm.xs.components.SchemaParticle;
 
 final class XMLCardinality
 {
@@ -129,7 +129,7 @@ final class XMLCardinality
 	 *            The particle whose cardinality is to be taken.
 	 * @return The cardinality corresponding to the particle's cardinality.
 	 */
-	public static <A> XMLCardinality create(final SmParticle<A> particle)
+	public static <A> XMLCardinality create(final SchemaParticle<A> particle)
 	{
 		return create(particle.getMinOccurs(), particle.getMaxOccurs(), true);
 	}

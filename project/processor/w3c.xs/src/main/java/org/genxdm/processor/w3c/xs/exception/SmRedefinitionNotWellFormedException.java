@@ -15,18 +15,18 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 final public class SmRedefinitionNotWellFormedException extends SrcRedefinitionException
 {
-	public SmRedefinitionNotWellFormedException(final SmLocation location)
+	public SmRedefinitionNotWellFormedException(final LocationInSchema location)
 	{
 		super(PART_SCHEMA_NOT_WELL_FORMED, location);
 	}
 
-	public SmRedefinitionNotWellFormedException(final SmLocation location, final SmException cause)
+	public SmRedefinitionNotWellFormedException(final LocationInSchema location, final SchemaException cause)
 	{
 		super(PART_SCHEMA_NOT_WELL_FORMED, location, cause);
 	}

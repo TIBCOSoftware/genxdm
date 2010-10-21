@@ -25,16 +25,16 @@ import javax.xml.namespace.QName;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.SmSchema;
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmAttributeGroup;
-import org.genxdm.xs.components.SmComponent;
-import org.genxdm.xs.components.SmComponentBag;
-import org.genxdm.xs.components.SmComponentKind;
-import org.genxdm.xs.components.SmComponentProvider;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.components.SmNotation;
+import org.genxdm.xs.Schema;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.SchemaComponent;
+import org.genxdm.xs.components.ComponentBag;
+import org.genxdm.xs.components.ComponentKind;
+import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
 import org.genxdm.xs.types.SmAtomicType;
 import org.genxdm.xs.types.SmAtomicUrType;
@@ -54,7 +54,7 @@ import org.genxdm.xs.types.SmSimpleType;
 import org.genxdm.xs.types.SmSimpleUrType;
 import org.genxdm.xs.types.SmType;
 
-final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSchema<A>
+final class SmCacheImpl<A> implements SmCache<A>, ComponentProvider<A>, Schema<A>
 {
 	private final AtomicUrTypeImpl<A> ANY_ATOMIC_TYPE;
 	private final ComplexUrTypeImpl<A> ANY_COMPLEX_TYPE;
@@ -69,16 +69,16 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 	private final SmDocumentNodeType<A> DOCUMENT;
 	private final SmElementNodeType<A> ELEMENT;
 	private final SmEmptyType<A> EMPTY;
-	final ConcurrentHashMap<QName, SmAttributeGroup<A>> m_attributeGroups = new ConcurrentHashMap<QName, SmAttributeGroup<A>>();
-	final ConcurrentHashMap<QName, SmAttribute<A>> m_attributes = new ConcurrentHashMap<QName, SmAttribute<A>>();
+	final ConcurrentHashMap<QName, AttributeGroupDefinition<A>> m_attributeGroups = new ConcurrentHashMap<QName, AttributeGroupDefinition<A>>();
+	final ConcurrentHashMap<QName, AttributeDefinition<A>> m_attributes = new ConcurrentHashMap<QName, AttributeDefinition<A>>();
 
 	final ConcurrentHashMap<QName, SmComplexType<A>> m_complexTypes = new ConcurrentHashMap<QName, SmComplexType<A>>();
-	final ConcurrentHashMap<QName, SmElement<A>> m_elements = new ConcurrentHashMap<QName, SmElement<A>>();
+	final ConcurrentHashMap<QName, ElementDefinition<A>> m_elements = new ConcurrentHashMap<QName, ElementDefinition<A>>();
 	final ConcurrentHashMap<QName, SmIdentityConstraint<A>> m_identityConstraints = new ConcurrentHashMap<QName, SmIdentityConstraint<A>>();
 	private boolean m_isLocked = false;
-	final ConcurrentHashMap<QName, SmModelGroup<A>> m_modelGroups = new ConcurrentHashMap<QName, SmModelGroup<A>>();
+	final ConcurrentHashMap<QName, ModelGroup<A>> m_modelGroups = new ConcurrentHashMap<QName, ModelGroup<A>>();
 	private int m_nextType = 0;
-	final ConcurrentHashMap<QName, SmNotation<A>> m_notations = new ConcurrentHashMap<QName, SmNotation<A>>();
+	final ConcurrentHashMap<QName, NotationDefinition<A>> m_notations = new ConcurrentHashMap<QName, NotationDefinition<A>>();
 	private final ConcurrentHashMap<QName, SmSimpleType<A>> m_simpleTypes = new ConcurrentHashMap<QName, SmSimpleType<A>>();
 	private final NameSource nameBridge;
 	private final SmNamespaceNodeType<A> NAMESPACE;
@@ -131,7 +131,7 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 		PreCondition.assertFalse(m_isLocked, "isLocked -> true");
 	}
 
-	private QName checkComponent(final SmComponent<A> component, final SmComponentKind kind)
+	private QName checkComponent(final SchemaComponent<A> component, final ComponentKind kind)
 	{
 		PreCondition.assertArgumentNotNull(component);
 		if (!kind.canBeAnonymous)
@@ -146,9 +146,9 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 		return COMMENT;
 	}
 
-	public void declareAttribute(final SmAttribute<A> attribute)
+	public void declareAttribute(final AttributeDefinition<A> attribute)
 	{
-		final QName name = checkComponent(attribute, SmComponentKind.ATTRIBUTE);
+		final QName name = checkComponent(attribute, ComponentKind.ATTRIBUTE);
 		if (!m_attributes.containsKey(name))
 		{
 			m_attributes.put(name, attribute);
@@ -156,9 +156,9 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 		}
 	}
 
-	public void declareElement(final SmElement<A> element)
+	public void declareElement(final ElementDefinition<A> element)
 	{
-		final QName name = checkComponent(element, SmComponentKind.ELEMENT);
+		final QName name = checkComponent(element, ComponentKind.ELEMENT);
 		if (!m_elements.containsKey(name))
 		{
 			m_elements.put(name, element);
@@ -166,9 +166,9 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 		}
 	}
 
-	public void declareNotation(final SmNotation<A> notation)
+	public void declareNotation(final NotationDefinition<A> notation)
 	{
-		final QName name = checkComponent(notation, SmComponentKind.NOTATION);
+		final QName name = checkComponent(notation, ComponentKind.NOTATION);
 		if (!m_notations.containsKey(name))
 		{
 			m_notations.put(name, notation);
@@ -176,9 +176,9 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 		}
 	}
 
-	public void defineAttributeGroup(final SmAttributeGroup<A> attributeGroup)
+	public void defineAttributeGroup(final AttributeGroupDefinition<A> attributeGroup)
 	{
-		final QName name = checkComponent(attributeGroup, SmComponentKind.ATTRIBUTE_GROUP);
+		final QName name = checkComponent(attributeGroup, ComponentKind.ATTRIBUTE_GROUP);
 		if (!m_attributeGroups.containsKey(name))
 		{
 			m_attributeGroups.put(name, attributeGroup);
@@ -188,7 +188,7 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 
 	public void defineComplexType(final SmComplexType<A> complexType)
 	{
-		final QName name = checkComponent(complexType, SmComponentKind.COMPLEX_TYPE);
+		final QName name = checkComponent(complexType, ComponentKind.COMPLEX_TYPE);
 		if (!m_complexTypes.containsKey(name))
 		{
 			m_complexTypes.put(name, complexType);
@@ -198,7 +198,7 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 
 	public void defineIdentityConstraint(final SmIdentityConstraint<A> identityConstraint)
 	{
-		final QName name = checkComponent(identityConstraint, SmComponentKind.IDENTITY_CONSTRAINT);
+		final QName name = checkComponent(identityConstraint, ComponentKind.IDENTITY_CONSTRAINT);
 		if (!m_identityConstraints.containsKey(name))
 		{
 			m_identityConstraints.put(name, identityConstraint);
@@ -206,9 +206,9 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 		}
 	}
 
-	public void defineModelGroup(final SmModelGroup<A> modelGroup)
+	public void defineModelGroup(final ModelGroup<A> modelGroup)
 	{
-		final QName name = checkComponent(modelGroup, SmComponentKind.MODEL_GROUP);
+		final QName name = checkComponent(modelGroup, ComponentKind.MODEL_GROUP);
 		if (!m_modelGroups.containsKey(name))
 		{
 			m_modelGroups.put(name, modelGroup);
@@ -218,7 +218,7 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 
 	public void defineSimpleType(final SmSimpleType<A> simpleType)
 	{
-		final QName name = checkComponent(simpleType, SmComponentKind.SIMPLE_TYPE);
+		final QName name = checkComponent(simpleType, ComponentKind.SIMPLE_TYPE);
 		if (!m_simpleTypes.containsKey(name))
 		{
 			m_simpleTypes.put(name, simpleType);
@@ -290,24 +290,24 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 		return ANY_ATOMIC_TYPE;
 	}
 
-	public SmAttribute<A> getAttributeDeclaration(final QName name)
+	public AttributeDefinition<A> getAttributeDeclaration(final QName name)
 	{
 		PreCondition.assertArgumentNotNull(name, "name");
 		return m_attributes.get(name);
 	}
 
-	public SmAttributeGroup<A> getAttributeGroup(final QName name)
+	public AttributeGroupDefinition<A> getAttributeGroup(final QName name)
 	{
 		PreCondition.assertArgumentNotNull(name, "name");
 		return m_attributeGroups.get(name);
 	}
 
-	public Iterable<SmAttributeGroup<A>> getAttributeGroups()
+	public Iterable<AttributeGroupDefinition<A>> getAttributeGroups()
 	{
 		return m_attributeGroups.values();
 	}
 
-	public Iterable<SmAttribute<A>> getAttributes()
+	public Iterable<AttributeDefinition<A>> getAttributes()
 	{
 		return m_attributes.values();
 	}
@@ -328,13 +328,13 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 		return ANY_COMPLEX_TYPE;
 	}
 
-	public SmElement<A> getElementDeclaration(final QName name)
+	public ElementDefinition<A> getElementDeclaration(final QName name)
 	{
 		PreCondition.assertArgumentNotNull(name, "name");
 		return m_elements.get(name);
 	}
 
-	public Iterable<SmElement<A>> getElements()
+	public Iterable<ElementDefinition<A>> getElements()
 	{
 		return m_elements.values();
 	}
@@ -350,13 +350,13 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 		return m_identityConstraints.values();
 	}
 
-	public SmModelGroup<A> getModelGroup(final QName name)
+	public ModelGroup<A> getModelGroup(final QName name)
 	{
 		PreCondition.assertArgumentNotNull(name, "name");
 		return m_modelGroups.get(name);
 	}
 
-	public Iterable<SmModelGroup<A>> getModelGroups()
+	public Iterable<ModelGroup<A>> getModelGroups()
 	{
 		return m_modelGroups.values();
 	}
@@ -371,13 +371,13 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 		return namespaces;
 	}
 
-	public SmNotation<A> getNotationDeclaration(final QName name)
+	public NotationDefinition<A> getNotationDeclaration(final QName name)
 	{
 		PreCondition.assertArgumentNotNull(name, "name");
 		return m_notations.get(name);
 	}
 
-	public Iterable<SmNotation<A>> getNotations()
+	public Iterable<NotationDefinition<A>> getNotations()
 	{
 		return m_notations.values();
 	}
@@ -759,7 +759,7 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 		}
 	}
 
-	private void recordNamespace(final SmComponent<A> component)
+	private void recordNamespace(final SchemaComponent<A> component)
 	{
 		if (!component.isAnonymous())
 		{
@@ -767,7 +767,7 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 		}
 	}
 
-	public void register(final SmComponentBag<A> components)
+	public void register(final ComponentBag<A> components)
 	{
 		assertNotLocked();
 		if (null != components)
@@ -780,15 +780,15 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 			{
 				defineComplexType(complexType);
 			}
-			for (final SmAttribute<A> attribute : components.getAttributes())
+			for (final AttributeDefinition<A> attribute : components.getAttributes())
 			{
 				declareAttribute(attribute);
 			}
-			for (final SmElement<A> element : components.getElements())
+			for (final ElementDefinition<A> element : components.getElements())
 			{
 				declareElement(element);
 			}
-			for (final SmAttributeGroup<A> attributeGroup : components.getAttributeGroups())
+			for (final AttributeGroupDefinition<A> attributeGroup : components.getAttributeGroups())
 			{
 				defineAttributeGroup(attributeGroup);
 			}
@@ -796,11 +796,11 @@ final class SmCacheImpl<A> implements SmCache<A>, SmComponentProvider<A>, SmSche
 			{
 				defineIdentityConstraint(identityConstraint);
 			}
-			for (final SmModelGroup<A> modelGroup : components.getModelGroups())
+			for (final ModelGroup<A> modelGroup : components.getModelGroups())
 			{
 				defineModelGroup(modelGroup);
 			}
-			for (final SmNotation<A> notation : components.getNotations())
+			for (final NotationDefinition<A> notation : components.getNotations())
 			{
 				declareNotation(notation);
 			}

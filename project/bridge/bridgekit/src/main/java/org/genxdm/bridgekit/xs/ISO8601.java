@@ -17,7 +17,7 @@ package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.SmSimpleType;
 
 final class ISO8601
@@ -27,7 +27,7 @@ final class ISO8601
 		START, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, FINISH;
 	}
 
-	public static <A> A parseGregorian(final String s, final AtomBridge<A> atomBridge, final SmSimpleType<A> type) throws SmDatatypeException
+	public static <A> A parseGregorian(final String s, final AtomBridge<A> atomBridge, final SmSimpleType<A> type) throws DatatypeException
 	{
 		PreCondition.assertArgumentNotNull(s, "s");
 		final int length = s.length();
@@ -68,7 +68,7 @@ final class ISO8601
 						break;
 						default:
 						{
-							throw new SmDatatypeException(s, type);
+							throw new DatatypeException(s, type);
 							// throw new AssertionError(s + "[" + Integer.toString(i - 1) + "]");
 						}
 					}
@@ -104,7 +104,7 @@ final class ISO8601
 						break;
 						default:
 						{
-							throw new SmDatatypeException(s, type);
+							throw new DatatypeException(s, type);
 							// throw new AssertionError(s + "[" + Integer.toString(i - 1) + "]");
 						}
 					}
@@ -230,7 +230,7 @@ final class ISO8601
 						break;
 						default:
 						{
-							throw new SmDatatypeException(s, type);
+							throw new DatatypeException(s, type);
 							// throw new AssertionError(s + "[" + Integer.toString(i - 1) + "]");
 						}
 					}
@@ -386,7 +386,7 @@ final class ISO8601
 		}
 		else
 		{
-			throw new SmDatatypeException(s, type);
+			throw new DatatypeException(s, type);
 		}
 	}
 }

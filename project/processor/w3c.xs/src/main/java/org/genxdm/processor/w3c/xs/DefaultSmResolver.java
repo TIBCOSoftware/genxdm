@@ -23,9 +23,9 @@ import java.net.URI;
 import java.net.URL;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.resolve.SmResolver;
+import org.genxdm.xs.resolve.CatalogResolver;
 
-enum DefaultSmResolver implements SmResolver
+enum DefaultSmResolver implements CatalogResolver
 {
 	SINGLETON;
 

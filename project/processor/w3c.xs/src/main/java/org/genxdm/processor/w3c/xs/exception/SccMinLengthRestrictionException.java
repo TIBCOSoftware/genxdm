@@ -15,21 +15,21 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 /**
  * Date: Mar 11, 2008
  */
 @SuppressWarnings("serial")
-final public class SccMinLengthRestrictionException extends SmComponentConstraintException
+final public class SccMinLengthRestrictionException extends ComponentConstraintException
 {
     private final int m_minLength;
     private final int m_restrictedMinLength;
 
     public SccMinLengthRestrictionException(final int minLength, final int restrictedMinLength)
     {
-        super(SmOutcome.SCC_FractionDigitsValidRestriction, "4.3.2.4");
+        super(ValidationOutcome.SCC_FractionDigitsValidRestriction, "4.3.2.4");
         m_minLength = minLength;
         m_restrictedMinLength = restrictedMinLength;
     }

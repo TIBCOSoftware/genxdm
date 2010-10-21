@@ -15,13 +15,13 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class CvcElementAbstractException extends CvcElementException
 {
-	public CvcElementAbstractException(final SmElement<?> elementDeclaration, final SmLocation location)
+	public CvcElementAbstractException(final ElementDefinition<?> elementDeclaration, final LocationInSchema location)
 	{
 		super(PART_ABSTRACT, elementDeclaration, location);
 	}

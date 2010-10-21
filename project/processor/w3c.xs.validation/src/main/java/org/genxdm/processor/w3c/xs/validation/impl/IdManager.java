@@ -23,9 +23,9 @@ import java.util.List;
 import org.genxdm.processor.w3c.xs.exception.CvcDanglingIDReferenceException;
 import org.genxdm.processor.w3c.xs.exception.SmDuplicateIDException;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
+import org.genxdm.xs.resolve.LocationInSchema;
 import org.genxdm.xs.types.SmSimpleType;
 
 
@@ -35,19 +35,19 @@ import org.genxdm.xs.types.SmSimpleType;
 final class IdManager<A>
 {
 	private final HashSet<String> m_definedIds = new HashSet<String>();
-	private final HashMap<String, List<SmLocation>> m_danglingIDREFLocations = new HashMap<String, List<SmLocation>>();
+	private final HashMap<String, List<LocationInSchema>> m_danglingIDREFLocations = new HashMap<String, List<LocationInSchema>>();
 
-	public void text(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final Locatable locatable, final SmExceptionHandler errors, final AtomBridge<A> atomBridge) throws SmAbortException
+	public void text(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		value(actualValue, actualType, locatable, errors, atomBridge);
 	}
 
-	public void attribute(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final Locatable locatable, final SmExceptionHandler errors, final AtomBridge<A> atomBridge) throws SmAbortException
+	public void attribute(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		value(actualValue, actualType, locatable, errors, atomBridge);
 	}
 
-	private void value(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final Locatable locatable, final SmExceptionHandler errors, final AtomBridge<A> atomBridge) throws SmAbortException
+	private void value(final List<? extends A> actualValue, final SmSimpleType<A> actualType, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		if (actualType.isID())
 		{
@@ -73,7 +73,7 @@ final class IdManager<A>
 		return atomBridge.getC14NForm(atom);
 	}
 
-	public void processId(final String id, final Locatable locatable, final AtomBridge<A> atomBridge, final SmExceptionHandler errors) throws SmAbortException
+	public void processId(final String id, final Locatable locatable, final AtomBridge<A> atomBridge, final SchemaExceptionHandler errors) throws AbortException
 	{
 		if (!m_definedIds.add(id))
 		{
@@ -97,22 +97,22 @@ final class IdManager<A>
 			}
 			else
 			{
-				final LinkedList<SmLocation> locations = new LinkedList<SmLocation>();
+				final LinkedList<LocationInSchema> locations = new LinkedList<LocationInSchema>();
 				locations.add(locatable.getLocation());
 				m_danglingIDREFLocations.put(idref, locations);
 			}
 		}
 	}
 
-	public void reportDanglingIdRefs(final SmExceptionHandler errors) throws SmAbortException
+	public void reportDanglingIdRefs(final SchemaExceptionHandler errors) throws AbortException
 	{
 		if (m_danglingIDREFLocations.size() != 0)
 		{
 			for (final String idref : m_danglingIDREFLocations.keySet())
 			{
-				final List<SmLocation> locations = m_danglingIDREFLocations.get(idref);
+				final List<LocationInSchema> locations = m_danglingIDREFLocations.get(idref);
 
-				for (final SmLocation location : locations)
+				for (final LocationInSchema location : locations)
 				{
 					errors.error(new CvcDanglingIDReferenceException(idref, location));
 				}

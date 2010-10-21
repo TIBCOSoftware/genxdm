@@ -23,16 +23,16 @@ import java.util.LinkedList;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmWhiteSpacePolicy;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.WhiteSpacePolicy;
 
 final class XMLType<A> extends XMLComponent<A>
 {
 	private final QName name;
-	private final EnumSet<SmDerivationMethod> m_block = EnumSet.noneOf(SmDerivationMethod.class);
-	private final EnumSet<SmDerivationMethod> m_final = EnumSet.noneOf(SmDerivationMethod.class);
-	private SmDerivationMethod m_derivation;
+	private final EnumSet<DerivationMethod> m_block = EnumSet.noneOf(DerivationMethod.class);
+	private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
+	private DerivationMethod m_derivation;
 	private XMLTypeRef<A> m_baseRef;
 	private boolean m_isComplexUrType = false;
 	private boolean m_isSimpleUrType = false;
@@ -40,7 +40,7 @@ final class XMLType<A> extends XMLComponent<A>
 	private boolean m_isAbstract = false;
 	private boolean m_isComplex = false;
 	private boolean m_isSimple = false;
-	private SmWhiteSpacePolicy m_whiteSpacePolicy = null;
+	private WhiteSpacePolicy m_whiteSpacePolicy = null;
 
 	public XMLTypeRef<A> itemRef = null; // xs:list
 	public final LinkedList<XMLTypeRef<A>> memberRefs = new LinkedList<XMLTypeRef<A>>(); // xs:union
@@ -119,7 +119,7 @@ final class XMLType<A> extends XMLComponent<A>
 		return m_isAtomicUrType;
 	}
 
-	public SmDerivationMethod getDerivationMethod()
+	public DerivationMethod getDerivationMethod()
 	{
 		return m_derivation;
 	}
@@ -129,18 +129,18 @@ final class XMLType<A> extends XMLComponent<A>
 		return m_baseRef;
 	}
 
-	void setBase(final XMLTypeRef<A> baseRef, final SmDerivationMethod derivation)
+	void setBase(final XMLTypeRef<A> baseRef, final DerivationMethod derivation)
 	{
 		m_baseRef = PreCondition.assertArgumentNotNull(baseRef, "baseRef");
 		m_derivation = PreCondition.assertArgumentNotNull(derivation, "derivation");
 	}
 
-	public EnumSet<SmDerivationMethod> getBlock()
+	public EnumSet<DerivationMethod> getBlock()
 	{
 		return m_block;
 	}
 
-	public EnumSet<SmDerivationMethod> getFinal()
+	public EnumSet<DerivationMethod> getFinal()
 	{
 		return m_final;
 	}
@@ -177,12 +177,12 @@ final class XMLType<A> extends XMLComponent<A>
 		m_isAbstract = isAbstract;
 	}
 
-	public SmWhiteSpacePolicy getWhiteSpacePolicy()
+	public WhiteSpacePolicy getWhiteSpacePolicy()
 	{
 		return m_whiteSpacePolicy;
 	}
 
-	public void setWhiteSpacePolicy(final SmWhiteSpacePolicy whiteSpacePolicy)
+	public void setWhiteSpacePolicy(final WhiteSpacePolicy whiteSpacePolicy)
 	{
 		this.m_whiteSpacePolicy = whiteSpacePolicy;
 	}
@@ -227,7 +227,7 @@ final class XMLType<A> extends XMLComponent<A>
 
 				PreCondition.assertNotNull(existing, "existing");
 
-				final XMLModelGroup<A> anonymous = new XMLModelGroup<A>(SmModelGroup.SmCompositor.Sequence, new XMLScope<A>(this));
+				final XMLModelGroup<A> anonymous = new XMLModelGroup<A>(ModelGroup.SmCompositor.Sequence, new XMLScope<A>(this));
 				anonymous.getParticles().add(PreCondition.assertNotNull(existing));
 				anonymous.getParticles().add(PreCondition.assertNotNull(contentModel));
 				m_contentModel = new XMLParticleWithModelGroupTerm<A>(BigInteger.ONE, BigInteger.ONE, anonymous, existing.getLocation());

@@ -15,20 +15,20 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmLimit;
 
 @SuppressWarnings("serial")
-public class SccLimitRestrictionException extends SmComponentConstraintException
+public class SccLimitRestrictionException extends ComponentConstraintException
 {
 	private final SmLimit<?> restrictingLimit;
 	private final SmLimit<?> parentLimit;
 	private final SmFacetKind childFacetKind;
 	private final SmFacetKind parentFacetKind;
 
-	public SccLimitRestrictionException(final SmOutcome outcome, final String partNumber, final SmFacetKind childFacetKind, final SmFacetKind parentFacetKind, final SmLimit<?> restrictingLimit, final SmLimit<?> parentLimit)
+	public SccLimitRestrictionException(final ValidationOutcome outcome, final String partNumber, final SmFacetKind childFacetKind, final SmFacetKind parentFacetKind, final SmLimit<?> restrictingLimit, final SmLimit<?> parentLimit)
 	{
 		super(outcome, partNumber);
 		this.restrictingLimit = restrictingLimit;

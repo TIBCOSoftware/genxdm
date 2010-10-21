@@ -16,13 +16,13 @@
 package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmAttribute;
+import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.constraints.SmAttributeUse;
 import org.genxdm.xs.constraints.SmValueConstraint;
 
 public final class AttributeUseImpl<A> extends LockableImpl implements SmAttributeUse<A>
 {
-	private final SmAttribute<A> m_attribute;
+	private final AttributeDefinition<A> m_attribute;
 	private final boolean m_isRequired;
 
 	/**
@@ -30,13 +30,13 @@ public final class AttributeUseImpl<A> extends LockableImpl implements SmAttribu
 	 */
 	private SmValueConstraint<A> m_valueConstraint = null;
 
-	public AttributeUseImpl(final boolean isRequired, final SmAttribute<A> attribute)
+	public AttributeUseImpl(final boolean isRequired, final AttributeDefinition<A> attribute)
 	{
 		m_isRequired = isRequired;
 		m_attribute = PreCondition.assertArgumentNotNull(attribute, "attribute");
 	}
 
-	public SmAttribute<A> getAttribute()
+	public AttributeDefinition<A> getAttribute()
 	{
 		return m_attribute;
 	}

@@ -18,8 +18,8 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 
 @SuppressWarnings("serial")
@@ -27,9 +27,9 @@ public final class SmUndeclaredReferenceException extends SmLocationException
 {
 	private final QName m_what;
 
-	public SmUndeclaredReferenceException(final QName name, final SmLocation location)
+	public SmUndeclaredReferenceException(final QName name, final LocationInSchema location)
 	{
-		super(SmOutcome.TODO, "?", location);
+		super(ValidationOutcome.TODO, "?", location);
 		m_what = PreCondition.assertArgumentNotNull(name, "name");
 	}
 

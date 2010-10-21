@@ -20,23 +20,23 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
 import org.genxdm.xs.constraints.SmValueConstraint;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmNodeKind;
-import org.genxdm.xs.enums.SmQuantifier;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.NodeKind;
+import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.SmPrimeType;
 import org.genxdm.xs.types.SmPrimeTypeKind;
 import org.genxdm.xs.types.SmSequenceTypeVisitor;
 import org.genxdm.xs.types.SmType;
 
-final class ElementDeclWithParentAxisType<A> implements SmElement<A>
+final class ElementDeclWithParentAxisType<A> implements ElementDefinition<A>
 {
-	private final SmElement<A> m_element;
+	private final ElementDefinition<A> m_element;
 
-	public ElementDeclWithParentAxisType(final SmElement<A> element, final SmElement<A> parentAxis)
+	public ElementDeclWithParentAxisType(final ElementDefinition<A> element, final ElementDefinition<A> parentAxis)
 	{
 		m_element = PreCondition.assertArgumentNotNull(element);
 	}
@@ -46,7 +46,7 @@ final class ElementDeclWithParentAxisType<A> implements SmElement<A>
 		visitor.visit(this);
 	}
 
-	public Set<SmDerivationMethod> getDisallowedSubtitutions()
+	public Set<DerivationMethod> getDisallowedSubtitutions()
 	{
 		return m_element.getDisallowedSubtitutions();
 	}
@@ -71,27 +71,27 @@ final class ElementDeclWithParentAxisType<A> implements SmElement<A>
 		return m_element.getName();
 	}
 
-	public SmNodeKind getNodeKind()
+	public NodeKind getNodeKind()
 	{
 		return m_element.getNodeKind();
 	}
 
-	public SmScopeExtent getScopeExtent()
+	public ScopeExtent getScopeExtent()
 	{
 		return m_element.getScopeExtent();
 	}
 
-	public SmElement<A> getSubstitutionGroup()
+	public ElementDefinition<A> getSubstitutionGroup()
 	{
 		return m_element.getSubstitutionGroup();
 	}
 
-	public Set<SmDerivationMethod> getSubstitutionGroupExclusions()
+	public Set<DerivationMethod> getSubstitutionGroupExclusions()
 	{
 		return m_element.getSubstitutionGroupExclusions();
 	}
 
-	public Iterable<SmElement<A>> getSubstitutionGroupMembers()
+	public Iterable<ElementDefinition<A>> getSubstitutionGroupMembers()
 	{
 		return m_element.getSubstitutionGroupMembers();
 	}
@@ -161,7 +161,7 @@ final class ElementDeclWithParentAxisType<A> implements SmElement<A>
 		return this;
 	}
 
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
 		return m_element.quantifier();
 	}

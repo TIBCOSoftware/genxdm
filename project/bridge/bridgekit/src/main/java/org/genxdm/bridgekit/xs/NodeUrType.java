@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.xs;
 
-import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.types.SmNodeUrType;
 import org.genxdm.xs.types.SmPrimeType;
 import org.genxdm.xs.types.SmPrimeTypeKind;
@@ -33,9 +33,9 @@ final class NodeUrType<A> implements SmNodeUrType<A>
 		return this;
 	}
 
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
-		return SmQuantifier.EXACTLY_ONE;
+		return KeeneQuantifier.EXACTLY_ONE;
 	}
 
 	public boolean isNone()
@@ -45,7 +45,7 @@ final class NodeUrType<A> implements SmNodeUrType<A>
 
 	public boolean subtype(final SmPrimeType<A> rhs)
 	{
-		return rhs.quantifier().contains(SmQuantifier.EMPTY);
+		return rhs.quantifier().contains(KeeneQuantifier.EMPTY);
 	}
 
 	public SmPrimeTypeKind getKind()

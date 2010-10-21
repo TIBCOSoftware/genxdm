@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.xs;
 
-import org.genxdm.xs.enums.SmNodeKind;
+import org.genxdm.NodeKind;
 import org.genxdm.xs.types.SmPrimeChoiceType;
 import org.genxdm.xs.types.SmPrimeType;
 import org.genxdm.xs.types.SmPrimeTypeKind;
@@ -26,7 +26,7 @@ final class TextNodeType<A> extends AbstractLeafNodeType<A> implements SmTextNod
 {
 	public TextNodeType(final SmCache<A> cache)
 	{
-		super(SmNodeKind.TEXT, cache);
+		super(NodeKind.TEXT, cache);
 	}
 
 	public void accept(final SmSequenceTypeVisitor<A> visitor)

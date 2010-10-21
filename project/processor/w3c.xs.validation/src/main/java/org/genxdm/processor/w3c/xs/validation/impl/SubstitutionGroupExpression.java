@@ -19,19 +19,19 @@ import java.util.ArrayList;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmParticleTerm;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ParticleTerm;
 
 /**
  * A Substitution Group is implemented as a choice of elements.
  */
-final class SubstitutionGroupExpression<A> implements ValidationExpr<A, SmParticleTerm<A>>
+final class SubstitutionGroupExpression<A> implements ValidationExpr<A, ParticleTerm<A>>
 {
-	private static <A> Iterable<ValidationExpr<A, SmParticleTerm<A>>> compileSubTerms(final Iterable<SmElement<A>> choices)
+	private static <A> Iterable<ValidationExpr<A, ParticleTerm<A>>> compileSubTerms(final Iterable<ElementDefinition<A>> choices)
 	{
-		final ArrayList<ValidationExpr<A, SmParticleTerm<A>>> subTerms = new ArrayList<ValidationExpr<A, SmParticleTerm<A>>>();
+		final ArrayList<ValidationExpr<A, ParticleTerm<A>>> subTerms = new ArrayList<ValidationExpr<A, ParticleTerm<A>>>();
 
-		for (final SmElement<A> element : choices)
+		for (final ElementDefinition<A> element : choices)
 		{
 			subTerms.add(new ParticleElementExpression<A>(1, 1, element));
 		}
@@ -42,9 +42,9 @@ final class SubstitutionGroupExpression<A> implements ValidationExpr<A, SmPartic
 	private final int m_maxOccurs;
 	private final int m_minOccurs;
 
-	private final Iterable<ValidationExpr<A, SmParticleTerm<A>>> m_subTerms;
+	private final Iterable<ValidationExpr<A, ParticleTerm<A>>> m_subTerms;
 
-	public SubstitutionGroupExpression(final int minOccurs, final int maxOccurs, final Iterable<SmElement<A>> choices)
+	public SubstitutionGroupExpression(final int minOccurs, final int maxOccurs, final Iterable<ElementDefinition<A>> choices)
 	{
 		this.m_minOccurs = minOccurs;
 		this.m_maxOccurs = maxOccurs;
@@ -52,7 +52,7 @@ final class SubstitutionGroupExpression<A> implements ValidationExpr<A, SmPartic
 		this.m_subTerms = compileSubTerms(choices);
 	}
 
-	public SubstitutionGroupExpression(final int minOccurs, final Iterable<SmElement<A>> choices)
+	public SubstitutionGroupExpression(final int minOccurs, final Iterable<ElementDefinition<A>> choices)
 	{
 		this.m_minOccurs = minOccurs;
 		this.m_maxOccurs = -1;
@@ -60,17 +60,17 @@ final class SubstitutionGroupExpression<A> implements ValidationExpr<A, SmPartic
 		this.m_subTerms = compileSubTerms(choices);
 	}
 
-	public SmParticleTerm<A> getParticleTerm()
+	public ParticleTerm<A> getParticleTerm()
 	{
 		throw new UnsupportedOperationException();
 	}
 
-	public Iterable<ValidationExpr<A, SmParticleTerm<A>>> getSubTerms()
+	public Iterable<ValidationExpr<A, ParticleTerm<A>>> getSubTerms()
 	{
 		return m_subTerms;
 	}
 
-	public boolean intersects(final ValidationExpr<A, SmParticleTerm<A>> other)
+	public boolean intersects(final ValidationExpr<A, ParticleTerm<A>> other)
 	{
 		return false;
 	}

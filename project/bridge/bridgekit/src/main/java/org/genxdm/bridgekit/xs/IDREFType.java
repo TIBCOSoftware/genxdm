@@ -22,15 +22,15 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmEnumeration;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmScopeExtent;
-import org.genxdm.xs.enums.SmWhiteSpacePolicy;
-import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.components.EnumerationDefinition;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.ScopeExtent;
+import org.genxdm.xs.enums.WhiteSpacePolicy;
+import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.facets.SmFacet;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmPattern;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.SmNativeType;
 import org.genxdm.xs.types.SmSequenceTypeVisitor;
 import org.genxdm.xs.types.SmSimpleType;
@@ -48,13 +48,13 @@ final class IDREFType<A> extends AbstractAtomType<A>
 		throw new AssertionError("TODO");
 	}
 
-	public boolean derivedFrom(String namespace, String name, Set<SmDerivationMethod> derivationMethods)
+	public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public Iterable<SmEnumeration<A>> getEnumerations()
+	public Iterable<EnumerationDefinition<A>> getEnumerations()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -71,7 +71,7 @@ final class IDREFType<A> extends AbstractAtomType<A>
 		return Collections.emptyList();
 	}
 
-	public Set<SmDerivationMethod> getFinal()
+	public Set<DerivationMethod> getFinal()
 	{
 		return Collections.emptySet();
 	}
@@ -87,15 +87,15 @@ final class IDREFType<A> extends AbstractAtomType<A>
 		throw new AssertionError("TODO");
 	}
 
-	public SmScopeExtent getScopeExtent()
+	public ScopeExtent getScopeExtent()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public SmWhiteSpacePolicy getWhiteSpacePolicy()
+	public WhiteSpacePolicy getWhiteSpacePolicy()
 	{
-		return SmWhiteSpacePolicy.COLLAPSE;
+		return WhiteSpacePolicy.COLLAPSE;
 	}
 
 	public boolean hasEnumerations()
@@ -133,18 +133,18 @@ final class IDREFType<A> extends AbstractAtomType<A>
 		return true;
 	}
 
-	public List<A> validate(final String initialValue) throws SmDatatypeException
+	public List<A> validate(final String initialValue) throws DatatypeException
 	{
 		final String normalized = normalize(initialValue);
 		return atomBridge.wrapAtom(atomBridge.createStringDerived(castAsIDREF(normalized, this), SmNativeType.IDREF));
 	}
 
-	public static String castAsIDREF(final String normalized, final SmSimpleType<?> type) throws SmDatatypeException
+	public static String castAsIDREF(final String normalized, final SmSimpleType<?> type) throws DatatypeException
 	{
 		return NCNameType.castAsNCName(normalized, type);
 	}
 
-	public List<A> validate(String initialValue, SmPrefixResolver resolver) throws SmDatatypeException
+	public List<A> validate(String initialValue, PrefixResolver resolver) throws DatatypeException
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");

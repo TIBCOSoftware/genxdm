@@ -16,19 +16,19 @@
 package org.genxdm.processor.w3c.xs;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.exceptions.SmException;
+import org.genxdm.xs.exceptions.SchemaException;
 
 @SuppressWarnings("serial")
 final class XMLIdentityConstraintException extends Exception
 {
-	public XMLIdentityConstraintException(final SmException cause)
+	public XMLIdentityConstraintException(final SchemaException cause)
 	{
 		super(PreCondition.assertArgumentNotNull(cause, "cause"));
 	}
 
 	@Override
-	public SmException getCause()
+	public SchemaException getCause()
 	{
-		return (SmException)super.getCause();
+		return (SchemaException)super.getCause();
 	}
 }

@@ -19,18 +19,18 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 
 @SuppressWarnings("serial")
-public final class SccXmlnsNotAllowedException extends SmComponentConstraintException
+public final class SccXmlnsNotAllowedException extends ComponentConstraintException
 {
 	private final QName m_attributeName;
 
 	public SccXmlnsNotAllowedException(final QName attributeName)
 	{
-		super(SmOutcome.SCC_xmlns_Not_Allowed, ""/* no part number */);
+		super(ValidationOutcome.SCC_xmlns_Not_Allowed, ""/* no part number */);
 		m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
 	}
 

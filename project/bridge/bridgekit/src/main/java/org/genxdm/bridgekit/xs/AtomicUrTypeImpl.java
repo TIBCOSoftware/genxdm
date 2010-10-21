@@ -23,14 +23,14 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmEnumeration;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmScopeExtent;
-import org.genxdm.xs.enums.SmWhiteSpacePolicy;
+import org.genxdm.xs.components.EnumerationDefinition;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.ScopeExtent;
+import org.genxdm.xs.enums.WhiteSpacePolicy;
 import org.genxdm.xs.facets.SmFacet;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmPattern;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.SmAtomicType;
 import org.genxdm.xs.types.SmAtomicUrType;
 import org.genxdm.xs.types.SmNativeType;
@@ -58,12 +58,12 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		visitor.visit(this);
 	}
 
-	public boolean derivedFrom(final String namespace, final String name, final Set<SmDerivationMethod> derivationMethods)
+	public boolean derivedFrom(final String namespace, final String name, final Set<DerivationMethod> derivationMethods)
 	{
 		return SmSupportImpl.derivedFrom(this, namespace, name, derivationMethods, m_atomBridge.getNameBridge());
 	}
 
-	public boolean derivedFromType(final SmType<A> ancestorType, final Set<SmDerivationMethod> derivationMethods)
+	public boolean derivedFromType(final SmType<A> ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
 		return SmSupportImpl.derivedFromType(this, ancestorType, derivationMethods, m_atomBridge.getNameBridge());
 	}
@@ -73,12 +73,12 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return m_baseType;
 	}
 
-	public SmDerivationMethod getDerivationMethod()
+	public DerivationMethod getDerivationMethod()
 	{
-		return SmDerivationMethod.Restriction;
+		return DerivationMethod.Restriction;
 	}
 
-	public Iterable<SmEnumeration<A>> getEnumerations()
+	public Iterable<EnumerationDefinition<A>> getEnumerations()
 	{
 		throw new AssertionError(getName());
 	}
@@ -93,9 +93,9 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		throw new AssertionError(getName());
 	}
 
-	public Set<SmDerivationMethod> getFinal()
+	public Set<DerivationMethod> getFinal()
 	{
-		return EnumSet.noneOf(SmDerivationMethod.class);
+		return EnumSet.noneOf(DerivationMethod.class);
 	}
 
 	public SmPrimeTypeKind getKind()
@@ -128,9 +128,9 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return this;
 	}
 
-	public SmScopeExtent getScopeExtent()
+	public ScopeExtent getScopeExtent()
 	{
-		return SmScopeExtent.Global;
+		return ScopeExtent.Global;
 	}
 
 	public String getTargetNamespace()
@@ -138,9 +138,9 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return m_name.getNamespaceURI();
 	}
 
-	public SmWhiteSpacePolicy getWhiteSpacePolicy()
+	public WhiteSpacePolicy getWhiteSpacePolicy()
 	{
-		return SmWhiteSpacePolicy.PRESERVE;
+		return WhiteSpacePolicy.PRESERVE;
 	}
 
 	public boolean hasEnumerations()
@@ -193,7 +193,7 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return false;
 	}
 
-	public boolean isFinal(final SmDerivationMethod derivation)
+	public boolean isFinal(final DerivationMethod derivation)
 	{
 		return false;
 	}
@@ -282,7 +282,7 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return m_atomBridge.wrapAtom(m_atomBridge.createUntypedAtomic(initialValue));
 	}
 
-	public List<A> validate(final String value, final SmPrefixResolver resolver)
+	public List<A> validate(final String value, final PrefixResolver resolver)
 	{
 		return validate(value);
 	}

@@ -18,7 +18,7 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 import org.genxdm.xs.types.SmComplexType;
 
 @SuppressWarnings("serial")
@@ -31,7 +31,7 @@ public final class CvcAbstractComplexTypeException extends SmComplexTypeExceptio
 		return complexType;
 	}
 
-	public CvcAbstractComplexTypeException(final QName elementName, final SmComplexType<?> complexType, final SmLocation location)
+	public CvcAbstractComplexTypeException(final QName elementName, final SmComplexType<?> complexType, final LocationInSchema location)
 	{
 		super(PART_ABSTRACT_FALSE, elementName, location);
 		this.complexType = PreCondition.assertArgumentNotNull(complexType, "complexType");

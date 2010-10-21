@@ -18,14 +18,14 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class SmMissingAttributeException extends SmComplexTypeException
 {
 	private final QName m_attributeName;
 
-	public SmMissingAttributeException(final QName elementName, final QName attributeName, final SmLocation location)
+	public SmMissingAttributeException(final QName elementName, final QName attributeName, final LocationInSchema location)
 	{
 		super(PART_ATTRIBUTE_REQUIRED_MISSING, elementName, location);
 		m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "name");

@@ -15,17 +15,17 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 @SuppressWarnings("serial")
-abstract public class SccWhiteSpaceValidRestrictionException extends SmComponentConstraintException
+abstract public class SccWhiteSpaceValidRestrictionException extends ComponentConstraintException
 {
     public static final String PART_PARENT_IS_COLLAPSE = "1";
     public static final String PART_PARENT_IS_REPLACE = "2";
 
     public SccWhiteSpaceValidRestrictionException(final String partNumber)
     {
-        super(SmOutcome.SCC_WhiteSpaceValidRestriction, partNumber);
+        super(ValidationOutcome.SCC_WhiteSpaceValidRestriction, partNumber);
     }
 }

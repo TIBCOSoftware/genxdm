@@ -22,10 +22,10 @@ import org.genxdm.processor.w3c.xs.exception.CvcElementChildElementWithFixedExce
 import org.genxdm.processor.w3c.xs.exception.CvcElementFixedValueOverriddenMixedException;
 import org.genxdm.processor.w3c.xs.exception.SrcFrozenLocation;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.SmValueConstraint;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.types.SmComplexType;
 
 
@@ -35,7 +35,7 @@ final class ValidationRules
 	 * If there is a fixed {value constraint} the element information item must have no element information item
 	 * children.
 	 */
-	public static <A> void checkValueConstraintAllowsElementChild(final SmElement<A> elementDeclaration, final QName childName, final Locatable childLocatable, final SmExceptionHandler errors) throws SmAbortException
+	public static <A> void checkValueConstraintAllowsElementChild(final ElementDefinition<A> elementDeclaration, final QName childName, final Locatable childLocatable, final SchemaExceptionHandler errors) throws AbortException
 	{
 		final SmValueConstraint<A> valueConstraint = elementDeclaration.getValueConstraint();
 		if (null != valueConstraint)
@@ -63,7 +63,7 @@ final class ValidationRules
 	/**
 	 * If the data component has a "fixed" attribute, reports an error if there is a conflict with the validated value.
 	 */
-	public static <A> void checkValueConstraintForMixedContent(final SmElement<A> elementDeclaration, final String initialValue, final Locatable locatable, final SmExceptionHandler errors, final AtomBridge<A> atomBridge) throws SmAbortException
+	public static <A> void checkValueConstraintForMixedContent(final ElementDefinition<A> elementDeclaration, final String initialValue, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		final SmValueConstraint<A> valueConstraint = elementDeclaration.getValueConstraint();
 		if (null != valueConstraint)
@@ -104,7 +104,7 @@ final class ValidationRules
 	 * @param errors
 	 *            The exception handler.
 	 */
-	public static <A, T> void checkComplexTypeNotAbstract(final SmComplexType<A> elementType, final QName elementName, final SmExceptionHandler errors) throws SmAbortException
+	public static <A, T> void checkComplexTypeNotAbstract(final SmComplexType<A> elementType, final QName elementName, final SchemaExceptionHandler errors) throws AbortException
 	{
 		if (null != elementType && elementType.isAbstract())
 		{

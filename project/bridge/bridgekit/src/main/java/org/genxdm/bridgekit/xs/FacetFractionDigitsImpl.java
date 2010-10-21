@@ -19,8 +19,8 @@ import java.util.List;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.exceptions.SmFacetException;
-import org.genxdm.xs.exceptions.SmFacetFractionDigitsException;
+import org.genxdm.xs.exceptions.FacetException;
+import org.genxdm.xs.exceptions.FacetFractionDigitsException;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmFractionDigits;
 import org.genxdm.xs.types.SmNativeType;
@@ -49,14 +49,14 @@ public final class FacetFractionDigitsImpl<A> extends FacetImpl<A> implements Sm
 		return fractionDigits;
 	}
 
-	public void validate(final List<? extends A> actualValue, final SmSimpleType<A> simpleType) throws SmFacetException
+	public void validate(final List<? extends A> actualValue, final SmSimpleType<A> simpleType) throws FacetException
 	{
 		for (final A atom : actualValue)
 		{
 			if (fractionDigits(atom, atomBridge) > fractionDigits)
 			{
 				final String displayString = atomBridge.getC14NString(actualValue);
-				throw new SmFacetFractionDigitsException(displayString, this);
+				throw new FacetFractionDigitsException(displayString, this);
 			}
 		}
 	}

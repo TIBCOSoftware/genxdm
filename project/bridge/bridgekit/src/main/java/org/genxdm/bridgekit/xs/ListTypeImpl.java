@@ -23,12 +23,12 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmQuantifier;
-import org.genxdm.xs.enums.SmScopeExtent;
-import org.genxdm.xs.enums.SmWhiteSpacePolicy;
-import org.genxdm.xs.exceptions.SmDatatypeException;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.xs.enums.ScopeExtent;
+import org.genxdm.xs.enums.WhiteSpacePolicy;
+import org.genxdm.xs.exceptions.DatatypeException;
+import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.SmListSimpleType;
 import org.genxdm.xs.types.SmNativeType;
 import org.genxdm.xs.types.SmPrimeType;
@@ -41,9 +41,9 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements SmListSi
 	private final SmType<A> baseType;
 	private final SmSimpleType<A> itemType;
 
-	public ListTypeImpl(final QName name, final boolean isAnonymous, final SmScopeExtent scope, final SmSimpleType<A> itemType, final SmType<A> baseType, final SmWhiteSpacePolicy whiteSpace, final AtomBridge<A> atomBridge)
+	public ListTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final SmSimpleType<A> itemType, final SmType<A> baseType, final WhiteSpacePolicy whiteSpace, final AtomBridge<A> atomBridge)
 	{
-		super(name, isAnonymous, scope, SmDerivationMethod.List, whiteSpace, atomBridge);
+		super(name, isAnonymous, scope, DerivationMethod.List, whiteSpace, atomBridge);
 		this.itemType = PreCondition.assertArgumentNotNull(itemType, "itemType");
 		this.baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");
 	}
@@ -54,7 +54,7 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements SmListSi
 	}
 
 	@SuppressWarnings("unused")
-	private List<A> compile(final List<? extends A> value) throws SmDatatypeException
+	private List<A> compile(final List<? extends A> value) throws DatatypeException
 	{
 		PreCondition.assertArgumentNotNull(value, "value");
 
@@ -74,15 +74,15 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements SmListSi
 					compiled.add(atom);
 				}
 			}
-			catch (final SmDatatypeException e)
+			catch (final DatatypeException e)
 			{
-				throw new SmDatatypeException(strval, this, e);
+				throw new DatatypeException(strval, this, e);
 			}
 		}
 		return compiled;
 	}
 
-	protected List<A> compile(final String initialValue) throws SmDatatypeException
+	protected List<A> compile(final String initialValue) throws DatatypeException
 	{
 		PreCondition.assertArgumentNotNull(initialValue, "value");
 
@@ -101,15 +101,15 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements SmListSi
 					compiled.add(atom);
 				}
 			}
-			catch (final SmDatatypeException e)
+			catch (final DatatypeException e)
 			{
-				throw new SmDatatypeException(initialValue, this, e);
+				throw new DatatypeException(initialValue, this, e);
 			}
 		}
 		return compiled;
 	}
 
-	protected List<A> compile(final String initialValue, final SmPrefixResolver resolver) throws SmDatatypeException
+	protected List<A> compile(final String initialValue, final PrefixResolver resolver) throws DatatypeException
 	{
 		PreCondition.assertArgumentNotNull(initialValue, "value");
 
@@ -128,9 +128,9 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements SmListSi
 					compiled.add(atom);
 				}
 			}
-			catch (final SmDatatypeException e)
+			catch (final DatatypeException e)
 			{
-				throw new SmDatatypeException(initialValue, this, e);
+				throw new DatatypeException(initialValue, this, e);
 			}
 		}
 		return compiled;
@@ -151,7 +151,7 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements SmListSi
 		return SmNativeType.ANY_SIMPLE_TYPE;
 	}
 
-	public final SmWhiteSpacePolicy getWhiteSpacePolicy()
+	public final WhiteSpacePolicy getWhiteSpacePolicy()
 	{
 		if (null != m_whiteSpace)
 		{
@@ -160,7 +160,7 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements SmListSi
 		else
 		{
 			// This is a bit freaky. Do we go to baseType?
-			return SmWhiteSpacePolicy.PRESERVE;
+			return WhiteSpacePolicy.PRESERVE;
 		}
 	}
 
@@ -201,7 +201,7 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements SmListSi
 
 	public String normalize(final String initialValue)
 	{
-		return SmWhiteSpacePolicy.COLLAPSE.apply(initialValue);
+		return WhiteSpacePolicy.COLLAPSE.apply(initialValue);
 	}
 
 	@Override
@@ -211,8 +211,8 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements SmListSi
 	}
 
 	@Override
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
-		return SmQuantifier.ZERO_OR_MORE;
+		return KeeneQuantifier.ZERO_OR_MORE;
 	}
 }

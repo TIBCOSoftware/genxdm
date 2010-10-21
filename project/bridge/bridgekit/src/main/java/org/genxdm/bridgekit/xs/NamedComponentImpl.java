@@ -18,16 +18,16 @@ package org.genxdm.bridgekit.xs;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmComponent;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.components.SchemaComponent;
+import org.genxdm.xs.enums.ScopeExtent;
 
-abstract class NamedComponentImpl<A> extends LockableImpl implements SmComponent<A>
+abstract class NamedComponentImpl<A> extends LockableImpl implements SchemaComponent<A>
 {
 	private final boolean isAnonymous;
 	private final QName name;
-	private final SmScopeExtent scope;
+	private final ScopeExtent scope;
 
-	public NamedComponentImpl(final QName name, final boolean isAnonymous, final SmScopeExtent scope)
+	public NamedComponentImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope)
 	{
 		if (isAnonymous)
 		{
@@ -51,7 +51,7 @@ abstract class NamedComponentImpl<A> extends LockableImpl implements SmComponent
 		return name;
 	}
 
-	public final SmScopeExtent getScopeExtent()
+	public final ScopeExtent getScopeExtent()
 	{
 		return scope;
 	}

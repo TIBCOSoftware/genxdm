@@ -15,11 +15,11 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 @SuppressWarnings("serial")
-public abstract class SccLengthAndMinLengthOrMaxLengthException extends SmComponentConstraintException
+public abstract class SccLengthAndMinLengthOrMaxLengthException extends ComponentConstraintException
 {
     public static final String PART_MIN_LENGTH_COMPATIBLE = "1.1";
     public static final String PART_MIN_LENGTH_DERIVED = "1.2";
@@ -28,6 +28,6 @@ public abstract class SccLengthAndMinLengthOrMaxLengthException extends SmCompon
 
     public SccLengthAndMinLengthOrMaxLengthException(final String partNumber)
     {
-        super(SmOutcome.SCC_Length_MinLength_Or_MaxLength, partNumber);
+        super(ValidationOutcome.SCC_Length_MinLength_Or_MaxLength, partNumber);
     }
 }

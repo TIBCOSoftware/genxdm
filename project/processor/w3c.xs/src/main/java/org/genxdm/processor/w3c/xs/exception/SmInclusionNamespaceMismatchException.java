@@ -15,18 +15,18 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public class SmInclusionNamespaceMismatchException extends SmInclusionException
 {
-	public SmInclusionNamespaceMismatchException(final SmLocation location)
+	public SmInclusionNamespaceMismatchException(final LocationInSchema location)
 	{
 		super(PART_INCLUSION_NAMESPACE_MISMATCH, location);
 	}
 
-	public SmInclusionNamespaceMismatchException(final SmLocation location, final SmException cause)
+	public SmInclusionNamespaceMismatchException(final LocationInSchema location, final SchemaException cause)
 	{
 		super(PART_INCLUSION_NAMESPACE_MISMATCH, location, cause);
 	}

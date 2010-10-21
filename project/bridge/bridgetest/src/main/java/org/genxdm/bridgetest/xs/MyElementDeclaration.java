@@ -21,28 +21,28 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.IllegalNullArgumentException;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.SmSchema;
-import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.Schema;
+import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
 import org.genxdm.xs.constraints.SmValueConstraint;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmNodeKind;
-import org.genxdm.xs.enums.SmQuantifier;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.NodeKind;
+import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.SmPrimeType;
 import org.genxdm.xs.types.SmPrimeTypeKind;
 import org.genxdm.xs.types.SmSequenceTypeVisitor;
 import org.genxdm.xs.types.SmType;
 
-public final class MyElementDeclaration<A> implements SmElement<A>
+public final class MyElementDeclaration<A> implements ElementDefinition<A>
 {
 	@SuppressWarnings("unused")
-	private final SmSchema<A> schema;
+	private final Schema<A> schema;
 	@SuppressWarnings("unused")
 	private final AtomBridge<A> atomBridge;
 	private final QName name;
 
-	public MyElementDeclaration(final String namespaceURI, final String localName, final SmSchema<A> schema, final AtomBridge<A> atomBridge)
+	public MyElementDeclaration(final String namespaceURI, final String localName, final Schema<A> schema, final AtomBridge<A> atomBridge)
 	{
 		this.schema = IllegalNullArgumentException.check(schema, "schema");
 		this.atomBridge = atomBridge;
@@ -57,7 +57,7 @@ public final class MyElementDeclaration<A> implements SmElement<A>
 		throw new AssertionError("TODO");
 	}
 
-	public Set<SmDerivationMethod> getDisallowedSubtitutions()
+	public Set<DerivationMethod> getDisallowedSubtitutions()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -86,31 +86,31 @@ public final class MyElementDeclaration<A> implements SmElement<A>
 		return name;
 	}
 
-	public SmNodeKind getNodeKind()
+	public NodeKind getNodeKind()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public SmScopeExtent getScopeExtent()
+	public ScopeExtent getScopeExtent()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public SmElement<A> getSubstitutionGroup()
+	public ElementDefinition<A> getSubstitutionGroup()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public Set<SmDerivationMethod> getSubstitutionGroupExclusions()
+	public Set<DerivationMethod> getSubstitutionGroupExclusions()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public Iterable<SmElement<A>> getSubstitutionGroupMembers()
+	public Iterable<ElementDefinition<A>> getSubstitutionGroupMembers()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -192,7 +192,7 @@ public final class MyElementDeclaration<A> implements SmElement<A>
 		throw new AssertionError("TODO");
 	}
 
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");

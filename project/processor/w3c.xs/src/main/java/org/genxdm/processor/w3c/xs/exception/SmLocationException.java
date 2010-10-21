@@ -15,29 +15,29 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 //TODO("This should ultimately be abstract.")
 @SuppressWarnings("serial")
-public class SmLocationException extends SmException
+public class SmLocationException extends SchemaException
 {
-	private final SmLocation m_location;
+	private final LocationInSchema m_location;
 
-	public SmLocationException(final SmOutcome outcome, final String partNumber, final SmLocation location)
+	public SmLocationException(final ValidationOutcome outcome, final String partNumber, final LocationInSchema location)
 	{
 		super(outcome, partNumber);
 		m_location = location;
 	}
 
-	public SmLocationException(final SmOutcome outcome, final String partNumber, final SmLocation location, final SmException cause)
+	public SmLocationException(final ValidationOutcome outcome, final String partNumber, final LocationInSchema location, final SchemaException cause)
 	{
 		super(outcome, partNumber, cause);
 		m_location = location;
 	}
 
-	public final SmLocation getLocation()
+	public final LocationInSchema getLocation()
 	{
 		return m_location;
 	}

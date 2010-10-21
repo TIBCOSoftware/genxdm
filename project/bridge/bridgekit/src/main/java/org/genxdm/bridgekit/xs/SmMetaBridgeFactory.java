@@ -17,7 +17,7 @@ package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.SmMetaBridge;
+import org.genxdm.xs.SchemaTypeBridge;
 
 /**
  * A factory for the schema model metadata bridge.
@@ -31,7 +31,7 @@ public final class SmMetaBridgeFactory<A>
 		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
 	}
 
-	public SmMetaBridge<A> newMetaBridge()
+	public SchemaTypeBridge<A> newMetaBridge()
 	{
 		return new SmMetaBridgeImpl<A>(atomBridge);
 	}

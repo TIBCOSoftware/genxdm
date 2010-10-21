@@ -15,13 +15,13 @@
  */
 package org.genxdm.processor.w3c.xs.validation.api;
 
-import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.ElementDefinition;
 
 public interface VxValidatorCacheFactory<A>
 {
 	VxValidatorCache<A> newValidatorCache();
 
-	VxValidatorCache<A> newValidatorCache(SmElement<A> elementDeclaration);
+	VxValidatorCache<A> newValidatorCache(ElementDefinition<A> elementDeclaration);
 
 	VxValidatorCacheFactory<A> setSchemaDocumentLocationStrategy(final VxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy);
 }

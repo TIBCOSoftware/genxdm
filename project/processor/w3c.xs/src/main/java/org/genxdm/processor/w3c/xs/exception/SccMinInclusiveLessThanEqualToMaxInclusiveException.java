@@ -15,18 +15,18 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 @SuppressWarnings("serial")
-public final class SccMinInclusiveLessThanEqualToMaxInclusiveException extends SmComponentConstraintException
+public final class SccMinInclusiveLessThanEqualToMaxInclusiveException extends ComponentConstraintException
 {
     private final String m_minInclusive;
     private final String m_maxInclusive;
 
     public SccMinInclusiveLessThanEqualToMaxInclusiveException(final String minLength, final String maxLength)
     {
-        super(SmOutcome.SCC_MinInclusiveLessThanEqualToMaxInclusive, "4.3.7.4");
+        super(ValidationOutcome.SCC_MinInclusiveLessThanEqualToMaxInclusive, "4.3.7.4");
         m_minInclusive = minLength;
         m_maxInclusive = maxLength;
     }

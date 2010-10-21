@@ -19,9 +19,9 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
-import org.genxdm.xs.SmMetaBridge;
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.SchemaTypeBridge;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.types.SmAttributeNodeType;
 import org.genxdm.xs.types.SmChoiceType;
 import org.genxdm.xs.types.SmCommentNodeType;
@@ -49,12 +49,12 @@ import org.genxdm.xs.types.SmUnionSimpleType;
 final class PrintSequenceTypeVisitor<A> implements SmSequenceTypeVisitor<A>
 {
 	private final StringBuilder m_sb = new StringBuilder();
-	private final SmMetaBridge<A> m_metaBridge;
+	private final SchemaTypeBridge<A> m_metaBridge;
 	private final NameSource m_nameBridge;
 	private final SmNamespaceResolver m_namespaces;
 	private final String m_defaultElementAndTypeNamespace;
 
-	public PrintSequenceTypeVisitor(final SmMetaBridge<A> metaBridge, final SmNamespaceResolver namespaces, final String defaultElementAndTypeNamespace)
+	public PrintSequenceTypeVisitor(final SchemaTypeBridge<A> metaBridge, final SmNamespaceResolver namespaces, final String defaultElementAndTypeNamespace)
 	{
 		m_metaBridge = PreCondition.assertArgumentNotNull(metaBridge, "metaBridge");
 		m_nameBridge = m_metaBridge.getNameBridge();
@@ -129,7 +129,7 @@ final class PrintSequenceTypeVisitor<A> implements SmSequenceTypeVisitor<A>
 		m_sb.append(")");
 	}
 
-	public void visit(final SmElement<A> schemaElement)
+	public void visit(final ElementDefinition<A> schemaElement)
 	{
 		final QName name = schemaElement.getName();
 		m_sb.append("schema-element(");
@@ -217,7 +217,7 @@ final class PrintSequenceTypeVisitor<A> implements SmSequenceTypeVisitor<A>
 		m_sb.append(")");
 	}
 
-	public void visit(final SmAttribute<A> schemaAttribute)
+	public void visit(final AttributeDefinition<A> schemaAttribute)
 	{
 		final QName declaration = schemaAttribute.getName();
 		m_sb.append("schema-attribute(");

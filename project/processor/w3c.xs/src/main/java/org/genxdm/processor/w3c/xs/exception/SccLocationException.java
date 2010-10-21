@@ -16,32 +16,32 @@
 package org.genxdm.processor.w3c.xs.exception;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 /**
  * A Schema Component Constraint Exception wrapped in physical location information.
  */
 @SuppressWarnings("serial")
-public final class SccLocationException extends SmComponentConstraintException
+public final class SccLocationException extends ComponentConstraintException
 {
-	private final SmLocation m_location;
+	private final LocationInSchema m_location;
 
-	public SccLocationException(final SmLocation location, final SmException cause)
+	public SccLocationException(final LocationInSchema location, final SchemaException cause)
 	{
 		super(PreCondition.assertArgumentNotNull(cause, "cause").getOutcome(), cause.getPartNumber(), cause);
 		m_location = PreCondition.assertArgumentNotNull(location, "location");
 	}
 
-	public final SmLocation getLocation()
+	public final LocationInSchema getLocation()
 	{
 		return m_location;
 	}
 
 	@Override
-	public SmException getCause()
+	public SchemaException getCause()
 	{
-		return (SmException)super.getCause();
+		return (SchemaException)super.getCause();
 	}
 }

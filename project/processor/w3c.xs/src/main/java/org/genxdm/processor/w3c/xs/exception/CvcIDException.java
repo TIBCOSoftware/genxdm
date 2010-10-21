@@ -15,8 +15,8 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public abstract class CvcIDException extends SmLocationException
@@ -24,8 +24,8 @@ public abstract class CvcIDException extends SmLocationException
 	public static final String PART_EMPTY = "1";
 	public static final String PART_DUPLICATE = "2";
 
-	public CvcIDException(final String partNumber, final SmLocation location)
+	public CvcIDException(final String partNumber, final LocationInSchema location)
 	{
-		super(SmOutcome.CVC_ID, partNumber, location);
+		super(ValidationOutcome.CVC_ID, partNumber, location);
 	}
 }

@@ -18,10 +18,10 @@ package org.genxdm.bridgekit.xs;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.enums.SmNodeKind;
-import org.genxdm.xs.enums.SmQuantifier;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.NodeKind;
+import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.SmElementNodeType;
 import org.genxdm.xs.types.SmPrimeType;
 import org.genxdm.xs.types.SmPrimeTypeKind;
@@ -32,7 +32,7 @@ final class ElementNodeWithParentAxisType<A> implements SmElementNodeType<A>
 {
 	private final SmElementNodeType<A> m_element;
 
-	public ElementNodeWithParentAxisType(final SmElementNodeType<A> element, final SmElement<A> parentAxis)
+	public ElementNodeWithParentAxisType(final SmElementNodeType<A> element, final ElementDefinition<A> parentAxis)
 	{
 		m_element = PreCondition.assertArgumentNotNull(element);
 	}
@@ -57,12 +57,12 @@ final class ElementNodeWithParentAxisType<A> implements SmElementNodeType<A>
 		return m_element.getName();
 	}
 
-	public SmNodeKind getNodeKind()
+	public NodeKind getNodeKind()
 	{
 		return m_element.getNodeKind();
 	}
 
-	public SmScopeExtent getScopeExtent()
+	public ScopeExtent getScopeExtent()
 	{
 		return m_element.getScopeExtent();
 	}
@@ -107,7 +107,7 @@ final class ElementNodeWithParentAxisType<A> implements SmElementNodeType<A>
 		return this;
 	}
 
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
 		return m_element.quantifier();
 	}

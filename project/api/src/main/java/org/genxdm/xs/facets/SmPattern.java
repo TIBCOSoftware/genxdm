@@ -15,7 +15,7 @@
  */
 package org.genxdm.xs.facets;
 
-import org.genxdm.xs.exceptions.SmPatternException;
+import org.genxdm.xs.exceptions.PatternException;
 
 /**
  * The xs:pattern facet.
@@ -30,5 +30,5 @@ public interface SmPattern
 	/**
 	 * Checks the passed <em>String</em> value according to this <em>pattern</em> facet.
 	 */
-	void validate(String input) throws SmPatternException;
+	void validate(String input) throws PatternException;
 }

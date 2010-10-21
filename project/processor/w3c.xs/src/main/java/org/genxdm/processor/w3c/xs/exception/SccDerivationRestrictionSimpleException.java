@@ -18,12 +18,12 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 
 @SuppressWarnings("serial")
-public abstract class SccDerivationRestrictionSimpleException extends SmComponentConstraintException
+public abstract class SccDerivationRestrictionSimpleException extends ComponentConstraintException
 {
 	private final QName m_simpleType;
 
@@ -32,7 +32,7 @@ public abstract class SccDerivationRestrictionSimpleException extends SmComponen
 
 	public SccDerivationRestrictionSimpleException(final String partNumber, final QName simpleType)
 	{
-		super(SmOutcome.SCC_Derivation_Valid_Restriction_Simple, partNumber);
+		super(ValidationOutcome.SCC_Derivation_Valid_Restriction_Simple, partNumber);
 		m_simpleType = PreCondition.assertArgumentNotNull(simpleType, "simpleType");
 	}
 

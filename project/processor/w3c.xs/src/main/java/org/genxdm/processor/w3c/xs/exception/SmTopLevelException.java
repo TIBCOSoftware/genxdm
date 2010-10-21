@@ -15,9 +15,9 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 /**
  * Used for reporting problems with the top level schema.
@@ -27,13 +27,13 @@ public abstract class SmTopLevelException extends SmLocationException
 {
 	public static final String PART_NOT_WELL_FORMED = "TODO";
 
-	public SmTopLevelException(final String partNumber, final SmLocation location)
+	public SmTopLevelException(final String partNumber, final LocationInSchema location)
 	{
-		super(SmOutcome.SRC_TopLevel, partNumber, location);
+		super(ValidationOutcome.SRC_TopLevel, partNumber, location);
 	}
 
-	public SmTopLevelException(final String partNumber, final SmLocation location, final SmException cause)
+	public SmTopLevelException(final String partNumber, final LocationInSchema location, final SchemaException cause)
 	{
-		super(SmOutcome.SRC_TopLevel, partNumber, location, cause);
+		super(ValidationOutcome.SRC_TopLevel, partNumber, location, cause);
 	}
 }
