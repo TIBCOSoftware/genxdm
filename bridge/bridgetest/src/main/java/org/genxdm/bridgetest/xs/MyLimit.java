@@ -20,8 +20,8 @@ import java.util.List;
 
 import org.genxdm.exceptions.IllegalNullArgumentException;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.exceptions.SmFacetException;
-import org.genxdm.xs.exceptions.SmFacetMinMaxException;
+import org.genxdm.xs.exceptions.FacetException;
+import org.genxdm.xs.exceptions.FacetMinMaxException;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmLimit;
 import org.genxdm.xs.types.SmSimpleType;
@@ -50,7 +50,7 @@ public final class MyLimit<A> implements SmLimit<A>
 		return limitValue;
 	}
 
-	public void validate(final A atom, final SmSimpleType<A> simpleType) throws SmFacetMinMaxException
+	public void validate(final A atom, final SmSimpleType<A> simpleType) throws FacetMinMaxException
 	{
 		IllegalNullArgumentException.check(atom, "atom");
 		IllegalNullArgumentException.check(simpleType, "simpleType");
@@ -66,7 +66,7 @@ public final class MyLimit<A> implements SmLimit<A>
 					{
 						if (actualInteger.compareTo(limitInteger) < 0)
 						{
-							throw new SmFacetMinMaxException(this, atomBridge.getC14NForm(atom));
+							throw new FacetMinMaxException(this, atomBridge.getC14NForm(atom));
 						}
 					}
 					break;
@@ -74,7 +74,7 @@ public final class MyLimit<A> implements SmLimit<A>
 					{
 						if (actualInteger.compareTo(limitInteger) >= 0)
 						{
-							throw new SmFacetMinMaxException(this, atomBridge.getC14NForm(atom));
+							throw new FacetMinMaxException(this, atomBridge.getC14NForm(atom));
 						}
 					}
 					break;
@@ -103,7 +103,7 @@ public final class MyLimit<A> implements SmLimit<A>
 		throw new AssertionError("TODO");
 	}
 
-	public void validate(final List<? extends A> actualValue, final SmSimpleType<A> simpleType) throws SmFacetException
+	public void validate(final List<? extends A> actualValue, final SmSimpleType<A> simpleType) throws FacetException
 	{
 		IllegalNullArgumentException.check(actualValue, "actualValue");
 		IllegalNullArgumentException.check(simpleType, "simpleType");

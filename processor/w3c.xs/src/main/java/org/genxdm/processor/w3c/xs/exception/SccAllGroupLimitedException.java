@@ -15,17 +15,17 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 @SuppressWarnings("serial")
-public abstract class SccAllGroupLimitedException extends SmComponentConstraintException
+public abstract class SccAllGroupLimitedException extends ComponentConstraintException
 {
     public static final String PART_APPEARS = "1";
     public static final String PART_MAX_OCCURS = "2";
 
     public SccAllGroupLimitedException(final String partNumber)
     {
-        super(SmOutcome.SCC_All_Group_Limited, partNumber);
+        super(ValidationOutcome.SCC_All_Group_Limited, partNumber);
     }
 }

@@ -21,27 +21,27 @@ import java.util.HashMap;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmAttributeGroup;
-import org.genxdm.xs.components.SmComponentBag;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.components.SmNotation;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.ComponentBag;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.SmComplexType;
 import org.genxdm.xs.types.SmNativeType;
 import org.genxdm.xs.types.SmSimpleType;
 import org.genxdm.xs.types.SmType;
 
-final class XmlSchema<A> implements SmComponentBag<A>
+final class XmlSchema<A> implements ComponentBag<A>
 {
-	private final HashMap<QName, SmAttribute<A>> m_attributes = new HashMap<QName, SmAttribute<A>>();
+	private final HashMap<QName, AttributeDefinition<A>> m_attributes = new HashMap<QName, AttributeDefinition<A>>();
 
 	private final HashMap<QName, SmSimpleType<A>> m_simpleTypes = new HashMap<QName, SmSimpleType<A>>();
-	final SmAttribute<A> XML_BASE;
+	final AttributeDefinition<A> XML_BASE;
 
-	final SmAttribute<A> XML_LANG;
+	final AttributeDefinition<A> XML_LANG;
 
 	/**
 	 * Constructs the W3C XML Schema native types and atributes.
@@ -52,13 +52,13 @@ final class XmlSchema<A> implements SmComponentBag<A>
 		{
 			final QName name = new QName(XMLConstants.XML_NS_URI, "base", XMLConstants.XML_NS_PREFIX);
 			final SmSimpleType<A> type = cache.getAtomicType(SmNativeType.ANY_URI);
-			XML_BASE = new AttributeDeclTypeImpl<A>(name, SmScopeExtent.Global, type);
+			XML_BASE = new AttributeDeclTypeImpl<A>(name, ScopeExtent.Global, type);
 			register(XML_BASE);
 		}
 		{
 			final QName name = new QName(XMLConstants.XML_NS_URI, "lang", XMLConstants.XML_NS_PREFIX);
 			final SmSimpleType<A> type = cache.getAtomicType(SmNativeType.LANGUAGE);
-			XML_LANG = new AttributeDeclTypeImpl<A>(name, SmScopeExtent.Global, type);
+			XML_LANG = new AttributeDeclTypeImpl<A>(name, ScopeExtent.Global, type);
 			register(XML_LANG);
 		}
 	}
@@ -76,22 +76,22 @@ final class XmlSchema<A> implements SmComponentBag<A>
 		}
 	}
 
-	public SmAttribute<A> getAttribute(final QName name)
+	public AttributeDefinition<A> getAttribute(final QName name)
 	{
 		return m_attributes.get(name);
 	}
 
-	public SmAttributeGroup<A> getAttributeGroup(final QName name)
+	public AttributeGroupDefinition<A> getAttributeGroup(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<SmAttributeGroup<A>> getAttributeGroups()
+	public Iterable<AttributeGroupDefinition<A>> getAttributeGroups()
 	{
 		return Collections.emptyList();
 	}
 
-	public Iterable<SmAttribute<A>> getAttributes()
+	public Iterable<AttributeDefinition<A>> getAttributes()
 	{
 		return m_attributes.values();
 	}
@@ -106,12 +106,12 @@ final class XmlSchema<A> implements SmComponentBag<A>
 		return Collections.emptyList();
 	}
 
-	public SmElement<A> getElement(final QName name)
+	public ElementDefinition<A> getElement(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<SmElement<A>> getElements()
+	public Iterable<ElementDefinition<A>> getElements()
 	{
 		return Collections.emptyList();
 	}
@@ -126,22 +126,22 @@ final class XmlSchema<A> implements SmComponentBag<A>
 		return Collections.emptyList();
 	}
 
-	public SmModelGroup<A> getModelGroup(final QName name)
+	public ModelGroup<A> getModelGroup(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<SmModelGroup<A>> getModelGroups()
+	public Iterable<ModelGroup<A>> getModelGroups()
 	{
 		return Collections.emptyList();
 	}
 
-	public SmNotation<A> getNotation(final QName name)
+	public NotationDefinition<A> getNotation(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<SmNotation<A>> getNotations()
+	public Iterable<NotationDefinition<A>> getNotations()
 	{
 		return Collections.emptyList();
 	}
@@ -206,7 +206,7 @@ final class XmlSchema<A> implements SmComponentBag<A>
 		return hasSimpleType(name);
 	}
 
-	private void register(final SmAttribute<A> attribute)
+	private void register(final AttributeDefinition<A> attribute)
 	{
 		m_attributes.put(attribute.getName(), attribute);
 	}

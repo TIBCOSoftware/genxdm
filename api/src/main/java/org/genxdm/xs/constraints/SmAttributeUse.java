@@ -15,7 +15,7 @@
  */
 package org.genxdm.xs.constraints;
 
-import org.genxdm.xs.components.SmAttribute;
+import org.genxdm.xs.components.AttributeDefinition;
 
 /**
  * Describes the use of an attribute declaration.
@@ -37,7 +37,7 @@ public interface SmAttributeUse<A> extends SmHasValueConstraint<A>
 	 * In the XML representation, this is the (top-level) attribute declaration resolved by the actual value of the ref
 	 * [attribute].
 	 */
-	SmAttribute<A> getAttribute();
+	AttributeDefinition<A> getAttribute();
 
 	/**
 	 * Returns the effective value constraint, may be <code>null</code>. [Definition:] Let the effective value

@@ -18,8 +18,8 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 import javax.xml.namespace.QName;
 
 import org.genxdm.processor.w3c.xs.validation.api.VxPSVI;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.types.SmSimpleType;
 import org.genxdm.xs.types.SmType;
 
@@ -28,13 +28,13 @@ interface ModelAnalyzer<A>
 {
 	void startDocument();
 
-	void endDocument() throws SmAbortException;
+	void endDocument() throws AbortException;
 
-	VxPSVI<A> startElement(QName name, SmType<A> localType, Boolean explicitNil) throws SmAbortException;
+	VxPSVI<A> startElement(QName name, SmType<A> localType, Boolean explicitNil) throws AbortException;
 
-	VxPSVI<A> endElement() throws SmAbortException;
+	VxPSVI<A> endElement() throws AbortException;
 
 	void attribute(QName name, SmSimpleType<A> type, A value);
 
-	void setExceptionHandler(SmExceptionHandler handler);
+	void setExceptionHandler(SchemaExceptionHandler handler);
 }

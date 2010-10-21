@@ -17,26 +17,26 @@ package org.genxdm.processor.w3c.xs;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.constraints.SmNamespaceConstraint;
-import org.genxdm.xs.enums.SmProcessContentsMode;
+import org.genxdm.xs.enums.ProcessContentsMode;
 
 final class XMLWildcard<A> implements XMLParticleTerm<A>
 {
 	public String id;
-	private SmProcessContentsMode m_processContents;
+	private ProcessContentsMode m_processContents;
 	private SmNamespaceConstraint m_namespaceConstraint;
 
-	public XMLWildcard(final SmProcessContentsMode processContents, final SmNamespaceConstraint namespaceConstraint)
+	public XMLWildcard(final ProcessContentsMode processContents, final SmNamespaceConstraint namespaceConstraint)
 	{
 		m_processContents = PreCondition.assertArgumentNotNull(processContents);
 		m_namespaceConstraint = PreCondition.assertArgumentNotNull(namespaceConstraint);
 	}
 
-	public SmProcessContentsMode getProcessContents()
+	public ProcessContentsMode getProcessContents()
 	{
 		return m_processContents;
 	}
 
-	public void setProcessContents(final SmProcessContentsMode processContents)
+	public void setProcessContents(final ProcessContentsMode processContents)
 	{
 		m_processContents = PreCondition.assertArgumentNotNull(processContents);
 	}

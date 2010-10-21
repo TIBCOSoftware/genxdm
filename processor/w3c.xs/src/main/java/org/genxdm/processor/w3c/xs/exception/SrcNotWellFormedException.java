@@ -15,8 +15,8 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 /**
  * Used for reporting errors due to ill formed documents.
@@ -28,14 +28,14 @@ public class SrcNotWellFormedException extends SmLocationException
     public static final String PART_SCHEMA_NOT_WELL_FORMED = "TODO_SCHEMA";
     public static final String PART_INSTANCE_NOT_WELL_FORMED = "TODO_INSTANCE";
 
-    public SrcNotWellFormedException(final String partNumber, final SmLocation location)
+    public SrcNotWellFormedException(final String partNumber, final LocationInSchema location)
     {
-        super(SmOutcome.SRC_NotWellFormed, partNumber, location);    //To change body of overridden methods use File | Settings | File Templates.
+        super(ValidationOutcome.SRC_NotWellFormed, partNumber, location);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    public SrcNotWellFormedException(final String partNumber, final SmLocation location, Exception cause)
+    public SrcNotWellFormedException(final String partNumber, final LocationInSchema location, Exception cause)
     {
-        super(SmOutcome.SRC_NotWellFormed, partNumber, location);    //To change body of overridden methods use File | Settings | File Templates.
+        super(ValidationOutcome.SRC_NotWellFormed, partNumber, location);    //To change body of overridden methods use File | Settings | File Templates.
         m_cause = cause;
     }
 

@@ -18,13 +18,13 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
-import org.genxdm.xs.exceptions.SmException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
+import org.genxdm.xs.exceptions.SchemaException;
 
 
 @SuppressWarnings("serial")
-public abstract class SccDerivationExtensionException extends SmComponentConstraintException
+public abstract class SccDerivationExtensionException extends ComponentConstraintException
 {
 	private final QName m_complexTypeName;
 
@@ -35,13 +35,13 @@ public abstract class SccDerivationExtensionException extends SmComponentConstra
 
 	public SccDerivationExtensionException(final String partNumber, final QName complexTypeName)
 	{
-		super(SmOutcome.SCC_Derivation_Valid_Extension, partNumber);
+		super(ValidationOutcome.SCC_Derivation_Valid_Extension, partNumber);
 		m_complexTypeName = PreCondition.assertArgumentNotNull(complexTypeName, "complexTypeName");
 	}
 
-	public SccDerivationExtensionException(final String partNumber, final QName complexTypeName, final SmException cause)
+	public SccDerivationExtensionException(final String partNumber, final QName complexTypeName, final SchemaException cause)
 	{
-		super(SmOutcome.SCC_Derivation_Valid_Extension, partNumber, PreCondition.assertArgumentNotNull(cause, "cause"));
+		super(ValidationOutcome.SCC_Derivation_Valid_Extension, partNumber, PreCondition.assertArgumentNotNull(cause, "cause"));
 		m_complexTypeName = PreCondition.assertArgumentNotNull(complexTypeName, "complexTypeName");
 	}
 

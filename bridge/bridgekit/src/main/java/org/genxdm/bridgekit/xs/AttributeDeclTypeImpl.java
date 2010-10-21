@@ -18,21 +18,21 @@ package org.genxdm.bridgekit.xs;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.enums.SmNodeKind;
-import org.genxdm.xs.enums.SmQuantifier;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.NodeKind;
+import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.SmPrimeType;
 import org.genxdm.xs.types.SmPrimeTypeKind;
 import org.genxdm.xs.types.SmSequenceTypeVisitor;
 import org.genxdm.xs.types.SmSimpleMarkerType;
 import org.genxdm.xs.types.SmSimpleType;
 
-public final class AttributeDeclTypeImpl<A> extends DataComponentImpl<A> implements SmAttribute<A>
+public final class AttributeDeclTypeImpl<A> extends DataComponentImpl<A> implements AttributeDefinition<A>
 {
 	private SmSimpleMarkerType<A> m_type;
 
-	public AttributeDeclTypeImpl(final QName name, final SmScopeExtent scope, final SmSimpleMarkerType<A> type)
+	public AttributeDeclTypeImpl(final QName name, final ScopeExtent scope, final SmSimpleMarkerType<A> type)
 	{
 		super(name, scope);
 		this.m_type = PreCondition.assertArgumentNotNull(type, "type");
@@ -48,9 +48,9 @@ public final class AttributeDeclTypeImpl<A> extends DataComponentImpl<A> impleme
 		return SmPrimeTypeKind.SCHEMA_ATTRIBUTE;
 	}
 
-	public SmNodeKind getNodeKind()
+	public NodeKind getNodeKind()
 	{
-		return SmNodeKind.ATTRIBUTE;
+		return NodeKind.ATTRIBUTE;
 	}
 
 	public SmSimpleMarkerType<A> getType()
@@ -79,9 +79,9 @@ public final class AttributeDeclTypeImpl<A> extends DataComponentImpl<A> impleme
 		return this;
 	}
 
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
-		return SmQuantifier.EXACTLY_ONE;
+		return KeeneQuantifier.EXACTLY_ONE;
 	}
 
 	public void setType(final SmSimpleType<A> type)
@@ -92,10 +92,10 @@ public final class AttributeDeclTypeImpl<A> extends DataComponentImpl<A> impleme
 
 	public boolean subtype(final SmPrimeType<A> rhs)
 	{
-		if (rhs instanceof SmAttribute<?>)
+		if (rhs instanceof AttributeDefinition<?>)
 		{
-			SmAttribute<A> rhsAttDecl = (SmAttribute<A>)rhs;
-			if (rhsAttDecl.getScopeExtent() == SmScopeExtent.Global)
+			AttributeDefinition<A> rhsAttDecl = (AttributeDefinition<A>)rhs;
+			if (rhsAttDecl.getScopeExtent() == ScopeExtent.Global)
 			{
 				if (getName().equals(rhsAttDecl.getName()))
 				{

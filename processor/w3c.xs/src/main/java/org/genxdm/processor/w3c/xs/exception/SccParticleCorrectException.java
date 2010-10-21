@@ -15,11 +15,11 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 @SuppressWarnings("serial")
-public abstract class SccParticleCorrectException extends SmComponentConstraintException
+public abstract class SccParticleCorrectException extends ComponentConstraintException
 {
     public static final String PART_PROPERTIES = "1";
     public static final String PART_MIN_OCCURS_LE_MAX_OCCURS = "2.1";
@@ -27,6 +27,6 @@ public abstract class SccParticleCorrectException extends SmComponentConstraintE
 
     public SccParticleCorrectException(final String partNumber)
     {
-        super(SmOutcome.SCC_Complex_Type_Definition_Properties, partNumber);
+        super(ValidationOutcome.SCC_Complex_Type_Definition_Properties, partNumber);
     }
 }

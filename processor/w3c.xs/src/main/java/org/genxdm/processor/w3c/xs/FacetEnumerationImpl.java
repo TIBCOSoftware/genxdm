@@ -20,9 +20,9 @@ import java.util.List;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmEnumeration;
+import org.genxdm.xs.components.EnumerationDefinition;
 
-final class FacetEnumerationImpl<A> implements SmEnumeration<A>
+final class FacetEnumerationImpl<A> implements EnumerationDefinition<A>
 {
 	private final List<A> m_value;
 	private final AtomBridge<A> atomBridge;

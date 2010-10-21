@@ -17,7 +17,7 @@ package org.genxdm.bridgekit.xs;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.types.SmNoneType;
 import org.genxdm.xs.types.SmPrimeType;
 import org.genxdm.xs.types.SmPrimeTypeKind;
@@ -72,9 +72,9 @@ final class NoneType<A> extends AbstractType<A> implements SmNoneType<A>
 		return this;
 	}
 
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
-		return SmQuantifier.EXACTLY_ONE;
+		return KeeneQuantifier.EXACTLY_ONE;
 	}
 
 	public boolean subtype(final SmPrimeType<A> rhs)

@@ -21,7 +21,7 @@ import java.util.HashMap;
 import javax.xml.namespace.QName;
 
 import org.genxdm.processor.w3c.xs.exception.SrcFrozenLocation;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 
 /**
@@ -58,7 +58,7 @@ final class ValidationItem<A> implements Locatable
 	/**
 	 * @return An opaque frozen location.
 	 */
-	public SmLocation getLocation()
+	public LocationInSchema getLocation()
 	{
 		return new SrcFrozenLocation(m_lineNumber, m_columnNumber, m_characterOffset, m_publicId, m_systemId);
 	}

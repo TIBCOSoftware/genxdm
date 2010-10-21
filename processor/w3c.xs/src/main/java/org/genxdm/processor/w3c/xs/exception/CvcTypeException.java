@@ -18,8 +18,8 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public abstract class CvcTypeException extends SmLocationException
@@ -30,9 +30,9 @@ public abstract class CvcTypeException extends SmLocationException
 	public static final String PART_ABSTRACT = "2";
 	public static final String PART_SIMPLE_TYPE_NO_CHILDREN = "3.1.2";
 
-	public CvcTypeException(final String partNumber, final QName elementName, final SmLocation elementLocation)
+	public CvcTypeException(final String partNumber, final QName elementName, final LocationInSchema elementLocation)
 	{
-		super(SmOutcome.CVC_Type, partNumber, elementLocation);
+		super(ValidationOutcome.CVC_Type, partNumber, elementLocation);
 		this.m_elementName = PreCondition.assertArgumentNotNull(elementName, "element");
 	}
 

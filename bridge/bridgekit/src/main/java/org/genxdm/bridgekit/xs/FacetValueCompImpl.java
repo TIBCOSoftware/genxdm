@@ -23,9 +23,9 @@ import org.genxdm.exceptions.GxmlAtomCastException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
-import org.genxdm.xs.exceptions.SmAtomCastException;
-import org.genxdm.xs.exceptions.SmFacetException;
-import org.genxdm.xs.exceptions.SmFacetMinMaxException;
+import org.genxdm.xs.exceptions.AtomCastException;
+import org.genxdm.xs.exceptions.FacetException;
+import org.genxdm.xs.exceptions.FacetMinMaxException;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmLimit;
 import org.genxdm.xs.types.SmNativeType;
@@ -67,7 +67,7 @@ public final class FacetValueCompImpl<A> extends FacetImpl<A> implements SmLimit
 		return m_value;
 	}
 
-	public void validate(final A atom, final SmSimpleType<A> simpleType) throws SmFacetMinMaxException
+	public void validate(final A atom, final SmSimpleType<A> simpleType) throws FacetMinMaxException
 	{
 		PreCondition.assertArgumentNotNull(atom, "atom");
 		PreCondition.assertArgumentNotNull(simpleType, "simpleType");
@@ -78,12 +78,12 @@ public final class FacetValueCompImpl<A> extends FacetImpl<A> implements SmLimit
 			if (!m_comparator.compare(lhsAtom))
 			{
 				final String actual = m_atomBridge.getC14NForm(lhsAtom);
-				throw new SmFacetMinMaxException(this, actual);
+				throw new FacetMinMaxException(this, actual);
 			}
 		}
-		catch (final SmAtomCastException e)
+		catch (final AtomCastException e)
 		{
-			throw new SmFacetMinMaxException(this, e.getSourceValue());
+			throw new FacetMinMaxException(this, e.getSourceValue());
 		}
 	}
 
@@ -187,7 +187,7 @@ public final class FacetValueCompImpl<A> extends FacetImpl<A> implements SmLimit
 		}
 	}
 
-	public void validate(final List<? extends A> actualValue, final SmSimpleType<A> simpleType) throws SmFacetException
+	public void validate(final List<? extends A> actualValue, final SmSimpleType<A> simpleType) throws FacetException
 	{
 		for (final A atom : actualValue)
 		{

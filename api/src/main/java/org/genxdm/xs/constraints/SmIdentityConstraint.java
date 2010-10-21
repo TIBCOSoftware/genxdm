@@ -19,13 +19,13 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.components.SmComponent;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.components.SchemaComponent;
+import org.genxdm.xs.enums.ScopeExtent;
 
 /**
  * Describes key/keyref/unique constraints on the schema.
  */
-public interface SmIdentityConstraint<A> extends SmComponent<A>
+public interface SmIdentityConstraint<A> extends SchemaComponent<A>
 {
 	/**
 	 * Returns this constraint's {identity-constraint category} property. This is one of key, keyref or unique.
@@ -47,7 +47,7 @@ public interface SmIdentityConstraint<A> extends SmComponent<A>
 
 	QName getName();
 
-	SmScopeExtent getScopeExtent();
+	ScopeExtent getScopeExtent();
 
 	/**
 	 * Returns the {selector} restricted XPath of the constraint.

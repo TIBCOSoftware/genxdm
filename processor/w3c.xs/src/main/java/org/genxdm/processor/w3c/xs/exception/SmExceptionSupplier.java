@@ -15,9 +15,9 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
 public interface SmExceptionSupplier
 {
-	void setExceptionHandler(SmExceptionHandler handler);
+	void setExceptionHandler(SchemaExceptionHandler handler);
 }

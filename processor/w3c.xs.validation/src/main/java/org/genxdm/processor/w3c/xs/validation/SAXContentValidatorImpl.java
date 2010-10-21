@@ -26,7 +26,7 @@ import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
 import org.genxdm.typed.io.SequenceHandler;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -135,7 +135,7 @@ public final class SAXContentValidatorImpl<A> implements SAXContentValidator<A>
 		m_locator = locator;
 	}
 
-	public void setExceptionHandler(final SmExceptionHandler handler)
+	public void setExceptionHandler(final SchemaExceptionHandler handler)
 	{
 		m_kernel.setExceptionHandler(handler);
 	}

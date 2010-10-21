@@ -19,10 +19,10 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.validation.regex.api.RegExBridge;
-import org.genxdm.xs.components.SmParticleTerm;
+import org.genxdm.xs.components.ParticleTerm;
 
 
-final class ValidationRegExBridge<A> implements RegExBridge<ValidationExpr<A, SmParticleTerm<A>>, QName>
+final class ValidationRegExBridge<A> implements RegExBridge<ValidationExpr<A, ParticleTerm<A>>, QName>
 {
 	@SuppressWarnings("unused")
 	private final NameSource nameBridge;
@@ -32,37 +32,37 @@ final class ValidationRegExBridge<A> implements RegExBridge<ValidationExpr<A, Sm
 		this.nameBridge = nameBridge;
 	}
 
-	public Iterable<ValidationExpr<A, SmParticleTerm<A>>> getSubTerms(final ValidationExpr<A, SmParticleTerm<A>> expression)
+	public Iterable<ValidationExpr<A, ParticleTerm<A>>> getSubTerms(final ValidationExpr<A, ParticleTerm<A>> expression)
 	{
 		return expression.getSubTerms();
 	}
 
-	public boolean intersects(final ValidationExpr<A, SmParticleTerm<A>> e1, final ValidationExpr<A, SmParticleTerm<A>> e2)
+	public boolean intersects(final ValidationExpr<A, ParticleTerm<A>> e1, final ValidationExpr<A, ParticleTerm<A>> e2)
 	{
 		return e1.intersects(e2);
 	}
 
-	public boolean isChoice(final ValidationExpr<A, SmParticleTerm<A>> expression)
+	public boolean isChoice(final ValidationExpr<A, ParticleTerm<A>> expression)
 	{
 		return expression.isChoice();
 	}
 
-	public boolean isInterleave(final ValidationExpr<A, SmParticleTerm<A>> expression)
+	public boolean isInterleave(final ValidationExpr<A, ParticleTerm<A>> expression)
 	{
 		return expression.isInterleave();
 	}
 
-	public boolean isSequence(final ValidationExpr<A, SmParticleTerm<A>> expression)
+	public boolean isSequence(final ValidationExpr<A, ParticleTerm<A>> expression)
 	{
 		return expression.isSequence();
 	}
 
-	public boolean matches(final ValidationExpr<A, SmParticleTerm<A>> expression, final QName token)
+	public boolean matches(final ValidationExpr<A, ParticleTerm<A>> expression, final QName token)
 	{
 		return expression.matches(token);
 	}
 
-	public int maxOccurs(final ValidationExpr<A, SmParticleTerm<A>> expression)
+	public int maxOccurs(final ValidationExpr<A, ParticleTerm<A>> expression)
 	{
 		if (expression.isMaxOccursUnbounded())
 		{
@@ -74,12 +74,12 @@ final class ValidationRegExBridge<A> implements RegExBridge<ValidationExpr<A, Sm
 		}
 	}
 
-	public int minOccurs(final ValidationExpr<A, SmParticleTerm<A>> expression)
+	public int minOccurs(final ValidationExpr<A, ParticleTerm<A>> expression)
 	{
 		return expression.minOccurs();
 	}
 
-	public ValidationExpr<A, SmParticleTerm<A>> prime(final ValidationExpr<A, SmParticleTerm<A>> expression)
+	public ValidationExpr<A, ParticleTerm<A>> prime(final ValidationExpr<A, ParticleTerm<A>> expression)
 	{
 		return expression;
 	}

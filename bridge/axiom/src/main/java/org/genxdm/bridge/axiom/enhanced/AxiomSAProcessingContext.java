@@ -35,13 +35,13 @@ import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
-import org.genxdm.xs.SmMetaBridge;
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmAttributeGroup;
-import org.genxdm.xs.components.SmComponentBag;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.components.SmNotation;
+import org.genxdm.xs.SchemaTypeBridge;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.ComponentBag;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
 import org.genxdm.xs.types.SmAtomicType;
 import org.genxdm.xs.types.SmAtomicUrType;
@@ -79,25 +79,25 @@ public final class AxiomSAProcessingContext
 	    return null;
 	}
 	
-	public void declareAttribute(final SmAttribute<XmlAtom> attribute)
+	public void declareAttribute(final AttributeDefinition<XmlAtom> attribute)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 	
-	public void declareElement(final SmElement<XmlAtom> element)
+	public void declareElement(final ElementDefinition<XmlAtom> element)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 	
-	public void declareNotation(SmNotation<XmlAtom> notation)
+	public void declareNotation(NotationDefinition<XmlAtom> notation)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 	
-	public void defineAttributeGroup(SmAttributeGroup<XmlAtom> attributeGroup)
+	public void defineAttributeGroup(AttributeGroupDefinition<XmlAtom> attributeGroup)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -115,7 +115,7 @@ public final class AxiomSAProcessingContext
 		throw new AssertionError("TODO");
 	}
 
-	public void defineModelGroup(SmModelGroup<XmlAtom> modelGroup)
+	public void defineModelGroup(ModelGroup<XmlAtom> modelGroup)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -156,25 +156,25 @@ public final class AxiomSAProcessingContext
 		throw new AssertionError("TODO");
 	}
 
-	public SmAttribute<XmlAtom> getAttributeDeclaration(QName attributeName)
+	public AttributeDefinition<XmlAtom> getAttributeDeclaration(QName attributeName)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public SmAttributeGroup<XmlAtom> getAttributeGroup(QName name)
+	public AttributeGroupDefinition<XmlAtom> getAttributeGroup(QName name)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Iterable<SmAttributeGroup<XmlAtom>> getAttributeGroups()
+	public Iterable<AttributeGroupDefinition<XmlAtom>> getAttributeGroups()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 	
-	public Iterable<SmAttribute<XmlAtom>> getAttributes()
+	public Iterable<AttributeDefinition<XmlAtom>> getAttributes()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -198,13 +198,13 @@ public final class AxiomSAProcessingContext
 		return null;
 	}
 
-	public SmElement<XmlAtom> getElementDeclaration(QName elementName)
+	public ElementDefinition<XmlAtom> getElementDeclaration(QName elementName)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public Iterable<SmElement<XmlAtom>> getElements()
+	public Iterable<ElementDefinition<XmlAtom>> getElements()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -232,13 +232,13 @@ public final class AxiomSAProcessingContext
 		return model;
 	}
 
-	public SmModelGroup<XmlAtom> getModelGroup(QName name)
+	public ModelGroup<XmlAtom> getModelGroup(QName name)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Iterable<SmModelGroup<XmlAtom>> getModelGroups()
+	public Iterable<ModelGroup<XmlAtom>> getModelGroups()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -250,13 +250,13 @@ public final class AxiomSAProcessingContext
 		throw new AssertionError("TODO");
 	}
 
-    public SmNotation<XmlAtom> getNotationDeclaration(QName name)
+    public NotationDefinition<XmlAtom> getNotationDeclaration(QName name)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	public Iterable<SmNotation<XmlAtom>> getNotations()
+	public Iterable<NotationDefinition<XmlAtom>> getNotations()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -382,7 +382,7 @@ public final class AxiomSAProcessingContext
 	    return new AxiomSequenceBuilder(this, context.getOMFactory(), true);
     }
     
-    public void register(final SmComponentBag<XmlAtom> components)
+    public void register(final ComponentBag<XmlAtom> components)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -390,7 +390,7 @@ public final class AxiomSAProcessingContext
     
     private final AxiomProcessingContext context;
 	private final AtomBridge<XmlAtom> atomBridge;
-	private final SmMetaBridge<XmlAtom> cache;
+	private final SchemaTypeBridge<XmlAtom> cache;
 	
 	@SuppressWarnings("unused")
 	private boolean locked;

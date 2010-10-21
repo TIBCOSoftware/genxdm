@@ -16,21 +16,21 @@
 package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmNodeKind;
+import org.genxdm.NodeKind;
 import org.genxdm.xs.types.SmNodeType;
 
 abstract class AbstractBranchNodeType<A> extends AbstractPrimeExcludingNoneType<A> implements SmNodeType<A>
 {
 	protected final SmCache<A> cache;
-	private final SmNodeKind nodeKind;
+	private final NodeKind nodeKind;
 
-	public AbstractBranchNodeType(final SmNodeKind nodeKind, final SmCache<A> cache)
+	public AbstractBranchNodeType(final NodeKind nodeKind, final SmCache<A> cache)
 	{
 		this.nodeKind = PreCondition.assertArgumentNotNull(nodeKind);
 		this.cache = cache;
 	}
 
-	public final SmNodeKind getNodeKind()
+	public final NodeKind getNodeKind()
 	{
 		return nodeKind;
 	}

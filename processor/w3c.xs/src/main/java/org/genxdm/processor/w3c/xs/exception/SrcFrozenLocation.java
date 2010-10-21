@@ -17,9 +17,9 @@ package org.genxdm.processor.w3c.xs.exception;
 
 import java.util.HashMap;
 
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
-public final class SrcFrozenLocation implements SmLocation
+public final class SrcFrozenLocation implements LocationInSchema
 {
 	private final int m_lineNumber;
 	private final int m_columnNumber;

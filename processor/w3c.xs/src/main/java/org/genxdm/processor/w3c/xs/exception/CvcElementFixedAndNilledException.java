@@ -15,13 +15,13 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class CvcElementFixedAndNilledException extends CvcElementException
 {
-	public CvcElementFixedAndNilledException(final SmElement<?> decl, final SmLocation location)
+	public CvcElementFixedAndNilledException(final ElementDefinition<?> decl, final LocationInSchema location)
 	{
 		super(PART_FIXED_AND_NILLED, decl, location);
 	}

@@ -80,29 +80,29 @@ import org.genxdm.processor.w3c.xs.exception.SccWhiteSpaceParentReplaceException
 import org.genxdm.processor.w3c.xs.exception.SccXmlnsNotAllowedException;
 import org.genxdm.processor.w3c.xs.exception.SccXsiNotAllowedException;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmAttributeGroup;
-import org.genxdm.xs.components.SmComponent;
-import org.genxdm.xs.components.SmComponentBag;
-import org.genxdm.xs.components.SmComponentProvider;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmEnumeration;
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.components.SmNotation;
-import org.genxdm.xs.components.SmParticle;
-import org.genxdm.xs.components.SmParticleTerm;
-import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.SchemaComponent;
+import org.genxdm.xs.components.ComponentBag;
+import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.EnumerationDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.NotationDefinition;
+import org.genxdm.xs.components.SchemaParticle;
+import org.genxdm.xs.components.ParticleTerm;
+import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.SmAttributeUse;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
 import org.genxdm.xs.constraints.SmModelGroupUse;
 import org.genxdm.xs.constraints.SmValueConstraint;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmScopeExtent;
-import org.genxdm.xs.enums.SmWhiteSpacePolicy;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.exceptions.SmFacetMinMaxException;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.ScopeExtent;
+import org.genxdm.xs.enums.WhiteSpacePolicy;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.exceptions.FacetMinMaxException;
 import org.genxdm.xs.facets.SmFacet;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmFractionDigits;
@@ -169,7 +169,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkAttribute(final SmAttribute<A> attribute, final SmConstraintHandler<A> errors, NameSource nameBridge) throws SmAbortException
+	private static <A> void checkAttribute(final AttributeDefinition<A> attribute, final SmConstraintHandler<A> errors, NameSource nameBridge) throws AbortException
 	{
 		checkAttributeDeclarationPropertiesCorrect(attribute, errors, nameBridge);
 
@@ -178,7 +178,7 @@ final class SmConstraintChecker
 		checkAttributeForXsiNotAllowed(attribute, errors, nameBridge);
 	}
 
-	private static <A> void checkAttributeDeclarationPropertiesCorrect(final SmAttribute<A> attribute, final SmConstraintHandler<A> errors, NameSource nameBridge) throws SmAbortException
+	private static <A> void checkAttributeDeclarationPropertiesCorrect(final AttributeDefinition<A> attribute, final SmConstraintHandler<A> errors, NameSource nameBridge) throws AbortException
 	{
 		final SmSimpleType<A> attributeType = (SmSimpleType<A>)attribute.getType();
 		if (null != attributeType)
@@ -197,14 +197,14 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkAttributeDerivationRestrictionComplexType(final SmComplexType<A> complexType, final SmComplexType<A> baseType, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws SmAbortException
+	private static <A> void checkAttributeDerivationRestrictionComplexType(final SmComplexType<A> complexType, final SmComplexType<A> baseType, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		final NameSource nameBridge = atomBridge.getNameBridge();
 
 		final HashMap<QName, SmAttributeUse<A>> attributes = new HashMap<QName, SmAttributeUse<A>>();
 		for (final SmAttributeUse<A> attributeUse : complexType.getAttributeUses().values())
 		{
-			final SmAttribute<A> attribute = attributeUse.getAttribute();
+			final AttributeDefinition<A> attribute = attributeUse.getAttribute();
 			final QName attributeName = attribute.getName();
 
 			if (attributes.containsKey(attributeName))
@@ -216,7 +216,7 @@ final class SmConstraintChecker
 				attributes.put(attributeName, attributeUse);
 			}
 
-			if (attribute.getScopeExtent() != SmScopeExtent.Global)
+			if (attribute.getScopeExtent() != ScopeExtent.Global)
 			{
 				checkAttribute(attribute, errors, nameBridge);
 			}
@@ -263,7 +263,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkAttributeForXmlnsNotAllowed(final SmAttribute<A> attribute, final SmConstraintHandler<A> errors, final NameSource nameBridge) throws SmAbortException
+	private static <A> void checkAttributeForXmlnsNotAllowed(final AttributeDefinition<A> attribute, final SmConstraintHandler<A> errors, final NameSource nameBridge) throws AbortException
 	{
 		final QName name = attribute.getName();
 		if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI == name.getNamespaceURI())
@@ -276,7 +276,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkAttributeForXsiNotAllowed(final SmAttribute<A> attribute, final SmConstraintHandler<A> errors, final NameSource nameBridge) throws SmAbortException
+	private static <A> void checkAttributeForXsiNotAllowed(final AttributeDefinition<A> attribute, final SmConstraintHandler<A> errors, final NameSource nameBridge) throws AbortException
 	{
 		if (XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI == attribute.getName().getNamespaceURI())
 		{
@@ -284,14 +284,14 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkAttributeGroup(final SmAttributeGroup<A> attributeGroup, final SmConstraintHandler<A> errors, NameSource nameBridge) throws SmAbortException
+	private static <A> void checkAttributeGroup(final AttributeGroupDefinition<A> attributeGroup, final SmConstraintHandler<A> errors, NameSource nameBridge) throws AbortException
 	{
 		if (attributeGroup.hasAttributeUses())
 		{
 			final HashSet<QName> unique = new HashSet<QName>();
 			for (final SmAttributeUse<A> attributeUse : attributeGroup.getAttributeUses())
 			{
-				final SmAttribute<A> attribute = attributeUse.getAttribute();
+				final AttributeDefinition<A> attribute = attributeUse.getAttribute();
 				final QName attributeName = attribute.getName();
 
 				if (unique.contains(attributeName))
@@ -303,7 +303,7 @@ final class SmConstraintChecker
 					unique.add(attributeName);
 				}
 
-				if (attribute.getScopeExtent() != SmScopeExtent.Global)
+				if (attribute.getScopeExtent() != ScopeExtent.Global)
 				{
 					checkAttribute(attribute, errors, nameBridge);
 				}
@@ -311,7 +311,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkAttributeUses(final SmComplexType<A> complexType, final SmConstraintHandler<A> errors, final AtomBridge<A> atomBridge) throws SmAbortException
+	private static <A> void checkAttributeUses(final SmComplexType<A> complexType, final SmConstraintHandler<A> errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		final NameSource nameBridge = atomBridge.getNameBridge();
 		// Check that the attribute names are unique, and check each local
@@ -319,7 +319,7 @@ final class SmConstraintChecker
 		final HashSet<QName> unique = new HashSet<QName>();
 		for (final SmAttributeUse<A> attributeUse : complexType.getAttributeUses().values())
 		{
-			final SmAttribute<A> attribute = attributeUse.getAttribute();
+			final AttributeDefinition<A> attribute = attributeUse.getAttribute();
 			final QName attributeName = attribute.getName();
 
 			if (unique.contains(attributeName))
@@ -348,14 +348,14 @@ final class SmConstraintChecker
 				}
 			}
 
-			if (attribute.getScopeExtent() != SmScopeExtent.Global)
+			if (attribute.getScopeExtent() != ScopeExtent.Global)
 			{
 				checkAttribute(attribute, errors, nameBridge);
 			}
 		}
 	}
 
-	private static <A> void checkClause5(final SmComplexType<A> complexType, final SmComplexType<A> baseType, final SmConstraintHandler<A> errors, NameSource nameBridge) throws SmAbortException
+	private static <A> void checkClause5(final SmComplexType<A> complexType, final SmComplexType<A> baseType, final SmConstraintHandler<A> errors, NameSource nameBridge) throws AbortException
 	{
 		if (baseType.isComplexUrType())
 		{
@@ -385,7 +385,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkComplexType(final SmComplexType<A> complexType, final SmComponentBagImpl<A> components, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws SmAbortException
+	private static <A> void checkComplexType(final SmComplexType<A> complexType, final SmComponentBagImpl<A> components, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		final NameSource nameBridge = atomBridge.getNameBridge();
 		checkComplexTypeDefinitionProperties(complexType, errors);
@@ -402,7 +402,7 @@ final class SmConstraintChecker
 		checkAttributeUses(complexType, errors, atomBridge);
 	}
 
-	private static <A> void checkComplexTypeDefinitionProperties(final SmComplexType<A> complexType, final SmConstraintHandler<A> errors) throws SmAbortException
+	private static <A> void checkComplexTypeDefinitionProperties(final SmComplexType<A> complexType, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		complexType.getName();
 
@@ -412,22 +412,22 @@ final class SmConstraintChecker
 			final SmModelGroupUse<A> contentModel = contentType.getContentModel();
 			checkOccurrences(contentModel, errors);
 
-			final SmModelGroup<A> modelGroup = contentModel.getTerm();
-			if (modelGroup.getScopeExtent() != SmScopeExtent.Global)
+			final ModelGroup<A> modelGroup = contentModel.getTerm();
+			if (modelGroup.getScopeExtent() != ScopeExtent.Global)
 			{
 				checkModelGroup(modelGroup, errors);
 			}
 		}
 	}
 
-	private static <A> void checkDerivationValidExtensionComplexType(final SmComplexType<A> complexType, final SmConstraintHandler<A> errors, NameSource nameBridge) throws SmAbortException
+	private static <A> void checkDerivationValidExtensionComplexType(final SmComplexType<A> complexType, final SmConstraintHandler<A> errors, NameSource nameBridge) throws AbortException
 	{
 		if (complexType.getBaseType() instanceof SmComplexType<?>)
 		{
 			final SmComplexType<A> baseType = (SmComplexType<A>)complexType.getBaseType();
 			// The {final} of the {base type definition} must not contain
 			// extension.
-			if (baseType.isFinal(SmDerivationMethod.Extension))
+			if (baseType.isFinal(DerivationMethod.Extension))
 			{
 				errors.error(complexType, new SccFinalOfBaseTypeContainsExtensionException(SccDerivationExtensionException.PART_WHEN_BASE_COMPLEX_TYPE_FINAL_OF_BASE_MUST_NOT_CONTAINT_EXTENSION, qname(complexType.getName())));
 			}
@@ -462,7 +462,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkDerivationValidRestrictionComplexType(final SmComplexType<A> complexType, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws SmAbortException
+	private static <A> void checkDerivationValidRestrictionComplexType(final SmComplexType<A> complexType, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		final NameSource nameBridge = atomBridge.getNameBridge();
 
@@ -473,7 +473,7 @@ final class SmConstraintChecker
 
 			// The {final} of the {base type definition} must not contain
 			// restriction.
-			if (baseType.isFinal(SmDerivationMethod.Restriction))
+			if (baseType.isFinal(DerivationMethod.Restriction))
 			{
 				errors.error(complexType, new SccFinalOfBaseTypeContainsRestrictionException(complexType.getName()));
 			}
@@ -491,12 +491,12 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkElement(final SmElement<A> element, final SmConstraintHandler<A> errors, NameSource nameBridge) throws SmAbortException
+	private static <A> void checkElement(final ElementDefinition<A> element, final SmConstraintHandler<A> errors, NameSource nameBridge) throws AbortException
 	{
 		checkElementDeclaration(element, nameBridge, errors);
 	}
 
-	private static <A> void checkElementDeclaration(final SmElement<A> element, final NameSource nameBridge, final SmConstraintHandler<A> errors) throws SmAbortException
+	private static <A> void checkElementDeclaration(final ElementDefinition<A> element, final NameSource nameBridge, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		// 4. If there is a {substitution group affiliation}, the {type
 		// definition} of the element must be
@@ -504,12 +504,12 @@ final class SmConstraintChecker
 		// the exclusions of the affiliation.
 		if (element.hasSubstitutionGroup())
 		{
-			final SmElement<A> substitutionGroup = element.getSubstitutionGroup();
+			final ElementDefinition<A> substitutionGroup = element.getSubstitutionGroup();
 			try
 			{
 				checkTypeDerivationOK(element.getType(), substitutionGroup.getType(), substitutionGroup.getSubstitutionGroupExclusions(), nameBridge);
 			}
-			catch (final SmComponentConstraintException e)
+			catch (final ComponentConstraintException e)
 			{
 				errors.error(element, new SccElementDeclarationSubstitutionGroupTypeDerivationException(element.getName(), e));
 			}
@@ -567,7 +567,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkIdentityConstraint(final SmIdentityConstraint<A> constraint, final SmConstraintHandler<A> errors) throws SmAbortException
+	private static <A> void checkIdentityConstraint(final SmIdentityConstraint<A> constraint, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		switch (constraint.getCategory())
 		{
@@ -610,7 +610,7 @@ final class SmConstraintChecker
 	}
 
 	private static <A> void checkLimitRestriction(final SmLimit<A> restrictingLimit, final SmLimit<A> parentMaxInclusive, final SmLimit<A> parentMaxExclusive, final SmLimit<A> parentMinInclusive, final SmLimit<A> parentMinExclusive,
-			final SmSimpleType<A> simpleType, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws SmAbortException
+			final SmSimpleType<A> simpleType, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		final A derivedAtom = restrictingLimit.getLimit();
 
@@ -896,14 +896,14 @@ final class SmConstraintChecker
 	}
 
 	private static <A> void checkMinExclusiveLessThanEqualToMaxExclusive(final SmLimit<A> minExclusive, final SmLimit<A> maxExclusive, final SmSimpleType<A> simpleType, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors)
-			throws SmAbortException
+			throws AbortException
 	{
 		final A min = minExclusive.getLimit();
 		try
 		{
 			maxExclusive.validate(min, simpleType);
 		}
-		catch (final SmFacetMinMaxException e)
+		catch (final FacetMinMaxException e)
 		{
 			final String minString = atomBridge.getC14NForm(min);
 			final String maxString = getDisplayString(maxExclusive.getLimit(), atomBridge);
@@ -911,9 +911,9 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkModelGroup(final SmModelGroup<A> modelGroup, final SmConstraintHandler<A> errors) throws SmAbortException
+	private static <A> void checkModelGroup(final ModelGroup<A> modelGroup, final SmConstraintHandler<A> errors) throws AbortException
 	{
-		for (final SmParticle<A> particle : modelGroup.getParticles())
+		for (final SchemaParticle<A> particle : modelGroup.getParticles())
 		{
 			checkOccurrences(particle, errors);
 
@@ -921,11 +921,11 @@ final class SmConstraintChecker
 			{
 				final SmModelGroupUse<A> modelGroupUse = (SmModelGroupUse<A>)particle;
 
-				final SmModelGroup<A> term = modelGroupUse.getTerm();
+				final ModelGroup<A> term = modelGroupUse.getTerm();
 				if (term.getCompositor().isAll())
 				{
 					errors.error(modelGroup, new SccAllGroupAppearsException());
-					if (modelGroup.getScopeExtent() != SmScopeExtent.Global)
+					if (modelGroup.getScopeExtent() != ScopeExtent.Global)
 					{
 						checkModelGroup(term, errors);
 					}
@@ -934,7 +934,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkModelGroupUseValidRestriction(final SmComplexType<A> complexType, final SmModelGroupUse<A> R, final SmModelGroupUse<A> B, final SmConstraintHandler<A> errors) throws SmAbortException
+	private static <A> void checkModelGroupUseValidRestriction(final SmComplexType<A> complexType, final SmModelGroupUse<A> R, final SmModelGroupUse<A> B, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		if (equalBounds(R, B) && (R.getTerm() == B.getTerm()))
 		{
@@ -942,8 +942,8 @@ final class SmConstraintChecker
 		}
 		else
 		{
-			final SmModelGroup<A> groupR = R.getTerm();
-			final SmModelGroup<A> groupB = B.getTerm();
+			final ModelGroup<A> groupR = R.getTerm();
+			final ModelGroup<A> groupB = B.getTerm();
 			switch (groupR.getCompositor())
 			{
 				case All:
@@ -1011,11 +1011,11 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkNotation(final SmNotation<A> notation, final SmConstraintHandler<A> errors) throws SmAbortException
+	private static <A> void checkNotation(final NotationDefinition<A> notation, final SmConstraintHandler<A> errors) throws AbortException
 	{
 	}
 
-	private static <A> void checkOccurrenceRangeOK(final SmComplexType<A> complexType, final SmParticle<A> one, final SmParticle<A> two, final SmConstraintHandler<A> errors) throws SmAbortException
+	private static <A> void checkOccurrenceRangeOK(final SmComplexType<A> complexType, final SchemaParticle<A> one, final SchemaParticle<A> two, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		if (one.getMinOccurs() < two.getMinOccurs())
 		{
@@ -1041,7 +1041,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkOccurrences(final SmParticle<A> particle, final SmConstraintHandler<A> errors) throws SmAbortException
+	private static <A> void checkOccurrences(final SchemaParticle<A> particle, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		if (!particle.isMaxOccursUnbounded())
 		{
@@ -1058,18 +1058,18 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkParticleDerivationOKAllAllSequenceSequence(final SmComplexType<A> complexType, final SmModelGroupUse<A> R, final SmModelGroupUse<A> B, final SmConstraintHandler<A> errors) throws SmAbortException
+	private static <A> void checkParticleDerivationOKAllAllSequenceSequence(final SmComplexType<A> complexType, final SmModelGroupUse<A> R, final SmModelGroupUse<A> B, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		checkOccurrenceRangeOK(complexType, R, B, errors);
 
-		final Iterator<? extends SmParticle<A>> particlesR = R.getTerm().getParticles().iterator();
-		final Iterator<? extends SmParticle<A>> particlesB = B.getTerm().getParticles().iterator();
+		final Iterator<? extends SchemaParticle<A>> particlesR = R.getTerm().getParticles().iterator();
+		final Iterator<? extends SchemaParticle<A>> particlesB = B.getTerm().getParticles().iterator();
 		if (particlesR.hasNext())
 		{
 			if (particlesB.hasNext())
 			{
-				final SmParticle<A> particleR = particlesR.next();
-				final SmParticle<A> particleB = particlesB.next();
+				final SchemaParticle<A> particleR = particlesR.next();
+				final SchemaParticle<A> particleB = particlesB.next();
 				checkParticleValidRestriction(complexType, particleR, particleB, errors);
 			}
 			else
@@ -1083,7 +1083,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkParticleValidRestriction(final SmComplexType<A> complexType, final SmParticle<A> R, final SmParticle<A> B, final SmConstraintHandler<A> errors) throws SmAbortException
+	private static <A> void checkParticleValidRestriction(final SmComplexType<A> complexType, final SchemaParticle<A> R, final SchemaParticle<A> B, final SmConstraintHandler<A> errors) throws AbortException
 	{
 
 	}
@@ -1092,7 +1092,7 @@ final class SmConstraintChecker
 	 * Checks the compiled components satisfy Schema Component Constraints. <br>
 	 * The cache is used only to provide the locations for error reporting purposes since the locations are not maintained in the compiled schema model.
 	 */
-	public static <A> void checkSchemaComponentConstraints(final SmComponentBagImpl<A> bag, final SmComponentProvider<A> existing, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws SmAbortException
+	public static <A> void checkSchemaComponentConstraints(final SmComponentBagImpl<A> bag, final ComponentProvider<A> existing, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		final NameSource nameBridge = atomBridge.getNameBridge();
 		for (final SmSimpleType<A> simpleType : bag.getSimpleTypes())
@@ -1103,15 +1103,15 @@ final class SmConstraintChecker
 		{
 			checkComplexType(complexType, bag, atomBridge, errors);
 		}
-		for (final SmAttribute<A> attribute : bag.getAttributes())
+		for (final AttributeDefinition<A> attribute : bag.getAttributes())
 		{
 			checkAttribute(attribute, errors, nameBridge);
 		}
-		for (final SmElement<A> element : bag.getElements())
+		for (final ElementDefinition<A> element : bag.getElements())
 		{
 			checkElement(element, errors, nameBridge);
 		}
-		for (final SmAttributeGroup<A> attributeGroup : bag.getAttributeGroups())
+		for (final AttributeGroupDefinition<A> attributeGroup : bag.getAttributeGroups())
 		{
 			checkAttributeGroup(attributeGroup, errors, nameBridge);
 		}
@@ -1119,20 +1119,20 @@ final class SmConstraintChecker
 		{
 			checkIdentityConstraint(constraint, errors);
 		}
-		for (final SmModelGroup<A> modelGroup : bag.getModelGroups())
+		for (final ModelGroup<A> modelGroup : bag.getModelGroups())
 		{
 			checkModelGroup(modelGroup, errors);
 		}
-		for (final SmNotation<A> notation : bag.getNotations())
+		for (final NotationDefinition<A> notation : bag.getNotations())
 		{
 			checkNotation(notation, errors);
 		}
 	}
 
-	private static <A> void checkSimpleType(final SmSimpleType<A> simpleType, final SmComponentBag<A> bag, final SmComponentProvider<A> existing, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws SmAbortException
+	private static <A> void checkSimpleType(final SmSimpleType<A> simpleType, final ComponentBag<A> bag, final ComponentProvider<A> existing, final AtomBridge<A> atomBridge, final SmConstraintHandler<A> errors) throws AbortException
 	{
 		final NameSource nameBridge = atomBridge.getNameBridge();
-		final SmWhiteSpacePolicy whiteSpace = simpleType.getWhiteSpacePolicy();
+		final WhiteSpacePolicy whiteSpace = simpleType.getWhiteSpacePolicy();
 		if (null != whiteSpace)
 		{
 			checkWhitespaceValidRestriction(whiteSpace, simpleType, errors, nameBridge);
@@ -1262,7 +1262,7 @@ final class SmConstraintChecker
 				{
 					minInclusive.validate(max, simpleType);
 				}
-				catch (final SmFacetMinMaxException e)
+				catch (final FacetMinMaxException e)
 				{
 					final String minString = getDisplayString(min, atomBridge);
 					final String maxString = getDisplayString(max, atomBridge);
@@ -1272,7 +1272,7 @@ final class SmConstraintChecker
 				{
 					maxInclusive.validate(min, simpleType);
 				}
-				catch (final SmFacetMinMaxException e)
+				catch (final FacetMinMaxException e)
 				{
 					final String minString = getDisplayString(min, atomBridge);
 					final String maxString = getDisplayString(max, atomBridge);
@@ -1317,16 +1317,16 @@ final class SmConstraintChecker
 			}
 		}
 		final SmSimpleType<A> notationType = existing.getAtomicType(SmNativeType.NOTATION);
-		if (simpleType.derivedFromType(notationType, EnumSet.of(SmDerivationMethod.Restriction)))
+		if (simpleType.derivedFromType(notationType, EnumSet.of(DerivationMethod.Restriction)))
 		{
-			for (final SmEnumeration<A> enumeration : simpleType.getEnumerations())
+			for (final EnumerationDefinition<A> enumeration : simpleType.getEnumerations())
 			{
 				for (final A atom : enumeration.getValue())
 				{
 					final QName reference = atomBridge.getNotation(atom);
 
 					boolean match = false;
-					for (final SmNotation<A> notation : bag.getNotations())
+					for (final NotationDefinition<A> notation : bag.getNotations())
 					{
 						if (reference.equals(notation.getName()))
 						{
@@ -1344,7 +1344,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkTypeDerivationOK(final SmType<A> D, final SmType<A> B, final Set<SmDerivationMethod> subset, NameSource nameBridge) throws SmComponentConstraintException
+	private static <A> void checkTypeDerivationOK(final SmType<A> D, final SmType<A> B, final Set<DerivationMethod> subset, NameSource nameBridge) throws ComponentConstraintException
 	{
 		if (D instanceof SmSimpleType<?>)
 		{
@@ -1360,7 +1360,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	public static <A> void checkTypeDerivationOKComplex(final SmComplexType<A> D, final SmType<A> B, final Set<SmDerivationMethod> subset, NameSource nameBridge) throws SmComponentConstraintException
+	public static <A> void checkTypeDerivationOKComplex(final SmComplexType<A> D, final SmType<A> B, final Set<DerivationMethod> subset, NameSource nameBridge) throws ComponentConstraintException
 	{
 		if (D == B)
 		{
@@ -1396,7 +1396,7 @@ final class SmConstraintChecker
 						{
 							checkTypeDerivationOK(deeBaseType, B, subset, nameBridge);
 						}
-						catch (final SmComponentConstraintException e)
+						catch (final ComponentConstraintException e)
 						{
 							throw new SccComplexTypeBaseComplexDerivationException(D, B, subset, e);
 						}
@@ -1407,7 +1407,7 @@ final class SmConstraintChecker
 						{
 							checkTypeDerivationOKSimple((SmSimpleType<A>)deeBaseType, B, subset, nameBridge);
 						}
-						catch (final SmComponentConstraintException e)
+						catch (final ComponentConstraintException e)
 						{
 							throw new SccComplexTypeBaseSimpleDerivationException(D, B, subset, e);
 						}
@@ -1424,7 +1424,7 @@ final class SmConstraintChecker
 	/**
 	 * Type Derivation OK (Simple) (3.14.6)
 	 */
-	public static <A> void checkTypeDerivationOKSimple(final SmSimpleType<A> D, final SmType<A> B, final Set<SmDerivationMethod> subset, final NameSource nameBridge) throws SmComponentConstraintException
+	public static <A> void checkTypeDerivationOKSimple(final SmSimpleType<A> D, final SmType<A> B, final Set<DerivationMethod> subset, final NameSource nameBridge) throws ComponentConstraintException
 	{
 		if (D == B)
 		{
@@ -1432,7 +1432,7 @@ final class SmConstraintChecker
 		}
 		else
 		{
-			if (subset.contains(SmDerivationMethod.Restriction) || (D.getBaseType().getFinal().contains(SmDerivationMethod.Restriction)))
+			if (subset.contains(DerivationMethod.Restriction) || (D.getBaseType().getFinal().contains(DerivationMethod.Restriction)))
 			{
 				throw new SccSimpleTypeDerivationRestrictionException(qname(D.getName()));
 			}
@@ -1469,13 +1469,13 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> void checkWhitespaceValidRestriction(final SmWhiteSpacePolicy ws, final SmSimpleType<A> simpleType, final SmConstraintHandler<A> errors, final NameSource nameBridge) throws SmAbortException
+	private static <A> void checkWhitespaceValidRestriction(final WhiteSpacePolicy ws, final SmSimpleType<A> simpleType, final SmConstraintHandler<A> errors, final NameSource nameBridge) throws AbortException
 	{
 		final SmType<A> baseType = simpleType.getBaseType();
 		if (baseType instanceof SmSimpleType<?>)
 		{
 			final SmSimpleType<A> parent = (SmSimpleType<A>)baseType;
-			final SmWhiteSpacePolicy pws = parent.getWhiteSpacePolicy();
+			final WhiteSpacePolicy pws = parent.getWhiteSpacePolicy();
 			if (null != pws)
 			{
 				if (pws.isCollapse())
@@ -1595,7 +1595,7 @@ final class SmConstraintChecker
 
 	private static <A> boolean clause22(final SmSimpleType<A> simpleTypeB)
 	{
-		return !simpleTypeB.isFinal(SmDerivationMethod.Extension);
+		return !simpleTypeB.isFinal(DerivationMethod.Extension);
 	}
 
 	private static <A> boolean clause52(final SmComplexType<A> complexType, final SmComplexType<A> baseType)
@@ -1885,7 +1885,7 @@ final class SmConstraintChecker
 		return complexType.getContentType().isSimple();
 	}
 
-	private static <A> boolean equalBounds(final SmParticle<A> one, final SmParticle<A> two)
+	private static <A> boolean equalBounds(final SchemaParticle<A> one, final SchemaParticle<A> two)
 	{
 		if (one.getMinOccurs() == two.getMinOccurs())
 		{
@@ -2007,10 +2007,10 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> Set<QName> getComponentNames(final Iterable<? extends SmComponent<A>> components)
+	private static <A> Set<QName> getComponentNames(final Iterable<? extends SchemaComponent<A>> components)
 	{
 		final Set<QName> names = new HashSet<QName>();
-		for (final SmComponent<A> component : components)
+		for (final SchemaComponent<A> component : components)
 		{
 			names.add(component.getName());
 		}
@@ -2184,13 +2184,13 @@ final class SmConstraintChecker
 		return true;
 	}
 
-	private static <A> boolean isTypeDerivationOK(final SmType<A> D, final SmType<A> B, final Set<SmDerivationMethod> subset, NameSource nameBridge)
+	private static <A> boolean isTypeDerivationOK(final SmType<A> D, final SmType<A> B, final Set<DerivationMethod> subset, NameSource nameBridge)
 	{
 		try
 		{
 			checkTypeDerivationOK(D, B, subset, nameBridge);
 		}
-		catch (final SmException e)
+		catch (final SchemaException e)
 		{
 			return false;
 		}
@@ -2218,13 +2218,13 @@ final class SmConstraintChecker
 		}
 		else if (1 == minOccurs && 1 == maxOccurs)
 		{
-			final SmModelGroup<A> groupE = E.getTerm();
+			final ModelGroup<A> groupE = E.getTerm();
 			if (groupE.getCompositor().isSequence())
 			{
-				final Iterator<? extends SmParticle<A>> particles = groupE.getParticles().iterator();
+				final Iterator<? extends SchemaParticle<A>> particles = groupE.getParticles().iterator();
 				if (particles.hasNext())
 				{
-					final SmParticle<A> firstMember = particles.next();
+					final SchemaParticle<A> firstMember = particles.next();
 					if (firstMember instanceof SmModelGroupUse<?>)
 					{
 						final SmModelGroupUse<A> F = (SmModelGroupUse<A>)firstMember;
@@ -2256,7 +2256,7 @@ final class SmConstraintChecker
 		return name;
 	}
 
-	private static <A> boolean recursivelyIdenticalElements(final SmElement<A> one, final SmElement<A> two)
+	private static <A> boolean recursivelyIdenticalElements(final ElementDefinition<A> one, final ElementDefinition<A> two)
 	{
 		if (one == two)
 		{
@@ -2282,7 +2282,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> boolean recursivelyIdenticalModelGroups(final SmModelGroup<A> one, final SmModelGroup<A> two)
+	private static <A> boolean recursivelyIdenticalModelGroups(final ModelGroup<A> one, final ModelGroup<A> two)
 	{
 		if (one == two)
 		{
@@ -2292,14 +2292,14 @@ final class SmConstraintChecker
 		{
 			if (one.getCompositor() == two.getCompositor())
 			{
-				final Iterator<? extends SmParticle<A>> particlesOne = one.getParticles().iterator();
-				final Iterator<? extends SmParticle<A>> particlesTwo = two.getParticles().iterator();
+				final Iterator<? extends SchemaParticle<A>> particlesOne = one.getParticles().iterator();
+				final Iterator<? extends SchemaParticle<A>> particlesTwo = two.getParticles().iterator();
 				if (particlesOne.hasNext())
 				{
 					if (particlesTwo.hasNext())
 					{
-						final SmParticle<A> particleOne = particlesOne.next();
-						final SmParticle<A> particleTwo = particlesTwo.next();
+						final SchemaParticle<A> particleOne = particlesOne.next();
+						final SchemaParticle<A> particleTwo = particlesTwo.next();
 
 						return recursivelyIdenticalProperties(particleOne, particleTwo);
 					}
@@ -2320,7 +2320,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> boolean recursivelyIdenticalParticleTerms(final SmParticleTerm<A> one, final SmParticleTerm<A> two)
+	private static <A> boolean recursivelyIdenticalParticleTerms(final ParticleTerm<A> one, final ParticleTerm<A> two)
 	{
 		if (one == two)
 		{
@@ -2328,17 +2328,17 @@ final class SmConstraintChecker
 		}
 		else
 		{
-			if (one instanceof SmElement<?> && two instanceof SmElement<?>)
+			if (one instanceof ElementDefinition<?> && two instanceof ElementDefinition<?>)
 			{
-				return recursivelyIdenticalElements((SmElement<A>)one, (SmElement<A>)two);
+				return recursivelyIdenticalElements((ElementDefinition<A>)one, (ElementDefinition<A>)two);
 			}
-			else if (one instanceof SmModelGroup<?> && two instanceof SmModelGroup<?>)
+			else if (one instanceof ModelGroup<?> && two instanceof ModelGroup<?>)
 			{
-				return recursivelyIdenticalModelGroups((SmModelGroup<A>)one, (SmModelGroup<A>)two);
+				return recursivelyIdenticalModelGroups((ModelGroup<A>)one, (ModelGroup<A>)two);
 			}
-			else if (one instanceof SmWildcard<?> && two instanceof SmWildcard<?>)
+			else if (one instanceof SchemaWildcard<?> && two instanceof SchemaWildcard<?>)
 			{
-				return recursivelyIdenticalWildcards((SmWildcard<A>)one, (SmWildcard<A>)two);
+				return recursivelyIdenticalWildcards((SchemaWildcard<A>)one, (SchemaWildcard<A>)two);
 			}
 			else
 			{
@@ -2366,7 +2366,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> boolean recursivelyIdenticalProperties(final SmParticle<A> one, final SmParticle<A> two)
+	private static <A> boolean recursivelyIdenticalProperties(final SchemaParticle<A> one, final SchemaParticle<A> two)
 	{
 		if (one == two)
 		{
@@ -2385,7 +2385,7 @@ final class SmConstraintChecker
 		}
 	}
 
-	private static <A> boolean recursivelyIdenticalWildcards(final SmWildcard<A> one, final SmWildcard<A> two)
+	private static <A> boolean recursivelyIdenticalWildcards(final SchemaWildcard<A> one, final SchemaWildcard<A> two)
 	{
 		// TODO:
 		return true;

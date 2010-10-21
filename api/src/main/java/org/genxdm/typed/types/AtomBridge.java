@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.GxmlAtomCastException;
 import org.genxdm.names.NameSource;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.SmNativeType;
 
 /**
@@ -112,7 +112,7 @@ public interface AtomBridge<A>
 	 */
 	A compile(String srcval, SmNativeType dataType) throws GxmlAtomCastException;
 
-	A compile(String srcval, SmNativeType dataType, SmPrefixResolver resolver) throws GxmlAtomCastException;
+	A compile(String srcval, SmNativeType dataType, PrefixResolver resolver) throws GxmlAtomCastException;
 
 	A createBase64Binary(byte[] base64BinaryValue);
 

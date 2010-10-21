@@ -15,18 +15,18 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 @SuppressWarnings("serial")
-final public class SccLengthRestrictionException extends SmComponentConstraintException
+final public class SccLengthRestrictionException extends ComponentConstraintException
 {
 	private final int m_length;
 	private final int m_restrictedLength;
 
 	public SccLengthRestrictionException(final int length, final int restrictedLength)
 	{
-		super(SmOutcome.SCC_LengthValidRestriction, "0");
+		super(ValidationOutcome.SCC_LengthValidRestriction, "0");
 		m_length = length;
 		m_restrictedLength = restrictedLength;
 	}

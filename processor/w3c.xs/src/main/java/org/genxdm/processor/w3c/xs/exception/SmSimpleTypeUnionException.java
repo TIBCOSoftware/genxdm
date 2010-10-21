@@ -15,12 +15,12 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class SmSimpleTypeUnionException extends SrcSimpleTypeException
 {
-	public SmSimpleTypeUnionException(final SmLocation location)
+	public SmSimpleTypeUnionException(final LocationInSchema location)
 	{
 		super(PART_UNION, location);
 	}

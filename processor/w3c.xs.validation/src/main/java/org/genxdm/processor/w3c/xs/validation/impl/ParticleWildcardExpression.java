@@ -19,51 +19,51 @@ import java.util.Collections;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmParticle;
-import org.genxdm.xs.components.SmParticleTerm;
-import org.genxdm.xs.components.SmWildcard;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.SchemaParticle;
+import org.genxdm.xs.components.ParticleTerm;
+import org.genxdm.xs.components.SchemaWildcard;
 
-final class ParticleWildcardExpression<A> implements ValidationExpr<A, SmParticleTerm<A>>
+final class ParticleWildcardExpression<A> implements ValidationExpr<A, ParticleTerm<A>>
 {
-	private final SmParticle<A> m_particle;
-	private final SmWildcard<A> m_wildcard;
+	private final SchemaParticle<A> m_particle;
+	private final SchemaWildcard<A> m_wildcard;
 
-	public ParticleWildcardExpression(final SmParticle<A> particle, final SmWildcard<A> wildcard)
+	public ParticleWildcardExpression(final SchemaParticle<A> particle, final SchemaWildcard<A> wildcard)
 	{
 		m_particle = PreCondition.assertArgumentNotNull(particle, "particle");
 		m_wildcard = PreCondition.assertArgumentNotNull(wildcard, "wildcard");
 	}
 
-	public SmParticleTerm<A> getParticleTerm()
+	public ParticleTerm<A> getParticleTerm()
 	{
 		return m_wildcard;
 	}
 
-	public Iterable<ValidationExpr<A, SmParticleTerm<A>>> getSubTerms()
+	public Iterable<ValidationExpr<A, ParticleTerm<A>>> getSubTerms()
 	{
 		// We are not building a deep finite state machine.
 		return Collections.emptyList();
 	}
 
-	public boolean intersects(final ValidationExpr<A, SmParticleTerm<A>> other)
+	public boolean intersects(final ValidationExpr<A, ParticleTerm<A>> other)
 	{
 		if (other.isGroup())
 		{
 			return false;
 		}
 
-		final SmParticleTerm<A> term = other.getParticleTerm();
+		final ParticleTerm<A> term = other.getParticleTerm();
 
-		if (term instanceof SmElement<?>)
+		if (term instanceof ElementDefinition<?>)
 		{
-			final SmElement<A> element = (SmElement<A>)term;
+			final ElementDefinition<A> element = (ElementDefinition<A>)term;
 			return m_wildcard.getNamespaceConstraint().allowsNamespaceName(element.getName().getNamespaceURI());
 		}
-		else if (term instanceof SmWildcard<?>)
+		else if (term instanceof SchemaWildcard<?>)
 		{
 			throw new UnsupportedOperationException("TODO");
-			// return m_wildcard.intersects((SmWildcard)term);
+			// return m_wildcard.intersects((SchemaWildcard)term);
 		}
 		else
 		{

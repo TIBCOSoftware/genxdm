@@ -18,7 +18,7 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class CvcAttributeFixedValueOverriddenException extends CvcAttributeException
@@ -26,7 +26,7 @@ public final class CvcAttributeFixedValueOverriddenException extends CvcAttribut
 	private final String m_expectValue;
 	private final String m_actualValue;
 
-	public CvcAttributeFixedValueOverriddenException(final QName attributeName, final String expectValue, final String actualValue, final SmLocation location)
+	public CvcAttributeFixedValueOverriddenException(final QName attributeName, final String expectValue, final String actualValue, final LocationInSchema location)
 	{
 		super(PART_VALUE_CONSTRAINT, attributeName, location);
 		m_expectValue = PreCondition.assertArgumentNotNull(expectValue, "expectValue");

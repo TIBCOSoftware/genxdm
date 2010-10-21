@@ -24,12 +24,12 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.SmElement;
+import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmNodeKind;
-import org.genxdm.xs.enums.SmQuantifier;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.NodeKind;
+import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.SmElementNodeType;
 import org.genxdm.xs.types.SmPrimeChoiceType;
 import org.genxdm.xs.types.SmPrimeType;
@@ -37,13 +37,13 @@ import org.genxdm.xs.types.SmPrimeTypeKind;
 import org.genxdm.xs.types.SmSequenceTypeVisitor;
 import org.genxdm.xs.types.SmType;
 
-public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implements SmElement<A>
+public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implements ElementDefinition<A>
 {
-	private final EnumSet<SmDerivationMethod> m_block = EnumSet.noneOf(SmDerivationMethod.class);
-	private final Set<SmDerivationMethod> m_blockUnmodifiable = Collections.unmodifiableSet(m_block);
+	private final EnumSet<DerivationMethod> m_block = EnumSet.noneOf(DerivationMethod.class);
+	private final Set<DerivationMethod> m_blockUnmodifiable = Collections.unmodifiableSet(m_block);
 	private final HashMap<QName, SmIdentityConstraint<A>> m_constraints = new HashMap<QName, SmIdentityConstraint<A>>();
-	private final EnumSet<SmDerivationMethod> m_final = EnumSet.noneOf(SmDerivationMethod.class);
-	private final Set<SmDerivationMethod> m_finalUnmodifiable = Collections.unmodifiableSet(m_final);
+	private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
+	private final Set<DerivationMethod> m_finalUnmodifiable = Collections.unmodifiableSet(m_final);
 
 	/**
 	 * The {abstract} property is mutable defaults to <code>false</code>
@@ -60,14 +60,14 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 	 */
 	private ElementDeclTypeImpl<A> m_substitutionGroup = null;
 
-	private final HashSet<SmElement<A>> m_substitutionGroupMembers = new HashSet<SmElement<A>>();
+	private final HashSet<ElementDefinition<A>> m_substitutionGroupMembers = new HashSet<ElementDefinition<A>>();
 
 	/**
 	 * The {type} property is mutable.
 	 */
 	private SmType<A> m_type;
 
-	public ElementDeclTypeImpl(final QName name, final SmScopeExtent scope, final SmType<A> type)
+	public ElementDeclTypeImpl(final QName name, final ScopeExtent scope, final SmType<A> type)
 	{
 		super(name, scope);
 		this.m_type = PreCondition.assertArgumentNotNull(type, "type");
@@ -84,14 +84,14 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		m_constraints.put(identityConstraint.getName(), identityConstraint);
 	}
 
-	public void addSubstitutionGroupMember(final SmElement<A> member)
+	public void addSubstitutionGroupMember(final ElementDefinition<A> member)
 	{
 		assertNotLocked();
 		PreCondition.assertArgumentNotNull(member, "member");
 		m_substitutionGroupMembers.add(member);
 	}
 
-	public Set<SmDerivationMethod> getDisallowedSubtitutions()
+	public Set<DerivationMethod> getDisallowedSubtitutions()
 	{
 		return m_blockUnmodifiable;
 	}
@@ -106,22 +106,22 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		return SmPrimeTypeKind.SCHEMA_ELEMENT;
 	}
 
-	public SmNodeKind getNodeKind()
+	public NodeKind getNodeKind()
 	{
-		return SmNodeKind.ELEMENT;
+		return NodeKind.ELEMENT;
 	}
 
-	public SmElement<A> getSubstitutionGroup()
+	public ElementDefinition<A> getSubstitutionGroup()
 	{
 		return m_substitutionGroup;
 	}
 
-	public Set<SmDerivationMethod> getSubstitutionGroupExclusions()
+	public Set<DerivationMethod> getSubstitutionGroupExclusions()
 	{
 		return m_finalUnmodifiable;
 	}
 
-	public Iterable<SmElement<A>> getSubstitutionGroupMembers()
+	public Iterable<ElementDefinition<A>> getSubstitutionGroupMembers()
 	{
 		return m_substitutionGroupMembers;
 	}
@@ -156,7 +156,7 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		return false;
 	}
 
-	public boolean isDisallowedSubstitution(final SmDerivationMethod derivation)
+	public boolean isDisallowedSubstitution(final DerivationMethod derivation)
 	{
 		PreCondition.assertArgumentNotNull(derivation, "derivation");
 		return m_block.contains(derivation);
@@ -182,12 +182,12 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		return this;
 	}
 
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
-		return SmQuantifier.EXACTLY_ONE;
+		return KeeneQuantifier.EXACTLY_ONE;
 	}
 
-	public void removeSubstitutionGroupMember(final SmElement<A> member)
+	public void removeSubstitutionGroupMember(final ElementDefinition<A> member)
 	{
 		assertNotLocked();
 		PreCondition.assertArgumentNotNull(member, "member");
@@ -200,7 +200,7 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		m_isAbstract = isAbstract;
 	}
 
-	public void setBlock(final SmDerivationMethod derivation, final boolean enabled)
+	public void setBlock(final DerivationMethod derivation, final boolean enabled)
 	{
 		assertNotLocked();
 		if (enabled)
@@ -213,7 +213,7 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		}
 	}
 
-	public void setFinal(final SmDerivationMethod derivation, final boolean enabled)
+	public void setFinal(final DerivationMethod derivation, final boolean enabled)
 	{
 		assertNotLocked();
 		if (enabled)
@@ -268,7 +268,7 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 			}
 			case SCHEMA_ELEMENT:
 			{
-				final SmElement<A> other = (SmElement<A>)rhs;
+				final ElementDefinition<A> other = (ElementDefinition<A>)rhs;
 				return getName().equals(other.getName());
 			}
 			case ELEMENT:

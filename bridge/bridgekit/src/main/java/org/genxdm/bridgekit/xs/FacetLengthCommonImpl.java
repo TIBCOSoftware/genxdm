@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.exceptions.SmFacetException;
+import org.genxdm.xs.exceptions.FacetException;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmLengthFacetUOM;
 import org.genxdm.xs.types.SmListSimpleType;
@@ -92,14 +92,14 @@ abstract class FacetLengthCommonImpl<A> extends FacetImpl<A>
 		this.facetKind = PreCondition.assertArgumentNotNull(facetKind, "facetKind");
 	}
 
-	protected abstract void checkLength(final int length, final SmLengthFacetUOM uom) throws SmFacetException;
+	protected abstract void checkLength(final int length, final SmLengthFacetUOM uom) throws FacetException;
 
 	public SmFacetKind getKind()
 	{
 		return facetKind;
 	}
 
-	public final void validate(final List<? extends A> actualValue, final SmSimpleType<A> simpleType) throws SmFacetException
+	public final void validate(final List<? extends A> actualValue, final SmSimpleType<A> simpleType) throws FacetException
 	{
 		if (simpleType instanceof SmListSimpleType<?>)
 		{

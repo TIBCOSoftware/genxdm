@@ -15,16 +15,16 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.SchemaException;
 
 @SuppressWarnings("serial")
-public abstract class SrcQNameInterpretationException extends SmException
+public abstract class SrcQNameInterpretationException extends SchemaException
 {
     public static final String PART_NAMESPACE_IN_SCOPE = "1.1";
 
     public SrcQNameInterpretationException(final String partNumber)
     {
-        super(SmOutcome.SRC_QName, partNumber);
+        super(ValidationOutcome.SRC_QName, partNumber);
     }
 }

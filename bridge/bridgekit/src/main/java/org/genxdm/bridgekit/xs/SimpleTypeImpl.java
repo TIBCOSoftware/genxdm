@@ -27,19 +27,19 @@ import javax.xml.namespace.QName;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmEnumeration;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmQuantifier;
-import org.genxdm.xs.enums.SmScopeExtent;
-import org.genxdm.xs.enums.SmWhiteSpacePolicy;
-import org.genxdm.xs.exceptions.SmDatatypeException;
-import org.genxdm.xs.exceptions.SmFacetEnumerationException;
-import org.genxdm.xs.exceptions.SmFacetException;
-import org.genxdm.xs.exceptions.SmPatternException;
+import org.genxdm.xs.components.EnumerationDefinition;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.xs.enums.ScopeExtent;
+import org.genxdm.xs.enums.WhiteSpacePolicy;
+import org.genxdm.xs.exceptions.DatatypeException;
+import org.genxdm.xs.exceptions.FacetEnumerationException;
+import org.genxdm.xs.exceptions.FacetException;
+import org.genxdm.xs.exceptions.PatternException;
 import org.genxdm.xs.facets.SmFacet;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmPattern;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.SmPrimeType;
 import org.genxdm.xs.types.SmSequenceType;
 import org.genxdm.xs.types.SmSequenceTypeVisitor;
@@ -52,11 +52,11 @@ import org.genxdm.xs.types.SmType;
  */
 public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleType<A>
 {
-	protected abstract List<A> compile(String initialValue) throws SmDatatypeException;
+	protected abstract List<A> compile(String initialValue) throws DatatypeException;
 
-	protected abstract List<A> compile(String initialValue, final SmPrefixResolver resolver) throws SmDatatypeException;
+	protected abstract List<A> compile(String initialValue, final PrefixResolver resolver) throws DatatypeException;
 
-	private static <A> void checkEnumerationFacets(final List<? extends A> actualValue, final SmSimpleType<A> simpleType, final AtomBridge<A> atomBridge) throws SmDatatypeException
+	private static <A> void checkEnumerationFacets(final List<? extends A> actualValue, final SmSimpleType<A> simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		// Quickee optimization; there are no enumerations for xs:anySimpleType and xs:anyAtomicType.
 		if (!simpleType.isSimpleUrType() && !simpleType.isAtomicUrType())
@@ -68,7 +68,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 				{
 					boolean matched = false;
 					int enumCount = 0;
-					for (final SmEnumeration<A> facet : currentType.getEnumerations())
+					for (final EnumerationDefinition<A> facet : currentType.getEnumerations())
 					{
 						enumCount++;
 						if (matchesValue(facet.getValue(), actualValue, atomBridge))
@@ -84,8 +84,8 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 					if (enumCount > 0 && !matched)
 					{
 						final String literal = atomBridge.getC14NString(actualValue);
-						final SmFacetEnumerationException cause = new SmFacetEnumerationException(literal);
-						throw new SmDatatypeException(literal, currentType, cause);
+						final FacetEnumerationException cause = new FacetEnumerationException(literal);
+						throw new DatatypeException(literal, currentType, cause);
 					}
 					// Once we've found and checked enumeration facets, we don't need to go further up the
 					// type hierarchy because enumerations in one step must be subsets of base enumerations.
@@ -113,7 +113,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		}
 	}
 
-	protected static <A> void checkNonEnumerationFacets(final List<? extends A> actualValue, final SmSimpleType<A> simpleType, final AtomBridge<A> atomBridge) throws SmDatatypeException
+	protected static <A> void checkNonEnumerationFacets(final List<? extends A> actualValue, final SmSimpleType<A> simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		// check the value space facets, excluding enumeration (e.g. length, digits, bounds)
 		SmSimpleType<A> currentType = simpleType;
@@ -127,10 +127,10 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 					{
 						facet.validate(actualValue, simpleType);
 					}
-					catch (final SmFacetException e)
+					catch (final FacetException e)
 					{
 						final String literal = atomBridge.getC14NString(actualValue);
-						throw new SmDatatypeException(literal, currentType);
+						throw new DatatypeException(literal, currentType);
 					}
 				}
 			}
@@ -153,7 +153,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 	/**
 	 * Checks pattern facets, walking up the type hierarchy and checking against each type.
 	 */
-	protected static <A> void checkPatternFacets(final SmSimpleType<A> simpleType, final String normalizedValue, final NameSource nameBridge) throws SmDatatypeException
+	protected static <A> void checkPatternFacets(final SmSimpleType<A> simpleType, final String normalizedValue, final NameSource nameBridge) throws DatatypeException
 	{
 		// Quickee optimization; there are no patterns for xs:anySimpleType and xs:anyAtomicType.
 		if (!simpleType.isSimpleUrType() && !simpleType.isAtomicUrType())
@@ -178,14 +178,14 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 							pattern.validate(normalizedValue);
 							pass++;
 						}
-						catch (final SmPatternException e)
+						catch (final PatternException e)
 						{
 							// Ignore.
 						}
 					}
 					if (size > 0 && pass == 0)
 					{
-						throw new SmDatatypeException(normalizedValue, simpleType);
+						throw new DatatypeException(normalizedValue, simpleType);
 					}
 				}
 				final SmType<A> baseType = currentType.getBaseType();
@@ -207,7 +207,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		}
 	}
 
-	protected static <A> void checkValueSpaceFacets(final List<? extends A> actualValue, final SmSimpleType<A> simpleType, final AtomBridge<A> atomBridge) throws SmDatatypeException
+	protected static <A> void checkValueSpaceFacets(final List<? extends A> actualValue, final SmSimpleType<A> simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		checkNonEnumerationFacets(actualValue, simpleType, atomBridge);
 
@@ -245,7 +245,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 
 	protected final AtomBridge<A> atomBridge;
 
-	private final HashSet<SmEnumeration<A>> m_enumerationFacets = new HashSet<SmEnumeration<A>>();
+	private final HashSet<EnumerationDefinition<A>> m_enumerationFacets = new HashSet<EnumerationDefinition<A>>();
 
 	@SuppressWarnings("unchecked")
 	private final SmFacet<A>[] m_facetArray = (SmFacet<A>[])(Array.newInstance(SmFacet.class, SmFacetKind.values().length));
@@ -254,17 +254,17 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 	/**
 	 * {final} is mutable.
 	 */
-	private final EnumSet<SmDerivationMethod> m_final = EnumSet.noneOf(SmDerivationMethod.class);
+	private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
 
-	private final Set<SmDerivationMethod> m_finalUnmodifiable = Collections.unmodifiableSet(m_final);
+	private final Set<DerivationMethod> m_finalUnmodifiable = Collections.unmodifiableSet(m_final);
 
 	private boolean m_isAbstract = false;
 
 	private final HashSet<SmPattern> m_patternFacets = new HashSet<SmPattern>();
 
-	protected final SmWhiteSpacePolicy m_whiteSpace;
+	protected final WhiteSpacePolicy m_whiteSpace;
 
-	public SimpleTypeImpl(final QName name, final boolean isAnonymous, final SmScopeExtent scope, final SmDerivationMethod derivation, final SmWhiteSpacePolicy whiteSpace, final AtomBridge<A> atomBridge)
+	public SimpleTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final DerivationMethod derivation, final WhiteSpacePolicy whiteSpace, final AtomBridge<A> atomBridge)
 	{
 		super(name, isAnonymous, scope, derivation, atomBridge.getNameBridge());
 		this.m_whiteSpace = whiteSpace;
@@ -277,7 +277,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		throw new UnsupportedOperationException("TODO");
 	}
 
-	public void addEnumeration(final SmEnumeration<A> enumeration)
+	public void addEnumeration(final EnumerationDefinition<A> enumeration)
 	{
 		assertNotLocked();
 		PreCondition.assertArgumentNotNull(enumeration, "enumeration");
@@ -311,7 +311,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		throw new UnsupportedOperationException("TODO");
 	}
 
-	public final Iterable<SmEnumeration<A>> getEnumerations()
+	public final Iterable<EnumerationDefinition<A>> getEnumerations()
 	{
 		return m_enumerationFacets;
 	}
@@ -326,7 +326,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		return m_facets;
 	}
 
-	public final Set<SmDerivationMethod> getFinal()
+	public final Set<DerivationMethod> getFinal()
 	{
 		return m_finalUnmodifiable;
 	}
@@ -378,7 +378,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		return false;
 	}
 
-	public final boolean isFinal(final SmDerivationMethod derivation)
+	public final boolean isFinal(final DerivationMethod derivation)
 	{
 		PreCondition.assertArgumentNotNull(derivation, "derivation");
 		return m_final.contains(derivation);
@@ -395,7 +395,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		throw new UnsupportedOperationException("TODO");
 	}
 
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("TODO");
@@ -407,7 +407,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		m_isAbstract = isAbstract;
 	}
 
-	public final void setFinal(final SmDerivationMethod derivation, final boolean enabled)
+	public final void setFinal(final DerivationMethod derivation, final boolean enabled)
 	{
 		assertNotLocked();
 		PreCondition.assertArgumentNotNull(derivation, "derivation");
@@ -422,7 +422,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		}
 	}
 
-	public List<A> validate(final List<? extends A> value) throws SmDatatypeException
+	public List<A> validate(final List<? extends A> value) throws DatatypeException
 	{
 		// TODO: Can we attempt working in the value space and then fall back to the lexical space?
 		final String initialValue = atomBridge.getC14NString(value);
@@ -443,7 +443,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 	/**
 	 * This method can only be called on simple types.
 	 */
-	public final List<A> validate(final String initialValue) throws SmDatatypeException
+	public final List<A> validate(final String initialValue) throws DatatypeException
 	{
 		PreCondition.assertArgumentNotNull(initialValue, "initialValue");
 
@@ -460,7 +460,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		return actualValue;
 	}
 
-	public List<A> validate(final String initialValue, final SmPrefixResolver resolver) throws SmDatatypeException
+	public List<A> validate(final String initialValue, final PrefixResolver resolver) throws DatatypeException
 	{
 		PreCondition.assertArgumentNotNull(initialValue, "initialValue");
 

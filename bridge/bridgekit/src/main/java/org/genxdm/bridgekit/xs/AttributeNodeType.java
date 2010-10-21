@@ -19,8 +19,8 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.names.QNameAsSet;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmNodeKind;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.NodeKind;
+import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.SmAttributeNodeType;
 import org.genxdm.xs.types.SmPrimeChoiceType;
 import org.genxdm.xs.types.SmPrimeType;
@@ -78,14 +78,14 @@ final class AttributeNodeType<A> extends AbstractPrimeExcludingNoneType<A> imple
 		return name;
 	}
 
-	public SmNodeKind getNodeKind()
+	public NodeKind getNodeKind()
 	{
-		return SmNodeKind.ATTRIBUTE;
+		return NodeKind.ATTRIBUTE;
 	}
 
-	public SmScopeExtent getScopeExtent()
+	public ScopeExtent getScopeExtent()
 	{
-		return SmScopeExtent.Global;
+		return ScopeExtent.Global;
 	}
 
 	public String getTargetNamespace()

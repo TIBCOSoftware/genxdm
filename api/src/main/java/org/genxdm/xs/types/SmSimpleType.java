@@ -17,13 +17,13 @@ package org.genxdm.xs.types;
 
 import java.util.List;
 
-import org.genxdm.xs.components.SmEnumeration;
-import org.genxdm.xs.enums.SmWhiteSpacePolicy;
-import org.genxdm.xs.exceptions.SmDatatypeException;
+import org.genxdm.xs.components.EnumerationDefinition;
+import org.genxdm.xs.enums.WhiteSpacePolicy;
+import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.facets.SmFacet;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmPattern;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.resolve.PrefixResolver;
 
 /**
  * A Simple Type definition.
@@ -33,7 +33,7 @@ import org.genxdm.xs.resolve.SmPrefixResolver;
  */
 public interface SmSimpleType<A> extends SmSimpleMarkerType<A>
 {
-	Iterable<SmEnumeration<A>> getEnumerations();
+	Iterable<EnumerationDefinition<A>> getEnumerations();
 
 	SmFacet<A> getFacetOfKind(SmFacetKind facetKind);
 
@@ -48,7 +48,7 @@ public interface SmSimpleType<A> extends SmSimpleMarkerType<A>
 	 */
 	Iterable<SmPattern> getPatterns();
 
-	SmWhiteSpacePolicy getWhiteSpacePolicy();
+	WhiteSpacePolicy getWhiteSpacePolicy();
 
 	boolean hasEnumerations();
 
@@ -103,7 +103,7 @@ public interface SmSimpleType<A> extends SmSimpleMarkerType<A>
 	 */
 	String normalize(String initialValue);
 
-	List<A> validate(List<? extends A> value) throws SmDatatypeException;
+	List<A> validate(List<? extends A> value) throws DatatypeException;
 
 	/**
 	 * Determines whether the supplied string literal is valid with respect to this type definition and, if successful,
@@ -116,10 +116,10 @@ public interface SmSimpleType<A> extends SmSimpleMarkerType<A>
 	 * 
 	 * @param initialValue
 	 *            The string literal to be validated.
-	 * @throws SmDatatypeException
+	 * @throws DatatypeException
 	 *             If the string literal is not valid with respect to this type definition.
 	 */
-	List<A> validate(String initialValue) throws SmDatatypeException;
+	List<A> validate(String initialValue) throws DatatypeException;
 
-	List<A> validate(String initialValue, final SmPrefixResolver resolver) throws SmDatatypeException;
+	List<A> validate(String initialValue, final PrefixResolver resolver) throws DatatypeException;
 }

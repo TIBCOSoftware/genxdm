@@ -17,15 +17,15 @@ package org.genxdm.processor.w3c.xs.exception;
 
 import java.util.Set;
 
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 import org.genxdm.xs.types.SmType;
 
 
 @SuppressWarnings("serial")
 public final class SccComplexTypeBaseSimpleDerivationException extends SccTypeDerivationOKComplexException
 {
-	public SccComplexTypeBaseSimpleDerivationException(final SmType<?> typeName, final SmType<?> baseName, final Set<SmDerivationMethod> subset, final SmComponentConstraintException cause)
+	public SccComplexTypeBaseSimpleDerivationException(final SmType<?> typeName, final SmType<?> baseName, final Set<DerivationMethod> subset, final ComponentConstraintException cause)
 	{
 		super(PART_BASE_SIMPLE, typeName, baseName, subset, cause);
 	}

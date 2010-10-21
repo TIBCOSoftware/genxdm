@@ -17,12 +17,12 @@ package org.genxdm.processor.w3c.xs.exception;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class CvcElementDeclarationAndTypeException extends CvcElementSchemaValidityAssessmentException
 {
-	public CvcElementDeclarationAndTypeException(final QName elementName, final SmLocation location)
+	public CvcElementDeclarationAndTypeException(final QName elementName, final LocationInSchema location)
 	{
 		super(PART_ONE, elementName, location);
 	}

@@ -16,7 +16,7 @@
 package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.types.SmChoiceType;
 import org.genxdm.xs.types.SmPrimeType;
 import org.genxdm.xs.types.SmSequenceType;
@@ -39,11 +39,11 @@ final class ZChoiceType<A> implements SmChoiceType<A>
 		}
 		else if (lhs.prime().isNone() && lhs.quantifier().isOptional())
 		{
-			return ZMultiplyType.multiply(rhs, SmQuantifier.OPTIONAL);
+			return ZMultiplyType.multiply(rhs, KeeneQuantifier.OPTIONAL);
 		}
 		else if (rhs.prime().isNone() && rhs.quantifier().isOptional())
 		{
-			return ZMultiplyType.multiply(lhs, SmQuantifier.OPTIONAL);
+			return ZMultiplyType.multiply(lhs, KeeneQuantifier.OPTIONAL);
 		}
 		else if (SmSupportImpl.subtype(lhs, rhs))
 		{
@@ -94,7 +94,7 @@ final class ZChoiceType<A> implements SmChoiceType<A>
 		return ZPrimeChoiceType.choice(m_lhs.prime(), m_rhs.prime());
 	}
 
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
 		return m_lhs.quantifier().choice(m_rhs.quantifier());
 	}

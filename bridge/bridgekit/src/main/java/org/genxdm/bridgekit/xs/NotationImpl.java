@@ -19,17 +19,17 @@ import java.net.URI;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.components.SmNotation;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.components.NotationDefinition;
+import org.genxdm.xs.enums.ScopeExtent;
 
-public final class NotationImpl<A> extends NamedComponentImpl<A> implements SmNotation<A>
+public final class NotationImpl<A> extends NamedComponentImpl<A> implements NotationDefinition<A>
 {
 	private final String publicId;
 	private final URI systemId;
 
 	public NotationImpl(final QName name, final String publicId, final URI systemId)
 	{
-		super(name, false, SmScopeExtent.Global);
+		super(name, false, ScopeExtent.Global);
 		this.publicId = publicId;
 		this.systemId = systemId;
 	}

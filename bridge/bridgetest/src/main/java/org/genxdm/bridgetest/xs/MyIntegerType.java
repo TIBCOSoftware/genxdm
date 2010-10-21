@@ -26,19 +26,19 @@ import javax.xml.namespace.QName;
 import org.genxdm.exceptions.IllegalNullArgumentException;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.SmSchema;
-import org.genxdm.xs.components.SmEnumeration;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmQuantifier;
-import org.genxdm.xs.enums.SmScopeExtent;
-import org.genxdm.xs.enums.SmWhiteSpacePolicy;
-import org.genxdm.xs.exceptions.SmDatatypeException;
-import org.genxdm.xs.exceptions.SmFacetException;
+import org.genxdm.xs.Schema;
+import org.genxdm.xs.components.EnumerationDefinition;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.xs.enums.ScopeExtent;
+import org.genxdm.xs.enums.WhiteSpacePolicy;
+import org.genxdm.xs.exceptions.DatatypeException;
+import org.genxdm.xs.exceptions.FacetException;
 import org.genxdm.xs.facets.SmFacet;
 import org.genxdm.xs.facets.SmFacetKind;
 import org.genxdm.xs.facets.SmLimit;
 import org.genxdm.xs.facets.SmPattern;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.SmAtomicType;
 import org.genxdm.xs.types.SmNativeType;
 import org.genxdm.xs.types.SmPrimeType;
@@ -54,7 +54,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 		return new QName(namespaceURI, localName);
 	}
 
-	private final SmSchema<A> schema;
+	private final Schema<A> schema;
 	private final AtomBridge<A> atomBridge;
 	private final ArrayList<SmFacet<A>> facets = new ArrayList<SmFacet<A>>(2);
 	private final SmLimit<A> MAX_INCLUSIVE;
@@ -63,7 +63,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 
 	private final QName name;
 
-	public MyIntegerType(final String namespaceURI, final String localName, final SmSchema<A> schema, final AtomBridge<A> atomBridge)
+	public MyIntegerType(final String namespaceURI, final String localName, final Schema<A> schema, final AtomBridge<A> atomBridge)
 	{
 		super(makeName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "integer", atomBridge.getNameBridge()));
 		this.schema = IllegalNullArgumentException.check(schema, "schema");
@@ -89,7 +89,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	/**
 	 * SmType
 	 */
-	public boolean derivedFrom(String namespace, String name, Set<SmDerivationMethod> derivationMethods)
+	public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -98,7 +98,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	/**
 	 * SmType
 	 */
-	public boolean derivedFromType(SmType<A> ancestorType, Set<SmDerivationMethod> derivationMethods)
+	public boolean derivedFromType(SmType<A> ancestorType, Set<DerivationMethod> derivationMethods)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -115,7 +115,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	/**
 	 * SmSimpleType
 	 */
-	public Iterable<SmEnumeration<A>> getEnumerations()
+	public Iterable<EnumerationDefinition<A>> getEnumerations()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -141,7 +141,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	/**
 	 * SmType
 	 */
-	public Set<SmDerivationMethod> getFinal()
+	public Set<DerivationMethod> getFinal()
 	{
 		return Collections.emptySet();
 	}
@@ -198,9 +198,9 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmComponent
+	 * SchemaComponent
 	 */
-	public SmScopeExtent getScopeExtent()
+	public ScopeExtent getScopeExtent()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -217,7 +217,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	/**
 	 * SmSimpleType
 	 */
-	public SmWhiteSpacePolicy getWhiteSpacePolicy()
+	public WhiteSpacePolicy getWhiteSpacePolicy()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -313,7 +313,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	/**
 	 * SmType
 	 */
-	public boolean isFinal(final SmDerivationMethod derivation)
+	public boolean isFinal(final DerivationMethod derivation)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -408,7 +408,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	/**
 	 * SmSequenceType
 	 */
-	public SmQuantifier quantifier()
+	public KeeneQuantifier quantifier()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -432,7 +432,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	/**
 	 * SmSimpleType
 	 */
-	public List<A> validate(final List<? extends A> value) throws SmDatatypeException
+	public List<A> validate(final List<? extends A> value) throws DatatypeException
 	{
 		IllegalNullArgumentException.check(value, "value");
 		if (value.size() == 1)
@@ -447,9 +447,9 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 					{
 						facet.validate(value, this);
 					}
-					catch (final SmFacetException e)
+					catch (final FacetException e)
 					{
-						throw new SmDatatypeException(atomBridge.getC14NString(value), this, e);
+						throw new DatatypeException(atomBridge.getC14NString(value), this, e);
 					}
 				}
 				// The following doesn't cost object creation on well optimized atomic values.
@@ -466,14 +466,14 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 		}
 		else
 		{
-			throw new SmDatatypeException("", this);
+			throw new DatatypeException("", this);
 		}
 	}
 
 	/**
 	 * SmSimpleType
 	 */
-	public List<A> validate(final String initialValue) throws SmDatatypeException
+	public List<A> validate(final String initialValue) throws DatatypeException
 	{
 		IllegalNullArgumentException.check(initialValue, "initialValue");
 		return validate(getBaseType().validate(initialValue));
@@ -482,7 +482,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	/**
 	 * SmSimpleType
 	 */
-	public List<A> validate(final String initialValue, final SmPrefixResolver resolver) throws SmDatatypeException
+	public List<A> validate(final String initialValue, final PrefixResolver resolver) throws DatatypeException
 	{
 		IllegalNullArgumentException.check(resolver, "resolver");
 		return validate(initialValue);

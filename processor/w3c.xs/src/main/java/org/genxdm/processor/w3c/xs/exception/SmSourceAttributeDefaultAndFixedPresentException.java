@@ -15,12 +15,12 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class SmSourceAttributeDefaultAndFixedPresentException extends SmSourceAttributeException
 {
-	public SmSourceAttributeDefaultAndFixedPresentException(final SmLocation location)
+	public SmSourceAttributeDefaultAndFixedPresentException(final LocationInSchema location)
 	{
 		super(PART_DEFAULT_AND_FIXED_PRESENT, location);
 	}

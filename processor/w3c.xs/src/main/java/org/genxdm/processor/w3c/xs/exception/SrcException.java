@@ -15,8 +15,8 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public class SrcException extends SmLocationException
@@ -25,7 +25,7 @@ public class SrcException extends SmLocationException
 	 * @param outcome
 	 *            The section reference in the specification.
 	 */
-	public SrcException(final SmOutcome outcome, final SmLocation location)
+	public SrcException(final ValidationOutcome outcome, final LocationInSchema location)
 	{
 		super(outcome, "?", location);
 	}

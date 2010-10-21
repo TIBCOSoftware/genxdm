@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.xs;
 
-import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.types.SmPrimeType;
 
 abstract class AbstractPrimeExcludingNoneType<A> extends AbstractType<A> implements SmPrimeType<A>
@@ -25,8 +25,8 @@ abstract class AbstractPrimeExcludingNoneType<A> extends AbstractType<A> impleme
 		return false;
 	}
 
-	public final SmQuantifier quantifier()
+	public final KeeneQuantifier quantifier()
 	{
-		return SmQuantifier.EXACTLY_ONE;
+		return KeeneQuantifier.EXACTLY_ONE;
 	}
 }

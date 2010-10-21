@@ -15,12 +15,12 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class SmDuplicateIDException extends CvcIDException
 {
-	public SmDuplicateIDException(final Object tag, final SmLocation location)
+	public SmDuplicateIDException(final Object tag, final LocationInSchema location)
 	{
 		super(PART_DUPLICATE, location);
 	}

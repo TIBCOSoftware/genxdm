@@ -24,22 +24,22 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.exception.SrcPrefixNotFoundException;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.SmComponentProvider;
+import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.constraints.SmRestrictedXPath;
-import org.genxdm.xs.exceptions.SmDatatypeException;
-import org.genxdm.xs.exceptions.SmSimpleTypeException;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.exceptions.DatatypeException;
+import org.genxdm.xs.exceptions.SimpleTypeException;
+import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.SmNativeType;
 import org.genxdm.xs.types.SmSimpleType;
 
 
 final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 {
-	private final SmComponentProvider<A> bootstrap;
+	private final ComponentProvider<A> bootstrap;
 	private final AtomBridge<A> atomBridge;
 	private final NameSource nameBridge;
 
-	public RestrictedXPathParser(final SmComponentProvider<A> bootstrap, final AtomBridge<A> atomBridge)
+	public RestrictedXPathParser(final ComponentProvider<A> bootstrap, final AtomBridge<A> atomBridge)
 	{
 		this.bootstrap = bootstrap;
 		this.atomBridge = atomBridge;
@@ -53,15 +53,15 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 	 * 
 	 * @return the parsed model implementing {@link com.tibco.xml.schema.SmIdentityConstraint.Path}
 	 */
-	public SmRestrictedXPath parseXPath(final String xpath, final SmPrefixResolver prefixes) throws SmSimpleTypeException
+	public SmRestrictedXPath parseXPath(final String xpath, final PrefixResolver prefixes) throws SimpleTypeException
 	{
 		PreCondition.assertArgumentNotNull(xpath, "xpath");
 		PreCondition.assertArgumentNotNull(prefixes, "prefixes");
 
 		if (xpath.startsWith("|"))
 		{
-			final SmDatatypeException dte = new SmDatatypeException(xpath, null);
-			throw new SmSimpleTypeException(xpath, null, dte);
+			final DatatypeException dte = new DatatypeException(xpath, null);
+			throw new SimpleTypeException(xpath, null, dte);
 		}
 		final StringTokenizer terms = new StringTokenizer(xpath, "|");
 		if (terms.hasMoreTokens())
@@ -77,8 +77,8 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 		}
 		else
 		{
-			final SmDatatypeException dte = new SmDatatypeException(xpath, null);
-			throw new SmSimpleTypeException(xpath, null, dte);
+			final DatatypeException dte = new DatatypeException(xpath, null);
+			throw new SimpleTypeException(xpath, null, dte);
 		}
 	}
 
@@ -114,7 +114,7 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 		}
 	}
 
-	private static <A> RestrictedXPathImpl parseAlternate(final String xpath, final SmPrefixResolver prefixes, NameSource nameBridge, final String original, final SmComponentProvider<A> bootstrap, final AtomBridge<A> atomBridge) throws SmSimpleTypeException
+	private static <A> RestrictedXPathImpl parseAlternate(final String xpath, final PrefixResolver prefixes, NameSource nameBridge, final String original, final ComponentProvider<A> bootstrap, final AtomBridge<A> atomBridge) throws SimpleTypeException
 	{
 		PreCondition.assertArgumentNotNull(xpath);
 		PreCondition.assertArgumentNotNull(prefixes);
@@ -131,8 +131,8 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 			final String remainder = opening.getFirst();
 			if ((remainder.length() == 0) || remainder.startsWith("/") || remainder.contains("//"))
 			{
-				final SmDatatypeException dte = new SmDatatypeException(original, null);
-				throw new SmSimpleTypeException(original, null, dte);
+				final DatatypeException dte = new DatatypeException(original, null);
+				throw new SimpleTypeException(original, null, dte);
 			}
 			else
 			{
@@ -195,8 +195,8 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 						if (null == namespace)
 						{
 							final SrcPrefixNotFoundException cause = new SrcPrefixNotFoundException(prefix);
-							final SmDatatypeException dte = new SmDatatypeException(original, null, cause);
-							throw new SmSimpleTypeException(original, null, dte);
+							final DatatypeException dte = new DatatypeException(original, null, cause);
+							throw new SimpleTypeException(original, null, dte);
 						}
 					}
 					expression.addNameStep(namespace, localPart);
@@ -206,7 +206,7 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 		return expression;
 	}
 
-	private static <A> String ensureNCName(final String initialValue, final SmComponentProvider<A> bootstrap, final AtomBridge<A> atomBridge) throws SmSimpleTypeException
+	private static <A> String ensureNCName(final String initialValue, final ComponentProvider<A> bootstrap, final AtomBridge<A> atomBridge) throws SimpleTypeException
 	{
 		final SmSimpleType<A> atomicType = bootstrap.getAtomicType(SmNativeType.NCNAME);
 		try
@@ -221,13 +221,13 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 				return null;
 			}
 		}
-		catch (final SmDatatypeException e)
+		catch (final DatatypeException e)
 		{
-			throw new SmSimpleTypeException(initialValue, atomicType, e);
+			throw new SimpleTypeException(initialValue, atomicType, e);
 		}
 	}
 
-	private static <A> String getLocalPart(final String step, final String original, final SmComponentProvider<A> bootstrap, final AtomBridge<A> atomBridge) throws SmSimpleTypeException
+	private static <A> String getLocalPart(final String step, final String original, final ComponentProvider<A> bootstrap, final AtomBridge<A> atomBridge) throws SimpleTypeException
 	{
 		final String localName = getLocalName(step);
 		if ("*".equals(localName))
@@ -253,7 +253,7 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 	 *            The entire original string.
 	 * @return A pair consisting of what is left and whether the keyword literals were found.
 	 */
-	private static Pair<String, Boolean> doubleKeyword(final String strval, final String partOne, final String partTwo, final String original) throws SmSimpleTypeException
+	private static Pair<String, Boolean> doubleKeyword(final String strval, final String partOne, final String partTwo, final String original) throws SimpleTypeException
 	{
 		final String following;
 		final Boolean found;
@@ -267,8 +267,8 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 			}
 			else
 			{
-				final SmDatatypeException dte = new SmDatatypeException(original, null);
-				throw new SmSimpleTypeException(original, null, dte);
+				final DatatypeException dte = new DatatypeException(original, null);
+				throw new SimpleTypeException(original, null, dte);
 			}
 		}
 		else if (strval.startsWith(partOne.concat(partTwo)))
@@ -284,7 +284,7 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 		return new Pair<String, Boolean>(following, found);
 	}
 
-	private static Pair<String, Boolean> attributeAxis(final String strval, final String original) throws SmSimpleTypeException
+	private static Pair<String, Boolean> attributeAxis(final String strval, final String original) throws SimpleTypeException
 	{
 		final Pair<String, Boolean> attributeAxis = doubleKeyword(strval, "attribute", "::", original);
 		if (attributeAxis.getSecond())
@@ -304,7 +304,7 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 		}
 	}
 
-	private static Pair<String, Boolean> childAxis(final String strval, final String original) throws SmSimpleTypeException
+	private static Pair<String, Boolean> childAxis(final String strval, final String original) throws SimpleTypeException
 	{
 		return doubleKeyword(strval, "child", "::", original);
 	}

@@ -15,11 +15,11 @@
  */
 package org.genxdm.processor.w3c.xs.validation;
 
-import org.genxdm.xs.exceptions.SmExceptionHandler;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
 public interface GxValidatorConfig
 {
 	void reset();
 
-	void setExceptionHandler(SmExceptionHandler handler);
+	void setExceptionHandler(SchemaExceptionHandler handler);
 }

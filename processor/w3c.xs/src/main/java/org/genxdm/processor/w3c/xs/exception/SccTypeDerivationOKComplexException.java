@@ -19,18 +19,18 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmDerivationMethod;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 import org.genxdm.xs.types.SmType;
 
 
 @SuppressWarnings("serial")
-public abstract class SccTypeDerivationOKComplexException extends SmComponentConstraintException
+public abstract class SccTypeDerivationOKComplexException extends ComponentConstraintException
 {
 	private final SmType<?> derivedType;
 	private final SmType<?> m_baseName;
-	private final Set<SmDerivationMethod> m_subset;
+	private final Set<DerivationMethod> m_subset;
 
 	public static final String PART_METHOD = "1";
 	public static final String PART_HIERARCHY = "2";
@@ -38,17 +38,17 @@ public abstract class SccTypeDerivationOKComplexException extends SmComponentCon
 	public static final String PART_BASE_COMPLEX = "2.3.2.1";
 	public static final String PART_BASE_SIMPLE = "2.3.2.2";
 
-	public SccTypeDerivationOKComplexException(final String partNumber, final SmType<?> derivedType, final SmType<?> baseName, final Set<SmDerivationMethod> subset)
+	public SccTypeDerivationOKComplexException(final String partNumber, final SmType<?> derivedType, final SmType<?> baseName, final Set<DerivationMethod> subset)
 	{
-		super(SmOutcome.SCC_Type_Derivation_OK_Complex, partNumber);
+		super(ValidationOutcome.SCC_Type_Derivation_OK_Complex, partNumber);
 		this.derivedType = PreCondition.assertArgumentNotNull(derivedType, "derivedType");
 		this.m_baseName = PreCondition.assertArgumentNotNull(baseName, "baseName");
 		this.m_subset = PreCondition.assertArgumentNotNull(subset, "subset");
 	}
 
-	public SccTypeDerivationOKComplexException(final String partNumber, final SmType<?> derivedType, final SmType<?> baseName, final Set<SmDerivationMethod> subset, final SmComponentConstraintException cause)
+	public SccTypeDerivationOKComplexException(final String partNumber, final SmType<?> derivedType, final SmType<?> baseName, final Set<DerivationMethod> subset, final ComponentConstraintException cause)
 	{
-		super(SmOutcome.SCC_Type_Derivation_OK_Complex, partNumber, cause);
+		super(ValidationOutcome.SCC_Type_Derivation_OK_Complex, partNumber, cause);
 		this.derivedType = PreCondition.assertArgumentNotNull(derivedType, "derivedType");
 		this.m_baseName = PreCondition.assertArgumentNotNull(baseName, "baseName");
 		this.m_subset = PreCondition.assertArgumentNotNull(subset, "subset");
@@ -64,17 +64,17 @@ public abstract class SccTypeDerivationOKComplexException extends SmComponentCon
 		return m_baseName;
 	}
 
-	public final Set<SmDerivationMethod> getSubset()
+	public final Set<DerivationMethod> getSubset()
 	{
 		return m_subset;
 	}
 
-	protected static String derivations(final Iterable<SmDerivationMethod> set)
+	protected static String derivations(final Iterable<DerivationMethod> set)
 	{
-		final Iterator<SmDerivationMethod> it = set.iterator();
+		final Iterator<DerivationMethod> it = set.iterator();
 		if (it.hasNext())
 		{
-			final SmDerivationMethod first = it.next();
+			final DerivationMethod first = it.next();
 			if (it.hasNext())
 			{
 				final StringBuilder sb = new StringBuilder();
@@ -97,7 +97,7 @@ public abstract class SccTypeDerivationOKComplexException extends SmComponentCon
 		}
 	}
 
-	protected static String derivation(final SmDerivationMethod derivation)
+	protected static String derivation(final DerivationMethod derivation)
 	{
 		switch (derivation)
 		{

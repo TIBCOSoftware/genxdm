@@ -15,12 +15,12 @@
  */
 package org.genxdm.processor.w3c.xs;
 
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 /**
  * Marker interface indicating a location in a file.
  */
-public interface SmFileLocation extends SmLocation
+public interface SmFileLocation extends LocationInSchema
 {
 
 }

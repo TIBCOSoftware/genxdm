@@ -17,17 +17,17 @@ package org.genxdm.bridgekit.xs;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.components.SmDataComponent;
+import org.genxdm.xs.components.SchemaDataComponent;
 import org.genxdm.xs.constraints.SmHasValueConstraint;
 import org.genxdm.xs.constraints.SmValueConstraint;
-import org.genxdm.xs.enums.SmScopeExtent;
+import org.genxdm.xs.enums.ScopeExtent;
 
-public abstract class DataComponentImpl<A> extends NamedComponentImpl<A> implements SmDataComponent<A>, SmHasValueConstraint<A>
+public abstract class DataComponentImpl<A> extends NamedComponentImpl<A> implements SchemaDataComponent<A>, SmHasValueConstraint<A>
 {
 	// The {value constraint} is mutable and optional.
 	private SmValueConstraint<A> m_valueConstraint = null;
 
-	public DataComponentImpl(final QName name, final SmScopeExtent scope)
+	public DataComponentImpl(final QName name, final ScopeExtent scope)
 	{
 		super(name, false, scope);
 	}

@@ -16,7 +16,7 @@
 package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.exceptions.SmPatternException;
+import org.genxdm.xs.exceptions.PatternException;
 import org.genxdm.xs.facets.SmPattern;
 import org.genxdm.xs.facets.SmRegExPattern;
 
@@ -31,13 +31,13 @@ public final class FacetPatternImpl implements SmPattern
 		this.regex = PreCondition.assertArgumentNotNull(regex, "regex");
 	}
 
-	public void validate(final String input) throws SmPatternException
+	public void validate(final String input) throws PatternException
 	{
 		PreCondition.assertArgumentNotNull(input, "input");
 
 		if (!pattern.matches(input))
 		{
-			throw new SmPatternException(this, input);
+			throw new PatternException(this, input);
 		}
 	}
 

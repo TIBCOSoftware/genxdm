@@ -15,18 +15,18 @@
  */
 package org.genxdm.processor.w3c.xs.exception;
 
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
 
 @SuppressWarnings("serial")
-public final class SccFractionDigitsTotalDigitsException extends SmComponentConstraintException
+public final class SccFractionDigitsTotalDigitsException extends ComponentConstraintException
 {
     private final int m_fractionDigits;
     private final int m_totalDigits;
 
     public SccFractionDigitsTotalDigitsException(final int fractionDigits, final int totalDigits)
     {
-        super(SmOutcome.SCC_FractionDigitsTotalDigits, "4.3.12.4");
+        super(ValidationOutcome.SCC_FractionDigitsTotalDigits, "4.3.12.4");
         m_fractionDigits = fractionDigits;
         m_totalDigits = totalDigits;
     }

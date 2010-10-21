@@ -17,9 +17,9 @@ package org.genxdm.processor.w3c.xs;
 
 import java.net.URI;
 
-import org.genxdm.xs.resolve.SmCatalog;
+import org.genxdm.xs.resolve.SchemaCatalog;
 
-enum DefaultSmCatalog implements SmCatalog
+enum DefaultSmCatalog implements SchemaCatalog
 {
 	SINGLETON;
 

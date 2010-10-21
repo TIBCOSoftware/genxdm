@@ -21,10 +21,10 @@ import java.util.Set;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
-import org.genxdm.xs.exceptions.SmWildcardIntersectionException;
-import org.genxdm.xs.exceptions.SmWildcardIntersectionNotExpressibleException;
-import org.genxdm.xs.exceptions.SmWildcardUnionException;
-import org.genxdm.xs.exceptions.SmWildcardUnionNotExpressibleException;
+import org.genxdm.xs.exceptions.WildcardIntersectionException;
+import org.genxdm.xs.exceptions.WildcardIntersectionNotExpressibleException;
+import org.genxdm.xs.exceptions.WildcardUnionException;
+import org.genxdm.xs.exceptions.WildcardUnionNotExpressibleException;
 
 /**
  * Implementation for a {namespace constraint} property of a wildcard.
@@ -163,7 +163,7 @@ public final class SmNamespaceConstraint
 	 * @param nameBridge
 	 * @return the SmNamespaceConstraint representing the intersection of one & two
 	 */
-	private static SmNamespaceConstraint intersection(final SmNamespaceConstraint one, final SmNamespaceConstraint two, final NameSource nameBridge) throws SmWildcardIntersectionNotExpressibleException
+	private static SmNamespaceConstraint intersection(final SmNamespaceConstraint one, final SmNamespaceConstraint two, final NameSource nameBridge) throws WildcardIntersectionNotExpressibleException
 	{
 		PreCondition.assertArgumentNotNull(one, "one");
 		PreCondition.assertArgumentNotNull(two, "two");
@@ -200,7 +200,7 @@ public final class SmNamespaceConstraint
 							}
 							else
 							{
-								throw new SmWildcardIntersectionNotExpressibleException();
+								throw new WildcardIntersectionNotExpressibleException();
 							}
 						}
 						case Include:
@@ -313,7 +313,7 @@ public final class SmNamespaceConstraint
 	 * @param nameBridge
 	 * @return an SmNamespaceConstraint representing the union of one & two
 	 */
-	private static SmNamespaceConstraint union(final SmNamespaceConstraint one, final SmNamespaceConstraint two, final NameSource nameBridge) throws SmWildcardUnionException
+	private static SmNamespaceConstraint union(final SmNamespaceConstraint one, final SmNamespaceConstraint two, final NameSource nameBridge) throws WildcardUnionException
 	{
 		PreCondition.assertArgumentNotNull(one, "one");
 		PreCondition.assertArgumentNotNull(two, "two");
@@ -382,7 +382,7 @@ public final class SmNamespaceConstraint
 		}
 	}
 
-	private static SmNamespaceConstraint unionIncludeAndExclude(final SmNamespaceConstraint include, final SmNamespaceConstraint exclude, final NameSource nameBridge) throws SmWildcardUnionNotExpressibleException
+	private static SmNamespaceConstraint unionIncludeAndExclude(final SmNamespaceConstraint include, final SmNamespaceConstraint exclude, final NameSource nameBridge) throws WildcardUnionNotExpressibleException
 	{
 		PreCondition.assertTrue(include.m_mode == Mode.Include, "include.mode == Include");
 		PreCondition.assertTrue(exclude.m_mode == Mode.Exclude, "exclude.mode == Exclude");
@@ -415,7 +415,7 @@ public final class SmNamespaceConstraint
 		{
 			if (include.m_namespaces.contains(NULL_NS_URI))
 			{
-				throw new SmWildcardUnionNotExpressibleException();
+				throw new WildcardUnionNotExpressibleException();
 			}
 			else
 			{
@@ -535,7 +535,7 @@ public final class SmNamespaceConstraint
 	 * @param other
 	 *            The other namespace constraint.
 	 */
-	public SmNamespaceConstraint intersection(final SmNamespaceConstraint other) throws SmWildcardIntersectionException
+	public SmNamespaceConstraint intersection(final SmNamespaceConstraint other) throws WildcardIntersectionException
 	{
 		PreCondition.assertArgumentNotNull(other, "other");
 		return intersection(this, other, m_nameBridge);
@@ -560,7 +560,7 @@ public final class SmNamespaceConstraint
 	 * @param other
 	 *            The other namespace constraint.
 	 */
-	public SmNamespaceConstraint union(final SmNamespaceConstraint other) throws SmWildcardUnionException
+	public SmNamespaceConstraint union(final SmNamespaceConstraint other) throws WildcardUnionException
 	{
 		PreCondition.assertArgumentNotNull(other, "other");
 		return union(this, other, m_nameBridge);

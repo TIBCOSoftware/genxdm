@@ -25,7 +25,7 @@ import javax.xml.stream.Location;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.exception.SmDuplicateIdentityConstraintException;
-import org.genxdm.xs.enums.SmDerivationMethod;
+import org.genxdm.xs.enums.DerivationMethod;
 
 
 /**
@@ -39,11 +39,11 @@ final class XMLSchemaModule<A>
 	}
 
 	boolean attributeQualified = false;
-	final EnumSet<SmDerivationMethod> blockDefault = EnumSet.noneOf(SmDerivationMethod.class);
+	final EnumSet<DerivationMethod> blockDefault = EnumSet.noneOf(DerivationMethod.class);
 
 	boolean elementQualified = false;
 
-	final EnumSet<SmDerivationMethod> finalDefault = EnumSet.noneOf(SmDerivationMethod.class);
+	final EnumSet<DerivationMethod> finalDefault = EnumSet.noneOf(DerivationMethod.class);
 
 	private final EnumSet<ModuleKind> m_flags = EnumSet.noneOf(ModuleKind.class);
 	A m_id;

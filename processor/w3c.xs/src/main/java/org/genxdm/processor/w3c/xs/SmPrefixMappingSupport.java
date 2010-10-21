@@ -22,9 +22,9 @@ import javax.xml.XMLConstants;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
-import org.genxdm.xs.resolve.SmPrefixResolver;
+import org.genxdm.xs.resolve.PrefixResolver;
 
-final class SmPrefixMappingSupport implements SmPrefixResolver
+final class SmPrefixMappingSupport implements PrefixResolver
 {
 	private final String NULL_NS_URI;
 	private final String XML_NS_URI;
@@ -303,9 +303,9 @@ final class SmPrefixMappingSupport implements SmPrefixResolver
 	}
 
 	/**
-	 * Returns a {@link SmPrefixResolver} snapshot of this prefix mapping.
+	 * Returns a {@link PrefixResolver} snapshot of this prefix mapping.
 	 */
-	public SmPrefixResolver getPrefixResolverSnapshot()
+	public PrefixResolver getPrefixResolverSnapshot()
 	{
 		final HashMap<String, String> map = new HashMap<String, String>();
 		for (int i = m_numMappings - 1; i >= 0; i--)

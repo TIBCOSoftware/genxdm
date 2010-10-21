@@ -16,15 +16,15 @@
 package org.genxdm.processor.w3c.xs.exception;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class SmIllegalNamespaceException extends SmLocationException
 {
-	public SmIllegalNamespaceException(final String type, final String containerNamespace, final String containedNamespace, final SmLocation location)
+	public SmIllegalNamespaceException(final String type, final String containerNamespace, final String containedNamespace, final LocationInSchema location)
 	{
-		super(SmOutcome.TODO, "?", location);
+		super(ValidationOutcome.TODO, "?", location);
 		m_type = PreCondition.assertArgumentNotNull(type, "type");
 		m_containerNamespace = PreCondition.assertArgumentNotNull(containerNamespace, "containerNamespace");
 		m_containedNamespace = PreCondition.assertArgumentNotNull(containedNamespace, "containedNamespace");

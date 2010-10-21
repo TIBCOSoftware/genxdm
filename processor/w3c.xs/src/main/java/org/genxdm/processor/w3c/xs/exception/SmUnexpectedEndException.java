@@ -17,12 +17,12 @@ package org.genxdm.processor.w3c.xs.exception;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 @SuppressWarnings("serial")
 public final class SmUnexpectedEndException extends SmComplexTypeException
 {
-	public SmUnexpectedEndException(final QName elementName, final SmLocation location)
+	public SmUnexpectedEndException(final QName elementName, final LocationInSchema location)
 	{
 		super(PART_CONTENT_TYPE_AND_CHILD_SEQUENCE, elementName, location);
 	}

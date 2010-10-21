@@ -17,37 +17,37 @@ package org.genxdm.processor.w3c.xs;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.exception.SccLocationException;
-import org.genxdm.xs.components.SmAttribute;
-import org.genxdm.xs.components.SmAttributeGroup;
-import org.genxdm.xs.components.SmElement;
-import org.genxdm.xs.components.SmModelGroup;
-import org.genxdm.xs.components.SmNotation;
-import org.genxdm.xs.components.SmParticle;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.NotationDefinition;
+import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.exceptions.SmAbortException;
-import org.genxdm.xs.exceptions.SmException;
-import org.genxdm.xs.exceptions.SmExceptionHandler;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaException;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
+import org.genxdm.xs.resolve.LocationInSchema;
 import org.genxdm.xs.types.SmComplexType;
 import org.genxdm.xs.types.SmSimpleType;
 
 
 final class XMLSccExceptionAdapter<A> implements SmConstraintHandler<A>
 {
-	private final SmExceptionHandler m_errors;
+	private final SchemaExceptionHandler m_errors;
 	private final XMLComponentLocator<A> m_locations;
 
-	public XMLSccExceptionAdapter(final SmExceptionHandler errors, final XMLComponentLocator<A> locations)
+	public XMLSccExceptionAdapter(final SchemaExceptionHandler errors, final XMLComponentLocator<A> locations)
 	{
 		m_errors = PreCondition.assertArgumentNotNull(errors, "errors");
 		m_locations = PreCondition.assertArgumentNotNull(locations, "locations");
 	}
 
-	public void error(final SmSimpleType<A> simpleType, final SmException exception) throws SmAbortException
+	public void error(final SmSimpleType<A> simpleType, final SchemaException exception) throws AbortException
 	{
 		if (m_locations.m_simpleTypeLocations.containsKey(simpleType))
 		{
-			final SmLocation location = m_locations.m_simpleTypeLocations.get(simpleType);
+			final LocationInSchema location = m_locations.m_simpleTypeLocations.get(simpleType);
 			m_errors.error(new SccLocationException(location, exception));
 		}
 		else
@@ -56,11 +56,11 @@ final class XMLSccExceptionAdapter<A> implements SmConstraintHandler<A>
 		}
 	}
 
-	public void error(final SmComplexType<A> complexType, final SmException exception) throws SmAbortException
+	public void error(final SmComplexType<A> complexType, final SchemaException exception) throws AbortException
 	{
 		if (m_locations.m_complexTypeLocations.containsKey(complexType))
 		{
-			final SmLocation location = m_locations.m_complexTypeLocations.get(complexType);
+			final LocationInSchema location = m_locations.m_complexTypeLocations.get(complexType);
 			m_errors.error(new SccLocationException(location, exception));
 		}
 		else
@@ -69,11 +69,11 @@ final class XMLSccExceptionAdapter<A> implements SmConstraintHandler<A>
 		}
 	}
 
-	public void error(final SmAttribute<A> attribute, final SmException exception) throws SmAbortException
+	public void error(final AttributeDefinition<A> attribute, final SchemaException exception) throws AbortException
 	{
 		if (m_locations.m_attributeLocations.containsKey(attribute))
 		{
-			final SmLocation location = m_locations.m_attributeLocations.get(attribute);
+			final LocationInSchema location = m_locations.m_attributeLocations.get(attribute);
 			m_errors.error(new SccLocationException(location, exception));
 		}
 		else
@@ -82,11 +82,11 @@ final class XMLSccExceptionAdapter<A> implements SmConstraintHandler<A>
 		}
 	}
 
-	public void error(final SmElement<A> element, final SmException exception) throws SmAbortException
+	public void error(final ElementDefinition<A> element, final SchemaException exception) throws AbortException
 	{
 		if (m_locations.m_elementLocations.containsKey(element))
 		{
-			final SmLocation location = m_locations.m_elementLocations.get(element);
+			final LocationInSchema location = m_locations.m_elementLocations.get(element);
 			m_errors.error(new SccLocationException(location, exception));
 		}
 		else
@@ -95,11 +95,11 @@ final class XMLSccExceptionAdapter<A> implements SmConstraintHandler<A>
 		}
 	}
 
-	public void error(final SmModelGroup<A> modelGroup, final SmException exception) throws SmAbortException
+	public void error(final ModelGroup<A> modelGroup, final SchemaException exception) throws AbortException
 	{
 		if (m_locations.m_modelGroupLocations.containsKey(modelGroup))
 		{
-			final SmLocation location = m_locations.m_modelGroupLocations.get(modelGroup);
+			final LocationInSchema location = m_locations.m_modelGroupLocations.get(modelGroup);
 			m_errors.error(new SccLocationException(location, exception));
 		}
 		else
@@ -108,11 +108,11 @@ final class XMLSccExceptionAdapter<A> implements SmConstraintHandler<A>
 		}
 	}
 
-	public void error(final SmAttributeGroup<A> attributeGroup, final SmException exception) throws SmAbortException
+	public void error(final AttributeGroupDefinition<A> attributeGroup, final SchemaException exception) throws AbortException
 	{
 		if (m_locations.m_attributeGroupLocations.containsKey(attributeGroup))
 		{
-			final SmLocation location = m_locations.m_attributeGroupLocations.get(attributeGroup);
+			final LocationInSchema location = m_locations.m_attributeGroupLocations.get(attributeGroup);
 			m_errors.error(new SccLocationException(location, exception));
 		}
 		else
@@ -121,11 +121,11 @@ final class XMLSccExceptionAdapter<A> implements SmConstraintHandler<A>
 		}
 	}
 
-	public void error(final SmIdentityConstraint<A> constraint, final SmException exception) throws SmAbortException
+	public void error(final SmIdentityConstraint<A> constraint, final SchemaException exception) throws AbortException
 	{
 		if (m_locations.m_constraintLocations.containsKey(constraint))
 		{
-			final SmLocation location = m_locations.m_constraintLocations.get(constraint);
+			final LocationInSchema location = m_locations.m_constraintLocations.get(constraint);
 			m_errors.error(new SccLocationException(location, exception));
 		}
 		else
@@ -134,11 +134,11 @@ final class XMLSccExceptionAdapter<A> implements SmConstraintHandler<A>
 		}
 	}
 
-	public void error(final SmNotation<A> notation, final SmException exception) throws SmAbortException
+	public void error(final NotationDefinition<A> notation, final SchemaException exception) throws AbortException
 	{
 		if (m_locations.m_notationLocations.containsKey(notation))
 		{
-			final SmLocation location = m_locations.m_notationLocations.get(notation);
+			final LocationInSchema location = m_locations.m_notationLocations.get(notation);
 			m_errors.error(new SccLocationException(location, exception));
 		}
 		else
@@ -147,11 +147,11 @@ final class XMLSccExceptionAdapter<A> implements SmConstraintHandler<A>
 		}
 	}
 
-	public void error(final SmParticle<A> particle, final SmException exception) throws SmAbortException
+	public void error(final SchemaParticle<A> particle, final SchemaException exception) throws AbortException
 	{
 		if (m_locations.m_particleLocations.containsKey(particle))
 		{
-			final SmLocation location = m_locations.m_particleLocations.get(particle);
+			final LocationInSchema location = m_locations.m_particleLocations.get(particle);
 			m_errors.error(new SccLocationException(location, exception));
 		}
 		else

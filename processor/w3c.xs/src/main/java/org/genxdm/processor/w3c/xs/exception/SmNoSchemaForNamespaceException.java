@@ -18,8 +18,8 @@ package org.genxdm.processor.w3c.xs.exception;
 import java.net.URI;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.resolve.SmLocation;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.resolve.LocationInSchema;
 
 
 @SuppressWarnings("serial")
@@ -27,9 +27,9 @@ public final class SmNoSchemaForNamespaceException extends SmLocationException
 {
 	private final URI namespaceURI;
 
-	public SmNoSchemaForNamespaceException(final URI namespaceURI, final SmLocation location)
+	public SmNoSchemaForNamespaceException(final URI namespaceURI, final LocationInSchema location)
 	{
-		super(SmOutcome.TODO, "1", location);
+		super(ValidationOutcome.TODO, "1", location);
 		this.namespaceURI = PreCondition.assertArgumentNotNull(namespaceURI, "namespaceURI");
 	}
 

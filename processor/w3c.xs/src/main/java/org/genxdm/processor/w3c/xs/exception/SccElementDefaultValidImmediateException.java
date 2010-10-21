@@ -18,13 +18,13 @@ package org.genxdm.processor.w3c.xs.exception;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.SmOutcome;
-import org.genxdm.xs.exceptions.SmComponentConstraintException;
-import org.genxdm.xs.exceptions.SmSimpleTypeException;
+import org.genxdm.xs.enums.ValidationOutcome;
+import org.genxdm.xs.exceptions.ComponentConstraintException;
+import org.genxdm.xs.exceptions.SimpleTypeException;
 
 
 @SuppressWarnings("serial")
-public abstract class SccElementDefaultValidImmediateException extends SmComponentConstraintException
+public abstract class SccElementDefaultValidImmediateException extends ComponentConstraintException
 {
 	private final QName m_elementName;
 
@@ -32,13 +32,13 @@ public abstract class SccElementDefaultValidImmediateException extends SmCompone
 
 	public SccElementDefaultValidImmediateException(final String partNumber, final QName elementName)
 	{
-		super(SmOutcome.SCC_Element_Default_Valid_Immediate, partNumber);
+		super(ValidationOutcome.SCC_Element_Default_Valid_Immediate, partNumber);
 		m_elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
 	}
 
-	public SccElementDefaultValidImmediateException(final String partNumber, final QName elementName, final SmSimpleTypeException cause)
+	public SccElementDefaultValidImmediateException(final String partNumber, final QName elementName, final SimpleTypeException cause)
 	{
-		super(SmOutcome.SCC_Element_Default_Valid_Immediate, partNumber, cause);
+		super(ValidationOutcome.SCC_Element_Default_Valid_Immediate, partNumber, cause);
 		m_elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
 	}
 

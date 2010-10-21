@@ -15,7 +15,7 @@
  */
 package org.genxdm.xs.types;
 
-import org.genxdm.xs.enums.SmQuantifier;
+import org.genxdm.xs.enums.KeeneQuantifier;
 
 /**
  * Indicates a type with an associated cardinality.
@@ -33,5 +33,5 @@ public interface SmMultiplyType<A> extends SmSequenceType<A>
 	/**
 	 * Returns the cardinality of the argument type.
 	 */
-	SmQuantifier getMultiplier();
+	KeeneQuantifier getMultiplier();
 }
