@@ -1,0 +1,8 @@
+<?xml-stylesheet href="doc.xsl" type="text/xsl" ?>
+
+<doc>Hello, world!<!-- Comment 1 --></doc>
+
+<?pi-without-data ?>
+
+<!-- Comment 2 -->
+<!-- Comment 3 -->
