@@ -25,19 +25,30 @@ import org.genxdm.base.Cursor;
 import org.genxdm.base.ProcessingContext;
 import org.genxdm.base.io.DocumentHandler;
 import org.genxdm.bridgekit.ProcessingContextFactory;
-import org.xml.sax.InputSource;
-
+// TODO: this sucks. it follows the old pattern in bridgetest, which is a bad
+// pattern.  it needs to follow the contract pattern instead.
+// noticed while adding a new test (which helps coverage, but doesn't prove anything)
 abstract public class SaxTestBase<N>
     extends TestCase
     implements ProcessingContextFactory<N>
 {
-    public void test001()
+    public void testSimpleDocWithPIsAndComments()
+    {
+        parseTest1Doc("test1.xml");
+    }
+    
+    public void testSimpleDocWithPIsAndCommentsButNoDecl()
+    {
+        parseTest1Doc("test1-nodecl.xml");
+    }
+    
+    private void parseTest1Doc(String resourceName)
     {
         try
         {
             ProcessingContext<N> context = newProcessingContext();
             DocumentHandler<N> parser = context.newDocumentHandler();
-            InputStream stream = getClass().getClassLoader().getResourceAsStream("test1.xml");
+            InputStream stream = getClass().getClassLoader().getResourceAsStream(resourceName);
             N document = parser.parse(stream, null);
             
 /*
