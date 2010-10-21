@@ -18,7 +18,7 @@ package org.genxdm.processor.w3c.xs;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.constraints.ValueConstraint;
 
 /**
  * XML representation of a value constraint. <br/>
@@ -26,12 +26,12 @@ import org.genxdm.xs.constraints.SmValueConstraint;
  */
 final class XMLValueConstraint
 {
-	public final SmValueConstraint.Kind kind;
+	public final ValueConstraint.Kind kind;
 	private final QName m_attributeName;
 	private final String m_value;
 	private final SrcFrozenLocation m_location;
 
-	public XMLValueConstraint(final SmValueConstraint.Kind kind, final QName attributeName, final String value, final SrcFrozenLocation location)
+	public XMLValueConstraint(final ValueConstraint.Kind kind, final QName attributeName, final String value, final SrcFrozenLocation location)
 	{
 		this.kind = PreCondition.assertArgumentNotNull(kind, "kind");
 		this.m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");

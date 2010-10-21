@@ -19,7 +19,7 @@ import java.math.BigInteger;
 
 import org.genxdm.typed.types.AtomBridge;
 
-final class OpXMLSchemaCompareInteger<A> implements SmValueComp<A>
+final class OpXMLSchemaCompareInteger<A> implements ValueComparator<A>
 {
 	private final OpXMLSchemaCompare m_opcode;
 	private final BigInteger operandRHS;

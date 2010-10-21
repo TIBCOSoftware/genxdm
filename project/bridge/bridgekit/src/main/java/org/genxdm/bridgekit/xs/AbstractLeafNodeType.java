@@ -16,14 +16,14 @@
 package org.genxdm.bridgekit.xs;
 
 import org.genxdm.NodeKind;
-import org.genxdm.xs.types.SmNodeType;
+import org.genxdm.xs.types.NodeType;
 
-abstract class AbstractLeafNodeType<A> extends AbstractPrimeExcludingNoneType<A> implements SmNodeType<A>
+abstract class AbstractLeafNodeType<A> extends AbstractPrimeExcludingNoneType<A> implements NodeType<A>
 {
-	protected final SmCache<A> cache;
+	protected final SchemaCache<A> cache;
 	private final NodeKind nodeKind;
 
-	public AbstractLeafNodeType(final NodeKind nodeKind, final SmCache<A> cache)
+	public AbstractLeafNodeType(final NodeKind nodeKind, final SchemaCache<A> cache)
 	{
 		switch (nodeKind)
 		{

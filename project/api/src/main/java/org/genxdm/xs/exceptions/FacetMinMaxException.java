@@ -17,8 +17,8 @@ package org.genxdm.xs.exceptions;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.enums.ValidationOutcome;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmLimit;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.Limit;
 
 /**
  * xs:maxExclusive, xs:maxInclusive, xs:minExclusive, xs:minInclusive
@@ -26,10 +26,10 @@ import org.genxdm.xs.facets.SmLimit;
 @SuppressWarnings("serial")
 public final class FacetMinMaxException extends FacetException
 {
-	private final SmLimit<?> limit;
+	private final Limit<?> limit;
 	private final String actual;
 
-	public FacetMinMaxException(final SmLimit<?> limit, final String actual)
+	public FacetMinMaxException(final Limit<?> limit, final String actual)
 	{
 		super(getOutcome(limit.getKind()));
 		this.actual = PreCondition.assertArgumentNotNull(actual, "actual");
@@ -50,7 +50,7 @@ public final class FacetMinMaxException extends FacetException
 		return message.toString();
 	}
 
-	private static ValidationOutcome getOutcome(final SmFacetKind opcode)
+	private static ValidationOutcome getOutcome(final FacetKind opcode)
 	{
 		PreCondition.assertArgumentNotNull(opcode, "opcode");
 		switch (opcode)

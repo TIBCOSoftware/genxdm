@@ -18,9 +18,9 @@ package org.genxdm.processor.w3c.xs;
 import java.util.regex.Pattern;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.facets.SmRegExPattern;
+import org.genxdm.xs.facets.RegExPattern;
 
-final class RegExPatternJDK implements SmRegExPattern
+final class RegExPatternJDK implements RegExPattern
 {
 	private final Pattern m_pattern;
 

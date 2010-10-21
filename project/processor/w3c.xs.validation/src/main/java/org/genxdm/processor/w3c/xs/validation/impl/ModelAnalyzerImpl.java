@@ -26,9 +26,9 @@ import org.genxdm.xs.enums.ProcessContentsMode;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 
 
 final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
@@ -45,7 +45,7 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 		this.m_currentPSVI = this.m_documentPSVI = new ModelPSVI<A>(ProcessContentsMode.Strict, metaBridge, cache);
 	}
 
-	public void attribute(final QName name, final SmSimpleType<A> type, final A value)
+	public void attribute(final QName name, final SimpleType<A> type, final A value)
 	{
 		// TODO: shall we keep track of which attributes are passed to us between startElement calls?
 	}
@@ -85,7 +85,7 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 		m_rootStartDone = false;
 	}
 
-	public ModelPSVI<A> startElement(final QName elementName, final SmType<A> localType, final Boolean explicitNil) throws AbortException
+	public ModelPSVI<A> startElement(final QName elementName, final Type<A> localType, final Boolean explicitNil) throws AbortException
 	{
 		final ModelPSVI<A> parentItem = m_currentPSVI;
 		m_currentPSVI = parentItem.push(elementName);
@@ -145,10 +145,10 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 		// More of the Validation Rule: Element Locally Valid (Element).
 		m_currentPSVI.setNilled(m_currentPSVI.computeNilled(explicitNil, m_errors));
 
-		final SmType<A> elementType = m_currentPSVI.getType();
-		if (elementType instanceof SmComplexType<?>)
+		final Type<A> elementType = m_currentPSVI.getType();
+		if (elementType instanceof ComplexType<?>)
 		{
-			ValidationRules.checkComplexTypeNotAbstract((SmComplexType<A>)elementType, elementName, m_errors);
+			ValidationRules.checkComplexTypeNotAbstract((ComplexType<A>)elementType, elementName, m_errors);
 		}
 
 		return m_currentPSVI;

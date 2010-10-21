@@ -19,22 +19,22 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.exceptions.FacetException;
 import org.genxdm.xs.exceptions.FacetLengthException;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmLength;
-import org.genxdm.xs.facets.SmLengthFacetUOM;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.Length;
+import org.genxdm.xs.facets.LengthFacetUOM;
 
-public final class FacetLengthImpl<A> extends FacetLengthCommonImpl<A> implements SmLength<A>
+public final class FacetLengthImpl<A> extends FacetLengthCommonImpl<A> implements Length<A>
 {
 	private final int length;
 
 	public FacetLengthImpl(final int length, final boolean isFixed, final AtomBridge<A> atomBridge)
 	{
-		super(isFixed, atomBridge, SmFacetKind.Length);
+		super(isFixed, atomBridge, FacetKind.Length);
 		PreCondition.assertTrue(length >= 0, "length >= 0");
 		this.length = length;
 	}
 
-	protected void checkLength(final int length, final SmLengthFacetUOM uom) throws FacetException
+	protected void checkLength(final int length, final LengthFacetUOM uom) throws FacetException
 	{
 		if (length != this.length)
 		{

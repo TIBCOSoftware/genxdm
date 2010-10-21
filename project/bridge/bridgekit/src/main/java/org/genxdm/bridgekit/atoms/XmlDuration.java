@@ -18,7 +18,7 @@ package org.genxdm.bridgekit.atoms;
 import java.math.BigDecimal;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#duration">duration</a>.
@@ -53,9 +53,9 @@ public final class XmlDuration extends XmlAbstractAtom
 		return DurationSupport.formatDurationC14N(seconds, months);
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.DURATION;
+		return NativeType.DURATION;
 	}
 
 	public boolean isWhiteSpace()

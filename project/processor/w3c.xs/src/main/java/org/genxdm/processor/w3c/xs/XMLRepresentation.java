@@ -17,7 +17,7 @@ package org.genxdm.processor.w3c.xs;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.constraints.ValueConstraint;
 
 class XMLRepresentation
 {
@@ -92,15 +92,15 @@ class XMLRepresentation
 	public static final String LN_WHITE_SPACE = "whiteSpace";
 	public static final String LN_XPATH = "xpath";
 
-	public static SmValueConstraint.Kind getValueConstraintKind(final QName attributeName)
+	public static ValueConstraint.Kind getValueConstraintKind(final QName attributeName)
 	{
 		if (attributeName.getLocalPart().equals(LN_FIXED))
 		{
-			return SmValueConstraint.Kind.Fixed;
+			return ValueConstraint.Kind.Fixed;
 		}
 		else if (attributeName.getLocalPart().equals(LN_DEFAULT))
 		{
-			return SmValueConstraint.Kind.Default;
+			return ValueConstraint.Kind.Default;
 		}
 		else
 		{

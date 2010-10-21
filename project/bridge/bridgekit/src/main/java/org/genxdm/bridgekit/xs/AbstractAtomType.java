@@ -25,14 +25,14 @@ import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.exceptions.DatatypeException;
-import org.genxdm.xs.types.SmAtomicType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmPrimeChoiceType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmPrimeTypeKind;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.AtomicType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.PrimeChoiceType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.PrimeTypeKind;
+import org.genxdm.xs.types.Type;
 
-abstract class AbstractAtomType<A> implements SmAtomicType<A>
+abstract class AbstractAtomType<A> implements AtomicType<A>
 {
 	/**
 	 * Removes leading and trailing whitespace, and any leading plus sign provided it is followed by a digit (0 through 9).
@@ -75,23 +75,23 @@ abstract class AbstractAtomType<A> implements SmAtomicType<A>
 
 	protected final AtomBridge<A> atomBridge;
 
-	private final SmType<A> baseType;
+	private final Type<A> baseType;
 
 	private final QName name;
 
-	AbstractAtomType(final QName name, final SmType<A> baseType, final AtomBridge<A> atomBridge)
+	AbstractAtomType(final QName name, final Type<A> baseType, final AtomBridge<A> atomBridge)
 	{
 		this.name = PreCondition.assertArgumentNotNull(name);
 		this.baseType = PreCondition.assertArgumentNotNull(baseType);
 		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge);
 	}
 
-	public final boolean derivedFromType(final SmType<A> ancestorType, final Set<DerivationMethod> derivationMethods)
+	public final boolean derivedFromType(final Type<A> ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
-		return SmSupportImpl.derivedFromType(this, ancestorType, derivationMethods, atomBridge.getNameBridge());
+		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods, atomBridge.getNameBridge());
 	}
 
-	public final SmType<A> getBaseType()
+	public final Type<A> getBaseType()
 	{
 		return baseType;
 	}
@@ -101,9 +101,9 @@ abstract class AbstractAtomType<A> implements SmAtomicType<A>
 		return DerivationMethod.Restriction;
 	}
 
-	public final SmPrimeTypeKind getKind()
+	public final PrimeTypeKind getKind()
 	{
-		return SmPrimeTypeKind.ATOM;
+		return PrimeTypeKind.ATOM;
 	}
 
 	public final String getLocalName()
@@ -116,7 +116,7 @@ abstract class AbstractAtomType<A> implements SmAtomicType<A>
 		return name;
 	}
 
-	public final SmAtomicType<A> getNativeTypeDefinition()
+	public final AtomicType<A> getNativeTypeDefinition()
 	{
 		return this;
 	}
@@ -201,7 +201,7 @@ abstract class AbstractAtomType<A> implements SmAtomicType<A>
 		return getWhiteSpacePolicy().apply(initialValue);
 	}
 
-	public final SmAtomicType<A> prime()
+	public final AtomicType<A> prime()
 	{
 		return this;
 	}
@@ -211,13 +211,13 @@ abstract class AbstractAtomType<A> implements SmAtomicType<A>
 		return KeeneQuantifier.EXACTLY_ONE;
 	}
 
-	public final boolean subtype(final SmPrimeType<A> rhs)
+	public final boolean subtype(final PrimeType<A> rhs)
 	{
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final SmPrimeChoiceType<A> choiceType = (SmPrimeChoiceType<A>)rhs;
+				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case ANY_ATOMIC_TYPE:
@@ -228,8 +228,8 @@ abstract class AbstractAtomType<A> implements SmAtomicType<A>
 			}
 			case ATOM:
 			{
-				final SmAtomicType<A> atomicType = (SmAtomicType<A>)rhs;
-				return SmSupportImpl.subtype(this, atomicType);
+				final AtomicType<A> atomicType = (AtomicType<A>)rhs;
+				return SchemaSupport.subtype(this, atomicType);
 			}
 			case EMPTY:
 			{
@@ -260,12 +260,12 @@ abstract class AbstractAtomType<A> implements SmAtomicType<A>
 			case 1:
 			{
 				final A atom = atoms.get(0);
-				final SmNativeType nativeType = atomBridge.getNativeType(atom);
+				final NativeType nativeType = atomBridge.getNativeType(atom);
 				if (nativeType.isA(getNativeType()))
 				{
 					return atomBridge.wrapAtom(atom);
 				}
-				else if (nativeType == SmNativeType.UNTYPED_ATOMIC)
+				else if (nativeType == NativeType.UNTYPED_ATOMIC)
 				{
 					return validate(atomBridge.getC14NForm(atom));
 				}

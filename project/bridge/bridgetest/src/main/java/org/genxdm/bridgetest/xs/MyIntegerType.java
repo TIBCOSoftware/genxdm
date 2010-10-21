@@ -34,20 +34,20 @@ import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.exceptions.FacetException;
-import org.genxdm.xs.facets.SmFacet;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmLimit;
-import org.genxdm.xs.facets.SmPattern;
+import org.genxdm.xs.facets.Facet;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.Limit;
+import org.genxdm.xs.facets.Pattern;
 import org.genxdm.xs.resolve.PrefixResolver;
-import org.genxdm.xs.types.SmAtomicType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmPrimeTypeKind;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.AtomicType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.PrimeTypeKind;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 
-public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> implements SmAtomicType<A>
+public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> implements AtomicType<A>
 {
 	private static QName makeName(final String namespaceURI, final String localName, final NameSource nameBridge)
 	{
@@ -56,10 +56,10 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 
 	private final Schema<A> schema;
 	private final AtomBridge<A> atomBridge;
-	private final ArrayList<SmFacet<A>> facets = new ArrayList<SmFacet<A>>(2);
-	private final SmLimit<A> MAX_INCLUSIVE;
+	private final ArrayList<Facet<A>> facets = new ArrayList<Facet<A>>(2);
+	private final Limit<A> MAX_INCLUSIVE;
 
-	private final SmLimit<A> MIN_INCLUSIVE;
+	private final Limit<A> MIN_INCLUSIVE;
 
 	private final QName name;
 
@@ -71,23 +71,23 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 		IllegalNullArgumentException.check(namespaceURI, "namespaceURI");
 		IllegalNullArgumentException.check(localName, "localName");
 		this.name = new QName(namespaceURI, localName);
-		this.MIN_INCLUSIVE = new MyLimit<A>(SmFacetKind.MinInclusive, atomBridge.createInteger(-2), atomBridge);
-		this.MAX_INCLUSIVE = new MyLimit<A>(SmFacetKind.MaxExclusive, atomBridge.createInteger(5), atomBridge);
+		this.MIN_INCLUSIVE = new MyLimit<A>(FacetKind.MinInclusive, atomBridge.createInteger(-2), atomBridge);
+		this.MAX_INCLUSIVE = new MyLimit<A>(FacetKind.MaxExclusive, atomBridge.createInteger(5), atomBridge);
 		facets.add(MIN_INCLUSIVE);
 		facets.add(MAX_INCLUSIVE);
 	}
 
 	/**
-	 * SmSequenceType
+	 * SequenceType
 	 */
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
 	/**
-	 * SmType
+	 * Type
 	 */
 	public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
 	{
@@ -96,24 +96,24 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmType
+	 * Type
 	 */
-	public boolean derivedFromType(SmType<A> ancestorType, Set<DerivationMethod> derivationMethods)
+	public boolean derivedFromType(Type<A> ancestorType, Set<DerivationMethod> derivationMethods)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
 	/**
-	 * SmType
+	 * Type
 	 */
-	public SmSimpleType<A> getBaseType()
+	public SimpleType<A> getBaseType()
 	{
-		return (SmSimpleType<A>)schema.getTypeDefinition(baseName);
+		return (SimpleType<A>)schema.getTypeDefinition(baseName);
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
 	public Iterable<EnumerationDefinition<A>> getEnumerations()
 	{
@@ -122,24 +122,24 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
-	public SmFacet<A> getFacetOfKind(final SmFacetKind facetKind)
+	public Facet<A> getFacetOfKind(final FacetKind facetKind)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
-	public Iterable<SmFacet<A>> getFacets()
+	public Iterable<Facet<A>> getFacets()
 	{
 		return facets;
 	}
 
 	/**
-	 * SmType
+	 * Type
 	 */
 	public Set<DerivationMethod> getFinal()
 	{
@@ -147,16 +147,16 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmAtomicType
+	 * AtomicType
 	 */
-	public SmPrimeTypeKind getKind()
+	public PrimeTypeKind getKind()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
 	/**
-	 * SmType
+	 * Type
 	 */
 	public String getLocalName()
 	{
@@ -164,7 +164,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmType
+	 * Type
 	 */
 	public QName getName()
 	{
@@ -172,26 +172,26 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmAtomicType
+	 * AtomicType
 	 */
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
 	/**
-	 * SmAtomicType
+	 * AtomicType
 	 */
-	public SmAtomicType<A> getNativeTypeDefinition()
+	public AtomicType<A> getNativeTypeDefinition()
 	{
 		return this;
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
-	public Iterable<SmPattern> getPatterns()
+	public Iterable<Pattern> getPatterns()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -207,7 +207,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmType
+	 * Type
 	 */
 	public String getTargetNamespace()
 	{
@@ -215,7 +215,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
 	public WhiteSpacePolicy getWhiteSpacePolicy()
 	{
@@ -224,7 +224,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
 	public boolean hasEnumerations()
 	{
@@ -233,16 +233,16 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
-	public boolean hasFacetOfKind(SmFacetKind facetKind)
+	public boolean hasFacetOfKind(FacetKind facetKind)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
 	public boolean hasFacets()
 	{
@@ -250,7 +250,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
 	public boolean hasPatterns()
 	{
@@ -259,7 +259,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmType
+	 * Type
 	 */
 	public boolean isAbstract()
 	{
@@ -268,7 +268,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmType
+	 * Type
 	 */
 	public boolean isAnonymous()
 	{
@@ -276,7 +276,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
 	public boolean isAtomicType()
 	{
@@ -284,7 +284,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmType
+	 * Type
 	 */
 	public boolean isAtomicUrType()
 	{
@@ -293,7 +293,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmAtomicType
+	 * AtomicType
 	 */
 	public boolean isChoice()
 	{
@@ -302,7 +302,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmType
+	 * Type
 	 */
 	public boolean isComplexUrType()
 	{
@@ -311,7 +311,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmType
+	 * Type
 	 */
 	public boolean isFinal(final DerivationMethod derivation)
 	{
@@ -320,7 +320,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
 	public boolean isID()
 	{
@@ -329,7 +329,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
 	public boolean isIDREF()
 	{
@@ -338,7 +338,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
 	public boolean isIDREFS()
 	{
@@ -347,7 +347,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
 	public boolean isListType()
 	{
@@ -355,7 +355,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmType
+	 * Type
 	 */
 	public boolean isNative()
 	{
@@ -364,7 +364,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmAtomicType
+	 * AtomicType
 	 */
 	public boolean isNone()
 	{
@@ -373,7 +373,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmType
+	 * Type
 	 */
 	public boolean isSimpleUrType()
 	{
@@ -382,7 +382,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
 	public boolean isUnionType()
 	{
@@ -390,7 +390,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
 	public String normalize(final String initialValue)
 	{
@@ -398,15 +398,15 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmSequenceType
+	 * SequenceType
 	 */
-	public SmAtomicType<A> prime()
+	public AtomicType<A> prime()
 	{
 		return this;
 	}
 
 	/**
-	 * SmSequenceType
+	 * SequenceType
 	 */
 	public KeeneQuantifier quantifier()
 	{
@@ -415,9 +415,9 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmAtomicType
+	 * AtomicType
 	 */
-	public boolean subtype(final SmPrimeType<A> rhs)
+	public boolean subtype(final PrimeType<A> rhs)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -430,7 +430,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
 	public List<A> validate(final List<? extends A> value) throws DatatypeException
 	{
@@ -438,10 +438,10 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 		if (value.size() == 1)
 		{
 			final A atom = value.get(0);
-			final SmNativeType nativeType = atomBridge.getNativeType(atom);
+			final NativeType nativeType = atomBridge.getNativeType(atom);
 			if (nativeType.isInteger())
 			{
-				for (final SmFacet<A> facet : facets)
+				for (final Facet<A> facet : facets)
 				{
 					try
 					{
@@ -455,7 +455,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 				// The following doesn't cost object creation on well optimized atomic values.
 				return atomBridge.wrapAtom(atom);
 			}
-			else if (nativeType == SmNativeType.UNTYPED_ATOMIC)
+			else if (nativeType == NativeType.UNTYPED_ATOMIC)
 			{
 				return validate(atomBridge.getC14NForm(atom));
 			}
@@ -471,7 +471,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
 	public List<A> validate(final String initialValue) throws DatatypeException
 	{
@@ -480,7 +480,7 @@ public final class MyIntegerType<A> extends MyDerivedByRestrictionSimpleType<A> 
 	}
 
 	/**
-	 * SmSimpleType
+	 * SimpleType
 	 */
 	public List<A> validate(final String initialValue, final PrefixResolver resolver) throws DatatypeException
 	{

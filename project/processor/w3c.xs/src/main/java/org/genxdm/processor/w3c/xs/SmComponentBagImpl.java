@@ -28,11 +28,11 @@ import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.enums.ScopeExtent;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 
 /**
  * A bag for storing of {@link org.genxdm.xs.components.SchemaComponent}(s).
@@ -42,12 +42,12 @@ final class SmComponentBagImpl<A> implements ComponentBag<A>
 	private final Map<QName, AttributeGroupDefinition<A>> m_attributeGroups = new HashMap<QName, AttributeGroupDefinition<A>>();
 
 	private final Map<QName, AttributeDefinition<A>> m_attributes = new HashMap<QName, AttributeDefinition<A>>();
-	private final Map<QName, SmComplexType<A>> m_complexTypes = new HashMap<QName, SmComplexType<A>>();
+	private final Map<QName, ComplexType<A>> m_complexTypes = new HashMap<QName, ComplexType<A>>();
 	private final Map<QName, ElementDefinition<A>> m_elements = new HashMap<QName, ElementDefinition<A>>();
-	private final Map<QName, SmIdentityConstraint<A>> m_identityConstraints = new HashMap<QName, SmIdentityConstraint<A>>();
+	private final Map<QName, IdentityConstraint<A>> m_identityConstraints = new HashMap<QName, IdentityConstraint<A>>();
 	private final Map<QName, ModelGroup<A>> m_modelGroups = new HashMap<QName, ModelGroup<A>>();
 	private final Map<QName, NotationDefinition<A>> m_notations = new HashMap<QName, NotationDefinition<A>>();
-	private final Map<QName, SmSimpleType<A>> m_simpleTypes = new HashMap<QName, SmSimpleType<A>>();
+	private final Map<QName, SimpleType<A>> m_simpleTypes = new HashMap<QName, SimpleType<A>>();
 
 	public void add(final ElementDefinition<A> element)
 	{
@@ -73,7 +73,7 @@ final class SmComponentBagImpl<A> implements ComponentBag<A>
 		m_attributeGroups.put(attributeGroup.getName(), attributeGroup);
 	}
 
-	public void add(final SmComplexType<A> complexType)
+	public void add(final ComplexType<A> complexType)
 	{
 		PreCondition.assertArgumentNotNull(complexType, "complexType");
 		PreCondition.assertFalse(m_complexTypes.containsKey(complexType.getName()));
@@ -81,7 +81,7 @@ final class SmComponentBagImpl<A> implements ComponentBag<A>
 		m_complexTypes.put(complexType.getName(), complexType);
 	}
 
-	public void add(final SmIdentityConstraint<A> identityConstraint)
+	public void add(final IdentityConstraint<A> identityConstraint)
 	{
 		PreCondition.assertArgumentNotNull(identityConstraint, "identity-constraint");
 		PreCondition.assertTrue(identityConstraint.getScopeExtent() == ScopeExtent.Global, "{scope} of identity-constraint must be global");
@@ -105,7 +105,7 @@ final class SmComponentBagImpl<A> implements ComponentBag<A>
 		m_notations.put(notation.getName(), notation);
 	}
 
-	public void add(final SmSimpleType<A> simpleType)
+	public void add(final SimpleType<A> simpleType)
 	{
 		PreCondition.assertArgumentNotNull(simpleType, "simpleType");
 		PreCondition.assertFalse(m_simpleTypes.containsKey(simpleType.getName()), "simpleType must only be added once");
@@ -113,11 +113,11 @@ final class SmComponentBagImpl<A> implements ComponentBag<A>
 		m_simpleTypes.put(simpleType.getName(), simpleType);
 	}
 
-	public SmComplexType<A> dereferenceComplexType(final QName name, final ComponentProvider<A> existing)
+	public ComplexType<A> dereferenceComplexType(final QName name, final ComponentProvider<A> existing)
 	{
 		PreCondition.assertArgumentNotNull(name);
 
-		final SmComplexType<A> type = existing.getComplexType(name);
+		final ComplexType<A> type = existing.getComplexType(name);
 		if (null != type)
 		{
 			return type;
@@ -135,11 +135,11 @@ final class SmComponentBagImpl<A> implements ComponentBag<A>
 		}
 	}
 
-	public SmSimpleType<A> dereferenceSimpleType(final QName name, final ComponentProvider<A> existing)
+	public SimpleType<A> dereferenceSimpleType(final QName name, final ComponentProvider<A> existing)
 	{
 		PreCondition.assertArgumentNotNull(name);
 
-		final SmSimpleType<A> type = existing.getSimpleType(name);
+		final SimpleType<A> type = existing.getSimpleType(name);
 		if (null != type)
 		{
 			return type;
@@ -157,9 +157,9 @@ final class SmComponentBagImpl<A> implements ComponentBag<A>
 		}
 	}
 
-	public SmSimpleType<A> getAtomicType(final QName name)
+	public SimpleType<A> getAtomicType(final QName name)
 	{
-		final SmSimpleType<A> simpleType = getSimpleType(name);
+		final SimpleType<A> simpleType = getSimpleType(name);
 		if (simpleType.isAtomicType())
 		{
 			return simpleType;
@@ -190,12 +190,12 @@ final class SmComponentBagImpl<A> implements ComponentBag<A>
 		return m_attributes.values();
 	}
 
-	public SmComplexType<A> getComplexType(final QName name)
+	public ComplexType<A> getComplexType(final QName name)
 	{
 		return m_complexTypes.get(name);
 	}
 
-	public Iterable<SmComplexType<A>> getComplexTypes()
+	public Iterable<ComplexType<A>> getComplexTypes()
 	{
 		return m_complexTypes.values();
 	}
@@ -210,12 +210,12 @@ final class SmComponentBagImpl<A> implements ComponentBag<A>
 		return m_elements.values();
 	}
 
-	public SmIdentityConstraint<A> getIdentityConstraint(final QName name)
+	public IdentityConstraint<A> getIdentityConstraint(final QName name)
 	{
 		return m_identityConstraints.get(name);
 	}
 
-	public Iterable<SmIdentityConstraint<A>> getIdentityConstraints()
+	public Iterable<IdentityConstraint<A>> getIdentityConstraints()
 	{
 		return m_identityConstraints.values();
 	}
@@ -240,17 +240,17 @@ final class SmComponentBagImpl<A> implements ComponentBag<A>
 		return m_notations.values();
 	}
 
-	public SmSimpleType<A> getSimpleType(final QName name)
+	public SimpleType<A> getSimpleType(final QName name)
 	{
 		return m_simpleTypes.get(name);
 	}
 
-	public Iterable<SmSimpleType<A>> getSimpleTypes()
+	public Iterable<SimpleType<A>> getSimpleTypes()
 	{
 		return m_simpleTypes.values();
 	}
 
-	public SmType<A> getType(final QName name)
+	public Type<A> getType(final QName name)
 	{
 		if (hasSimpleType(name))
 		{
@@ -315,7 +315,7 @@ final class SmComponentBagImpl<A> implements ComponentBag<A>
 	{
 		PreCondition.assertArgumentNotNull(name);
 
-		final SmComplexType<A> type = existing.getComplexType(name);
+		final ComplexType<A> type = existing.getComplexType(name);
 		if (null != type)
 		{
 			return true;
@@ -330,7 +330,7 @@ final class SmComponentBagImpl<A> implements ComponentBag<A>
 	{
 		PreCondition.assertArgumentNotNull(name);
 
-		final SmSimpleType<A> type = existing.getSimpleType(name);
+		final SimpleType<A> type = existing.getSimpleType(name);
 		if (null != type)
 		{
 			return true;

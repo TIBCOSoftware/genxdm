@@ -18,7 +18,7 @@ package org.genxdm.bridgekit.atoms;
 import java.math.BigDecimal;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#decimal">decimal</a>.
@@ -74,9 +74,9 @@ public final class XmlDecimal extends XmlAbstractAtom
 		return NumericSupport.formatDecimalC14N(decimalValue);
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.DECIMAL;
+		return NativeType.DECIMAL;
 	}
 
 	@Override

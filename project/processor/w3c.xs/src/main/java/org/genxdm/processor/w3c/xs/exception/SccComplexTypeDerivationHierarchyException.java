@@ -18,13 +18,13 @@ package org.genxdm.processor.w3c.xs.exception;
 import java.util.Set;
 
 import org.genxdm.xs.enums.DerivationMethod;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.Type;
 
 
 @SuppressWarnings("serial")
 public final class SccComplexTypeDerivationHierarchyException extends SccTypeDerivationOKComplexException
 {
-	public SccComplexTypeDerivationHierarchyException(final SmType<?> typeName, final SmType<?> baseName, final Set<DerivationMethod> subset)
+	public SccComplexTypeDerivationHierarchyException(final Type<?> typeName, final Type<?> baseName, final Set<DerivationMethod> subset)
 	{
 		super(PART_HIERARCHY, typeName, baseName, subset);
 	}

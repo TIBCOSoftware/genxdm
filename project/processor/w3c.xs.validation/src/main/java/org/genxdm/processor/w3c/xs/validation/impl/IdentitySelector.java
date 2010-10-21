@@ -22,7 +22,7 @@ import java.util.LinkedList;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.constraints.RestrictedXPath;
 import org.genxdm.xs.exceptions.AbortException;
 
 /**
@@ -39,7 +39,7 @@ final class IdentitySelector<A>
 
 	// a List of branches, representing a parsed identity (selector or field)
 	// XPath expression
-	private final SmRestrictedXPath m_xpath[];
+	private final RestrictedXPath m_xpath[];
 
 	/**
 	 * The possibility of having "//" in the XPath expression means that a single XPath expression may have many
@@ -57,14 +57,14 @@ final class IdentitySelector<A>
 	 * @param xpath
 	 *            representing the parsed attribute xpath
 	 */
-	public IdentitySelector(final IdentityScope<A> scope, final SmRestrictedXPath xpath)
+	public IdentitySelector(final IdentityScope<A> scope, final RestrictedXPath xpath)
 	{
 		m_scope = PreCondition.assertArgumentNotNull(scope, "scope");
 
 		// Count the number of branches, that is, the number of XPath
 		// expressions separated by "|".
 		int size = 0;
-		for (SmRestrictedXPath branch = xpath; branch != null; branch = branch.getAlternate())
+		for (RestrictedXPath branch = xpath; branch != null; branch = branch.getAlternate())
 		{
 			// System.out.println("IdentityPathEvaluation.<init> Branch = " +
 			// branch);
@@ -72,9 +72,9 @@ final class IdentitySelector<A>
 		}
 
 		m_relocatable = new boolean[size];
-		m_xpath = (SmRestrictedXPath[])Array.newInstance(SmRestrictedXPath.class, size);
+		m_xpath = (RestrictedXPath[])Array.newInstance(RestrictedXPath.class, size);
 		m_evals = new ArrayList<LinkedList<IdentitySelectorEvaluation>>(size);
-		SmRestrictedXPath branch = xpath;
+		RestrictedXPath branch = xpath;
 		for (int i = size - 1; i >= 0; i--)
 		{
 			// put them backwards
@@ -184,7 +184,7 @@ final class IdentitySelector<A>
 		}
 	}
 
-	private boolean matchesElement(final SmRestrictedXPath xpath, final int idxStep, final QName elementName)
+	private boolean matchesElement(final RestrictedXPath xpath, final int idxStep, final QName elementName)
 	{
 		if (xpath.isAttribute())
 		{

@@ -22,8 +22,8 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.processor.w3c.xs.validation.api.VxOutputHandler;
 import org.genxdm.typed.io.SequenceHandler;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 
 
 public class GxOutputAdapter<A> implements VxOutputHandler<A>
@@ -35,7 +35,7 @@ public class GxOutputAdapter<A> implements VxOutputHandler<A>
 		this.handler = PreCondition.assertArgumentNotNull(handler, "handler");
 	}
 
-	public void attribute(final QName name, final List<? extends A> value, final SmSimpleType<A> type)
+	public void attribute(final QName name, final List<? extends A> value, final SimpleType<A> type)
 	{
 		handler.attribute(name.getNamespaceURI(), name.getLocalPart(), name.getPrefix(), value, type.getName());
 	}
@@ -65,7 +65,7 @@ public class GxOutputAdapter<A> implements VxOutputHandler<A>
 		handler.startDocument(null, null);
 	}
 
-	public void startElement(final QName name, final SmType<A> type) throws IOException
+	public void startElement(final QName name, final Type<A> type) throws IOException
 	{
 		handler.startElement(name.getNamespaceURI(), name.getLocalPart(), name.getPrefix(), type.getName());
 	}

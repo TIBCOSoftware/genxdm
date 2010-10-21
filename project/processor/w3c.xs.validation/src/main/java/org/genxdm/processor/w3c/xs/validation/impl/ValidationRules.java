@@ -23,10 +23,10 @@ import org.genxdm.processor.w3c.xs.exception.CvcElementFixedValueOverriddenMixed
 import org.genxdm.processor.w3c.xs.exception.SrcFrozenLocation;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.ElementDefinition;
-import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
-import org.genxdm.xs.types.SmComplexType;
+import org.genxdm.xs.types.ComplexType;
 
 
 final class ValidationRules
@@ -37,7 +37,7 @@ final class ValidationRules
 	 */
 	public static <A> void checkValueConstraintAllowsElementChild(final ElementDefinition<A> elementDeclaration, final QName childName, final Locatable childLocatable, final SchemaExceptionHandler errors) throws AbortException
 	{
-		final SmValueConstraint<A> valueConstraint = elementDeclaration.getValueConstraint();
+		final ValueConstraint<A> valueConstraint = elementDeclaration.getValueConstraint();
 		if (null != valueConstraint)
 		{
 			switch (valueConstraint.getVariety())
@@ -65,7 +65,7 @@ final class ValidationRules
 	 */
 	public static <A> void checkValueConstraintForMixedContent(final ElementDefinition<A> elementDeclaration, final String initialValue, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
-		final SmValueConstraint<A> valueConstraint = elementDeclaration.getValueConstraint();
+		final ValueConstraint<A> valueConstraint = elementDeclaration.getValueConstraint();
 		if (null != valueConstraint)
 		{
 			switch (valueConstraint.getVariety())
@@ -104,7 +104,7 @@ final class ValidationRules
 	 * @param errors
 	 *            The exception handler.
 	 */
-	public static <A, T> void checkComplexTypeNotAbstract(final SmComplexType<A> elementType, final QName elementName, final SchemaExceptionHandler errors) throws AbortException
+	public static <A, T> void checkComplexTypeNotAbstract(final ComplexType<A> elementType, final QName elementName, final SchemaExceptionHandler errors) throws AbortException
 	{
 		if (null != elementType && elementType.isAbstract())
 		{

@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.genxdm.NodeKind;
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.Type;
 
 public final class XmlTextNode
     extends XmlLeafNode
@@ -35,7 +35,7 @@ public final class XmlTextNode
         super(NodeKind.TEXT, document, value);
     }
     
-    public SmType<XmlAtom> getType()
+    public Type<XmlAtom> getType()
     {
         if ( (parent != null) && parent.isElement() )
             return ((XmlElementNode)parent).getType();

@@ -27,28 +27,28 @@ import org.genxdm.xs.components.EnumerationDefinition;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
-import org.genxdm.xs.facets.SmFacet;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmPattern;
+import org.genxdm.xs.facets.Facet;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.Pattern;
 import org.genxdm.xs.resolve.PrefixResolver;
-import org.genxdm.xs.types.SmComplexUrType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmPrimeChoiceType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmPrimeTypeKind;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmSimpleUrType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.ComplexUrType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.PrimeChoiceType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.PrimeTypeKind;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.SimpleUrType;
+import org.genxdm.xs.types.Type;
 
-final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implements SmSimpleUrType<A>
+final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implements SimpleUrType<A>
 {
 	private final AtomBridge<A> atomBridge;
 	private final NameSource nameBridge;
 	private final QName m_name;
-	private final SmCache<A> cache;
+	private final SchemaCache<A> cache;
 
-	public SimpleUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final AtomBridge<A> atomBridge, final SmCache<A> cache)
+	public SimpleUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final AtomBridge<A> atomBridge, final SchemaCache<A> cache)
 	{
 		this.atomBridge = atomBridge;
 		this.nameBridge = atomBridge.getNameBridge();
@@ -56,7 +56,7 @@ final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		this.cache = cache;
 	}
 
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		visitor.visit(this);
 	}
@@ -66,27 +66,27 @@ final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		throw new AssertionError(getName());
 	}
 
-	public void addFacet(final SmFacet<A> facet)
+	public void addFacet(final Facet<A> facet)
 	{
 		throw new AssertionError(getName());
 	}
 
-	public void addPattern(final SmPattern pattern)
+	public void addPattern(final Pattern pattern)
 	{
 		throw new AssertionError(getName());
 	}
 
 	public boolean derivedFrom(final String namespace, final String name, final Set<DerivationMethod> derivationMethods)
 	{
-		return SmSupportImpl.derivedFrom(this, namespace, name, derivationMethods, nameBridge);
+		return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods, nameBridge);
 	}
 
-	public boolean derivedFromType(final SmType<A> ancestorType, final Set<DerivationMethod> derivationMethods)
+	public boolean derivedFromType(final Type<A> ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
-		return SmSupportImpl.derivedFromType(this, ancestorType, derivationMethods, nameBridge);
+		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods, nameBridge);
 	}
 
-	public SmComplexUrType<A> getBaseType()
+	public ComplexUrType<A> getBaseType()
 	{
 		return cache.getComplexUrType();
 	}
@@ -101,12 +101,12 @@ final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		throw new AssertionError(getName());
 	}
 
-	public SmFacet<A> getFacetOfKind(final SmFacetKind facetKind)
+	public Facet<A> getFacetOfKind(final FacetKind facetKind)
 	{
 		throw new AssertionError(getName());
 	}
 
-	public Iterable<SmFacet<A>> getFacets()
+	public Iterable<Facet<A>> getFacets()
 	{
 		throw new AssertionError(getName());
 	}
@@ -116,9 +116,9 @@ final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return EnumSet.noneOf(DerivationMethod.class);
 	}
 
-	public SmPrimeTypeKind getKind()
+	public PrimeTypeKind getKind()
 	{
-		return SmPrimeTypeKind.ANY_SIMPLE_TYPE;
+		return PrimeTypeKind.ANY_SIMPLE_TYPE;
 	}
 
 	public String getLocalName()
@@ -131,17 +131,17 @@ final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return m_name;
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.ANY_SIMPLE_TYPE;
+		return NativeType.ANY_SIMPLE_TYPE;
 	}
 
-	public SmSimpleType<A> getNativeTypeDefinition()
+	public SimpleType<A> getNativeTypeDefinition()
 	{
 		return this;
 	}
 
-	public Iterable<SmPattern> getPatterns()
+	public Iterable<Pattern> getPatterns()
 	{
 		throw new AssertionError(getName());
 	}
@@ -166,7 +166,7 @@ final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return false;
 	}
 
-	public boolean hasFacetOfKind(final SmFacetKind facetKind)
+	public boolean hasFacetOfKind(final FacetKind facetKind)
 	{
 		return false;
 	}
@@ -266,7 +266,7 @@ final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return initialValue;
 	}
 
-	public SmSimpleUrType<A> prime()
+	public SimpleUrType<A> prime()
 	{
 		return this;
 	}
@@ -281,13 +281,13 @@ final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		throw new AssertionError(getName());
 	}
 
-	public boolean subtype(final SmPrimeType<A> rhs)
+	public boolean subtype(final PrimeType<A> rhs)
 	{
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final SmPrimeChoiceType<A> choiceType = (SmPrimeChoiceType<A>)rhs;
+				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case ANY_TYPE:

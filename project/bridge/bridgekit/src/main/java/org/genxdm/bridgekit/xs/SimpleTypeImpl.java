@@ -36,32 +36,32 @@ import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.exceptions.FacetEnumerationException;
 import org.genxdm.xs.exceptions.FacetException;
 import org.genxdm.xs.exceptions.PatternException;
-import org.genxdm.xs.facets.SmFacet;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmPattern;
+import org.genxdm.xs.facets.Facet;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.Pattern;
 import org.genxdm.xs.resolve.PrefixResolver;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmSequenceType;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmSimpleUrType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.SequenceType;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.SimpleUrType;
+import org.genxdm.xs.types.Type;
 
 /**
  * A simple type, but not the Simple Ur-Type or the Atomic Ur-Type.
  */
-public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleType<A>
+public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleType<A>
 {
 	protected abstract List<A> compile(String initialValue) throws DatatypeException;
 
 	protected abstract List<A> compile(String initialValue, final PrefixResolver resolver) throws DatatypeException;
 
-	private static <A> void checkEnumerationFacets(final List<? extends A> actualValue, final SmSimpleType<A> simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
+	private static <A> void checkEnumerationFacets(final List<? extends A> actualValue, final SimpleType<A> simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		// Quickee optimization; there are no enumerations for xs:anySimpleType and xs:anyAtomicType.
 		if (!simpleType.isSimpleUrType() && !simpleType.isAtomicUrType())
 		{
-			SmSimpleType<A> currentType = simpleType;
+			SimpleType<A> currentType = simpleType;
 			while (true)
 			{
 				if (currentType.hasEnumerations())
@@ -93,7 +93,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 				}
 				else
 				{
-					final SmType<A> baseType = currentType.getBaseType();
+					final Type<A> baseType = currentType.getBaseType();
 					if (baseType.isAtomicUrType())
 					{
 						return;
@@ -106,22 +106,22 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 					{
 						// We shouldn't get to the complex Ur-Type, because of the optimization,
 						// but if that is changed, this cast will also act as an assertion.
-						currentType = (SmSimpleType<A>)baseType;
+						currentType = (SimpleType<A>)baseType;
 					}
 				}
 			}
 		}
 	}
 
-	protected static <A> void checkNonEnumerationFacets(final List<? extends A> actualValue, final SmSimpleType<A> simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
+	protected static <A> void checkNonEnumerationFacets(final List<? extends A> actualValue, final SimpleType<A> simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		// check the value space facets, excluding enumeration (e.g. length, digits, bounds)
-		SmSimpleType<A> currentType = simpleType;
+		SimpleType<A> currentType = simpleType;
 		while (!currentType.isNative())
 		{
 			if (currentType.hasFacets())
 			{
-				for (final SmFacet<A> facet : currentType.getFacets())
+				for (final Facet<A> facet : currentType.getFacets())
 				{
 					try
 					{
@@ -134,12 +134,12 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 					}
 				}
 			}
-			final SmType<A> baseType = currentType.getBaseType();
-			if (baseType instanceof SmSimpleType<?>)
+			final Type<A> baseType = currentType.getBaseType();
+			if (baseType instanceof SimpleType<?>)
 			{
-				currentType = (SmSimpleType<A>)baseType;
+				currentType = (SimpleType<A>)baseType;
 			}
-			else if (baseType instanceof SmSimpleUrType<?>)
+			else if (baseType instanceof SimpleUrType<?>)
 			{
 				return;
 			}
@@ -153,7 +153,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 	/**
 	 * Checks pattern facets, walking up the type hierarchy and checking against each type.
 	 */
-	protected static <A> void checkPatternFacets(final SmSimpleType<A> simpleType, final String normalizedValue, final NameSource nameBridge) throws DatatypeException
+	protected static <A> void checkPatternFacets(final SimpleType<A> simpleType, final String normalizedValue, final NameSource nameBridge) throws DatatypeException
 	{
 		// Quickee optimization; there are no patterns for xs:anySimpleType and xs:anyAtomicType.
 		if (!simpleType.isSimpleUrType() && !simpleType.isAtomicUrType())
@@ -163,14 +163,14 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 			// is considered valid if it matches at least one of the patterns, meaning that a logical
 			// or is performed on all the patterns defined in the same derivation step.
 
-			SmSimpleType<A> currentType = simpleType;
+			SimpleType<A> currentType = simpleType;
 			while (true)
 			{
 				if (currentType.hasPatterns())
 				{
 					int size = 0;
 					int pass = 0;
-					for (final SmPattern pattern : currentType.getPatterns())
+					for (final Pattern pattern : currentType.getPatterns())
 					{
 						size++;
 						try
@@ -188,7 +188,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 						throw new DatatypeException(normalizedValue, simpleType);
 					}
 				}
-				final SmType<A> baseType = currentType.getBaseType();
+				final Type<A> baseType = currentType.getBaseType();
 				if (baseType.isAtomicUrType())
 				{
 					return;
@@ -201,13 +201,13 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 				{
 					// We shouldn't get to the complex Ur-Type, because of the optimization,
 					// but if that is changed, this cast will also act as an assertion.
-					currentType = (SmSimpleType<A>)baseType;
+					currentType = (SimpleType<A>)baseType;
 				}
 			}
 		}
 	}
 
-	protected static <A> void checkValueSpaceFacets(final List<? extends A> actualValue, final SmSimpleType<A> simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
+	protected static <A> void checkValueSpaceFacets(final List<? extends A> actualValue, final SimpleType<A> simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		checkNonEnumerationFacets(actualValue, simpleType, atomBridge);
 
@@ -248,9 +248,9 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 	private final HashSet<EnumerationDefinition<A>> m_enumerationFacets = new HashSet<EnumerationDefinition<A>>();
 
 	@SuppressWarnings("unchecked")
-	private final SmFacet<A>[] m_facetArray = (SmFacet<A>[])(Array.newInstance(SmFacet.class, SmFacetKind.values().length));
+	private final Facet<A>[] m_facetArray = (Facet<A>[])(Array.newInstance(Facet.class, FacetKind.values().length));
 
-	private final HashSet<SmFacet<A>> m_facets = new HashSet<SmFacet<A>>();
+	private final HashSet<Facet<A>> m_facets = new HashSet<Facet<A>>();
 	/**
 	 * {final} is mutable.
 	 */
@@ -260,7 +260,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 
 	private boolean m_isAbstract = false;
 
-	private final HashSet<SmPattern> m_patternFacets = new HashSet<SmPattern>();
+	private final HashSet<Pattern> m_patternFacets = new HashSet<Pattern>();
 
 	protected final WhiteSpacePolicy m_whiteSpace;
 
@@ -271,7 +271,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		this.atomBridge = atomBridge;
 	}
 
-	public void accept(SmSequenceTypeVisitor<A> visitor)
+	public void accept(SequenceTypeVisitor<A> visitor)
 	{
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("TODO");
@@ -284,7 +284,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		m_enumerationFacets.add(enumeration);
 	}
 
-	public void addFacet(final SmFacet<A> facet)
+	public void addFacet(final Facet<A> facet)
 	{
 		assertNotLocked();
 		PreCondition.assertArgumentNotNull(facet, "facet");
@@ -292,20 +292,20 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		m_facetArray[facet.getKind().ordinal()] = facet;
 	}
 
-	public void addPattern(final SmPattern pattern)
+	public void addPattern(final Pattern pattern)
 	{
 		assertNotLocked();
 		PreCondition.assertArgumentNotNull(pattern, "pattern");
 		m_patternFacets.add(pattern);
 	}
 
-	public SmSequenceType<A> atomSet()
+	public SequenceType<A> atomSet()
 	{
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("TODO");
 	}
 
-	public SmType<A> getBaseType()
+	public Type<A> getBaseType()
 	{
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("TODO");
@@ -316,12 +316,12 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		return m_enumerationFacets;
 	}
 
-	public SmFacet<A> getFacetOfKind(final SmFacetKind facetKind)
+	public Facet<A> getFacetOfKind(final FacetKind facetKind)
 	{
 		return m_facetArray[facetKind.ordinal()];
 	}
 
-	public final Iterable<SmFacet<A>> getFacets()
+	public final Iterable<Facet<A>> getFacets()
 	{
 		return m_facets;
 	}
@@ -331,12 +331,12 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		return m_finalUnmodifiable;
 	}
 
-	public final Iterable<SmPattern> getPatterns()
+	public final Iterable<Pattern> getPatterns()
 	{
 		return m_patternFacets;
 	}
 
-	public SmSimpleType<A> getNativeTypeDefinition()
+	public SimpleType<A> getNativeTypeDefinition()
 	{
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("TODO");
@@ -347,7 +347,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		return m_enumerationFacets.size() > 0;
 	}
 
-	public boolean hasFacetOfKind(SmFacetKind facetKind)
+	public boolean hasFacetOfKind(FacetKind facetKind)
 	{
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("TODO");
@@ -389,7 +389,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SmSimpleT
 		return false;
 	}
 
-	public SmPrimeType<A> prime()
+	public PrimeType<A> prime()
 	{
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("TODO");

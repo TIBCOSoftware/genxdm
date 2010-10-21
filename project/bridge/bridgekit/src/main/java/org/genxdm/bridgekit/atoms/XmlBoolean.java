@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.genxdm.bridgekit.misc.UnaryIterator;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#boolean">boolean</a>.
@@ -104,9 +104,9 @@ public enum XmlBoolean implements XmlAtom
 		return booleanValue ? "true" : "false";
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.BOOLEAN;
+		return NativeType.BOOLEAN;
 	}
 
 	public int indexOf(Object o)

@@ -17,14 +17,14 @@ package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.enums.KeeneQuantifier;
-import org.genxdm.xs.types.SmMultiplyType;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmSequenceType;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
+import org.genxdm.xs.types.MultiplyType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.SequenceType;
+import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class ZMultiplyType<A> extends AbstractType<A> implements SmMultiplyType<A>
+final class ZMultiplyType<A> extends AbstractType<A> implements MultiplyType<A>
 {
-	public static <A> SmSequenceType<A> multiply(final SmSequenceType<A> argument, final KeeneQuantifier multiplier)
+	public static <A> SequenceType<A> multiply(final SequenceType<A> argument, final KeeneQuantifier multiplier)
 	{
 		switch (multiplier)
 		{
@@ -38,9 +38,9 @@ final class ZMultiplyType<A> extends AbstractType<A> implements SmMultiplyType<A
 			}
 			default:
 			{
-				if (argument instanceof SmMultiplyType<?>)
+				if (argument instanceof MultiplyType<?>)
 				{
-					final SmMultiplyType<A> arg = (SmMultiplyType<A>)argument;
+					final MultiplyType<A> arg = (MultiplyType<A>)argument;
 					return multiply(arg.getArgument(), arg.getMultiplier().product(multiplier));
 				}
 				else
@@ -51,32 +51,32 @@ final class ZMultiplyType<A> extends AbstractType<A> implements SmMultiplyType<A
 		}
 	}
 
-	public static <A> SmSequenceType<A> optional(final SmSequenceType<A> argument)
+	public static <A> SequenceType<A> optional(final SequenceType<A> argument)
 	{
 		return multiply(argument, KeeneQuantifier.OPTIONAL);
 	}
 
-	public static <A> SmSequenceType<A> zeroOrMore(final SmSequenceType<A> argument)
+	public static <A> SequenceType<A> zeroOrMore(final SequenceType<A> argument)
 	{
 		return multiply(argument, KeeneQuantifier.ZERO_OR_MORE);
 	}
 
-	private final SmSequenceType<A> m_argument;
+	private final SequenceType<A> m_argument;
 
 	private final KeeneQuantifier m_multiplier;
 
-	private ZMultiplyType(final SmSequenceType<A> argument, final KeeneQuantifier multiplier)
+	private ZMultiplyType(final SequenceType<A> argument, final KeeneQuantifier multiplier)
 	{
 		this.m_argument = PreCondition.assertArgumentNotNull(argument, "argument");
 		this.m_multiplier = PreCondition.assertArgumentNotNull(multiplier, "multiplier");
 	}
 
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public SmSequenceType<A> getArgument()
+	public SequenceType<A> getArgument()
 	{
 		return m_argument;
 	}
@@ -91,7 +91,7 @@ final class ZMultiplyType<A> extends AbstractType<A> implements SmMultiplyType<A
 		return false;
 	}
 
-	public SmPrimeType<A> prime()
+	public PrimeType<A> prime()
 	{
 		// Formal Semantics...
 		// prime(Type?) = prime(Type)
@@ -109,7 +109,7 @@ final class ZMultiplyType<A> extends AbstractType<A> implements SmMultiplyType<A
 		return m_argument.quantifier().product(m_multiplier);
 	}
 
-	public boolean subtype(final SmSequenceType<A> type)
+	public boolean subtype(final SequenceType<A> type)
 	{
 		if (type.quantifier().contains(m_multiplier))
 		{

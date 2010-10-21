@@ -20,15 +20,15 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 
 
 public interface VxOutputHandler<A>
 {
 	void attribute(QName name, String value) throws IOException;
 
-	void attribute(QName name, List<? extends A> value, SmSimpleType<A> type) throws IOException;
+	void attribute(QName name, List<? extends A> value, SimpleType<A> type) throws IOException;
 
 	void endDocument() throws IOException;
 
@@ -38,7 +38,7 @@ public interface VxOutputHandler<A>
 
 	void startDocument() throws IOException;
 
-	void startElement(QName name, SmType<A> type) throws IOException;
+	void startElement(QName name, Type<A> type) throws IOException;
 
 	void text(List<? extends A> value) throws IOException;
 

@@ -15,8 +15,8 @@
  */
 package org.genxdm.xs.components;
 
-import org.genxdm.xs.constraints.SmHasValueConstraint;
-import org.genxdm.xs.types.SmNodeType;
+import org.genxdm.xs.constraints.HasValueConstraint;
+import org.genxdm.xs.types.NodeType;
 
 /**
  * A data component is a named schema component that may have value constraints.
@@ -24,6 +24,6 @@ import org.genxdm.xs.types.SmNodeType;
  * @param <A>
  *            The atom handle.
  */
-public interface SchemaDataComponent<A> extends SchemaComponent<A>, SmHasValueConstraint<A>, SmNodeType<A>
+public interface SchemaDataComponent<A> extends SchemaComponent<A>, HasValueConstraint<A>, NodeType<A>
 {
 }

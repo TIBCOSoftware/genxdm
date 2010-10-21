@@ -20,20 +20,20 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.constraints.SmIdentityConstraintKind;
-import org.genxdm.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.constraints.IdentityConstraint;
+import org.genxdm.xs.constraints.IdentityConstraintKind;
+import org.genxdm.xs.constraints.RestrictedXPath;
 import org.genxdm.xs.enums.ScopeExtent;
 
-public final class IdentityConstraintImpl<A> extends NamedComponentImpl<A> implements SmIdentityConstraint<A>
+public final class IdentityConstraintImpl<A> extends NamedComponentImpl<A> implements IdentityConstraint<A>
 {
-	private final SmIdentityConstraintKind m_category;
-	private final List<SmRestrictedXPath> m_fields;
-	private final SmIdentityConstraint<A> m_keyConstraint;
+	private final IdentityConstraintKind m_category;
+	private final List<RestrictedXPath> m_fields;
+	private final IdentityConstraint<A> m_keyConstraint;
 	private final QName m_name;
-	private final SmRestrictedXPath m_selector;
+	private final RestrictedXPath m_selector;
 
-	public IdentityConstraintImpl(final QName name, final SmIdentityConstraintKind category, final SmRestrictedXPath selector, final List<SmRestrictedXPath> fields, final SmIdentityConstraint<A> keyConstraint)
+	public IdentityConstraintImpl(final QName name, final IdentityConstraintKind category, final RestrictedXPath selector, final List<RestrictedXPath> fields, final IdentityConstraint<A> keyConstraint)
 	{
 		super(name, false, ScopeExtent.Global);
 		m_name = PreCondition.assertArgumentNotNull(name, "name");
@@ -43,27 +43,27 @@ public final class IdentityConstraintImpl<A> extends NamedComponentImpl<A> imple
 		m_keyConstraint = keyConstraint;
 	}
 
-	public SmIdentityConstraintKind getCategory()
+	public IdentityConstraintKind getCategory()
 	{
 		return m_category;
 	}
 
-	public List<SmRestrictedXPath> getFields()
+	public List<RestrictedXPath> getFields()
 	{
 		return m_fields;
 	}
 
-	public SmIdentityConstraint<A> getKeyConstraint()
+	public IdentityConstraint<A> getKeyConstraint()
 	{
 		return m_keyConstraint;
 	}
 
-	public SmRestrictedXPath getSelector()
+	public RestrictedXPath getSelector()
 	{
 		return m_selector;
 	}
 
-	public boolean sameAs(final SmIdentityConstraint<A> constraint)
+	public boolean sameAs(final IdentityConstraint<A> constraint)
 	{
 		PreCondition.assertArgumentNotNull(constraint, "constraint");
 		if (this == constraint)

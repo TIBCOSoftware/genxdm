@@ -21,16 +21,16 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.components.ElementDefinition;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.constraints.IdentityConstraint;
+import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.NodeKind;
 import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.enums.ScopeExtent;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmPrimeTypeKind;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.PrimeTypeKind;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.Type;
 
 final class ElementDeclWithParentAxisType<A> implements ElementDefinition<A>
 {
@@ -41,7 +41,7 @@ final class ElementDeclWithParentAxisType<A> implements ElementDefinition<A>
 		m_element = PreCondition.assertArgumentNotNull(element);
 	}
 
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		visitor.visit(this);
 	}
@@ -51,12 +51,12 @@ final class ElementDeclWithParentAxisType<A> implements ElementDefinition<A>
 		return m_element.getDisallowedSubtitutions();
 	}
 
-	public Iterable<SmIdentityConstraint<A>> getIdentityConstraints()
+	public Iterable<IdentityConstraint<A>> getIdentityConstraints()
 	{
 		return m_element.getIdentityConstraints();
 	}
 
-	public SmPrimeTypeKind getKind()
+	public PrimeTypeKind getKind()
 	{
 		return m_element.getKind();
 	}
@@ -101,12 +101,12 @@ final class ElementDeclWithParentAxisType<A> implements ElementDefinition<A>
 		return m_element.getTargetNamespace();
 	}
 
-	public SmType<A> getType()
+	public Type<A> getType()
 	{
 		return m_element.getType();
 	}
 
-	public SmValueConstraint<A> getValueConstraint()
+	public ValueConstraint<A> getValueConstraint()
 	{
 		return m_element.getValueConstraint();
 	}
@@ -156,7 +156,7 @@ final class ElementDeclWithParentAxisType<A> implements ElementDefinition<A>
 		return m_element.isNone();
 	}
 
-	public SmPrimeType<A> prime()
+	public PrimeType<A> prime()
 	{
 		return this;
 	}
@@ -166,7 +166,7 @@ final class ElementDeclWithParentAxisType<A> implements ElementDefinition<A>
 		return m_element.quantifier();
 	}
 
-	public boolean subtype(final SmPrimeType<A> rhs)
+	public boolean subtype(final PrimeType<A> rhs)
 	{
 		return m_element.subtype(rhs);
 	}

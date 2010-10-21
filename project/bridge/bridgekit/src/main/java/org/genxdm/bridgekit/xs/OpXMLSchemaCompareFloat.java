@@ -17,7 +17,7 @@ package org.genxdm.bridgekit.xs;
 
 import org.genxdm.typed.types.AtomBridge;
 
-final class OpXMLSchemaCompareFloat<A> implements SmValueComp<A>
+final class OpXMLSchemaCompareFloat<A> implements ValueComparator<A>
 {
 	private final OpXMLSchemaCompare m_opcode;
 	private final float floatR;

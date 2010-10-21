@@ -21,7 +21,7 @@ import org.genxdm.processor.w3c.xs.validation.api.VxMetaBridge;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.ElementDefinition;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.Type;
 
 
 final class ValidationMetaBridge<N, A> implements VxMetaBridge<A>
@@ -43,7 +43,7 @@ final class ValidationMetaBridge<N, A> implements VxMetaBridge<A>
 		return pcx.getElementDeclaration(elementName);
 	}
 
-	public SmType<A> getTypeDefinition(final QName typeName)
+	public Type<A> getTypeDefinition(final QName typeName)
 	{
 		// TODO: Why don't we have an SmNAtiveType?
 		return pcx.getTypeDefinition(typeName);

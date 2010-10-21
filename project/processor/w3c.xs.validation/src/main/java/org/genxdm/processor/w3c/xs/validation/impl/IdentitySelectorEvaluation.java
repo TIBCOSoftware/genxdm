@@ -17,7 +17,7 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xs.constraints.SmRestrictedXPath;
+import org.genxdm.xs.constraints.RestrictedXPath;
 
 /**
  * The status of a streaming XPath evaluation for an xs:selector.
@@ -27,7 +27,7 @@ public class IdentitySelectorEvaluation
 	/**
 	 * The XPath expressionfor this xs:selector.
 	 */
-	private final SmRestrictedXPath xpath;
+	private final RestrictedXPath xpath;
 	/**
 	 * An index into the current XPath step. This value may advance and retreat.
 	 */
@@ -46,7 +46,7 @@ public class IdentitySelectorEvaluation
 	 */
 	public final boolean removable;
 
-	public IdentitySelectorEvaluation(final SmRestrictedXPath xpath, final boolean removable)
+	public IdentitySelectorEvaluation(final RestrictedXPath xpath, final boolean removable)
 	{
 		this.xpath = xpath;
 		this.removable = removable;

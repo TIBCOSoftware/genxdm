@@ -35,19 +35,19 @@ import org.genxdm.processor.w3c.xs.validation.api.VxValidationHost;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.ElementDefinition;
-import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.xs.enums.ProcessContentsMode;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.exceptions.SimpleTypeException;
-import org.genxdm.xs.types.SmComplexMarkerType;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmContentType;
-import org.genxdm.xs.types.SmSimpleMarkerType;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmSimpleUrType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.types.ComplexMarkerType;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.ContentType;
+import org.genxdm.xs.types.SimpleMarkerType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.SimpleUrType;
+import org.genxdm.xs.types.Type;
 
 
 /**
@@ -134,9 +134,9 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		m_text.append(ch, start, length);
 	}
 
-	private void checkValueConstraintForElement(final ElementDefinition<A> elementDeclaration, final SmSimpleType<A> simpleType, final List<? extends A> actualValue) throws AbortException
+	private void checkValueConstraintForElement(final ElementDefinition<A> elementDeclaration, final SimpleType<A> simpleType, final List<? extends A> actualValue) throws AbortException
 	{
-		final SmValueConstraint<A> valueConstraint = elementDeclaration.getValueConstraint();
+		final ValueConstraint<A> valueConstraint = elementDeclaration.getValueConstraint();
 		if (null != valueConstraint)
 		{
 			switch (valueConstraint.getVariety())
@@ -232,17 +232,17 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 
 	private void handleNoTextCalls() throws IOException, AbortException
 	{
-		final SmType<A> elementType = m_currentPSVI.getType();
+		final Type<A> elementType = m_currentPSVI.getType();
 		if (null != elementType)
 		{
-			if (elementType instanceof SmSimpleType<?>)
+			if (elementType instanceof SimpleType<?>)
 			{
-				handleNoTextCallsForSimpleContentModel((SmSimpleType<A>)elementType);
+				handleNoTextCallsForSimpleContentModel((SimpleType<A>)elementType);
 			}
 			else
 			{
-				final SmComplexType<A> complexType = (SmComplexType<A>)elementType;
-				final SmContentType<A> contentType = complexType.getContentType();
+				final ComplexType<A> complexType = (ComplexType<A>)elementType;
+				final ContentType<A> contentType = complexType.getContentType();
 				switch (contentType.getKind())
 				{
 					case Simple:
@@ -266,7 +266,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		}
 	}
 
-	private void handleNoTextCallsForSimpleContentModel(final SmSimpleType<A> simpleType) throws IOException, AbortException
+	private void handleNoTextCallsForSimpleContentModel(final SimpleType<A> simpleType) throws IOException, AbortException
 	{
 		if (m_currentPSVI.isNilled())
 		{
@@ -276,7 +276,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		{
 			// any default or fixed values.
 			final ElementDefinition<A> declaration = m_currentPSVI.getDeclaration();
-			final SmValueConstraint<A> valueConstraint = (null != declaration) ? declaration.getValueConstraint() : null;
+			final ValueConstraint<A> valueConstraint = (null != declaration) ? declaration.getValueConstraint() : null;
 			if (null != valueConstraint)
 			{
 				switch (valueConstraint.getVariety())
@@ -369,14 +369,14 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 					m_errors.error(new CvcElementUnexpectedChildInNilledElementException(declaration, m_currentItem.getLocation()));
 				}
 
-				final SmType<A> elementType = m_currentPSVI.getType();
+				final Type<A> elementType = m_currentPSVI.getType();
 				if (null != elementType)
 				{
-					if (elementType instanceof SmSimpleMarkerType<?>)
+					if (elementType instanceof SimpleMarkerType<?>)
 					{
-						if (elementType instanceof SmSimpleType<?>)
+						if (elementType instanceof SimpleType<?>)
 						{
-							final SmSimpleType<A> simpleType = (SmSimpleType<A>)elementType;
+							final SimpleType<A> simpleType = (SimpleType<A>)elementType;
 							try
 							{
 								final List<A> actualValue = simpleType.validate(initialValue);
@@ -403,7 +403,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 								}
 							}
 						}
-						else if (elementType instanceof SmSimpleUrType<?>)
+						else if (elementType instanceof SimpleUrType<?>)
 						{
 							if (null != m_downstream)
 							{
@@ -415,15 +415,15 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 							throw new AssertionError(elementType);
 						}
 					}
-					else if (elementType instanceof SmComplexMarkerType<?>)
+					else if (elementType instanceof ComplexMarkerType<?>)
 					{
-						final SmComplexMarkerType<A> complexType = (SmComplexMarkerType<A>)elementType;
-						final SmContentType<A> contentType = complexType.getContentType();
+						final ComplexMarkerType<A> complexType = (ComplexMarkerType<A>)elementType;
+						final ContentType<A> contentType = complexType.getContentType();
 						switch (contentType.getKind())
 						{
 							case Simple:
 							{
-								final SmSimpleType<A> simpleType = contentType.getSimpleType();
+								final SimpleType<A> simpleType = contentType.getSimpleType();
 								try
 								{
 									final List<A> actualValue = simpleType.validate(initialValue);
@@ -573,7 +573,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 
 		// Digest the attributes from the XMLSchema-instance namespace.
 		m_attributes.initialize(elementName, m_currentItem, attributes, m_namespaces, documentURI, m_errors, sdl);
-		final SmType<A> localType = m_attributes.getLocalType();
+		final Type<A> localType = m_attributes.getLocalType();
 		final Boolean explicitNil = m_attributes.getLocalNil();
 
 		m_currentPSVI = m_mac.startElement(elementName, localType, explicitNil);
@@ -622,12 +622,12 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 					m_errors.error(new CvcElementUnexpectedChildInNilledElementException(declaration, m_currentItem.getLocation()));
 				}
 
-				final SmType<A> elementType = m_currentPSVI.getType();
+				final Type<A> elementType = m_currentPSVI.getType();
 				if (null != elementType)
 				{
-					if (elementType instanceof SmSimpleType<?>)
+					if (elementType instanceof SimpleType<?>)
 					{
-						final SmSimpleType<A> simpleType = (SmSimpleType<A>)elementType;
+						final SimpleType<A> simpleType = (SimpleType<A>)elementType;
 						try
 						{
 							final List<A> actualValue = simpleType.validate(initialValue);
@@ -656,13 +656,13 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 					}
 					else
 					{
-						final SmComplexType<A> complexType = (SmComplexType<A>)elementType;
-						final SmContentType<A> contentType = complexType.getContentType();
+						final ComplexType<A> complexType = (ComplexType<A>)elementType;
+						final ContentType<A> contentType = complexType.getContentType();
 						switch (contentType.getKind())
 						{
 							case Simple:
 							{
-								final SmSimpleType<A> simpleType = contentType.getSimpleType();
+								final SimpleType<A> simpleType = contentType.getSimpleType();
 								try
 								{
 									final List<A> actualValue = simpleType.validate(initialValue);

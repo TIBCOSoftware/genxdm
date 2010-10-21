@@ -17,8 +17,8 @@ package org.genxdm.xs.exceptions;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.enums.ValidationOutcome;
-import org.genxdm.xs.facets.SmLengthFacetUOM;
-import org.genxdm.xs.facets.SmMaxLength;
+import org.genxdm.xs.facets.LengthFacetUOM;
+import org.genxdm.xs.facets.MaxLength;
 
 
 /**
@@ -27,11 +27,11 @@ import org.genxdm.xs.facets.SmMaxLength;
 @SuppressWarnings("serial")
 public final class FacetMaxLengthException extends FacetException
 {
-	private final SmMaxLength<?> maxLength;
+	private final MaxLength<?> maxLength;
 	private final int actualLength;
-	private final SmLengthFacetUOM uom;
+	private final LengthFacetUOM uom;
 
-	public FacetMaxLengthException(final SmMaxLength<?> maxLength, final int actualLength, final SmLengthFacetUOM uom)
+	public FacetMaxLengthException(final MaxLength<?> maxLength, final int actualLength, final LengthFacetUOM uom)
 	{
 		super(ValidationOutcome.CVC_MaxLength);
 		this.maxLength = maxLength;

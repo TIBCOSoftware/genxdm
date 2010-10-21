@@ -20,33 +20,33 @@ import java.util.List;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.exceptions.FacetException;
-import org.genxdm.xs.facets.SmFacetKind;
-import org.genxdm.xs.facets.SmLengthFacetUOM;
-import org.genxdm.xs.types.SmListSimpleType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.facets.FacetKind;
+import org.genxdm.xs.facets.LengthFacetUOM;
+import org.genxdm.xs.types.ListSimpleType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
 
 /**
- * Abstract base class for implementations of {@link org.genxdm.xs.facets.SmFacet}
+ * Abstract base class for implementations of {@link org.genxdm.xs.facets.Facet}
  */
 abstract class FacetLengthCommonImpl<A> extends FacetImpl<A>
 {
 	private static <A> int length(final A atom, final AtomBridge<A> atomBridge)
 	{
-		final SmNativeType nativeType = atomBridge.getNativeType(atom);
+		final NativeType nativeType = atomBridge.getNativeType(atom);
 		if (nativeType.isString())
 		{
 			return atomBridge.getString(atom).length();
 		}
-		else if (nativeType == SmNativeType.ANY_URI)
+		else if (nativeType == NativeType.ANY_URI)
 		{
 			return atomBridge.getURI(atom).toString().length();
 		}
-		else if (nativeType == SmNativeType.BASE64_BINARY)
+		else if (nativeType == NativeType.BASE64_BINARY)
 		{
 			return atomBridge.getBase64Binary(atom).length;
 		}
-		else if (nativeType == SmNativeType.HEX_BINARY)
+		else if (nativeType == NativeType.HEX_BINARY)
 		{
 			return atomBridge.getHexBinary(atom).length;
 		}
@@ -56,24 +56,24 @@ abstract class FacetLengthCommonImpl<A> extends FacetImpl<A>
 		}
 	}
 
-	private static <A> SmLengthFacetUOM uom(final A atom, final AtomBridge<A> atomBridge)
+	private static <A> LengthFacetUOM uom(final A atom, final AtomBridge<A> atomBridge)
 	{
-		final SmNativeType nativeType = atomBridge.getNativeType(atom);
+		final NativeType nativeType = atomBridge.getNativeType(atom);
 		if (nativeType.isString())
 		{
-			return SmLengthFacetUOM.Characters;
+			return LengthFacetUOM.Characters;
 		}
-		else if (nativeType == SmNativeType.ANY_URI)
+		else if (nativeType == NativeType.ANY_URI)
 		{
-			return SmLengthFacetUOM.Characters;
+			return LengthFacetUOM.Characters;
 		}
-		else if (nativeType == SmNativeType.BASE64_BINARY)
+		else if (nativeType == NativeType.BASE64_BINARY)
 		{
-			return SmLengthFacetUOM.Octets;
+			return LengthFacetUOM.Octets;
 		}
-		else if (nativeType == SmNativeType.HEX_BINARY)
+		else if (nativeType == NativeType.HEX_BINARY)
 		{
-			return SmLengthFacetUOM.Octets;
+			return LengthFacetUOM.Octets;
 		}
 		else
 		{
@@ -83,33 +83,33 @@ abstract class FacetLengthCommonImpl<A> extends FacetImpl<A>
 
 	private final AtomBridge<A> atomBridge;
 
-	private final SmFacetKind facetKind;
+	private final FacetKind facetKind;
 
-	public FacetLengthCommonImpl(final boolean isFixed, final AtomBridge<A> atomBridge, SmFacetKind facetKind)
+	public FacetLengthCommonImpl(final boolean isFixed, final AtomBridge<A> atomBridge, FacetKind facetKind)
 	{
 		super(isFixed);
 		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
 		this.facetKind = PreCondition.assertArgumentNotNull(facetKind, "facetKind");
 	}
 
-	protected abstract void checkLength(final int length, final SmLengthFacetUOM uom) throws FacetException;
+	protected abstract void checkLength(final int length, final LengthFacetUOM uom) throws FacetException;
 
-	public SmFacetKind getKind()
+	public FacetKind getKind()
 	{
 		return facetKind;
 	}
 
-	public final void validate(final List<? extends A> actualValue, final SmSimpleType<A> simpleType) throws FacetException
+	public final void validate(final List<? extends A> actualValue, final SimpleType<A> simpleType) throws FacetException
 	{
-		if (simpleType instanceof SmListSimpleType<?>)
+		if (simpleType instanceof ListSimpleType<?>)
 		{
-			checkLength(actualValue.size(), SmLengthFacetUOM.ListItems);
+			checkLength(actualValue.size(), LengthFacetUOM.ListItems);
 		}
 		else
 		{
 			for (final A atom : actualValue)
 			{
-				final SmLengthFacetUOM uom = uom(atom, atomBridge);
+				final LengthFacetUOM uom = uom(atom, atomBridge);
 				switch (uom)
 				{
 					case NotApplicable:

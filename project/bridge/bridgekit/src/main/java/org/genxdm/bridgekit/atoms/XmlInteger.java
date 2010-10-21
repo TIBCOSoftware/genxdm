@@ -18,7 +18,7 @@ package org.genxdm.bridgekit.atoms;
 import java.math.BigInteger;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#integer">integer</a>.
@@ -115,9 +115,9 @@ public final class XmlInteger extends XmlAbstractAtom
 		return integerValue.toString();
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.INTEGER;
+		return NativeType.INTEGER;
 	}
 
 	@Override

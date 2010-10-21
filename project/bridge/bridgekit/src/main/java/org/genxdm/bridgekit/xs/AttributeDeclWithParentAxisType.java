@@ -20,14 +20,14 @@ import javax.xml.namespace.QName;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.ElementDefinition;
-import org.genxdm.xs.constraints.SmValueConstraint;
+import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.NodeKind;
 import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.enums.ScopeExtent;
-import org.genxdm.xs.types.SmPrimeType;
-import org.genxdm.xs.types.SmPrimeTypeKind;
-import org.genxdm.xs.types.SmSequenceTypeVisitor;
-import org.genxdm.xs.types.SmSimpleMarkerType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.PrimeTypeKind;
+import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.SimpleMarkerType;
 
 final class AttributeDeclWithParentAxisType<A> implements AttributeDefinition<A>
 {
@@ -38,12 +38,12 @@ final class AttributeDeclWithParentAxisType<A> implements AttributeDefinition<A>
 		m_attribute = PreCondition.assertArgumentNotNull(element);
 	}
 
-	public void accept(final SmSequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor<A> visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public SmPrimeTypeKind getKind()
+	public PrimeTypeKind getKind()
 	{
 		return m_attribute.getKind();
 	}
@@ -73,12 +73,12 @@ final class AttributeDeclWithParentAxisType<A> implements AttributeDefinition<A>
 		return m_attribute.getTargetNamespace();
 	}
 
-	public SmSimpleMarkerType<A> getType()
+	public SimpleMarkerType<A> getType()
 	{
 		return m_attribute.getType();
 	}
 
-	public SmValueConstraint<A> getValueConstraint()
+	public ValueConstraint<A> getValueConstraint()
 	{
 		return m_attribute.getValueConstraint();
 	}
@@ -103,7 +103,7 @@ final class AttributeDeclWithParentAxisType<A> implements AttributeDefinition<A>
 		return m_attribute.isNone();
 	}
 
-	public SmPrimeType<A> prime()
+	public PrimeType<A> prime()
 	{
 		return this;
 	}
@@ -113,7 +113,7 @@ final class AttributeDeclWithParentAxisType<A> implements AttributeDefinition<A>
 		return m_attribute.quantifier();
 	}
 
-	public boolean subtype(final SmPrimeType<A> rhs)
+	public boolean subtype(final PrimeType<A> rhs)
 	{
 		return m_attribute.subtype(rhs);
 	}

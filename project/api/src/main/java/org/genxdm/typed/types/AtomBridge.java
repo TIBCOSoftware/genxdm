@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 import org.genxdm.exceptions.GxmlAtomCastException;
 import org.genxdm.names.NameSource;
 import org.genxdm.xs.resolve.PrefixResolver;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * A part of the bridge that provides access to the system of atomic values. <br/>
@@ -98,7 +98,7 @@ public interface AtomBridge<A>
 	 * @throws GxmlAtomCastException
 	 *             if a cast does not exist between the two types or fails because of incompatible data.
 	 */
-	A castAs(A sourceAtom, SmNativeType targetType, CastingContext<A> castingContext) throws GxmlAtomCastException;
+	A castAs(A sourceAtom, NativeType targetType, CastingContext<A> castingContext) throws GxmlAtomCastException;
 
 	/**
 	 * Compile the atomic value from the lexical representation. This method is typically used for validation.
@@ -110,9 +110,9 @@ public interface AtomBridge<A>
 	 * @throws GxmlAtomCastException
 	 *             If the lexical representation is not valid for the atomic value type.
 	 */
-	A compile(String srcval, SmNativeType dataType) throws GxmlAtomCastException;
+	A compile(String srcval, NativeType dataType) throws GxmlAtomCastException;
 
-	A compile(String srcval, SmNativeType dataType, PrefixResolver resolver) throws GxmlAtomCastException;
+	A compile(String srcval, NativeType dataType, PrefixResolver resolver) throws GxmlAtomCastException;
 
 	A createBase64Binary(byte[] base64BinaryValue);
 
@@ -220,9 +220,9 @@ public interface AtomBridge<A>
 	 * @param value
 	 *            The {@link BigInteger} value of the created atomic value.
 	 * @param nativeType
-	 *            The native type, one of {@link SmNativeType#UNSIGNED_LONG} etc.
+	 *            The native type, one of {@link NativeType#UNSIGNED_LONG} etc.
 	 */
-	A createIntegerDerived(BigInteger value, SmNativeType nativeType);
+	A createIntegerDerived(BigInteger value, NativeType nativeType);
 
 	/**
 	 * Creates an implementation of a native type derived from xs:integer.
@@ -245,9 +245,9 @@ public interface AtomBridge<A>
 	 * @param value
 	 *            The value of the created atomic value.
 	 * @param nativeType
-	 *            The native type, one of {@link SmNativeType#UNSIGNED_LONG} etc.
+	 *            The native type, one of {@link NativeType#UNSIGNED_LONG} etc.
 	 */
-	A createIntegerDerived(long value, SmNativeType nativeType);
+	A createIntegerDerived(long value, NativeType nativeType);
 
 	/**
 	 * Returns an xs:long based upon the value.
@@ -351,9 +351,9 @@ public interface AtomBridge<A>
 	 * @param strval
 	 *            The {@link String} value of the created atomic value.
 	 * @param nativeType
-	 *            The native type, one of {@link SmNativeType#NORMALIZED_STRING} etc.
+	 *            The native type, one of {@link NativeType#NORMALIZED_STRING} etc.
 	 */
-	A createStringDerived(String strval, SmNativeType nativeType);
+	A createStringDerived(String strval, NativeType nativeType);
 
 	/**
 	 * Creates an xs:time atomic value.
@@ -587,7 +587,7 @@ public interface AtomBridge<A>
 	 *            The atomic value for which the data-type is required.
 	 */
 
-	SmNativeType getNativeType(A atom);
+	NativeType getNativeType(A atom);
 
 	/**
 	 * Convert an atom known to be a the internal representation of an xs:NOTATION to {@link QName}. <br/>

@@ -19,15 +19,15 @@ import java.math.BigInteger;
 
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.exceptions.AtomCastException;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
-final class OpXMLSchemaCompareIntegerRestricted<A> implements SmValueComp<A>
+final class OpXMLSchemaCompareIntegerRestricted<A> implements ValueComparator<A>
 {
 	private final OpXMLSchemaCompare opcode;
 	private final BigInteger operandRHS;
 	private final AtomBridge<A> atomBridge;
 
-	OpXMLSchemaCompareIntegerRestricted(final OpXMLSchemaCompare opcode, final A rhsAtom, final SmNativeType nativeType, final AtomBridge<A> atomBridge)
+	OpXMLSchemaCompareIntegerRestricted(final OpXMLSchemaCompare opcode, final A rhsAtom, final NativeType nativeType, final AtomBridge<A> atomBridge)
 	{
 		this.opcode = opcode;
 		this.atomBridge = atomBridge;

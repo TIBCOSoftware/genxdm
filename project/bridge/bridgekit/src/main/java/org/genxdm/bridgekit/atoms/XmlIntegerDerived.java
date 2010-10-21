@@ -18,25 +18,25 @@ package org.genxdm.bridgekit.atoms;
 import java.math.BigInteger;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 public final class XmlIntegerDerived extends XmlAbstractAtom
 {
-	public static XmlIntegerDerived valueOf(final BigInteger integerValue, final SmNativeType nativeType)
+	public static XmlIntegerDerived valueOf(final BigInteger integerValue, final NativeType nativeType)
 	{
 		return new XmlIntegerDerived(integerValue, nativeType);
 	}
 
-	public static XmlIntegerDerived valueOf(final long integerValue, final SmNativeType nativeType)
+	public static XmlIntegerDerived valueOf(final long integerValue, final NativeType nativeType)
 	{
 		return new XmlIntegerDerived(BigInteger.valueOf(integerValue), nativeType);
 	}
 
-	private final SmNativeType type;
+	private final NativeType type;
 
 	private final BigInteger value;
 
-	private XmlIntegerDerived(final BigInteger integerValue, final SmNativeType nativeType)
+	private XmlIntegerDerived(final BigInteger integerValue, final NativeType nativeType)
 	{
 		this.value = PreCondition.assertArgumentNotNull(integerValue, "integerValue");
 		this.type = PreCondition.assertArgumentNotNull(nativeType, "nativeType");
@@ -65,7 +65,7 @@ public final class XmlIntegerDerived extends XmlAbstractAtom
 		return value.toString();
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
 		return type;
 	}

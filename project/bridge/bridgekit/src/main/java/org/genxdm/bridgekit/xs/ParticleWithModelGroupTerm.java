@@ -21,9 +21,9 @@ import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.components.ParticleTerm;
 import org.genxdm.xs.components.SchemaWildcard;
-import org.genxdm.xs.constraints.SmModelGroupUse;
+import org.genxdm.xs.constraints.ModelGroupUse;
 
-public final class ParticleWithModelGroupTerm<A> extends ParticleImpl<A> implements SmModelGroupUse<A>
+public final class ParticleWithModelGroupTerm<A> extends ParticleImpl<A> implements ModelGroupUse<A>
 {
 	public ParticleWithModelGroupTerm(final int minOccurs, final ModelGroup<A> modelGroup)
 	{
@@ -47,7 +47,7 @@ public final class ParticleWithModelGroupTerm<A> extends ParticleImpl<A> impleme
 		return isEmptiable(this);
 	}
 
-	private static <A> boolean isEmptiable(final SmModelGroupUse<A> particle)
+	private static <A> boolean isEmptiable(final ModelGroupUse<A> particle)
 	{
 		if (particle.getMinOccurs() > 0)
 		{

@@ -20,20 +20,20 @@ import java.util.Iterator;
 import org.genxdm.exceptions.PreCondition;
 
 /**
- * Used internally by {@link SmNativeType} to return ancestors.
+ * Used internally by {@link NativeType} to return ancestors.
  */
-final class UberTypeArgumentOrSelfIterable implements Iterable<SmNativeType>
+final class UberTypeArgumentOrSelfIterable implements Iterable<NativeType>
 {
-	private final SmNativeType m_origin;
+	private final NativeType m_origin;
 	private final boolean m_promotions;
 
-	public UberTypeArgumentOrSelfIterable(final SmNativeType origin, final boolean promotions)
+	public UberTypeArgumentOrSelfIterable(final NativeType origin, final boolean promotions)
 	{
 		m_origin = PreCondition.assertArgumentNotNull(origin, "origin");
 		m_promotions = promotions;
 	}
 
-	public Iterator<SmNativeType> iterator()
+	public Iterator<NativeType> iterator()
 	{
 		return new UberTypeArgumentOrSelfIterator(m_origin, m_promotions);
 	}

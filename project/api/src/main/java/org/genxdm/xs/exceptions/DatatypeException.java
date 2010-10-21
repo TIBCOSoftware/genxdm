@@ -17,7 +17,7 @@ package org.genxdm.xs.exceptions;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.enums.ValidationOutcome;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.SimpleType;
 
 @SuppressWarnings("serial")
 /*
@@ -32,16 +32,16 @@ public final class DatatypeException extends SchemaException
 	public static String PART_PATTERN = "1.1";
 	public static String PART_UNION = "1.2.3";
 	private final String literal;
-	private final SmSimpleType<?> type;
+	private final SimpleType<?> type;
 
-	public DatatypeException(final String literal, final SmSimpleType<?> type)
+	public DatatypeException(final String literal, final SimpleType<?> type)
 	{
 		super(ValidationOutcome.CVC_Datatype, "?");
 		this.literal = PreCondition.assertArgumentNotNull(literal, "literal");
 		this.type = type;
 	}
 
-	public DatatypeException(final String literal, final SmSimpleType<?> type, final SchemaException cause)
+	public DatatypeException(final String literal, final SimpleType<?> type, final SchemaException cause)
 	{
 		super(ValidationOutcome.CVC_Datatype, "?", cause);
 		this.literal = PreCondition.assertArgumentNotNull(literal, "literal");
@@ -66,7 +66,7 @@ public final class DatatypeException extends SchemaException
 		return message.toString();
 	}
 
-	public SmSimpleType<?> getType()
+	public SimpleType<?> getType()
 	{
 		return type;
 	}

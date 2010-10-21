@@ -15,13 +15,13 @@
  */
 package org.genxdm.xs.components;
 
-import org.genxdm.xs.types.SmAttributeNodeType;
-import org.genxdm.xs.types.SmSimpleMarkerType;
+import org.genxdm.xs.types.AttributeNodeType;
+import org.genxdm.xs.types.SimpleMarkerType;
 
 /**
  * An attribute declaration, which may be global or local to some complex type.
  */
-public interface AttributeDefinition<A> extends SmAttributeNodeType<A>, SchemaDataComponent<A>
+public interface AttributeDefinition<A> extends AttributeNodeType<A>, SchemaDataComponent<A>
 {
 	/**
 	 * Returns the {type definition} for the attribute declaration.
@@ -29,5 +29,5 @@ public interface AttributeDefinition<A> extends SmAttributeNodeType<A>, SchemaDa
 	 * This may be a simple type definition or the simple ur-type definition.
 	 * </p>
 	 */
-	SmSimpleMarkerType<A> getType();
+	SimpleMarkerType<A> getType();
 }

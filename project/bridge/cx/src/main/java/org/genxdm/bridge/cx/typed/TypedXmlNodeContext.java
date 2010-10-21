@@ -22,8 +22,8 @@ import org.genxdm.bridge.cx.base.XmlNodeContext;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XmlAtomBridge;
-import org.genxdm.bridgekit.xs.GxMetaBridgeOnSmMetaBridgeAdapter;
-import org.genxdm.bridgekit.xs.SmMetaBridgeFactory;
+import org.genxdm.bridgekit.xs.MetaBridgeOnSchemaTypeBridgeAdapter;
+import org.genxdm.bridgekit.xs.SchemaTypeBridgeFactory;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.TypedContext;
@@ -39,15 +39,15 @@ import org.genxdm.xs.components.ComponentBag;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
-import org.genxdm.xs.types.SmAtomicType;
-import org.genxdm.xs.types.SmAtomicUrType;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmComplexUrType;
-import org.genxdm.xs.types.SmNativeType;
-import org.genxdm.xs.types.SmSimpleType;
-import org.genxdm.xs.types.SmSimpleUrType;
-import org.genxdm.xs.types.SmType;
+import org.genxdm.xs.constraints.IdentityConstraint;
+import org.genxdm.xs.types.AtomicType;
+import org.genxdm.xs.types.AtomicUrType;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.ComplexUrType;
+import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.SimpleUrType;
+import org.genxdm.xs.types.Type;
 
 public class TypedXmlNodeContext
     implements TypedContext<XmlNode, XmlAtom>
@@ -57,8 +57,8 @@ public class TypedXmlNodeContext
     {
         this.context = PreCondition.assertNotNull(context, "context");
         this.atoms = new XmlAtomBridge(this, new NameSource());
-        this.cache = new SmMetaBridgeFactory<XmlAtom>(atoms).newMetaBridge();
-        this.types = new GxMetaBridgeOnSmMetaBridgeAdapter<XmlAtom>(cache, atoms);
+        this.cache = new SchemaTypeBridgeFactory<XmlAtom>(atoms).newMetaBridge();
+        this.types = new MetaBridgeOnSchemaTypeBridgeAdapter<XmlAtom>(cache, atoms);
         this.model = new TypedXmlNodeModel(atoms);
     }
     
@@ -97,14 +97,14 @@ public class TypedXmlNodeContext
         cache.defineAttributeGroup(attributeGroup);
     }
 
-    public void defineComplexType(SmComplexType<XmlAtom> complexType)
+    public void defineComplexType(ComplexType<XmlAtom> complexType)
     {
         PreCondition.assertArgumentNotNull(complexType, "complexType");
         PreCondition.assertFalse(isLocked(), "isLocked()");
         cache.defineComplexType(complexType);
     }
 
-    public void defineIdentityConstraint(SmIdentityConstraint<XmlAtom> identityConstraint)
+    public void defineIdentityConstraint(IdentityConstraint<XmlAtom> identityConstraint)
     {
         PreCondition.assertArgumentNotNull(identityConstraint, "identityConstraint");
         PreCondition.assertFalse(isLocked(), "isLocked()");
@@ -118,7 +118,7 @@ public class TypedXmlNodeContext
         cache.defineModelGroup(modelGroup);
     }
 
-    public void defineSimpleType(SmSimpleType<XmlAtom> simpleType)
+    public void defineSimpleType(SimpleType<XmlAtom> simpleType)
     {
         PreCondition.assertArgumentNotNull(simpleType, "simpleType");
         PreCondition.assertFalse(isLocked(), "isLocked()");
@@ -135,17 +135,17 @@ public class TypedXmlNodeContext
         return atoms;
     }
 
-    public SmAtomicType<XmlAtom> getAtomicType(QName name)
+    public AtomicType<XmlAtom> getAtomicType(QName name)
     {
         return cache.getAtomicType(name);
     }
 
-    public SmAtomicType<XmlAtom> getAtomicType(SmNativeType name)
+    public AtomicType<XmlAtom> getAtomicType(NativeType name)
     {
         return cache.getAtomicType(name);
     }
 
-    public SmAtomicUrType<XmlAtom> getAtomicUrType()
+    public AtomicUrType<XmlAtom> getAtomicUrType()
     {
         return cache.getAtomicUrType();
     }
@@ -170,17 +170,17 @@ public class TypedXmlNodeContext
         return cache.getAttributes();
     }
 
-    public SmComplexType<XmlAtom> getComplexType(QName name)
+    public ComplexType<XmlAtom> getComplexType(QName name)
     {
         return cache.getComplexType(name);
     }
 
-    public Iterable<SmComplexType<XmlAtom>> getComplexTypes()
+    public Iterable<ComplexType<XmlAtom>> getComplexTypes()
     {
         return cache.getComplexTypes();
     }
 
-    public SmComplexUrType<XmlAtom> getComplexUrType()
+    public ComplexUrType<XmlAtom> getComplexUrType()
     {
         return cache.getComplexUrType();
     }
@@ -195,12 +195,12 @@ public class TypedXmlNodeContext
         return cache.getElements();
     }
 
-    public SmIdentityConstraint<XmlAtom> getIdentityConstraint(QName name)
+    public IdentityConstraint<XmlAtom> getIdentityConstraint(QName name)
     {
         return cache.getIdentityConstraint(name);
     }
 
-    public Iterable<SmIdentityConstraint<XmlAtom>> getIdentityConstraints()
+    public Iterable<IdentityConstraint<XmlAtom>> getIdentityConstraints()
     {
         return cache.getIdentityConstraints();
     }
@@ -245,32 +245,32 @@ public class TypedXmlNodeContext
         return context;
     }
 
-    public SmSimpleType<XmlAtom> getSimpleType(QName name)
+    public SimpleType<XmlAtom> getSimpleType(QName name)
     {
         return cache.getSimpleType(name);
     }
 
-    public SmSimpleType<XmlAtom> getSimpleType(SmNativeType name)
+    public SimpleType<XmlAtom> getSimpleType(NativeType name)
     {
         return cache.getSimpleType(name);
     }
 
-    public Iterable<SmSimpleType<XmlAtom>> getSimpleTypes()
+    public Iterable<SimpleType<XmlAtom>> getSimpleTypes()
     {
         return cache.getSimpleTypes();
     }
 
-    public SmSimpleUrType<XmlAtom> getSimpleUrType()
+    public SimpleUrType<XmlAtom> getSimpleUrType()
     {
         return cache.getSimpleUrType();
     }
 
-    public SmType<XmlAtom> getTypeDefinition(QName name)
+    public Type<XmlAtom> getTypeDefinition(QName name)
     {
         return cache.getTypeDefinition(name);
     }
 
-    public SmType<XmlAtom> getTypeDefinition(SmNativeType nativeType)
+    public Type<XmlAtom> getTypeDefinition(NativeType nativeType)
     {
         return cache.getTypeDefinition(nativeType);
     }
@@ -355,6 +355,6 @@ public class TypedXmlNodeContext
     private final TypedXmlNodeModel model;
     private final XmlAtomBridge atoms;
     private final SchemaTypeBridge<XmlAtom> cache;
-    private final GxMetaBridgeOnSmMetaBridgeAdapter<XmlAtom> types;
+    private final MetaBridgeOnSchemaTypeBridgeAdapter<XmlAtom> types;
     private boolean locked;
 }

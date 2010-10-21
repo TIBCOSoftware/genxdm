@@ -19,7 +19,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.base.ProcessingContext;
 import org.genxdm.names.NameSource;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 // TODO: either move the atom bridge test to a new typedtiming, or make this a typed test.
 public abstract class TimingTestBase<N> 
@@ -98,7 +98,7 @@ public abstract class TimingTestBase<N>
 			final long start = System.currentTimeMillis();
 			for (int i = 0; i < CALL_REPETITIONS; i++)
 			{
-				for (final SmNativeType nativeType : SmNativeType.values())
+				for (final NativeType nativeType : NativeType.values())
 				{
 					final QName name = nameBridge.nativeType(nativeType);
 					assertNotNull(name);
@@ -108,7 +108,7 @@ public abstract class TimingTestBase<N>
 			}
 			final long end = System.currentTimeMillis();
 			final long time = end - start;
-			System.out.println(getClass().getName() + " .nativeType(SmNativeType): " + Long.toString(time) + "ms for " + Integer.toString(CALL_REPETITIONS));
+			System.out.println(getClass().getName() + " .nativeType(NativeType): " + Long.toString(time) + "ms for " + Integer.toString(CALL_REPETITIONS));
 			// assertTrue("GxProcessingContext load time exceeds performance requirements.", time < PCX_MAX_LOAD_TIME);
 		}
 	}
@@ -120,7 +120,7 @@ public abstract class TimingTestBase<N>
 			final long start = System.currentTimeMillis();
 			for (int i = 0; i < CALL_REPETITIONS; i++)
 			{
-				for (final SmNativeType nativeType : SmNativeType.values())
+				for (final NativeType nativeType : NativeType.values())
 				{
 					final QName name = nativeType.toQName();
 					assertNotNull(name);
@@ -130,7 +130,7 @@ public abstract class TimingTestBase<N>
 			}
 			final long end = System.currentTimeMillis();
 			final long time = end - start;
-			System.out.println(getClass().getName() + " .nativeType(SmNativeType): " + Long.toString(time) + "ms for " + Integer.toString(CALL_REPETITIONS));
+			System.out.println(getClass().getName() + " .nativeType(NativeType): " + Long.toString(time) + "ms for " + Integer.toString(CALL_REPETITIONS));
 			// assertTrue("GxProcessingContext load time exceeds performance requirements.", time < PCX_MAX_LOAD_TIME);
 		}
 	}

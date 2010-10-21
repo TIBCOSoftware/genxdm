@@ -35,7 +35,7 @@ import org.genxdm.processor.w3c.xs.exception.SmDuplicateModelGroupException;
 import org.genxdm.processor.w3c.xs.exception.SmDuplicateNotationException;
 import org.genxdm.processor.w3c.xs.exception.SmDuplicateTypeException;
 import org.genxdm.processor.w3c.xs.exception.SmUndeclaredReferenceException;
-import org.genxdm.xs.constraints.SmIdentityConstraintKind;
+import org.genxdm.xs.constraints.IdentityConstraintKind;
 import org.genxdm.xs.exceptions.SchemaException;
 
 
@@ -262,7 +262,7 @@ final class XMLSchemaCache<A>
 	 * Guarantee that a global element declaration exists with the specified name. <br/>
 	 * Forward references are handled by creating placeholders that get filled in later.
 	 */
-	public XMLIdentityConstraint<A> registerIdentityConstraint(final SmIdentityConstraintKind kind, final QName name, final SrcFrozenLocation location) throws SmDuplicateIdentityConstraintException
+	public XMLIdentityConstraint<A> registerIdentityConstraint(final IdentityConstraintKind kind, final QName name, final SrcFrozenLocation location) throws SmDuplicateIdentityConstraintException
 	{
 		PreCondition.assertArgumentNotNull(name);
 

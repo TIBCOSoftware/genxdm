@@ -23,13 +23,13 @@ import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.components.SchemaParticle;
-import org.genxdm.xs.constraints.SmIdentityConstraint;
+import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.resolve.LocationInSchema;
-import org.genxdm.xs.types.SmComplexType;
-import org.genxdm.xs.types.SmSimpleType;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.SimpleType;
 
 
 final class XMLSccExceptionAdapter<A> implements SmConstraintHandler<A>
@@ -43,7 +43,7 @@ final class XMLSccExceptionAdapter<A> implements SmConstraintHandler<A>
 		m_locations = PreCondition.assertArgumentNotNull(locations, "locations");
 	}
 
-	public void error(final SmSimpleType<A> simpleType, final SchemaException exception) throws AbortException
+	public void error(final SimpleType<A> simpleType, final SchemaException exception) throws AbortException
 	{
 		if (m_locations.m_simpleTypeLocations.containsKey(simpleType))
 		{
@@ -56,7 +56,7 @@ final class XMLSccExceptionAdapter<A> implements SmConstraintHandler<A>
 		}
 	}
 
-	public void error(final SmComplexType<A> complexType, final SchemaException exception) throws AbortException
+	public void error(final ComplexType<A> complexType, final SchemaException exception) throws AbortException
 	{
 		if (m_locations.m_complexTypeLocations.containsKey(complexType))
 		{
@@ -121,7 +121,7 @@ final class XMLSccExceptionAdapter<A> implements SmConstraintHandler<A>
 		}
 	}
 
-	public void error(final SmIdentityConstraint<A> constraint, final SchemaException exception) throws AbortException
+	public void error(final IdentityConstraint<A> constraint, final SchemaException exception) throws AbortException
 	{
 		if (m_locations.m_constraintLocations.containsKey(constraint))
 		{

@@ -16,7 +16,7 @@
 package org.genxdm.bridgekit.atoms;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#string">string</a>.
@@ -55,9 +55,9 @@ public final class XmlString extends XmlAbstractAtom
 		return value;
 	}
 
-	public SmNativeType getNativeType()
+	public NativeType getNativeType()
 	{
-		return SmNativeType.STRING;
+		return NativeType.STRING;
 	}
 
 	@Override

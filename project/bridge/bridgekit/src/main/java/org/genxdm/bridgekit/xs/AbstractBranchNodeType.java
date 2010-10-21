@@ -17,14 +17,14 @@ package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.NodeKind;
-import org.genxdm.xs.types.SmNodeType;
+import org.genxdm.xs.types.NodeType;
 
-abstract class AbstractBranchNodeType<A> extends AbstractPrimeExcludingNoneType<A> implements SmNodeType<A>
+abstract class AbstractBranchNodeType<A> extends AbstractPrimeExcludingNoneType<A> implements NodeType<A>
 {
-	protected final SmCache<A> cache;
+	protected final SchemaCache<A> cache;
 	private final NodeKind nodeKind;
 
-	public AbstractBranchNodeType(final NodeKind nodeKind, final SmCache<A> cache)
+	public AbstractBranchNodeType(final NodeKind nodeKind, final SchemaCache<A> cache)
 	{
 		this.nodeKind = PreCondition.assertArgumentNotNull(nodeKind);
 		this.cache = cache;

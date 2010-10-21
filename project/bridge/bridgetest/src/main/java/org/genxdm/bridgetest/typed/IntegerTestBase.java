@@ -29,7 +29,7 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
 import org.genxdm.typed.types.Emulation;
-import org.genxdm.xs.types.SmNativeType;
+import org.genxdm.xs.types.NativeType;
 
 /**
  * These unit tests provide broad coverage of casting of integers.
@@ -52,7 +52,7 @@ public abstract class IntegerTestBase<N, A>
 	private static final int UNSIGNED_SHORT_MIN_VALUE = 0;
 
 	/**
-	 * Attempt to cast the atom to all of the native types defined by {@link SmNativeType}.
+	 * Attempt to cast the atom to all of the native types defined by {@link NativeType}.
 	 * <p>
 	 * Introspect the sourceAtom to determine whether the casting output is reasonable.
 	 * </p>
@@ -61,7 +61,7 @@ public abstract class IntegerTestBase<N, A>
 	{
 		final AtomBridge<A> atomBridge = pcx.getAtomBridge();
 		final QName sourceType = atomBridge.getDataType(sourceAtom);
-		for (final SmNativeType targetType : SmNativeType.values())
+		for (final NativeType targetType : NativeType.values())
 		{
 			try
 			{
@@ -879,7 +879,7 @@ public abstract class IntegerTestBase<N, A>
 
 	private short getCastAsUnsignedByte(final A sourceAtom, final AtomBridge<A> atomBridge)
 	{
-		final SmNativeType sourceType = atomBridge.getNativeType(sourceAtom);
+		final NativeType sourceType = atomBridge.getNativeType(sourceAtom);
 		switch (sourceType)
 		{
 			case INTEGER:
@@ -889,8 +889,8 @@ public abstract class IntegerTestBase<N, A>
 			case BYTE:
 			{
 				final BigInteger value = atomBridge.getInteger(sourceAtom);
-				assertTrue(lowerBoundViolation(sourceAtom, sourceType.toQName(), SmNativeType.UNSIGNED_BYTE), value.compareTo(BigInteger.valueOf(UNSIGNED_BYTE_MIN_VALUE)) >= 0);
-				assertTrue(upperBoundViolation(sourceAtom, sourceType.toQName(), SmNativeType.UNSIGNED_BYTE), value.compareTo(BigInteger.valueOf(UNSIGNED_BYTE_MAX_VALUE)) <= 0);
+				assertTrue(lowerBoundViolation(sourceAtom, sourceType.toQName(), NativeType.UNSIGNED_BYTE), value.compareTo(BigInteger.valueOf(UNSIGNED_BYTE_MIN_VALUE)) >= 0);
+				assertTrue(upperBoundViolation(sourceAtom, sourceType.toQName(), NativeType.UNSIGNED_BYTE), value.compareTo(BigInteger.valueOf(UNSIGNED_BYTE_MAX_VALUE)) <= 0);
 				return value.shortValue();
 			}
 			default:
@@ -902,7 +902,7 @@ public abstract class IntegerTestBase<N, A>
 
 	private long getCastAsUnsignedInt(final A sourceAtom, final AtomBridge<A> atomBridge)
 	{
-		final SmNativeType sourceType = atomBridge.getNativeType(sourceAtom);
+		final NativeType sourceType = atomBridge.getNativeType(sourceAtom);
 		switch (sourceType)
 		{
 			case INTEGER:
@@ -912,8 +912,8 @@ public abstract class IntegerTestBase<N, A>
 			case BYTE:
 			{
 				final BigInteger value = atomBridge.getInteger(sourceAtom);
-				assertTrue(lowerBoundViolation(sourceAtom, sourceType.toQName(), SmNativeType.UNSIGNED_INT), value.compareTo(BigInteger.valueOf(UNSIGNED_INT_MIN_VALUE)) >= 0);
-				assertTrue(upperBoundViolation(sourceAtom, sourceType.toQName(), SmNativeType.UNSIGNED_INT), value.compareTo(BigInteger.valueOf(UNSIGNED_INT_MAX_VALUE)) <= 0);
+				assertTrue(lowerBoundViolation(sourceAtom, sourceType.toQName(), NativeType.UNSIGNED_INT), value.compareTo(BigInteger.valueOf(UNSIGNED_INT_MIN_VALUE)) >= 0);
+				assertTrue(upperBoundViolation(sourceAtom, sourceType.toQName(), NativeType.UNSIGNED_INT), value.compareTo(BigInteger.valueOf(UNSIGNED_INT_MAX_VALUE)) <= 0);
 				return value.longValue();
 			}
 			default:
@@ -925,7 +925,7 @@ public abstract class IntegerTestBase<N, A>
 
 	private BigInteger getCastAsUnsignedLong(final A sourceAtom, final AtomBridge<A> atomBridge)
 	{
-		final SmNativeType sourceType = atomBridge.getNativeType(sourceAtom);
+		final NativeType sourceType = atomBridge.getNativeType(sourceAtom);
 		switch (sourceType)
 		{
 			case INTEGER:
@@ -935,8 +935,8 @@ public abstract class IntegerTestBase<N, A>
 			case BYTE:
 			{
 				final BigInteger value = atomBridge.getInteger(sourceAtom);
-				assertTrue(lowerBoundViolation(sourceAtom, sourceType.toQName(), SmNativeType.UNSIGNED_LONG), value.compareTo(UNSIGNED_LONG_MIN_VALUE) >= 0);
-				assertTrue(upperBoundViolation(sourceAtom, sourceType.toQName(), SmNativeType.UNSIGNED_LONG), value.compareTo(UNSIGNED_LONG_MAX_VALUE) <= 0);
+				assertTrue(lowerBoundViolation(sourceAtom, sourceType.toQName(), NativeType.UNSIGNED_LONG), value.compareTo(UNSIGNED_LONG_MIN_VALUE) >= 0);
+				assertTrue(upperBoundViolation(sourceAtom, sourceType.toQName(), NativeType.UNSIGNED_LONG), value.compareTo(UNSIGNED_LONG_MAX_VALUE) <= 0);
 				return value;
 			}
 			default:
@@ -948,7 +948,7 @@ public abstract class IntegerTestBase<N, A>
 
 	private int getCastAsUnsignedShort(final A sourceAtom, final AtomBridge<A> atomBridge)
 	{
-		final SmNativeType sourceType = atomBridge.getNativeType(sourceAtom);
+		final NativeType sourceType = atomBridge.getNativeType(sourceAtom);
 		switch (sourceType)
 		{
 			case INTEGER:
@@ -958,8 +958,8 @@ public abstract class IntegerTestBase<N, A>
 			case BYTE:
 			{
 				final BigInteger value = atomBridge.getInteger(sourceAtom);
-				assertTrue(lowerBoundViolation(sourceAtom, sourceType.toQName(), SmNativeType.UNSIGNED_SHORT), value.compareTo(BigInteger.valueOf(UNSIGNED_SHORT_MIN_VALUE)) >= 0);
-				assertTrue(upperBoundViolation(sourceAtom, sourceType.toQName(), SmNativeType.UNSIGNED_SHORT), value.compareTo(BigInteger.valueOf(UNSIGNED_SHORT_MAX_VALUE)) <= 0);
+				assertTrue(lowerBoundViolation(sourceAtom, sourceType.toQName(), NativeType.UNSIGNED_SHORT), value.compareTo(BigInteger.valueOf(UNSIGNED_SHORT_MIN_VALUE)) >= 0);
+				assertTrue(upperBoundViolation(sourceAtom, sourceType.toQName(), NativeType.UNSIGNED_SHORT), value.compareTo(BigInteger.valueOf(UNSIGNED_SHORT_MAX_VALUE)) <= 0);
 				return value.intValue();
 			}
 			default:
@@ -1000,22 +1000,22 @@ public abstract class IntegerTestBase<N, A>
 		}
 	}
 
-	private String message(final A sourceAtom, final QName sourceType, final SmNativeType targetType)
+	private String message(final A sourceAtom, final QName sourceType, final NativeType targetType)
 	{
 		return sourceAtom + " : " + sourceType.getLocalPart() + " => " + targetType.getLocalName();
 	}
 
-	private String lowerBoundViolation(final A sourceAtom, final QName sourceType, final SmNativeType targetType)
+	private String lowerBoundViolation(final A sourceAtom, final QName sourceType, final NativeType targetType)
 	{
 		return "lower-bound violation: " + sourceAtom + ": " + sourceType.getLocalPart() + " => " + targetType.getLocalName();
 	}
 
-	private String upperBoundViolation(final A sourceAtom, final QName sourceType, final SmNativeType targetType)
+	private String upperBoundViolation(final A sourceAtom, final QName sourceType, final NativeType targetType)
 	{
 		return "upper-bound violation: " + sourceAtom + ": " + sourceType.getLocalPart() + " => " + targetType.getLocalName();
 	}
 
-	private String missingCast(final QName sourceType, final SmNativeType targetType)
+	private String missingCast(final QName sourceType, final NativeType targetType)
 	{
 		return "missing cast from " + sourceType.getLocalPart() + " to " + targetType.getLocalName();
 	}

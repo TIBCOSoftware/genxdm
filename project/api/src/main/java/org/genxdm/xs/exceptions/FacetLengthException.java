@@ -16,7 +16,7 @@
 package org.genxdm.xs.exceptions;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.facets.SmLength;
+import org.genxdm.xs.facets.Length;
 
 
 /**
@@ -25,10 +25,10 @@ import org.genxdm.xs.facets.SmLength;
 @SuppressWarnings("serial")
 public final class FacetLengthException extends FacetException
 {
-	private final SmLength<?> expectLength;
+	private final Length<?> expectLength;
 	private final int actualLength;
 
-	public FacetLengthException(final SmLength<?> expectLength, final int actualLength)
+	public FacetLengthException(final Length<?> expectLength, final int actualLength)
 	{
 		this.expectLength = PreCondition.assertArgumentNotNull(expectLength, "expectLength");
 		this.actualLength = actualLength;
