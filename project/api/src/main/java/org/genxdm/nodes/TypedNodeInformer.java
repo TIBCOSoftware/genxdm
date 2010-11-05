@@ -55,15 +55,19 @@ public interface TypedNodeInformer<N, A>
     /**
      * Gets the type name of an element or attribute node. <br/>
      * Returns <code>null</code> for all other node kinds. <br/>
-     * Corresponds to the dm:type-name accessor in the XDM.
+     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-type-name">
+     * dm:type-name</a> accessor in the XDM.
      * 
      * @param node
      *            The node for which the type name is required.
+     *            
+     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-type-name
      */
     QName getTypeName(N node);
 
     /**
-     * Returns the dm:typed-value property of the node.
+     * Returns the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-typed-value">
+     * dm:typed-value</a> property of the node.
      * <p>
      * Applies to all node kinds.
      * </p>
@@ -73,6 +77,8 @@ public interface TypedNodeInformer<N, A>
      * 
      * @param node
      *            The node for which dm:typed-value is required.
+     * 
+     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-typed-value
      */
     Iterable<? extends A> getValue(N node);
 

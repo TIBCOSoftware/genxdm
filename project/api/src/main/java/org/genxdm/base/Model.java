@@ -25,10 +25,12 @@ import org.genxdm.nodes.NodeInformer;
 
 /**
  * The model provides the tree API.
- * 
+ *
  * <p/>
  * 
  * End users will normally consume, rather than implement, this interface.
+ * 
+ * @param <N> Corresponds to the base type for all members of the underlying tree API.
  */
 public interface Model<N>
     extends Comparator<N>, NodeInformer<N>, NodeNavigator<N>, AxisNavigator<N>

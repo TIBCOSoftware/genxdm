@@ -105,10 +105,13 @@ public interface NodeNavigator<N>
     /**
      * Returns the parent node of the node provided. <br/>
      * May return <code>null</code> for top-most or orphaned nodes. <br/>
-     * Corresponds to the dm:parent accessor in the XDM.
+     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-parent">
+     * dm:parent</a> accessor in the XDM.
      * 
      * @param node
      *            The node for which the parent is required.
+     *            
+     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-parent
      */
     N getParent(N origin);
 
