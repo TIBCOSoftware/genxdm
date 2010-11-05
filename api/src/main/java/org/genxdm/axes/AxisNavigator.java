@@ -15,6 +15,14 @@
  */
 package org.genxdm.axes;
 
+/**
+ * Provides the various "axes" by which nodes can be traversed, as defined by
+ * XPath 2.0.
+ *  
+ * @param <N> Corresponds to the base type for all members of the underlying tree API.
+ * 
+ * @see http://www.w3.org/TR/xpath20/#axes
+ */
 public interface AxisNavigator<N>
 {
     /**
@@ -37,13 +45,16 @@ public interface AxisNavigator<N>
      * Returns the nodes along the attribute axis using the specified node as the origin.
      * 
      * <br/>
-     * Corresponds to the dm:attributes accessor in the XDM.
+     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-attributes">
+     * dm:attributes</a> accessor in the XDM.
      * 
      * @param node
      *            The origin node.
      * @param inherit
      *            Determines whether attributes in the XML namespace will be inherited. The standard value for this
      *            parameter is <code>false</code>.
+     * 
+     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-attributes
      */
     Iterable<N> getAttributeAxis(N node, boolean inherit);
 
@@ -52,10 +63,13 @@ public interface AxisNavigator<N>
      * 
      * <br/>
      * 
-     * Corresponds to the dm:children accessor in the XDM.
+     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-children">
+     * dm:children</a> accessor in the XDM.
      * 
      * @param node
      *            The origin node.
+     * 
+     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-children
      */
     Iterable<N> getChildAxis(N node);
 
@@ -119,11 +133,16 @@ public interface AxisNavigator<N>
      * node is an element.
      * </p>
      * 
+     * <p>Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-nodes">
+     * dm:namespace-nodes</a> of XDM.</p>
+     * 
      * @param node
      *            The origin node.
      * @param inherit
      *            Determines whether in-scope prefix mappings will be included in the result. The standard setting for
      *            this parameter is <code>true</code>.
+     * 
+     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-nodes
      */
     Iterable<N> getNamespaceAxis(N node, boolean inherit);
 
