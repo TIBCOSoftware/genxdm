@@ -12,6 +12,7 @@ So that we do this consistently, this page captures the process whereby we do a 
  * Request a vote on the particular revision # planned for release
  * Build the release
  * Create a ZIP and .tar.gz of the source, as well as the built binary files
+ * Tag the code included in the build.
  * Build the site, and then update [http://genxdm.org]
  * Send out an email announcing the release
  * Post an announcement to the [http://genxdm.wordpress.com/ wiki]
