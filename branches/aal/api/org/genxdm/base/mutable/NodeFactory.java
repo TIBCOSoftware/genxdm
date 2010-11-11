@@ -17,88 +17,90 @@ package org.genxdm.base.mutable;
 
 import java.net.URI;
 
+// Development note:
+// This NodeFactory deliberately reflects the pattern of the ContentHandler
+// interface.  Where ContentHandler has methods with N returns, we return
+// the node.  That's the only difference.  The goal is consistency.
+// In terms of implementation, a bridge could either have a node factory
+// (which it used inside ContentHandler), or a content handler (used in
+// NodeFactory, with getNode()).  The same implementation should work for
+// both.
 public interface NodeFactory<N>
 {
-    N createDocument(final URI uri, final String docTypeDecl);
-
     /**
-     * Creates a new attribute.
+     * Create an attribute with a value and a DTD type.
      * 
-     * @param owner
-     *            The document node that owns the new attribute.
      * @param namespaceURI
-     *            The namespace-uri part of the attribute name.
+     *            The namespace-uri part of the attribute name. Cannot be <code>null</code> (but may be an empty string).
      * @param localName
-     *            The local-name part of the attribute name.
-     * @param prefix
-     *            The prefix part of the attribute name.
+     *            The local-name part of the attribute name. Cannot be <code>null</code> or the empty string.
      * @param value
-     *            The value of the attribute as a {@link String} i.e. xs:untypedAtomic.
-     * @return The created attribute.
+     *            The dm:string-value property of the attribute. May be null or an empty string.
+     * @param type
+     *            The type of the attribute; if null, then type is "NONE", not "UNKNOWN".
      */
-    N createAttribute(final N owner, final String namespaceURI, final String localName, final String prefix, final String value);
+    N createAttribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type) throws GxmlException;
 
     /**
-     * Creates a new namespace node.
+     * Create a comment information item.
      * 
-     * @param owner
-     *            The document node that owns the new namespace node.
-     * @param prefix
-     *            The prefix part of the namespace node.
+     * @param value
+     *            The content of the comment. Cannot be <code>null</code>, but may be an empty string.
+     */
+    N createComment(String value) throws GxmlException;
+
+    /**
+     * Create a document.
+     * <p>
+     * <p/>
+     * A callee will invoke this method only once, before any other methods in this interface.
+     * 
+     * @param documentURI
+     *            The dm:document-uri. May be null or the empty string.
+     * @param docTypeDecl
+     *            The document type declaration or internal subset, as a string. May be null; should not be an empty string.
+     */
+    N createDocument(URI documentURI, String docTypeDecl) throws GxmlException;
+
+    /**
+     * Create an element.
+     * 
      * @param namespaceURI
-     *            The string-value of the namespace node.
-     * @return The created namespace node.
-     */
-    N createNamespace(final N owner, final String prefix, final String namespaceURI);
-
-    /**
-     * Creates a new comment node.
-     * 
-     * @param owner
-     *            The document node that owns the new namespace node.
-     * @param data
-     *            The string-value of the comment node.
-     * @return The created comment node.
-     */
-    N createComment(final N owner, final String data);
-
-    /**
-     * Creates a new element node.
-     * 
-     * @param owner
-     *            The document node that owns the element node.
-     * @param namespaceURI
-     *            The namespace-uri part of the name of the element node.
+     *            The namespace-uri part of the element name. Cannot be <code>null</code> but may be an empty string.
      * @param localName
-     *            The local-name part of the name of the element node.
+     *            The local-name part of the element name. Cannot be <code>null</code> or the empty string.
      * @param prefix
-     *            The prefix part of the name of the element node.
-     * @return The created element node.
+     *            The prefix-hint part of the element name. May not be null, but may be the empty string.
      */
-    N createElement(final N owner, final String namespaceURI, final String localName, final String prefix);
+    N createElement(String namespaceURI, String localName, String prefix) throws GxmlException;
 
     /**
-     * Creates a new processing-instruction node.
+     * Create a namespace in the style of a lexical attribute. <br/>
      * 
-     * @param owner
-     *            The document node that owns the processing-instruction node.
+     * @param prefix
+     *            The name of the namespace node. Cannot be <code>null</code> but may be the empty string.
+     * @param namespaceURI
+     *            The string value of the namespace node. Cannot be <code>null</code>, but may be the empty string.
+     */
+    N createNamespace(String prefix, String namespaceURI) throws GxmlException;
+
+    /**
+     * Create a processing instruction.
+     * 
      * @param target
-     *            The target of the processing-instruction (dm:local-name).
+     *            The processing instruction target. Cannot be <code>null</code> or the empty string.
      * @param data
-     *            The data of the processing-instruction (dm:string-value).
-     * @return The created processing-instruction.
+     *            The processing instruction data, or null if none was supplied. The data does not include any
+     *            whitespace separating it from the target.
      */
-    N createProcessingInstruction(final N owner, final String target, final String data);
+    N createProcessingInstruction(String target, String data) throws GxmlException;
 
     /**
-     * Creates a new text node.
+     * Create character data.
+     * <p>
      * 
-     * @param owner
-     *            The document node that owns the text node.
-     * @param value
-     *            The value of the text node as a {@link String} i.e. xs:untypedAtomic.
-     * @return The created text node.
+     * @param data
+     *            The data associated with the text node. May be null or the empty string.
      */
-    N createText(final N owner, final String value);
-
+    N createText(String data) throws GxmlException;
 }
