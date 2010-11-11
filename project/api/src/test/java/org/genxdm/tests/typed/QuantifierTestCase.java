@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.tests;
+package org.genxdm.tests.typed;
 
 import junit.framework.TestCase;
 
 import org.genxdm.typed.types.Quantifier;
 
-public class GxQuantifierTestCase extends TestCase
+public class QuantifierTestCase extends TestCase
 {
 	/**
 	 * {@link Quantifier#contains} is used to supports static type analysis.
