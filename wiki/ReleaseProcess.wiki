@@ -1,0 +1,17 @@
+#summary Steps to create a release.
+
+= Introduction =
+
+So that we do this consistently, this page captures the process whereby we do a release.
+
+= Details =
+
+ * Verify copyright licenses on all files in release
+ * If this is the first release of a new year, verify that all files changed since the first of the year have an updated copyright date on them.
+ * Confirm that all bugs marked [http://code.google.com/p/genxdm/issues/list?can=2&q=status%3AFixed+&colspec=ID+Type+Status+Priority+Milestone+Owner+Summary&cells=tiles fixed] for the release have been verified.
+ * Request a vote on the particular revision # planned for release
+ * Build the release
+ * Create a ZIP and .tar.gz of the source, as well as the built binary files
+ * Build the site, and then update [http://genxdm.org]
+ * Send out an email announcing the release
+ * Post an announcement to the [http://genxdm.wordpress.com/ wiki]
