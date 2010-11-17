@@ -66,7 +66,7 @@ public interface MutableModel<N> extends Model<N>
 	 */
 	N delete(final N target);
 	
-	N deleteContent(final N target);
+	N deleteChildren(final N target);
 
 	/**
 	 * Replaces a node in the child axis of a parent node.

@@ -30,53 +30,83 @@ public class MutableCursorOnMutableModel<N>
         this.tmodel = model;
     }
 
-    public void appendChild(N newChild)
+    public void appendChild(final N newChild)
     {
         tmodel.appendChild(node, newChild);
     }
-
-    public N insertBefore(N newChild, N refChild)
+    
+    public void appendChildren(final Iterable<N> content)
     {
-        return tmodel.insertBefore(refChild, newChild);
+    	tmodel.appendChildren(node, content);
+    }
+    
+    public void prependChild(final N newChild)
+    {
+    	tmodel.prependChild(node, newChild);
+    }
+    
+    public void prependChildren(final Iterable<N> content)
+    {
+    	tmodel.prependChildren(node, content);
     }
 
-    public void removeAttribute(String namespaceURI, String localName)
+    public void insertBefore(final N previous)
     {
-    	tmodel.delete(tmodel.getAttribute(node, namespaceURI, localName));
-//        tmodel.removeAttribute(node, namespaceURI, localName);
+        tmodel.insertBefore(node, previous);
+    }
+    
+    public void insertBefore(final Iterable<N> content)
+    {
+    	tmodel.insertBefore(node, content);
+    }
+    
+    public void insertAfter(final N next)
+    {
+    	tmodel.insertAfter(node, next);
+    }
+    
+    public void insertAfter(final Iterable<N> content)
+    {
+    	tmodel.insertAfter(node, content);
     }
 
-    public N removeChild(N oldChild)
+    public N delete()
     {
-        return tmodel.delete(oldChild);
+    	N old = node;
+    	if (!moveToPreviousSibling())
+    		moveToParent();
+        return tmodel.delete(old);
+    }
+    
+    public void deleteChildren()
+    {
+    	tmodel.deleteChildren(node);
     }
 
-    public void removeNamespace(String prefix)
+    public N replace(final N newNode)
     {
-//        tmodel.removeNamespace(node, prefix);
+        N old = tmodel.replace(node, newNode);
+        if (old != null)
+        	moveTo(newNode);
+        return old;
+    }
+    
+    public void replaceValue(final String value)
+    {
+    	tmodel.replaceValue(node, value);
     }
 
-    public N replaceChild(N newChild, N oldChild)
-    {
-        return tmodel.replace(oldChild, newChild);
-    }
-
-    public void setAttribute(N attribute)
+    public void insertAttribute(final N attribute)
     {
         tmodel.insertAttribute(node, attribute);
     }
-
-    public N setAttribute(String namespaceURI, String localName, String prefix, String value)
+    
+    public void insertAttributes(final Iterable<N> attributes)
     {
-        return null;//tmodel.setAttribute(node, namespaceURI, localName, prefix, value);
+    	tmodel.insertAttributes(node, attributes);
     }
 
-    public void setNamespace(N namespace)
-    {
-//        tmodel.setNamespace(node, namespace);
-    }
-
-    public void setNamespace(String prefix, String uri)
+    public void propagateNamespace(String prefix, String uri)
     {
         tmodel.propagateNamespace(node, prefix, uri);
     }

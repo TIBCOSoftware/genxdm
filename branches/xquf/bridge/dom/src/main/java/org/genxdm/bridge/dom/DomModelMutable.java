@@ -185,7 +185,7 @@ public final class DomModelMutable
 		return null;
 	}
 	
-	public Node deleteContent(final Node target)
+	public Node deleteChildren(final Node target)
 	{
 		PreCondition.assertNotNull(target, "target");
 		if (getNodeKind(target).isContainer())

@@ -29,6 +29,12 @@ public interface MutableCursor<N>
      * @return The child added to the parent.
      */
     void appendChild(final N newChild);
+    
+    void appendChildren(final Iterable<N> content);
+    
+    void prependChild(final N newChild);
+    
+    void prependChildren(final Iterable<N> content);
 
     /**
      * Inserts a new child node before a specified reference node in the child axis of a parent node.
@@ -38,50 +44,34 @@ public interface MutableCursor<N>
      * 
      * @param newChild
      *            The new child to be added to the parent.
-     * @param refChild
-     *            The reference child before which the new node will be added. If no reference child is specified then
-     *            the new child is appended to the children of the parent node.
-     * @return The node that was inserted.
      */
-    N insertBefore(final N newChild, final N refChild);
-
-    /**
-     * Removes an attribute from an element by specifying the name of the attribute.
-     * 
-     * @param namespaceURI
-     *            The namespace-uri part of the attribute name.
-     * @param localName
-     *            The local-name part of the attribute name.
-     */
-    void removeAttribute(final String namespaceURI, final String localName);
+    void insertBefore(final N previous);
+    
+    void insertBefore(final Iterable<N> content);
+    
+    void insertAfter(final N next);
+    
+    void insertAfter(final Iterable<N> content);
 
     /**
      * Removes a node from the child axis of the parent node.
      * 
-     * @param oldChild
-     *            The child to be removed.
      * @return The child that has been removed.
      */
-    N removeChild(final N oldChild);
-
-    /**
-     * Removes a namespace from an element by specifying the prefix (dm:local-name) of the namespace.
-     * 
-     * @param prefix
-     *            The prefix (local-name part of dm:name) of the namespace node.
-     */
-    void removeNamespace(final String prefix);
+    N delete();
+    
+    void deleteChildren();
 
     /**
      * Replaces a node in the child axis of a parent node.
      * 
-     * @param newChild
+     * @param newNode
      *            The new node that will replace the old node.
-     * @param oldChild
-     *            The old node to be replaced.
      * @return The old node that was removed.
      */
-    N replaceChild(final N newChild, final N oldChild);
+    N replace(final N newNode);
+    
+    void replaceValue(final String value);
 
     /**
      * Sets an attribute node into the attribute axis of an element.
@@ -89,30 +79,9 @@ public interface MutableCursor<N>
      * @param attribute
      *            The attribute to be inserted.
      */
-    void setAttribute(final N attribute);
-
-    /**
-     * Sets an attribute into the attribute axis of an element.
-     * 
-     * @param namespaceURI
-     *            The namespace-uri part of the dm:name of the attribute.
-     * @param localName
-     *            The local-name part of the dm:name of the attribute.
-     * @param prefix
-     *            The prefix part of the dm:name of the attribute.
-     * @param value
-     *            The value of the attribute.
-     * @return The new attribute node.
-     */
-    N setAttribute(final String namespaceURI, final String localName, final String prefix, final String value);
-
-    /**
-     * Sets a namespace node into the namespace axis of an element.
-     * 
-     * @param namespace
-     *            The namespace node to be added.
-     */
-    void setNamespace(final N namespace);
+    void insertAttribute(final N attribute);
+    
+    void insertAttributes(final Iterable<N> attributes);
 
     /**
      * Sets a namespace binding into the namespace axis of an element.
@@ -122,5 +91,8 @@ public interface MutableCursor<N>
      * @param uriSymbol
      *            The dm:string-value of the namespace node as a symbol.
      */
-    void setNamespace(final String prefixString, final String uriSymbol);
+    void propagateNamespace(final String prefixString, final String uriSymbol);
+    
+    // if we were to do this, it would look something like this:
+    //void rename(final String namespace, final String name);
 }
