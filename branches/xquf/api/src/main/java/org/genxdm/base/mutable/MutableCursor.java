@@ -22,16 +22,6 @@ public interface MutableCursor<N>
 {
 
     /**
-     * Adopts a node from an external document. The source node (and its subtree) is removed from the document it is in
-     * (if any), and its owner document is changed to the target document. The source node can then be inserted into the
-     * target document.
-     * 
-     * @param source
-     *            The source node.
-     */
-    N adoptNode(final N source);
-
-    /**
      * Appends the specified child to the end of the child axis of the specified parent.
      * 
      * @param newChild
@@ -39,46 +29,6 @@ public interface MutableCursor<N>
      * @return The child added to the parent.
      */
     void appendChild(final N newChild);
-
-    /**
-     * Copies a node to a specified depth.
-     * <p>
-     * The resulting node has the same owner as the source node.
-     * </p>
-     * 
-     * @param deep
-     *            Determines whether to include the children of the copied node.
-     * @return A copy of the source node.
-     */
-    N clone(final boolean deep);
-
-    /**
-     * Returns the owner document node of the specified node.
-     * 
-     * @return The owner document, never <code>null</code>.
-     */
-    N getOwner();
-
-    /**
-     * Normalizes the specified node and all of its descendants.
-     * <p>
-     * Normalization coalesces adjacent text nodes into a single node and removes any text nodes that have
-     * dm:string-value equivalent to a zero-length string.
-     * </p>
-     * 
-     */
-    void normalize();
-
-    /**
-     * Creates a copy of a source node from an external document that can be inserted into the target document.
-     * 
-     * @param source
-     *            The node from another document to be imported.
-     * @param deep
-     *            indicates whether the children of the node should be imported.
-     * @return The new node that is imported into the target document.
-     */
-    N importNode(final N source, final boolean deep);
 
     /**
      * Inserts a new child node before a specified reference node in the child axis of a parent node.

@@ -30,39 +30,14 @@ public class MutableCursorOnMutableModel<N>
         this.tmodel = model;
     }
 
-    public N adoptNode(N source)
-    {
-        return tmodel.adoptNode(node, source);
-    }
-
     public void appendChild(N newChild)
     {
         tmodel.appendChild(node, newChild);
     }
 
-    public N clone(boolean deep)
-    {
-        return tmodel.cloneNode(node, deep);
-    }
-
-    public N getOwner()
-    {
-        return tmodel.getOwner(node);
-    }
-
-    public N importNode(N source, boolean deep)
-    {
-        return tmodel.importNode(node, source, deep);
-    }
-
     public N insertBefore(N newChild, N refChild)
     {
-        return tmodel.insertBefore(node, newChild, refChild);
-    }
-
-    public void normalize()
-    {
-        tmodel.normalize(node);
+        return tmodel.insertBefore(refChild, newChild);
     }
 
     public void removeAttribute(String namespaceURI, String localName)

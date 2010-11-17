@@ -28,53 +28,145 @@ import org.w3c.dom.Node;
 public final class DomModelMutable 
     extends DomModel implements MutableModel<Node>
 {
-	public Node adoptNode(final Node target, final Node source)
-	{
-		PreCondition.assertArgumentNotNull(target, "target");
-		PreCondition.assertArgumentNotNull(source, "source");
-		final Document owner = DomSupport.getOwner(target);
-		return owner.adoptNode(source);
-	}
+//	public Node adoptNode(final Node target, final Node source)
+//	{
+//		PreCondition.assertArgumentNotNull(target, "target");
+//		PreCondition.assertArgumentNotNull(source, "source");
+//		final Document owner = DomSupport.getOwner(target);
+//		return owner.adoptNode(source);
+//	}
 
 	public Node appendChild(final Node parent, final Node newChild)
 	{
 		PreCondition.assertArgumentNotNull(parent, "parent");
 		PreCondition.assertArgumentNotNull(newChild, "newChild");
-		return parent.appendChild(newChild);
+		return parent.appendChild(insureOwnership(parent.getOwnerDocument(), newChild));
+	}
+	
+	public Node appendChildren(final Node parent, final Iterable<Node> content)
+	{
+		PreCondition.assertNotNull(parent, "parent");
+		PreCondition.assertNotNull(content, "content");
+		Node last = null;
+		final Document owner = parent.getOwnerDocument();
+		for (Node node : content)
+		{
+			last = parent.appendChild(insureOwnership(owner, node));
+		}
+		return last;
+	}
+	
+	public Node prependChild(final Node parent, final Node content)
+	{
+		PreCondition.assertNotNull(parent, "parent");
+		PreCondition.assertNotNull(content, "content");
+		return parent.insertBefore(insureOwnership(parent.getOwnerDocument(), content), parent.getFirstChild());
+	}
+	
+	public Node prependChildren(final Node parent, final Iterable<Node> content)
+	{
+		// probably highly inefficient, but easy to implement.
+		Node last = null;
+		for (Node node : content)
+		{
+			last = prependChild(parent, node);
+		}
+		return last;
 	}
 
-	public Node cloneNode(final Node source, final boolean deep)
+//	public Node cloneNode(final Node source, final boolean deep)
+//	{
+//		PreCondition.assertArgumentNotNull(source, "source");
+//		return source.cloneNode(deep);
+//	}
+//
+//	public Document getOwner(final Node node)
+//	{
+//		PreCondition.assertArgumentNotNull(node, "node");
+//		return DomSupport.getOwner(node);
+//	}
+//
+//	public Node importNode(final Node target, final Node source, final boolean deep)
+//	{
+//		PreCondition.assertArgumentNotNull(target, "target");
+//		PreCondition.assertArgumentNotNull(source, "source");
+//		final Document owner = DomSupport.getOwner(target);
+//		return owner.importNode(source, deep);
+//	}
+
+	public Node insertBefore(final Node target, final Node content)
 	{
-		PreCondition.assertArgumentNotNull(source, "source");
-		return source.cloneNode(deep);
+		PreCondition.assertNotNull(target, "target");
+		PreCondition.assertNotNull(content, "content");
+		final Node parent = target.getParentNode();
+		if (parent != null)
+		{
+			return parent.insertBefore(insureOwnership(target.getOwnerDocument(), content), target);
+		}
+		return null;
+	}
+	
+	public Node insertBefore(final Node target, final Iterable<Node> content)
+	{
+		PreCondition.assertNotNull(target, "target");
+		PreCondition.assertNotNull(content, "content");
+		final Node parent = target.getParentNode();
+		Node last = null;
+		if (parent != null)
+		{
+			final Document owner = parent.getOwnerDocument();
+			for (Node node : content)
+			{
+				last = parent.insertBefore(insureOwnership(owner, node), target);
+			}
+		}
+		return last;
+	}
+	
+	public Node insertAfter(final Node target, final Node content)
+	{
+		PreCondition.assertNotNull(target, "target");
+		PreCondition.assertNotNull(content, "content");
+		final Node parent = target.getParentNode();
+		final Node next = target.getNextSibling();
+		// need a bloody closure, dammit
+		if (parent != null)
+		{
+			final Document owner = parent.getOwnerDocument();
+			if (next != null)
+				return parent.insertBefore(insureOwnership(owner, content), next);
+			else
+				return parent.appendChild(insureOwnership(owner, content));
+		}
+		return null;
+	}
+	
+	public Node insertAfter(final Node target, final Iterable<Node> content)
+	{
+		PreCondition.assertNotNull(target, "target");
+		PreCondition.assertNotNull(content, "content");
+		final Node parent = target.getParentNode();
+		final Node next = target.getNextSibling();
+		Node last = null;
+		if (parent != null)
+		{
+			final Document owner = parent.getOwnerDocument();
+			for (Node node : content)
+			{
+				if (next != null)
+					last = parent.insertBefore(insureOwnership(owner, node), next);
+				else
+					last = parent.appendChild(insureOwnership(owner, node));
+			}
+		}
+		return last;
 	}
 
-	public Document getOwner(final Node node)
-	{
-		PreCondition.assertArgumentNotNull(node, "node");
-		return DomSupport.getOwner(node);
-	}
-
-	public Node importNode(final Node target, final Node source, final boolean deep)
-	{
-		PreCondition.assertArgumentNotNull(target, "target");
-		PreCondition.assertArgumentNotNull(source, "source");
-		final Document owner = DomSupport.getOwner(target);
-		return owner.importNode(source, deep);
-	}
-
-	public Node insertBefore(final Node parent, final Node newChild, final Node refChild)
-	{
-		PreCondition.assertArgumentNotNull(parent, "parent");
-		PreCondition.assertArgumentNotNull(newChild, "newChild");
-		return parent.insertBefore(newChild, refChild);
-	}
-
-	public void normalize(final Node node)
-	{
-		PreCondition.assertArgumentNotNull(node, "node");
-		node.normalize();
-	}
+//	public void normalize(final Node node)
+//	{
+//		PreCondition.assertArgumentNotNull(node, "node");
+//		node.normalize();
+//	}
 
 	public void removeAttribute(final Node element, final String namespaceURI, final String localName)
 	{
@@ -131,5 +223,12 @@ public final class DomModelMutable
 		PreCondition.assertArgumentNotNull(prefix, "prefix");
 		PreCondition.assertArgumentNotNull(uri, "uri");
 		return DomSupport.setNamespace(element, prefix, uri);
+	}
+	
+	private Node insureOwnership(Document d, Node n)
+	{
+		if (n.getOwnerDocument() != d)
+			d.adoptNode(n);
+		return n;
 	}
 }

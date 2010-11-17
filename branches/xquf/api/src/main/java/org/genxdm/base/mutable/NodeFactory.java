@@ -29,6 +29,8 @@ public interface NodeFactory<N, F>
 	 */
 	void setApiFactory(F factory);
 	
+	F getApiFactoryForNode(N node);
+	
     N createDocument(final URI uri, final String docTypeDecl);
 
     /**

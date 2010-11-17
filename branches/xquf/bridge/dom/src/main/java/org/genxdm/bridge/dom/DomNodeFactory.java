@@ -49,6 +49,10 @@ public class DomNodeFactory
     		m_doc = doc;
     }
     
+    public Document getApiFactoryForNode(Node node) {
+    	return DomSupport.getOwner(node);
+    }
+    
     public Node createAttribute(String namespaceURI, String localName, String prefix, String value)
     {
         return DomSupport.createAttributeUntyped(insureDocument(), namespaceURI, localName, prefix, value);
