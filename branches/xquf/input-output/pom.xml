@@ -20,7 +20,7 @@
     
     <parent>
         <groupId>org.genxdm</groupId>
-        <artifactId>processor</artifactId>
+        <artifactId>project</artifactId>
         <version>0.3</version>
     </parent>
 
@@ -32,31 +32,6 @@
          the XQuery Serialization spec makes even 0.5 questionable.  Still ...
          it *does* work. -->
     <name>GenXDM Input/Output Processor</name>
-
-    <reporting>
-        <plugins>
-            <plugin>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jxr-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </reporting>
-
-    <scm>
-        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/processor/input-output</connection>
-        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/processor/input-output</developerConnection>
-        <url>http://genxdm.googlecode.com/svn/trunk/project/processor/input-output</url>
-    </scm>
 
     <dependencies>
         <dependency>
