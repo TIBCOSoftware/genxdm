@@ -30,83 +30,10 @@
          version (in particular, the project module/pom itself is fairly stable -->
     
     <name>GenXDM</name>
-    <url>http://www.genxdm.org/</url>
-    <description>GenXDM enables applications to write code that uses and
-    manipulates XML trees without being tied to a particular XML tree
-    representation like DOM, DOM4J, AXIOM, or any other. It also prods
-    developers towards an immutable view of XML trees, which will make it
-    easier and faster to work with XML across multiple cores and multiple
-    processors.</description>
-    <licenses>
-      <license>
-        <name>Apache 2</name>
-        <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        <distribution>repo</distribution>
-        <!--comments>A business-friendly OSS license</comments-->
-      </license>
-      <!-- do we need to also mention the jc and bl licenses here? -->
-    </licenses>
-
-    <issueManagement>
-        <system>Google Code</system>
-        <url>http://code.google.com/p/genxdm/issues/list</url>
-    </issueManagement>
-
-    <developers>
-        <developer>
-            <id>aaletal</id>
-            <name>Amy!</name>
-            <roles>
-                <role>bottle-washer</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>joe.baysdon</id>
-            <name>Joe Baysdon</name>
-        </developer>
-        <developer>
-            <id>eric</id>
-            <name>Eric Johnson</name>
-        </developer>
-    </developers>
-
-    <!--contributors>
-        <contributor>
-            <name></name>
-        </contributor>
-    </contributors-->
-
-    <mailingLists>
-        <mailingList>
-            <name>GenXDM Mailing List</name>
-            <post>genxdm@googlegroups.com</post>
-        </mailingList>
-    </mailingLists>
-
-    <scm>
-        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project</connection>
-        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project</developerConnection>
-        <url>http://genxdm.googlecode.com/svn/trunk/project</url>
-    </scm>
-
-    <reporting>
-        <plugins>
-            <!--plugin>
-                <artifactId>maven-changelog-plugin</artifactId>
-            </plugin-->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>taglist-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </reporting>
-
      <modules> 
         <module>api</module> <!-- api --> 
         <module>bridge</module> <!-- container --> 
-        <module>processor</module> <!-- container -->
-        <module>xpath</module> <!-- api --> 
-        <module>support</module> <!-- container --> 
+        <module>input-output</module> <!-- container -->
     </modules>
 
     <build>
