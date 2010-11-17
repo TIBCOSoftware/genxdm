@@ -42,42 +42,43 @@ public class MutableCursorOnMutableModel<N>
 
     public void removeAttribute(String namespaceURI, String localName)
     {
-        tmodel.removeAttribute(node, namespaceURI, localName);
+    	tmodel.delete(tmodel.getAttribute(node, namespaceURI, localName));
+//        tmodel.removeAttribute(node, namespaceURI, localName);
     }
 
     public N removeChild(N oldChild)
     {
-        return tmodel.removeChild(node, oldChild);
+        return tmodel.delete(oldChild);
     }
 
     public void removeNamespace(String prefix)
     {
-        tmodel.removeNamespace(node, prefix);
+//        tmodel.removeNamespace(node, prefix);
     }
 
     public N replaceChild(N newChild, N oldChild)
     {
-        return tmodel.replaceChild(node, newChild, oldChild);
+        return tmodel.replace(oldChild, newChild);
     }
 
     public void setAttribute(N attribute)
     {
-        tmodel.setAttribute(node, attribute);
+        tmodel.insertAttribute(node, attribute);
     }
 
     public N setAttribute(String namespaceURI, String localName, String prefix, String value)
     {
-        return tmodel.setAttribute(node, namespaceURI, localName, prefix, value);
+        return null;//tmodel.setAttribute(node, namespaceURI, localName, prefix, value);
     }
 
     public void setNamespace(N namespace)
     {
-        tmodel.setNamespace(node, namespace);
+//        tmodel.setNamespace(node, namespace);
     }
 
     public void setNamespace(String prefix, String uri)
     {
-        tmodel.setNamespace(node, prefix, uri);
+        tmodel.propagateNamespace(node, prefix, uri);
     }
 
     private final MutableModel<N> tmodel;

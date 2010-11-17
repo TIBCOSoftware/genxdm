@@ -16,8 +16,6 @@
 package org.genxdm.base.mutable;
 
 import org.genxdm.base.Model;
-import org.genxdm.base.io.FragmentBuilder;
-import org.genxdm.typed.TypedModel;
 
 public interface MutableModel<N> extends Model<N>
 {
@@ -60,50 +58,28 @@ public interface MutableModel<N> extends Model<N>
 	N insertAfter(final N target, final Iterable<N> content);
 
 	/**
-	 * Removes an attribute from an element by specifying the name of the attribute.
-	 * 
-	 * @param element
-	 *            The element that contains the attribute node.
-	 * @param namespaceURI
-	 *            The namespace-uri part of the attribute name.
-	 * @param localName
-	 *            The local-name part of the attribute name.
-	 */
-	void removeAttribute(final N element, final String namespaceURI, final String localName); //delete
-
-	/**
 	 * Removes a node from the child axis of the parent node.
-	 * 
-	 * @param parent
-	 *            The parent containing the child to be removed.
-	 * @param oldChild
+	 * @param target
 	 *            The child to be removed.
+	 * 
 	 * @return The child that has been removed.
 	 */
-	N removeChild(final N parent, final N oldChild); //delete
-
-	/**
-	 * Removes a namespace from an element by specifying the prefix (dm:local-name) of the namespace.
-	 * 
-	 * @param element
-	 *            The element that contains the namespace node.
-	 * @param prefix
-	 *            The prefix (local-name part of dm:name) of the namespace node.
-	 */
-	void removeNamespace(final N element, final String prefix); //delete
+	N delete(final N target);
+	
+	N deleteContent(final N target);
 
 	/**
 	 * Replaces a node in the child axis of a parent node.
-	 * 
-	 * @param parent
-	 *            The parent containing the node to be replaced in its child axis.
-	 * @param newChild
-	 *            The new node that will replace the old node.
-	 * @param oldChild
+	 * @param target
 	 *            The old node to be replaced.
+	 * @param content
+	 *            The new node that will replace the old node.
+	 * 
 	 * @return The old node that was removed.
 	 */
-	N replaceChild(final N parent, final N newChild, final N oldChild); //replace
+	N replace(final N target, final N content); //replace
+	
+	N replaceValue(final N target, final String value);
 
 	/**
 	 * Sets an attribute node into the attribute axis of an element.
@@ -112,35 +88,11 @@ public interface MutableModel<N> extends Model<N>
 	 *            The element that will hold the attribute.
 	 * @param attribute
 	 *            The attribute to be inserted.
+	 * @return TODO
 	 */
-	void setAttribute(final N element, final N attribute); //insertattributes
-
-	/**
-	 * Sets an attribute into the attribute axis of an element.
-	 * 
-	 * @param element
-	 *            The element that will hold the new attribute.
-	 * @param namespaceURI
-	 *            The namespace-uri part of the dm:name of the attribute.
-	 * @param localName
-	 *            The local-name part of the dm:name of the attribute.
-	 * @param prefix
-	 *            The prefix part of the dm:name of the attribute.
-	 * @param value
-	 *            The value of the attribute.
-	 * @return The new attribute node.
-	 */
-	N setAttribute(final N element, final String namespaceURI, final String localName, final String prefix, final String value);
-
-	/**
-	 * Sets a namespace node into the namespace axis of an element.
-	 * 
-	 * @param element
-	 *            The element that will hold the namespace node.
-	 * @param namespace
-	 *            The namespace node to be added.
-	 */
-	void setNamespace(final N element, final N namespace);
+	N insertAttribute(final N element, final N attribute);
+	
+	N insertAttributes(final N element, final Iterable<N> attributes);
 
 	/**
 	 * Sets a namespace binding into the namespace axis of an element.
@@ -153,5 +105,9 @@ public interface MutableModel<N> extends Model<N>
 	 *            The dm:string-value of the namespace node as a symbol.
 	 * @return TODO
 	 */
-	N setNamespace(final N element, final String prefixString, final String uriSymbol); // propagatenamespace
+	N propagateNamespace(final N element, final String prefixString, final String uriSymbol);
+	
+	// implementing this looks to me like a *really* bad idea.
+	// i'd rather discuss it than implement it.
+	//N rename(N node, String namespace, String name);
 }

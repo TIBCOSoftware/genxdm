@@ -168,56 +168,87 @@ public final class DomModelMutable
 //		node.normalize();
 //	}
 
-	public void removeAttribute(final Node element, final String namespaceURI, final String localName)
+//	public void removeAttribute(final Node element, final String namespaceURI, final String localName)
+//	{
+//		PreCondition.assertArgumentNotNull(element, "element");
+//		PreCondition.assertArgumentNotNull(namespaceURI, "namespaceURI");
+//		PreCondition.assertArgumentNotNull(localName, "localName");
+//		DomSupport.removeAttribute(element, namespaceURI, localName);
+//	}
+
+	public Node delete(final Node target)
 	{
-		PreCondition.assertArgumentNotNull(element, "element");
-		PreCondition.assertArgumentNotNull(namespaceURI, "namespaceURI");
-		PreCondition.assertArgumentNotNull(localName, "localName");
-		DomSupport.removeAttribute(element, namespaceURI, localName);
+		PreCondition.assertArgumentNotNull(target, "target");
+		Node parent = target.getParentNode();
+		if (parent != null)
+			return parent.removeChild(target);
+		return null;
+	}
+	
+	public Node deleteContent(final Node target)
+	{
+		PreCondition.assertNotNull(target, "target");
+		if (getNodeKind(target).isContainer())
+			for (Node child : getChildAxis(target))
+				delete(child);
+		return target;
 	}
 
-	public Node removeChild(final Node parent, final Node oldChild)
+//	public void removeNamespace(final Node element, final String prefix)
+//	{
+//		PreCondition.assertArgumentNotNull(element, "element");
+//		PreCondition.assertArgumentNotNull(prefix, "prefix");
+//		DomSupport.removeNamespace(element, prefix);
+//	}
+
+	public Node replace(final Node target, final Node content)
 	{
-		PreCondition.assertArgumentNotNull(parent, "parent");
-		PreCondition.assertArgumentNotNull(oldChild, "oldChild");
-		return parent.removeChild(oldChild);
+		PreCondition.assertArgumentNotNull(content, "newChild");
+		PreCondition.assertArgumentNotNull(target, "oldChild");
+		final Node parent = target.getParentNode();
+		if (parent != null)
+			return parent.replaceChild(insureOwnership(target.getOwnerDocument(), content), target);
+		return null;
+	}
+	
+	public Node replaceValue(final Node target, final String value)
+	{
+		PreCondition.assertNotNull(target, "target");
+		if (getNodeKind(target).isContainer() || getNodeKind(target).isNamespace() )
+			return null; // throw an exception, really.
+		target.setNodeValue(value);
+		return target;
 	}
 
-	public void removeNamespace(final Node element, final String prefix)
+	public Node insertAttribute(final Node element, final Node attribute)
 	{
-		PreCondition.assertArgumentNotNull(element, "element");
-		PreCondition.assertArgumentNotNull(prefix, "prefix");
-		DomSupport.removeNamespace(element, prefix);
+		((Element)element).setAttributeNodeNS((Attr)insureOwnership(element.getOwnerDocument(), attribute));
+		return attribute;
+	}
+	
+	public Node insertAttributes(final Node element, final Iterable<Node> attributes)
+	{
+		Node last = null;
+		for (Node attr : attributes)
+			last = insertAttribute(element, attr);
+		return last;
 	}
 
-	public Node replaceChild(final Node parent, final Node newChild, final Node oldChild)
-	{
-		PreCondition.assertArgumentNotNull(parent, "parent");
-		PreCondition.assertArgumentNotNull(newChild, "newChild");
-		PreCondition.assertArgumentNotNull(oldChild, "oldChild");
-		return parent.replaceChild(newChild, oldChild);
-	}
+//	public Attr setAttribute(final Node element, final String namespaceURI, final String localName, final String prefix, final String value)
+//	{
+//		PreCondition.assertArgumentNotNull(element, "element");
+//		PreCondition.assertArgumentNotNull(namespaceURI, "namespaceURI");
+//		PreCondition.assertArgumentNotNull(localName, "localName");
+//		PreCondition.assertArgumentNotNull(prefix, "prefix");
+//		return DomSupport.setAttributeUntyped(element, namespaceURI, localName, prefix, value);
+//	}
 
-	public void setAttribute(final Node element, final Node attribute)
-	{
-		((Element)element).setAttributeNodeNS((Attr)attribute);
-	}
+//	public void setNamespace(final Node element, final Node namespace)
+//	{
+//		((Element)element).setAttributeNodeNS((Attr)namespace);
+//	}
 
-	public Attr setAttribute(final Node element, final String namespaceURI, final String localName, final String prefix, final String value)
-	{
-		PreCondition.assertArgumentNotNull(element, "element");
-		PreCondition.assertArgumentNotNull(namespaceURI, "namespaceURI");
-		PreCondition.assertArgumentNotNull(localName, "localName");
-		PreCondition.assertArgumentNotNull(prefix, "prefix");
-		return DomSupport.setAttributeUntyped(element, namespaceURI, localName, prefix, value);
-	}
-
-	public void setNamespace(final Node element, final Node namespace)
-	{
-		((Element)element).setAttributeNodeNS((Attr)namespace);
-	}
-
-	public Attr setNamespace(final Node element, final String prefix, final String uri)
+	public Attr propagateNamespace(final Node element, final String prefix, final String uri)
 	{
 		PreCondition.assertArgumentNotNull(element, "element");
 		PreCondition.assertArgumentNotNull(prefix, "prefix");
