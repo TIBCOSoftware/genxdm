@@ -34,6 +34,7 @@ import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 public class DomProcessingContext
@@ -85,7 +86,7 @@ public class DomProcessingContext
         return ( (object instanceof Node) || (object instanceof XmlAtom) );
     }
 
-    public MutableContext<Node> getMutableContext()
+    public MutableContext<Node, Document> getMutableContext()
     {
         if (mutantContext == null)
             mutantContext = new MutantContext();
@@ -143,7 +144,7 @@ public class DomProcessingContext
         return new Node[size];
     }
 
-    private class MutantContext implements MutableContext<Node>
+    private class MutantContext implements MutableContext<Node, Document>
     {
         
         public MutableModel<Node> getModel()
@@ -151,11 +152,13 @@ public class DomProcessingContext
             return mutant;
         }
 
-        public NodeFactory<Node> getNodeFactory()
+        public NodeFactory<Node, Document> getNodeFactory(Document doc)
         {
-            return factory;
+        	if (doc != null)
+        		return new DomNodeFactory(getDocumentBuilderFactory(), doc);
+        	return new DomNodeFactory( getDocumentBuilderFactory() );
         }
-        
+
         public ProcessingContext<Node> getProcessingContext()
         {
             return DomProcessingContext.this;
@@ -167,7 +170,6 @@ public class DomProcessingContext
         }
 
         private final DomModelMutable mutant = new DomModelMutable();
-        private final DomNodeFactory factory = new DomNodeFactory( getDocumentBuilderFactory() );
     }
 
     private static DocumentBuilderFactory sm_dbf;

@@ -57,7 +57,7 @@ public interface ProcessingContext<N> extends DocumentHandlerFactory<N>
      * @return a MutableContext associated with this ProcessingContext, or null
      * if no such context is available
      */
-    MutableContext<N> getMutableContext();
+    <F> MutableContext<N, F> getMutableContext();
     
     /**
      * Indicates whether this processing context supports schema processing and awareness.

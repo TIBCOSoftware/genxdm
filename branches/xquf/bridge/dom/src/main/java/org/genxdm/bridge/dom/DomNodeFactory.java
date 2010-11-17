@@ -26,11 +26,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 public class DomNodeFactory
-    implements NodeFactory<Node>
+    implements NodeFactory<Node, Document>
 {
 
 	public DomNodeFactory(DocumentBuilderFactory dbf) {
 		m_dbf = dbf;
+	}
+	
+	public DomNodeFactory(DocumentBuilderFactory dbf, Document doc) {
+		this(dbf);
+		if (doc != null)
+			m_doc = doc;
 	}
 	
     public DocumentBuilderFactory getCachedDocumentBuilderFactory()
@@ -38,17 +44,20 @@ public class DomNodeFactory
         return m_dbf;
     }
     
-    public Node createAttribute(Node owner, String namespaceURI, String localName, String prefix, String value)
+    public void setApiFactory(Document doc) {
+    	if (doc != null)
+    		m_doc = doc;
+    }
+    
+    public Node createAttribute(String namespaceURI, String localName, String prefix, String value)
     {
-        return DomSupport.createAttributeUntyped(DomSupport.getOwner(owner), namespaceURI, localName, prefix, value);
+        return DomSupport.createAttributeUntyped(insureDocument(), namespaceURI, localName, prefix, value);
     }
 
-    public Node createComment(Node owner, String data)
+    public Node createComment(String data)
     {
-        PreCondition.assertArgumentNotNull(owner, "owner");
         PreCondition.assertArgumentNotNull(data, "data");
-        final Document document = DomSupport.getOwner(owner);
-        return DomSupport.createComment(document, data);
+        return DomSupport.createComment(insureDocument(), data);
     }
 
     public Node createDocument(final URI uri, final String docTypeDecl)
@@ -64,35 +73,36 @@ public class DomNodeFactory
         }
     }
 
-    public Node createElement(Node owner, String namespaceURI, String localName, String prefix)
+    public Node createElement(String namespaceURI, String localName, String prefix)
     {
-        PreCondition.assertArgumentNotNull(owner, "owner");
-        final Document document = DomSupport.getOwner(owner);
-        return DomSupport.createElement(document, namespaceURI, localName, prefix);
+        return DomSupport.createElement(insureDocument(), namespaceURI, localName, prefix);
     }
 
-    public Node createNamespace(Node owner, String prefix, String namespaceURI)
+    public Node createNamespace(String prefix, String namespaceURI)
     {
-        return DomSupport.createNamespace(DomSupport.getOwner(owner), prefix, namespaceURI);
+        return DomSupport.createNamespace(insureDocument(), prefix, namespaceURI);
     }
 
-    public Node createProcessingInstruction(Node owner, String target, String data)
+    public Node createProcessingInstruction(String target, String data)
     {
-        PreCondition.assertArgumentNotNull(owner, "owner");
         PreCondition.assertArgumentNotNull(data, "data");
-        final Document document = DomSupport.getOwner(owner);
-        return DomSupport.createProcessingInstruction(document, target, data);
+        return DomSupport.createProcessingInstruction(insureDocument(), target, data);
     }
 
-    public Node createText(Node owner, String value)
+    public Node createText(String value)
     {
-        PreCondition.assertArgumentNotNull(owner, "owner");
         PreCondition.assertArgumentNotNull(value, "value");
-        final Document document = DomSupport.getOwner(owner);
-        return DomSupport.createText(document, value);
+        return DomSupport.createText(insureDocument(), value);
+    }
+    
+    private Document insureDocument() {
+    	if (m_doc == null)
+    		m_doc = (Document)createDocument(null, null);
+    	return m_doc;
     }
 
     private final DocumentBuilderFactory m_dbf;
+    private Document m_doc;
     
     /**
      * Initializing the {@link DocumentBuilderFactory} is expensive so we do it once statically.

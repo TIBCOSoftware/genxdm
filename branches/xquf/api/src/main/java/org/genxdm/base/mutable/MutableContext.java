@@ -17,7 +17,7 @@ package org.genxdm.base.mutable;
 
 import org.genxdm.base.ProcessingContext;
 
-public interface MutableContext<N>
+public interface MutableContext<N, F>
 {
     /** Provide the node factory associated with this context.
      * 
@@ -27,7 +27,7 @@ public interface MutableContext<N>
      * 
      * @return a {@link NodeFactory} for creating new nodes, or null if mutability is not supported.
      */
-    NodeFactory<N> getNodeFactory();
+    NodeFactory<N, F> getNodeFactory(F apiFactory);
 
     /**
      * Returns a {@link MutableModel} for navigating and modifying an XDM model.
