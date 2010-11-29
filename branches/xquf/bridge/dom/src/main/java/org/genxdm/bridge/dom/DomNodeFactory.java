@@ -26,17 +26,19 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 public class DomNodeFactory
-    implements NodeFactory<Node, Document>
+    implements NodeFactory<Node>
 {
 
+	// use for creating new documents.
 	public DomNodeFactory(DocumentBuilderFactory dbf) {
+		PreCondition.assertNotNull(dbf, "dbf");
 		m_dbf = dbf;
 	}
 	
-	public DomNodeFactory(DocumentBuilderFactory dbf, Document doc) {
-		this(dbf);
-		if (doc != null)
-			m_doc = doc;
+	// use for context instantiation
+	public DomNodeFactory(Document doc) {
+		PreCondition.assertNotNull(doc, "doc");
+		m_doc = doc;
 	}
 	
     public DocumentBuilderFactory getCachedDocumentBuilderFactory()
@@ -44,24 +46,17 @@ public class DomNodeFactory
         return m_dbf;
     }
     
-    public void setApiFactory(Document doc) {
-    	if (doc != null)
-    		m_doc = doc;
-    }
-    
-    public Document getApiFactoryForNode(Node node) {
-    	return DomSupport.getOwner(node);
-    }
-    
     public Node createAttribute(String namespaceURI, String localName, String prefix, String value)
     {
-        return DomSupport.createAttributeUntyped(insureDocument(), namespaceURI, localName, prefix, value);
+        PreCondition.assertNotNull(m_doc, "m_doc");
+        return DomSupport.createAttributeUntyped(m_doc, namespaceURI, localName, prefix, value);
     }
 
     public Node createComment(String data)
     {
         PreCondition.assertArgumentNotNull(data, "data");
-        return DomSupport.createComment(insureDocument(), data);
+        PreCondition.assertNotNull(m_doc, "m_doc");
+        return DomSupport.createComment(m_doc, data);
     }
 
     public Node createDocument(final URI uri, final String docTypeDecl)
@@ -69,7 +64,8 @@ public class DomNodeFactory
         // TODO: set document uri and use the doc type declaration
         try
         {
-            return sm_dbf.newDocumentBuilder().newDocument();
+        	m_doc = m_dbf.newDocumentBuilder().newDocument();
+            return m_doc;
         }
         catch (ParserConfigurationException pce)
         {
@@ -79,43 +75,30 @@ public class DomNodeFactory
 
     public Node createElement(String namespaceURI, String localName, String prefix)
     {
-        return DomSupport.createElement(insureDocument(), namespaceURI, localName, prefix);
+        PreCondition.assertNotNull(m_doc, "m_doc");
+        return DomSupport.createElement(m_doc, namespaceURI, localName, prefix);
     }
 
     public Node createNamespace(String prefix, String namespaceURI)
     {
-        return DomSupport.createNamespace(insureDocument(), prefix, namespaceURI);
+        PreCondition.assertNotNull(m_doc, "m_doc");
+        return DomSupport.createNamespace(m_doc, prefix, namespaceURI);
     }
 
     public Node createProcessingInstruction(String target, String data)
     {
         PreCondition.assertArgumentNotNull(data, "data");
-        return DomSupport.createProcessingInstruction(insureDocument(), target, data);
+        PreCondition.assertNotNull(m_doc, "m_doc");
+        return DomSupport.createProcessingInstruction(m_doc, target, data);
     }
 
     public Node createText(String value)
     {
         PreCondition.assertArgumentNotNull(value, "value");
-        return DomSupport.createText(insureDocument(), value);
+        PreCondition.assertNotNull(m_doc, "m_doc");
+        return DomSupport.createText(m_doc, value);
     }
     
-    private Document insureDocument() {
-    	if (m_doc == null)
-    		m_doc = (Document)createDocument(null, null);
-    	return m_doc;
-    }
-
-    private final DocumentBuilderFactory m_dbf;
+    private DocumentBuilderFactory m_dbf;
     private Document m_doc;
-    
-    /**
-     * Initializing the {@link DocumentBuilderFactory} is expensive so we do it once statically.
-     */
-    private static final DocumentBuilderFactory sm_dbf = DocumentBuilderFactory.newInstance();
-    
-    static
-    {
-        sm_dbf.setNamespaceAware(true);
-    }
-
 }

@@ -21,7 +21,9 @@ public interface MutableCursor<N>
     extends Cursor<N>
 {
 
-    /**
+	NodeFactory<N> getFactoryForContext();
+
+	/**
      * Appends the specified child to the end of the child axis of the specified parent.
      * 
      * @param newChild

@@ -27,7 +27,7 @@ public interface MutableContext<N, F>
      * 
      * @return a {@link NodeFactory} for creating new nodes, or null if mutability is not supported.
      */
-    NodeFactory<N, F> getNodeFactory(F apiFactory);
+    NodeFactory<N> getNodeFactory();
 
     /**
      * Returns a {@link MutableModel} for navigating and modifying an XDM model.

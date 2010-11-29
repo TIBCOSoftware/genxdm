@@ -17,20 +17,8 @@ package org.genxdm.base.mutable;
 
 import java.net.URI;
 
-public interface NodeFactory<N, F>
+public interface NodeFactory<N>
 {
-	/** A NodeFactory <em>may</em> be associated with an underlying factory
-	 * for node creation defined by the underlying tree model.
-	 * 
-	 * If such a factory is needed, then use a new node factory each time you
-	 * need one, or set the underlying api factory.
-	 * 
-	 * @param factory
-	 */
-	void setApiFactory(F factory);
-	
-	F getApiFactoryForNode(N node);
-	
     N createDocument(final URI uri, final String docTypeDecl);
 
     /**

@@ -36,6 +36,18 @@ public final class DomModelMutable
 //		return owner.adoptNode(source);
 //	}
 
+	public DomNodeFactory getFactoryForContext(final Node context)
+	{
+		PreCondition.assertNotNull(context, "context");
+		// TODO: cache this, probably with a least-recent first-dropped algo, rather
+		// than creating a new one each time as we're doing here.  Basically, a Map<Document, NodeFactory>,
+		// possibly user-configurable in size with a reasonable default (six?); check whether
+		// we have one already or not.  verify that this really is a better solution than
+		// creating a nodefactory each time; it's not a heavy abstraction (has only doc or
+		// dbf as state).
+		return new DomNodeFactory(context.getOwnerDocument());
+	}
+	
 	public Node appendChild(final Node parent, final Node newChild)
 	{
 		PreCondition.assertArgumentNotNull(parent, "parent");

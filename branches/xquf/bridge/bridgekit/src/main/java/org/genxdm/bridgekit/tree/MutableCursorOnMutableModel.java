@@ -17,17 +17,22 @@ package org.genxdm.bridgekit.tree;
 
 import org.genxdm.base.mutable.MutableCursor;
 import org.genxdm.base.mutable.MutableModel;
+import org.genxdm.base.mutable.NodeFactory;
 
 public class MutableCursorOnMutableModel<N>
     extends CursorOnModel<N>
     implements MutableCursor<N>
 {
-
+	
     public MutableCursorOnMutableModel(N node, MutableModel<N> model)
     {
         super(node, model);
-//        PreCondition.assertTrue(context.isMutable());
         this.tmodel = model;
+    }
+    
+    public NodeFactory<N> getFactoryForContext()
+    {
+    	return tmodel.getFactoryForContext(node);
     }
 
     public void appendChild(final N newChild)

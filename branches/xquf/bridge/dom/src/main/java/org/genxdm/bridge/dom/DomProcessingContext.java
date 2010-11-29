@@ -25,7 +25,6 @@ import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.base.mutable.MutableContext;
 import org.genxdm.base.mutable.MutableCursor;
 import org.genxdm.base.mutable.MutableModel;
-import org.genxdm.base.mutable.NodeFactory;
 import org.genxdm.bridge.dom.enhanced.DomSAProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.tree.BookmarkOnModel;
@@ -80,12 +79,6 @@ public class DomProcessingContext
         return model;
     }
 
-    public boolean isItem(Object object)
-    {
-        // TODO: should we return true if a String is supplied?
-        return ( (object instanceof Node) || (object instanceof XmlAtom) );
-    }
-
     public MutableContext<Node, Document> getMutableContext()
     {
         if (mutantContext == null)
@@ -115,11 +108,6 @@ public class DomProcessingContext
         if (typedContext == null)
             typedContext = new DomSAProcessingContext(this);
         return typedContext;
-    }
-
-    public Object[] itemArray(int size)
-    {
-        return new Object[size];
     }
 
     public Cursor<Node> newCursor(Node node)
@@ -152,10 +140,8 @@ public class DomProcessingContext
             return mutant;
         }
 
-        public NodeFactory<Node, Document> getNodeFactory(Document doc)
+        public DomNodeFactory getNodeFactory()
         {
-        	if (doc != null)
-        		return new DomNodeFactory(getDocumentBuilderFactory(), doc);
         	return new DomNodeFactory( getDocumentBuilderFactory() );
         }
 
@@ -172,6 +158,10 @@ public class DomProcessingContext
         private final DomModelMutable mutant = new DomModelMutable();
     }
 
+    // TODO: the DOM bridge has too many document builder factories.
+    // we need to review the whole bridge, of course, but this is one
+    // of the notable issues in it; if we have a static "default" one somewhere ...
+    // well, we should only have *one*, dammit.
     private static DocumentBuilderFactory sm_dbf;
     static {
     	sm_dbf = DocumentBuilderFactory.newInstance();

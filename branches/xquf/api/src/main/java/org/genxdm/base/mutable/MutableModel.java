@@ -19,6 +19,8 @@ import org.genxdm.base.Model;
 
 public interface MutableModel<N> extends Model<N>
 {
+	NodeFactory<N> getFactoryForContext(N node);
+	
 	/**
 	 * Appends the specified child to the end of the child axis of the specified parent.
 	 * 
