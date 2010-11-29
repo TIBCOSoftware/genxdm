@@ -17,7 +17,6 @@ package org.genxdm.bridgekit.tree;
 
 import java.net.URI;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -28,7 +27,6 @@ import org.genxdm.bridgekit.axes.IterableAncestorAxis;
 import org.genxdm.bridgekit.axes.IterableAncestorOrSelfAxis;
 import org.genxdm.bridgekit.axes.IterableChildAxis;
 import org.genxdm.bridgekit.axes.IterableChildAxisElements;
-import org.genxdm.bridgekit.axes.IterableChildAxisElementsByName;
 import org.genxdm.bridgekit.axes.IterableDescendantAxis;
 import org.genxdm.bridgekit.axes.IterableDescendantOrSelfAxis;
 import org.genxdm.bridgekit.axes.IterableFollowingAxis;
@@ -94,41 +92,29 @@ public final class CoreModelDecorator<N, A>
 
 	public String getAttributeStringValue(final N parent, final String namespaceURI, final String localName)
 	{
-		if (false)
+//		return model.getAttributeStringValue(parent, namespaceURI, localName);
+		final N attribute = getAttribute(parent, namespaceURI, localName);
+		if (null != attribute)
 		{
-			return model.getAttributeStringValue(parent, namespaceURI, localName);
+			return getStringValue(attribute);
 		}
 		else
 		{
-			final N attribute = getAttribute(parent, namespaceURI, localName);
-			if (null != attribute)
-			{
-				return getStringValue(attribute);
-			}
-			else
-			{
-				return null;
-			}
+			return null;
 		}
 	}
 
 	public Iterable<? extends A> getAttributeValue(final N parent, final String namespaceURI, final String localName)
 	{
-		if (false)
+//		return model.getAttributeValue(parent, namespaceURI, localName);
+		final N attribute = getAttribute(parent, namespaceURI, localName);
+		if (null != attribute)
 		{
-			return model.getAttributeValue(parent, namespaceURI, localName);
+			return getValue(attribute);
 		}
 		else
 		{
-			final N attribute = getAttribute(parent, namespaceURI, localName);
-			if (null != attribute)
-			{
-				return getValue(attribute);
-			}
-			else
-			{
-				return null;
-			}
+			return null;
 		}
 	}
 
@@ -182,14 +168,8 @@ public final class CoreModelDecorator<N, A>
 
 	public Iterable<N> getChildElementsByName(final N origin, final String namespaceURI, final String localName)
 	{
-		if (true)
-		{
-			return model.getChildElementsByName(origin, namespaceURI, localName);
-		}
-		else
-		{
-			return new IterableChildAxisElementsByName<N>(origin, namespaceURI, localName, this);
-		}
+		return model.getChildElementsByName(origin, namespaceURI, localName);
+//		return new IterableChildAxisElementsByName<N>(origin, namespaceURI, localName, this);
 	}
 
 	public Iterable<N> getDescendantAxis(final N origin)
@@ -233,41 +213,29 @@ public final class CoreModelDecorator<N, A>
 
 	public N getFirstChildElement(final N origin)
 	{
-		if (false)
+//		return model.getFirstChildElement(origin);
+		final N candidate = getFirstChild(origin);
+		if (isElement(candidate))
 		{
-			return model.getFirstChildElement(origin);
+			return candidate;
 		}
 		else
 		{
-			final N candidate = getFirstChild(origin);
-			if (isElement(candidate))
-			{
-				return candidate;
-			}
-			else
-			{
-				return getNextSiblingElement(candidate);
-			}
+			return getNextSiblingElement(candidate);
 		}
 	}
 
 	public N getFirstChildElementByName(final N origin, final String namespaceURI, final String localName)
 	{
-		if (false)
+//		return model.getFirstChildElementByName(origin, namespaceURI, localName);
+		final N element = getFirstChildElement(origin);
+		if (matches(element, namespaceURI, localName))
 		{
-			return model.getFirstChildElementByName(origin, namespaceURI, localName);
+			return element;
 		}
 		else
 		{
-			final N element = getFirstChildElement(origin);
-			if (matches(element, namespaceURI, localName))
-			{
-				return element;
-			}
-			else
-			{
-				return getNextSiblingElementByName(element, namespaceURI, localName);
-			}
+			return getNextSiblingElementByName(element, namespaceURI, localName);
 		}
 	}
 
@@ -337,54 +305,42 @@ public final class CoreModelDecorator<N, A>
 
 	public N getNextSiblingElement(final N node)
 	{
-		if (false)
+//		return model.getNextSiblingElement(node);
+		final N candidate = getNextSibling(node);
+		if (isElement(candidate))
 		{
-			return model.getNextSiblingElement(node);
+			return candidate;
 		}
 		else
 		{
-			final N candidate = getNextSibling(node);
-			if (isElement(candidate))
+			if (candidate != null)
 			{
-				return candidate;
+				return getNextSiblingElement(candidate);
 			}
 			else
 			{
-				if (candidate != null)
-				{
-					return getNextSiblingElement(candidate);
-				}
-				else
-				{
-					return null;
-				}
+				return null;
 			}
 		}
 	}
 
 	public N getNextSiblingElementByName(final N node, final String namespaceURI, final String localName)
 	{
-		if (false)
+//		return model.getNextSiblingElementByName(node, namespaceURI, localName);
+		final N element = getNextSiblingElement(node);
+		if (matches(element, namespaceURI, localName))
 		{
-			return model.getNextSiblingElementByName(node, namespaceURI, localName);
+			return element;
 		}
 		else
 		{
-			final N element = getNextSiblingElement(node);
-			if (matches(element, namespaceURI, localName))
+			if (element != null)
 			{
-				return element;
+				return getNextSiblingElementByName(element, namespaceURI, localName);
 			}
 			else
 			{
-				if (element != null)
-				{
-					return getNextSiblingElementByName(element, namespaceURI, localName);
-				}
-				else
-				{
-					return null;
-				}
+				return null;
 			}
 		}
 	}
@@ -450,29 +406,23 @@ public final class CoreModelDecorator<N, A>
 
 	public Iterable<? extends A> getValue(final N node)
 	{
-		if (false)
+//		return model.getValue(node);
+		switch (getNodeKind(node))
 		{
-			return model.getValue(node);
-		}
-		else
-		{
-			switch (getNodeKind(node))
+			case ELEMENT:
+			case ATTRIBUTE:
 			{
-				case ELEMENT:
-				case ATTRIBUTE:
-				{
-					return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(getStringValue(node)));
-				}
-				case COMMENT:
-				case NAMESPACE:
-				case PROCESSING_INSTRUCTION:
-				{
-					return atomBridge.wrapAtom(atomBridge.createString(getStringValue(node)));
-				}
-				default:
-				{
-					throw new AssertionError(getNodeKind(node));
-				}
+				return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(getStringValue(node)));
+			}
+			case COMMENT:
+			case NAMESPACE:
+			case PROCESSING_INSTRUCTION:
+			{
+				return atomBridge.wrapAtom(atomBridge.createString(getStringValue(node)));
+			}
+			default:
+			{
+				throw new AssertionError(getNodeKind(node));
 			}
 		}
 	}
@@ -485,53 +435,23 @@ public final class CoreModelDecorator<N, A>
 
 	public boolean hasAttributes(final N node)
 	{
-		if (true)
-		{
-			return model.hasAttributes(node);
-		}
-		else
-		{
-			// TODO Auto-generated method stub
-			throw new AssertionError();
-		}
+		return model.hasAttributes(node);
 	}
 
 	public boolean hasChildren(final N node)
 	{
-		if (true)
-		{
-			return model.hasChildren(node);
-		}
-		else
-		{
-			// TODO Auto-generated method stub
-			throw new AssertionError();
-		}
+		return model.hasChildren(node);
 	}
 
 	public boolean hasNamespaces(final N node)
 	{
-		if (true)
-		{
-			return model.hasNamespaces(node);
-		}
-		else
-		{
-			// TODO Auto-generated method stub
-			throw new AssertionError();
-		}
+		return model.hasNamespaces(node);
 	}
 
 	public boolean hasNextSibling(final N node)
 	{
-		if (false)
-		{
-			return model.hasNextSibling(node);
-		}
-		else
-		{
-			return model.getNextSibling(node) != null;
-		}
+//		return model.hasNextSibling(node);
+		return model.getNextSibling(node) != null;
 	}
 
 	public boolean hasParent(final N node)
@@ -541,14 +461,8 @@ public final class CoreModelDecorator<N, A>
 
 	public boolean hasPreviousSibling(final N node)
 	{
-		if (false)
-		{
-			return model.hasPreviousSibling(node);
-		}
-		else
-		{
-			return model.getPreviousSibling(node) != null;
-		}
+//		return model.hasPreviousSibling(node);
+		return model.getPreviousSibling(node) != null;
 	}
 
 	public boolean isAttribute(final N node)
@@ -590,21 +504,15 @@ public final class CoreModelDecorator<N, A>
 
 	public boolean matches(final N node, final NodeKind kind, final String namespaceURI, final String localName)
 	{
-		if (false)
+//		return model.matches(node, kind, namespaceURI, localName);
+		if (kind != null)
 		{
-			return model.matches(node, kind, namespaceURI, localName);
-		}
-		else
-		{
-			if (kind != null)
+			if (getNodeKind(node) != kind)
 			{
-				if (getNodeKind(node) != kind)
-				{
-					return false;
-				}
+				return false;
 			}
-			return matches(node, namespaceURI, localName);
 		}
+		return matches(node, namespaceURI, localName);
 	}
 
 	public boolean matches(final N node, final String namespaceURI, final String localName)

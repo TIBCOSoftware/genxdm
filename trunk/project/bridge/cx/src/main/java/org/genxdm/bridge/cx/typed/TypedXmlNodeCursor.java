@@ -39,7 +39,6 @@ public class TypedXmlNodeCursor
         return node.getAttributeTypeName(namespaceURI, localName);
     }
 
-    @SuppressWarnings("unchecked")
     public Iterable<? extends XmlAtom> getAttributeValue(String namespaceURI, String localName)
     {
         return node.getAttributeValue(namespaceURI, localName);
@@ -50,7 +49,6 @@ public class TypedXmlNodeCursor
         return node.getTypeName();
     }
 
-    @SuppressWarnings("unchecked")
     public Iterable<? extends XmlAtom> getValue()
     {
         AtomBridge<XmlAtom> bridge = context.getAtomBridge();

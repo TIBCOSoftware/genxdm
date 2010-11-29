@@ -773,14 +773,7 @@ final class XMLSchemaConverter<A>
 			}
 			final SchemaWildcard<A> completeWildcard = completeWildcard(xmlAttributeGroup.getGroups(), xmlAttributeGroup.wildcard);
 			final AttributeGroupDefinition<A> attributeGroup;
-			if (null != attributeUses)
-			{
-				attributeGroup = new AttributeGroupImpl<A>(agName, scope, attributeUses.values(), completeWildcard);
-			}
-			else
-			{
-				attributeGroup = new AttributeGroupImpl<A>(agName, scope, null, completeWildcard);
-			}
+			attributeGroup = new AttributeGroupImpl<A>(agName, scope, attributeUses.values(), completeWildcard);
 
 			if (attributeGroup.getScopeExtent() == ScopeExtent.Global)
 			{

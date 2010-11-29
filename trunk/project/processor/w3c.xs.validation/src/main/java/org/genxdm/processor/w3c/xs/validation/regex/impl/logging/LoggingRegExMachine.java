@@ -29,7 +29,7 @@ public class LoggingRegExMachine<E, T> implements RegExMachine<E, T>
 		m_logger = logger;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public boolean step(final T token, final List<? super E> matchers)
 	{
 		m_logger.logToken(token);
