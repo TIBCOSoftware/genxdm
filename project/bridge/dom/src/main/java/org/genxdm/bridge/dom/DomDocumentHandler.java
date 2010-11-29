@@ -27,7 +27,6 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.io.DefaultDocumentHandler;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 

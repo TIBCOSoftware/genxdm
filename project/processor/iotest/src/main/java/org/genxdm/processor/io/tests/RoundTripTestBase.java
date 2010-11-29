@@ -24,8 +24,6 @@ import java.io.Reader;
 import java.nio.charset.Charset;
 
 import javax.xml.XMLConstants;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamWriter;
 
 import junit.framework.TestCase;
 

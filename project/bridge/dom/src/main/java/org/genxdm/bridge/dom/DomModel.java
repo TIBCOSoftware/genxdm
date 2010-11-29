@@ -53,7 +53,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.TypeInfo;
+//import org.w3c.dom.TypeInfo;
 
 public class DomModel
     implements Model<Node>
@@ -823,8 +823,8 @@ public class DomModel
     {
         if (isAttribute(node))
         {
-            Attr attr = (Attr)node;
-            TypeInfo ti = attr.getSchemaTypeInfo();
+            //Attr attr = (Attr)node;
+            //TypeInfo ti = attr.getSchemaTypeInfo();
             // TODO: now determine whether it's IDREF or IDREFS or xs:IDREF or xs:IDREFS
             // fall through until that's done
         }

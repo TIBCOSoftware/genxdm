@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -27,7 +26,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.genxdm.base.Model;
 import org.genxdm.bridge.dom.DomProcessingContext;
 import org.genxdm.bridgetest.ModelTestBase;
-import org.genxdm.names.NamespaceBinding;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -44,8 +42,6 @@ public final class DomModelTest
     public void testSymbolIntegrity()
         throws ParserConfigurationException, IOException, URISyntaxException
     {
-        final DomProcessingContext pcx = newProcessingContext();
-
         final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         dbf.setValidating(false);
@@ -65,8 +61,6 @@ public final class DomModelTest
         final Attr attribute = document.createAttributeNS(
                 copy("http://www.example.com"), copy("foo"));
         element.setAttributeNodeNS(attribute);
-
-        assertNodeSymbolSemantics(element, pcx);
     }
 
     public void testNamespaceUnawareDOM()
@@ -95,70 +89,6 @@ public final class DomModelTest
             assertEquals("bar", model.getLocalName(attribute));
 
             element.setAttributeNode(attribute);
-        }
-
-        for (final Node node : model.getDescendantOrSelfAxis(document))
-        {
-            assertNodeSymbolSemantics(node, pcx);
-            for (final Node namespace : model.getNamespaceAxis(node, false))
-            {
-                assertNodeSymbolSemantics(namespace, pcx);
-            }
-            for (final Node attribute : model.getAttributeAxis(node, false))
-            {
-                assertNodeSymbolSemantics(attribute, pcx);
-            }
-        }
-    }
-
-    /**
-     * Some bridge implementations may use {@link String} directly for symbols.
-     */
-    public static void assertNodeSymbolSemantics(final Node node, final DomProcessingContext pcx)
-    {
-        final Model<Node> model = pcx.getModel();
-
-        switch (model.getNodeKind(node))
-        {
-            case ELEMENT:
-            {
-
-                for (final Node namespace : model.getNamespaceAxis(node, false))
-                {
-                    assertNodeSymbolSemantics(namespace, pcx);
-                }
-                for (final NamespaceBinding binding : model.getNamespaceBindings(node))
-                {
-                	// TODO - do we need something here?
-                }
-                for (final Node attribute : model.getAttributeAxis(node, false))
-                {
-                    assertNodeSymbolSemantics(attribute, pcx);
-                }
-                for (final QName name : model.getAttributeNames(node, true))
-                {
-                	// TODO - do we need something here?
-                }
-            }
-                break;
-            case NAMESPACE:
-            {
-            }
-                break;
-            case ATTRIBUTE:
-            {
-            }
-                break;
-            case DOCUMENT:
-            case TEXT:
-            case COMMENT:
-            {
-            }
-                break;
-            default:
-            {
-                throw new AssertionError(model.getNodeKind(node));
-            }
         }
 
     }

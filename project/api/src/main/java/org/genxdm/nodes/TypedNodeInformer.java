@@ -15,8 +15,6 @@
  */
 package org.genxdm.nodes;
 
-import java.util.List;
-
 import javax.xml.namespace.QName;
 
 public interface TypedNodeInformer<N, A>

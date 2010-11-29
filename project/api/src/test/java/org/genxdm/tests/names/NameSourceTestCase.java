@@ -15,8 +15,6 @@
  */
 package org.genxdm.tests.names;
 
-import org.genxdm.xs.types.NativeType;
-
 import junit.framework.TestCase;
 
 public class NameSourceTestCase

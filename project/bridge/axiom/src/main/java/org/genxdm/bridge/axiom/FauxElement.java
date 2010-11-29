@@ -94,13 +94,15 @@ public class FauxElement
         return null;
     }
 
-    public Iterator getAllAttributes()
+    @SuppressWarnings("rawtypes")
+	public Iterator getAllAttributes()
     {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Iterator getAllDeclaredNamespaces()
+    @SuppressWarnings("rawtypes")
+	public Iterator getAllDeclaredNamespaces()
         throws OMException
     {
         // TODO Auto-generated method stub
@@ -125,7 +127,8 @@ public class FauxElement
         return null;
     }
 
-    public Iterator getChildElements()
+    @SuppressWarnings("rawtypes")
+	public Iterator getChildElements()
     {
         // TODO Auto-generated method stub
         return null;
@@ -423,25 +426,29 @@ public class FauxElement
 
     }
 
-    public Iterator getChildren()
+    @SuppressWarnings("rawtypes")
+	public Iterator getChildren()
     {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Iterator getChildrenWithLocalName(String localName)
+    @SuppressWarnings("rawtypes")
+	public Iterator getChildrenWithLocalName(String localName)
     {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Iterator getChildrenWithName(QName elementQName)
+    @SuppressWarnings("rawtypes")
+	public Iterator getChildrenWithName(QName elementQName)
     {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Iterator getChildrenWithNamespaceURI(String uri)
+    @SuppressWarnings("rawtypes")
+	public Iterator getChildrenWithNamespaceURI(String uri)
     {
         // TODO Auto-generated method stub
         return null;

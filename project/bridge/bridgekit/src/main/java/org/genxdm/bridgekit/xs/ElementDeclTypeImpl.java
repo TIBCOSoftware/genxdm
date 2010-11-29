@@ -255,7 +255,7 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		m_type = PreCondition.assertArgumentNotNull(type, "type");
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public boolean subtype(final PrimeType rhs)
 	{
 		PreCondition.assertArgumentNotNull(rhs, "rhs");
