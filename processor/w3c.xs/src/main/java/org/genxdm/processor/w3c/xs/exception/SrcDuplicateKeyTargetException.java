@@ -25,10 +25,10 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SrcDuplicateKeyTargetException extends CvcIdentityConstraintException
 {
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private final List fields;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public SrcDuplicateKeyTargetException(final QName constraintName, final List fields, final LocationInSchema location)
 	{
 		super(constraintName, PART_TODO, location);

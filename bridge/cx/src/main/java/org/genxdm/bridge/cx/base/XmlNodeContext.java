@@ -56,7 +56,8 @@ public final class XmlNodeContext
         return mutant;
     }
 
-    public TypedContext<XmlNode, XmlAtom> getTypedContext()
+    @SuppressWarnings("unchecked")
+	public TypedContext<XmlNode, XmlAtom> getTypedContext()
     {
         return new TypedXmlNodeContext(this);
     }

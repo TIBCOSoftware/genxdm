@@ -423,10 +423,10 @@ public class ContentHandlerOnXmlStreamWriter
             content.put(prefix, uri);
         }
         
-        Iterable<String> getDeclarations()
-        {
-            return content.keySet();
-        }
+//        Iterable<String> getDeclarations()
+//        {
+//            return content.keySet();
+//        }
         private Map<String, String> content = new HashMap<String, String>();
     }
 

@@ -66,6 +66,7 @@ final class FauxNamespace implements OMNamespace
                         prefix.equals(otherPrefix)));
 	}
 
+	@SuppressWarnings("deprecation")
 	public String getName()
 	{
 	    if (namespace != null)
