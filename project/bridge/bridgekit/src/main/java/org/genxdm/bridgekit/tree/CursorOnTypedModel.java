@@ -15,8 +15,6 @@
  */
 package org.genxdm.bridgekit.tree;
 
-import java.util.List;
-
 import javax.xml.namespace.QName;
 
 import org.genxdm.typed.TypedCursor;

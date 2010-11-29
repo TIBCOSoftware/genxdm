@@ -40,7 +40,6 @@ public class TypedXmlNodeModel
         return parent.getAttributeTypeName(namespaceURI, localName);
     }
 
-    @SuppressWarnings("unchecked")
     public Iterable<? extends XmlAtom> getAttributeValue(XmlNode parent, String namespaceURI, String localName)
     {
         return parent.getAttributeValue(namespaceURI, localName);
@@ -51,7 +50,6 @@ public class TypedXmlNodeModel
         return node.getTypeName();
     }
 
-    @SuppressWarnings("unchecked")
     public Iterable<? extends XmlAtom> getValue(XmlNode node)
     {
         switch (node.getNodeKind())

@@ -15,8 +15,6 @@
  */
 package org.genxdm.bridgekit.tree;
 
-import java.io.IOException;
-
 import org.genxdm.NodeKind;
 import org.genxdm.base.Cursor;
 import org.genxdm.base.Model;

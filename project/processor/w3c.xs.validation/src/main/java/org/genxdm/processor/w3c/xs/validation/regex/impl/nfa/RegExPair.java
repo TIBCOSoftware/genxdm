@@ -93,13 +93,12 @@ final class RegExPair<L,R> implements Comparable<RegExPair<L,R>>
      * @param obj
      * @return true is components are equals
      */
-    @SuppressWarnings("unchecked")
 	@Override
     public boolean equals(Object obj)
     {
         if (obj instanceof RegExPair)
         {
-            RegExPair other = (RegExPair)obj;
+            RegExPair<?,?> other = (RegExPair<?,?>)obj;
             return (m_first == other.m_first
                     || (m_first != null && m_first.equals(other.m_first)))
                     && (m_second == other.m_second
@@ -129,7 +128,7 @@ final class RegExPair<L,R> implements Comparable<RegExPair<L,R>>
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
 	protected static <L,R> int nullSafeCompare(final L o1, R o2)
     {
         if (o1 == o2)
