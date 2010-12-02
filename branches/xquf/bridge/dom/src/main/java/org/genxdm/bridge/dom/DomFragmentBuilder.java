@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.genxdm.DtdAttributeKind;
 import org.genxdm.NodeKind;
@@ -254,7 +255,16 @@ public class DomFragmentBuilder
 
     private Document newDocument(final URI documentURI)
     {
-        final Document document = DomSupport.newDocumentInternal(new DomNodeFactory(m_dbf), Emulation.C14N, false);
+    	final Document document;
+        try
+        {
+        	document = m_dbf.newDocumentBuilder().newDocument();
+        }
+        catch (ParserConfigurationException pce)
+        {
+            throw new RuntimeException(pce);
+        }
+
 
         if (null != documentURI)
         {

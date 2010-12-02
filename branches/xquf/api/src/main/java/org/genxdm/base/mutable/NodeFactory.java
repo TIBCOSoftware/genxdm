@@ -21,6 +21,8 @@ public interface NodeFactory<N>
 {
     N createDocument(final URI uri, final String docTypeDecl);
 
+    MutableModel<N> getMutableModel();
+    
     /**
      * Creates a new attribute.
      * 

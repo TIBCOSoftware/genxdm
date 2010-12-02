@@ -30,15 +30,23 @@ public class DomNodeFactory
 {
 
 	// use for creating new documents.
-	public DomNodeFactory(DocumentBuilderFactory dbf) {
+	public DomNodeFactory(DocumentBuilderFactory dbf, DomModelMutable model) {
 		PreCondition.assertNotNull(dbf, "dbf");
+		PreCondition.assertNotNull(model, "model");
 		m_dbf = dbf;
+		m_model = model;
 	}
 	
 	// use for context instantiation
-	public DomNodeFactory(Document doc) {
+	public DomNodeFactory(Document doc, DomModelMutable model) {
 		PreCondition.assertNotNull(doc, "doc");
+		PreCondition.assertNotNull(model, "model");
 		m_doc = doc;
+		m_model = model;
+	}
+	
+	public DomModelMutable getMutableModel() {
+		return m_model;
 	}
 	
     public DocumentBuilderFactory getCachedDocumentBuilderFactory()
@@ -101,4 +109,5 @@ public class DomNodeFactory
     
     private DocumentBuilderFactory m_dbf;
     private Document m_doc;
+    private final DomModelMutable m_model;
 }

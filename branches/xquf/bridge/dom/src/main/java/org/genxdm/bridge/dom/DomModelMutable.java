@@ -45,7 +45,7 @@ public final class DomModelMutable
 		// we have one already or not.  verify that this really is a better solution than
 		// creating a nodefactory each time; it's not a heavy abstraction (has only doc or
 		// dbf as state).
-		return new DomNodeFactory(context.getOwnerDocument());
+		return new DomNodeFactory(context.getOwnerDocument(), this);
 	}
 	
 	public Node appendChild(final Node parent, final Node newChild)

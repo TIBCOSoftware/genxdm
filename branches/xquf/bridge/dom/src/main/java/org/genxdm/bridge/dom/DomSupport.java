@@ -23,9 +23,6 @@ import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.genxdm.NodeKind;
 import org.genxdm.exceptions.GxmlException;
@@ -995,22 +992,6 @@ public final class DomSupport implements DomConstants
 		}
 
 		return realLength;
-	}
-
-	public static <A> Document newDocumentInternal(final DomNodeFactory fac, final Emulation emulation, final boolean useEnhancedDOM)
-	{
-		PreCondition.assertFalse(useEnhancedDOM, "useEnhancedDOM");
-		final DocumentBuilderFactory dbf = fac.getCachedDocumentBuilderFactory();
-		final DocumentBuilder db;
-		try
-		{
-			db = dbf.newDocumentBuilder();
-		}
-		catch (final ParserConfigurationException e)
-		{
-			throw new RuntimeException(e);
-		}
-		return db.newDocument();
 	}
 
 	public static void removeAttribute(final Node parent, final String namespaceURI, final String localName)

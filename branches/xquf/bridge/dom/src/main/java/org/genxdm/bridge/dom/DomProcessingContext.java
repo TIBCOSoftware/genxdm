@@ -79,7 +79,8 @@ public class DomProcessingContext
         return model;
     }
 
-    public MutableContext<Node, Document> getMutableContext()
+    @SuppressWarnings("unchecked")
+	public MutableContext<Node, Document> getMutableContext()
     {
         if (mutantContext == null)
             mutantContext = new MutantContext();
@@ -142,7 +143,7 @@ public class DomProcessingContext
 
         public DomNodeFactory getNodeFactory()
         {
-        	return new DomNodeFactory( getDocumentBuilderFactory() );
+        	return new DomNodeFactory( getDocumentBuilderFactory(), mutant );
         }
 
         public ProcessingContext<Node> getProcessingContext()
