@@ -21,6 +21,8 @@ public interface NodeFactory<N>
 {
     N createDocument(final URI uri, final String docTypeDecl);
 
+    MutableModel<N> getMutableModel();
+    
     /**
      * Creates a new attribute.
      * 
@@ -36,7 +38,7 @@ public interface NodeFactory<N>
      *            The value of the attribute as a {@link String} i.e. xs:untypedAtomic.
      * @return The created attribute.
      */
-    N createAttribute(final N owner, final String namespaceURI, final String localName, final String prefix, final String value);
+    N createAttribute(final String namespaceURI, final String localName, final String prefix, final String value);
 
     /**
      * Creates a new namespace node.
@@ -49,7 +51,7 @@ public interface NodeFactory<N>
      *            The string-value of the namespace node.
      * @return The created namespace node.
      */
-    N createNamespace(final N owner, final String prefix, final String namespaceURI);
+    N createNamespace(final String prefix, final String namespaceURI);
 
     /**
      * Creates a new comment node.
@@ -60,7 +62,7 @@ public interface NodeFactory<N>
      *            The string-value of the comment node.
      * @return The created comment node.
      */
-    N createComment(final N owner, final String data);
+    N createComment(final String data);
 
     /**
      * Creates a new element node.
@@ -75,7 +77,7 @@ public interface NodeFactory<N>
      *            The prefix part of the name of the element node.
      * @return The created element node.
      */
-    N createElement(final N owner, final String namespaceURI, final String localName, final String prefix);
+    N createElement(final String namespaceURI, final String localName, final String prefix);
 
     /**
      * Creates a new processing-instruction node.
@@ -88,7 +90,7 @@ public interface NodeFactory<N>
      *            The data of the processing-instruction (dm:string-value).
      * @return The created processing-instruction.
      */
-    N createProcessingInstruction(final N owner, final String target, final String data);
+    N createProcessingInstruction(final String target, final String data);
 
     /**
      * Creates a new text node.
@@ -99,6 +101,6 @@ public interface NodeFactory<N>
      *            The value of the text node as a {@link String} i.e. xs:untypedAtomic.
      * @return The created text node.
      */
-    N createText(final N owner, final String value);
+    N createText(final String value);
 
 }
