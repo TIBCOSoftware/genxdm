@@ -40,8 +40,8 @@
     <modules>
         <module>bridgekit</module>
         <module>bridgetest</module>
-        <module>axiom</module>
-        <module>cx</module>
+        <!--module>axiom</module-->
+        <!--module>cx</module-->
         <module>dom</module>
     </modules>
 

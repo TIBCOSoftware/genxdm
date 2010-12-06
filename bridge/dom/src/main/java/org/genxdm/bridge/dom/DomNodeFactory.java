@@ -29,26 +29,42 @@ public class DomNodeFactory
     implements NodeFactory<Node>
 {
 
-	public DomNodeFactory(DocumentBuilderFactory dbf) {
-		m_dbf = dbf;
-	}
-	
+    // use for creating new documents.
+    public DomNodeFactory(DocumentBuilderFactory dbf, DomModelMutable model) {
+        PreCondition.assertNotNull(dbf, "dbf");
+        PreCondition.assertNotNull(model, "model");
+        m_dbf = dbf;
+        m_model = model;
+    }
+    
+    // use for context instantiation
+    public DomNodeFactory(Document doc, DomModelMutable model) {
+        PreCondition.assertNotNull(doc, "doc");
+        PreCondition.assertNotNull(model, "model");
+        m_doc = doc;
+        m_model = model;
+    }
+    
+    public DomModelMutable getMutableModel() {
+        return m_model;
+    }
+    
     public DocumentBuilderFactory getCachedDocumentBuilderFactory()
     {
         return m_dbf;
     }
     
-    public Node createAttribute(Node owner, String namespaceURI, String localName, String prefix, String value)
+    public Node createAttribute(String namespaceURI, String localName, String prefix, String value)
     {
-        return DomSupport.createAttributeUntyped(DomSupport.getOwner(owner), namespaceURI, localName, prefix, value);
+        PreCondition.assertNotNull(m_doc, "m_doc");
+        return DomSupport.createAttributeUntyped(m_doc, namespaceURI, localName, prefix, value);
     }
 
-    public Node createComment(Node owner, String data)
+    public Node createComment(String data)
     {
-        PreCondition.assertArgumentNotNull(owner, "owner");
         PreCondition.assertArgumentNotNull(data, "data");
-        final Document document = DomSupport.getOwner(owner);
-        return DomSupport.createComment(document, data);
+        PreCondition.assertNotNull(m_doc, "m_doc");
+        return DomSupport.createComment(m_doc, data);
     }
 
     public Node createDocument(final URI uri, final String docTypeDecl)
@@ -56,7 +72,8 @@ public class DomNodeFactory
         // TODO: set document uri and use the doc type declaration
         try
         {
-            return sm_dbf.newDocumentBuilder().newDocument();
+            m_doc = m_dbf.newDocumentBuilder().newDocument();
+            return m_doc;
         }
         catch (ParserConfigurationException pce)
         {
@@ -64,44 +81,33 @@ public class DomNodeFactory
         }
     }
 
-    public Node createElement(Node owner, String namespaceURI, String localName, String prefix)
+    public Node createElement(String namespaceURI, String localName, String prefix)
     {
-        PreCondition.assertArgumentNotNull(owner, "owner");
-        final Document document = DomSupport.getOwner(owner);
-        return DomSupport.createElement(document, namespaceURI, localName, prefix);
+        PreCondition.assertNotNull(m_doc, "m_doc");
+        return DomSupport.createElement(m_doc, namespaceURI, localName, prefix);
     }
 
-    public Node createNamespace(Node owner, String prefix, String namespaceURI)
+    public Node createNamespace(String prefix, String namespaceURI)
     {
-        return DomSupport.createNamespace(DomSupport.getOwner(owner), prefix, namespaceURI);
+        PreCondition.assertNotNull(m_doc, "m_doc");
+        return DomSupport.createNamespace(m_doc, prefix, namespaceURI);
     }
 
-    public Node createProcessingInstruction(Node owner, String target, String data)
+    public Node createProcessingInstruction(String target, String data)
     {
-        PreCondition.assertArgumentNotNull(owner, "owner");
         PreCondition.assertArgumentNotNull(data, "data");
-        final Document document = DomSupport.getOwner(owner);
-        return DomSupport.createProcessingInstruction(document, target, data);
+        PreCondition.assertNotNull(m_doc, "m_doc");
+        return DomSupport.createProcessingInstruction(m_doc, target, data);
     }
 
-    public Node createText(Node owner, String value)
+    public Node createText(String value)
     {
-        PreCondition.assertArgumentNotNull(owner, "owner");
         PreCondition.assertArgumentNotNull(value, "value");
-        final Document document = DomSupport.getOwner(owner);
-        return DomSupport.createText(document, value);
+        PreCondition.assertNotNull(m_doc, "m_doc");
+        return DomSupport.createText(m_doc, value);
     }
-
-    private final DocumentBuilderFactory m_dbf;
     
-    /**
-     * Initializing the {@link DocumentBuilderFactory} is expensive so we do it once statically.
-     */
-    private static final DocumentBuilderFactory sm_dbf = DocumentBuilderFactory.newInstance();
-    
-    static
-    {
-        sm_dbf.setNamespaceAware(true);
-    }
-
+    private DocumentBuilderFactory m_dbf;
+    private Document m_doc;
+    private final DomModelMutable m_model;
 }
