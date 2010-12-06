@@ -21,6 +21,8 @@ public interface MutableModel<N> extends Model<N>
 {
     NodeFactory<N> getFactoryForContext(N node);
     
+    N copyNode(N source, boolean deep);
+    
     /**
      * Appends the specified child to the end of the child axis of the specified parent.
      * 
