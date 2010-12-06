@@ -17,92 +17,103 @@ package org.genxdm.bridgekit.tree;
 
 import org.genxdm.base.mutable.MutableCursor;
 import org.genxdm.base.mutable.MutableModel;
+import org.genxdm.base.mutable.NodeFactory;
 
 public class MutableCursorOnMutableModel<N>
     extends CursorOnModel<N>
     implements MutableCursor<N>
 {
-
+    
     public MutableCursorOnMutableModel(N node, MutableModel<N> model)
     {
         super(node, model);
-//        PreCondition.assertTrue(context.isMutable());
         this.tmodel = model;
     }
-
-    public N adoptNode(N source)
+    
+    public NodeFactory<N> getFactoryForContext()
     {
-        return tmodel.adoptNode(node, source);
+        return tmodel.getFactoryForContext(node);
     }
 
-    public void appendChild(N newChild)
+    public void appendChild(final N newChild)
     {
         tmodel.appendChild(node, newChild);
     }
-
-    public N clone(boolean deep)
+    
+    public void appendChildren(final Iterable<N> content)
     {
-        return tmodel.cloneNode(node, deep);
+        tmodel.appendChildren(node, content);
+    }
+    
+    public void prependChild(final N newChild)
+    {
+        tmodel.prependChild(node, newChild);
+    }
+    
+    public void prependChildren(final Iterable<N> content)
+    {
+        tmodel.prependChildren(node, content);
     }
 
-    public N getOwner()
+    public void insertBefore(final N previous)
     {
-        return tmodel.getOwner(node);
+        tmodel.insertBefore(node, previous);
+    }
+    
+    public void insertBefore(final Iterable<N> content)
+    {
+        tmodel.insertBefore(node, content);
+    }
+    
+    public void insertAfter(final N next)
+    {
+        tmodel.insertAfter(node, next);
+    }
+    
+    public void insertAfter(final Iterable<N> content)
+    {
+        tmodel.insertAfter(node, content);
     }
 
-    public N importNode(N source, boolean deep)
+    public N delete()
     {
-        return tmodel.importNode(node, source, deep);
+        N old = node;
+        if (!moveToPreviousSibling())
+            moveToParent();
+        return tmodel.delete(old);
+    }
+    
+    public Iterable<N> deleteChildren()
+    {
+        return tmodel.deleteChildren(node);
     }
 
-    public N insertBefore(N newChild, N refChild)
+    public N replace(final N newNode)
     {
-        return tmodel.insertBefore(node, newChild, refChild);
+        N old = tmodel.replace(node, newNode);
+        if (old != null)
+            moveTo(newNode);
+        return old;
+    }
+    
+    public void replaceValue(final String value)
+    {
+        tmodel.replaceValue(node, value);
     }
 
-    public void normalize()
+    public void insertAttribute(final N attribute)
     {
-        tmodel.normalize(node);
+        tmodel.insertAttribute(node, attribute);
+    }
+    
+    public void insertAttributes(final Iterable<N> attributes)
+    {
+        tmodel.insertAttributes(node, attributes);
     }
 
-    public void removeAttribute(String namespaceURI, String localName)
+    public void insertNamespace(String prefix, String uri)
     {
-        tmodel.removeAttribute(node, namespaceURI, localName);
-    }
-
-    public N removeChild(N oldChild)
-    {
-        return tmodel.removeChild(node, oldChild);
-    }
-
-    public void removeNamespace(String prefix)
-    {
-        tmodel.removeNamespace(node, prefix);
-    }
-
-    public N replaceChild(N newChild, N oldChild)
-    {
-        return tmodel.replaceChild(node, newChild, oldChild);
-    }
-
-    public void setAttribute(N attribute)
-    {
-        tmodel.setAttribute(node, attribute);
-    }
-
-    public N setAttribute(String namespaceURI, String localName, String prefix, String value)
-    {
-        return tmodel.setAttribute(node, namespaceURI, localName, prefix, value);
-    }
-
-    public void setNamespace(N namespace)
-    {
-        tmodel.setNamespace(node, namespace);
-    }
-
-    public void setNamespace(String prefix, String uri)
-    {
-        tmodel.setNamespace(node, prefix, uri);
+        tmodel.insertNamespace(node, prefix, uri);
     }
 
     private final MutableModel<N> tmodel;
