@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<project name="GenXDM Site Generation" default="xyzzy">
+
+    <property name="target-dir" location="target/site" />
+    <available property="_can_agg_" file="${target-dir}" type="dir" />
+
+    <target name="aggregate" description="Aggregate the generated sites into a single site" if="_can_agg_">
+        <echo>This is the cheap and sleazy approach.  There's got to be a better way.</echo>
+        <move todir="${target-dir}/genxdm-api">
+            <fileset dir="api/target/site" />
+        </move>
+        <move todir="${target-dir}/genxdm-xpath-api">
+            <fileset dir="xpath/target/site" />
+        </move>
+        <property name="bridge-target" location="${target-dir}/bridge" />
+        <move todir="${bridge-target}">
+            <fileset dir="bridge/target/site" />
+        </move>
+        <move todir="${bridge-target}/bridgekit">
+            <fileset dir="bridge/bridgekit/target/site" />
+        </move>
+        <move todir="${bridge-target}/bridgetest">
+            <fileset dir="bridge/bridgetest/target/site" />
+        </move>
+        <move todir="${bridge-target}/bridge-axiom">
+            <fileset dir="bridge/axiom/target/site" />
+        </move>
+        <move todir="${bridge-target}/bridge-cx">
+            <fileset dir="bridge/cx/target/site" />
+        </move>
+        <move todir="${bridge-target}/bridge-dom">
+            <fileset dir="bridge/dom/target/site" />
+        </move>
+        <property name="proc-target" location="${target-dir}/processor" />
+        <move todir="${proc-target}">
+            <fileset dir="processor/target/site" />
+        </move>
+        <move todir="${proc-target}/proc-convert">
+            <fileset dir="processor/convert/target/site" />
+        </move>
+        <move todir="${proc-target}/proc-io">
+            <fileset dir="processor/input-output/target/site" />
+        </move>
+        <move todir="${proc-target}/proc-iotest">
+            <fileset dir="processor/iotest/target/site" />
+        </move>
+        <move todir="${proc-target}/proc-w3cxs-val">
+            <fileset dir="processor/w3c.xs.validation/target/site" />
+        </move>
+        <move todir="${proc-target}/proc-w3cxs">
+            <fileset dir="processor/w3c.xs/target/site" />
+        </move>
+        <move todir="${proc-target}/proc-xpath">
+            <fileset dir="processor/xpath.impl/target/site" />
+        </move>
+        <property name="support-target" location="${target-dir}/support" />
+        <move todir="${support-target}">
+            <fileset dir="support/target/site" />
+        </move>
+        <move todir="${support-target}/genxdm-book">
+            <fileset dir="support/book/target/site" />
+        </move>
+        <move todir="${support-target}/performance">
+            <fileset dir="support/performance/target/site" />
+        </move>
+        <move todir="${support-target}/samples">
+            <fileset dir="support/samples/target/site" />
+        </move>
+    </target>
+
+    <target name="xyzzy">
+        <echo>Nothing happens.</echo>
+        <echo>(try -projecthelp, 'kay?)</echo>
+    </target>
+</project>
