@@ -21,9 +21,9 @@ public final class XmlCommentNode
     extends XmlLeafNode
 {
 
-    XmlCommentNode(final XmlRootNode document, final String value)
+    XmlCommentNode(final String value)
     {
-        super(NodeKind.COMMENT, document, value);
+        super(NodeKind.COMMENT, value);
     }
 
 }

@@ -35,9 +35,9 @@ import org.genxdm.xs.types.Type;
 public final class XmlElementNode
     extends XmlContainerNode
 {
-    XmlElementNode(final XmlRootNode document, final String namespace, final String localName, final String prefix, final Type<XmlAtom> type)
+    XmlElementNode(final String namespace, final String localName, final String prefix, final Type<XmlAtom> type)
     {
-        super(NodeKind.ELEMENT, document);
+        super(NodeKind.ELEMENT);
         this.type = type;
         this.localName = localName;
         this.namespaceURI = namespace;
@@ -204,17 +204,7 @@ public final class XmlElementNode
         return false;
     }
     
-    @Override
-	void setDocument(XmlRootNode document) {
-		// TODO Auto-generated method stub
-		super.setDocument(document);
-		
-		// must set the owner for attributes and namespaces.
-		setDocumentForNodeAndSiblings(document, firstAttribute);
-		setDocumentForNodeAndSiblings(document, firstNamespace);
-	}
-
-	void setAttribute(XmlAttributeNode attribute)
+    void setAttribute(XmlAttributeNode attribute)
     {
         if (firstAttribute == null)
         {
@@ -341,11 +331,11 @@ public final class XmlElementNode
      * Useful for debugging:
      */
     @Override
-	public String toString() {
-    	return "Element: {" + namespaceURI + "}" + localName;
-	}
+    public String toString() {
+        return "Element: {" + namespaceURI + "}" + localName;
+    }
 
-	private URI baseURI;
+    private URI baseURI;
     
     protected XmlAttributeNode firstAttribute;
     protected XmlNamespaceNode firstNamespace;

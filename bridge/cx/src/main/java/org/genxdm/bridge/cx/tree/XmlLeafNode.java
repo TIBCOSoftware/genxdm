@@ -38,9 +38,9 @@ import org.genxdm.xs.types.Type;
 public class XmlLeafNode
     extends XmlNode
 {
-    protected XmlLeafNode(final NodeKind nodeKind, final XmlRootNode document, final Type<XmlAtom> type, final List<? extends XmlAtom> data)
+    protected XmlLeafNode(final NodeKind nodeKind, final Type<XmlAtom> type, final List<? extends XmlAtom> data)
     {
-        super(nodeKind, document);
+        super(nodeKind);
         if (type == null)
             this.type = UNTYPED_ATOMIC_TYPE;
         else
@@ -48,9 +48,9 @@ public class XmlLeafNode
         this.atoms = Collections.unmodifiableList(new ArrayList<XmlAtom>(PreCondition.assertNotNull(data, "data")));
     }
     
-    protected XmlLeafNode(final NodeKind nodeKind, final XmlRootNode document, final String value)
+    protected XmlLeafNode(final NodeKind nodeKind, final String value)
     {
-        super(nodeKind, document);
+        super(nodeKind);
         this.type = null;
         this.atoms = Collections.unmodifiableList(new ArrayList<XmlAtom>(new XmlUntypedAtomic( (value == null) ? "" : value )));
     }
@@ -142,10 +142,10 @@ public class XmlLeafNode
         }
         // if a type is specified, then this is the typed world,
         // so let's hope that we have a document and that it has a bridge.
-        if (document != null)
+        if (getRoot().getNodeKind() == NodeKind.DOCUMENT)
         {
-            if (document.atomBridge != null)
-                return document.atomBridge.getC14NString(atoms);
+            if (((XmlRootNode)getRoot()).atomBridge != null)
+                return ((XmlRootNode)getRoot()).atomBridge.getC14NString(atoms);
         }
         return getUntypedValue();
     }

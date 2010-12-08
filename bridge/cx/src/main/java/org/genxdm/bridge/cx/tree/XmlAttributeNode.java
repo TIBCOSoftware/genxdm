@@ -28,9 +28,9 @@ import org.genxdm.xs.types.Type;
 public final class XmlAttributeNode
     extends XmlLeafNode
 {
-    XmlAttributeNode(final XmlRootNode document, final String namespace, final String localName, final String prefix, final DtdAttributeKind attType, final String value)
+    XmlAttributeNode(final String namespace, final String localName, final String prefix, final DtdAttributeKind attType, final String value)
     {
-        super(NodeKind.ATTRIBUTE, document, value);
+        super(NodeKind.ATTRIBUTE, value);
         dtdType = attType;
         if (attType == null)
             dtdType = DtdAttributeKind.CDATA;
@@ -39,11 +39,10 @@ public final class XmlAttributeNode
         this.prefixHint = prefix;
         checkId();
     }
-    // TODO: add a typed constructor.  but the one we had wasn't right.
     
-    XmlAttributeNode(final XmlRootNode document, final String namespace, final String localName, final String prefix, final Type<XmlAtom> type, final List<XmlAtom> data)
+    XmlAttributeNode( final String namespace, final String localName, final String prefix, final Type<XmlAtom> type, final List<XmlAtom> data)
     {
-        super(NodeKind.ATTRIBUTE, document, type, data);
+        super(NodeKind.ATTRIBUTE, type, data);
         this.namespaceURI = (namespace == null) ? "" : namespace;
         this.localName = localName;
         this.prefixHint = prefix;
@@ -90,8 +89,8 @@ public final class XmlAttributeNode
     
     void checkId()
     {
-        if (isId() && (this.document != null) )
-            document.addIdNode(this);
+        if (isId() && (getRoot().getNodeKind() == NodeKind.DOCUMENT) )
+            ((XmlRootNode)getRoot()).addIdNode(this);
     }
 
     private DtdAttributeKind dtdType;

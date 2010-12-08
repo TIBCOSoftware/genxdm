@@ -317,7 +317,7 @@ public class XmlNodeModel
                         if (attribute.getNamespaceURI().equals(XMLConstants.XML_NS_URI))
                         {
                             // create a fake attribute with node as the parent.
-                            XmlAttributeNode attr = factory.createAttribute(node.getRoot(), attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix(), attribute.getStringValue());
+                            XmlAttributeNode attr = factory.createAttribute(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getPrefix(), attribute.getStringValue());
                             agency.setParent(attr, (XmlContainerNode)node);
                             attributeMap.put(attribute.getLocalName(), attr);
                         }
@@ -419,7 +419,7 @@ public class XmlNodeModel
                         else
                         {
                             // create a fake namespace node with parent set to the current node
-                            XmlNamespaceNode ns = factory.createNamespace(node.getRoot(), prefix, uri);
+                            XmlNamespaceNode ns = factory.createNamespace(prefix, uri);
                             agency.setParent(ns, (XmlContainerNode)node);
                             namespaceMap.put(prefix, ns);
                         }
@@ -437,7 +437,7 @@ public class XmlNodeModel
                 }
                 // Add a namespace node for the xml prefix that is implicitly
                 // declared by the XML Namespaces Recommendation.
-                XmlNamespaceNode xmlns = factory.createNamespace(node.getRoot(), XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI);
+                XmlNamespaceNode xmlns = factory.createNamespace(XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI);
                 agency.setParent(xmlns, (XmlContainerNode)node);
                 namespaceMap.put(XMLConstants.XML_NS_PREFIX, xmlns);
                 return namespaceMap.values();
