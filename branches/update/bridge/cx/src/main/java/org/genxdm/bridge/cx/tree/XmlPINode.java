@@ -21,9 +21,9 @@ public final class XmlPINode
     extends XmlLeafNode
 {
 
-    XmlPINode(final XmlRootNode document, final String target, final String value)
+    XmlPINode(final String target, final String value)
     {
-        super(NodeKind.PROCESSING_INSTRUCTION, document, value);
+        super(NodeKind.PROCESSING_INSTRUCTION, value);
         this.localName = target;
         this.namespaceURI = "";
         this.prefixHint = "";

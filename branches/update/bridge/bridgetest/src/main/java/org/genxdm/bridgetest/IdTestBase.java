@@ -34,21 +34,21 @@ import junit.framework.TestCase;
  * @param <N>
  */
 public abstract class IdTestBase<N> extends TestCase
-	implements ProcessingContextFactory<N>
+    implements ProcessingContextFactory<N>
 {
-	protected DocumentHandler<N> m_handler;
-	protected Model<N> m_model;
-	
-	public void setUp() {
-		ProcessingContext<N> pcx = newProcessingContext(); 
-		m_handler = pcx.newDocumentHandler();
-		m_model = pcx.getModel();
-	}
-	
-	/**
-	 * Verifies that {@link Model#getElementById(Object, String)} works correctly.
-	 */
-	public void testIdLookup() throws GxmlMarshalException, IOException {
+    protected DocumentHandler<N> m_handler;
+    protected Model<N> m_model;
+    
+    public void setUp() {
+        ProcessingContext<N> pcx = newProcessingContext(); 
+        m_handler = pcx.newDocumentHandler();
+        m_model = pcx.getModel();
+    }
+    
+    /**
+     * Verifies that {@link Model#getElementById(Object, String)} works correctly.
+     */
+    public void testIdLookup() throws GxmlMarshalException, IOException {
 
         InputStream stream = IdTestBase.class.getResourceAsStream("docWithId.xml");
         InputSource source = new InputSource(stream);
@@ -58,5 +58,5 @@ public abstract class IdTestBase<N> extends TestCase
         N elem = m_model.getElementById(document, "E3");
         assertNotNull("Failed to find object with getElementById()", elem);
         assertEquals("e3", m_model.getLocalName(elem) );
-	}
+    }
 }

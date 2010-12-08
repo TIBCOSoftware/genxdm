@@ -55,13 +55,13 @@ public class TypedXmlNodeBuilder
         Type<XmlAtom> stype = context.getTypeDefinition(type);
         if (current != null)
         {
-            final XmlAttributeNode attribute = factory.createAttribute(currentDoc, namespaceURI, localName, prefix, data, stype);
-            mutator.setAttribute(current, attribute);
+            final XmlAttributeNode attribute = factory.createAttribute(namespaceURI, localName, prefix, data, stype);
+            mutator.insertAttribute(current, attribute);
             current = attribute;
         }
         else
         {
-            current = factory.createAttribute(currentDoc, namespaceURI, localName, prefix, data, stype);
+            current = factory.createAttribute(namespaceURI, localName, prefix, data, stype);
         }
         endNodeProcessing();
     }
@@ -81,13 +81,13 @@ public class TypedXmlNodeBuilder
         Type<XmlAtom> stype = context.getTypeDefinition(type);
         if (current != null)
         {
-            final XmlElementNode element = factory.createElement(currentDoc, namespaceURI, localName, prefix, stype);
+            final XmlElementNode element = factory.createElement(namespaceURI, localName, prefix, stype);
             mutator.appendChild(current, element);
             current = element;
         }
         else
         {
-            current = factory.createElement(currentDoc, namespaceURI, localName, prefix, stype);
+            current = factory.createElement(namespaceURI, localName, prefix, stype);
         }
     }
 
@@ -105,13 +105,13 @@ public class TypedXmlNodeBuilder
         depth++;
         if (current != null)
         {
-            final XmlTextNode text = factory.createText(currentDoc, data);
+            final XmlTextNode text = factory.createText(data);
             mutator.appendChild(current, text);
             current = text;
         }
         else
         {
-            current = factory.createText(currentDoc, data);
+            current = factory.createText(data);
         }
         endNodeProcessing();
     }

@@ -28,9 +28,9 @@ import org.genxdm.names.NamespaceBinding;
 public class XmlContainerNode
     extends XmlNode
 {
-    protected XmlContainerNode(final NodeKind nodeKind, final XmlRootNode document)
+    protected XmlContainerNode(final NodeKind nodeKind)
     {
-        super(nodeKind, document);
+        super(nodeKind);
     }
 
     public XmlAttributeNode getAttribute(String namespaceURI, String localName)
@@ -179,33 +179,7 @@ public class XmlContainerNode
         return false;
     }
     
-    /**
-     * Set document has to apply recursively, so this sets the
-     * document on all child elements.
-     */
-    @Override
-	void setDocument(XmlRootNode document) {
-		// TODO Auto-generated method stub
-		super.setDocument(document);
-		
-		setDocumentForNodeAndSiblings(document, getFirstChild() );
-	}
-
-    /**
-     * Iterate through the siblings and set their "owner".
-     * 
-     * @param document	Document to set as owner
-     * @param node	Node to be updated.
-     */
-    static void setDocumentForNodeAndSiblings(XmlRootNode document, XmlNode node) {
-
-		while (node != null) {
-			node.setDocument(document);
-			node = node.getNextSibling();
-		}
-    }
-    
-	void appendChild(XmlNode child)
+    void appendChild(XmlNode child)
     {
         PreCondition.assertNotNull(child, "child");
         if (lastChild == null)
