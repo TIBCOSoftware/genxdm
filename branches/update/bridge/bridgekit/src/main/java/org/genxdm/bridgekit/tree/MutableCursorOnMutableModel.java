@@ -96,9 +96,9 @@ public class MutableCursorOnMutableModel<N>
         return old;
     }
     
-    public void replaceValue(final String value)
+    public String replaceValue(final String value)
     {
-        tmodel.replaceValue(node, value);
+        return tmodel.replaceValue(node, value);
     }
 
     public void insertAttribute(final N attribute)

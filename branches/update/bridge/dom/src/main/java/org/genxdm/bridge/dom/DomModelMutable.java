@@ -44,42 +44,38 @@ public final class DomModelMutable
         return new DomNodeFactory(context.getOwnerDocument(), this);
     }
     
-    public Node appendChild(final Node parent, final Node newChild)
+    public void appendChild(final Node parent, final Node newChild)
     {
         PreCondition.assertArgumentNotNull(parent, "parent");
         PreCondition.assertArgumentNotNull(newChild, "newChild");
-        return parent.appendChild(insureOwnership(parent.getOwnerDocument(), newChild));
+        parent.appendChild(insureOwnership(parent.getOwnerDocument(), newChild));
     }
     
-    public Node appendChildren(final Node parent, final Iterable<Node> content)
+    public void appendChildren(final Node parent, final Iterable<Node> content)
     {
-        PreCondition.assertNotNull(parent, "parent");
+        // TODO: probably highly inefficient, but easy to implement.
         PreCondition.assertNotNull(content, "content");
-        Node last = null;
         final Document owner = parent.getOwnerDocument();
         for (Node node : content)
         {
-            last = parent.appendChild(insureOwnership(owner, node));
+            parent.appendChild(insureOwnership(owner, node));
         }
-        return last;
     }
     
-    public Node prependChild(final Node parent, final Node content)
+    public void prependChild(final Node parent, final Node content)
     {
         PreCondition.assertNotNull(parent, "parent");
         PreCondition.assertNotNull(content, "content");
-        return parent.insertBefore(insureOwnership(parent.getOwnerDocument(), content), parent.getFirstChild());
+        parent.insertBefore(insureOwnership(parent.getOwnerDocument(), content), parent.getFirstChild());
     }
     
-    public Node prependChildren(final Node parent, final Iterable<Node> content)
+    public void prependChildren(final Node parent, final Iterable<Node> content)
     {
-        // probably highly inefficient, but easy to implement.
-        Node last = null;
+        // TODO: probably highly inefficient, but easy to implement.
         for (Node node : content)
         {
-            last = prependChild(parent, node);
+            prependChild(parent, node);
         }
-        return last;
     }
 
     public Node copyNode(final Node source, final boolean deep)
@@ -88,36 +84,33 @@ public final class DomModelMutable
         return source.cloneNode(deep);
     }
 
-    public Node insertBefore(final Node target, final Node content)
+    public void insertBefore(final Node target, final Node content)
     {
         PreCondition.assertNotNull(target, "target");
         PreCondition.assertNotNull(content, "content");
         final Node parent = target.getParentNode();
         if (parent != null)
         {
-            return parent.insertBefore(insureOwnership(target.getOwnerDocument(), content), target);
+            parent.insertBefore(insureOwnership(target.getOwnerDocument(), content), target);
         }
-        return null;
     }
     
-    public Node insertBefore(final Node target, final Iterable<Node> content)
+    public void insertBefore(final Node target, final Iterable<Node> content)
     {
         PreCondition.assertNotNull(target, "target");
         PreCondition.assertNotNull(content, "content");
         final Node parent = target.getParentNode();
-        Node last = null;
         if (parent != null)
         {
             final Document owner = parent.getOwnerDocument();
             for (Node node : content)
             {
-                last = parent.insertBefore(insureOwnership(owner, node), target);
+                parent.insertBefore(insureOwnership(owner, node), target);
             }
         }
-        return last;
     }
     
-    public Node insertAfter(final Node target, final Node content)
+    public void insertAfter(final Node target, final Node content)
     {
         PreCondition.assertNotNull(target, "target");
         PreCondition.assertNotNull(content, "content");
@@ -128,32 +121,29 @@ public final class DomModelMutable
         {
             final Document owner = parent.getOwnerDocument();
             if (next != null)
-                return parent.insertBefore(insureOwnership(owner, content), next);
+                parent.insertBefore(insureOwnership(owner, content), next);
             else
-                return parent.appendChild(insureOwnership(owner, content));
+                parent.appendChild(insureOwnership(owner, content));
         }
-        return null;
     }
     
-    public Node insertAfter(final Node target, final Iterable<Node> content)
+    public void insertAfter(final Node target, final Iterable<Node> content)
     {
         PreCondition.assertNotNull(target, "target");
         PreCondition.assertNotNull(content, "content");
         final Node parent = target.getParentNode();
         final Node next = target.getNextSibling();
-        Node last = null;
         if (parent != null)
         {
             final Document owner = parent.getOwnerDocument();
             for (Node node : content)
             {
                 if (next != null)
-                    last = parent.insertBefore(insureOwnership(owner, node), next);
+                    parent.insertBefore(insureOwnership(owner, node), next);
                 else
-                    last = parent.appendChild(insureOwnership(owner, node));
+                    parent.appendChild(insureOwnership(owner, node));
             }
         }
-        return last;
     }
 
     public Node delete(final Node target)
@@ -187,35 +177,33 @@ public final class DomModelMutable
         return null;
     }
     
-    public Node replaceValue(final Node target, final String value)
+    public String replaceValue(final Node target, final String value)
     {
         PreCondition.assertNotNull(target, "target");
         if (getNodeKind(target).isContainer() || getNodeKind(target).isNamespace() )
             return null; // throw an exception, really.
+        String retval = getStringValue(target);
         target.setNodeValue(value);
-        return target;
+        return retval;
     }
 
-    public Node insertAttribute(final Node element, final Node attribute)
+    public void insertAttribute(final Node element, final Node attribute)
     {
         ((Element)element).setAttributeNodeNS((Attr)insureOwnership(element.getOwnerDocument(), attribute));
-        return attribute;
     }
     
-    public Node insertAttributes(final Node element, final Iterable<Node> attributes)
+    public void insertAttributes(final Node element, final Iterable<Node> attributes)
     {
-        Node last = null;
         for (Node attr : attributes)
-            last = insertAttribute(element, attr);
-        return last;
+            insertAttribute(element, attr);
     }
 
-    public Attr insertNamespace(final Node element, final String prefix, final String uri)
+    public void insertNamespace(final Node element, final String prefix, final String uri)
     {
         PreCondition.assertArgumentNotNull(element, "element");
         PreCondition.assertArgumentNotNull(prefix, "prefix");
         PreCondition.assertArgumentNotNull(uri, "uri");
-        return DomSupport.setNamespace(element, prefix, uri);
+        DomSupport.setNamespace(element, prefix, uri);
     }
     
     private Node insureOwnership(Document d, Node n)

@@ -19,10 +19,6 @@ import java.net.URI;
 
 public interface NodeFactory<N>
 {
-    N createDocument(final URI uri, final String docTypeDecl);
-
-    MutableModel<N> getMutableModel();
-    
     /**
      * Creates a new attribute.
      * 
@@ -41,19 +37,6 @@ public interface NodeFactory<N>
     N createAttribute(final String namespaceURI, final String localName, final String prefix, final String value);
 
     /**
-     * Creates a new namespace node.
-     * 
-     * @param owner
-     *            The document node that owns the new namespace node.
-     * @param prefix
-     *            The prefix part of the namespace node.
-     * @param namespaceURI
-     *            The string-value of the namespace node.
-     * @return The created namespace node.
-     */
-    N createNamespace(final String prefix, final String namespaceURI);
-
-    /**
      * Creates a new comment node.
      * 
      * @param owner
@@ -63,6 +46,8 @@ public interface NodeFactory<N>
      * @return The created comment node.
      */
     N createComment(final String data);
+
+    N createDocument(final URI uri, final String docTypeDecl);
 
     /**
      * Creates a new element node.
@@ -78,6 +63,19 @@ public interface NodeFactory<N>
      * @return The created element node.
      */
     N createElement(final String namespaceURI, final String localName, final String prefix);
+
+    /**
+     * Creates a new namespace node.
+     * 
+     * @param owner
+     *            The document node that owns the new namespace node.
+     * @param prefix
+     *            The prefix part of the namespace node.
+     * @param namespaceURI
+     *            The string-value of the namespace node.
+     * @return The created namespace node.
+     */
+    N createNamespace(final String prefix, final String namespaceURI);
 
     /**
      * Creates a new processing-instruction node.
@@ -103,4 +101,5 @@ public interface NodeFactory<N>
      */
     N createText(final String value);
 
+    MutableModel<N> getMutableModel();
 }

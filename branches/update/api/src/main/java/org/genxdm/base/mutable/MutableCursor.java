@@ -21,9 +21,7 @@ public interface MutableCursor<N>
     extends Cursor<N>
 {
 
-	NodeFactory<N> getFactoryForContext();
-
-	/**
+    /**
      * Appends the specified child to the end of the child axis of the specified parent.
      * 
      * @param newChild
@@ -31,12 +29,33 @@ public interface MutableCursor<N>
      * @return The child added to the parent.
      */
     void appendChild(final N newChild);
-    
+
     void appendChildren(final Iterable<N> content);
-    
-    void prependChild(final N newChild);
-    
-    void prependChildren(final Iterable<N> content);
+
+    /**
+     * Removes a node from the child axis of the parent node.
+     * 
+     * @return The child that has been removed.
+     */
+    N delete();
+
+    Iterable<N> deleteChildren();
+
+    NodeFactory<N> getFactoryForContext();
+
+    void insertAfter(final N next);
+
+    void insertAfter(final Iterable<N> content);
+
+    /**
+     * Sets an attribute node into the attribute axis of an element.
+     * 
+     * @param attribute
+     *            The attribute to be inserted.
+     */
+    void insertAttribute(final N attribute);
+
+    void insertAttributes(final Iterable<N> attributes);
 
     /**
      * Inserts a new child node before a specified reference node in the child axis of a parent node.
@@ -48,42 +67,8 @@ public interface MutableCursor<N>
      *            The new child to be added to the parent.
      */
     void insertBefore(final N previous);
-    
+
     void insertBefore(final Iterable<N> content);
-    
-    void insertAfter(final N next);
-    
-    void insertAfter(final Iterable<N> content);
-
-    /**
-     * Removes a node from the child axis of the parent node.
-     * 
-     * @return The child that has been removed.
-     */
-    N delete();
-    
-    Iterable<N> deleteChildren();
-
-    /**
-     * Replaces a node in the child axis of a parent node.
-     * 
-     * @param newNode
-     *            The new node that will replace the old node.
-     * @return The old node that was removed.
-     */
-    N replace(final N newNode);
-    
-    void replaceValue(final String value);
-
-    /**
-     * Sets an attribute node into the attribute axis of an element.
-     * 
-     * @param attribute
-     *            The attribute to be inserted.
-     */
-    void insertAttribute(final N attribute);
-    
-    void insertAttributes(final Iterable<N> attributes);
 
     /**
      * Sets a namespace binding into the namespace axis of an element.
@@ -93,8 +78,21 @@ public interface MutableCursor<N>
      * @param uriSymbol
      *            The dm:string-value of the namespace node as a symbol.
      */
-    void insertNamespace(final String prefixString, final String uriSymbol);
-    
-    // if we were to do this, it would look something like this:
-    //void rename(final String namespace, final String name);
+    void insertNamespace(final String prefix, final String uri);
+
+    void prependChild(final N newChild);
+
+    void prependChildren(final Iterable<N> content);
+
+    /**
+     * Replaces a node in the child axis of a parent node.
+     * 
+     * @param newNode
+     *            The new node that will replace the old node.
+     * @return The old node that was removed.
+     */
+    N replace(final N newNode);
+
+    String replaceValue(final String value);
+
 }
