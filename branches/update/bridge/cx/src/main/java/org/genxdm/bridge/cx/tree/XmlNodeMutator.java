@@ -34,6 +34,8 @@ public class XmlNodeMutator
     {
         PreCondition.assertNotNull(parent, "parent");
         PreCondition.assertNotNull(newChild, "newChild");
+        PreCondition.assertTrue(parent.getNodeKind().isContainer(), "parent is container");
+        PreCondition.assertTrue(newChild.getNodeKind().isChild(), "content is child");
         ((XmlContainerNode)parent).appendChild(newChild);
     }
 
@@ -96,6 +98,7 @@ public class XmlNodeMutator
     public XmlNode delete(final XmlNode target)
     {
         PreCondition.assertNotNull(target, "target");
+        PreCondition.assertTrue(target.hasParent(), "target has parent");
         NodeKind kind = target.getNodeKind();
         if (kind == NodeKind.ATTRIBUTE)
             ((XmlElementNode)target.getParent()).removeAttribute((XmlAttributeNode)target);
@@ -109,7 +112,8 @@ public class XmlNodeMutator
     public Iterable<XmlNode> deleteChildren(final XmlNode target)
     {
         PreCondition.assertNotNull(target, "target");
-        // cheap and sleazy implementation:
+        PreCondition.assertTrue(target.getNodeKind().isContainer(), "target is container");
+        // cheap and sleazy (but probably correct?) implementation:
         if (target.getNodeKind().isContainer())
         {
             XmlContainerNode container = (XmlContainerNode)target;
@@ -138,7 +142,8 @@ public class XmlNodeMutator
     {
         PreCondition.assertNotNull(target, "target");
         PreCondition.assertNotNull(content, "content");
-        // TODO: only child nodes now.  enable attributes at least.
+        PreCondition.assertTrue(target.hasParent(), "target has parent");
+        PreCondition.assertTrue(content.getNodeKind().isChild(), "content is child");
         XmlNode next = target.getNextSibling();
         if (next == null)
         {
@@ -163,6 +168,8 @@ public class XmlNodeMutator
     {
         PreCondition.assertNotNull(element, "element");
         PreCondition.assertNotNull(attribute, "attribute");
+        PreCondition.assertTrue(element.getNodeKind() == NodeKind.ELEMENT, "target is element");
+        PreCondition.assertTrue(attribute.getNodeKind() == NodeKind.ATTRIBUTE, "content is attribute");
         ((XmlElementNode)element).setAttribute((XmlAttributeNode)attribute);
     }
 
@@ -179,7 +186,8 @@ public class XmlNodeMutator
     {
         PreCondition.assertNotNull(target, "target");
         PreCondition.assertNotNull(content, "content");
-        // TODO: only works for child nodes, now.  enable attributes at least
+        PreCondition.assertTrue(target.hasParent(), "target has parent");
+        PreCondition.assertTrue(content.getNodeKind().isChild(), "content is child");
         target.getParent().insertChild(content, target);
     }
     
@@ -194,8 +202,10 @@ public class XmlNodeMutator
 
     public void insertNamespace(XmlNode element, String prefix, String uri)
     {
+        PreCondition.assertNotNull(element, "element");
         PreCondition.assertNotNull(prefix, "prefix");
         PreCondition.assertNotNull(uri, "namespaceURI");
+        PreCondition.assertTrue(element.getNodeKind() == NodeKind.ELEMENT, "target is element");
         XmlNamespaceNode result = factory.createNamespace(prefix, uri);
         ((XmlElementNode)element).setNamespace(result);
     }
@@ -204,6 +214,8 @@ public class XmlNodeMutator
     {
         PreCondition.assertNotNull(parent, "parent");
         PreCondition.assertNotNull(content, "content");
+        PreCondition.assertTrue(parent.getNodeKind().isContainer(), "parent is container");
+        PreCondition.assertTrue(content.getNodeKind().isChild(), "content is child");
         XmlContainerNode container = (XmlContainerNode)parent;
         if (container.getFirstChild() == null)
             container.appendChild(content);
@@ -214,33 +226,51 @@ public class XmlNodeMutator
     public void prependChildren(final XmlNode parent, final Iterable<XmlNode> content)
     {
         PreCondition.assertNotNull(content, "content");
-        // TODO: this is wrong: we need it in reverse order
-//        for (XmlNode child : content)
-//        {
-//            prependChild(parent, child);
-//        }
+        PreCondition.assertTrue(parent.getNodeKind().isContainer(), "parent is container");
+        XmlNode first = ((XmlContainerNode)parent).getFirstChild();
+        if (first == null)
+        {
+            appendChildren(parent, content);
+        }
+        else
+        {
+            for (XmlNode child : content)
+            {
+                insertBefore(first, child);
+            }
+        }
     }
 
     public XmlNode replace(XmlNode target, XmlNode content)
     {
-        // other forms of screwup: old or new is a namespace
-        // old or new is an attribute; other is not
-        // either is a document
-        XmlContainerNode parent = null;
-        if (target.hasParent())
-            parent = target.getParent();
-        // what node kinds have no parent?
-        else
-            return null;
+        PreCondition.assertNotNull(target);
+        PreCondition.assertTrue(target.hasParent(), "target has parent");
         NodeKind kind = target.getNodeKind();
         if (kind == NodeKind.ATTRIBUTE)
+            PreCondition.assertTrue(content.getNodeKind() == NodeKind.ATTRIBUTE);
+        else if (kind == NodeKind.NAMESPACE)
+            PreCondition.assertTrue(content.getNodeKind() == NodeKind.NAMESPACE);
+        else
         {
-            if (content.getNodeKind() == NodeKind.ATTRIBUTE)
-            {
-                ((XmlElementNode)parent).removeAttribute((XmlAttributeNode)target);
-                ((XmlElementNode)parent).setAttribute((XmlAttributeNode)content);
-            }
-            // TODO: handle the mismatch
+            NodeKind contentKind = content.getNodeKind();
+            PreCondition.assertTrue( (contentKind == NodeKind.TEXT) ||
+                                     (contentKind == NodeKind.ELEMENT) ||
+                                     (contentKind == NodeKind.COMMENT) ||
+                                     (contentKind == NodeKind.PROCESSING_INSTRUCTION) );
+        }
+        
+        XmlContainerNode parent = target.getParent();
+        if (kind == NodeKind.ATTRIBUTE)
+        {
+            // preconditions guarantee safe casting.
+            ((XmlElementNode)parent).removeAttribute((XmlAttributeNode)target);
+            ((XmlElementNode)parent).setAttribute((XmlAttributeNode)content);
+        }
+        else if (kind == NodeKind.NAMESPACE)
+        {
+            // preconditions guarantee safe casting.
+            ((XmlElementNode)parent).removeNamespace((XmlNamespaceNode)target);
+            ((XmlElementNode)parent).setNamespace((XmlNamespaceNode)content);
         }
         else
         {
@@ -254,8 +284,11 @@ public class XmlNodeMutator
     {
         PreCondition.assertNotNull(target);
         NodeKind kind = target.getNodeKind();
-        // TODO: make it work.
-        throw new UnsupportedOperationException();
+        PreCondition.assertTrue( (kind == NodeKind.TEXT) ||
+                                 (kind == NodeKind.ATTRIBUTE) ||
+                                 (kind == NodeKind.COMMENT) ||
+                                 (kind == NodeKind.PROCESSING_INSTRUCTION) );
+        return ((XmlLeafNode)target).setValue(value);
     }
 
     // this is used when creating fake nodes.  they point to their parents,
@@ -265,7 +298,9 @@ public class XmlNodeMutator
         if (child != null)
             child.setParent(parent);
     }
-    
+
+    // this is used by the node builder to keep the stack straight; the insertNamespace
+    // method unfortunately doesn't return the node that is implicitly created.
     public void setNamespace(final XmlElementNode element, final XmlNamespaceNode namespace)
     {
         PreCondition.assertNotNull(element, "element");
