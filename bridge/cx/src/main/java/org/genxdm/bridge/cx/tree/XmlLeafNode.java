@@ -212,6 +212,20 @@ public class XmlLeafNode
         return false;
     }
     
+    String setValue(String value)
+    {
+        String ret = getUntypedValue();
+        setValue(new ArrayList<XmlAtom>(new XmlUntypedAtomic( (value == null) ? "" : value )) );
+        return ret;
+    }
+    
+    Iterable<? extends XmlAtom> setValue(final List<? extends XmlAtom> data)
+    {
+        List<XmlAtom> ret = atoms;
+        atoms = Collections.unmodifiableList(new ArrayList<XmlAtom>(PreCondition.assertNotNull(data, "data")));
+        return ret;
+    }
+    
     private String getUntypedValue()
     {
         if ( (atoms == null) || (atoms.size() < 1) )
