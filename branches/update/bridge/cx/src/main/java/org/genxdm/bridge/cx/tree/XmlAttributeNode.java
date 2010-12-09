@@ -92,6 +92,13 @@ public final class XmlAttributeNode
         if (isId() && (getRoot().getNodeKind() == NodeKind.DOCUMENT) )
             ((XmlRootNode)getRoot()).addIdNode(this);
     }
+    
+    @Override
+    void setParent(XmlContainerNode container)
+    {
+        super.setParent(container);
+        checkId();
+    }
 
     private DtdAttributeKind dtdType;
 }

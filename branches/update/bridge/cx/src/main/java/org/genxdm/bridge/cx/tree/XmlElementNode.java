@@ -210,6 +210,7 @@ public final class XmlElementNode
         {
             firstAttribute = attribute;
             attribute.parent = this;
+            attribute.checkId();
         }
         else
         {
@@ -227,6 +228,7 @@ public final class XmlElementNode
                         lastAttribute.nextSibling.prevSibling = attribute;
                     attribute.nextSibling = lastAttribute.nextSibling;
                     attribute.parent = this;
+                    attribute.checkId();
                     if (firstAttribute == lastAttribute)
                         firstAttribute = attribute;
                     lastAttribute.nextSibling = lastAttribute.prevSibling = lastAttribute.parent = null;
@@ -238,6 +240,7 @@ public final class XmlElementNode
                     lastAttribute.nextSibling = attribute;
                     attribute.prevSibling = lastAttribute;
                     attribute.parent = this;
+                    attribute.checkId();
                     break;
                 }
                 lastAttribute = (XmlAttributeNode)lastAttribute.nextSibling;
