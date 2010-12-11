@@ -233,7 +233,7 @@ public interface MutableModel<N> extends Model<N>
      *            May not be null, but may be the empty string (default/global namespace,
      *            or namespace un-definition for Namespaces in XML 1.1).
      **/
-    void insertNamespace(final N element, final String prefix, final String uri);
+    N insertNamespace(final N element, final String prefix, final String uri);
 
     /**
      * Prepends the specified child to the beginning of the child axis of the specified parent.

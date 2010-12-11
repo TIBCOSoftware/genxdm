@@ -170,11 +170,12 @@ public class AxiomMutableModel
      * @param uri
      *            The dm:string-value of the namespace node.
      */
-    public void insertNamespace(final Object element, final String prefix, final String uri)
+    public Object insertNamespace(final Object element, final String prefix, final String uri)
     {
         OMNamespace ns = new OMNamespaceImpl(uri, prefix);
         OMElement omElem = AxiomSupport.staticDowncastElement(element);
         omElem.setNamespace(ns);
+        return ns;
     }
 
     public void prependChild(final Object parent, final Object content)

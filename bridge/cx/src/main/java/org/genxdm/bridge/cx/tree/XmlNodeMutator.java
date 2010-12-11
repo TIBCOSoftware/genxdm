@@ -200,7 +200,7 @@ public class XmlNodeMutator
         }
     }
 
-    public void insertNamespace(XmlNode element, String prefix, String uri)
+    public XmlNode insertNamespace(XmlNode element, String prefix, String uri)
     {
         PreCondition.assertNotNull(element, "element");
         PreCondition.assertNotNull(prefix, "prefix");
@@ -208,6 +208,8 @@ public class XmlNodeMutator
         PreCondition.assertTrue(element.getNodeKind() == NodeKind.ELEMENT, "target is element");
         XmlNamespaceNode result = factory.createNamespace(prefix, uri);
         ((XmlElementNode)element).setNamespace(result);
+        
+        return result;
     }
     
     public void prependChild(final XmlNode parent, final XmlNode content)
