@@ -41,7 +41,7 @@ public final class DomModelMutable
         // we have one already or not.  verify that this really is a better solution than
         // creating a nodefactory each time; it's not a heavy abstraction (has only doc or
         // dbf as state).
-        return new DomNodeFactory(context.getOwnerDocument(), this);
+        return new DomNodeFactory(DomSupport.getOwner(context), this);
     }
     
     public void appendChild(final Node parent, final Node newChild)
@@ -198,12 +198,12 @@ public final class DomModelMutable
             insertAttribute(element, attr);
     }
 
-    public void insertNamespace(final Node element, final String prefix, final String uri)
+    public Node insertNamespace(final Node element, final String prefix, final String uri)
     {
         PreCondition.assertArgumentNotNull(element, "element");
         PreCondition.assertArgumentNotNull(prefix, "prefix");
         PreCondition.assertArgumentNotNull(uri, "uri");
-        DomSupport.setNamespace(element, prefix, uri);
+        return DomSupport.setNamespace(element, prefix, uri);
     }
     
     private Node insureOwnership(Document d, Node n)
