@@ -31,16 +31,15 @@ public class AxiomFactory
         omFactory = delegate;
     }
 
-    public Object createAttribute(Object owner, String namespaceURI,
-            String localName, String prefix, String value)
+    public Object createAttribute(String namespaceURI, String localName, String prefix, String value)
     {
-        // TODO Auto-generated method stub
         return omFactory.createOMAttribute(localName, omFactory.createOMNamespace(namespaceURI, prefix), value);
     }
 
-    public Object createComment(Object owner, String data)
+    public Object createComment(String data)
     {
-        return omFactory.createOMComment((OMContainer) owner, data);
+        // TODO: null first parameter may not work; it's supposed to be the container
+        return omFactory.createOMComment(null, data);
     }
 
     public Object createDocument(final URI uri, final String docTypeDecl)
@@ -48,30 +47,38 @@ public class AxiomFactory
         return omFactory.createOMDocument();
     }
 
-    public Object createElement(Object owner, String namespaceURI,
-            String localName, String prefix)
+    public Object createElement(String namespaceURI, String localName, String prefix)
     {
-    	OMContainer parent = AxiomSupport.staticDowncastContainer(owner);
-    	OMNamespace ns = omFactory.createOMNamespace(namespaceURI, prefix);
-        return omFactory.createOMElement(localName, ns, parent);
+        OMNamespace ns = omFactory.createOMNamespace(namespaceURI, prefix);
+        return omFactory.createOMElement(localName, ns);
     }
 
-    public Object createNamespace(Object owner, String prefix,
-            String namespaceURI)
+    public Object createNamespace(String prefix, String namespaceURI)
     {
         return omFactory.createOMNamespace(namespaceURI, prefix);
     }
 
-    public Object createProcessingInstruction(Object owner, String target,
-            String data)
+    public Object createProcessingInstruction(String target, String data)
     {
-        return omFactory.createOMProcessingInstruction((OMContainer) owner, target, data);
+        // TODO: null first parameter may not work; it's supposed to be the container
+        return omFactory.createOMProcessingInstruction(null, target, data);
     }
 
-    public Object createText(Object owner, String value)
+    public Object createText(String value)
     {
-        return omFactory.createOMText((OMContainer) owner, value);
+        return omFactory.createOMText(value);
+    }
+    
+    public AxiomMutableModel getMutableModel()
+    {
+        return model;
+    }
+    
+    void setMutableModel(AxiomMutableModel model)
+    {
+        this.model = model;
     }
 
+    private AxiomMutableModel model;
     private final OMFactory omFactory;
 }

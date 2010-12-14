@@ -17,7 +17,7 @@ package org.genxdm;
 
 public interface Feature
 {
-    static final String PREFIX = "http://gxml.apache.org/features/";
+    static final String PREFIX = "http://genxdm.org/features/";
 	static final String ATTRIBUTE_AXIS_INHERIT = PREFIX + "axis/attribute/inherit";
 	static final String DOCUMENT_URI = PREFIX + "document-uri";
 	static final String NAMESPACE_AXIS = PREFIX + "axis/namespace";

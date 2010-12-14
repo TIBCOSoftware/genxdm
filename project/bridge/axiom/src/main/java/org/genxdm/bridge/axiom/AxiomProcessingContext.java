@@ -99,12 +99,6 @@ public class AxiomProcessingContext
         return saContext;
     }
     
-    public boolean isItem(Object object)
-    {
-        // TODO: implement
-        return false;
-    }
-
     public boolean isNode(Object item)
     {
         if (null != item)
@@ -134,15 +128,6 @@ public class AxiomProcessingContext
     public boolean isTyped()
     {
         return false;
-    }
-
-    public Object[] itemArray(int size)
-    {
-        if (size < 0)
-        {
-            throw new NegativeArraySizeException("Illegal size: " + size);
-        }
-        return new Object[size];
     }
 
     public Cursor<Object> newCursor(Object node)
@@ -181,6 +166,8 @@ public class AxiomProcessingContext
         AxioMutableContext()
         {
             this.factory = new AxiomFactory(PreCondition.assertNotNull(omfactory, "omfactory"));
+            this.mmodel = new AxiomMutableModel(factory);
+            this.factory.setMutableModel(mmodel);
         }
         
         public AxiomProcessingContext getProcessingContext()
@@ -202,8 +189,8 @@ public class AxiomProcessingContext
         {
             return new MutableCursorOnMutableModel<Object>(node, mmodel);
         }
-        private final AxiomMutableModel mmodel = new AxiomMutableModel();
         private final AxiomFactory factory;
+        private final AxiomMutableModel mmodel;
     }
     
     private final AxiomModel model = new AxiomModel();

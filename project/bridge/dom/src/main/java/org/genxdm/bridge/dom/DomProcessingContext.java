@@ -25,7 +25,6 @@ import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.base.mutable.MutableContext;
 import org.genxdm.base.mutable.MutableCursor;
 import org.genxdm.base.mutable.MutableModel;
-import org.genxdm.base.mutable.NodeFactory;
 import org.genxdm.bridge.dom.enhanced.DomSAProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.tree.BookmarkOnModel;
@@ -34,25 +33,26 @@ import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 public class DomProcessingContext
-	extends DomDocumentHandlerFactory
+    extends DomDocumentHandlerFactory
     implements ProcessingContext<Node>
-	
+    
 {
-	/**
-	 * Create a DOM processing context.
-	 * 
-	 * <p>Note that the preferred way is to call
-	 * {@link DomProcessingContext#DomProcessingContext(DocumentBuilderFactory)
-	 * so that the caller can control the set of schemas available during parsing.
-	 * </p>
-	 * 
-	 * <p>The default DocumentBuilderFactory simply sets namespace awareness, but
-	 * with no schema support</p>
-	 * 
-	 */
+    /**
+     * Create a DOM processing context.
+     * 
+     * <p>Note that the preferred way is to call
+     * {@link DomProcessingContext#DomProcessingContext(DocumentBuilderFactory)
+     * so that the caller can control the set of schemas available during parsing.
+     * </p>
+     * 
+     * <p>The default DocumentBuilderFactory simply sets namespace awareness, but
+     * with no schema support</p>
+     * 
+     */
     public DomProcessingContext()
     {
         this(sm_dbf);
@@ -65,7 +65,7 @@ public class DomProcessingContext
      * @param dbf
      */
     public DomProcessingContext(DocumentBuilderFactory dbf) {
-    	super(dbf);
+        super(dbf);
         
     }
     
@@ -79,12 +79,7 @@ public class DomProcessingContext
         return model;
     }
 
-    public boolean isItem(Object object)
-    {
-        // TODO: should we return true if a String is supplied?
-        return ( (object instanceof Node) || (object instanceof XmlAtom) );
-    }
-
+    @SuppressWarnings("unchecked")
     public MutableContext<Node> getMutableContext()
     {
         if (mutantContext == null)
@@ -114,11 +109,6 @@ public class DomProcessingContext
         if (typedContext == null)
             typedContext = new DomSAProcessingContext(this);
         return typedContext;
-    }
-
-    public Object[] itemArray(int size)
-    {
-        return new Object[size];
     }
 
     public Cursor<Node> newCursor(Node node)
@@ -151,11 +141,11 @@ public class DomProcessingContext
             return mutant;
         }
 
-        public NodeFactory<Node> getNodeFactory()
+        public DomNodeFactory getNodeFactory()
         {
-            return factory;
+            return new DomNodeFactory( getDocumentBuilderFactory(), mutant );
         }
-        
+
         public ProcessingContext<Node> getProcessingContext()
         {
             return DomProcessingContext.this;
@@ -167,13 +157,16 @@ public class DomProcessingContext
         }
 
         private final DomModelMutable mutant = new DomModelMutable();
-        private final DomNodeFactory factory = new DomNodeFactory( getDocumentBuilderFactory() );
     }
 
+    // TODO: the DOM bridge has too many document builder factories.
+    // we need to review the whole bridge, of course, but this is one
+    // of the notable issues in it; if we have a static "default" one somewhere ...
+    // well, we should only have *one*, dammit.
     private static DocumentBuilderFactory sm_dbf;
     static {
-    	sm_dbf = DocumentBuilderFactory.newInstance();
-    	sm_dbf.setNamespaceAware(true);
+        sm_dbf = DocumentBuilderFactory.newInstance();
+        sm_dbf.setNamespaceAware(true);
     }
     
     private final DomModel model = new DomModel();

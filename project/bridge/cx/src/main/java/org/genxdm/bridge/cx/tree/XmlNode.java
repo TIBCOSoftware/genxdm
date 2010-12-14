@@ -26,10 +26,9 @@ import org.genxdm.nodes.TypeInformer;
 public abstract class XmlNode
     implements Informer, TypeInformer<XmlAtom>, XmlNodeNavigator
 {
-    protected XmlNode(final NodeKind nodeKind, final XmlRootNode document)
+    protected XmlNode(final NodeKind nodeKind)
     {
         this.nodeKind = PreCondition.assertNotNull(nodeKind, "nodeKind");
-        this.document = document;
     }
 
     public URI getBaseURI()
@@ -46,8 +45,8 @@ public abstract class XmlNode
 
     public XmlElementNode getElementById(final String id)
     {
-        if (document != null)
-            return document.getElementById(id);
+        if (getRoot().getNodeKind() == NodeKind.DOCUMENT)
+            return ((XmlRootNode)getRoot()).getElementById(id);
         return null;
     }
 
@@ -127,9 +126,11 @@ public abstract class XmlNode
         return prevSibling;
     }
 
-    public XmlRootNode getRoot()
+    public XmlNode getRoot()
     {
-        return document;
+        if (parent != null)
+            return parent.getRoot();
+        return this;
     }
 
     public boolean hasNextSibling()
@@ -184,16 +185,6 @@ public abstract class XmlNode
         this.parent = container;
     }
     
-    /**
-     * Sets the document, recursively.
-     * 
-     * @param document
-     */
-    void setDocument(final XmlRootNode document)
-    {
-        this.document = document;
-    }
-
     protected String localName;
     protected String namespaceURI;
     protected String prefixHint;
@@ -202,7 +193,6 @@ public abstract class XmlNode
     protected XmlNode prevSibling;
 
     protected XmlContainerNode parent;
-    protected XmlRootNode document;
 
     private final NodeKind nodeKind;
     
