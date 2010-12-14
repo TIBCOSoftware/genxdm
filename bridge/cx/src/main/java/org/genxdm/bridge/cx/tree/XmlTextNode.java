@@ -25,14 +25,14 @@ public final class XmlTextNode
     extends XmlLeafNode
 {
 
-    XmlTextNode(final XmlRootNode document, List<? extends XmlAtom> data)
+    XmlTextNode(List<? extends XmlAtom> data)
     {
-        super(NodeKind.TEXT, document, null, data);
+        super(NodeKind.TEXT, null, data);
     }
     
-    XmlTextNode(final XmlRootNode document, String value)
+    XmlTextNode(String value)
     {
-        super(NodeKind.TEXT, document, value);
+        super(NodeKind.TEXT, value);
     }
     
     public Type<XmlAtom> getType()

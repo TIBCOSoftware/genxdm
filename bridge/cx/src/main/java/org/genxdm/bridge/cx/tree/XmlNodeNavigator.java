@@ -45,6 +45,6 @@ interface XmlNodeNavigator
 
     XmlNode getPreviousSibling();
 
-    XmlRootNode getRoot();
+    XmlNode getRoot();
 
 }

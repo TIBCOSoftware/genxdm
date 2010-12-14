@@ -22,105 +22,202 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
+
 import org.genxdm.base.mutable.MutableModel;
+import org.genxdm.base.mutable.NodeFactory;
+import org.genxdm.exceptions.PreCondition;
 
 public class AxiomMutableModel
     extends AxiomModel
     implements MutableModel<Object>
 {
+    public AxiomMutableModel(final AxiomFactory factory)
+    {
+        this.factory = PreCondition.assertNotNull(factory);
+    }
     
-    public Object adoptNode(Object target, Object source)
+    /**
+     * Appends the specified child to the end of the child axis of the specified parent.
+     * 
+     * @param parent
+     *            The parent to which the child should be added.
+     * @param newChild
+     *            The child to be added to the parent.
+     */
+    public void appendChild(Object parent, Object content)
     {
-    	throw new UnsupportedOperationException();
+        PreCondition.assertNotNull(parent, "parent");
+        PreCondition.assertNotNull(content, "content");
+        OMContainer container = AxiomSupport.dynamicDowncastContainer(parent);
+        OMNode childNode = AxiomSupport.staticDowncastNode(content);
+        container.addChild(childNode);
     }
 
-    public Object appendChild(Object parent, Object newChild)
+    public void appendChildren(final Object parent, final Iterable<Object> content)
     {
-    	OMContainer parentNode = AxiomSupport.dynamicDowncastContainer(parent);
-    	OMNode childNode = AxiomSupport.staticDowncastNode(newChild);
-    	parentNode.addChild(childNode);
-        return null;
+        PreCondition.assertNotNull(content, "content"); // could be empty, though
+        for (Object node : content)
+        {
+            appendChild(parent, node);
+        }
     }
 
-    public Object cloneNode(Object source, boolean deep)
+    public Object copyNode(Object source, boolean deep)
     {
-    	throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     /**
-     * TODO - this is a horribly inefficient way of implementing this function...
+     * Removes a node from the child axis of the parent node.
+     * @param target
+     *            The child to be removed.
+     * 
+     * @return The child that has been removed.
      */
-    public Object getOwner(Object node)
+    public Object delete(final Object target)
     {
-    	if (node instanceof OMDocument) {
-    		return node;
-    	}
-    	else if (node instanceof OMAttribute) {
-    		OMAttribute attr = AxiomSupport.staticDowncastAttribute(node);
-    		return getOwner(attr.getOwner());
-    	}
-    	else {
-    		OMNode omNode = AxiomSupport.staticDowncastNode(node);
-    		return getOwner(omNode.getParent());
-    	}
+        throw new UnsupportedOperationException();
     }
 
-    public Object importNode(Object target, Object source, boolean deep)
+    public Iterable<Object> deleteChildren(final Object target)
     {
-    	throw new UnsupportedOperationException();
+        PreCondition.assertNotNull(target, "target");
+        throw new UnsupportedOperationException();
     }
 
-    public Object insertBefore(Object parent, Object newChild, Object refChild)
+    public NodeFactory<Object> getFactoryForContext(Object node)
     {
-    	throw new UnsupportedOperationException();
+        return factory;
     }
 
-    public void normalize(Object node)
+    public void insertAfter(final Object target, final Object content)
     {
-    	throw new UnsupportedOperationException();
+        PreCondition.assertNotNull(target, "target");
+        PreCondition.assertNotNull(content, "content");
+        throw new UnsupportedOperationException();
     }
 
-    public void removeAttribute(Object element, String namespaceURI, String localName)
+    public void insertAfter(final Object target, final Iterable<Object> content)
     {
-    	throw new UnsupportedOperationException();
+        PreCondition.assertNotNull(content, "content");
+        for (Object node : content)
+        {
+            insertAfter(target, node);
+        }
     }
 
-    public Object removeChild(Object parent, Object oldChild)
+    /**
+     * Sets an attribute node into the attribute axis of an element.
+     * 
+     * @param element
+     *            The element that will hold the attribute.
+     * @param attribute
+     *            The attribute to be inserted.
+     * @return TODO
+     */
+    public void insertAttribute(final Object element, final Object attribute)
     {
-    	throw new UnsupportedOperationException();
+        PreCondition.assertNotNull(element, "element");
+        PreCondition.assertNotNull(attribute, "attribute");
+        throw new UnsupportedOperationException();
     }
 
-    public void removeNamespace(Object element, String prefix)
+    public void insertAttributes(final Object element, final Iterable<Object> attributes)
     {
-    	throw new UnsupportedOperationException();
+        PreCondition.assertNotNull(attributes, "attributes");
+        for (Object attr : attributes)
+        {
+            insertAttribute(element, attr);
+        }
     }
 
-    public Object replaceChild(Object parent, Object newChild, Object oldChild)
+    /**
+     * Inserts a new child node before a specified reference node in the child axis of a parent node.
+     * <p>
+     * Insertion is not expected and not required to result in a normalized tree.
+     * </p>
+     * @param target
+     *            The reference child before which the new node will be added. If no reference child is specified then
+     *            the new child is appended to the children of the parent node.
+     * @param content
+     *            The new child to be added to the parent.
+     * 
+     * @return The node that was inserted.
+     */
+    public void insertBefore(final Object target, final Object content)
     {
-    	throw new UnsupportedOperationException();
+        PreCondition.assertNotNull(target, "target");
+        PreCondition.assertNotNull(content, "content");
+        throw new UnsupportedOperationException();
     }
 
-    public void setAttribute(Object element, Object attribute)
+    public void insertBefore(final Object target, final Iterable<Object> content)
     {
-    	throw new UnsupportedOperationException();
+        PreCondition.assertNotNull(content, "content");
+        for (Object node : content)
+        {
+            insertBefore(target, node);
+        }
     }
 
-    public Object setAttribute(Object element, String namespaceURI, String localName, String prefix, String value)
+    /**
+     * Sets a namespace binding into the namespace axis of an element.
+     * 
+     * @param element
+     *            The element that will hold the namespace binding.
+     * @param prefix
+     *            The prefix (local-name part of the dm:name) of the namespace node as a <code>String</code>.
+     * @param uri
+     *            The dm:string-value of the namespace node.
+     */
+    public Object insertNamespace(final Object element, final String prefix, final String uri)
     {
-    	throw new UnsupportedOperationException();
+        OMNamespace ns = new OMNamespaceImpl(uri, prefix);
+        OMElement omElem = AxiomSupport.staticDowncastElement(element);
+        omElem.setNamespace(ns);
+        return ns;
     }
 
-    public void setNamespace(Object element, Object namespace)
+    public void prependChild(final Object parent, final Object content)
     {
-    	throw new UnsupportedOperationException();
+        PreCondition.assertNotNull(parent, "parent");
+        PreCondition.assertNotNull(content, "content");
+        // downcast the parent
+        throw new UnsupportedOperationException();
     }
 
-    public Object setNamespace(Object element, String prefixString, String uriSymbol)
+    public void prependChildren(final Object parent, final Iterable<Object> content)
     {
-    	OMElement omElem = AxiomSupport.staticDowncastElement(element);
-    	OMNamespace ns = new OMNamespaceImpl(uriSymbol, prefixString);
-    	omElem.setNamespace(ns);
-    	return ns;
+        PreCondition.assertNotNull(content, "content");
+        for (Object node : content)
+        {
+            prependChild(parent, node);
+        }
     }
 
+    /**
+     * Replaces a node in the child axis of a parent node.
+     * @param target
+     *            The old node to be replaced.
+     * @param content
+     *            The new node that will replace the old node.
+     * 
+     * @return The old node that was removed.
+     */
+    public Object replace(final Object target, final Object content)
+    {
+        PreCondition.assertNotNull(target, "target");
+        PreCondition.assertNotNull(content, "content");
+        throw new UnsupportedOperationException();
+    }
+
+    public String replaceValue(final Object target, final String value)
+    {
+        PreCondition.assertNotNull(target);
+        // verify that the target is appropriate: text, attribute, comment, or pi
+        // can value be null?
+        throw new UnsupportedOperationException();
+    }
+
+    private final AxiomFactory factory;
 }

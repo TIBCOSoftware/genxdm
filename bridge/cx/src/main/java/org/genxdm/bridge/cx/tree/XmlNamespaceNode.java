@@ -23,9 +23,9 @@ public final class XmlNamespaceNode
     extends XmlLeafNode
 {
 
-    XmlNamespaceNode(final XmlRootNode document, final String prefix, final String value)
+    XmlNamespaceNode(final String prefix, final String value)
     {
-        super(NodeKind.NAMESPACE, document, value);
+        super(NodeKind.NAMESPACE, value);
         this.localName = (prefix == null) ? XMLConstants.DEFAULT_NS_PREFIX : prefix;
         // if the following two bits seem weird, it's because these are *namespaces*,
         // not attributes.  it seems very weird to me, but it's correct according to the namespaces
