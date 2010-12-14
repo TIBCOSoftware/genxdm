@@ -34,6 +34,11 @@ public enum NodeKind
 		{
 			return true;
 		}
+		
+		public boolean isContainer()
+		{
+			return true;
+		}
 
 		public boolean isNamespace()
 		{
@@ -55,6 +60,11 @@ public enum NodeKind
 		{
 			return true;
 		}
+		
+		public boolean isContainer()
+		{
+			return false;
+		}
 
 		public boolean isNamespace()
 		{
@@ -73,6 +83,11 @@ public enum NodeKind
 		}
 
 		public boolean isChild()
+		{
+			return false;
+		}
+		
+		public boolean isContainer()
 		{
 			return false;
 		}
@@ -97,6 +112,11 @@ public enum NodeKind
 		{
 			return false;
 		}
+		
+		public boolean isContainer()
+		{
+			return false;
+		}
 
 		public boolean isNamespace()
 		{
@@ -118,6 +138,11 @@ public enum NodeKind
 		{
 			return false;
 		}
+		
+		public boolean isContainer()
+		{
+			return true;
+		}
 
 		public boolean isNamespace()
 		{
@@ -138,6 +163,11 @@ public enum NodeKind
 		public boolean isChild()
 		{
 			return true;
+		}
+		
+		public boolean isContainer()
+		{
+			return false;
 		}
 
 		public boolean isNamespace()
@@ -161,6 +191,11 @@ public enum NodeKind
 			return true;
 		}
 
+		public boolean isContainer()
+		{
+			return false;
+		}
+		
 		public boolean isNamespace()
 		{
 			return false;
@@ -172,4 +207,6 @@ public enum NodeKind
 	public abstract boolean isChild();
 
 	public abstract boolean isNamespace();
+	
+	public abstract boolean isContainer();
 }

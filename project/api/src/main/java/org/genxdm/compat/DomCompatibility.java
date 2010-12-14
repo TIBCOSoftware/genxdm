@@ -20,6 +20,8 @@ import java.util.List;
 
 import org.genxdm.NodeKind;
 import org.genxdm.base.Model;
+import org.genxdm.base.mutable.MutableModel;
+import org.genxdm.base.mutable.NodeFactory;
 
 /**
  * Methods that provide similar functionality to DOM capability, where that capability
@@ -83,7 +85,7 @@ public class DomCompatibility {
 	}
 	
 	/**
-	 * Utility method to fill a list from an Iterable
+	 * Utility method to fill a list from an {@link Iterable}
 	 * @param <N>
 	 * @param axis
 	 * @return
@@ -95,4 +97,27 @@ public class DomCompatibility {
 	    return result;
 	}
 	
+	/**
+	 * Either create or update an attribute on an element.
+	 * 
+	 * @param <N>	The node kind.
+	 * 
+	 * @param factory	The factory for create attributes, if needed.
+	 * @param element	The element for which the attribute will be updated/added.
+	 * @param namespace	The namespace for the attribute.
+	 * @param localName	The local name of the attribute
+	 * @param prefix	What prefix to associate with the attribute.
+	 * @param value		The value of the attribute.
+	 */
+	public static <N> void setAttribute(NodeFactory<N> factory, N element, String namespace, String localName, String prefix, String value) {
+		MutableModel<N> model = factory.getMutableModel();
+		N currAttr = model.getAttribute(element, namespace, localName);
+		if (currAttr != null) {
+			model.replaceValue(currAttr, value);
+		}
+		else {
+			N newAttr = factory.createAttribute(namespace, localName, prefix, value);
+			model.insertAttribute(element, newAttr);
+		}
+	}
 }
