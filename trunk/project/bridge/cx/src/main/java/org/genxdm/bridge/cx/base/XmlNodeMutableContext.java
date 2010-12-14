@@ -22,6 +22,7 @@ import org.genxdm.base.mutable.NodeFactory;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridge.cx.tree.XmlNodeFactory;
 import org.genxdm.bridge.cx.tree.XmlNodeMutator;
+import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
 
 public class XmlNodeMutableContext
@@ -50,8 +51,7 @@ public class XmlNodeMutableContext
 
     public MutableCursor<XmlNode> newCursor(XmlNode node)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new MutableCursorOnMutableModel<XmlNode>(node, model);
     }
 
     private final XmlNodeFactory factory = new XmlNodeFactory();

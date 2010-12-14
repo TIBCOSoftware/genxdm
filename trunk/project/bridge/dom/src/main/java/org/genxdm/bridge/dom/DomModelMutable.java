@@ -15,6 +15,9 @@
  */
 package org.genxdm.bridge.dom;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.genxdm.base.mutable.MutableModel;
 import org.genxdm.exceptions.PreCondition;
 import org.w3c.dom.Attr;
@@ -28,108 +31,185 @@ import org.w3c.dom.Node;
 public final class DomModelMutable 
     extends DomModel implements MutableModel<Node>
 {
-	public Node adoptNode(final Node target, final Node source)
-	{
-		PreCondition.assertArgumentNotNull(target, "target");
-		PreCondition.assertArgumentNotNull(source, "source");
-		final Document owner = DomSupport.getOwner(target);
-		return owner.adoptNode(source);
-	}
 
-	public Node appendChild(final Node parent, final Node newChild)
-	{
-		PreCondition.assertArgumentNotNull(parent, "parent");
-		PreCondition.assertArgumentNotNull(newChild, "newChild");
-		return parent.appendChild(newChild);
-	}
+    public DomNodeFactory getFactoryForContext(final Node context)
+    {
+        PreCondition.assertNotNull(context, "context");
+        // TODO: cache this, probably with a least-recent first-dropped algo, rather
+        // than creating a new one each time as we're doing here.  Basically, a Map<Document, NodeFactory>,
+        // possibly user-configurable in size with a reasonable default (six?); check whether
+        // we have one already or not.  verify that this really is a better solution than
+        // creating a nodefactory each time; it's not a heavy abstraction (has only doc or
+        // dbf as state).
+        return new DomNodeFactory(DomSupport.getOwner(context), this);
+    }
+    
+    public void appendChild(final Node parent, final Node newChild)
+    {
+        PreCondition.assertArgumentNotNull(parent, "parent");
+        PreCondition.assertArgumentNotNull(newChild, "newChild");
+        parent.appendChild(ensureOwnership(DomSupport.getOwner(parent), newChild));
+    }
+    
+    public void appendChildren(final Node parent, final Iterable<Node> content)
+    {
+        // TODO: probably highly inefficient, but easy to implement.
+        PreCondition.assertNotNull(content, "content");
+        final Document owner = parent.getOwnerDocument();
+        for (Node node : content)
+        {
+            parent.appendChild(ensureOwnership(owner, node));
+        }
+    }
+    
+    public void prependChild(final Node parent, final Node content)
+    {
+        PreCondition.assertNotNull(parent, "parent");
+        PreCondition.assertNotNull(content, "content");
+        parent.insertBefore(ensureOwnership(parent.getOwnerDocument(), content), parent.getFirstChild());
+    }
+    
+    public void prependChildren(final Node parent, final Iterable<Node> content)
+    {
+        // TODO: probably highly inefficient, but easy to implement.
+        for (Node node : content)
+        {
+            prependChild(parent, node);
+        }
+    }
 
-	public Node cloneNode(final Node source, final boolean deep)
-	{
-		PreCondition.assertArgumentNotNull(source, "source");
-		return source.cloneNode(deep);
-	}
+    public Node copyNode(final Node source, final boolean deep)
+    {
+        PreCondition.assertArgumentNotNull(source, "source");
+        return source.cloneNode(deep);
+    }
 
-	public Document getOwner(final Node node)
-	{
-		PreCondition.assertArgumentNotNull(node, "node");
-		return DomSupport.getOwner(node);
-	}
+    public void insertBefore(final Node target, final Node content)
+    {
+        PreCondition.assertNotNull(target, "target");
+        PreCondition.assertNotNull(content, "content");
+        final Node parent = target.getParentNode();
+        if (parent != null)
+        {
+            parent.insertBefore(ensureOwnership(target.getOwnerDocument(), content), target);
+        }
+    }
+    
+    public void insertBefore(final Node target, final Iterable<Node> content)
+    {
+        PreCondition.assertNotNull(target, "target");
+        PreCondition.assertNotNull(content, "content");
+        final Node parent = target.getParentNode();
+        if (parent != null)
+        {
+            final Document owner = parent.getOwnerDocument();
+            for (Node node : content)
+            {
+                parent.insertBefore(ensureOwnership(owner, node), target);
+            }
+        }
+    }
+    
+    public void insertAfter(final Node target, final Node content)
+    {
+        PreCondition.assertNotNull(target, "target");
+        PreCondition.assertNotNull(content, "content");
+        final Node parent = target.getParentNode();
+        final Node next = target.getNextSibling();
+        // need a bloody closure, dammit
+        if (parent != null)
+        {
+            final Document owner = parent.getOwnerDocument();
+            if (next != null)
+                parent.insertBefore(ensureOwnership(owner, content), next);
+            else
+                parent.appendChild(ensureOwnership(owner, content));
+        }
+    }
+    
+    public void insertAfter(final Node target, final Iterable<Node> content)
+    {
+        PreCondition.assertNotNull(target, "target");
+        PreCondition.assertNotNull(content, "content");
+        final Node parent = target.getParentNode();
+        final Node next = target.getNextSibling();
+        if (parent != null)
+        {
+            final Document owner = parent.getOwnerDocument();
+            for (Node node : content)
+            {
+                if (next != null)
+                    parent.insertBefore(ensureOwnership(owner, node), next);
+                else
+                    parent.appendChild(ensureOwnership(owner, node));
+            }
+        }
+    }
 
-	public Node importNode(final Node target, final Node source, final boolean deep)
-	{
-		PreCondition.assertArgumentNotNull(target, "target");
-		PreCondition.assertArgumentNotNull(source, "source");
-		final Document owner = DomSupport.getOwner(target);
-		return owner.importNode(source, deep);
-	}
+    public Node delete(final Node target)
+    {
+        PreCondition.assertArgumentNotNull(target, "target");
+        Node parent = target.getParentNode();
+        if (parent != null)
+            return parent.removeChild(target);
+        return null;
+    }
+    
+    public Iterable<Node> deleteChildren(final Node target)
+    {
+        PreCondition.assertNotNull(target, "target");
+        List<Node> deleted = new ArrayList<Node>();
+        if (getNodeKind(target).isContainer())
+            for (Node child : getChildAxis(target))
+            {
+                deleted.add(target.removeChild(child));
+            }
+        return deleted;
+    }
 
-	public Node insertBefore(final Node parent, final Node newChild, final Node refChild)
-	{
-		PreCondition.assertArgumentNotNull(parent, "parent");
-		PreCondition.assertArgumentNotNull(newChild, "newChild");
-		return parent.insertBefore(newChild, refChild);
-	}
+    public Node replace(final Node target, final Node content)
+    {
+        PreCondition.assertArgumentNotNull(content, "newChild");
+        PreCondition.assertArgumentNotNull(target, "oldChild");
+        final Node parent = target.getParentNode();
+        if (parent != null)
+            return parent.replaceChild(ensureOwnership(target.getOwnerDocument(), content), target);
+        return null;
+    }
+    
+    public String replaceValue(final Node target, final String value)
+    {
+        PreCondition.assertNotNull(target, "target");
+        if (getNodeKind(target).isContainer() || getNodeKind(target).isNamespace() )
+            return null; // throw an exception, really.
+        String retval = getStringValue(target);
+        target.setNodeValue(value);
+        return retval;
+    }
 
-	public void normalize(final Node node)
-	{
-		PreCondition.assertArgumentNotNull(node, "node");
-		node.normalize();
-	}
+    public void insertAttribute(final Node element, final Node attribute)
+    {
+        ((Element)element).setAttributeNodeNS((Attr)ensureOwnership(element.getOwnerDocument(), attribute));
+    }
+    
+    public void insertAttributes(final Node element, final Iterable<Node> attributes)
+    {
+        for (Node attr : attributes)
+            insertAttribute(element, attr);
+    }
 
-	public void removeAttribute(final Node element, final String namespaceURI, final String localName)
-	{
-		PreCondition.assertArgumentNotNull(element, "element");
-		PreCondition.assertArgumentNotNull(namespaceURI, "namespaceURI");
-		PreCondition.assertArgumentNotNull(localName, "localName");
-		DomSupport.removeAttribute(element, namespaceURI, localName);
-	}
-
-	public Node removeChild(final Node parent, final Node oldChild)
-	{
-		PreCondition.assertArgumentNotNull(parent, "parent");
-		PreCondition.assertArgumentNotNull(oldChild, "oldChild");
-		return parent.removeChild(oldChild);
-	}
-
-	public void removeNamespace(final Node element, final String prefix)
-	{
-		PreCondition.assertArgumentNotNull(element, "element");
-		PreCondition.assertArgumentNotNull(prefix, "prefix");
-		DomSupport.removeNamespace(element, prefix);
-	}
-
-	public Node replaceChild(final Node parent, final Node newChild, final Node oldChild)
-	{
-		PreCondition.assertArgumentNotNull(parent, "parent");
-		PreCondition.assertArgumentNotNull(newChild, "newChild");
-		PreCondition.assertArgumentNotNull(oldChild, "oldChild");
-		return parent.replaceChild(newChild, oldChild);
-	}
-
-	public void setAttribute(final Node element, final Node attribute)
-	{
-		((Element)element).setAttributeNodeNS((Attr)attribute);
-	}
-
-	public Attr setAttribute(final Node element, final String namespaceURI, final String localName, final String prefix, final String value)
-	{
-		PreCondition.assertArgumentNotNull(element, "element");
-		PreCondition.assertArgumentNotNull(namespaceURI, "namespaceURI");
-		PreCondition.assertArgumentNotNull(localName, "localName");
-		PreCondition.assertArgumentNotNull(prefix, "prefix");
-		return DomSupport.setAttributeUntyped(element, namespaceURI, localName, prefix, value);
-	}
-
-	public void setNamespace(final Node element, final Node namespace)
-	{
-		((Element)element).setAttributeNodeNS((Attr)namespace);
-	}
-
-	public Attr setNamespace(final Node element, final String prefix, final String uri)
-	{
-		PreCondition.assertArgumentNotNull(element, "element");
-		PreCondition.assertArgumentNotNull(prefix, "prefix");
-		PreCondition.assertArgumentNotNull(uri, "uri");
-		return DomSupport.setNamespace(element, prefix, uri);
-	}
+    public Node insertNamespace(final Node element, final String prefix, final String uri)
+    {
+        PreCondition.assertArgumentNotNull(element, "element");
+        PreCondition.assertArgumentNotNull(prefix, "prefix");
+        PreCondition.assertArgumentNotNull(uri, "uri");
+        return DomSupport.setNamespace(element, prefix, uri);
+    }
+    
+    private Node ensureOwnership(Document d, Node n)
+    {
+        if (n.getOwnerDocument() != d)
+            d.adoptNode(n);
+        return n;
+    }
 }

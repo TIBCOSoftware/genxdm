@@ -38,21 +38,7 @@ import org.genxdm.exceptions.GxmlException;
 public class XmlNodeBuilder
     implements FragmentBuilder<XmlNode>
 {
-	
-	public XmlNodeBuilder() {
-		this(null);
-	}
-	
-	/**
-	 * This constructor exists for the purposes of cloning/importing into a new document,
-	 * rather than the same one.
-	 * 
-	 * @param document	The root ("document") node to set on the results.
-	 */
-	public XmlNodeBuilder(XmlRootNode document) {
-		currentDoc = document;
-	}
-
+    
     public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
         throws GxmlException
     {
@@ -60,13 +46,13 @@ public class XmlNodeBuilder
         depth++;
         if (current != null)
         {
-            final XmlAttributeNode attribute = factory.createAttribute(currentDoc, namespaceURI, localName, prefix, value, type);
-            mutator.setAttribute(current, attribute);
+            final XmlAttributeNode attribute = factory.createAttribute(namespaceURI, localName, prefix, value, type);
+            mutator.insertAttribute(current, attribute);
             current = attribute;
         }
         else
         {
-            current = factory.createAttribute(currentDoc, namespaceURI, localName, prefix, value, type);
+            current = factory.createAttribute(namespaceURI, localName, prefix, value, type);
         }
         endNodeProcessing();
     }
@@ -85,13 +71,13 @@ public class XmlNodeBuilder
         depth++;
         if (current != null)
         {
-            final XmlCommentNode comment = factory.createComment(currentDoc, value);
+            final XmlCommentNode comment = factory.createComment(value);
             mutator.appendChild(current, comment);
             current = comment;
         }
         else
         {
-            current = factory.createComment(currentDoc, value);
+            current = factory.createComment(value);
         }
         endNodeProcessing();
     }
@@ -101,7 +87,6 @@ public class XmlNodeBuilder
     {
         flushCatch();
         endNodeProcessing();
-        currentDoc = null;
     }
 
     public void endElement()
@@ -134,16 +119,12 @@ public class XmlNodeBuilder
     {
         flushCatch();
         depth++;
+        XmlNamespaceNode ns = factory.createNamespace(prefix, namespaceURI);
         if (current != null)
         {
-            final XmlNamespaceNode namespace = factory.createNamespace(currentDoc, prefix, namespaceURI);
-            mutator.setNamespace(current, namespace);
-            current = namespace;
+            mutator.setNamespace((XmlElementNode)current, ns);
         }
-        else
-        {
-            current = factory.createNamespace(currentDoc, prefix, namespaceURI);
-        }
+        current = ns;
         endNodeProcessing();
     }
 
@@ -154,13 +135,13 @@ public class XmlNodeBuilder
         depth++;
         if (current != null)
         {
-            final XmlPINode pi = factory.createProcessingInstruction(currentDoc, target, data);
+            final XmlPINode pi = factory.createProcessingInstruction(target, data);
             mutator.appendChild(current, pi);
             current = pi;
         }
         else
         {
-            current = factory.createProcessingInstruction(currentDoc, target, data);
+            current = factory.createProcessingInstruction(target, data);
         }
         endNodeProcessing();
     }
@@ -177,7 +158,6 @@ public class XmlNodeBuilder
     {
         depth++;
         current = factory.createDocument(documentURI, docTypeDecl);
-        currentDoc = (XmlRootNode)current;
     }
 
     public void startElement(String namespaceURI, String localName, String prefix)
@@ -187,13 +167,13 @@ public class XmlNodeBuilder
         depth++;
         if (current != null)
         {
-            final XmlElementNode element = factory.createElement(currentDoc, namespaceURI, localName, prefix);
+            final XmlElementNode element = factory.createElement(namespaceURI, localName, prefix);
             mutator.appendChild(current, element);
             current = element;
         }
         else
         {
-            current = factory.createElement(currentDoc, namespaceURI, localName, prefix);
+            current = factory.createElement(namespaceURI, localName, prefix);
         }
     }
 
@@ -204,13 +184,13 @@ public class XmlNodeBuilder
         depth++;
         if (current != null)
         {
-            final XmlTextNode text = factory.createText(currentDoc, data);
+            final XmlTextNode text = factory.createText(data);
             mutator.appendChild(current, text);
             current = text;
         }
         else
         {
-            current = factory.createText(currentDoc, data);
+            current = factory.createText(data);
         }
         endNodeProcessing();
     }
@@ -245,7 +225,6 @@ public class XmlNodeBuilder
     protected final ArrayList<XmlNode> nodes = new ArrayList<XmlNode>();
     protected int depth;
     protected XmlNode current;
-    protected XmlRootNode currentDoc;
     protected final XmlNodeFactory factory = new XmlNodeFactory();
     protected final XmlNodeMutator mutator = new XmlNodeMutator();
 }

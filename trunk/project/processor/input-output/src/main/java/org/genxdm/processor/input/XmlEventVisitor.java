@@ -188,11 +188,11 @@ public class XmlEventVisitor
                     // This special case seems to be necessary for some StAX parsers that have a bug,
                     // and report the namespace to be "" when it in fact is the canonical namespace for "xml:"
                     if (localPart.startsWith("xml:")) {
-                    	// TODO - figure out why this work-around is necessary!
-    					handler.attribute(XMLConstants.XML_NS_URI, localPart.substring(4), "xml", attribute.getValue(), DtdAttributeKind.get(attribute.getDTDType()));
+                        // TODO - figure out why this work-around is necessary!
+                        handler.attribute(XMLConstants.XML_NS_URI, localPart.substring(4), "xml", attribute.getValue(), DtdAttributeKind.get(attribute.getDTDType()));
                     }
                     else {
-    					handler.attribute(attribute.getName().getNamespaceURI(), localPart, attribute.getName().getPrefix(), attribute.getValue(), DtdAttributeKind.get(attribute.getDTDType()));
+                        handler.attribute(attribute.getName().getNamespaceURI(), localPart, attribute.getName().getPrefix(), attribute.getValue(), DtdAttributeKind.get(attribute.getDTDType()));
                     }
                 }
                 break;

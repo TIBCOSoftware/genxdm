@@ -27,25 +27,27 @@ import org.genxdm.xs.types.Type;
 public class XmlNodeFactory
     implements NodeFactory<XmlNode>
 {
+    // TODO: maybe provide alternate constructors instead of spewing new
+    // factories from models from factories from models from factories?
 
-    public XmlAttributeNode createAttribute(XmlNode owner, String namespaceURI, String localName, String prefix, String value)
+    public XmlAttributeNode createAttribute(String namespaceURI, String localName, String prefix, String value)
     {
-        return new XmlAttributeNode(getRoot(owner), namespaceURI, localName, prefix, DtdAttributeKind.CDATA, value);
+        return new XmlAttributeNode(namespaceURI, localName, prefix, DtdAttributeKind.CDATA, value);
     }
     
-    public XmlAttributeNode createAttribute(XmlNode owner, String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
+    public XmlAttributeNode createAttribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
     {
-        return new XmlAttributeNode(getRoot(owner), namespaceURI, localName, prefix, type, value);
+        return new XmlAttributeNode(namespaceURI, localName, prefix, type, value);
     }
     
-    public XmlAttributeNode createAttribute(XmlNode owner, String namespaceURI, String localName, String prefix, List<? extends XmlAtom> data, Type<XmlAtom> type)
+    public XmlAttributeNode createAttribute(String namespaceURI, String localName, String prefix, List<? extends XmlAtom> data, Type<XmlAtom> type)
     {
-        return new XmlAttributeNode(getRoot(owner), namespaceURI, localName, prefix, type, makeList(data));
+        return new XmlAttributeNode(namespaceURI, localName, prefix, type, makeList(data));
     }
     
-    public XmlCommentNode createComment(XmlNode owner, String data)
+    public XmlCommentNode createComment(String data)
     {
-        return new XmlCommentNode(getRoot(owner), data);
+        return new XmlCommentNode(data);
     }
 
     public XmlRootNode createDocument(final URI documentURI, final String docTypeDecl)
@@ -53,43 +55,43 @@ public class XmlNodeFactory
         return new XmlRootNode(documentURI, docTypeDecl);
     }
 
-    public XmlElementNode createElement(XmlNode owner, String namespaceURI, String localName, String prefix)
+    public XmlElementNode createElement(String namespaceURI, String localName, String prefix)
     {
-        return new XmlElementNode(getRoot(owner), namespaceURI, localName, prefix, null);
+        return new XmlElementNode(namespaceURI, localName, prefix, null);
     }
     
-    public XmlElementNode createElement(XmlNode owner, String namespaceURI, String localName, String prefix, Type<XmlAtom> type)
+    public XmlElementNode createElement(String namespaceURI, String localName, String prefix, Type<XmlAtom> type)
     {
-        return new XmlElementNode(getRoot(owner), namespaceURI, localName, prefix, type);
+        return new XmlElementNode(namespaceURI, localName, prefix, type);
     }
 
-    public XmlNamespaceNode createNamespace(XmlNode owner, String prefix, String namespaceURI)
+    public XmlNamespaceNode createNamespace(String prefix, String namespaceURI)
     {
-        return new XmlNamespaceNode(getRoot(owner), prefix, namespaceURI);
+        return new XmlNamespaceNode(prefix, namespaceURI);
     }
 
-    public XmlPINode createProcessingInstruction(XmlNode owner, String target, String data)
+    public XmlPINode createProcessingInstruction(String target, String data)
     {
-        return new XmlPINode(getRoot(owner), target, data);
+        return new XmlPINode(target, data);
     }
 
-    public XmlTextNode createText(XmlNode owner, String value)
+    public XmlTextNode createText(String value)
     {
-        return new XmlTextNode(getRoot(owner), value);
+        return new XmlTextNode(value);
     }
     
-    public XmlTextNode createText(XmlNode owner, List<? extends XmlAtom> data)
+    public XmlNodeMutator getMutableModel()
     {
-        return new XmlTextNode(getRoot(owner), makeList(data));
+        if (model == null)
+            model = new XmlNodeMutator();
+        return model;
     }
     
-    private XmlRootNode getRoot(XmlNode node)
+    public XmlTextNode createText(List<? extends XmlAtom> data)
     {
-        if (node == null)
-            return null;
-        return node.getRoot();
+        return new XmlTextNode(makeList(data));
     }
-
+    
     List<XmlAtom> makeList(Iterable<? extends XmlAtom> it)
     {
         List<XmlAtom> list = new ArrayList<XmlAtom>();
@@ -99,4 +101,6 @@ public class XmlNodeFactory
         }
         return list;
     }
+    
+    private XmlNodeMutator model;
 }

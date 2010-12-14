@@ -28,10 +28,9 @@ public final class XmlRootNode
 {
     XmlRootNode(final URI docURI, final String decl)
     {
-        super(NodeKind.DOCUMENT, null);
+        super(NodeKind.DOCUMENT);
         documentURI = docURI;
         docTypeDecl = decl;
-        this.document = this;
         parseDocTypeDecl();
     }
     
