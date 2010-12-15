@@ -2,11 +2,15 @@ The following concrete classes exist in the GenXDM API package.
 We can, in theory, test concrete classes (but cannot reasonably
 claim to have tested interfaces by implementing them; that's fatuous).
 
+Items with "]]" have complete test cases, in Junit 4.
+Items with "--" have issues that currently make things difficult.
+Items with "**" still need attention.
+
 org.genxdm package:
 DtdAttributeKind: an enumeration without behavior
 EventKind: an enumeration without behavior
 Feature: an interface
-NodeKind: enumeration with behavior; test case exists
+]]NodeKind: enumeration with behavior; test case exists
 Resolved: concrete, but parameterized class; its only contract is that
 	its members are not null, which is guaranteed in the constructor
 Resolver: interface
@@ -25,29 +29,36 @@ Testing of exceptions is problematic.  We're going to defer it for the time
 	being.  We used to have some internationalization test cases, but the
 	test cases were unfortunately broken.  Note that there are two enums for
 	which we ought to have coverage, but they're ... well, odd.
-AssertMessage: an enumeration with behavior; we should test its behavior.
-SpillagePolicy: an enumeration with behavior; we should test its behavior.
+]]SpillagePolicy: an enumeration with behavior
 
 org.genxdm.names package: all interfaces except
-NameSource: we have a placeholder for tests, with an outline
+]]NameSource: we have a test (the class has been simplified, as well; it needs further simplification and then to be moved)
 
 org.genxdm.nodes: all interfaces
 org.genxdm.typed: all interfaces
 org.genxdm.typed.io: all interfaces
 
 org.genxdm.typed.types: all interfaces except:
-Emulation: an enumeration with behavior; we should test its behavior.
-Quantifier: an enumeration with behavior; test case exists
+Emulation: an enumeration with behavior; it relies upon the definition of "A" and can only be
+  adequately tested with a (typed) bridge.  put test in bridgetest.
+--Quantifier: an enumeration with behavior; test case exists (see issue for Quantifier versus KeeneQuantifier in xs.enums)
 VariantKind: an enumeration without behavior
 
-org.genxdm.xs and child packages: need more investigation.
+org.genxdm.xs and child packages: need more investigation.  Several cases needed.
 	rough outline follows. 
 
-org.genxdm.xs.constraint.NamespaceConstraint
-org.genxdm.xs.constraint.ValueConstraint
+**org.genxdm.xs.constraint.NamespaceConstraint
+**org.genxdm.xs.constraint.ValueConstraint
 
+org.genxdm.xs.enums: most have no testable behavior, except:
+**DerivationMethod
+--KeeneQuantifier (see Quantifier note, above, and issue in tracker)
+**WhiteSpacePolicy
+
+(we really don't want to build test cases for exceptions, do we?)
 org.genxdm.xs.exceptions.*, except SchemaExceptionThrower and SchemaExceptionHandler
 
-org.genxdm.xs.SchemaLoadOptions
+**org.genxdm.xs.SchemaLoadOptions
 
-org.genxdm.xs.types.UberTypeArgumentOrSelfItera{tor,ble}
+**org.genxdm.xs.types.UberTypeArgumentOrSelfItera{tor,ble}
+]]org.genxdm.xs.types.NativeType
