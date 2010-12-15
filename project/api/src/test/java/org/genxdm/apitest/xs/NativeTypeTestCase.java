@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.tests.xs;
+package org.genxdm.apitest.xs;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,11 +23,16 @@ import java.util.Map;
 
 import javax.xml.XMLConstants;
 
-import junit.framework.TestCase;
-
 import org.genxdm.xs.types.NativeType;
 
-public final class NativeTypeTestCase extends TestCase
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
+public final class NativeTypeTestCase
 {
 	private static final int EXPECTED_TOP_LEVEL = 20;
 
@@ -102,6 +107,7 @@ public final class NativeTypeTestCase extends TestCase
 		}
 	}
 
+	@Test
 	public void testCommonType()
 	{
 		// assertEquals(UberType.DOUBLE, UberType.commonType(UberType.INTEGER, UberType.DOUBLE));
@@ -132,12 +138,14 @@ public final class NativeTypeTestCase extends TestCase
 		}
 	}
 
+	@Test
 	public void testGetName()
 	{
 		assertEquals(XMLConstants.W3C_XML_SCHEMA_NS_URI, NativeType.ANY_TYPE.toQName().getNamespaceURI());
 		assertEquals("anyType", NativeType.ANY_TYPE.toQName().getLocalPart());
 	}
 
+	@Test
 	public void testGetType()
 	{
 		assertEquals(NativeType.ANY_TYPE, NativeType.getType("anyType"));
@@ -147,6 +155,7 @@ public final class NativeTypeTestCase extends TestCase
 		assertEquals(NativeType.STRING, NativeType.getType("string"));
 	}
 
+	@Test
 	public void testIsA()
 	{
 		assertTrue(NativeType.ANY_TYPE.isA(NativeType.ANY_TYPE));
@@ -178,6 +187,7 @@ public final class NativeTypeTestCase extends TestCase
 		assertFalse(NativeType.UNTYPED_ATOMIC.isA(NativeType.STRING));
 	}
 
+	@Test
 	public void testIsDecimal()
 	{
 		for (final NativeType candidate : NativeType.values())
@@ -210,6 +220,7 @@ public final class NativeTypeTestCase extends TestCase
 		}
 	}
 
+	@Test
 	public void testIsGregorian()
 	{
 		for (final NativeType candidate : NativeType.values())
@@ -236,6 +247,7 @@ public final class NativeTypeTestCase extends TestCase
 		}
 	}
 
+	@Test
 	public void testIsInt()
 	{
 		for (final NativeType candidate : NativeType.values())
@@ -257,6 +269,7 @@ public final class NativeTypeTestCase extends TestCase
 		}
 	}
 
+	@Test
 	public void testIsInteger()
 	{
 		for (final NativeType candidate : NativeType.values())
@@ -288,6 +301,7 @@ public final class NativeTypeTestCase extends TestCase
 		}
 	}
 
+	@Test
 	public void testIsNumeric()
 	{
 		for (final NativeType candidate : NativeType.values())
@@ -322,6 +336,7 @@ public final class NativeTypeTestCase extends TestCase
 		}
 	}
 
+	@Test
 	public void testIsPrimitive()
 	{
 		for (final NativeType candidate : NativeType.values())
@@ -376,6 +391,7 @@ public final class NativeTypeTestCase extends TestCase
 		}
 	}
 
+	@Test
 	public void testIsString()
 	{
 		for (final NativeType candidate : NativeType.values())
@@ -404,6 +420,7 @@ public final class NativeTypeTestCase extends TestCase
 		}
 	}
 
+	@Test
 	public void testIsToken()
 	{
 		for (final NativeType candidate : NativeType.values())
@@ -430,6 +447,7 @@ public final class NativeTypeTestCase extends TestCase
 		}
 	}
 
+	@Test
 	public void testIsUrType()
 	{
 		assertTrue(NativeType.ANY_TYPE.isUrType());
@@ -455,6 +473,7 @@ public final class NativeTypeTestCase extends TestCase
 		}
 	}
 
+	@Test
 	public void testTopLevel()
 	{
 		// Use the full set of Ur-types and the isA method to calculate the relationships.

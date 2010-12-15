@@ -19,6 +19,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.xml.XMLConstants;
+
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.xs.exceptions.WildcardIntersectionException;
@@ -102,7 +104,7 @@ public final class NamespaceConstraint
 	public static NamespaceConstraint exclude(final String namespace, final NameSource nameBridge)
 	{
 		PreCondition.assertArgumentNotNull(namespace, "namespace");
-		if (nameBridge.isEmpty(namespace))
+		if (namespace.equals(XMLConstants.NULL_NS_URI))
 		{
 			return NotAbsent(nameBridge);
 		}
@@ -131,7 +133,7 @@ public final class NamespaceConstraint
 		final HashSet<String> namespaces = new HashSet<String>();
 		for (final String x : include.m_namespaces)
 		{
-			if (!exclude.m_namespaces.contains(x) && !nameBridge.isEmpty(x))
+			if (!exclude.m_namespaces.contains(x) && !x.equals(XMLConstants.NULL_NS_URI))
 			{
 				namespaces.add(x);
 			}

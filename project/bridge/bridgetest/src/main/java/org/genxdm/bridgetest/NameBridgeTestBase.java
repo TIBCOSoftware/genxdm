@@ -59,14 +59,12 @@ public abstract class NameBridgeTestBase<N>
 			final String empty = nameBridge.empty();
 			assertNotNull(empty);
 			assertEquals("", empty.toString());
-			assertTrue(nameBridge.isEmpty(empty));
 			assertEquals(nameBridge.empty(), myEmptySymbol);
 		}
 
 		{
 			final String empty = "";
 			assertNotNull(empty);
-			assertTrue(nameBridge.isEmpty(empty));
 			assertEquals(empty, nameBridge.empty());
 			assertEquals("", empty.toString());
 		}
@@ -97,22 +95,6 @@ public abstract class NameBridgeTestBase<N>
 			}
 		}
 		assertNull(nameBridge.nativeType(new QName("foo", "bar")));
-	}
-
-	public void testPrefix()
-	{
-		final NameSource nameBridge = new NameSource();
-
-		{
-			assertEquals("", nameBridge.getPrefix("", true));
-			assertNull(nameBridge.getPrefix("", false));
-			assertEquals("xml", nameBridge.getPrefix("http://www.w3.org/XML/1998/namespace", true));
-			assertEquals("xml", nameBridge.getPrefix("http://www.w3.org/XML/1998/namespace", false));
-			assertEquals("xmlns", nameBridge.getPrefix("http://www.w3.org/2000/xmlns/", true));
-			assertEquals("xmlns", nameBridge.getPrefix("http://www.w3.org/2000/xmlns/", false));
-			assertNull(nameBridge.getPrefix("foo", true));
-			assertNull(nameBridge.getPrefix("foo", false));
-		}
 	}
 
 	public void testProlog()
