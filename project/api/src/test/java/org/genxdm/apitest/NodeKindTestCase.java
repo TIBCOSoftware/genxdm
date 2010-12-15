@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.tests;
-
-import junit.framework.TestCase;
+package org.genxdm.apitest;
 
 import org.genxdm.NodeKind;
+import org.junit.Test;
 
-public final class NodeKindTestCase extends TestCase
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+public final class NodeKindTestCase
 {
+    @Test
 	public void testIsAttribute()
 	{
 		for (final NodeKind candidate : NodeKind.values())
@@ -40,6 +43,7 @@ public final class NodeKindTestCase extends TestCase
 		}
 	}
 
+	@Test
 	public void testIsChild()
 	{
 		for (final NodeKind candidate : NodeKind.values())
@@ -62,6 +66,7 @@ public final class NodeKindTestCase extends TestCase
 		}
 	}
 
+	@Test
 	public void testIsNamespace()
 	{
 		for (final NodeKind candidate : NodeKind.values())
@@ -79,5 +84,27 @@ public final class NodeKindTestCase extends TestCase
 				}
 			}
 		}
+	}
+	
+	@Test
+	public void testIsContainer()
+	{
+	    for (final NodeKind candidate : NodeKind.values())
+	    {
+	        switch (candidate)
+	        {
+	            case DOCUMENT:
+	            case ELEMENT:
+	            {
+	                assertTrue(candidate.name(), candidate.isContainer());
+	            }
+	            break;
+	            default:
+	            {
+	                assertFalse(candidate.name(), candidate.isContainer());
+	            }
+	            
+	        }
+	    }
 	}
 }
