@@ -27,9 +27,14 @@
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>bridgetest</artifactId>
+    <artifactId>legacytest</artifactId>
     <version>0.2</version>
-    <name>GenXDM Bridge Test Kit</name>
+    <!-- bridgetest needs to be more or less replaced.  Although the design is
+         good (makes it easy to implement the test for a particular bridge),
+         the execution is haphazard at best, and difficult to comprehend.
+         New work is in progress to establish a consistent, contract-based
+         test suite. -->
+    <name>GenXDM Legacy Bridge Test Kit</name>
 
     <reporting>
         <plugins>
@@ -70,7 +75,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>[4.0.0,5.0.0)</version>
+            <version>[3.8.1,4.0.0)</version>
         </dependency>
     </dependencies>
 </project>
