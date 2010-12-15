@@ -39,6 +39,7 @@
 
     <modules>
         <module>bridgekit</module>
+        <module>legacytest</module> <!-- temporary: will be removed when no dependents remain -->
         <module>bridgetest</module>
         <module>axiom</module>
         <module>cx</module>
