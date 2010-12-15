@@ -98,6 +98,11 @@ public abstract class ContextTestBase<N>
     @Test
     public void fragmentBuilder()
     {
+        // TODO: note that the use of fragment builder is pretty fundamental
+        // to the success of most other tests.  is there a way for us to
+        // say "test the fundamentals first"?  it appears that the junit
+        // geeks regard setting the order of tests as "doing it wrong."
+
         // *must* be non-null.
         // called twice, should return two different objects.
        ProcessingContext<N> context = newProcessingContext();

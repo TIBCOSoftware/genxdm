@@ -17,7 +17,6 @@ package org.genxdm.base;
 
 import org.genxdm.axes.Navigator;
 import org.genxdm.base.io.ContentHandler;
-import org.genxdm.base.io.Writable;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.nodes.Informer;
@@ -30,7 +29,7 @@ import org.genxdm.nodes.Informer;
  * </p>
  */
 public interface Cursor<N>
-    extends Informer, Navigator<N>, Comparable<Cursor<N>>, Writable
+    extends Informer, Navigator<N>, Comparable<Cursor<N>>
 {
     /**
      * Obtain a fixed-location marker initialized with the current node.
@@ -43,7 +42,7 @@ public interface Cursor<N>
      * @param writer
      *            The handler for events generated.
      * 
-     * @throws IOException
+     * @throws GxmlException
      */
     void write(ContentHandler writer) throws GxmlException;
 }
