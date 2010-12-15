@@ -28,6 +28,7 @@ import org.genxdm.bridgekit.tree.CursorOnTypedModel;
 import org.genxdm.bridgekit.xs.MetaBridgeOnSchemaTypeBridgeAdapter;
 import org.genxdm.bridgekit.xs.SchemaTypeBridgeFactory;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.NameSource;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
@@ -58,7 +59,7 @@ public final class AxiomSAProcessingContext
 	public AxiomSAProcessingContext(final AxiomProcessingContext context)
 	{
 	    this.context = PreCondition.assertNotNull(context, "context");
-		this.atomBridge = new XmlAtomBridge(this, context.getNameBridge());
+		this.atomBridge = new XmlAtomBridge(this, new NameSource());
 		final SchemaTypeBridgeFactory<XmlAtom> cacheFactory = new SchemaTypeBridgeFactory<XmlAtom>(atomBridge);
 		cache = cacheFactory.newMetaBridge();
 		this.metaBridge = new MetaBridgeOnSchemaTypeBridgeAdapter<XmlAtom>(cache, atomBridge);

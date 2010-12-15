@@ -15,8 +15,11 @@
  */
 package org.genxdm.bridgetest;
 
+import javax.xml.XMLConstants;
+
 import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.bridgekit.ProcessingContextFactory;
+import org.genxdm.exceptions.PreCondition;
 
 /** Base class for deriving contract-based test cases.
  *
@@ -42,10 +45,33 @@ abstract public class TestBase<N>
     implements ProcessingContextFactory<N>
 {
     
-    public N createTestDocument1(FragmentBuilder<N> builder)
+    public N createSimpleAllKindsDocument(FragmentBuilder<N> builder)
     {
+        PreCondition.assertNotNull(builder);
         // create a simple document via the fragment builder.
+        // this very simple document contains precisely one node of each node kind.
+
+        // <doc att="value" xmlns:ns="ns"><!-- comment -->text<?target data?></doc>
+     
+        builder.startDocument(null, null); // this should be possible, right?
+        builder.startElement(XMLConstants.NULL_NS_URI, "doc", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "att", XMLConstants.DEFAULT_NS_PREFIX, "value", null);
+        builder.namespace("ns", "ns");
+        builder.comment("comment");
+        builder.text("text");
+        builder.processingInstruction("target", "data");
+        builder.endElement();
+        builder.endDocument();
+        
         // return the root node.
+        return builder.getNode();
+    }
+    
+    public N createComplexTestDocument(FragmentBuilder<N> builder)
+    {
+        PreCondition.assertNotNull(builder);
+        // TODO:
+        // this should create a more complex document for navigation testing.
         return builder.getNode();
     }
 }

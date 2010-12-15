@@ -28,13 +28,12 @@ import org.genxdm.base.mutable.MutableContext;
 import org.genxdm.base.mutable.MutableCursor;
 import org.genxdm.base.mutable.MutableModel;
 import org.genxdm.base.mutable.NodeFactory;
-import org.genxdm.bridge.axiom.enhanced.AxiomSAProcessingContext;
+//import org.genxdm.bridge.axiom.enhanced.AxiomSAProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.tree.BookmarkOnModel;
 import org.genxdm.bridgekit.tree.CursorOnModel;
 import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.names.NameSource;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.processor.io.DefaultDocumentHandler;
 import org.genxdm.typed.TypedContext;
@@ -79,24 +78,22 @@ public class AxiomProcessingContext
         return model;
     }
 
-    public NameSource getNameBridge()
-    {
-        return names;
-    }
-
     public MutableContext<Object> getMutableContext()
     {
-        if (mutableContext == null)
-            mutableContext = new AxioMutableContext();
-        return mutableContext;
+        // TODO: disabled temporarily, while completing base and the test suite.
+        return null;
+//        if (mutableContext == null)
+//            mutableContext = new AxioMutableContext();
+//        return mutableContext;
     }
     
     @SuppressWarnings("unchecked")
     public TypedContext<Object, XmlAtom> getTypedContext()
     {
-        if (saContext == null)
-            saContext = new AxiomSAProcessingContext(this);
-        return saContext;
+        return null; //TODO: implement properly; change this and isSupported. 
+//        if (saContext == null)
+//            saContext = new AxiomSAProcessingContext(this);
+//        return saContext;
     }
     
     public boolean isNode(Object item)
@@ -116,17 +113,16 @@ public class AxiomProcessingContext
         PreCondition.assertNotNull(feature, "feature");
         if (feature.startsWith(Feature.PREFIX))
         {
+            // at the moment, none of the following are supported.
+            // we need to know what "supported" means.
             if (!feature.equals(Feature.TYPE_ANNOTATION) &&
                 !feature.equals(Feature.TYPED_VALUE) &&
-                !feature.equals(Feature.DOCUMENT_URI)
-                && !feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT))
+                !feature.equals(Feature.DOCUMENT_URI) &&
+                !feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT) &&
+                !feature.equals(Feature.TYPED) &&
+                !feature.equals(Feature.MUTABILITY) )
                 return true;
         }
-        return false;
-    }
-
-    public boolean isTyped()
-    {
         return false;
     }
 
@@ -194,8 +190,7 @@ public class AxiomProcessingContext
     }
     
     private final AxiomModel model = new AxiomModel();
-    private final NameSource names = new NameSource();
     private final OMFactory omfactory;
     private MutableContext<Object> mutableContext;
-    private AxiomSAProcessingContext saContext;
+//    private AxiomSAProcessingContext saContext;
 }
