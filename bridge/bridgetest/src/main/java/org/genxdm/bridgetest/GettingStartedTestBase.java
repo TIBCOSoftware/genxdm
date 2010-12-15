@@ -212,26 +212,6 @@ public abstract class GettingStartedTestBase<N>
 		assertNotNull(strval);
 		assertEquals("", strval);
 
-		assertTrue(nameBridge.isEmpty(symbol));
-		assertFalse(nameBridge.isEmpty("junk"));
-
-		assertEquals(nameBridge.isEmpty(null), "" == null);
-		assertEquals(nameBridge.isEmpty(nameBridge.empty()), "" == nameBridge.empty());
-		assertEquals(nameBridge.isEmpty("a"), "" == "a");
-	}
-
-	/**
-	 * Commonly used symbols for namespaces are cached at the name bridge level.
-	 */
-	public void test00012()
-	{
-		final NameSource nameBridge = new NameSource();
-		assertNotNull(nameBridge);
-
-		assertTrue(nameBridge.isXmlNamespaceURI("http://www.w3.org/XML/1998/namespace"));
-		assertTrue(nameBridge.isXmlNamespaceURI(XMLConstants.XML_NS_URI));
-		assertFalse(nameBridge.isXmlNamespaceURI(XMLConstants.W3C_XML_SCHEMA_NS_URI));
-		assertFalse(nameBridge.isXmlNamespaceURI(null));
 	}
 
 	/**

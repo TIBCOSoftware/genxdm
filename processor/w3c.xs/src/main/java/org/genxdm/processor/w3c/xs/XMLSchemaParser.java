@@ -3654,7 +3654,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	{
 		PreCondition.assertArgumentNotNull(name);
 
-		if (nameBridge.isW3cXmlSchemaNamespaceURI(name.getNamespaceURI()))
+		if (name.getNamespaceURI().equals(XMLConstants.W3C_XML_SCHEMA_NS_URI))
 		{
 			// Do nothing. This will be caught later if a dangling reference
 			// exists.
