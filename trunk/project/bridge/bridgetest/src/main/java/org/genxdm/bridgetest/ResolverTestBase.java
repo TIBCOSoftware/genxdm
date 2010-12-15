@@ -21,6 +21,7 @@ import org.genxdm.Resolved;
 import org.genxdm.Resolver;
 
 import org.junit.Test;
+import org.junit.Ignore;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -41,6 +42,8 @@ abstract public class ResolverTestBase<N>
      * a Resolved<InputStream> is returned with properly initialized fields.
      * Depends on sharedResolvedTest.
      */
+    @Test
+    @Ignore
     public void testResolveInputStream()
     {
         Resolver resolver = newResolver();
@@ -51,6 +54,8 @@ abstract public class ResolverTestBase<N>
      * a Resolved<Reader> is returned with properly initialized fields.
      * Depends on sharedResolvedTest.
      */
+    @Test
+    @Ignore
     public void testResolveReader()
     {
         Resolver resolver = newResolver();
@@ -62,6 +67,8 @@ abstract public class ResolverTestBase<N>
      * the parameters retrieved. verify that the instance cannot be created
      * incomplete.
      */
+    @Test
+    @Ignore
     public void testInitializeResolved()
     {
     }

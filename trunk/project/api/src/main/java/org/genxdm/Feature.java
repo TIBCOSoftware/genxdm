@@ -18,11 +18,18 @@ package org.genxdm;
 public interface Feature
 {
     static final String PREFIX = "http://genxdm.org/features/";
+    
+    // TODO: are these reasonable?  If they're in use, then they
+    // should be referenced at the point that the unsupported feature
+    // provides a different-than-usual return or behavior.
 	static final String ATTRIBUTE_AXIS_INHERIT = PREFIX + "axis/attribute/inherit";
 	static final String DOCUMENT_URI = PREFIX + "document-uri";
 	static final String NAMESPACE_AXIS = PREFIX + "axis/namespace";
-	static final String TYPE_ANNOTATION = PREFIX + "annotation/type";
-	static final String TYPED_VALUE = PREFIX + "typed-value";
+	static final String TYPE_ANNOTATION = PREFIX + "type/annotation";
+	static final String TYPED_VALUE = PREFIX + "type/typed-value";
+	
+	static final String MUTABILITY = PREFIX + "mutable";
+	static final String TYPED = PREFIX + "type";
 
 	static final String UNSUPPORTED_MESSAGE = "Feature is not supported";
 }
