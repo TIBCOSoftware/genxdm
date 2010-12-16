@@ -82,26 +82,26 @@
         </dependency>
         <dependency>
             <groupId>org.genxdm</groupId>
-            <artifactId>legacytest</artifactId>
+            <artifactId>bridgetest</artifactId>
             <version>[,2)</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>proc-iotest</artifactId>
             <version>[,2)</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
+        </dependency-->
+        <!--dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>proc-xpath</artifactId>
             <version>[,2)</version>
             <scope>test</scope>
-        </dependency>
+        </dependency-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>[3.8.1,4.0.0)</version>
+            <version>[4.0.0,5.0.0)</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

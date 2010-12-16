@@ -87,6 +87,8 @@ public class XmlNodeBuilder
     {
         flushCatch();
         endNodeProcessing();
+//        if (depth > 0)
+//            throw new IllegalStateException("Missing one or more element end tags");
     }
 
     public void endElement()

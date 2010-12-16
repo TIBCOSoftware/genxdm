@@ -50,10 +50,10 @@ public class AxiomFragmentBuilder
     public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
         throws GxmlException
     {
-        IllegalNullArgumentException.check(namespaceURI, "namespaceURI");
-        IllegalNullArgumentException.check(localName, "localName");
-        IllegalNullArgumentException.check(prefix, "prefix");
-        IllegalNullArgumentException.check(value, "value");
+        PreCondition.assertNotNull(namespaceURI, "namespaceURI");
+        PreCondition.assertNotNull(localName, "localName");
+        PreCondition.assertNotNull(prefix, "prefix");
+        PreCondition.assertNotNull(value, "value");
 
         if (null != currentNode)
         {
@@ -106,6 +106,8 @@ public class AxiomFragmentBuilder
         throws GxmlException
     {
         epilog();
+        if (level > 0)
+            throw new IllegalStateException("Document ended with unclosed elements.");
     }
 
     public void endElement()
@@ -166,7 +168,7 @@ public class AxiomFragmentBuilder
         }
         else
         {
-            throw new IllegalStateException("startDocument");
+            throw new IllegalStateException("A document cannot be contained by a document or element.");
         }
     }
 
@@ -203,11 +205,13 @@ public class AxiomFragmentBuilder
         throws GxmlException
     {
         prolog();
-        if (null != currentNode)
+        if (currentNode != null)
         {
             final OMContainer container = AxiomSupport.dynamicDowncastContainer(currentNode);
-            if (null != container)
+            if (container != null)
             {
+                if ( (container instanceof OMDocument) && (data.trim().length() > 0) )
+                    throw new IllegalStateException("Non-whitespace text is not permitted in prolog or epilog.");
                 final OMText text = factory.createOMText(data);
                 container.addChild(text);
                 currentNode = text;
@@ -242,12 +246,16 @@ public class AxiomFragmentBuilder
     
     public Object getNode()
     {
-        return getNodes().get(0);
+        if (nodes.size() > 0)
+            return getNodes().get(0);
+        return null;
     }
 
     public void reset()
     {
         nodes.clear();
+        currentNode = null;
+        level = 0;
     }
     
     public OMFactory getFactory()
@@ -258,7 +266,9 @@ public class AxiomFragmentBuilder
     private void epilog()
     {
         level--;
-        if (0 == level)
+        if (level < 0)
+            throw new IllegalStateException("Closed a container that was never opened.");
+        if (level == 0)
         {
             nodes.add(currentNode);
             currentNode = null;
