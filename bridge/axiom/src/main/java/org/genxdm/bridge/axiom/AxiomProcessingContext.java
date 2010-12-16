@@ -25,14 +25,14 @@ import org.genxdm.base.Model;
 import org.genxdm.base.ProcessingContext;
 import org.genxdm.base.io.DocumentHandler;
 import org.genxdm.base.mutable.MutableContext;
-import org.genxdm.base.mutable.MutableCursor;
-import org.genxdm.base.mutable.MutableModel;
-import org.genxdm.base.mutable.NodeFactory;
+//import org.genxdm.base.mutable.MutableCursor;
+//import org.genxdm.base.mutable.MutableModel;
+//import org.genxdm.base.mutable.NodeFactory;
 //import org.genxdm.bridge.axiom.enhanced.AxiomSAProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.tree.BookmarkOnModel;
 import org.genxdm.bridgekit.tree.CursorOnModel;
-import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
+//import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.processor.io.DefaultDocumentHandler;
@@ -54,23 +54,38 @@ public class AxiomProcessingContext
 
     public DocumentHandler<Object> newDocumentHandler()
     {
-        return new DefaultDocumentHandler<Object>(this);
+        DocumentHandler<Object> handler = new DefaultDocumentHandler<Object>(this);
+        // TODO: should the DocumentHandler interface grow these methods?
+        if (resolver != null)
+            ((DefaultDocumentHandler<Object>)handler).setResolver(resolver);
+        if (reporter != null)
+            ((DefaultDocumentHandler<Object>)handler).setReporter(reporter);
+        return handler;
     }
 
-    public DocumentHandler<Object> newDocumentHandler(XMLReporter reporter, Resolver resolver)
+    public DocumentHandler<Object> newDocumentHandler(XMLReporter aReporter, Resolver aResolver)
     {
-        // TODO: implement
-        return newDocumentHandler();
+        DocumentHandler<Object> handler = new DefaultDocumentHandler<Object>(this);
+        // TODO: should supplying a null reporter or resolver override a non-null default reporter or resolver?
+        if (aResolver != null)
+            ((DefaultDocumentHandler<Object>)handler).setResolver(aResolver);
+        else if (resolver != null)
+            ((DefaultDocumentHandler<Object>)handler).setResolver(resolver);
+        if (aReporter != null)
+            ((DefaultDocumentHandler<Object>)handler).setReporter(aReporter);
+        else if (reporter != null)
+            ((DefaultDocumentHandler<Object>)handler).setReporter(reporter);
+        return handler;
     }
 
     public void setDefaultReporter(XMLReporter reporter)
     {
-        // TODO: implement
+        this.reporter = reporter;
     }
     
     public void setDefaultResolver(Resolver resolver)
     {
-        // TODO: implement
+        this.resolver = resolver;
     }
 
     public Model<Object> getModel()
@@ -157,40 +172,42 @@ public class AxiomProcessingContext
         return omfactory;
     }
     
-    private class AxioMutableContext implements MutableContext<Object>
-    {
-        AxioMutableContext()
-        {
-            this.factory = new AxiomFactory(PreCondition.assertNotNull(omfactory, "omfactory"));
-            this.mmodel = new AxiomMutableModel(factory);
-            this.factory.setMutableModel(mmodel);
-        }
-        
-        public AxiomProcessingContext getProcessingContext()
-        {
-            return AxiomProcessingContext.this;
-        }
-        
-        public MutableModel<Object> getModel()
-        {
-            return mmodel;
-        }
-
-        public NodeFactory<Object> getNodeFactory()
-        {
-            return factory;
-        }
-
-        public MutableCursor<Object> newCursor(Object node)
-        {
-            return new MutableCursorOnMutableModel<Object>(node, mmodel);
-        }
-        private final AxiomFactory factory;
-        private final AxiomMutableModel mmodel;
-    }
+//    private class AxioMutableContext implements MutableContext<Object>
+//    {
+//        AxioMutableContext()
+//        {
+//            this.factory = new AxiomFactory(PreCondition.assertNotNull(omfactory, "omfactory"));
+//            this.mmodel = new AxiomMutableModel(factory);
+//            this.factory.setMutableModel(mmodel);
+//        }
+//        
+//        public AxiomProcessingContext getProcessingContext()
+//        {
+//            return AxiomProcessingContext.this;
+//        }
+//        
+//        public MutableModel<Object> getModel()
+//        {
+//            return mmodel;
+//        }
+//
+//        public NodeFactory<Object> getNodeFactory()
+//        {
+//            return factory;
+//        }
+//
+//        public MutableCursor<Object> newCursor(Object node)
+//        {
+//            return new MutableCursorOnMutableModel<Object>(node, mmodel);
+//        }
+//        private final AxiomFactory factory;
+//        private final AxiomMutableModel mmodel;
+//    }
     
     private final AxiomModel model = new AxiomModel();
     private final OMFactory omfactory;
-    private MutableContext<Object> mutableContext;
+//    private MutableContext<Object> mutableContext;
+    private Resolver resolver;
+    private XMLReporter reporter;
 //    private AxiomSAProcessingContext saContext;
 }
