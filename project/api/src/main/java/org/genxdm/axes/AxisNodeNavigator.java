@@ -15,27 +15,31 @@
  */
 package org.genxdm.axes;
 
-import org.genxdm.nodes.Informer;
-
 /**
  * Provides the various "axes" by which nodes can be traversed, as defined by
  * XPath 2.0.
+ *  
+ * @param <N> Corresponds to the base type for all members of the underlying tree API.
  * 
  * @see http://www.w3.org/TR/xpath20/#axes
  */
-public interface AxisNavigator
+public interface AxisNodeNavigator<N>
 {
     /**
      * Returns the nodes along the ancestor axis using the specified node as the origin.
      * 
+     * @param node
+     *            The origin node.
      */
-    Iterable<Informer> getAncestorAxis();
+    Iterable<N> getAncestorAxis(N node);
 
     /**
      * Returns the nodes along the ancestor-or-self axis using the specified node as the origin.
      * 
+     * @param node
+     *            The origin node.
      */
-    Iterable<Informer> getAncestorOrSelfAxis();
+    Iterable<N> getAncestorOrSelfAxis(N node);
 
     /**
      * Returns the nodes along the attribute axis using the specified node as the origin.
@@ -44,13 +48,15 @@ public interface AxisNavigator
      * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-attributes">
      * dm:attributes</a> accessor in the XDM.
      * 
+     * @param node
+     *            The origin node.
      * @param inherit
      *            Determines whether attributes in the XML namespace will be inherited. The standard value for this
      *            parameter is <code>false</code>.
      * 
      * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-attributes
      */
-    Iterable<Informer> getAttributeAxis(boolean inherit);
+    Iterable<N> getAttributeAxis(N node, boolean inherit);
 
     /**
      * Returns the nodes along the child axis using the specified node as the origin.
@@ -60,50 +66,64 @@ public interface AxisNavigator
      * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-children">
      * dm:children</a> accessor in the XDM.
      * 
+     * @param node
+     *            The origin node.
      * 
      * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-children
      */
-    Iterable<Informer> getChildAxis();
+    Iterable<N> getChildAxis(N node);
 
     /**
      * Returns all the child element along the child axis.
      * 
+     * @param node
+     *            The parent node that owns the child axis.
      */
-    Iterable<Informer> getChildElements();
+    Iterable<N> getChildElements(N node);
 
     /**
      * Returns all the child element along the child axis whose names match the arguments supplied.
      * 
+     * @param node
+     *            The parent node that owns the child axis.
      * @param namespaceURI
      *            The namespace-uri to be matched.
      * @param localName
      *            The local-name to be matched.
      */
-    Iterable<Informer> getChildElementsByName(String namespaceURI, String localName);
+    Iterable<N> getChildElementsByName(N node, String namespaceURI, String localName);
 
     /**
      * Returns the nodes along the descendant axis using the specified node as the origin.
      * 
+     * @param node
+     *            The origin node.
      */
-    Iterable<Informer> getDescendantAxis();
+    Iterable<N> getDescendantAxis(N node);
 
     /**
      * Returns the nodes along the descendant-or-self axis using the specified node as the origin.
      * 
+     * @param node
+     *            The origin node.
      */
-    Iterable<Informer> getDescendantOrSelfAxis();
+    Iterable<N> getDescendantOrSelfAxis(N node);
 
     /**
      * Returns the nodes along the following axis using the specified node as the origin.
      * 
+     * @param node
+     *            The origin node.
      */
-    Iterable<Informer> getFollowingAxis();
+    Iterable<N> getFollowingAxis(N node);
 
     /**
      * Returns the nodes along the following-sibling axis using the specified node as the origin.
      * 
+     * @param node
+     *            The origin node.
      */
-    Iterable<Informer> getFollowingSiblingAxis();
+    Iterable<N> getFollowingSiblingAxis(N node);
 
     /**
      * Returns the nodes along the namespace axis using the specified node as the origin.
@@ -116,24 +136,30 @@ public interface AxisNavigator
      * <p>Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-nodes">
      * dm:namespace-nodes</a> of XDM.</p>
      * 
+     * @param node
+     *            The origin node.
      * @param inherit
      *            Determines whether in-scope prefix mappings will be included in the result. The standard setting for
      *            this parameter is <code>true</code>.
      * 
      * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-nodes
      */
-    Iterable<Informer> getNamespaceAxis(boolean inherit);
+    Iterable<N> getNamespaceAxis(N node, boolean inherit);
 
     /**
      * Returns the nodes along the preceding axis using the specified node as the origin.
      * 
+     * @param node
+     *            The origin node.
      */
-    Iterable<Informer> getPrecedingAxis();
+    Iterable<N> getPrecedingAxis(N node);
 
     /**
      * Returns the nodes along the preceding-sibling axis using the specified node as the origin.
      * 
+     * @param node
+     *            The origin node.
      */
-    Iterable<Informer> getPrecedingSiblingAxis();
+    Iterable<N> getPrecedingSiblingAxis(N node);
 
 }

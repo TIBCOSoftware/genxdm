@@ -130,7 +130,9 @@ public class DomFragmentBuilder
     
     public Node getNode()
     {
-        return getNodes().get(0);
+        if (m_nodes.size() > 0)
+            return getNodes().get(0);
+        return null;
     }
 
     public void namespace(final String prefix, final String namespaceURI) 

@@ -35,7 +35,7 @@ public interface ContentHandler
     extends Closeable, Flushable
 {
     /**
-     * Receive notification of an attribute with a dm:typed-value.
+     * Receive notification of an attribute with a dm:string-value.
      * 
      * @param namespaceURI
      *            The namespace-uri part of the attribute name. Cannot be <code>null</code>.

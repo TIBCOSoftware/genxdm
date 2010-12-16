@@ -105,7 +105,9 @@ public class XmlNodeBuilder
 
     public XmlNode getNode()
     {
-        return getNodes().get(0);
+        if (nodes.size() > 0)
+            return getNodes().get(0);
+        return null;
     }
 
     public List<XmlNode> getNodes()
