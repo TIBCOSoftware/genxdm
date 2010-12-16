@@ -22,7 +22,6 @@ import java.net.URI;
 import org.genxdm.DtdAttributeKind;
 import org.genxdm.base.io.ContentHandler;
 import org.genxdm.exceptions.GxmlException;
-import org.genxdm.exceptions.GxmlIOException;
 import org.genxdm.exceptions.PreCondition;
 
 final class SimplestSerializer<N> implements ContentHandler
@@ -44,7 +43,7 @@ final class SimplestSerializer<N> implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlIOException(e);
+            throw new GxmlException(e);
         }
     }
     
@@ -56,11 +55,11 @@ final class SimplestSerializer<N> implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlIOException(e);
+            throw new GxmlException(e);
         }
     }
 
-    public void endDocument() throws GxmlException, GxmlIOException
+    public void endDocument() throws GxmlException
     {
         try
         {
@@ -68,7 +67,7 @@ final class SimplestSerializer<N> implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlIOException(e);
+            throw new GxmlException(e);
         }
     }
 
@@ -80,7 +79,7 @@ final class SimplestSerializer<N> implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlIOException(e);
+            throw new GxmlException(e);
         }
     }
 
@@ -92,7 +91,7 @@ final class SimplestSerializer<N> implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlIOException(e);
+            throw new GxmlException(e);
         }
     }
 
@@ -104,7 +103,7 @@ final class SimplestSerializer<N> implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlIOException(e);
+            throw new GxmlException(e);
         }
     }
 
@@ -116,7 +115,7 @@ final class SimplestSerializer<N> implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlIOException(e);
+            throw new GxmlException(e);
         }
     }
 
@@ -134,7 +133,7 @@ final class SimplestSerializer<N> implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlIOException(e);
+            throw new GxmlException(e);
         }
     }
 
@@ -149,7 +148,7 @@ final class SimplestSerializer<N> implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlIOException(e);
+            throw new GxmlException(e);
         }
     }
     

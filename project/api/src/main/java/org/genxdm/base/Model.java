@@ -17,7 +17,7 @@ package org.genxdm.base;
 
 import java.util.Comparator;
 
-import org.genxdm.axes.AxisNavigator;
+import org.genxdm.axes.AxisNodeNavigator;
 import org.genxdm.axes.NodeNavigator;
 import org.genxdm.base.io.ContentHandler;
 import org.genxdm.exceptions.GxmlException;
@@ -33,7 +33,7 @@ import org.genxdm.nodes.NodeInformer;
  * @param <N> Corresponds to the base type for all members of the underlying tree API.
  */
 public interface Model<N>
-    extends Comparator<N>, NodeInformer<N>, NodeNavigator<N>, AxisNavigator<N>
+    extends Comparator<N>, NodeInformer<N>, NodeNavigator<N>, AxisNodeNavigator<N>
 {
     /**
      * Support for streaming a node to a {@link ContentHandler}.

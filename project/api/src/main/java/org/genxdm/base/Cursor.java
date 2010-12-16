@@ -15,7 +15,7 @@
  */
 package org.genxdm.base;
 
-import org.genxdm.axes.Navigator;
+import org.genxdm.axes.Repositioner;
 import org.genxdm.base.io.ContentHandler;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.nodes.Bookmark;
@@ -29,7 +29,7 @@ import org.genxdm.nodes.Informer;
  * </p>
  */
 public interface Cursor<N>
-    extends Informer, Navigator<N>, Comparable<Cursor<N>>
+    extends Informer, Repositioner<N>, Comparable<Cursor<N>>
 {
     /**
      * Obtain a fixed-location marker initialized with the current node.
