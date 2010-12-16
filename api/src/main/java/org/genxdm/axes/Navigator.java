@@ -15,16 +15,8 @@
  */
 package org.genxdm.axes;
 
-public interface Navigator<N>
+public interface Navigator
 {
-
-    /**
-     * Positions the cursor at the specified bookmark.
-     * 
-     * @param bookmark
-     *            The bookmark to which the cursor should be positioned.
-     */
-    void moveTo(N bookmark);
 
     /**
      * Moves to the attribute node with the specified expanded-QName.

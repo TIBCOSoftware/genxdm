@@ -25,16 +25,21 @@ import java.util.List;
 public interface NodeSource<N>
 {
     /**
-     * This is a shortcut method for getting the tree and then converting it to a node.
+     * Returns a sequence of <N>odes, expressed as a list of <N>odes (some
+     * of which may have complex content).
      * 
-     * @return The nodes built by this builder.
+     * @return the sequence of nodes available from this source, never null (the
+     * list may be empty).
      */
     List<N> getNodes();
     
     /** Return the document node, or the first node in the list.
      * 
-     * @return a single node, either the single node constructed, or the first in the list;
-     *  may return null if no nodes are available.
+     * This is really a shortcut for getNodes().get(0), but with error checking.
+     * 
+     * @return a single node, either the single node available, or the first in the sequence;
+     *  may return null if no nodes are available; may <em>not</em> return a node which is
+     *  not the first in the list of available nodes.
      */
     N getNode();
 
