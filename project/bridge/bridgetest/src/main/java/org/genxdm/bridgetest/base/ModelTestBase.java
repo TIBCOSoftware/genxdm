@@ -15,10 +15,16 @@
  */
 package org.genxdm.bridgetest.base;
 
+import org.genxdm.NodeKind;
 import org.genxdm.base.Model;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.ContentHandler;
+import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.bridgetest.TestBase;
 
 import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
 
 //this is the test for nodes/NodeInformer, too.
 // we'll *probably* test node navigation and axis navigation separately.
@@ -26,7 +32,19 @@ public abstract class ModelTestBase<N>
     extends TestBase<N>
 {
     @Test
-    public void doSomething()
+    public void streaming()
     {
+        ProcessingContext<N> context = newProcessingContext();
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        assertNotNull(builder);
     }
+    
+    private boolean matchNode(N node, NodeKind kind, String ns, String name, String pf, String value)
+    {
+        return false;
+    }
+//    void stream(N node, boolean copyNamespaces, ContentHandler handler) throws GxmlException;
 }
