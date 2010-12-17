@@ -15,11 +15,14 @@
  */
 package org.genxdm.bridgetest.base.io;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.util.List;
 
 import javax.xml.XMLConstants;
 
@@ -38,13 +41,66 @@ public abstract class BuilderTestBase<N>
     extends TestBase<N>
 {
     @Test
-    @Ignore("Isn't this accomplished with any frag build? (we got lots)")
     public void constructionWF()
     {
         // verify we can construct things well-formed
+        ProcessingContext<N> context = newProcessingContext();
+        
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        
+        assertNotNull(builder); // never null
+        assertNull(builder.getNode()); // should be null if list is empty
+        assertNotNull(builder.getNodes()); // list is never null
+        assertTrue(builder.getNodes().isEmpty());
+
         // make a sequence of documents
+        builder.startDocument(null, null);
+        builder.startElement(XMLConstants.NULL_NS_URI, "element", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.endElement();
+        builder.endDocument();
+        builder.startDocument(null, null);
+        builder.startElement(XMLConstants.NULL_NS_URI, "element", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.endElement();
+        builder.endDocument();
+        List<N> nodes = builder.getNodes();
+        assertNotNull(nodes);
+        assertFalse(nodes.isEmpty());
+        assertEquals(nodes.size(), 2);
+        
+        builder.reset();
+        nodes = builder.getNodes();
+        assertTrue(nodes.isEmpty());
         // make a sequence of elements
+        builder.startElement(XMLConstants.NULL_NS_URI, "element", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.endElement();
+        builder.startElement(XMLConstants.NULL_NS_URI, "element", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.endElement();
+        nodes = builder.getNodes();
+        assertNotNull(nodes);
+        assertFalse(nodes.isEmpty());
+        assertEquals(nodes.size(), 2);
+        
+        builder.reset();
+        nodes = builder.getNodes();
+        assertTrue(nodes.isEmpty());
         // make a sequence of children
+        builder.comment("comment");
+        builder.startElement(XMLConstants.NULL_NS_URI, "element", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.endElement();
+        builder.text("text");
+        builder.startElement(XMLConstants.NULL_NS_URI, "element", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.endElement();
+        builder.processingInstruction("target", "data");
+        nodes = builder.getNodes();
+        assertNotNull(nodes);
+        assertFalse(nodes.isEmpty());
+        assertEquals(nodes.size(), 5);
+    }
+    
+    public void internalSubset()
+    {
+        // test the internal subset (add the annotation)
+        // how do we verify that it's being sucked in?
     }
     
     @Test
