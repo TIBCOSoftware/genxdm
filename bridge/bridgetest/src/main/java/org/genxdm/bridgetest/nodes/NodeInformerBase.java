@@ -1,19 +1,24 @@
 package org.genxdm.bridgetest.nodes;
 
-import javax.xml.namespace.QName;
-
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+
 import org.genxdm.NodeKind;
 import org.genxdm.base.Model;
 import org.genxdm.base.ProcessingContext;
 import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.bridgetest.TestBase;
+import org.junit.Ignore;
+import org.junit.Test;
 
 public abstract class NodeInformerBase<N>
     extends TestBase<N>
@@ -85,10 +90,10 @@ public abstract class NodeInformerBase<N>
         Object id = model.getNodeId(doc);
         N docElement = model.getFirstChildElement(doc);
         assertNotNull(docElement);
-        assertEquals(model.getNodeId(model.getParent(docElement)), id);
+        assertEquals(id, model.getNodeId(model.getParent(docElement)));
         
         id = model.getNodeId(docElement);
-        assertEquals(model.getNodeId(model.getFirstChildElement(doc)), id);
+        assertEquals(id, model.getNodeId(model.getFirstChildElement(doc)));
     }
     
     @Test
@@ -135,8 +140,8 @@ public abstract class NodeInformerBase<N>
             assertNotNull(name.getPrefix());
             count++;
         }
-        assertEquals(count, 1);
-        assertEquals(model.getAttributeStringValue(node, "", "att"), "value");
+        assertEquals(1, count);
+        assertEquals("value", model.getAttributeStringValue(node, "", "att"));
         
         node = model.getFirstChild(node); // comment
         attributes = model.getAttributeNames(node, false);
@@ -252,8 +257,51 @@ public abstract class NodeInformerBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
-        // TODO
-        // namespace uri, local name, prefix
+        
+        // docs have no name
+        assertNull(model.getNamespaceURI(doc));
+        assertNull(model.getLocalName(doc));
+        assertNull(model.getPrefix(doc));
+        
+        N el = model.getFirstChildElement(doc);
+        assertNotNull(el);
+        assertEquals("", model.getNamespaceURI(el));
+        assertEquals("doc", model.getLocalName(el));
+        assertEquals("", model.getPrefix(el));
+        
+        N n = model.getAttribute(el, "", "att");
+        assertNotNull(n);
+        assertEquals("", model.getNamespaceURI(n));
+        assertEquals("att", model.getLocalName(n));
+        assertEquals("", model.getPrefix(n));
+        
+        // this looks weird, but it's all according to spec.
+        // alas.
+        n = getNamespaceNode(model, el, "ns");
+        assertNotNull(n);
+        assertEquals(XMLConstants.NULL_NS_URI, model.getNamespaceURI(n));
+        assertEquals("ns", model.getLocalName(n));
+        assertEquals(XMLConstants.DEFAULT_NS_PREFIX, model.getPrefix(n));
+        
+        // comments have no name
+        n = model.getFirstChild(el);
+        assertNotNull(n);
+        assertNull(model.getNamespaceURI(n));
+        assertNull(model.getLocalName(n));
+        assertNull(model.getPrefix(n));
+        
+        // text nodes have no name
+        n = model.getNextSibling(n);
+        assertNotNull(n);
+        assertNull(model.getNamespaceURI(n));
+        assertNull(model.getLocalName(n));
+        assertNull(model.getPrefix(n));
+        
+        n = model.getNextSibling(n);
+        assertNotNull(n);
+        assertEquals("", model.getNamespaceURI(n));
+        assertEquals("target", model.getLocalName(n));
+        assertEquals("", model.getPrefix(n));
     }
     
     @Test
@@ -266,13 +314,39 @@ public abstract class NodeInformerBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
-        // TODO
-        // string value
+        
+        final String text = "text";
+        
+        assertEquals(text, model.getStringValue(doc));
+        N e = model.getFirstChildElement(doc);
+        assertEquals(text, model.getStringValue(e));
+        
+        N n = model.getAttribute(e, "", "att");
+        assertEquals("value", model.getStringValue(n));
+        
+        // binding a prefix to itself is kinda bogus for testing
+        n = getNamespaceNode(model, e, "ns");
+        assertEquals("ns", model.getStringValue(n));
+        
+        n = model.getFirstChild(e);
+        assertEquals("comment", model.getStringValue(n));
+        
+        n = model.getNextSibling(n);
+        assertEquals(text, model.getStringValue(n));
+        
+        n = model.getNextSibling(n);
+        assertEquals("data", model.getStringValue(n));
     }
     
     @Test
+    @Ignore
     public void uris()
     {
+        // TODO: Axiom currently doesn't support URIs.  Either
+        // rethink incorporating support in the base model (create
+        // an additional, external, optional interface that can be
+        // implemented by bridges that support it), or fix it in
+        // axiom.
         ProcessingContext<N> context = newProcessingContext();
         FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createSimpleAllKindsDocument(builder);
@@ -280,68 +354,45 @@ public abstract class NodeInformerBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
-        // TODO
-        // base and doc.
+        URI docURI = null;
+        try { docURI = new URI(URI_PREFIX + SIMPLE_DOC); }
+        catch (URISyntaxException u) { /* do nothing */ } 
+        
+        URI uri = model.getDocumentURI(doc);
+        assertEquals(docURI, uri);
+        assertEquals(uri, model.getBaseURI(doc)); // which means that all three are equal
+        
+        N e = model.getFirstChildElement(doc);
+        assertNull(model.getDocumentURI(e));
+        assertEquals(uri, model.getBaseURI(e));
+        
+        N n = model.getAttribute(e, "", "att");
+        assertNull(model.getDocumentURI(n));
+        assertEquals(uri, model.getBaseURI(n));
+        
+        n = getNamespaceNode(model, e, "ns");
+        assertNull(model.getDocumentURI(n));
+        assertEquals(uri, model.getBaseURI(n));
+        
+        n = model.getFirstChild(e);
+        assertNull(model.getDocumentURI(n));
+        assertEquals(uri, model.getBaseURI(n));
+        
+        n = model.getNextSibling(n);
+        assertNull(model.getDocumentURI(n));
+        assertEquals(uri, model.getBaseURI(n));
+        
+        n = model.getNextSibling(n);
+        assertNull(model.getDocumentURI(n));
+        assertEquals(uri, model.getBaseURI(n));
     }
     
     @Test
     public void matching()
     {
+        // TODO
     }
     
-//    /**
-//     * Returns the base URI of the supplied context node, per the XML:Base
-//     * specification.
-//     * <br />Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-base-uri">
-//     * dm:base-uri</a> accessor in the XDM.  Defined
-//     * for all node types except namespace.
-//     * 
-//     * @return the absolute value of the base-uri property, if it is available,
-//     * or null if it is not.
-//     * 
-//     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-base-uri
-//     */
-//    URI getBaseURI(N node);
-//
-//    /**
-//     * Returns the absolute URI of the resource from which the Document Node was
-//     * constructed. <br/>
-//     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-document-uri">
-//     * dm:document-uri</a> accessor in the XDM.
-//     * 
-//     * @return the absolute URI of the resource from which the Document Node was
-//     *         constructed, if the absolute URI is available; f there is no URI
-//     *         available, or if it cannot be made absolute when the Document
-//     *         Node is constructed, or if it is used on a node other than a
-//     *         Document Node, returns null
-//     *         
-//     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-document-uri
-//     */
-//    URI getDocumentURI(N node);
-//
-//    /**
-//     * Returns the local-name property of the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name">
-//     * dm:node-name</a>.
-//     * 
-//     * <br/>
-//     * 
-//     * <p>
-//     * TEXT, COMMENT, and DOCUMENT nodes return <code>null</code>; they have no name.
-//     * </p>
-//     * 
-//     * <p>Other node types should never return <code>null</code>.  Note that in the
-//     * case of namespace nodes, the <code>dm:node-name</code> accessor indicates that
-//     * it returns an empty sequence in the case of an "empty" prefix (as in
-//     * <code>xmlns=...</code>).  This API, however, dictates that an empty string
-//     * will be returned in that particular case.</p>
-//     *  
-//     * @param node
-//     *            The node for which the node local-name is required.
-//     *            
-//     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name
-//     */
-//    String getLocalName(N node);
-//
 //    /**
 //     * Returns the namespace bindings associated with the node as a set or prefix/URI pairs.
 //     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-bindings">
@@ -380,37 +431,6 @@ public abstract class NodeInformerBase<N>
 //    Iterable<String> getNamespaceNames(N node, boolean orderCanonical);
 //
 //    /**
-//     * Returns the namespace-uri part of the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name">
-//     * dm:node-name</a>.
-//     * 
-//     * <br/>
-//     * 
-//     * DOCUMENT, COMMENT, and TEXT nodes return <code>null</code>; they have no name.
-//     * 
-//     * Other node types should never return <code>null</code>.
-//     * @param node
-//     *            The node for which the node namespace-uri is required.
-//     * 
-//     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name
-//     */
-//    String getNamespaceURI(N node);
-//
-//    /**
-//     * Returns the prefix part of the dm:node-name.
-//     * 
-//     * <br/>
-//     * 
-//     * DOCUMENT, COMMENT, and TEXT nodes return <code>null</code>; they have no name.
-//     * 
-//     * Other node types should never return <code>null</code>.
-//     * This is just a hint because it usually contains the prefix of the original document. The prefix will not be
-//     * updated to reflect in scope namespaces.
-//     * @param node
-//     *            The node for which the node prefix hint is required.
-//     */
-//    String getPrefix(N node);
-//
-//    /**
 //     * Returns the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-string-value">
 //     * dm:string-value</a> property of the node. Applies to all node kinds.
 //     * 
@@ -421,54 +441,6 @@ public abstract class NodeInformerBase<N>
 //     */
 //    String getStringValue(N node);
 //
-//    /**
-//     * Determines whether there are nodes on the attribute axis for this node.
-//     * 
-//     * @param node
-//     *            The node under consideration.
-//     */
-//    boolean hasAttributes(N node);
-//
-//    /**
-//     * Determines whether there are nodes on the child axis for this node.
-//     * 
-//     * @param node
-//     *            The node under consideration.
-//     */
-//    boolean hasChildren(N node);
-//
-//    /**
-//     * Determines whether there are prefix-to-namespace mappings for this node.
-//     * 
-//     * @param node
-//     *            The node under consideration.
-//     */
-//    boolean hasNamespaces(N node);
-//
-//    /**
-//     * Determines whether the node has a following sibling.
-//     * 
-//     * @param node
-//     *            The node under consideration.
-//     */
-//    boolean hasNextSibling(N node);
-//
-//    /**
-//     * Determines whether there are nodes on the parent axis for this node.
-//     * 
-//     * @param node
-//     *            The node under consideration.
-//     */
-//    boolean hasParent(N node);
-//
-//    /**
-//     * Determines whether the node has a preceding sibling.
-//     * 
-//     * @param node
-//     *            The node under consideration.
-//     */
-//    boolean hasPreviousSibling(N node);
-//    
 //    /**
 //     * <p>Determine whether the node is an ID node. Corresponds to the
 //     * <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-is-id">
