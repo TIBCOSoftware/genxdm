@@ -339,14 +339,14 @@ public abstract class NodeInformerBase<N>
     }
     
     @Test
-    @Ignore
     public void uris()
     {
-        // TODO: Axiom currently doesn't support URIs.  Either
-        // rethink incorporating support in the base model (create
-        // an additional, external, optional interface that can be
-        // implemented by bridges that support it), or fix it in
-        // axiom.
+        // TODO: this is a terrible solution.  We have methods that
+        // optionally return information or not; there's no telling
+        // whether null is returned because the bridge is incapable,
+        // or because the information never existed.  See issue 40.
+        // the implication is that some nodes might return information,
+        // while other nodes do not.
         ProcessingContext<N> context = newProcessingContext();
         FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createSimpleAllKindsDocument(builder);
@@ -359,32 +359,38 @@ public abstract class NodeInformerBase<N>
         catch (URISyntaxException u) { /* do nothing */ } 
         
         URI uri = model.getDocumentURI(doc);
-        assertEquals(docURI, uri);
-        assertEquals(uri, model.getBaseURI(doc)); // which means that all three are equal
-        
-        N e = model.getFirstChildElement(doc);
-        assertNull(model.getDocumentURI(e));
-        assertEquals(uri, model.getBaseURI(e));
-        
-        N n = model.getAttribute(e, "", "att");
-        assertNull(model.getDocumentURI(n));
-        assertEquals(uri, model.getBaseURI(n));
-        
-        n = getNamespaceNode(model, e, "ns");
-        assertNull(model.getDocumentURI(n));
-        assertEquals(uri, model.getBaseURI(n));
-        
-        n = model.getFirstChild(e);
-        assertNull(model.getDocumentURI(n));
-        assertEquals(uri, model.getBaseURI(n));
-        
-        n = model.getNextSibling(n);
-        assertNull(model.getDocumentURI(n));
-        assertEquals(uri, model.getBaseURI(n));
-        
-        n = model.getNextSibling(n);
-        assertNull(model.getDocumentURI(n));
-        assertEquals(uri, model.getBaseURI(n));
+        if (uri != null)
+        {
+            assertEquals(docURI, uri);
+            if (model.getBaseURI(doc) != null)
+            {
+                assertEquals(uri, model.getBaseURI(doc)); // which means that all three are equal
+                
+                N e = model.getFirstChildElement(doc);
+                assertNull(model.getDocumentURI(e));
+                assertEquals(uri, model.getBaseURI(e));
+                
+                N n = model.getAttribute(e, "", "att");
+                assertNull(model.getDocumentURI(n));
+                assertEquals(uri, model.getBaseURI(n));
+                
+                n = getNamespaceNode(model, e, "ns");
+                assertNull(model.getDocumentURI(n));
+                assertEquals(uri, model.getBaseURI(n));
+                
+                n = model.getFirstChild(e);
+                assertNull(model.getDocumentURI(n));
+                assertEquals(uri, model.getBaseURI(n));
+                
+                n = model.getNextSibling(n);
+                assertNull(model.getDocumentURI(n));
+                assertEquals(uri, model.getBaseURI(n));
+                
+                n = model.getNextSibling(n);
+                assertNull(model.getDocumentURI(n));
+                assertEquals(uri, model.getBaseURI(n));
+            }
+        }
     }
     
     @Test
