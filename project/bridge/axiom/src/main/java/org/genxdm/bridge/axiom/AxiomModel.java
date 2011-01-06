@@ -151,7 +151,8 @@ public class AxiomModel
     
     public URI getBaseURI(final Object node)
     {
-        // TODO: implement
+        // TODO: resolve this problem.
+        // axiom doesn't support XML:Base, it appears.
         return null;
     }
 
@@ -197,7 +198,7 @@ public class AxiomModel
 
     public URI getDocumentURI(final Object node)
     {
-        // TODO: verify that this is correct for axiom
+        // TODO: resolve missing axiom functionality
         return null;
     }
     
