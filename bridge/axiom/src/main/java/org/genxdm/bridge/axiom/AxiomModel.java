@@ -123,7 +123,7 @@ public class AxiomModel
     public Iterable<QName> getAttributeNames(final Object node, final boolean orderCanonical)
     {
         final OMElement element = AxiomSupport.dynamicDowncastElement(node);
-        if (null != element)
+        if (element != null)
         {
             final ArrayList<QName> names = new ArrayList<QName>();
             @SuppressWarnings("unchecked")
@@ -138,10 +138,7 @@ public class AxiomModel
             }
             return names;
         }
-        else
-        {
-            return Collections.emptySet();
-        }
+        return null;
     }
 
     public String getAttributeStringValue(Object parent, String namespaceURI, String localName)

@@ -15,8 +15,12 @@
  */
 package org.genxdm.bridgetest;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javax.xml.XMLConstants;
 
+import org.genxdm.base.Model;
 import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.bridgekit.ProcessingContextFactory;
 import org.genxdm.exceptions.PreCondition;
@@ -52,8 +56,12 @@ abstract public class TestBase<N>
         // this very simple document contains precisely one node of each node kind.
 
         // <doc att="value" xmlns:ns="ns"><!-- comment -->text<?target data?></doc>
-     
-        builder.startDocument(null, null); // this should be possible, right?
+        
+        URI uri = null;
+        try { uri = new URI(URI_PREFIX + SIMPLE_DOC); }
+        catch (URISyntaxException urise) { /* do nothing */}
+        
+        builder.startDocument(uri, null);
         builder.startElement(XMLConstants.NULL_NS_URI, "doc", XMLConstants.DEFAULT_NS_PREFIX);
         builder.attribute(XMLConstants.NULL_NS_URI, "att", XMLConstants.DEFAULT_NS_PREFIX, "value", null);
         builder.namespace("ns", "ns");
@@ -70,8 +78,51 @@ abstract public class TestBase<N>
     public N createComplexTestDocument(FragmentBuilder<N> builder)
     {
         PreCondition.assertNotNull(builder);
+        URI uri = null;
+        try { uri = new URI(URI_PREFIX + COMPLEX_DOC); }
+        catch (URISyntaxException urise) { /* do nothing */}
+        
+        builder.startDocument(uri, null);
         // TODO:
         // this should create a more complex document for navigation testing.
         return builder.getNode();
     }
+    
+    public N createIdsAndRefsTestDocument(FragmentBuilder<N> builder)
+    {
+        PreCondition.assertNotNull(builder);
+        URI uri = null;
+        try { uri = new URI(URI_PREFIX + IDS_REFS_DOC); }
+        catch (URISyntaxException urise) { /* do nothing */}
+        
+        builder.startDocument(uri, null);
+        // TODO:
+        // this should create a document that has both IDs and IDREFs.
+        // it should probably do this both with the doctype decl,
+        // and by using xml:id syntax.
+        return builder.getNode();
+    }
+    
+    // this is an internal helper method to get a namespace node for testing.
+    // it's got all sorts of checks to make it fail, so *don't* do that.
+    protected N getNamespaceNode(Model<N> model, N element, String prefix)
+    {
+        PreCondition.assertNotNull(model);
+        PreCondition.assertNotNull(element);
+        PreCondition.assertTrue(model.isElement(element));
+        PreCondition.assertNotNull(prefix);
+        
+        Iterable<N> namespaces = model.getNamespaceAxis(element, false);
+        for (N namespace : namespaces)
+        {
+            if (model.getLocalName(namespace).equals(prefix))
+                return namespace;
+        }
+        return null;
+    }
+    
+    protected static final String URI_PREFIX = "http://www.genxdm.org/sample/";
+    protected static final String SIMPLE_DOC = "simple";
+    protected static final String COMPLEX_DOC = "complex";
+    protected static final String IDS_REFS_DOC = "ids_refs";
 }
