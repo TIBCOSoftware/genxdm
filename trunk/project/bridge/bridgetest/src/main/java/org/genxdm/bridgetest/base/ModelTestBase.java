@@ -26,8 +26,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
 
-//this is the test for nodes/NodeInformer, too.
-// we'll *probably* test node navigation and axis navigation separately.
+// this tests very little; see the tests for node informer, node navigator, and node axis navigator.
+// all three of those should be passing when this one is turned on.
 public abstract class ModelTestBase<N>
     extends TestBase<N>
 {

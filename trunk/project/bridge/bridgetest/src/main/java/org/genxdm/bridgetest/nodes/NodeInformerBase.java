@@ -1,11 +1,12 @@
 package org.genxdm.bridgetest.nodes;
 
-import java.net.URI;
-
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.genxdm.NodeKind;
@@ -13,7 +14,6 @@ import org.genxdm.base.Model;
 import org.genxdm.base.ProcessingContext;
 import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.bridgetest.TestBase;
-import org.genxdm.names.NamespaceBinding;
 
 public abstract class NodeInformerBase<N>
     extends TestBase<N>
@@ -38,76 +38,257 @@ public abstract class NodeInformerBase<N>
         assertTrue(model.getNodeKind(docElement) == NodeKind.ELEMENT);
         assertTrue(model.isElement(docElement));
         
-        // is*, getNodeKind()
+        N node = model.getAttribute(docElement, "", "att");
+        assertNotNull(node);
+        assertTrue(model.getNodeKind(node) == NodeKind.ATTRIBUTE);
+        assertTrue(model.isAttribute(node));
+  
+        node = getNamespaceNode(model, docElement, "ns");
+        assertNotNull(node);
+        assertTrue(model.getNodeKind(node) == NodeKind.NAMESPACE);
+        assertTrue(model.isNamespace(node));
+        
+        node = model.getFirstChild(docElement);
+        assertNotNull(node); // it should be a comment
+        assertTrue(model.getNodeKind(node) == NodeKind.COMMENT);
+        
+        node = model.getNextSibling(node);
+        assertNotNull(node); // it should be text
+        assertTrue(model.getNodeKind(node) == NodeKind.TEXT);
+        assertTrue(model.isText(node));
+        
+        node = model.getNextSibling(node);
+        assertNotNull(node); // it should be a pi
+        assertTrue(model.getNodeKind(node) == NodeKind.PROCESSING_INSTRUCTION);
     }
     
+    @Test
     public void nodeIdentity()
     {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createSimpleAllKindsDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        
+        //there's not a whole lot to do, here.
+        // in fact, there's an interesting question: what the fuck is a
+        // node identity?  say that we've created a document, above.
+        // does "node id" refer to this instance of that document?  we
+        // create it a lot; does it refer to any instance?  if no, then
+        // does it refer to the node id returned by a different model,
+        // or by a different cursor?
+        // TODO: define the semantics of NodeId more clearly (in the API, not here;
+        // here, we need to better test those semantics once they're defined).
+        Object id = model.getNodeId(doc);
+        N docElement = model.getFirstChildElement(doc);
+        assertNotNull(docElement);
+        assertEquals(model.getNodeId(model.getParent(docElement)), id);
+        
+        id = model.getNodeId(docElement);
+        assertEquals(model.getNodeId(model.getFirstChildElement(doc)), id);
     }
     
+    @Test
     public void idsAndRefs()
     {
+        // TODO: create a document, in testbase.
+        // we need to create a document that has ids and idrefs.
+        // see testbase.
     }
     
+    @Test
     public void attributes()
     {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createSimpleAllKindsDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        
+        // contract seems less than well-documented.
+        // the rule is complex: on an element, getAttributeNames never
+        // returns null, but may return an empty iterable.  on any other
+        // node type, it always returns null.
+        // getAttributeStringValue may return null.
+        // it should not return anything for a "namespace attribute",
+        // when a tree model provides such things.
+        
+        Iterable<QName> attributes = model.getAttributeNames(doc, false);
+        assertNull(attributes);
+        assertNull(model.getAttributeStringValue(doc, "", "xyzzy"));
+        N node = model.getFirstChildElement(doc);
+        assertNotNull(node);
+        
+        attributes = model.getAttributeNames(node, false);
+        assertNotNull(attributes);
+        // TODO: we really need a test that has an element with no attributes
+        int count = 0;
+        for (QName name : attributes)
+        {
+            assertNotNull(name.getLocalPart());
+            assertNotNull(name.getNamespaceURI());
+            assertNotNull(name.getPrefix());
+            count++;
+        }
+        assertEquals(count, 1);
+        assertEquals(model.getAttributeStringValue(node, "", "att"), "value");
+        
+        node = model.getFirstChild(node); // comment
+        attributes = model.getAttributeNames(node, false);
+        assertNull(attributes);
+        assertNull(model.getAttributeStringValue(node, "", "att"));
+        
+        node = model.getNextSibling(node); // text
+        attributes = model.getAttributeNames(node, false);
+        assertNull(attributes);
+        assertNull(model.getAttributeStringValue(node, "", "att"));
+        
+        node = model.getNextSibling(node); // pi
+        attributes = model.getAttributeNames(node, false);
+        assertNull(attributes);
+        assertNull(model.getAttributeStringValue(node, "", "att"));
     }
     
+    @Test
     public void namespaces()
     {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createSimpleAllKindsDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        
+        //TODO
+        // namespace bindings, namespace for prefix, namespace names
     }
     
+    @Test
     public void relationships()
     {
-        // has this, has that
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createSimpleAllKindsDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        
+        assertFalse(model.hasAttributes(doc));
+        assertFalse(model.hasNamespaces(doc));
+        assertTrue(model.hasChildren(doc));
+        assertFalse(model.hasParent(doc));
+        assertFalse(model.hasPreviousSibling(doc));
+        assertFalse(model.hasNextSibling(doc));
+
+        N elem = model.getFirstChildElement(doc);
+        assertNotNull(elem);
+        assertTrue(model.hasAttributes(elem));
+        assertTrue(model.hasNamespaces(elem));
+        assertTrue(model.hasChildren(elem));
+        assertTrue(model.hasParent(elem));
+        assertFalse(model.hasPreviousSibling(elem));
+        assertFalse(model.hasNextSibling(elem));
+        
+        N node = model.getAttribute(elem, "", "att");
+        assertNotNull(node);
+        assertFalse(model.hasAttributes(node));
+        assertFalse(model.hasNamespaces(node));
+        assertFalse(model.hasChildren(node));
+        assertTrue(model.hasParent(node));
+        assertFalse(model.hasPreviousSibling(node));
+        assertFalse(model.hasNextSibling(node));
+        
+        node = getNamespaceNode(model, elem, "ns");
+        assertNotNull(node);
+        assertFalse(model.hasAttributes(node));
+        assertFalse(model.hasNamespaces(node));
+        assertFalse(model.hasChildren(node));
+        assertTrue(model.hasParent(node));
+        assertFalse(model.hasPreviousSibling(node));
+        assertFalse(model.hasNextSibling(node));
+        
+        node = model.getFirstChild(elem);
+        assertNotNull(node); // comment node
+        assertFalse(model.hasAttributes(node));
+        assertFalse(model.hasNamespaces(node));
+        assertFalse(model.hasChildren(node));
+        assertTrue(model.hasParent(node));
+        assertFalse(model.hasPreviousSibling(node));
+        assertTrue(model.hasNextSibling(node));
+        
+        node = model.getNextSibling(node);
+        assertNotNull(node); // text
+        assertFalse(model.hasAttributes(node));
+        assertFalse(model.hasNamespaces(node));
+        assertFalse(model.hasChildren(node));
+        assertTrue(model.hasParent(node));
+        assertTrue(model.hasPreviousSibling(node));
+        assertTrue(model.hasNextSibling(node));
+        
+        node = model.getNextSibling(node);
+        assertNotNull(node); // pi
+        assertFalse(model.hasAttributes(node));
+        assertFalse(model.hasNamespaces(node));
+        assertFalse(model.hasChildren(node));
+        assertTrue(model.hasParent(node));
+        assertTrue(model.hasPreviousSibling(node));
+        assertFalse(model.hasNextSibling(node));
     }
     
+    @Test
     public void names()
     {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createSimpleAllKindsDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+        // namespace uri, local name, prefix
     }
     
+    @Test
     public void values()
     {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createSimpleAllKindsDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+        // string value
     }
     
+    @Test
     public void uris()
     {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createSimpleAllKindsDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+        // base and doc.
     }
     
+    @Test
     public void matching()
     {
     }
     
-//    /**
-//     * Returns the set of attribute names for the node.
-//     * 
-//     * <p>
-//     * This method does not inherit attribute names in the reserved XML namespace.
-//     * </p>
-//     * 
-//     * @param node
-//     *            The node for which the attribute names are required.
-//     * @param orderCanonical
-//     *            Determines whether the names will be returned in canonical order (lexicographically by namespace
-//     *            URI,local name).
-//     */
-//    Iterable<QName> getAttributeNames(N node, boolean orderCanonical);
-//    
-//    /**
-//     * Returns the dm:string-value of the attribute node with the specified expanded-QName.
-//     * <p>
-//     * This is equivalent to retrieving the attribute node and then its string value.
-//     * </p>
-//     * 
-//     * @param parent
-//     *            The node that is the parent of the attribute node.
-//     * @param namespaceURI
-//     *            The namespace-uri part of the attribute name.
-//     * @param localName
-//     *            The local-name part of the attribute name.
-//     */
-//    String getAttributeStringValue(N parent, String namespaceURI, String localName);
-//
 //    /**
 //     * Returns the base URI of the supplied context node, per the XML:Base
 //     * specification.
@@ -215,32 +396,6 @@ public abstract class NodeInformerBase<N>
 //    String getNamespaceURI(N node);
 //
 //    /**
-//     * Return an object which obeys the contract for equals() and hashCode();
-//     * it may also identify the node via object identity (==), but this is not
-//     * guaranteed.  Implementations often return the node itself, but some bridges
-//     * are not able to do so.  The object returned from this method is guaranteed
-//     * to obey the equals()/hashCode() contract even when the node the object identifies
-//     * does not.
-//     * 
-//     * @param node the node for which an ID object is required.
-//     */
-//    Object getNodeId(N node);
-//
-//    /**
-//     * Returns the node-kind of the node as an enumeration in {@link NodeKind}.
-//     * 
-//     * Applies to all node kinds and never returns <code>null</code>. <br/>
-//     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-kind">
-//     * dm:node-kind</a> accessor in the XDM.
-//     * 
-//     * @param node
-//     *            The node for which the node-kind is required.
-//     *            
-//     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-kind
-//     */
-//    NodeKind getNodeKind(N node);
-//
-//    /**
 //     * Returns the prefix part of the dm:node-name.
 //     * 
 //     * <br/>
@@ -315,22 +470,6 @@ public abstract class NodeInformerBase<N>
 //    boolean hasPreviousSibling(N node);
 //    
 //    /**
-//     * Determines whether the specified node is an attribute node.
-//     * 
-//     * @param node
-//     *            The node under consideration.
-//     */
-//    boolean isAttribute(N node);
-//
-//    /**
-//     * Determines whether the specified node is an element node.
-//     * 
-//     * @param node
-//     *            The node under consideration.
-//     */
-//    boolean isElement(N node);
-//
-//    /**
 //     * <p>Determine whether the node is an ID node. Corresponds to the
 //     * <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-is-id">
 //     * dm:is-id</a> accessor.  Valid for element and attribute nodes.
@@ -358,22 +497,6 @@ public abstract class NodeInformerBase<N>
 //     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-is-idrefs
 //     */
 //    boolean isIdRefs(N node);
-//
-//    /**
-//     * Determines whether the specified node is a namespace node.
-//     * 
-//     * @param node
-//     *            The node under consideration.
-//     */
-//    boolean isNamespace(N node);
-//
-//    /**
-//     * Determines whether the specified node is a text node.
-//     * 
-//     * @param node
-//     *            The node under consideration.
-//     */
-//    boolean isText(N node);
 //
 //    /**
 //     * Deterimines whether the specified node matches the arguments.
