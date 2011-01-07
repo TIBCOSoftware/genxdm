@@ -16,6 +16,8 @@
 package org.genxdm.bridge.dom;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.net.URI;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -49,6 +51,21 @@ public class DomDocumentHandler extends DefaultDocumentHandler<Node> {
 		
 		m_dbf = dbf;
 	}
+
+	
+	@Override
+	public Node parse(InputStream byteStream, URI systemId) throws IOException,
+			GxmlMarshalException {
+		return parse(new InputSource(byteStream), systemId);
+	}
+
+
+	@Override
+	public Node parse(Reader characterStream, URI systemId) throws IOException,
+			GxmlMarshalException {
+		return parse(new InputSource(characterStream), systemId);
+	}
+
 
 	@Override
 	public Node parse(InputSource source, URI systemId) throws IOException,
