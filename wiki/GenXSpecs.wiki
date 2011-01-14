@@ -1,0 +1,15 @@
+#summary Links to supported specifications.
+#sidebar TableOfContents
+
+= Introduction =
+
+GenXDM is founded upon the notion of design-by-specification.  The core supported specifcation is the XDM.  We also support, or plan to support, a number of additional specs.
+
+= Details =
+
+ * [http://www.w3.org/TR/2010/REC-xpath-datamodel-20101214/ XQuery 1.0 and XPath 2.0 Data Model] (XDM)
+ * [http://www.w3.org/TR/2010/REC-xpath-functions-20101214/ XQuery 1.0 and XPath 2.0 Functions and Operators]
+ * [http://www.w3.org/TR/1999/REC-xpath-19991116/ XML Path Language] (XPath)
+ * [http://www.w3.org/TR/2010/REC-xslt-xquery-serialization-20101214/ XSLT 2.0 and XQuery 1.0 Serialization]
+ * [http://www.w3.org/TR/2009/CR-xquery-update-10-20090609/ XQuery Update Facility 1.0] (XQUF)
+ * [http://www.w3.org/TR/2007/REC-xslt20-20070123/ XSL Transformations (XSLT) Version 2.0]
