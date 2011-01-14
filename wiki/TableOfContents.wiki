@@ -2,3 +2,4 @@
 
  * [GenXdmHome GenXDM Open Source Wiki Home]
  * [GenXdmProposal GenXDM Overview (from Apache Proposal)]
+ * [GenXSpecs Supported Specifications]
