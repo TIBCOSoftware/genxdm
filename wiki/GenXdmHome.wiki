@@ -41,6 +41,9 @@ Committers:
 
 Contributors:
 
+ * Ashutosh Bhide
+ * Vijay Nalawade
+
 == Resources ==
 
 If you're here, you ought to be able to find the code. :-)
@@ -53,3 +56,4 @@ If you're here, you ought to be able to find the code. :-)
 
 [http://www.balisage.net/Proceedings/vol5/html/Lewis01/BalisageVol5-Lewis01.html Paper presented at Balisage 2010]
 
+[GenXSpecs Supported Specifications]
