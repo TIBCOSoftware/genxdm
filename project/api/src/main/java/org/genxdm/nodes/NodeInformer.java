@@ -331,11 +331,13 @@ public interface NodeInformer<N>
      * @param node
      *            The XML node.
      * @param nodeKind
-     *            The node kind to match.
+     *            The node kind to match; if null, match regardless of node kind
      * @param namespaceURI
-     *            The namespace-uri to match.
+     *            The namespace-uri to match; if null, ignore namespace matching
      * @param localName
-     *            The local-name to match.
+     *            The local-name to match; if null, ignore local name matching
+     * 
+     * @return true if the node matches the arguments specified, ignoring nulls
      */
     boolean matches(N node, NodeKind nodeKind, String namespaceURI, String localName);
 
@@ -345,10 +347,11 @@ public interface NodeInformer<N>
      * @param node
      *            The node being tested.
      * @param namespaceURI
-     *            The namespace-uri part of the name.
+     *            The namespace-uri to match; if null, ignore namespace matching
      * @param localName
-     *            The local-name part of the name.
-     * @return <code>true</code> if the node matches the arguments specified, otherwise <code>false</code>.
+     *            The local-name to match; if null, ignore local name matching
+     * 
+     * @return true if the node matches the arguments specified, ignoring nulls
      */
     boolean matches(N node, String namespaceURI, String localName);
 }
