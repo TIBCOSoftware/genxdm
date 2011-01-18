@@ -77,10 +77,9 @@ public abstract class NodeInformerBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
-        
-        // TODO: see issue 41.  We need to test based on the content of
-        // that issue, after adjusting the API javadoc (and implementations,
-        // if necessary) to match.
+
+        // in this part, test that the same node accessed in different
+        // ways still *is* the same node.
         Object id = model.getNodeId(doc);
         N docElement = model.getFirstChildElement(doc);
         assertNotNull(docElement);
@@ -88,6 +87,33 @@ public abstract class NodeInformerBase<N>
         
         id = model.getNodeId(docElement);
         assertEquals(id, model.getNodeId(model.getFirstChildElement(doc)));
+
+        // in this part, create an "identical" document, and assert that no
+        // node in this second instance has the same id as the corresponding
+        // node in the first instance (we ignore namespace nodes, here, but
+        // maybe ought to, though they're sort of a pain).
+        builder.reset();
+        N doc2 = createSimpleAllKindsDocument(builder);
+        N doc2Element = model.getFirstChildElement(doc2);
+        
+        assertFalse(model.getNodeId(doc).equals(model.getNodeId(doc2)));
+        assertFalse(model.getNodeId(docElement).equals(model.getNodeId(doc2Element)));
+        assertFalse(model.getNodeId(model.getAttribute(docElement, XMLConstants.NULL_NS_URI, "att")).equals(model.getNodeId(model.getAttribute(doc2Element, XMLConstants.NULL_NS_URI, "att"))));
+        
+        // comment
+        N node = model.getFirstChild(docElement);
+        N node2 = model.getFirstChild(doc2Element);
+        assertFalse(model.getNodeId(node).equals(model.getNodeId(node2)));
+        
+        // text
+        node = model.getNextSibling(node);
+        node2 = model.getNextSibling(node2);
+        assertFalse(model.getNodeId(node).equals(model.getNodeId(node2)));
+
+        // pi
+        node = model.getNextSibling(node);
+        node2 = model.getNextSibling(node2);
+        assertFalse(model.getNodeId(node).equals(model.getNodeId(node2)));
     }
     
     @Test
@@ -426,43 +452,6 @@ public abstract class NodeInformerBase<N>
         // TODO
     }
     
-//    /**
-//     * Returns the namespace bindings associated with the node as a set or prefix/URI pairs.
-//     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-bindings">
-//     * dm:namespace-bindings</a> accessor.
-//     * 
-//     * Only includes prefix mappings which are explicit and local to the node.
-//     * 
-//     * @param node
-//     *            The node under consideration.
-//     * 
-//     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-bindings
-//     */
-//    Iterable<NamespaceBinding> getNamespaceBindings(N node);
-//
-//    /** Only reports on namespace declarations for the target node,
-//     * not namespaces in scope for that node.
-//     * 
-//     * @param node the target node on which the namespace is declared.
-//     * @param prefix the prefix (namespace name) for which the URI is desired.
-//     * 
-//     * @return the namespace URI declared for this prefix, or null if no such prefix
-//     * mapping is declared on this node.
-//     */
-//    String getNamespaceForPrefix(N node, String prefix);
-//
-//    /**
-//     * Returns the set of namespace names (prefixes) for a given node.
-//     * 
-//     * <br/>
-//     * 
-//     * This refers to the prefix mappings which are explicit and local to the node.
-//     * 
-//     * @param orderCanonical
-//     *            Determines whether the names will be returned in canonical order (lexicographically by local name).
-//     */
-//    Iterable<String> getNamespaceNames(N node, boolean orderCanonical);
-//
 //    /**
 //     * Deterimines whether the specified node matches the arguments.
 //     * 
