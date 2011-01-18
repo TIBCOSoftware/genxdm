@@ -1153,7 +1153,6 @@ public class AxiomModel
         if (isAttribute(node))
         {
             OMAttribute att = AxiomSupport.dynamicDowncastAttribute(node);
-System.out.println(att.getNamespace().getNamespaceURI() + ":" + att.getLocalName());
             if (att.getAttributeType().equals("ID")) return true;
             if (att.getNamespace().getNamespaceURI().equals(XMLConstants.XML_NS_URI) &&
                 att.getLocalName().equals("id"))
