@@ -17,7 +17,6 @@ import org.genxdm.base.Model;
 import org.genxdm.base.ProcessingContext;
 import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.bridgetest.TestBase;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public abstract class NodeInformerBase<N>
@@ -78,15 +77,9 @@ public abstract class NodeInformerBase<N>
         Model<N> model = context.getModel();
         assertNotNull(model);
         
-        //there's not a whole lot to do, here.
-        // in fact, there's an interesting question: what the fuck is a
-        // node identity?  say that we've created a document, above.
-        // does "node id" refer to this instance of that document?  we
-        // create it a lot; does it refer to any instance?  if no, then
-        // does it refer to the node id returned by a different model,
-        // or by a different cursor?
-        // TODO: define the semantics of NodeId more clearly (in the API, not here;
-        // here, we need to better test those semantics once they're defined).
+        // TODO: see issue 41.  We need to test based on the content of
+        // that issue, after adjusting the API javadoc (and implementations,
+        // if necessary) to match.
         Object id = model.getNodeId(doc);
         N docElement = model.getFirstChildElement(doc);
         assertNotNull(docElement);
@@ -99,9 +92,32 @@ public abstract class NodeInformerBase<N>
     @Test
     public void idsAndRefs()
     {
-        // TODO: create a document, in testbase.
-        // we need to create a document that has ids and idrefs.
-        // see testbase.
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createIdsAndRefsTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        
+        N node = model.getFirstChildElement(doc); // doc
+        node = model.getFirstChildElement(node); // e1
+        node = model.getFirstChildElement(node); // e2
+        
+        N idNode = model.getFirstChildElement(node); // e3
+        assertTrue(model.isId(idNode));
+        N attr = model.getAttribute(idNode, XMLConstants.NULL_NS_URI, "id");
+        assertTrue(model.isId(attr));
+        
+        N idRefNode = model.getNextSibling(idNode); // e4
+        assertTrue(model.isIdRefs(idRefNode));
+        attr = model.getAttribute(idRefNode, XMLConstants.NULL_NS_URI, "ref");
+        assertTrue(model.isIdRefs(attr));
+
+        idNode = model.getNextSibling(idRefNode); // e5
+        assertTrue(model.isId(idNode));
+        attr = model.getAttribute(idNode, XMLConstants.XML_NS_URI, "id");
+        assertTrue(model.isId(attr));
     }
     
     @Test
@@ -435,46 +451,6 @@ public abstract class NodeInformerBase<N>
 //     *            Determines whether the names will be returned in canonical order (lexicographically by local name).
 //     */
 //    Iterable<String> getNamespaceNames(N node, boolean orderCanonical);
-//
-//    /**
-//     * Returns the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-string-value">
-//     * dm:string-value</a> property of the node. Applies to all node kinds.
-//     * 
-//     * @param node
-//     *            The node for which the dm:string-value is required.
-//     * 
-//     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-string-value
-//     */
-//    String getStringValue(N node);
-//
-//    /**
-//     * <p>Determine whether the node is an ID node. Corresponds to the
-//     * <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-is-id">
-//     * dm:is-id</a> accessor.  Valid for element and attribute nodes.
-//     * </p>
-//     * 
-//     * @param node the node under consideration
-//     * @return true if the node is an attribute named xml:id, if it has a PSVI
-//     * type derived from xs:ID, or if it is an attribute with a DTD-defined type of ID,
-//     * otherwise false.
-//     * 
-//     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-is-id
-//     */
-//    boolean isId(N node);
-//    
-//    /**
-//     * Determine whether the node contains one or more IDREFs.
-//     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-is-idrefs">
-//     * dm:is-idrefs</a> accessor.  Valid for element and attribute nodes.
-//     * 
-//     * @param node the node under consideration
-//     * @return true if the node is an element or attribute with at least one atomic value
-//     * derived from xs:IDREF or xs:IDREFS, or if it is an attribute with a DTD-defined
-//     * type of IDREF or IDREFS.
-//     * 
-//     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-is-idrefs
-//     */
-//    boolean isIdRefs(N node);
 //
 //    /**
 //     * Deterimines whether the specified node matches the arguments.

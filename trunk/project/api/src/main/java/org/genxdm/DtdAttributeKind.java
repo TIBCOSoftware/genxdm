@@ -17,15 +17,42 @@ package org.genxdm;
 
 public enum DtdAttributeKind
 {
-    CDATA, // includes infoset "no value" and "unknown"
-    ID, // NAME
-    IDREF, // NAME
-    IDREFS, // NAMES
-    ENTITY, // NAME
-    ENTITIES, // NAME
-    NMTOKEN, // includes non-notation enumerations
-    NMTOKENS,
-    NOTATION; // NAME? or NMTOKEN?
+    CDATA // includes infoset "no value" and "unknown"
+    {
+        public String toString() { return "CDATA"; }
+    },
+    ID // NAME
+    {
+        public String toString() { return "ID"; }
+    },
+    IDREF // NAME
+    {
+        public String toString() { return "IDREF"; }
+    },
+    IDREFS // NAMES
+    {
+        public String toString() { return "IDREFS"; }
+    },
+    ENTITY // NAME
+    {
+        public String toString() { return "ENTITY"; }
+    },
+    ENTITIES // NAME
+    {
+        public String toString() { return "ENTITIES"; }
+    },
+    NMTOKEN // includes non-notation enumerations
+    {
+        public String toString() { return "NMTOKEN"; }
+    },
+    NMTOKENS
+    {
+        public String toString() { return "NMTOKENS"; }
+    },
+    NOTATION // NAME? or NMTOKEN?
+    {
+        public String toString() { return "NOTATION"; }
+    };
     
     public static DtdAttributeKind get(final String saxName)
     {
