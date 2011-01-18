@@ -62,6 +62,8 @@ public class AxiomFragmentBuilder
             if (namespace == null)
                 namespace = factory.createOMNamespace(namespaceURI, prefix);
             final OMAttribute attribute = factory.createOMAttribute(localName, namespace, value);
+            if (type != null)
+                attribute.setAttributeType(type.toString());
             element.addAttribute(attribute);
         }
         else
