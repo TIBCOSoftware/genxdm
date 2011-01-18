@@ -98,7 +98,9 @@ public abstract class NodeInformerBase<N>
         
         assertFalse(model.getNodeId(doc).equals(model.getNodeId(doc2)));
         assertFalse(model.getNodeId(docElement).equals(model.getNodeId(doc2Element)));
+
         assertFalse(model.getNodeId(model.getAttribute(docElement, XMLConstants.NULL_NS_URI, "att")).equals(model.getNodeId(model.getAttribute(doc2Element, XMLConstants.NULL_NS_URI, "att"))));
+        assertFalse(model.getNodeId(getNamespaceNode(model, docElement, "ns")).equals(model.getNodeId(getNamespaceNode(model, doc2Element, "ns"))));
         
         // comment
         N node = model.getFirstChild(docElement);
@@ -449,33 +451,93 @@ public abstract class NodeInformerBase<N>
     @Test
     public void matching()
     {
-        // TODO
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createSimpleAllKindsDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        
+        // a document does not have a name.
+        assertTrue(model.matches(doc, null, null, null));
+        assertTrue(model.matches(doc, NodeKind.DOCUMENT, null, null));
+        assertTrue(model.matches(doc, null, null));
+        assertFalse(model.matches(doc, NodeKind.TEXT, null, null));
+        assertFalse(model.matches(doc, XMLConstants.NULL_NS_URI, null));
+        assertFalse(model.matches(doc, null, ""));
+        
+        N element = model.getFirstChild(doc);
+        assertTrue(model.matches(element, null, null, null));
+        assertTrue(model.matches(element, NodeKind.ELEMENT, null, null));
+        assertTrue(model.matches(element, null, null));
+        assertTrue(model.matches(element, NodeKind.ELEMENT, null, "doc"));
+        assertTrue(model.matches(element, NodeKind.ELEMENT, XMLConstants.NULL_NS_URI, null));
+        assertTrue(model.matches(element, NodeKind.ELEMENT, XMLConstants.NULL_NS_URI, "doc"));
+        assertTrue(model.matches(element, null, "doc"));
+        assertTrue(model.matches(element, XMLConstants.NULL_NS_URI, null));
+        assertTrue(model.matches(element, XMLConstants.NULL_NS_URI, "doc"));
+        assertFalse(model.matches(element, NodeKind.TEXT, XMLConstants.NULL_NS_URI, "doc"));
+        assertFalse(model.matches(element, XMLConstants.NULL_NS_URI, ""));
+        assertFalse(model.matches(element, "ns", "doc"));
+        
+        N n = model.getAttribute(element, "", "att");
+        assertTrue(model.matches(n, null, null, null));
+        assertTrue(model.matches(n, NodeKind.ATTRIBUTE, null, null));
+        assertTrue(model.matches(n, null, null));
+        assertTrue(model.matches(n, NodeKind.ATTRIBUTE, null, "att"));
+        assertTrue(model.matches(n, NodeKind.ATTRIBUTE, XMLConstants.NULL_NS_URI, null));
+        assertTrue(model.matches(n, NodeKind.ATTRIBUTE, XMLConstants.NULL_NS_URI, "att"));
+        assertTrue(model.matches(n, null, "att"));
+        assertTrue(model.matches(n, XMLConstants.NULL_NS_URI, null));
+        assertTrue(model.matches(n, XMLConstants.NULL_NS_URI, "att"));
+        assertFalse(model.matches(n, NodeKind.NAMESPACE, XMLConstants.NULL_NS_URI, "att"));
+        assertFalse(model.matches(n, XMLConstants.NULL_NS_URI, ""));
+        assertFalse(model.matches(n, "ns", "att"));
+        
+        n = getNamespaceNode(model, element, "ns");
+        assertTrue(model.matches(n, null, null, null));
+        assertTrue(model.matches(n, NodeKind.NAMESPACE, null, null));
+        assertTrue(model.matches(n, null, null));
+        assertTrue(model.matches(n, NodeKind.NAMESPACE, null, "ns"));
+        assertTrue(model.matches(n, NodeKind.NAMESPACE, XMLConstants.NULL_NS_URI, null));
+        assertTrue(model.matches(n, NodeKind.NAMESPACE, XMLConstants.NULL_NS_URI, "ns"));
+        assertTrue(model.matches(n, null, "ns"));
+        assertTrue(model.matches(n, XMLConstants.NULL_NS_URI, "ns"));
+        assertTrue(model.matches(n, XMLConstants.NULL_NS_URI, "ns"));
+        assertFalse(model.matches(n, NodeKind.ATTRIBUTE, null, null));
+        assertFalse(model.matches(n, "ns", null));
+        assertFalse(model.matches(n, XMLConstants.NULL_NS_URI, ""));
+        
+        n = model.getFirstChild(element); // comment
+        assertTrue(model.matches(n, null, null, null));
+        assertTrue(model.matches(n, NodeKind.COMMENT, null, null));
+        assertTrue(model.matches(n, null, null));
+        assertFalse(model.matches(n, NodeKind.TEXT, null, null));
+        assertFalse(model.matches(n, XMLConstants.NULL_NS_URI, null));
+        assertFalse(model.matches(n, null, ""));
+        
+        n = model.getNextSibling(n); // text
+        assertTrue(model.matches(n, null, null, null));
+        assertTrue(model.matches(n, NodeKind.TEXT, null, null));
+        assertTrue(model.matches(n, null, null));
+        assertFalse(model.matches(n, NodeKind.ELEMENT, null, null));
+        assertFalse(model.matches(n, XMLConstants.NULL_NS_URI, null));
+        assertFalse(model.matches(n, null, ""));
+        
+        n = model.getNextSibling(n); // pi
+        assertTrue(model.matches(n, null, null, null));
+        assertTrue(model.matches(n, NodeKind.PROCESSING_INSTRUCTION, null, null));
+        assertTrue(model.matches(n, null, null));
+        assertTrue(model.matches(n, NodeKind.PROCESSING_INSTRUCTION, null, "target"));
+        assertTrue(model.matches(n, NodeKind.PROCESSING_INSTRUCTION, XMLConstants.NULL_NS_URI, null));
+        assertTrue(model.matches(n, NodeKind.PROCESSING_INSTRUCTION, XMLConstants.NULL_NS_URI, "target"));
+        assertTrue(model.matches(n, null, "target"));
+        assertTrue(model.matches(n, XMLConstants.NULL_NS_URI, null));
+        assertTrue(model.matches(n, XMLConstants.NULL_NS_URI, "target"));
+        assertFalse(model.matches(n, NodeKind.COMMENT, XMLConstants.NULL_NS_URI, "target"));
+        assertFalse(model.matches(n, "ns", "target"));
+        assertFalse(model.matches(n, XMLConstants.NULL_NS_URI, ""));
+        
     }
-    
-//    /**
-//     * Deterimines whether the specified node matches the arguments.
-//     * 
-//     * @param node
-//     *            The XML node.
-//     * @param nodeKind
-//     *            The node kind to match.
-//     * @param namespaceURI
-//     *            The namespace-uri to match.
-//     * @param localName
-//     *            The local-name to match.
-//     */
-//    boolean matches(N node, NodeKind nodeKind, String namespaceURI, String localName);
-//
-//    /**
-//     * Determines whether the specified node matches in name.
-//     * 
-//     * @param node
-//     *            The node being tested.
-//     * @param namespaceURI
-//     *            The namespace-uri part of the name.
-//     * @param localName
-//     *            The local-name part of the name.
-//     * @return <code>true</code> if the node matches the arguments specified, otherwise <code>false</code>.
-//     */
-//    boolean matches(N node, String namespaceURI, String localName);
 }
