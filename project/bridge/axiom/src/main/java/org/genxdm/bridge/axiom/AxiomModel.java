@@ -1152,14 +1152,21 @@ public class AxiomModel
     {
         if (isAttribute(node))
         {
-            // TODO: this doesn't handle xml:id; it is probably too simplistic
             OMAttribute att = AxiomSupport.dynamicDowncastAttribute(node);
-            return att.getAttributeType().equals("ID");
+System.out.println(att.getNamespace().getNamespaceURI() + ":" + att.getLocalName());
+            if (att.getAttributeType().equals("ID")) return true;
+            if (att.getNamespace().getNamespaceURI().equals(XMLConstants.XML_NS_URI) &&
+                att.getLocalName().equals("id"))
+                return true;
         }
         if (isElement(node))
         {
-            // TODO: if it's got a PSVI, it returns true if derived from xs:ID
+            for (Object o : getAttributeAxis(node, false))
+            {
+                if (isId(o)) return true;
+            }
         }
+        // falls through, if you weren't paying attention.
         return false;
     }
     
@@ -1167,13 +1174,15 @@ public class AxiomModel
     {
         if (isAttribute(node))
         {
-            // TODO: this is probably too simple.
             OMAttribute att = AxiomSupport.dynamicDowncastAttribute(node);
             return att.getAttributeType().startsWith("IDREF");
         }
         if (isElement(node))
         {
-            // TODO: if it's got a PSVI, it returns true if derived from xs:IDREF or xs:IDREFS.
+            for (Object o : getAttributeAxis(node, false))
+            {
+                if (isIdRefs(o)) return true;
+            }
         }
         return false;
     }

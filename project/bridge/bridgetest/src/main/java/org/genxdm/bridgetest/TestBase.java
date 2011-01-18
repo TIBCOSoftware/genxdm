@@ -20,6 +20,7 @@ import java.net.URISyntaxException;
 
 import javax.xml.XMLConstants;
 
+import org.genxdm.DtdAttributeKind;
 import org.genxdm.base.Model;
 import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.bridgekit.ProcessingContextFactory;
@@ -85,6 +86,7 @@ abstract public class TestBase<N>
         builder.startDocument(uri, null);
         // TODO:
         // this should create a more complex document for navigation testing.
+        builder.endDocument();
         return builder.getNode();
     }
     
@@ -95,11 +97,38 @@ abstract public class TestBase<N>
         try { uri = new URI(URI_PREFIX + IDS_REFS_DOC); }
         catch (URISyntaxException urise) { /* do nothing */}
         
-        builder.startDocument(uri, null);
-        // TODO:
-        // this should create a document that has both IDs and IDREFs.
-        // it should probably do this both with the doctype decl,
-        // and by using xml:id syntax.
+        final String intsubset = "<!DOCTYPE doc [\n<!ATTLIST e3 id ID #IMPLIED>\n<!ATTLIST e4 ref IDREF #IMPLIED>\n]>";
+        /*
+         <!DOCTYPE doc [
+         <!ATTLIST e3 id ID #IMPLIED>
+         <!ATTLIST e4 ref IDREF #IMPLIED>
+         ]>
+         <doc>
+            <e1><e2><e3 id="E3" /><e4 ref="E3" /><e5 xml:id="E5" /></e2></e1>
+         </doc>
+         */
+        
+        builder.startDocument(uri, intsubset);
+        builder.startElement(XMLConstants.NULL_NS_URI, "doc", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.startElement(XMLConstants.NULL_NS_URI, "e1", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.startElement(XMLConstants.NULL_NS_URI, "e2", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.startElement(XMLConstants.NULL_NS_URI, "e3", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "id", XMLConstants.DEFAULT_NS_PREFIX, "value", DtdAttributeKind.ID);
+        builder.endElement();
+
+        builder.startElement(XMLConstants.NULL_NS_URI, "e4", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "ref", XMLConstants.DEFAULT_NS_PREFIX, "value", DtdAttributeKind.IDREF);
+        builder.endElement();
+
+        builder.startElement(XMLConstants.NULL_NS_URI, "e5", XMLConstants.DEFAULT_NS_PREFIX);
+        // this *should* work without the DtdAttributeKind being set to anything useful.
+        builder.attribute(XMLConstants.XML_NS_URI, "id", XMLConstants.XML_NS_PREFIX, "value", null);
+        builder.endElement();
+
+        builder.endElement(); //e2
+        builder.endElement(); //e1
+        builder.endElement(); //doc
+        builder.endDocument();
         return builder.getNode();
     }
     
