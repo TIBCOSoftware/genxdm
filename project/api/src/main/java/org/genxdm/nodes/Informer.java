@@ -63,6 +63,10 @@ public interface Informer
      * are not able to do so.  The object returned from this method is guaranteed
      * to obey the equals()/hashCode() contract even when the node the object identifies
      * does not.
+     * 
+     * Conforms to the contract specified in section 2.3 of the XDM specification
+     * for node identity.  Nodes in an instance are equal to themselves and to no
+     * other node; they are never equal across instances.
      */
     Object getNodeId();
 

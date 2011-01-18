@@ -35,6 +35,9 @@ import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
 import org.genxdm.exceptions.PreCondition;
 
+// this exists so that we can attach namespaces to documents.
+// in axiom, they aren't.  this faux element is only ever used
+// by faux namespace.
 public class FauxElement
     extends Object
     implements OMElement
