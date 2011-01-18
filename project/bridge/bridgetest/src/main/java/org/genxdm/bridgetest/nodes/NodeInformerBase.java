@@ -17,6 +17,7 @@ import org.genxdm.base.Model;
 import org.genxdm.base.ProcessingContext;
 import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.bridgetest.TestBase;
+import org.genxdm.names.NamespaceBinding;
 import org.junit.Test;
 
 public abstract class NodeInformerBase<N>
@@ -186,8 +187,18 @@ public abstract class NodeInformerBase<N>
         Model<N> model = context.getModel();
         assertNotNull(model);
         
-        //TODO
-        // namespace bindings, namespace for prefix, namespace names
+        N docEl = model.getFirstChildElement(doc);
+        // there's only one namespace declared; we shouldn't have a problem.
+        assertEquals("ns", model.getNamespaceForPrefix(docEl, "ns"));
+        for (String nsName : model.getNamespaceNames(docEl, false))
+        {
+            assertEquals("ns", nsName);
+        }
+        for (NamespaceBinding binding : model.getNamespaceBindings(docEl))
+        {
+            assertEquals("ns", binding.getPrefix());
+            assertEquals("ns", binding.getNamespaceURI());
+        }
     }
     
     @Test
