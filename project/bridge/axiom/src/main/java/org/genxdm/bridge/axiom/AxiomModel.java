@@ -1189,7 +1189,9 @@ public class AxiomModel
     public Object getNodeId(final Object node)
     {
         if (node instanceof OMAttribute)
-            return new AttributeWithIdentity((OMAttribute)node);
+            return new AttributeIdentity((OMAttribute)node);
+        if (node instanceof OMNamespace)
+            return new NamespaceIdentity((OMNamespace)node);
         return node;
     }
 
