@@ -168,6 +168,10 @@ public interface NodeInformer<N>
      * to obey the equals()/hashCode() contract even when the node the object identifies
      * does not.
      * 
+     * Conforms to the contract specified in section 2.3 of the XDM specification
+     * for node identity.  Nodes in an instance are equal to themselves and to no
+     * other node; they are never equal across instances.
+     * 
      * @param node the node for which an ID object is required.
      */
     Object getNodeId(N node);

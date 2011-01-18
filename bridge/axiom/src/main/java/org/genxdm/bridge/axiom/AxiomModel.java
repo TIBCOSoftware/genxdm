@@ -1188,6 +1188,8 @@ public class AxiomModel
 
     public Object getNodeId(final Object node)
     {
+        if (node instanceof OMAttribute)
+            return new AttributeWithIdentity((OMAttribute)node);
         return node;
     }
 
