@@ -204,8 +204,11 @@ public class AxiomModel
     
     public OMElement getElementById(final Object context, final String id)
     {
-        // TODO: find out the efficient way to do this in axiom
-        return null;
+        // note: this depends upon the map having been initialized.
+        // TODO: check the size of the map? if it's empty, we might want
+        // to try to look through the document for ids.  barf-puke, but eh.
+        Map<String, OMElement> idMap = AxiomSupport.getIdMap(AxiomSupport.dynamicDowncastDocument(getRoot(context)));
+        return idMap.get(id);
     }
 
     public OMNode getFirstChild(final Object origin)
