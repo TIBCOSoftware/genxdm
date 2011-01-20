@@ -83,9 +83,175 @@ abstract public class TestBase<N>
         try { uri = new URI(URI_PREFIX + COMPLEX_DOC); }
         catch (URISyntaxException urise) { /* do nothing */}
         
+        final String retTab = "\n    ";
+        final String tab = "    ";
         builder.startDocument(uri, null);
-        // TODO:
-        // this should create a more complex document for navigation testing.
+/* create this ant buildfile.  note the pain of programmatic creation. *sigh*
+At the end of the file is something that *isn't* valid ant, but that does have
+a lot of interesting namespace fun.  It's also got the text nodes.
+
+<?xml version="1.0"?>
+<project name="Hello" default="compile">
+    <path id="project.class.path">
+        <pathelement location="lib/" />
+        <pathelement path="${java.class.path}" />
+    </path>
+    <fileset dir="classes" id="project.output">
+        <include name="** /*.java" />
+    </fileset>
+    <target name="clean" description="remove intermediate files">
+        <delete dir="classes"/>
+    </target>
+    <target name="clobber" depends="clean" description="remove all artifact files">
+        <delete file="hello.jar"/>
+    </target>
+    <target name="compile" description="compile the Java source code to class files">
+        <mkdir dir="classes"/>
+        <javac srcdir="." destdir="classes">
+            <classpath refid="project.class.path" />
+        </javac>
+    </target>
+    <target name="jar" depends="compile" description="create a Jar file for the application">
+        <jar destfile="hello.jar">
+            <fileset refid="project.output" />
+            <manifest>
+                <attribute name="Main-Class" value="HelloProgram"/>
+            </manifest>
+        </jar>
+    </target>
+    <nstest xmlns="http://www.genxdm.org/nonsense" xmlns:gue="http://great.underground.empire/adventure">
+        <gue:zork xmlns="http://great.underground.empire/adventure" xmlns:grue="http://great.underground.empire/adventure/eaten">
+            <grue:light>It is dark.  You might be eaten by a grue.</grue:light>
+            <magicword word="xyzzy">Nothing happens.</magicword>
+        </gue:zork>
+    </nstest>
+</project>
+ */
+        builder.startElement(XMLConstants.NULL_NS_URI, "project", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "name", XMLConstants.DEFAULT_NS_PREFIX, "Hello", DtdAttributeKind.CDATA);
+        builder.attribute(XMLConstants.NULL_NS_URI, "default", XMLConstants.DEFAULT_NS_PREFIX, "compile", DtdAttributeKind.NMTOKEN);
+        
+        builder.text(retTab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "path", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "id", XMLConstants.DEFAULT_NS_PREFIX, "project.class.path", DtdAttributeKind.ID);
+        builder.text(retTab + tab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "pathelement", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "location", XMLConstants.DEFAULT_NS_PREFIX, "lib/", DtdAttributeKind.CDATA);
+        builder.endElement(); // pathelement with location
+        builder.text(retTab + tab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "pathelement", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "path", XMLConstants.DEFAULT_NS_PREFIX, "${java.class.path}", DtdAttributeKind.CDATA);
+        builder.endElement(); // pathelement with path
+        builder.text(retTab);
+        builder.endElement(); // path
+
+        builder.text(retTab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "fileset", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "dir", XMLConstants.DEFAULT_NS_PREFIX, "classes", DtdAttributeKind.CDATA);
+        builder.attribute(XMLConstants.NULL_NS_URI, "id", XMLConstants.DEFAULT_NS_PREFIX, "project.output", DtdAttributeKind.ID);
+        builder.text(retTab + tab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "include", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "name", XMLConstants.DEFAULT_NS_PREFIX, "**/*.java", DtdAttributeKind.CDATA);
+        builder.endElement(); // include
+        builder.text(retTab);
+        builder.endElement(); // fileset
+
+        builder.text(retTab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "target", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "name", XMLConstants.DEFAULT_NS_PREFIX, "clean", DtdAttributeKind.NMTOKEN);
+        builder.attribute(XMLConstants.NULL_NS_URI, "description", XMLConstants.DEFAULT_NS_PREFIX, "remove intermediate files", DtdAttributeKind.CDATA);
+        builder.text(retTab + tab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "delete", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "dir", XMLConstants.DEFAULT_NS_PREFIX, "classes", DtdAttributeKind.CDATA);
+        builder.endElement(); // delete
+        builder.text(retTab);
+        builder.endElement(); // target clean
+
+        builder.text(retTab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "target", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "name", XMLConstants.DEFAULT_NS_PREFIX, "clobber", DtdAttributeKind.NMTOKEN);
+        builder.attribute(XMLConstants.NULL_NS_URI, "description", XMLConstants.DEFAULT_NS_PREFIX, "remove build artifacts", DtdAttributeKind.CDATA);
+        builder.text(retTab + tab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "delete", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "file", XMLConstants.DEFAULT_NS_PREFIX, "hello.jar", DtdAttributeKind.CDATA);
+        builder.endElement(); // delete
+        builder.text(retTab);
+        builder.endElement(); // target clobber
+
+        builder.text(retTab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "target", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "name", XMLConstants.DEFAULT_NS_PREFIX, "compile", DtdAttributeKind.NMTOKEN);
+        builder.attribute(XMLConstants.NULL_NS_URI, "description", XMLConstants.DEFAULT_NS_PREFIX, "compile the java source code", DtdAttributeKind.CDATA);
+        builder.text(retTab + tab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "mkdir", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "dir", XMLConstants.DEFAULT_NS_PREFIX, "classes", DtdAttributeKind.CDATA);
+        builder.endElement(); // mkdir
+        builder.text(retTab + tab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "javac", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "srcdir", XMLConstants.DEFAULT_NS_PREFIX, ".", DtdAttributeKind.CDATA);
+        builder.attribute(XMLConstants.NULL_NS_URI, "destdir", XMLConstants.DEFAULT_NS_PREFIX, "classes", DtdAttributeKind.CDATA);
+        builder.text(retTab + tab + tab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "classpath", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "refid", XMLConstants.DEFAULT_NS_PREFIX, "project.class.path", DtdAttributeKind.IDREF);
+        builder.endElement(); // classpath
+        builder.text(retTab + tab);
+        builder.endElement(); // javac
+        builder.text(retTab);
+        builder.endElement(); // target compile
+
+        builder.text(retTab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "target", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "name", XMLConstants.DEFAULT_NS_PREFIX, "jar", DtdAttributeKind.NMTOKEN);
+        builder.attribute(XMLConstants.NULL_NS_URI, "depends", XMLConstants.DEFAULT_NS_PREFIX, "compile", DtdAttributeKind.NMTOKENS);
+        builder.attribute(XMLConstants.NULL_NS_URI, "description", XMLConstants.DEFAULT_NS_PREFIX, "create the jar artifact for distribution", DtdAttributeKind.CDATA);
+        builder.text(retTab + tab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "jar", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "destfile", XMLConstants.DEFAULT_NS_PREFIX, "hello.jar", DtdAttributeKind.CDATA);
+        builder.text(retTab + tab + tab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "fileset", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "refid", XMLConstants.DEFAULT_NS_PREFIX, "project.output", DtdAttributeKind.IDREF);
+        builder.endElement(); // fileset
+        builder.text(retTab + tab + tab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "manifest", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.text(retTab + tab + tab + tab);
+        builder.startElement(XMLConstants.NULL_NS_URI, "attribute", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "name", XMLConstants.DEFAULT_NS_PREFIX, "Main-Class", DtdAttributeKind.NMTOKEN);
+        builder.attribute(XMLConstants.NULL_NS_URI, "value", XMLConstants.DEFAULT_NS_PREFIX, "HelloProgram", DtdAttributeKind.CDATA);
+        builder.endElement(); // attribute
+        builder.text(retTab + tab + tab);
+        builder.endElement(); // manifest
+        builder.text(retTab + tab);
+        builder.endElement(); // jar
+        builder.text(retTab);
+        builder.endElement(); // target jar
+
+        final String nsgenx = "http://www.genxdm.org/nonsense";
+        final String nsadv = "http://great.underground.empire/adventure";
+        final String nsgrue = "http://great.underground.empire/adventure/eaten";
+        builder.text(retTab);
+        builder.startElement(nsgenx, "nstest", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.namespace(XMLConstants.DEFAULT_NS_PREFIX, nsgenx);
+        builder.namespace("gue", nsadv);
+        builder.text(retTab + tab);
+        builder.startElement(nsadv, "zork", "gue");
+        builder.namespace(XMLConstants.DEFAULT_NS_PREFIX, nsadv);
+        builder.namespace("grue", nsgrue);
+        builder.text(retTab + tab + tab);
+        builder.startElement(nsgrue, "light", "grue");
+        builder.text("It is dark. You might be eaten by a grue.");
+        builder.endElement(); // grue:light
+        builder.text(retTab + tab + tab);
+        builder.startElement(nsadv, "magicword", XMLConstants.DEFAULT_NS_PREFIX);
+        builder.attribute(XMLConstants.NULL_NS_URI, "word", XMLConstants.DEFAULT_NS_PREFIX, "xyzzy", DtdAttributeKind.CDATA);
+        builder.text("Nothing happens.");
+        builder.endElement(); // magicword
+        builder.text(retTab + tab);
+        builder.endElement(); // gue:zork
+        builder.text(retTab);
+        builder.endElement(); // nstest
+
+        builder.text("\n");
+        builder.endElement(); // project
         builder.endDocument();
         return builder.getNode();
     }

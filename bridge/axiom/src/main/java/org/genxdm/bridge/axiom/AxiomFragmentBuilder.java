@@ -18,6 +18,7 @@ package org.genxdm.bridge.axiom;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -64,6 +65,15 @@ public class AxiomFragmentBuilder
             final OMAttribute attribute = factory.createOMAttribute(localName, namespace, value);
             if (type != null)
                 attribute.setAttributeType(type.toString());
+            if ( (type == DtdAttributeKind.ID) ||
+                (namespaceURI.equals(XMLConstants.XML_NS_URI) &&
+                 localName.equals("id")) )
+            {
+                Map<String, OMElement> ids = AxiomSupport.getIdMap(documentNode);
+                if (ids != null) // only null if we don't have a document.  *shrug*
+                    ids.put(value, element);
+            }
+                
             element.addAttribute(attribute);
         }
         else
@@ -108,6 +118,7 @@ public class AxiomFragmentBuilder
         throws GxmlException
     {
         epilog();
+        documentNode = null;
         if (level > 0)
             throw new IllegalStateException("Document ended with unclosed elements.");
     }
@@ -166,7 +177,8 @@ public class AxiomFragmentBuilder
         prolog();
         if (null == currentNode)
         {
-            currentNode = factory.createOMDocument();
+            documentNode = factory.createOMDocument();
+            currentNode = documentNode;
         }
         else
         {
@@ -257,6 +269,7 @@ public class AxiomFragmentBuilder
     {
         nodes.clear();
         currentNode = null;
+        documentNode = null;
         level = 0;
     }
     
@@ -294,5 +307,6 @@ public class AxiomFragmentBuilder
     protected final OMFactory factory;
     protected ArrayList<Object> nodes = new ArrayList<Object>();
     protected Object currentNode;
+    protected OMDocument documentNode;
     protected boolean ignoreComments;
 }

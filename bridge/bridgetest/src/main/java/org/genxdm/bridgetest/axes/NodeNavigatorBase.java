@@ -1,11 +1,111 @@
 package org.genxdm.bridgetest.axes;
 
+import static org.junit.Assert.assertNotNull;
+
+import org.genxdm.base.Model;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.bridgetest.TestBase;
+import org.junit.Test;
 
 public abstract class NodeNavigatorBase<N>
     extends TestBase<N>
 {
 
+    @Test
+    public void attributes()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+    }
+    
+    @Test
+    public void ids()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+    }
+    
+    @Test
+    public void firstChildren()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+        // getfirstchild, getfirstchildelement, getfirstchildelementbyname
+    }
+    
+    @Test
+    public void lastChildren()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+    }
+    
+    @Test
+    public void nextSiblings()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+        // getNextSibling, getNextSiblingElement, getNextSiblingElementByName
+    }
+    
+    @Test
+    public void previousSiblings()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+    }
+    
+    @Test
+    public void ancestors()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+        // getParent, getRoot
+    }
+    
 //    /**
 //     * Returns the attribute node with the specified expanded-QName.
 //     * 
