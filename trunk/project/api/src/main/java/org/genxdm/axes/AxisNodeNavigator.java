@@ -87,9 +87,9 @@ public interface AxisNodeNavigator<N>
      * @param node
      *            The parent node that owns the child axis.
      * @param namespaceURI
-     *            The namespace-uri to be matched.
+     *            The namespace-uri to be matched.  If <code>null</code>, will match any namespace.
      * @param localName
-     *            The local-name to be matched.
+     *            The local-name to be matched.  If <code>null</code>, will match any local name.
      */
     Iterable<N> getChildElementsByName(N node, String namespaceURI, String localName);
 

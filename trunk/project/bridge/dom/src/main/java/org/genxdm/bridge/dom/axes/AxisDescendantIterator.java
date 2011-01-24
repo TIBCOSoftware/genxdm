@@ -18,19 +18,17 @@ package org.genxdm.bridge.dom.axes;
 import java.util.LinkedList;
 
 import org.genxdm.bridge.dom.DomSupport;
+import org.genxdm.bridgekit.axes.BaseImmutableIterator;
 import org.w3c.dom.Node;
 
-final class AxisDescendantIterator extends AxisStrategyIterator<Node>
+final class AxisDescendantIterator extends BaseImmutableIterator<Node>
 {
     private LinkedList<Node> m_stack;
 
     public AxisDescendantIterator(final Node origin)
     {
         super(origin);
-    }
 
-    public Node prime(final Node origin)
-    {
         m_stack = new LinkedList<Node>();
 
         Node child = DomSupport.getTailChild(origin);
@@ -42,7 +40,7 @@ final class AxisDescendantIterator extends AxisStrategyIterator<Node>
             child = child.getPreviousSibling();
         }
 
-        return next(null);
+        setFirstResult(next(null));
     }
 
     public Node next(final Node unused)
