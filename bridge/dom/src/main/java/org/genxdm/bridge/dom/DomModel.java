@@ -45,15 +45,12 @@ import org.genxdm.bridgekit.names.QNameComparator;
 import org.genxdm.bridgekit.tree.Ordering;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.names.NameSource;
 import org.genxdm.names.NamespaceBinding;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-//import org.w3c.dom.TypeInfo;
 
 public class DomModel
     implements Model<Node>
@@ -307,7 +304,7 @@ public class DomModel
     {
         if (origin != null)
         {
-            return DomSupport.getChildElementsByName(origin, namespaceURI, localName);
+        	return new NamedChildIterable(origin, namespaceURI, localName);
         }
         else
         {
@@ -358,84 +355,9 @@ public class DomModel
     {
         final short nodeType = origin.getNodeType();
 
-        if (nodeType == Node.ELEMENT_NODE)
+        if (nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE)
         {
-            final Element element = (Element)origin;
-
-            final NodeList elements;
-
-            if (null != namespaceURI)
-            {
-                if (namespaceURI.length() > 0)
-                {
-                    if (null != localName)
-                    {
-                        elements = element.getElementsByTagNameNS(namespaceURI, localName);
-                    }
-                    else
-                    {
-                        elements = element.getElementsByTagNameNS(namespaceURI, "*");
-                    }
-                }
-                else
-                {
-                    if (null != localName)
-                    {
-                        elements = element.getElementsByTagNameNS(null, localName);
-                    }
-                    else
-                    {
-                        elements = element.getElementsByTagNameNS(null, "*");
-                    }
-                }
-            }
-            else
-            {
-                if (null != localName)
-                {
-                    elements = element.getElementsByTagNameNS("*", localName);
-                }
-                else
-                {
-                    elements = element.getElementsByTagNameNS("*", "*");
-                }
-            }
-
-            final int length = elements.getLength();
-
-            if (length > 0)
-            {
-                return elements.item(0);
-            }
-            else
-            {
-                return null;
-            }
-        }
-        else if (nodeType == Node.DOCUMENT_NODE)
-        {
-            final Document document = (Document)origin;
-
-            final NodeList elements;
-            if (namespaceURI.length() > 0)
-            {
-                elements = document.getElementsByTagNameNS(namespaceURI, localName);
-            }
-            else
-            {
-                elements = document.getElementsByTagNameNS(null, localName);
-            }
-
-            final int length = elements.getLength();
-
-            if (length > 0)
-            {
-                return elements.item(0);
-            }
-            else
-            {
-                return null;
-            }
+        	return NamedSiblingIterator.findNextMatch(origin.getFirstChild(), namespaceURI, localName);
         }
         else
         {
@@ -1187,5 +1109,5 @@ public class DomModel
         }
     }
 
-    private final NameSource nameBridge = new NameSource();
+    //private final NameSource nameBridge = new NameSource();
 }
