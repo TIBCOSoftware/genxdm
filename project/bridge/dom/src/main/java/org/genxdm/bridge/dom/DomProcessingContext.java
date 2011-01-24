@@ -33,7 +33,6 @@ import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 public class DomProcessingContext
@@ -79,7 +78,6 @@ public class DomProcessingContext
         return model;
     }
 
-    @SuppressWarnings("unchecked")
     public MutableContext<Node> getMutableContext()
     {
         if (mutantContext == null)

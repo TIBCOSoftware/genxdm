@@ -27,7 +27,6 @@ import org.genxdm.DtdAttributeKind;
 import org.genxdm.NodeKind;
 import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.exceptions.GxmlException;
-import org.genxdm.typed.types.Emulation;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

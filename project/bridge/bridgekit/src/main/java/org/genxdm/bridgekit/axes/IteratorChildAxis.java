@@ -15,44 +15,22 @@
  */
 package org.genxdm.bridgekit.axes;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
 import org.genxdm.base.Model;
 import org.genxdm.exceptions.PreCondition;
 
-final class IteratorChildAxis<N> implements Iterator<N>
+final class IteratorChildAxis<N> extends BaseImmutableIterator<N>
 {
-	private N m_pending;
 	private final Model<N> m_navigator;
 
 	public IteratorChildAxis(final N origin, final Model<N> navigator)
 	{
+		super(navigator.getFirstChild(origin));
 		this.m_navigator = PreCondition.assertArgumentNotNull(navigator);
-		this.m_pending = navigator.getFirstChild(origin);
 	}
 
-	public boolean hasNext()
-	{
-		return (null != m_pending);
+	@Override
+	protected N next(N current) {
+		return m_navigator.getNextSibling(current);
 	}
 
-	public N next()
-	{
-		if (m_pending != null)
-		{
-			final N last = m_pending;
-			m_pending = m_navigator.getNextSibling(m_pending);
-			return last;
-		}
-		else
-		{
-			throw new NoSuchElementException();
-		}
-	}
-
-	public void remove()
-	{
-		throw new UnsupportedOperationException();
-	}
 }
