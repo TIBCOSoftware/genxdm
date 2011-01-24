@@ -15,18 +15,14 @@
  */
 package org.genxdm.bridge.dom.axes;
 
+import org.genxdm.bridgekit.axes.BaseImmutableIterator;
 import org.w3c.dom.Node;
 
-final class AxisFollowingSiblingIterator extends AxisStrategyIterator<Node>
+final class AxisFollowingSiblingIterator extends BaseImmutableIterator<Node>
 {
     public AxisFollowingSiblingIterator(final Node origin)
     {
-        super(origin);
-    }
-
-    public Node prime(final Node origin)
-    {
-        return origin.getNextSibling();
+        super(origin.getNextSibling() );
     }
 
     public Node next(final Node current)

@@ -15,28 +15,21 @@
  */
 package org.genxdm.bridge.dom.axes;
 
-import org.genxdm.bridge.dom.DomSupport;
+import org.genxdm.bridgekit.axes.BaseImmutableIterator;
 import org.w3c.dom.Node;
 
-final class AxisChildElementIterator extends AxisStrategyIterator<Node>
+final class AxisChildElementIterator extends BaseImmutableIterator<Node>
 {
     public AxisChildElementIterator(final Node origin)
     {
-        super(origin);
-    }
-
-    public Node prime(final Node origin)
-    {
-        final Node candidate = DomSupport.getFirstChild(origin);
-
-        return getNextElement(candidate);
+    	// Note that the following doesn't call DomSupport.getFirstChild(), because it is already
+    	// filtering for just element nodes with the call to getNextElement().
+        super(getNextElement( origin.getFirstChild() ));
     }
 
     public Node next(final Node current)
     {
-        final Node candidate = current.getNextSibling();
-
-        return getNextElement(candidate);
+        return getNextElement(current.getNextSibling());
     }
 
     private static Node getNextElement(Node candidate)
