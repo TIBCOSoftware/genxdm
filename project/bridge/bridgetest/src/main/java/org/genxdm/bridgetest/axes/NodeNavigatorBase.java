@@ -3,6 +3,7 @@ package org.genxdm.bridgetest.axes;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import javax.xml.XMLConstants;
 
@@ -56,7 +57,7 @@ public abstract class NodeNavigatorBase<N>
         at = model.getAttribute(el, XMLConstants.NULL_NS_URI, "xmlns");
         assertNull(at); // the xmlns 'attribute' is not an attribute!
         
-        // TODO: maybe test other node types (document, comment, pi, even ns)
+        // Maybe test other node types (document, comment, pi, even ns)
         // to verify that they will not return an attribute when asked?
         // but ... you can't prove a negative, you know. so we should test
         // common error cases; other ones ... not so much.
@@ -102,9 +103,31 @@ public abstract class NodeNavigatorBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
-        // TODO
-        // getfirstchild, getfirstchildelement, getfirstchildelementbyname
-        // laschild
+        
+        doc = model.getFirstChildElement(doc);
+        assertNotNull(doc); // move to document element.
+        
+        N c1 = model.getFirstChild(doc); // a text node.
+        N c2 = model.getFirstChildElement(doc); // the path node
+        N c3 = model.getFirstChildElementByName(doc, XMLConstants.NULL_NS_URI, "target"); // the first target node
+        assertNotNull(c1);
+        assertNotNull(c2);
+        assertNotNull(c3);
+        assertTrue(c1 != c2);
+        assertTrue(c1 != c3);
+        assertTrue(c2 != c3);
+        assertEquals(NodeKind.TEXT, model.getNodeKind(c1));
+        assertEquals(NodeKind.ELEMENT, model.getNodeKind(c2));
+        assertEquals(NodeKind.ELEMENT, model.getNodeKind(c3));
+        
+        c2 = model.getFirstChild(c1);
+        assertNull(c2);
+        
+        c1 = model.getFirstChild(c3);
+        c2 = model.getLastChild(c3);
+        assertNotNull(c1);
+        assertNotNull(c2);
+        assertTrue(c1 != c2);
     }
     
     @Test
@@ -117,9 +140,71 @@ public abstract class NodeNavigatorBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
-        // TODO
-        // getNextSibling, getNextSiblingElement, getNextSiblingElementByName
-        // previousSibling
+        
+        N parent = model.getFirstChildElementByName(model.getFirstChildElement(doc), "http://www.genxdm.org/nonsense", "nstest");
+        assertNotNull(parent);
+        parent = model.getFirstChildElement(parent);
+        N fc = model.getFirstChild(parent);
+        N fce = model.getFirstChildElement(parent);
+        N fcebn = model.getFirstChildElementByName(parent, "http://great.underground.empire/adventure", "magicword");
+        assertNotNull(fc);
+        assertNotNull(fce);
+        assertNotNull(fcebn);
+        assertEquals(NodeKind.TEXT, model.getNodeKind(fc));
+        
+        N walker = model.getNextSibling(fc);
+        assertNotNull(walker);
+        assertEquals(fce, walker);
+        
+        walker = model.getNextSiblingElement(fc);
+        assertNotNull(walker);
+        assertEquals(fce, walker);
+        
+        walker = model.getNextSiblingElementByName(fc, "http://great.underground.empire/adventure", "magicword");
+        assertNotNull(walker);
+        assertEquals(fcebn, walker);
+        
+        walker = model.getNextSibling(walker);
+        assertNotNull(walker);
+        walker = model.getPreviousSibling(walker);
+        assertNotNull(walker);
+        assertEquals(fcebn, walker);
+        
+        walker = model.getNextSibling(walker);
+        assertNotNull(walker);
+        assertEquals(NodeKind.TEXT, model.getNodeKind(walker));
+        walker = model.getNextSibling(walker);
+        assertNotNull(walker);
+        assertEquals(NodeKind.COMMENT, model.getNodeKind(walker));
+        walker = model.getNextSibling(walker);
+        assertNotNull(walker);
+        assertEquals(NodeKind.TEXT, model.getNodeKind(walker));
+        walker = model.getNextSibling(walker);
+        assertNotNull(walker);
+        assertEquals(NodeKind.PROCESSING_INSTRUCTION, model.getNodeKind(walker));
+        
+        fce = model.getAttribute(model.getFirstChildElement(doc), XMLConstants.NULL_NS_URI, "name");
+        assertNotNull(fce);
+        walker = model.getNextSibling(fce);
+        assertNull(walker);
+        walker = model.getPreviousSibling(fce);
+        assertNull(walker);
+
+        // TODO: axiom doesn't like this at all.  i don't know if it's
+        // a problem with the test, or with axiom, and if it's a problem
+        // with axiom, whether it's a problem with the bridge or the underlying
+        // tree model.  in any event, if we ask for the namespace bound to ""
+        // here, we *should* get something different; we don't get anything,
+        // because we're getting a generated prefix (via axis) instead.
+        // So, make a better namespaces test, somewhere.
+//        fce = getNamespaceNode(model, parent, XMLConstants.DEFAULT_NS_PREFIX);
+        // this, on the other hand, works.
+        fce = getNamespaceNode(model, parent, "grue");
+        assertNotNull(fce);
+        walker = model.getNextSibling(fce);
+        assertNull(walker);
+        walker = model.getPreviousSibling(fce);
+        assertNull(walker);
     }
     
     @Test
@@ -169,79 +254,40 @@ public abstract class NodeNavigatorBase<N>
         assertNotNull(p);
         assertEquals(doc, p);
         
-        // TODO: namespace, comment, and processing instruction nodes.
+        el = model.getFirstChildElementByName(model.getFirstChildElement(doc), "http://www.genxdm.org/nonsense", "nstest");
+        assertNotNull(el);
+        el = model.getFirstChildElement(el);
+        assertNotNull(el);
+        n = getNamespaceNode(model, el, "grue");
+        assertNotNull(n);
+        p = model.getParent(n);
+        assertNotNull(p);
+        assertEquals(el, p);
+        p = model.getRoot(n);
+        assertNotNull(p);
+        assertEquals(doc, p);
+        
+        n = model.getFirstChildElementByName(el, "http://great.underground.empire/adventure", "magicword");
+        assertNotNull(n);
+        n = model.getNextSibling(model.getNextSibling(n)); // comment node
+        assertNotNull(n);
+        assertEquals(NodeKind.COMMENT, model.getNodeKind(n));
+        p = model.getParent(n);
+        assertNotNull(p);
+        assertEquals(el, p);
+        p = model.getRoot(n);
+        assertNotNull(p);
+        assertEquals(doc, p);
+        
+        n = model.getNextSibling(model.getNextSibling(n)); // pi
+        assertNotNull(n);
+        assertEquals(NodeKind.PROCESSING_INSTRUCTION, model.getNodeKind(n));
+        p = model.getParent(n);
+        assertNotNull(p);
+        assertEquals(el, p);
+        p = model.getRoot(n);
+        assertNotNull(p);
+        assertEquals(doc, p);
     }
     
-//    /**
-//     * Returns the first child node of the node provided.
-//     * 
-//     * @param node
-//     *            The node for which the first child node is required.
-//     */
-//    N getFirstChild(N origin);
-//
-//    /**
-//     * Returns the first element along the child axis.
-//     * 
-//     * @param node
-//     *            The parent node that owns the child axis.
-//     */
-//    N getFirstChildElement(N node);
-//
-//    /**
-//     * Returns the first child element along the child axis whose name matches the arguments supplied.
-//     * 
-//     * @param node
-//     *            The parent node that owns the child axis.
-//     * @param namespaceURI
-//     *            The namespace-uri to be matched.
-//     * @param localName
-//     *            The local-name to be matched.
-//     */
-//    N getFirstChildElementByName(N node, String namespaceURI, String localName);
-//
-//    /**
-//     * Returns the last child node of the node provided.
-//     * 
-//     * @param node
-//     *            The node for which the last child node is required.
-//     */
-//    N getLastChild(N node);
-//
-//    /**
-//     * Returns the next sibling node of the node provided.
-//     * 
-//     * @param node
-//     *            The node for which the next sibling node is required.
-//     */
-//    N getNextSibling(N node);
-//
-//    /**
-//     * Returns the next element along the child axis.
-//     * 
-//     * @param node
-//     *            The node for which the next sibling node is required.
-//     */
-//    N getNextSiblingElement(N node);
-//
-//    /**
-//     * Returns the next element along the following-sibling axis whose name matches the arguments supplied.
-//     * 
-//     * @param node
-//     *            The node for which the next sibling node is required.
-//     * @param namespaceURI
-//     *            The namespace-uri to be matched.
-//     * @param localName
-//     *            The local-name to be matched.
-//     */
-//    N getNextSiblingElementByName(N node, String namespaceURI, String localName);
-//
-//    /**
-//     * Returns the previous sibling node of the node provided.
-//     * 
-//     * @param node
-//     *            The node for which the previous sibling node is required.
-//     */
-//    N getPreviousSibling(N node);
-//
 }
