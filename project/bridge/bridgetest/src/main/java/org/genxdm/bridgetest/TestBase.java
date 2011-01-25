@@ -89,7 +89,6 @@ abstract public class TestBase<N>
 /* create this ant buildfile.  note the pain of programmatic creation. *sigh*
 At the end of the file is something that *isn't* valid ant, but that does have
 a lot of interesting namespace fun.  It's also got the text nodes.
-We could use comments and PIs, though.
 
 <?xml version="1.0"?>
 <project name="Hello" default="compile">
@@ -124,6 +123,8 @@ We could use comments and PIs, though.
         <gue:zork xmlns="http://great.underground.empire/adventure" xmlns:grue="http://great.underground.empire/adventure/eaten">
             <grue:light>It is dark.  You might be eaten by a grue.</grue:light>
             <magicword word="xyzzy">Nothing happens.</magicword>
+            <!-- this is a comment node, with text siblings -->
+            <?magicword plugh?>
         </gue:zork>
     </nstest>
 </project>
@@ -246,6 +247,10 @@ We could use comments and PIs, though.
         builder.attribute(XMLConstants.NULL_NS_URI, "word", XMLConstants.DEFAULT_NS_PREFIX, "xyzzy", DtdAttributeKind.CDATA);
         builder.text("Nothing happens.");
         builder.endElement(); // magicword
+        builder.text(retTab + tab + tab);
+        builder.comment("this is a comment node, with text siblings");
+        builder.text(retTab + tab + tab);
+        builder.processingInstruction("magicword", "plugh");
         builder.text(retTab + tab);
         builder.endElement(); // gue:zork
         builder.text(retTab);
