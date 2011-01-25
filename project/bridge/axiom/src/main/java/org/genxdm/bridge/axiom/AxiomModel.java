@@ -35,6 +35,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
+import org.genxdm.DtdAttributeKind;
 import org.genxdm.NodeKind;
 import org.genxdm.base.Model;
 import org.genxdm.base.io.ContentHandler;
@@ -1260,11 +1261,107 @@ public class AxiomModel
         return true;
     }
 
+    @SuppressWarnings("rawtypes")
     public void stream(Object node, boolean copyNamespaces, ContentHandler handler)
         throws GxmlException
     {
-        // TODO Auto-generated method stub
-
+        switch (getNodeKind(node))
+        {
+            case ELEMENT:
+                {
+                    OMElement element = AxiomSupport.dynamicDowncastElement(node);
+                    handler.startElement(element.getQName().getNamespaceURI(), element.getQName().getLocalPart(), element.getQName().getPrefix());
+                    try
+                    {
+                        if (hasNamespaces(node))
+                        {
+                            Iterator it = element.getAllDeclaredNamespaces();
+                            while (it.hasNext())
+                            {
+                                stream(it.next(), copyNamespaces, handler);
+                            }
+                        }
+                        if (hasAttributes(node))
+                        {
+                            Iterator it = element.getAllAttributes();
+                            while (it.hasNext())
+                            {
+                                stream(it.next(), copyNamespaces, handler);
+                            }
+                        }
+                        if (hasChildren(node))
+                        {
+                            Iterator it = element.getChildren();
+                            while (it.hasNext())
+                            {
+                                stream(it.next(), copyNamespaces, handler);
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        handler.endElement();
+                    }
+                }
+                break;
+            case ATTRIBUTE:
+                {
+                    OMAttribute attribute = AxiomSupport.dynamicDowncastAttribute(node);
+                    final String prefix = copyNamespaces ?  attribute.getQName().getPrefix() : "";
+                    handler.attribute(attribute.getQName().getNamespaceURI(), attribute.getQName().getLocalPart(), prefix, attribute.getAttributeValue(), DtdAttributeKind.get(attribute.getAttributeType()));
+                }
+                break;
+                case TEXT:
+                {
+                    OMText text = AxiomSupport.dynamicDowncastText(node);
+                    handler.text(text.getText());
+                }
+                break;
+                case DOCUMENT:
+                {
+                    OMDocument doc = AxiomSupport.dynamicDowncastDocument(node);
+                    // TODO: i don't think that this is quite right.
+                    handler.startDocument(getDocumentURI(node), null);
+                    try
+                    {
+                        Iterator it = doc.getChildren();
+                        while (it.hasNext())
+                        {
+                            stream(it.next(), copyNamespaces, handler);
+                        }
+                    }
+                    finally
+                    {
+                        handler.endDocument();
+                    }
+                }
+                break;
+            case NAMESPACE:
+                {
+                    if (copyNamespaces)
+                    {
+                        OMNamespace ns = AxiomSupport.dynamicDowncastNamespace(node);
+                        handler.namespace(ns.getPrefix(), ns.getNamespaceURI());
+                    }
+                }
+                break;
+            case COMMENT:
+                {
+                    OMComment comment = AxiomSupport.dynamicDowncastComment(node);
+                    handler.comment(comment.getValue());
+                }
+                break;
+            case PROCESSING_INSTRUCTION:
+                {
+                    OMProcessingInstruction pi = AxiomSupport.dynamicDowncastProcessingInstruction(node);
+                    handler.processingInstruction(pi.getTarget(), pi.getValue());
+                }
+                break;
+            default:
+                {
+                    throw new AssertionError(getNodeKind(node));
+                }
+        }
     }
 
     /**

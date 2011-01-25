@@ -4,7 +4,7 @@ import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.genxdm.bridge.axiom.AxiomProcessingContext;
 import org.genxdm.bridgetest.axes.NodeNavigatorBase;
 
-public class AxisNodeNavigatorTest
+public class AxiomNodeNavigatorTest
     extends NodeNavigatorBase
 {
 
