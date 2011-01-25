@@ -89,6 +89,7 @@ abstract public class TestBase<N>
 /* create this ant buildfile.  note the pain of programmatic creation. *sigh*
 At the end of the file is something that *isn't* valid ant, but that does have
 a lot of interesting namespace fun.  It's also got the text nodes.
+We could use comments and PIs, though.
 
 <?xml version="1.0"?>
 <project name="Hello" default="compile">

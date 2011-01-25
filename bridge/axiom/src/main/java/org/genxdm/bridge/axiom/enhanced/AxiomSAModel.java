@@ -35,11 +35,11 @@ import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
 
 /**
- * Note that some implementations of Axiom implement {@link OMNode} on their document node but don't support the OMNode interface methods. This means that we have to check for a document first in order not to throw unchecked exceptions.
+ * Note that some implementations of Axiom implement {@link OMNode} on their 
+ * document node but don't support the OMNode interface methods. This means 
+ * that we have to check for a document first in order not to throw 
+ * unchecked exceptions.
  * 
- * Bugs in Axiom:
- * 
- * 1) OMNode.getPreviousSibling returns self for comment nodes. 2) OMFactory doesn't create processing instructions.
  */
 final class AxiomSAModel implements TypedModel<Object, XmlAtom>
 {
