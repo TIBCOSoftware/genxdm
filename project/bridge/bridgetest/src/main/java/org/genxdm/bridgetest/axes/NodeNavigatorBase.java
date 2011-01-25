@@ -1,7 +1,12 @@
 package org.genxdm.bridgetest.axes;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
+import javax.xml.XMLConstants;
+
+import org.genxdm.NodeKind;
 import org.genxdm.base.Model;
 import org.genxdm.base.ProcessingContext;
 import org.genxdm.base.io.FragmentBuilder;
@@ -18,11 +23,43 @@ public abstract class NodeNavigatorBase<N>
         ProcessingContext<N> context = newProcessingContext();
         FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
+        // complex test document is an ant build script (mostly).
+        // ant is attribute-heavy.  we're gonna navigate to one
+        // of the few elements that are attribute-free in the
+        // second part of the test, to verify that we can't
+        // get an attribute no matter what we do.
         
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
-        // TODO
+        
+        N el = model.getFirstChildElement(doc); // project element
+        assertNotNull(el);
+        // project element has two attributes: name and default
+        N at = model.getAttribute(el, XMLConstants.NULL_NS_URI, "name");
+        assertNotNull(at);
+        at = model.getAttribute(el, "'", "name");
+        assertNull(at); // no such attribute exists
+        at = model.getAttribute(el, XMLConstants.NULL_NS_URI, "default");
+        assertNotNull(at);
+        N nn = model.getAttribute(at, XMLConstants.NULL_NS_URI, "default");
+        assertNull(nn); // the attribute should not return itself.
+        
+        el = model.getLastChild(el); // a text node?
+        assertEquals(NodeKind.TEXT, model.getNodeKind(el));
+        at = model.getAttribute(el, XMLConstants.NULL_NS_URI, "name");
+        assertNull(at); // text nodes have no attributes.
+        el = model.getPreviousSibling(el); // nstest node
+        assertNotNull(el);
+        at = model.getAttribute(el, XMLConstants.NULL_NS_URI, "name");
+        assertNull(at); // no such attribute
+        at = model.getAttribute(el, XMLConstants.NULL_NS_URI, "xmlns");
+        assertNull(at); // the xmlns 'attribute' is not an attribute!
+        
+        // TODO: maybe test other node types (document, comment, pi, even ns)
+        // to verify that they will not return an attribute when asked?
+        // but ... you can't prove a negative, you know. so we should test
+        // common error cases; other ones ... not so much.
     }
     
     @Test
@@ -35,11 +72,28 @@ public abstract class NodeNavigatorBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
-        // TODO
+        
+        N lc = model.getLastChild(model.getFirstChildElement(doc));
+        assertNotNull(lc); // text node inside closing tag of doc element
+        
+        N el = model.getElementById(doc, "project.class.path");
+        assertNotNull(el);
+        N at = model.getAttribute(el, XMLConstants.NULL_NS_URI, "id");
+        assertNotNull(at);
+        assertEquals("project.class.path", model.getStringValue(at));
+        
+        el = model.getElementById(lc, "project.output");
+        assertNotNull(el);
+        at = model.getAttribute(el, XMLConstants.NULL_NS_URI, "id");
+        assertNotNull(at);
+        assertEquals("project.output", model.getStringValue(at));
+        
+        el = model.getElementById(doc, "this.id.does.not.exist");
+        assertNull(el);
     }
     
     @Test
-    public void firstChildren()
+    public void children()
     {
         ProcessingContext<N> context = newProcessingContext();
         FragmentBuilder<N> builder = context.newFragmentBuilder();
@@ -50,23 +104,11 @@ public abstract class NodeNavigatorBase<N>
         assertNotNull(model);
         // TODO
         // getfirstchild, getfirstchildelement, getfirstchildelementbyname
+        // laschild
     }
     
     @Test
-    public void lastChildren()
-    {
-        ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
-        N doc = createComplexTestDocument(builder);
-        
-        assertNotNull(doc);
-        Model<N> model = context.getModel();
-        assertNotNull(model);
-        // TODO
-    }
-    
-    @Test
-    public void nextSiblings()
+    public void siblings()
     {
         ProcessingContext<N> context = newProcessingContext();
         FragmentBuilder<N> builder = context.newFragmentBuilder();
@@ -77,19 +119,7 @@ public abstract class NodeNavigatorBase<N>
         assertNotNull(model);
         // TODO
         // getNextSibling, getNextSiblingElement, getNextSiblingElementByName
-    }
-    
-    @Test
-    public void previousSiblings()
-    {
-        ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
-        N doc = createComplexTestDocument(builder);
-        
-        assertNotNull(doc);
-        Model<N> model = context.getModel();
-        assertNotNull(model);
-        // TODO
+        // previousSibling
     }
     
     @Test
@@ -102,33 +132,46 @@ public abstract class NodeNavigatorBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
-        // TODO
-        // getParent, getRoot
+        
+        // document node
+        N p = model.getParent(doc);
+        assertNull(p); // doc has no parent.
+        p = model.getRoot(doc);
+        assertNotNull(p);
+        assertEquals(doc, p);
+        
+        // element node
+        N el = model.getFirstChildElement(model.getFirstChildElement(doc));
+        assertNotNull(el);
+        p = model.getParent(el);
+        assertNotNull(p);
+        p = model.getRoot(el);
+        assertNotNull(p);
+        assertEquals(doc, p);
+        
+        // attribute node
+        N n = model.getAttribute(el, XMLConstants.NULL_NS_URI, "id");
+        p = model.getParent(n);
+        assertNotNull(p);
+        assertEquals(el, p);
+        p = model.getRoot(n);
+        assertNotNull(p);
+        assertEquals(doc, p);
+        
+        // text node
+        n = model.getFirstChild(el);
+        assertNotNull(n);
+        assertEquals(NodeKind.TEXT, model.getNodeKind(n));
+        p = model.getParent(n);
+        assertNotNull(p);
+        assertEquals(el, p);
+        p = model.getRoot(n);
+        assertNotNull(p);
+        assertEquals(doc, p);
+        
+        // TODO: namespace, comment, and processing instruction nodes.
     }
     
-//    /**
-//     * Returns the attribute node with the specified expanded-QName.
-//     * 
-//     * @param node
-//     *            The node that is the parent of the attribute node.
-//     * @param namespaceURI
-//     *            The namespace-uri part of the attribute name.
-//     * @param localName
-//     *            The local-name part of the attribute name.
-//     */
-//    N getAttribute(N node, String namespaceURI, String localName);
-//    
-//    /**
-//     * Return the element that has the specified ID
-//     * 
-//     * @param context   Any node from document for which the ID lookup is being done.
-//     * @param id        The id being searched for
-//     * 
-//     * @return the element node (in the same document as the context node)
-//     * that has the specified ID, or <code>null</code> if no such element exists.
-//     */
-//    N getElementById(N context, String id);
-//
 //    /**
 //     * Returns the first child node of the node provided.
 //     * 
@@ -194,19 +237,6 @@ public abstract class NodeNavigatorBase<N>
 //    N getNextSiblingElementByName(N node, String namespaceURI, String localName);
 //
 //    /**
-//     * Returns the parent node of the node provided. <br/>
-//     * May return <code>null</code> for top-most or orphaned nodes. <br/>
-//     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-parent">
-//     * dm:parent</a> accessor in the XDM.
-//     * 
-//     * @param node
-//     *            The node for which the parent is required.
-//     *            
-//     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-parent
-//     */
-//    N getParent(N origin);
-//
-//    /**
 //     * Returns the previous sibling node of the node provided.
 //     * 
 //     * @param node
@@ -214,11 +244,4 @@ public abstract class NodeNavigatorBase<N>
 //     */
 //    N getPreviousSibling(N node);
 //
-//    /**
-//     * Returns the identity of the top-most node along the ancestor-or-self axis from this node.
-//     * 
-//     * @param node
-//     *            The node from which to begin the search for the top-most node.
-//     */
-//    N getRoot(N node);
 }

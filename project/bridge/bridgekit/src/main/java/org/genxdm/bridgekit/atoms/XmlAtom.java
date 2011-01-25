@@ -17,10 +17,9 @@ package org.genxdm.bridgekit.atoms;
 
 import java.util.List;
 
-import org.genxdm.bridgekit.XmlItem;
 import org.genxdm.xs.types.NativeType;
 
-public interface XmlAtom extends XmlItem, List<XmlAtom>
+public interface XmlAtom extends List<XmlAtom>
 {
 	String getC14NForm();
 
