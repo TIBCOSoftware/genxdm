@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.typed.types;
+package org.genxdm.typed.variant;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -29,100 +29,98 @@ import java.util.List;
  *            The node handle parameter.
  * @param <A>
  *            The atom handle parameter.
- * @param <X>
- *            The variant data model representation handle.
  */
-public interface VariantBridge<N, A, X>
+public interface VariantBridge<N, A>
 {
 	/**
 	 * Converts an atomic value to a variant value (X).
 	 */
-	X atom(A atom);
+	XmlVariant atom(A atom);
 
 	/**
 	 * Converts a list of atomic values to a variant value (X).
 	 */
-	X atomSet(List<? extends A> atoms);
+	XmlVariant atomSet(List<? extends A> atoms);
 
 	/**
 	 * Converts the Java primitive for xs:boolean to a variant value (X).
 	 */
-	X booleanValue(Boolean booval);
+	XmlVariant booleanValue(Boolean booval);
 
 	/**
 	 * Converts the Java primitive for xs:decimal to a variant value (X).
 	 */
-	X decimalValue(BigDecimal decval);
+	XmlVariant decimalValue(BigDecimal decval);
 
 	/**
 	 * Converts the Java primitive for xs:double to a variant value (X).
 	 */
-	X doubleValue(Double dblval);
+	XmlVariant doubleValue(Double dblval);
 
 	/**
 	 * Returns the variant value representation for the empty-sequence.
 	 */
-	X empty();
+	XmlVariant empty();
 
 	/**
 	 * Converts a variant value (X) known to be {@link VariantKind#ATOM} to an atom.
 	 */
-	A getAtom(X value);
+	A getAtom(XmlVariant value);
 
 	/**
 	 * Converts a variant value (X) known to be {@link VariantKind#ATOMS} to a list of atoms.
 	 */
-	List<A> getAtomSet(X value);
+	List<A> getAtomSet(XmlVariant value);
 
 	/**
 	 * Converts a variant value (X) known to be {@link VariantKind#BOOLEAN} to a {@link Boolean}.
 	 */
-	Boolean getBoolean(X value);
+	Boolean getBoolean(XmlVariant value);
 
 	/**
 	 * Converts a variant value (X) known to be {@link VariantKind#DECIMAL} to a {@link BigDecimal}.
 	 */
-	BigDecimal getDecimal(X value);
+	BigDecimal getDecimal(XmlVariant value);
 
 	/**
 	 * Converts a variant value (X) known to be {@link VariantKind#DOUBLE} to a {@link Double}.
 	 */
-	Double getDouble(X value);
+	Double getDouble(XmlVariant value);
 
 	/**
 	 * Converts a variant value (X) known to be {@link VariantKind#INTEGER} to a {@link BigInteger}.
 	 */
-	BigInteger getInteger(X value);
+	BigInteger getInteger(XmlVariant value);
 
 	/**
 	 * Converts a variant value (X) known to be {@link VariantKind#ITEM} to an item handle.
 	 */
-	Object getItem(X value);
+	Object getItem(XmlVariant value);
 
 	/**
 	 * Converts a variant value (X) known to be {@link VariantKind#ITEMS} to a list of item handles.
 	 */
-	Iterable<Object> getItemSet(X value);
+	Iterable<Object> getItemSet(XmlVariant value);
 
 	/**
 	 * Returns an enumeration representing the nature of a variant value allowing it to be correctly converted back to (I,N,A) representation.
 	 */
-	VariantKind getNature(X value);
+	VariantKind getNature(XmlVariant value);
 
 	/**
 	 * Converts a variant value (X) know to be {@link VariantKind#NODE} to a node handle.
 	 */
-	N getNode(X value);
+	N getNode(XmlVariant value);
 
 	/**
 	 * Converts a variant value (X) know to be {@link VariantKind#NODES} to a list of node handles.
 	 */
-	Iterable<N> getNodeSet(X value);
+	Iterable<N> getNodeSet(XmlVariant value);
 
 	/**
 	 * Converts a variant value (X) know to be {@link VariantKind#STRING} to a {@link String}.
 	 */
-	String getString(X value);
+	String getString(XmlVariant value);
 
 	/**
 	 * Converts the Java object for xs:integer to a variant value (X).
@@ -130,27 +128,27 @@ public interface VariantBridge<N, A, X>
 	 * A <code>null</code> {@link BigInteger} value will be converted to an empty sequence.
 	 * <p>
 	 */
-	X integerValue(BigInteger intval);
+	XmlVariant integerValue(BigInteger intval);
 
 	/**
 	 * Converts an item handle into a variant value (X).
 	 */
-	X item(Object item);
+	XmlVariant item(Object item);
 
 	/**
 	 * Converts a list of item handles to a variant value (X).
 	 */
-	X itemSet(Iterable<Object> items);
+	XmlVariant itemSet(Iterable<Object> items);
 
 	/**
 	 * Converts a node handle into a variant value (X).
 	 */
-	X node(N node);
+	XmlVariant node(N node);
 
 	/**
 	 * Converts a list of node handles to a variant value (X).
 	 */
-	X nodeSet(Iterable<? extends N> nodes);
+	XmlVariant nodeSet(Iterable<? extends N> nodes);
 
 	/**
 	 * Converts the Java object for xs:string to a variant value (X).
@@ -158,7 +156,7 @@ public interface VariantBridge<N, A, X>
 	 * A <code>null</code> {@link String} value will be converted to an empty sequence.
 	 * <p>
 	 */
-	X stringValue(String strval);
+	XmlVariant stringValue(String strval);
 
 	/**
 	 * Allocates an empty array of variant values (X).
@@ -166,5 +164,5 @@ public interface VariantBridge<N, A, X>
 	 * @param size
 	 *            The size of the array of values.
 	 */
-	X[] valueArray(int size);
+	XmlVariant[] valueArray(int size);
 }

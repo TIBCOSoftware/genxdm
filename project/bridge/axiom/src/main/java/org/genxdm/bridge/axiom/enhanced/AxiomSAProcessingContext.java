@@ -36,6 +36,7 @@ import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
+import org.genxdm.typed.variant.VariantBridge;
 import org.genxdm.xs.SchemaTypeBridge;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
@@ -301,6 +302,12 @@ public final class AxiomSAProcessingContext
 	public Type<XmlAtom> getTypeDefinition(final NativeType nativeType)
 	{
 		return cache.getTypeDefinition(nativeType);
+	}
+	
+	public VariantBridge<Object, XmlAtom> getVariantBridge()
+	{
+	    // TODO
+	    return null;
 	}
 
 	public boolean hasAttribute(QName name)

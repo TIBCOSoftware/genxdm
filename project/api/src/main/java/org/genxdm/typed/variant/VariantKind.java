@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.typed.types;
+package org.genxdm.typed.variant;
 
 /**
  * Used to indicate the nature of Data Model sequences.
