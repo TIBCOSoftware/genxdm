@@ -1,11 +1,165 @@
 package org.genxdm.bridgetest.axes;
 
+import static org.junit.Assert.assertNotNull;
+
+import org.genxdm.base.Model;
+import org.genxdm.base.ProcessingContext;
+import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.bridgetest.TestBase;
+import org.junit.Test;
 
 public abstract class AxisNodeNavigatorBase<N>
     extends TestBase<N>
 {
 
+    @Test
+    public void attributes()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        // complex test document is an ant build script (mostly).
+        // ant is attribute-heavy.  we're gonna navigate to one
+        // of the few elements that are attribute-free in the
+        // second part of the test, to verify that we can't
+        // get an attribute no matter what we do.
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+    }
+    
+    @Test
+    public void namespaces()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+    }
+    
+    @Test
+    public void ancestors()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+    }
+    
+    @Test
+    public void descendants()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+    }
+    
+    @Test
+    public void children()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+    }
+    
+    @Test
+    public void childElements()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+    }
+    
+    @Test
+    public void childElementsByName()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+    }
+    
+    @Test
+    public void followingSiblings()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+    }
+    
+    @Test
+    public void precedingSiblings()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+    }
+
+    @Test
+    public void following()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+    }
+    
+    @Test
+    public void preceding()
+    {
+        ProcessingContext<N> context = newProcessingContext();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        N doc = createComplexTestDocument(builder);
+        
+        assertNotNull(doc);
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+        // TODO
+    }
+    
 //    /**
 //     * Returns the nodes along the ancestor axis using the specified node as the origin.
 //     * 
