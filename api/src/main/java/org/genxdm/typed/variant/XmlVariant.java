@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.bridgekit.variant;
+package org.genxdm.typed.variant;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.genxdm.typed.types.VariantKind;
 
 public final class XmlVariant
 {

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * You may obtain XmlAtom copy of the License at
  *
  *    http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -19,71 +19,67 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
-import org.genxdm.typed.types.VariantBridge;
-import org.genxdm.typed.types.VariantKind;
+import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.typed.variant.VariantBridge;
+import org.genxdm.typed.variant.VariantKind;
+import org.genxdm.typed.variant.XmlVariant;
 import org.w3c.dom.Node;
 
-final class DomValueBridge<A> implements VariantBridge<Node, A, Object>
+final class DomValueBridge implements VariantBridge<Node, XmlAtom>
 {
-	public Object atom(final A atom)
+	public XmlVariant atom(final XmlAtom atom)
 	{
 		if (null != atom)
 		{
-			return DomValue.atom(atom);
+			return XmlVariant.atom(atom);
 		}
 		else
 		{
-			return DomValue.empty();
+			return XmlVariant.empty();
 		}
 	}
 
-	public Object atomSet(final List<? extends A> atoms)
+	public XmlVariant atomSet(final List<? extends XmlAtom> atoms)
 	{
-		return DomValue.atomSet(atoms);
+		return XmlVariant.atomSet(atoms);
 	}
 
-	public Object booleanValue(final Boolean booval)
+	public XmlVariant booleanValue(final Boolean booval)
 	{
-		return DomValue.booleanValue(booval);
+		return XmlVariant.booleanValue(booval);
 	}
 
-	public Object decimalValue(final BigDecimal decval)
+	public XmlVariant decimalValue(final BigDecimal decval)
 	{
-		return DomValue.decimalValue(decval);
+		return XmlVariant.decimalValue(decval);
 	}
 
-	public Object doubleValue(final Double dblval)
+	public XmlVariant doubleValue(final Double dblval)
 	{
-		return DomValue.doubleValue(dblval);
+		return XmlVariant.doubleValue(dblval);
 	}
 
-	private DomValue downcast(final Object value)
+	public XmlVariant empty()
 	{
-		return (DomValue)value;
+		return XmlVariant.empty();
 	}
 
-	public Object empty()
+	public XmlAtom getAtom(final XmlVariant value)
 	{
-		return DomValue.empty();
-	}
-
-	@SuppressWarnings("unchecked")
-	public A getAtom(final Object value)
-	{
-		return (A)downcast(value).getObject();
+		return (XmlAtom)value.getObject();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<A> getAtomSet(final Object value)
+	public List<XmlAtom> getAtomSet(final XmlVariant value)
 	{
-		return (List<A>)downcast(value).getObject();
+		return (List<XmlAtom>)value.getObject();
 	}
 
-	public Boolean getBoolean(final Object value)
+	public Boolean getBoolean(final XmlVariant value)
 	{
 		if (null != value)
 		{
-			return (Boolean)downcast(value).getObject();
+			return (Boolean)value.getObject();
 		}
 		else
 		{
@@ -91,53 +87,53 @@ final class DomValueBridge<A> implements VariantBridge<Node, A, Object>
 		}
 	}
 
-	public BigDecimal getDecimal(final Object value)
+	public BigDecimal getDecimal(final XmlVariant value)
 	{
-		return (BigDecimal)downcast(value).getObject();
+		return (BigDecimal)value.getObject();
 	}
 
-	public Double getDouble(final Object value)
+	public Double getDouble(final XmlVariant value)
 	{
-		return (Double)downcast(value).getObject();
+		return (Double)value.getObject();
 	}
 
-	public BigInteger getInteger(Object value)
+	public BigInteger getInteger(XmlVariant value)
 	{
-		return (BigInteger)downcast(value).getObject();
+		return (BigInteger)value.getObject();
 	}
 
-	public Object getItem(final Object value)
+	public Object getItem(final XmlVariant value)
 	{
-		return downcast(value).getObject();
-	}
-
-	@SuppressWarnings("unchecked")
-	public Iterable<Object> getItemSet(final Object value)
-	{
-		return (Iterable<Object>)downcast(value).getObject();
-	}
-
-	public VariantKind getNature(final Object value)
-	{
-		return downcast(value).getNature();
-	}
-
-	public Node getNode(final Object value)
-	{
-		return (Node)downcast(value).getObject();
+		return value.getObject();
 	}
 
 	@SuppressWarnings("unchecked")
-	public Iterable<Node> getNodeSet(final Object value)
+	public Iterable<Object> getItemSet(final XmlVariant value)
 	{
-		return (Iterable<Node>)downcast(value).getObject();
+		return (Iterable<Object>)value.getObject();
 	}
 
-	public String getString(final Object value)
+	public VariantKind getNature(final XmlVariant value)
+	{
+		return value.getNature();
+	}
+
+	public Node getNode(final XmlVariant value)
+	{
+		return (Node)value.getObject();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Iterable<Node> getNodeSet(final XmlVariant value)
+	{
+		return (Iterable<Node>)value.getObject();
+	}
+
+	public String getString(final XmlVariant value)
 	{
 		if (null != value)
 		{
-			return (String)downcast(value).getObject();
+			return (String)value.getObject();
 		}
 		else
 		{
@@ -145,38 +141,38 @@ final class DomValueBridge<A> implements VariantBridge<Node, A, Object>
 		}
 	}
 
-	public Object integerValue(final BigInteger intval)
+	public XmlVariant integerValue(final BigInteger intval)
 	{
-		return DomValue.integerValue(intval);
+		return XmlVariant.integerValue(intval);
 	}
 
-	public Object item(final Object item)
+	public XmlVariant item(final Object item)
 	{
-		return DomValue.item(item);
+		return XmlVariant.item(item);
 	}
 
-	public Object itemSet(final Iterable<Object> items)
+	public XmlVariant itemSet(final Iterable<Object> items)
 	{
-		return DomValue.itemSet(items);
+		return XmlVariant.itemSet(items);
 	}
 
-	public Object node(final Node node)
+	public XmlVariant node(final Node node)
 	{
-		return DomValue.node(node);
+		return XmlVariant.node(node);
 	}
 
-	public Object nodeSet(final Iterable<? extends Node> nodes)
+	public XmlVariant nodeSet(final Iterable<? extends Node> nodes)
 	{
-		return DomValue.nodeSet(nodes);
+		return XmlVariant.nodeSet(nodes);
 	}
 
-	public Object stringValue(final String strval)
+	public XmlVariant stringValue(final String strval)
 	{
-		return DomValue.stringValue(strval);
+		return XmlVariant.stringValue(strval);
 	}
 
-	public Object[] valueArray(final int size)
+	public XmlVariant[] valueArray(final int size)
 	{
-		return new DomValue[size];
+		return new XmlVariant[size];
 	}
 }
