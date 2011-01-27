@@ -19,6 +19,7 @@ import org.genxdm.base.ProcessingContext;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
+import org.genxdm.typed.variant.VariantBridge;
 import org.genxdm.xs.Schema;
 
 /**
@@ -51,6 +52,8 @@ public interface TypedContext<N, A>
 	 * Returns the associated ProcessingContext
 	 */
 	ProcessingContext<N> getProcessingContext();
+	
+	VariantBridge<N, A> getVariantBridge();
 
     /**
      * Determines whether the item is an atom.

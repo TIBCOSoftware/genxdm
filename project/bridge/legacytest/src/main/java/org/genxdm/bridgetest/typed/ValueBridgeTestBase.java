@@ -19,25 +19,26 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.genxdm.bridgetest.GxTestBase;
-import org.genxdm.typed.types.VariantBridge;
-import org.genxdm.typed.types.VariantKind;
+import org.genxdm.typed.variant.VariantBridge;
+import org.genxdm.typed.variant.VariantKind;
+import org.genxdm.typed.variant.XmlVariant;
 
-public abstract class ValueBridgeTestBase<N, A, X> 
+public abstract class ValueBridgeTestBase<N, A> 
     extends GxTestBase<N>
 {
-    abstract public VariantBridge<N, A, X> getVariantBridge();
+    abstract public VariantBridge<N, A> getVariantBridge();
     
 	public void testProlog()
 	{
-		final Set<X> seeds = new HashSet<X>();
+		final Set<XmlVariant> seeds = new HashSet<XmlVariant>();
 
-		final VariantBridge<N, A, X> valueBridge = getVariantBridge();
+		final VariantBridge<N, A> valueBridge = getVariantBridge();
 
 		seeds.add(valueBridge.empty());
 
-		final Set<X> values = computeClosure(seeds, valueBridge);
+		final Set<XmlVariant> values = computeClosure(seeds, valueBridge);
 
-		for (final X value : values)
+		for (final XmlVariant value : values)
 		{
 			System.out.println("value=" + valueBridge.getNature(value).name().toLowerCase() + "('" + valueBridge.getString(stringFunction(value, valueBridge)) + "')");
 		}
@@ -45,9 +46,9 @@ public abstract class ValueBridgeTestBase<N, A, X>
 		assertEquals(12, values.size());
 	}
 
-	private Set<X> computeClosure(final Set<X> seeds, final VariantBridge<N, A, X> valueBridge)
+	private Set<XmlVariant> computeClosure(final Set<XmlVariant> seeds, final VariantBridge<N, A> valueBridge)
 	{
-		final Set<X> values = new HashSet<X>();
+		final Set<XmlVariant> values = new HashSet<XmlVariant>();
 		values.addAll(seeds);
 
 		boolean done = false;
@@ -56,15 +57,15 @@ public abstract class ValueBridgeTestBase<N, A, X>
 		{
 			done = true;
 
-			for (final X value : values)
+			for (final XmlVariant value : values)
 			{
-				final X booval = booleanFunction(value, valueBridge);
+				final XmlVariant booval = booleanFunction(value, valueBridge);
 				if (contains(values, booval, valueBridge))
 				{
-					final X strval = stringFunction(value, valueBridge);
+					final XmlVariant strval = stringFunction(value, valueBridge);
 					if (contains(values, strval, valueBridge))
 					{
-						final X numval = numberFunction(value, valueBridge);
+						final XmlVariant numval = numberFunction(value, valueBridge);
 						if (contains(values, numval, valueBridge))
 						{
 						}
@@ -94,7 +95,7 @@ public abstract class ValueBridgeTestBase<N, A, X>
 		return values;
 	}
 
-	private X booleanFunction(final X value, final VariantBridge<N, A, X> valueBridge)
+	private XmlVariant booleanFunction(final XmlVariant value, final VariantBridge<N, A> valueBridge)
 	{
 		final VariantKind nature = valueBridge.getNature(value);
 		switch (nature)
@@ -130,7 +131,7 @@ public abstract class ValueBridgeTestBase<N, A, X>
 		}
 	}
 
-	private X numberFunction(final X value, final VariantBridge<N, A, X> valueBridge)
+	private XmlVariant numberFunction(final XmlVariant value, final VariantBridge<N, A> valueBridge)
 	{
 		final VariantKind nature = valueBridge.getNature(value);
 		switch (nature)
@@ -158,7 +159,7 @@ public abstract class ValueBridgeTestBase<N, A, X>
 		}
 	}
 
-	private X stringFunction(final X value, final VariantBridge<N, A, X> valueBridge)
+	private XmlVariant stringFunction(final XmlVariant value, final VariantBridge<N, A> valueBridge)
 	{
 		final VariantKind nature = valueBridge.getNature(value);
 		switch (nature)
@@ -187,9 +188,9 @@ public abstract class ValueBridgeTestBase<N, A, X>
 
 	}
 
-	private boolean contains(final Set<X> values, final X value, final VariantBridge<N, A, X> valueBridge)
+	private boolean contains(final Set<XmlVariant> values, final XmlVariant value, final VariantBridge<N, A> valueBridge)
 	{
-		for (final X candidate : values)
+		for (final XmlVariant candidate : values)
 		{
 			if (identical(candidate, value, valueBridge))
 			{
@@ -199,7 +200,7 @@ public abstract class ValueBridgeTestBase<N, A, X>
 		return false;
 	}
 
-	private boolean identical(final X lhs, final X rhs, final VariantBridge<N, A, X> valueBridge)
+	private boolean identical(final XmlVariant lhs, final XmlVariant rhs, final VariantBridge<N, A> valueBridge)
 	{
 		switch (valueBridge.getNature(lhs))
 		{
@@ -267,8 +268,8 @@ public abstract class ValueBridgeTestBase<N, A, X>
 	}
 
 	/*
-	 * private boolean equals(final X lhs, final X rhs, final GxProcessingContext<N, A> pcx) { final
-	 * GxValueBridge<N, A, X> valueBridge = pcx.getValueBridge(); switch (valueBridge.getNature(lhs)) { case EMPTY: {
+	 * private boolean equals(final XmlVariant lhs, final XmlVariant rhs, final GxProcessingContext<N, A> pcx) { final
+	 * GxValueBridge<N, A> valueBridge = pcx.getValueBridge(); switch (valueBridge.getNature(lhs)) { case EMPTY: {
 	 * switch (valueBridge.getNature(rhs)) { case BOOLEAN: { return !valueBridge.getBoolean(rhs); } default: { throw new
 	 * AssertionError(valueBridge.getNature(rhs)); } } } default: { throw new
 	 * AssertionError(valueBridge.getNature(lhs)); } } }
