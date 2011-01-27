@@ -21,11 +21,11 @@ import java.util.List;
 
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.genxdm.bridgekit.variant.XmlVariant;
-import org.genxdm.typed.types.VariantBridge;
-import org.genxdm.typed.types.VariantKind;
+import org.genxdm.typed.variant.VariantBridge;
+import org.genxdm.typed.variant.VariantKind;
+import org.genxdm.typed.variant.XmlVariant;
 
-public final class XmlVariantBridge implements VariantBridge<XmlNode, XmlAtom, XmlVariant>
+public final class XmlVariantBridge implements VariantBridge<XmlNode, XmlAtom>
 {
 	public XmlVariant atom(final XmlAtom atom)
 	{
