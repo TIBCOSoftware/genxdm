@@ -17,7 +17,6 @@ package org.genxdm.bridge.axiom;
 
 import java.net.URI;
 
-import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.genxdm.base.mutable.NodeFactory;
@@ -38,7 +37,6 @@ public class AxiomFactory
 
     public Object createComment(String data)
     {
-        // TODO: null first parameter may not work; it's supposed to be the container
         return omFactory.createOMComment(null, data);
     }
 
@@ -60,7 +58,6 @@ public class AxiomFactory
 
     public Object createProcessingInstruction(String target, String data)
     {
-        // TODO: null first parameter may not work; it's supposed to be the container
         return omFactory.createOMProcessingInstruction(null, target, data);
     }
 
