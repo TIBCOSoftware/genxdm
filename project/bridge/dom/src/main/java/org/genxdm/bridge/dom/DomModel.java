@@ -144,7 +144,10 @@ public class DomModel
                 {
                     for (final Node attribute : getAttributeAxis(scope, false))
                     {
-                        if (attribute.getNamespaceURI().equals(XMLConstants.XML_NS_URI))
+                        String ns = attribute.getNamespaceURI();
+                        if (ns == null)
+                            ns = "";
+                        if (ns.equals(XMLConstants.XML_NS_URI))
                         {
                             // The faux attribute created must be parented by this element.
                             final String localName = getLocalName(attribute);

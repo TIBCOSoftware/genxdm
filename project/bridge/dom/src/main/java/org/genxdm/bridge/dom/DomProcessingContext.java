@@ -94,10 +94,7 @@ public class DomProcessingContext
     {
         PreCondition.assertNotNull(feature, "feature");
         if (feature.startsWith(Feature.PREFIX))
-        {
-            if (!feature.equals(Feature.TYPE_ANNOTATION) && feature.equals(Feature.TYPED_VALUE))
-                return true;
-        }
+            return true;
         return false;
     }
 

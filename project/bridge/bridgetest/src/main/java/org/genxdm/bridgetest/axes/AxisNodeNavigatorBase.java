@@ -1,7 +1,11 @@
 package org.genxdm.bridgetest.axes;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.ArrayList;
+
+import org.genxdm.Feature;
 import org.genxdm.base.Model;
 import org.genxdm.base.ProcessingContext;
 import org.genxdm.base.io.FragmentBuilder;
@@ -16,18 +20,150 @@ public abstract class AxisNodeNavigatorBase<N>
     public void attributes()
     {
         ProcessingContext<N> context = newProcessingContext();
+        
+        boolean doInheritedAttributeTests = context.isSupported(Feature.ATTRIBUTE_AXIS_INHERIT);
+        
         FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
-        // complex test document is an ant build script (mostly).
-        // ant is attribute-heavy.  we're gonna navigate to one
-        // of the few elements that are attribute-free in the
-        // second part of the test, to verify that we can't
-        // get an attribute no matter what we do.
         
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
-        // TODO
+        
+        ArrayList<N> attributes = new ArrayList<N>(); 
+        
+        // document nodes have no attributes, inherited or otherwise
+        Iterable<N> atts = model.getAttributeAxis(doc, false);
+        assertNotNull(atts);
+        iterableToList(attributes, atts);
+        assertEquals(0, attributes.size());
+        
+        if (doInheritedAttributeTests)
+        {
+            atts = model.getAttributeAxis(doc, true);
+            assertNotNull(atts);
+            iterableToList(attributes, atts);
+            assertEquals(0, attributes.size());
+        }
+        
+        // (some) element nodes do have attributes.
+        N de = model.getFirstChildElement(doc);
+        assertNotNull(de);
+        // the document element has three attributes, one of which is xml:lang
+        atts = model.getAttributeAxis(de, false);
+        assertNotNull(atts);
+        iterableToList(attributes, atts);
+        assertEquals(3, attributes.size());
+
+        if (doInheritedAttributeTests)
+        {
+            atts = model.getAttributeAxis(de, true);
+            assertNotNull(atts);
+            iterableToList(attributes, atts);
+            assertEquals(3, attributes.size());
+        }
+        
+        N n = model.getFirstChildElement(de); // path element; 1 attribute
+        assertNotNull(n);
+        atts = model.getAttributeAxis(n, false);
+        assertNotNull(atts);
+        iterableToList(attributes, atts);
+        assertEquals(1, attributes.size());
+        
+        if (doInheritedAttributeTests)
+        {
+            // there are *two* attributes if we inherit.
+            atts = model.getAttributeAxis(n, true);
+            assertNotNull(atts);
+            iterableToList(attributes, atts);
+            assertEquals(2, attributes.size());
+        }
+        
+        n = attributes.get(0); // first attribute
+        atts = model.getAttributeAxis(n, false);
+        assertNotNull(atts);
+        iterableToList(attributes, atts);
+        assertEquals(0, attributes.size()); // attributes ain't got attributes.
+
+        if (doInheritedAttributeTests)
+        {
+            atts = model.getAttributeAxis(n, true);
+            assertNotNull(atts);
+            iterableToList(attributes, atts);
+            assertEquals(0, attributes.size()); // not even inherited ones.
+        }
+
+        // nstest element has no attributes, but does inherit the same as before.
+        n = model.getPreviousSibling(model.getLastChild(de)); // nstest element
+        atts = model.getAttributeAxis(n, false);
+        assertNotNull(atts);
+        iterableToList(attributes, atts);
+        assertEquals(0, attributes.size());
+
+        if (doInheritedAttributeTests)
+        {
+            atts = model.getAttributeAxis(n, true);
+            assertNotNull(atts);
+            iterableToList(attributes, atts);
+            assertEquals(1, attributes.size());
+        }
+        
+        N ns = getNamespaceNode(model, n, "gue");
+        assertNotNull(ns);
+        atts = model.getAttributeAxis(ns, false);
+        assertNotNull(atts);
+        iterableToList(attributes, atts);
+        assertEquals(0, attributes.size()); // namespaces don't got attributes, neither
+
+        if (doInheritedAttributeTests)
+        {
+            atts = model.getAttributeAxis(ns, true);
+            assertNotNull(atts);
+            iterableToList(attributes, atts);
+            assertEquals(0, attributes.size()); // nope, not even inherited ones
+        }
+        
+        n = model.getLastChild(model.getFirstChildElement(n)); // text node: no atts
+        assertNotNull(n);
+        atts = model.getAttributeAxis(n, false);
+        assertNotNull(atts);
+        iterableToList(attributes, atts);
+        assertEquals(0, attributes.size());
+        if (doInheritedAttributeTests)
+        {
+            atts = model.getAttributeAxis(n, true);
+            assertNotNull(atts);
+            iterableToList(attributes, atts);
+            assertEquals(0, attributes.size());
+        }
+        
+        n = model.getPreviousSibling(n); // pi; no atts
+        assertNotNull(n);
+        atts = model.getAttributeAxis(n, false);
+        assertNotNull(atts);
+        iterableToList(attributes, atts);
+        assertEquals(0, attributes.size());
+        if (doInheritedAttributeTests)
+        {
+            atts = model.getAttributeAxis(n, true);
+            assertNotNull(atts);
+            iterableToList(attributes, atts);
+            assertEquals(0, attributes.size());
+        }
+
+        n = model.getPreviousSibling(model.getPreviousSibling(n)); // comment; no atts
+        assertNotNull(n);
+        atts = model.getAttributeAxis(n, false);
+        assertNotNull(atts);
+        iterableToList(attributes, atts);
+        assertEquals(0, attributes.size());
+        if (doInheritedAttributeTests)
+        {
+            atts = model.getAttributeAxis(n, true);
+            assertNotNull(atts);
+            iterableToList(attributes, atts);
+            assertEquals(0, attributes.size());
+        }
     }
     
     @Test
@@ -160,6 +296,13 @@ public abstract class AxisNodeNavigatorBase<N>
         // TODO
     }
     
+    private void iterableToList(ArrayList<N> list, Iterable<N> iterable)
+    {
+        list.clear();
+        for (N n : iterable)
+            list.add(n);
+    }
+    
 //    /**
 //     * Returns the nodes along the ancestor axis using the specified node as the origin.
 //     * 
@@ -175,23 +318,6 @@ public abstract class AxisNodeNavigatorBase<N>
 //     *            The origin node.
 //     */
 //    Iterable<N> getAncestorOrSelfAxis(N node);
-//
-//    /**
-//     * Returns the nodes along the attribute axis using the specified node as the origin.
-//     * 
-//     * <br/>
-//     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-attributes">
-//     * dm:attributes</a> accessor in the XDM.
-//     * 
-//     * @param node
-//     *            The origin node.
-//     * @param inherit
-//     *            Determines whether attributes in the XML namespace will be inherited. The standard value for this
-//     *            parameter is <code>false</code>.
-//     * 
-//     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-attributes
-//     */
-//    Iterable<N> getAttributeAxis(N node, boolean inherit);
 //
 //    /**
 //     * Returns the nodes along the child axis using the specified node as the origin.
