@@ -27,6 +27,7 @@ import java.net.URISyntaxException;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.Feature;
 import org.genxdm.NodeKind;
 import org.genxdm.base.Cursor;
 import org.genxdm.base.ProcessingContext;
@@ -451,11 +452,14 @@ public abstract class InformerBase<N>
         try { docURI = new URI(URI_PREFIX + SIMPLE_DOC); }
         catch (URISyntaxException u) { /* do nothing */ } 
         
+        boolean docUriSupported = context.isSupported(Feature.DOCUMENT_URI);
+        boolean baseUriSupported = context.isSupported(Feature.BASE_URI);
+        
         URI uri = cursor.getDocumentURI();
-        if (uri != null)
+        if (docUriSupported)
         {
             assertEquals(docURI, uri);
-            if (cursor.getBaseURI() != null)
+            if (baseUriSupported)
             {
                 assertEquals(uri, cursor.getBaseURI()); // which means that all three are equal
                 

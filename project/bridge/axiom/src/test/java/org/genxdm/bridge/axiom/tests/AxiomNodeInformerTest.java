@@ -5,7 +5,7 @@ import org.genxdm.bridge.axiom.AxiomProcessingContext;
 import org.genxdm.bridgetest.nodes.NodeInformerBase;
 
 public class AxiomNodeInformerTest
-    extends NodeInformerBase
+    extends NodeInformerBase<Object>
 {
 
     @Override

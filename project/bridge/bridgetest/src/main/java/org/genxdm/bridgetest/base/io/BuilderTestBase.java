@@ -33,7 +33,6 @@ import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.bridgetest.TestBase;
 
 import org.junit.Test;
-import org.junit.Ignore;
 
 // Note: this *also* handles the testing of ContentHandler and NodeSource,
 // since FragmentBuilder is the canonical implementation of both.
