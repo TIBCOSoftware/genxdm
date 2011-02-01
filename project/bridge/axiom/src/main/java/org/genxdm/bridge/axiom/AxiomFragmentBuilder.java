@@ -136,9 +136,12 @@ public class AxiomFragmentBuilder
         {
             final OMElement parent = (OMElement)currentNode;
             if (namespaceURI == null) {
-            	namespaceURI = "";
+            	namespaceURI = XMLConstants.NULL_NS_URI;
             }
-            parent.declareNamespace(namespaceURI, prefix);
+            if (prefix.equals(XMLConstants.DEFAULT_NS_PREFIX))
+                parent.declareDefaultNamespace(namespaceURI);
+            else
+                parent.declareNamespace(namespaceURI, prefix);
         }
         else
         {
