@@ -45,7 +45,7 @@ If you're here, you ought to be able to find the code. :-)
 
 [http://www.genxdm.org/ Website] (Maven-generated)
 
-[http://opensourcegxml.wordpress.com/ Developers' blog] (Wordpress)
+[http://genxdm.wordpress.com/ Developers' blog] (Wordpress)
 
 [http://www.balisage.net/Proceedings/vol5/html/Lewis01/BalisageVol5-Lewis01.html Paper presented at Balisage 2010]
 
