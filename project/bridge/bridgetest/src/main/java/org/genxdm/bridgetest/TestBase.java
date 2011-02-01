@@ -91,7 +91,7 @@ At the end of the file is something that *isn't* valid ant, but that does have
 a lot of interesting namespace fun.  It's also got the text nodes.
 
 <?xml version="1.0"?>
-<project name="Hello" default="compile">
+<project name="Hello" default="compile" xml:lang="en">
     <path id="project.class.path">
         <pathelement location="lib/" />
         <pathelement path="${java.class.path}" />
@@ -132,6 +132,7 @@ a lot of interesting namespace fun.  It's also got the text nodes.
         builder.startElement(XMLConstants.NULL_NS_URI, "project", XMLConstants.DEFAULT_NS_PREFIX);
         builder.attribute(XMLConstants.NULL_NS_URI, "name", XMLConstants.DEFAULT_NS_PREFIX, "Hello", DtdAttributeKind.CDATA);
         builder.attribute(XMLConstants.NULL_NS_URI, "default", XMLConstants.DEFAULT_NS_PREFIX, "compile", DtdAttributeKind.NMTOKEN);
+        builder.attribute(XMLConstants.XML_NS_URI, "lang", XMLConstants.XML_NS_PREFIX, "en", DtdAttributeKind.NMTOKEN);
         
         builder.text(retTab);
         builder.startElement(XMLConstants.NULL_NS_URI, "path", XMLConstants.DEFAULT_NS_PREFIX);

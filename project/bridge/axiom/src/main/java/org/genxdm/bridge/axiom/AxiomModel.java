@@ -53,6 +53,7 @@ import org.genxdm.bridgekit.axes.IterablePrecedingSiblingAxis;
 import org.genxdm.bridgekit.names.QNameComparator;
 import org.genxdm.bridgekit.tree.Ordering;
 import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NamespaceBinding;
 
 // TODO: from DGH; verify
@@ -69,16 +70,14 @@ public class AxiomModel
 
     public Iterable<Object> getAncestorAxis(Object node)
     {
-        if (node != null)
-            return new IterableAncestorAxis<Object>(node, this);
-        return null;
+        PreCondition.assertNotNull(node);
+        return new IterableAncestorAxis<Object>(node, this);
     }
 
     public Iterable<Object> getAncestorOrSelfAxis(Object node)
     {
-        if (node != null)
-            return new IterableAncestorOrSelfAxis<Object>(node, this);
-        return null;
+        PreCondition.assertNotNull(node);
+        return new IterableAncestorOrSelfAxis<Object>(node, this);
     }
 
     public OMAttribute getAttribute(final Object parent, final String namespaceURI, final String localName)
@@ -96,32 +95,74 @@ public class AxiomModel
 
     public Iterable<Object> getAttributeAxis(final Object node, final boolean inherit)
     {
+        PreCondition.assertNotNull(node);
         final OMElement element = AxiomSupport.dynamicDowncastElement(node);
         if (element != null)
         {
+            boolean hasLang = false;
+            boolean hasSpace = false;
+            boolean hasBase = false;
+            final ArrayList<Object> attributes = new ArrayList<Object>();
+            @SuppressWarnings("unchecked")
+            final Iterator<OMAttribute> it = element.getAllAttributes();
+            while (it.hasNext())
+            {
+                OMAttribute a = it.next();
+                attributes.add(a);
+                if (inherit)
+                    {
+                    QName n = a.getQName();
+                    if (n.getNamespaceURI().equals(XMLConstants.XML_NS_URI))
+                    {
+                        String l = n.getLocalPart();
+                        if (l.equals("lang"))
+                            hasLang = true;
+                        else if (l.equals("space"))
+                            hasSpace = true;
+                        else if (l.equals("base"))
+                            hasBase = true;
+                    }
+                }
+            }
             if (inherit)
             {
-                // TODO Auto-generated method stub
-                // implementing this means we have to include the inherited (scoped)
-                // attributes, of various and nauseating characteristics.
-                throw new AssertionError("TODO: getAttributeAxis(" + node + "," + inherit + ")");
+                OMContainer parent = element;
+                do {
+                    parent = getParent(parent);
+                    if ( (parent != null) && (parent instanceof OMElement) )
+                    {
+                        Iterable<Object> parentAtts = getAttributeAxis(parent, false);
+                        for (Object o : parentAtts)
+                        {
+                            OMAttribute a = AxiomSupport.dynamicDowncastAttribute(o);
+                            QName aName = a.getQName();
+                            if (aName.getNamespaceURI().equals(XMLConstants.XML_NS_URI))
+                            {
+                                // TODO: should these be new faux attributes?
+                                String n = aName.getLocalPart();
+                                if (n.equals("lang") && !hasLang)
+                                {
+                                    attributes.add(a);
+                                    hasLang = true;
+                                }
+                                else if (n.equals("space") && !hasSpace)
+                                {
+                                    attributes.add(a);
+                                    hasSpace = true;
+                                }
+                                else if (n.equals("base") && !hasBase)
+                                {
+                                    attributes.add(a);
+                                    hasBase = true;
+                                }
+                            }
+                        }
+                    }
+                } while (parent != null);
             }
-            else
-            {
-                final ArrayList<Object> attributes = new ArrayList<Object>();
-                @SuppressWarnings("unchecked")
-                final Iterator<OMAttribute> it = element.getAllAttributes();
-                while (it.hasNext())
-                {
-                    attributes.add(it.next());
-                }
-                return attributes;
-            }
+            return attributes; // enhanced with scoped atts if inherit == true, otherwise not
         }
-        else
-        {
-            return Collections.emptyList();
-        }
+        return Collections.emptyList();
     }
 
     public Iterable<QName> getAttributeNames(final Object node, final boolean orderCanonical)
