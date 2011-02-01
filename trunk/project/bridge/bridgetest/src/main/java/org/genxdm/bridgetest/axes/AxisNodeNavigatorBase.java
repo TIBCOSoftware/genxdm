@@ -170,13 +170,18 @@ public abstract class AxisNodeNavigatorBase<N>
     public void namespaces()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
-        N doc = createComplexTestDocument(builder);
-        
-        assertNotNull(doc);
-        Model<N> model = context.getModel();
-        assertNotNull(model);
-        // TODO
+        if (context.isSupported(Feature.NAMESPACE_AXIS))
+        {
+            FragmentBuilder<N> builder = context.newFragmentBuilder();
+            N doc = createComplexTestDocument(builder);
+            
+            assertNotNull(doc);
+            Model<N> model = context.getModel();
+            assertNotNull(model);
+
+            // TODO: doc, doc element (inherited only).
+            // nstest element and its children.
+        }
     }
     
     @Test
@@ -385,27 +390,6 @@ public abstract class AxisNodeNavigatorBase<N>
 //     *            The origin node.
 //     */
 //    Iterable<N> getFollowingSiblingAxis(N node);
-//
-//    /**
-//     * Returns the nodes along the namespace axis using the specified node as the origin.
-//     * 
-//     * <p>
-//     * The namespace axis contains the namespace nodes of the context node; the axis will be empty unless the context
-//     * node is an element.
-//     * </p>
-//     * 
-//     * <p>Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-nodes">
-//     * dm:namespace-nodes</a> of XDM.</p>
-//     * 
-//     * @param node
-//     *            The origin node.
-//     * @param inherit
-//     *            Determines whether in-scope prefix mappings will be included in the result. The standard setting for
-//     *            this parameter is <code>true</code>.
-//     * 
-//     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-nodes
-//     */
-//    Iterable<N> getNamespaceAxis(N node, boolean inherit);
 //
 //    /**
 //     * Returns the nodes along the preceding axis using the specified node as the origin.

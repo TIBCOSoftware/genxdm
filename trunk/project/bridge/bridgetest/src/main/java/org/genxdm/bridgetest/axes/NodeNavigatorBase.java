@@ -190,16 +190,9 @@ public abstract class NodeNavigatorBase<N>
         walker = model.getPreviousSibling(fce);
         assertNull(walker);
 
-        // TODO: axiom doesn't like this at all.  i don't know if it's
-        // a problem with the test, or with axiom, and if it's a problem
-        // with axiom, whether it's a problem with the bridge or the underlying
-        // tree model.  in any event, if we ask for the namespace bound to ""
-        // here, we *should* get something different; we don't get anything,
-        // because we're getting a generated prefix (via axis) instead.
-        // So, make a better namespaces test, somewhere.
-//        fce = getNamespaceNode(model, parent, XMLConstants.DEFAULT_NS_PREFIX);
-        // this, on the other hand, works.
-        fce = getNamespaceNode(model, parent, "grue");
+        // note that this is a redeclaration of the default namespace.
+        // a bridge that chokes on this has some serious namespace issues.
+        fce = getNamespaceNode(model, parent, XMLConstants.DEFAULT_NS_PREFIX);
         assertNotNull(fce);
         walker = model.getNextSibling(fce);
         assertNull(walker);
