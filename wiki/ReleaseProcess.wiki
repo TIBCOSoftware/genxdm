@@ -1,4 +1,5 @@
 #summary Steps to create a release.
+#sidebar TableOfContents
 
 = Introduction =
 

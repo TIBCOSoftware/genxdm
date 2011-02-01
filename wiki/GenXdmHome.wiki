@@ -8,11 +8,6 @@ copy and paste from old site
 
 todo: make it more reasonably comprehensive
 
-todo: make it appear as the default front page of the wiki tab
-
-todo: add links
-
-todo: link to external hosted site (or decide not to worry about it, and just use the wiki)
 </wiki:comment>
 
 GenXDM enables applications to write code that uses and manipulates XML trees
@@ -34,8 +29,6 @@ Project owners:
  * Joe Baysdon
  * Eric Johnson
  * Amelia Lewis
-
-You can contact one of the above to be added to one of the below:
 
 Committers:
 
