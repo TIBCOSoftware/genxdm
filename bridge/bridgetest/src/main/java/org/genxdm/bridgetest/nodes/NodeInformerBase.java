@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.Feature;
 import org.genxdm.NodeKind;
 import org.genxdm.base.Model;
 import org.genxdm.base.ProcessingContext;
@@ -396,12 +397,6 @@ public abstract class NodeInformerBase<N>
     @Test
     public void uris()
     {
-        // TODO: this is a terrible solution.  We have methods that
-        // optionally return information or not; there's no telling
-        // whether null is returned because the bridge is incapable,
-        // or because the information never existed.  See issue 40.
-        // the implication is that some nodes might return information,
-        // while other nodes do not.
         ProcessingContext<N> context = newProcessingContext();
         FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createSimpleAllKindsDocument(builder);
@@ -411,13 +406,16 @@ public abstract class NodeInformerBase<N>
         assertNotNull(model);
         URI docURI = null;
         try { docURI = new URI(URI_PREFIX + SIMPLE_DOC); }
-        catch (URISyntaxException u) { /* do nothing */ } 
+        catch (URISyntaxException u) { /* do nothing */ }
+        
+        boolean docUriSupported = context.isSupported(Feature.DOCUMENT_URI);
+        boolean baseUriSupported = context.isSupported(Feature.BASE_URI);
         
         URI uri = model.getDocumentURI(doc);
-        if (uri != null)
+        if (docUriSupported)
         {
             assertEquals(docURI, uri);
-            if (model.getBaseURI(doc) != null)
+            if (baseUriSupported)
             {
                 assertEquals(uri, model.getBaseURI(doc)); // which means that all three are equal
                 

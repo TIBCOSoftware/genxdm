@@ -5,7 +5,7 @@ import org.genxdm.bridge.axiom.AxiomProcessingContext;
 import org.genxdm.bridgetest.axes.NodeNavigatorBase;
 
 public class AxiomNodeNavigatorTest
-    extends NodeNavigatorBase
+    extends NodeNavigatorBase<Object>
 {
 
     @Override
