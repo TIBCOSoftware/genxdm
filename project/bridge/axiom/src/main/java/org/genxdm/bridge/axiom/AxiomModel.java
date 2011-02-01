@@ -380,6 +380,7 @@ public class AxiomModel
 
     public Iterable<Object> getNamespaceAxis(final Object node, final boolean inherit)
     {
+        PreCondition.assertNotNull(node);
         final OMElement origin = AxiomSupport.dynamicDowncastElement(node);
         if (origin != null)
         {
