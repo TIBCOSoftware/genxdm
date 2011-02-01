@@ -18,21 +18,29 @@ package org.genxdm;
 public interface Feature
 {
     static final String PREFIX = "http://genxdm.org/features/";
-    
-    // TODO: are these reasonable?  If they're in use, then they
-    // should be referenced at the point that the unsupported feature
-    // provides a different-than-usual return or behavior.
+
+    // return true if the three attributes xml:space, xml:lang, and xml:base are supported as scoped attributes
 	static final String ATTRIBUTE_AXIS_INHERIT = PREFIX + "axis/attribute/inherit";
+	// return true if there is an N representing namespace nodes.
     static final String NAMESPACE_AXIS = PREFIX + "axis/namespace";
 
+    // return true if the document uri is preserved
     static final String DOCUMENT_URI = PREFIX + "uri/document";
+    // return true if xml:base is supported
     static final String BASE_URI = PREFIX + "uri/base";
 	
-    static final String TYPE_ANNOTATION = PREFIX + "type/annotation";
-	static final String TYPED_VALUE = PREFIX + "type/typed-value";
-	
+    // return true if there is a mutable extension for this bridge.
+    // getMutableContext must return non-null
 	static final String MUTABILITY = PREFIX + "mutable";
+	// return true if there is a typed extension for this bridge.
+	// getTypedContext must return non-null.
 	static final String TYPED = PREFIX + "type";
+	// these are not used; they basically describe whether type names
+	// and typed values are returned by the typed api.  we will decide
+	// whether to keep them later.
+//    static final String TYPE_ANNOTATION = PREFIX + "type/annotation";
+//    static final String TYPED_VALUE = PREFIX + "type/typed-value";
+    
 
 	static final String UNSUPPORTED_MESSAGE = "Feature is not supported";
 }
