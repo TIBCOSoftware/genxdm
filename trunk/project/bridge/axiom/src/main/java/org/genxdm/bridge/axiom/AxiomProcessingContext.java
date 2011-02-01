@@ -133,6 +133,7 @@ public class AxiomProcessingContext
             if (!feature.equals(Feature.TYPE_ANNOTATION) &&
                 !feature.equals(Feature.TYPED_VALUE) &&
                 !feature.equals(Feature.DOCUMENT_URI) &&
+                !feature.equals(Feature.BASE_URI) &&
                 !feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT) &&
                 !feature.equals(Feature.TYPED) &&
                 !feature.equals(Feature.MUTABILITY) )
