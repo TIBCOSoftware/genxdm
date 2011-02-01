@@ -128,16 +128,18 @@ public class AxiomProcessingContext
         PreCondition.assertNotNull(feature, "feature");
         if (feature.startsWith(Feature.PREFIX))
         {
-            // at the moment, none of the following are supported.
-            // we need to know what "supported" means.
-            if (!feature.equals(Feature.TYPE_ANNOTATION) &&
-                !feature.equals(Feature.TYPED_VALUE) &&
-                !feature.equals(Feature.DOCUMENT_URI) &&
-                !feature.equals(Feature.BASE_URI) &&
-                !feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT) &&
-                !feature.equals(Feature.TYPED) &&
-                !feature.equals(Feature.MUTABILITY) )
+            if (feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT) ||
+                feature.equals(Feature.NAMESPACE_AXIS) )
                 return true;
+            // Axiom does not support document uri retrieval or xml:base.
+            if (feature.equals(Feature.DOCUMENT_URI) ||
+                feature.equals(Feature.BASE_URI) )
+                return false;
+            // at the moment, neither of the following are supported.
+            // however, they will be.
+            if (feature.equals(Feature.TYPED) &&
+                feature.equals(Feature.MUTABILITY) )
+                return false;
         }
         return false;
     }
