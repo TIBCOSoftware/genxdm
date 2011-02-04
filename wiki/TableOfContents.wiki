@@ -1,10 +1,11 @@
 #summary The preferred sidebar
 
- * [GenXdmHome GenXDM Open Source Wiki Home]
+ * [GenXdmHome GenXDM Wiki Home]
  * Information
    * [GenXSpecs Supported Specifications]
    * (In process) Introduction to the API
  * [GenXdmProposal GenXDM Overview (from Apache Proposal)]
  * Administrative
    * [ReleaseProcess The Release Process]
+   * [Governance]
    * [Participation Participating] as a contributor or committer
