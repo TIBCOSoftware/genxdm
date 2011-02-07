@@ -38,14 +38,13 @@ import org.junit.Test;
 
 /**
  * Base Test Class for Cursor unit tests for the Informer methods. 
- * @author Ashutosh
  *
  * @param <N> - Generic Node.
  */
 public abstract class InformerBase<N> 
-	extends TestBase<N>
+    extends TestBase<N>
 {
-	
+    
     @Test
     public void nodeKinds()
     {
