@@ -31,12 +31,11 @@ import org.junit.Test;
 
 /**
  * Base Test Class for Cursor unit tests for the Navigation methods. 
- * @author Ashutosh
  *
  * @param <N>
  */
 public abstract class NavigatorBase<N>
-	extends TestBase<N>
+    extends TestBase<N>
 
 {
 
@@ -120,7 +119,7 @@ public abstract class NavigatorBase<N>
         isMoved = cursor.moveToElementById("this.id.does.not.exist");
         assertFalse(isMoved);
     }
-    
+
     @Test
     public void children()
     {
@@ -336,5 +335,4 @@ public abstract class NavigatorBase<N>
         assertEquals(cursor.getNodeId(), cursor2.getNodeId());
     }
 
-    
 }
