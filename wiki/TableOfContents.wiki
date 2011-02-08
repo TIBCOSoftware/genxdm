@@ -3,6 +3,7 @@
  * [GenXdmHome GenXDM Wiki Home]
  * Information
    * [GenXSpecs Supported Specifications]
+   * [CodingConventions Coding Conventions]
    * (In process) Introduction to the API
  * [GenXdmProposal GenXDM Overview (from Apache Proposal)]
  * Administrative
