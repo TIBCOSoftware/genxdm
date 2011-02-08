@@ -1,0 +1,22 @@
+#summary Documents our coding conventions
+#labels Phase-Design
+#sidebar TableOfContents
+
+= Overview =
+
+We don't want to be too religious about our coding conventions, but we do have a few we need to establish.
+
+Like many guidelines, these are very much aspirational, rather than being strictly followed everywhere.
+
+= Additive =
+
+ * Every non-anonymous class has a Javadoc description
+ * Every public method in an interface has Javadoc, and every abstract class method has Javadoc
+ * Every package gets javadoc description
+
+= Conforming =
+ * Use spaces instead of tabs
+
+= Unwanted =
+ * No `@author` tags
+ * No empty `catch` blocks (at least comment why there's no code!)
