@@ -10,9 +10,9 @@ todo: make it more reasonably comprehensive
 
 </wiki:comment>
 
-GenXDM enables applications to write code that uses and manipulates XML trees
-without being tied to a particular XML tree representation like DOM, DOM4J,
-AXIOM, or any other. It also prods developers towards an immutable view of XML
+GenXDM enables applications to write code that uses and manipulates [http://www.w3.org/XML/ XML] trees
+without being tied to a particular XML tree representation like [http://www.w3.org/DOM/ DOM], [http://dom4j.sourceforge.net/ DOM4J],
+[http://ws.apache.org/axiom/ Apache Axiom], or any other. It also prods developers towards an immutable view of XML
 trees, which will make it easier and faster to work with XML across multiple
 cores and multiple processors.
 
@@ -31,10 +31,9 @@ Project owners:
  * Amelia Lewis
 
 Committers:
+ * Ashutosh Bhide
 
 Contributors:
-
- * Ashutosh Bhide
  * Vijay Nalawade
 
 == Resources ==
