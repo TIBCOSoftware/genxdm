@@ -19,8 +19,64 @@ package org.genxdm.axes;
  * Provides the various "axes" by which nodes can be traversed, as defined by
  * XPath 2.0.
  *  
- * @param <N> Corresponds to the base type for all members of the underlying tree API.
  * 
+<!-- cut and paste from the spec, with some ellipses -->
+<ul>
+<li>The child axis contains the children of the context node, which are the nodes returned by 
+the dm:children accessor in the XDM.</li>
+
+<li>the descendant axis is defined as the transitive closure of the child axis; 
+it contains the descendants of the context node (the children, 
+the children of the children, and so on)</li>
+
+<li>the parent axis contains the sequence returned by the dm:parent accessor in 
+the XDM, 
+which returns the parent of the context node, or an empty sequence if the 
+context node has no parent</li>
+
+<li>the ancestor axis is defined as the transitive closure of the parent axis; 
+it contains the ancestors of the context node (the parent, the parent of the parent, 
+and so on)</li>
+
+<li>the following-sibling axis contains the context node's following siblings, 
+those children of the context node's parent that occur after the context node in 
+document order; if the context node is an attribute or namespace node, 
+the following-sibling axis is empty</li>
+
+<li>the preceding-sibling axis contains the context node's preceding siblings, 
+those children of the context node's parent that occur before the context node 
+in document order; if the context node is an attribute or namespace node, the 
+preceding-sibling axis is empty</li>
+
+<li>the following axis contains all nodes that are descendants of the root of the 
+tree in which the context node is found, are not descendants of the context node, 
+and occur after the context node in document order</li>
+
+<li>the preceding axis contains all nodes that are descendants of the root of the tree 
+in which the context node is found, are not ancestors of the context node, 
+and occur before the context node in document order</li>
+
+<li>the attribute axis contains the attributes of the context node, which are the 
+nodes returned by the dm:attributes accessor in 
+the XDM; the axis will be empty 
+unless the context node is an element</li>
+
+<li>the self axis contains just the context node itself</li>
+
+<li>the descendant-or-self axis contains the context node and the descendants of the 
+context node</li>
+
+<li>the ancestor-or-self axis contains the context node and the ancestors of the 
+context node; thus, the ancestor-or-self axis will always include the root node</li>
+
+<li>the namespace axis contains the namespace nodes of the context node, which are the 
+nodes returned by the dm:namespace-nodes accessor in 
+the XDM; this axis is empty 
+unless the context node is an element node.</li>
+
+</ul>
+
+ * @param <N> Corresponds to the base type for all members of the underlying tree API.
  * @see http://www.w3.org/TR/xpath20/#axes
  */
 public interface AxisNodeNavigator<N>
