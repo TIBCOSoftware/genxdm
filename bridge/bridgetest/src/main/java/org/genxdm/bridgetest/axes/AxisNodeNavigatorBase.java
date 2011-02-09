@@ -179,8 +179,8 @@ public abstract class AxisNodeNavigatorBase<N>
             Model<N> model = context.getModel();
             assertNotNull(model);
 
-            // TODO: doc, doc element (inherited only).
-            // nstest element and its children.
+            // TODO: doc, doc element (inherited only). check docelement att
+            // nstest element and its children. namespaces, text, comment, pi
         }
     }
     
@@ -189,11 +189,19 @@ public abstract class AxisNodeNavigatorBase<N>
     {
         ProcessingContext<N> context = newProcessingContext();
         FragmentBuilder<N> builder = context.newFragmentBuilder();
-        N doc = createComplexTestDocument(builder);
+        N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
+        
+        // context is document: no ancestors; self
+        // document element: one ancestor + self
+        // docelement attribute: two ancestors + self
+        // docelement namespace: two ancestors + self
+        // comment: two ancestors + self
+        // text: two ancestores + self
+        // pi: two ancestors + self
         // TODO
     }
     
@@ -208,6 +216,7 @@ public abstract class AxisNodeNavigatorBase<N>
         Model<N> model = context.getModel();
         assertNotNull(model);
         // TODO
+        // no attributes, no namespaces
     }
     
     @Test
@@ -221,6 +230,7 @@ public abstract class AxisNodeNavigatorBase<N>
         Model<N> model = context.getModel();
         assertNotNull(model);
         // TODO
+        // no attributes, no namespaces
     }
     
     @Test
@@ -234,6 +244,8 @@ public abstract class AxisNodeNavigatorBase<N>
         Model<N> model = context.getModel();
         assertNotNull(model);
         // TODO
+        // no attributes, no namespaces
+        // no comments, no text, no pis
     }
     
     @Test
@@ -260,6 +272,7 @@ public abstract class AxisNodeNavigatorBase<N>
         Model<N> model = context.getModel();
         assertNotNull(model);
         // TODO
+        // no attributes, no namespaces
     }
     
     @Test
@@ -273,6 +286,7 @@ public abstract class AxisNodeNavigatorBase<N>
         Model<N> model = context.getModel();
         assertNotNull(model);
         // TODO
+        // no attributes, no namespaces
     }
 
     @Test
@@ -286,6 +300,8 @@ public abstract class AxisNodeNavigatorBase<N>
         Model<N> model = context.getModel();
         assertNotNull(model);
         // TODO
+        // note: no attributes, no namespaces, and no descendants.
+        // all descendants of following siblings and of ancestor's following siblings
     }
     
     @Test
@@ -299,6 +315,8 @@ public abstract class AxisNodeNavigatorBase<N>
         Model<N> model = context.getModel();
         assertNotNull(model);
         // TODO
+        // oh, how fucking weird.  *cannot* include ancestors, but includes
+        // other descendants of the root of the tree that precede this node in doc order 
     }
     
     private void iterableToList(ArrayList<N> list, Iterable<N> iterable)
