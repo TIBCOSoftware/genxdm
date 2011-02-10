@@ -128,12 +128,15 @@ public class AxiomProcessingContext
         PreCondition.assertNotNull(feature, "feature");
         if (feature.startsWith(Feature.PREFIX))
         {
-            if (feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT) ||
-                feature.equals(Feature.NAMESPACE_AXIS) )
+            if (feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT) ) //||
+//                feature.equals(Feature.NAMESPACE_AXIS) )
                 return true;
             // Axiom does not support document uri retrieval or xml:base.
+            // disable namespace axis until we can figure out if we can
+            // make it work; axis doesn't support it, apparently.
             if (feature.equals(Feature.DOCUMENT_URI) ||
-                feature.equals(Feature.BASE_URI) )
+                feature.equals(Feature.BASE_URI) ||
+                feature.equals(Feature.NAMESPACE_AXIS) )
                 return false;
             // at the moment, neither of the following are supported.
             // however, they will be.
