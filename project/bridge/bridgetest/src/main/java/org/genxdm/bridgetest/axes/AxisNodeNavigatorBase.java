@@ -231,18 +231,18 @@ public abstract class AxisNodeNavigatorBase<N>
             iterableToList(namespaces, domains);
             assertEquals(0, domains.size());
             
-//            n = model.getLastChild(e);
-//            e = model.getPreviousSibling(n);
-//            namespaces = model.getNamespaceAxis(e, false);
-//            assertNotNull(namespaces);
-//            iterableToList(namespaces, domains);
+            n = model.getLastChild(e);
+            e = model.getPreviousSibling(n);
+            namespaces = model.getNamespaceAxis(e, false);
+            assertNotNull(namespaces);
+            iterableToList(namespaces, domains);
 //for (N ns : namespaces) { System.out.println(model.getLocalName(ns)); System.out.println(model.getStringValue(ns));}
-//            assertEquals(2, domains.size());
+            assertEquals(2, domains.size());
             
-//            namespaces = model.getNamespaceAxis(e, true);
-//            assertNotNull(namespaces);
-//            iterableToList(namespaces, domains);
-//            assertEquals(3, domains.size());
+            namespaces = model.getNamespaceAxis(e, true);
+            assertNotNull(namespaces);
+            iterableToList(namespaces, domains);
+            assertEquals(3, domains.size());
             
             n = getNamespaceNode(model, e, "gue");
             namespaces = model.getNamespaceAxis(e, false);
