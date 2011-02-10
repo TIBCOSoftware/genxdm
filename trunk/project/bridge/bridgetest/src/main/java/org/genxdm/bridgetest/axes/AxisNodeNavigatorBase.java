@@ -35,14 +35,14 @@ public abstract class AxisNodeNavigatorBase<N>
         // document nodes have no attributes, inherited or otherwise
         Iterable<N> atts = model.getAttributeAxis(doc, false);
         assertNotNull(atts);
-        iterableToList(attributes, atts);
+        iterableToList(atts, attributes);
         assertEquals(0, attributes.size());
         
         if (doInheritedAttributeTests)
         {
             atts = model.getAttributeAxis(doc, true);
             assertNotNull(atts);
-            iterableToList(attributes, atts);
+            iterableToList(atts, attributes);
             assertEquals(0, attributes.size());
         }
         
@@ -52,14 +52,14 @@ public abstract class AxisNodeNavigatorBase<N>
         // the document element has three attributes, one of which is xml:lang
         atts = model.getAttributeAxis(de, false);
         assertNotNull(atts);
-        iterableToList(attributes, atts);
+        iterableToList(atts, attributes);
         assertEquals(3, attributes.size());
 
         if (doInheritedAttributeTests)
         {
             atts = model.getAttributeAxis(de, true);
             assertNotNull(atts);
-            iterableToList(attributes, atts);
+            iterableToList(atts, attributes);
             assertEquals(3, attributes.size());
         }
         
@@ -67,7 +67,7 @@ public abstract class AxisNodeNavigatorBase<N>
         assertNotNull(n);
         atts = model.getAttributeAxis(n, false);
         assertNotNull(atts);
-        iterableToList(attributes, atts);
+        iterableToList(atts, attributes);
         assertEquals(1, attributes.size());
         
         if (doInheritedAttributeTests)
@@ -75,21 +75,21 @@ public abstract class AxisNodeNavigatorBase<N>
             // there are *two* attributes if we inherit.
             atts = model.getAttributeAxis(n, true);
             assertNotNull(atts);
-            iterableToList(attributes, atts);
+            iterableToList(atts, attributes);
             assertEquals(2, attributes.size());
         }
         
         n = attributes.get(0); // first attribute
         atts = model.getAttributeAxis(n, false);
         assertNotNull(atts);
-        iterableToList(attributes, atts);
+        iterableToList(atts, attributes);
         assertEquals(0, attributes.size()); // attributes ain't got attributes.
 
         if (doInheritedAttributeTests)
         {
             atts = model.getAttributeAxis(n, true);
             assertNotNull(atts);
-            iterableToList(attributes, atts);
+            iterableToList(atts, attributes);
             assertEquals(0, attributes.size()); // not even inherited ones.
         }
 
@@ -97,14 +97,14 @@ public abstract class AxisNodeNavigatorBase<N>
         n = model.getPreviousSibling(model.getLastChild(de)); // nstest element
         atts = model.getAttributeAxis(n, false);
         assertNotNull(atts);
-        iterableToList(attributes, atts);
+        iterableToList(atts, attributes);
         assertEquals(0, attributes.size());
 
         if (doInheritedAttributeTests)
         {
             atts = model.getAttributeAxis(n, true);
             assertNotNull(atts);
-            iterableToList(attributes, atts);
+            iterableToList(atts, attributes);
             assertEquals(1, attributes.size());
         }
         
@@ -112,14 +112,14 @@ public abstract class AxisNodeNavigatorBase<N>
         assertNotNull(ns);
         atts = model.getAttributeAxis(ns, false);
         assertNotNull(atts);
-        iterableToList(attributes, atts);
+        iterableToList(atts, attributes);
         assertEquals(0, attributes.size()); // namespaces don't got attributes, neither
 
         if (doInheritedAttributeTests)
         {
             atts = model.getAttributeAxis(ns, true);
             assertNotNull(atts);
-            iterableToList(attributes, atts);
+            iterableToList(atts, attributes);
             assertEquals(0, attributes.size()); // nope, not even inherited ones
         }
         
@@ -127,13 +127,13 @@ public abstract class AxisNodeNavigatorBase<N>
         assertNotNull(n);
         atts = model.getAttributeAxis(n, false);
         assertNotNull(atts);
-        iterableToList(attributes, atts);
+        iterableToList(atts, attributes);
         assertEquals(0, attributes.size());
         if (doInheritedAttributeTests)
         {
             atts = model.getAttributeAxis(n, true);
             assertNotNull(atts);
-            iterableToList(attributes, atts);
+            iterableToList(atts, attributes);
             assertEquals(0, attributes.size());
         }
         
@@ -141,13 +141,13 @@ public abstract class AxisNodeNavigatorBase<N>
         assertNotNull(n);
         atts = model.getAttributeAxis(n, false);
         assertNotNull(atts);
-        iterableToList(attributes, atts);
+        iterableToList(atts, attributes);
         assertEquals(0, attributes.size());
         if (doInheritedAttributeTests)
         {
             atts = model.getAttributeAxis(n, true);
             assertNotNull(atts);
-            iterableToList(attributes, atts);
+            iterableToList(atts, attributes);
             assertEquals(0, attributes.size());
         }
 
@@ -155,13 +155,13 @@ public abstract class AxisNodeNavigatorBase<N>
         assertNotNull(n);
         atts = model.getAttributeAxis(n, false);
         assertNotNull(atts);
-        iterableToList(attributes, atts);
+        iterableToList(atts, attributes);
         assertEquals(0, attributes.size());
         if (doInheritedAttributeTests)
         {
             atts = model.getAttributeAxis(n, true);
             assertNotNull(atts);
-            iterableToList(attributes, atts);
+            iterableToList(atts, attributes);
             assertEquals(0, attributes.size());
         }
     }
@@ -195,14 +195,85 @@ public abstract class AxisNodeNavigatorBase<N>
         Model<N> model = context.getModel();
         assertNotNull(model);
         
-        // context is document: no ancestors; self
-        // document element: one ancestor + self
-        // docelement attribute: two ancestors + self
-        // docelement namespace: two ancestors + self
-        // comment: two ancestors + self
-        // text: two ancestores + self
-        // pi: two ancestors + self
-        // TODO
+        ArrayList<N> olds = new ArrayList<N>();
+        
+        Iterable<N> ancestors = model.getAncestorAxis(doc);
+        assertNotNull(ancestors);
+        iterableToList(ancestors, olds);
+        assertEquals(0, olds.size()); // documents have no ancestors.
+        
+        ancestors = model.getAncestorOrSelfAxis(doc);
+        assertNotNull(ancestors);
+        iterableToList(ancestors, olds);
+        assertEquals(1, olds.size());
+        
+        N de = model.getFirstChildElement(doc);
+        assertNotNull(de);
+        
+        ancestors = model.getAncestorAxis(de);
+        assertNotNull(ancestors);
+        iterableToList(ancestors, olds);
+        assertEquals(1, olds.size());
+        
+        ancestors = model.getAncestorOrSelfAxis(de);
+        assertNotNull(ancestors);
+        iterableToList(ancestors, olds);
+        assertEquals(2, olds.size());
+        
+        N n = model.getAttribute(de, "", "att");
+        ancestors = model.getAncestorAxis(n);
+        assertNotNull(ancestors);
+        iterableToList(ancestors, olds);
+        assertEquals(2, olds.size());
+        
+        ancestors = model.getAncestorOrSelfAxis(n);
+        assertNotNull(ancestors);
+        iterableToList(ancestors, olds);
+        assertEquals(3, olds.size());
+        
+        n = getNamespaceNode(model, de, "ns");
+        ancestors = model.getAncestorAxis(n);
+        assertNotNull(ancestors);
+        iterableToList(ancestors, olds);
+        assertEquals(2, olds.size());
+        
+        ancestors = model.getAncestorOrSelfAxis(n);
+        assertNotNull(ancestors);
+        iterableToList(ancestors, olds);
+        assertEquals(3, olds.size());
+        
+        n = model.getFirstChild(de); //comment
+        ancestors = model.getAncestorAxis(n);
+        assertNotNull(ancestors);
+        iterableToList(ancestors, olds);
+        assertEquals(2, olds.size());
+        
+        ancestors = model.getAncestorOrSelfAxis(n);
+        assertNotNull(ancestors);
+        iterableToList(ancestors, olds);
+        assertEquals(3, olds.size());
+        
+        n = model.getNextSibling(n); // text
+        ancestors = model.getAncestorAxis(n);
+        assertNotNull(ancestors);
+        iterableToList(ancestors, olds);
+        assertEquals(2, olds.size());
+        
+        ancestors = model.getAncestorOrSelfAxis(n);
+        assertNotNull(ancestors);
+        iterableToList(ancestors, olds);
+        assertEquals(3, olds.size());
+        
+        n = model.getNextSibling(n);
+        ancestors = model.getAncestorAxis(n);
+        assertNotNull(ancestors);
+        iterableToList(ancestors, olds);
+        assertEquals(2, olds.size());
+        
+        ancestors = model.getAncestorOrSelfAxis(n);
+        assertNotNull(ancestors);
+        iterableToList(ancestors, olds);
+        assertEquals(3, olds.size());
     }
     
     @Test
@@ -215,6 +286,8 @@ public abstract class AxisNodeNavigatorBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
+        
+        ArrayList<N> spawn = new ArrayList<N>();
         // TODO
         // no attributes, no namespaces
     }
@@ -229,6 +302,8 @@ public abstract class AxisNodeNavigatorBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
+
+        ArrayList<N> spawn = new ArrayList<N>();
         // TODO
         // no attributes, no namespaces
     }
@@ -243,6 +318,8 @@ public abstract class AxisNodeNavigatorBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
+
+        ArrayList<N> spawn = new ArrayList<N>();
         // TODO
         // no attributes, no namespaces
         // no comments, no text, no pis
@@ -258,6 +335,8 @@ public abstract class AxisNodeNavigatorBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
+
+        ArrayList<N> spawn = new ArrayList<N>();
         // TODO
     }
     
@@ -271,6 +350,8 @@ public abstract class AxisNodeNavigatorBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
+        
+        ArrayList<N> pests = new ArrayList<N>();
         // TODO
         // no attributes, no namespaces
     }
@@ -285,6 +366,8 @@ public abstract class AxisNodeNavigatorBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
+        
+        ArrayList<N> elders = new ArrayList<N>();
         // TODO
         // no attributes, no namespaces
     }
@@ -299,6 +382,8 @@ public abstract class AxisNodeNavigatorBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
+        
+        ArrayList<N> sheep = new ArrayList<N>();
         // TODO
         // note: no attributes, no namespaces, and no descendants.
         // all descendants of following siblings and of ancestor's following siblings
@@ -314,12 +399,14 @@ public abstract class AxisNodeNavigatorBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
+        
+        ArrayList<N> cousins = new ArrayList<N>();
         // TODO
         // oh, how fucking weird.  *cannot* include ancestors, but includes
         // other descendants of the root of the tree that precede this node in doc order 
     }
     
-    private void iterableToList(ArrayList<N> list, Iterable<N> iterable)
+    private void iterableToList(Iterable<N> iterable, ArrayList<N> list)
     {
         list.clear();
         for (N n : iterable)
