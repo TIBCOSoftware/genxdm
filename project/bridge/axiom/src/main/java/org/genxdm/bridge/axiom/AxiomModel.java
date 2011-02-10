@@ -539,7 +539,9 @@ public class AxiomModel
                     }
                     else
                     {
-                        namespaces.add(new FauxNamespace(namespace, element));
+                        // ignore the xml namespace
+                        if (!prefix.equals("xml"))
+                            namespaces.add(new FauxNamespace(namespace, element));
                     }
                 }
                 return namespaces;
