@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2011 TIBCO Software Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.genxdm.bridgetest.axes;
 
 import static org.junit.Assert.assertEquals;
@@ -179,6 +194,122 @@ public abstract class AxisNodeNavigatorBase<N>
             Model<N> model = context.getModel();
             assertNotNull(model);
 
+            ArrayList<N> domains = new ArrayList<N>();
+            
+            Iterable<N> namespaces = model.getNamespaceAxis(doc, false);
+            assertNotNull(namespaces);
+            iterableToList(namespaces, domains);
+            assertEquals(0, domains.size());
+            
+            namespaces = model.getNamespaceAxis(doc, true);
+            assertNotNull(namespaces);
+            iterableToList(namespaces, domains);
+            assertEquals(0, domains.size());
+            
+            N e = model.getFirstChildElement(doc);
+            // an element node has a namespace axis; this one's empty,
+            // except for the inherited namespace.
+            
+            namespaces = model.getNamespaceAxis(e, false);
+            assertNotNull(namespaces);
+            iterableToList(namespaces, domains);
+            assertEquals(0, domains.size());
+            
+            namespaces = model.getNamespaceAxis(e, true);
+            assertNotNull(namespaces);
+            iterableToList(namespaces, domains);
+            assertEquals(1, domains.size());
+            
+            N n = model.getAttribute(e, "", "name");
+            namespaces = model.getNamespaceAxis(n, false);
+            assertNotNull(namespaces);
+            iterableToList(namespaces, domains);
+            assertEquals(0, domains.size());
+            
+            namespaces = model.getNamespaceAxis(n, true);
+            assertNotNull(namespaces);
+            iterableToList(namespaces, domains);
+            assertEquals(0, domains.size());
+            
+//            n = model.getLastChild(e);
+//            e = model.getPreviousSibling(n);
+//            namespaces = model.getNamespaceAxis(e, false);
+//            assertNotNull(namespaces);
+//            iterableToList(namespaces, domains);
+//for (N ns : namespaces) { System.out.println(model.getLocalName(ns)); System.out.println(model.getStringValue(ns));}
+//            assertEquals(2, domains.size());
+            
+//            namespaces = model.getNamespaceAxis(e, true);
+//            assertNotNull(namespaces);
+//            iterableToList(namespaces, domains);
+//            assertEquals(3, domains.size());
+            
+            n = getNamespaceNode(model, e, "gue");
+            namespaces = model.getNamespaceAxis(e, false);
+            assertNotNull(namespaces);
+            iterableToList(namespaces, domains);
+            assertEquals(0, domains.size());
+            
+            namespaces = model.getNamespaceAxis(e, true);
+            assertNotNull(namespaces);
+            iterableToList(namespaces, domains);
+            assertEquals(0, domains.size());
+            
+            e = model.getFirstChildElement(e);
+            // this one also has namespaces. 2+2
+            namespaces = model.getNamespaceAxis(e, false);
+            iterableToList(namespaces, domains);
+            assertEquals(2, domains.size());
+            
+            namespaces = model.getNamespaceAxis(e, true);
+            iterableToList(namespaces, domains);
+            assertEquals(4, domains.size());
+            
+            // get the last child.  that's a text node.
+            n = model.getLastChild(e);
+            namespaces = model.getNamespaceAxis(n, false);
+            assertNotNull(namespaces);
+            iterableToList(namespaces, domains);
+            assertEquals(0, domains.size());
+            
+            namespaces = model.getNamespaceAxis(n, true);
+            assertNotNull(namespaces);
+            iterableToList(namespaces, domains);
+            assertEquals(0, domains.size());
+            
+            // get the previous sibling. it's a processing instruction
+            n = model.getPreviousSibling(n);
+            namespaces = model.getNamespaceAxis(n, false);
+            assertNotNull(namespaces);
+            iterableToList(namespaces, domains);
+            assertEquals(0, domains.size());
+            
+            namespaces = model.getNamespaceAxis(n, true);
+            assertNotNull(namespaces);
+            iterableToList(namespaces, domains);
+            assertEquals(0, domains.size());
+            
+            // get the previous sibling of the previous sibling. that's a comment
+            n = model.getPreviousSibling(model.getPreviousSibling(n));
+            namespaces = model.getNamespaceAxis(n, false);
+            assertNotNull(namespaces);
+            iterableToList(namespaces, domains);
+            assertEquals(0, domains.size());
+            
+            namespaces = model.getNamespaceAxis(n, true);
+            assertNotNull(namespaces);
+            iterableToList(namespaces, domains);
+            assertEquals(0, domains.size());
+            
+            // get the firstchildelement.  0+4
+            n = model.getFirstChildElement(e);
+            namespaces = model.getNamespaceAxis(n, false);
+            iterableToList(namespaces, domains);
+            assertEquals(0, domains.size());
+            
+            namespaces = model.getNamespaceAxis(n, true);
+            iterableToList(namespaces, domains);
+            assertEquals(4, domains.size());
             // TODO: doc, doc element (inherited only). check docelement att
             // nstest element and its children. namespaces, text, comment, pi
         }

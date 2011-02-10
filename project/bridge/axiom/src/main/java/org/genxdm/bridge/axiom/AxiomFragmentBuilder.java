@@ -132,7 +132,7 @@ public class AxiomFragmentBuilder
     public void namespace(String prefix, String namespaceURI)
         throws GxmlException
     {
-        if (null != currentNode)
+        if (currentNode != null)
         {
             final OMElement parent = (OMElement)currentNode;
             if (namespaceURI == null) {
