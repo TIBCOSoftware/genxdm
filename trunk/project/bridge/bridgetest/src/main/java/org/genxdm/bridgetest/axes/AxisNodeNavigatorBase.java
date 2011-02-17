@@ -310,8 +310,6 @@ public abstract class AxisNodeNavigatorBase<N>
             namespaces = model.getNamespaceAxis(n, true);
             iterableToList(namespaces, domains);
             assertEquals(4, domains.size());
-            // TODO: doc, doc element (inherited only). check docelement att
-            // nstest element and its children. namespaces, text, comment, pi
         }
     }
     
@@ -451,24 +449,103 @@ public abstract class AxisNodeNavigatorBase<N>
         assertNotNull(model);
 
         ArrayList<N> spawn = new ArrayList<N>();
-        // TODO
-        // no attributes, no namespaces
-        // no comments, no text, no pis
-    }
-    
-    @Test
-    public void childElementsByName()
-    {
-        ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
-        N doc = createComplexTestDocument(builder);
+        ArrayList<N> namedSpawn = new ArrayList<N>();
+        Iterable<N> childElements = model.getChildElements(doc);
+        assertNotNull(childElements);
+        iterableToList(childElements, spawn);
+        assertEquals(1, spawn.size()); // a document always has one child element.
         
-        assertNotNull(doc);
-        Model<N> model = context.getModel();
-        assertNotNull(model);
+        childElements = model.getChildElementsByName(doc, "", ""); // match nothing
+        assertNotNull(childElements);
+        iterableToList(childElements, namedSpawn);
+        assertEquals(0, namedSpawn.size());
+        
+        childElements = model.getChildElementsByName(doc, null, null); // match anything, equivalent to getChildElements. verify that.
+        assertNotNull(childElements);
+        iterableToList(childElements, namedSpawn);
+        assertEquals(1, namedSpawn.size());
+        // old fashioned, so we can compare the members of both lists
+        for (int i = 0 ; i < spawn.size() ; i++)
+        {
+            assertEquals(model.getNodeId(spawn.get(i)), model.getNodeId(namedSpawn.get(i)));
+        }
+        
+        N project = spawn.get(0);
+        // project has seven child elements: path, fileset, target x 4, nstest
+        childElements = model.getChildElements(project);
+        assertNotNull(childElements);
+        iterableToList(childElements, spawn);
+        assertEquals(7, spawn.size());
+        
+        childElements = model.getChildElementsByName(project, null, null);
+        assertNotNull(childElements);
+        iterableToList(childElements, namedSpawn);
+        assertEquals(7, namedSpawn.size());
+        for (int i = 0 ; i < spawn.size() ; i++)
+        {
+            assertEquals(model.getNodeId(spawn.get(i)), model.getNodeId(namedSpawn.get(i)));
+        }
 
-        ArrayList<N> spawn = new ArrayList<N>();
-        // TODO
+        childElements = model.getChildElementsByName(project, "", null); // six in this namespace
+        assertNotNull(childElements);
+        iterableToList(childElements, namedSpawn);
+        assertEquals(6, namedSpawn.size());
+        
+        // only nstest in this namespace
+        childElements = model.getChildElementsByName(project, "http://www.genxdm.org/nonsense", null);
+        assertNotNull(childElements);
+        iterableToList(childElements, namedSpawn);
+        assertEquals(1, namedSpawn.size());
+        
+        childElements = model.getChildElementsByName(project, "no-match-possible", null);
+        assertNotNull(childElements);
+        iterableToList(childElements, namedSpawn);
+        assertEquals(0, namedSpawn.size());
+        
+        childElements = model.getChildElementsByName(project, "", "path");
+        assertNotNull(childElements);
+        iterableToList(childElements, namedSpawn);
+        assertEquals(1, namedSpawn.size());
+        
+        childElements = model.getChildElementsByName(project, null, "path");
+        assertNotNull(childElements);
+        iterableToList(childElements, namedSpawn);
+        assertEquals(1, namedSpawn.size());
+        
+        childElements = model.getChildElementsByName(project, "", "target");
+        assertNotNull(childElements);
+        iterableToList(childElements, namedSpawn);
+        assertEquals(4, namedSpawn.size());
+        
+        childElements = model.getChildElementsByName(project, null, "target");
+        assertNotNull(childElements);
+        iterableToList(childElements, namedSpawn);
+        assertEquals(4, namedSpawn.size());
+        
+        childElements = model.getChildElementsByName(project, "http://www.genxdm.org/nonsense", "nstest");
+        assertNotNull(childElements);
+        iterableToList(childElements, namedSpawn);
+        assertEquals(1, namedSpawn.size());
+        
+        childElements = model.getChildElementsByName(project, null, "nstest");
+        assertNotNull(childElements);
+        iterableToList(childElements, namedSpawn);
+        assertEquals(1, namedSpawn.size());
+        
+        childElements = model.getChildElementsByName(project, "no-match-possible", "no-match-possible");
+        assertNotNull(childElements);
+        iterableToList(childElements, namedSpawn);
+        assertEquals(0, namedSpawn.size());
+        
+        childElements = model.getChildElementsByName(project, "", "no-match-possible");
+        assertNotNull(childElements);
+        iterableToList(childElements, namedSpawn);
+        assertEquals(0, namedSpawn.size());
+        
+        childElements = model.getChildElementsByName(project, null, "no-match-possible");
+        assertNotNull(childElements);
+        iterableToList(childElements, namedSpawn);
+        assertEquals(0, namedSpawn.size());
     }
     
     @Test
@@ -574,26 +651,6 @@ public abstract class AxisNodeNavigatorBase<N>
 //     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-children
 //     */
 //    Iterable<N> getChildAxis(N node);
-//
-//    /**
-//     * Returns all the child element along the child axis.
-//     * 
-//     * @param node
-//     *            The parent node that owns the child axis.
-//     */
-//    Iterable<N> getChildElements(N node);
-//
-//    /**
-//     * Returns all the child element along the child axis whose names match the arguments supplied.
-//     * 
-//     * @param node
-//     *            The parent node that owns the child axis.
-//     * @param namespaceURI
-//     *            The namespace-uri to be matched.
-//     * @param localName
-//     *            The local-name to be matched.
-//     */
-//    Iterable<N> getChildElementsByName(N node, String namespaceURI, String localName);
 //
 //    /**
 //     * Returns the nodes along the descendant axis using the specified node as the origin.
