@@ -416,9 +416,107 @@ public abstract class AxisNodeNavigatorBase<N>
         Model<N> model = context.getModel();
         assertNotNull(model);
         
+        // problem: if we start counting descendants, chances are excellent
+        // that we are going to have an extremely brittle test, which will
+        // break the first time we tweak the document to add or modify something.
         ArrayList<N> spawn = new ArrayList<N>();
-        // TODO
-        // no attributes, no namespaces
+        ArrayList<N> spawnMe = new ArrayList<N>();
+        Iterable<N> descendants = model.getDescendantAxis(doc);
+        Iterable<N> descendantsAndSelf = model.getDescendantOrSelfAxis(doc);
+        assertNotNull(descendants);
+        assertNotNull(descendantsAndSelf);
+        iterableToList(descendants, spawn);
+        iterableToList(descendantsAndSelf, spawnMe);
+        assertEquals(spawnMe.size(), spawn.size() + 1);
+        
+        N el = model.getFirstChild(doc); // doc element
+        descendantsAndSelf = model.getDescendantOrSelfAxis(el);
+        assertNotNull(descendantsAndSelf);
+        iterableToList(descendantsAndSelf, spawnMe);
+        assertEquals(spawn.size(), spawnMe.size());
+        descendants = model.getDescendantAxis(el);
+        assertNotNull(descendants);
+        iterableToList(descendants, spawn);
+        assertEquals(spawnMe.size(), spawn.size() + 1);
+        
+        // the document element has seven child elements, eight text children.
+        
+        N n = model.getAttribute(el, "", "name"); // attributes have no descendants
+        descendantsAndSelf = model.getDescendantOrSelfAxis(n);
+        descendants = model.getDescendantAxis(n);
+        assertNotNull(descendantsAndSelf);
+        assertNotNull(descendants);
+        iterableToList(descendants, spawn);
+        iterableToList(descendantsAndSelf, spawnMe);
+        assertEquals(0, spawn.size());
+        assertEquals(spawnMe.size(), spawn.size() + 1);
+
+        n = model.getFirstChild(el); // text node
+        descendantsAndSelf = model.getDescendantOrSelfAxis(n);
+        descendants = model.getDescendantAxis(n);
+        assertNotNull(descendantsAndSelf);
+        assertNotNull(descendants);
+        iterableToList(descendants, spawn);
+        iterableToList(descendantsAndSelf, spawnMe);
+        assertEquals(0, spawn.size());
+        assertEquals(spawnMe.size(), spawn.size() + 1);
+        
+        n = model.getFirstChildElementByName(model.getFirstChildElementByName(el, "", "path"), "", "pathelement");
+        // empty element
+        descendantsAndSelf = model.getDescendantOrSelfAxis(n);
+        descendants = model.getDescendantAxis(n);
+        assertNotNull(descendantsAndSelf);
+        assertNotNull(descendants);
+        iterableToList(descendants, spawn);
+        iterableToList(descendantsAndSelf, spawnMe);
+        assertEquals(0, spawn.size());
+        assertEquals(spawnMe.size(), spawn.size() + 1);
+        
+        n = model.getFirstChildElement(model.getFirstChildElementByName(el, "http://www.genxdm.org/nonsense", "nstest"));
+        if (context.isSupported(Feature.NAMESPACE_AXIS))
+        {
+            N ns = getNamespaceNode(model, n, "grue");
+            descendants = model.getDescendantAxis(ns);
+            descendantsAndSelf = model.getDescendantOrSelfAxis(ns);
+            assertNotNull(descendants);
+            assertNotNull(descendantsAndSelf);
+            iterableToList(descendants, spawn);
+            iterableToList(descendantsAndSelf, spawnMe);
+            assertEquals(0, spawn.size());
+            assertEquals(spawnMe.size(), spawn.size() + 1);
+        }
+
+        n = model.getNextSiblingElement(model.getFirstChildElement(n)); // has a text child and an attribute
+        descendants = model.getDescendantAxis(n);
+        descendantsAndSelf = model.getDescendantOrSelfAxis(n);
+        assertNotNull(descendants);
+        assertNotNull(descendantsAndSelf);
+        iterableToList(descendants, spawn);
+        iterableToList(descendantsAndSelf, spawnMe);
+        assertEquals(1, spawn.size());
+        assertEquals(spawnMe.size(), spawn.size() + 1);
+        
+        // already checked text node, so double over to the comment
+        n = model.getNextSibling(model.getNextSibling(n));
+        descendants = model.getDescendantAxis(n);
+        descendantsAndSelf = model.getDescendantOrSelfAxis(n);
+        assertNotNull(descendants);
+        assertNotNull(descendantsAndSelf);
+        iterableToList(descendants, spawn);
+        iterableToList(descendantsAndSelf, spawnMe);
+        assertEquals(0, spawn.size());
+        assertEquals(spawnMe.size(), spawn.size() + 1);
+        
+        // pi, same like comment
+        n = model.getNextSibling(model.getNextSibling(n));
+        descendants = model.getDescendantAxis(n);
+        descendantsAndSelf = model.getDescendantOrSelfAxis(n);
+        assertNotNull(descendants);
+        assertNotNull(descendantsAndSelf);
+        iterableToList(descendants, spawn);
+        iterableToList(descendantsAndSelf, spawnMe);
+        assertEquals(0, spawn.size());
+        assertEquals(spawnMe.size(), spawn.size() + 1);
     }
     
     @Test
@@ -433,8 +531,63 @@ public abstract class AxisNodeNavigatorBase<N>
         assertNotNull(model);
 
         ArrayList<N> spawn = new ArrayList<N>();
-        // TODO
-        // no attributes, no namespaces
+        Iterable<N> children = model.getChildAxis(doc);
+        // there's only one child, the document element
+        assertNotNull(children);
+        iterableToList(children, spawn);
+        assertEquals(1, spawn.size());
+        
+        N de = spawn.get(0);
+        children = model.getChildAxis(de);
+        assertNotNull(children);
+        iterableToList(children, spawn);
+        assertEquals(15, spawn.size());
+
+        N child = model.getFirstChildElement(model.getFirstChildElement(de)); // empty element
+        children = model.getChildAxis(child);
+        assertNotNull(children);
+        iterableToList(children, spawn);
+        assertEquals(0, spawn.size());
+        
+        child = model.getAttribute(de, "", "name"); // attributes have no children
+        children = model.getChildAxis(child);
+        assertNotNull(children);
+        iterableToList(children, spawn);
+        assertEquals(0, spawn.size());
+        
+        child = model.getFirstChild(de); // a text element (which has no children)
+        children = model.getChildAxis(child);
+        assertNotNull(children);
+        iterableToList(children, spawn);
+        assertEquals(0, spawn.size());
+
+        if (context.isSupported(Feature.NAMESPACE_AXIS))
+        {
+            child = getNamespaceNode(model, model.getFirstChildElementByName(de, "http://www.genxdm.org/nonsense", "nstest"), "gue");
+            children = model.getChildAxis(child);
+            assertNotNull(children);
+            iterableToList(children, spawn);
+            assertEquals(0, spawn.size());
+        }
+
+        child = model.getFirstChildElement(model.getFirstChildElementByName(de, "http://www.genxdm.org/nonsense", "nstest"));
+        // this is the zork element, which has two elements, a comment, a pi, and five text nodes
+        children = model.getChildAxis(child);
+        assertNotNull(children);
+        iterableToList(children, spawn);
+        assertEquals(9, spawn.size());
+
+        child = model.getPreviousSibling(model.getLastChild(child)); // pi
+        children = model.getChildAxis(child);
+        assertNotNull(children);
+        iterableToList(children, spawn);
+        assertEquals(0, spawn.size());
+        
+        child = model.getPreviousSibling(model.getPreviousSibling(child)); // comment
+        children = model.getChildAxis(child);
+        assertNotNull(children);
+        iterableToList(children, spawn);
+        assertEquals(0, spawn.size());
     }
     
     @Test
