@@ -135,6 +135,10 @@ public abstract class NodeNavigatorBase<N>
         assertEquals(NodeKind.ELEMENT, model.getNodeKind(c2));
         assertEquals(NodeKind.ELEMENT, model.getNodeKind(c3));
         
+        // verify that we're getting children, not descendants
+        N c4 = model.getFirstChildElementByName(doc, XMLConstants.NULL_NS_URI, "pathelement"); // child of path, not of pathelement, but does exist as a descendant
+        assertNull(c4);
+        
         c2 = model.getFirstChild(c1);
         assertNull(c2);
         

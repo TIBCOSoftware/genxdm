@@ -26,7 +26,6 @@ import org.genxdm.bridgetest.TestBase;
 import org.genxdm.typed.TypedContext;
 
 import org.junit.Test;
-import org.junit.Ignore;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -94,17 +93,7 @@ public abstract class ContextTestBase<N>
         
         Cursor<N> cursor = context.newCursor(testDoc);
         assertNotNull(cursor); // never null
-        
-        // all this will fail if the model is broken or incomplete.
-        // don't do it here; put it in the cursor test.
-//      Model<N> model = context.getModel();
-//      assertNotNull(model);
-//      N docRoot = model.getFirstChildElement(testDoc);
-//      assertNotNull(docRoot);
-//
-//      // we've now got the same document, but a different *state* for a cursor.
-//      assertFalse(cursor == context.newCursor(docRoot));
-        
+                
         // now, we should be able to start two cursors from the same position,
         // and still have different cursors.
         assertFalse(cursor == context.newCursor(testDoc)); // never the same
@@ -113,11 +102,6 @@ public abstract class ContextTestBase<N>
     @Test
     public void fragmentBuilder()
     {
-        // TODO: note that the use of fragment builder is pretty fundamental
-        // to the success of most other tests.  is there a way for us to
-        // say "test the fundamentals first"?  it appears that the junit
-        // geeks regard setting the order of tests as "doing it wrong."
-
         // *must* be non-null.
         // called twice, should return two different objects.
        ProcessingContext<N> context = newProcessingContext();
@@ -134,17 +118,9 @@ public abstract class ContextTestBase<N>
        
        assertFalse(testDoc == createSimpleAllKindsDocument(slacker)); // and they create different docs, too.
 
-       // belongs in fragbuilder test.
-//       // verify that reset works to produce a null return,
-//       // and that the same document built twice with the same builder
-//       // is a different document.
-//       builder.reset();
-//       assertNull(builder.getNode());
-//       assertFalse(testDoc == createSimpleAllKindsDocument(builder));
     }
     
     @Test
-    @Ignore
     public void mutableContext()
     {
         // *may* return null; if so, then the corresponding feature must be unsupported.
@@ -165,7 +141,6 @@ public abstract class ContextTestBase<N>
     }
     
     @Test
-    @Ignore
     public void typedContext()
     {
         // same as for mutable context: if the return is null, then the corresponding feature must be unsupported.
@@ -204,6 +179,7 @@ public abstract class ContextTestBase<N>
         N[] nodes = context.nodeArray(6); // 6 is a guaranteed-random number.  snrk.
         assertNotNull(nodes);
         assertEquals(nodes.length, 6);
+        // TODO
         // test node(), isNode(), and nodeArray().
         // node() must return null if isNode() is false.
         // node() must return null and isNode() must return false if a non-node is supplied.
