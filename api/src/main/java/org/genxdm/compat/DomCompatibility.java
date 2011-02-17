@@ -55,7 +55,7 @@ public class DomCompatibility {
 	}
 	
 	/**
-	 * Get all of the descendants matching a given namespace and local name.
+	 * Get all of the descendant elements matching a given namespace and local name.
 	 * @param <N>
 	 * @param model	Which model are we traversing.
 	 * @param node	From which node do we start?
