@@ -158,9 +158,11 @@ public abstract class NavigatorBase<N>
 
         cursor.moveToParent();
         
+        isMoved = cursor.moveToFirstChildElementByName(XMLConstants.NULL_NS_URI, "pathelement"); // descendant, not child; verify single-stepping
+        assertFalse(isMoved);
+        
         isMoved = cursor.moveToLastChild();
         assertTrue(isMoved);
-
     }
 
     @Test
