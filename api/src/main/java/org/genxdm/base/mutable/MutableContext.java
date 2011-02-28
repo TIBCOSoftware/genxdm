@@ -21,21 +21,18 @@ public interface MutableContext<N>
 {
     /** Provide the node factory associated with this context.
      * 
-     * A bridge need not support mutability, and consequently need not support this
-     * method.  If {@link isMutable()} returns <code>false</code>, this method may
-     * return null.
-     * 
-     * @return a {@link NodeFactory} for creating new nodes, or null if mutability is not supported.
+     * @return a {@link NodeFactory} for creating new nodes, never null.
      */
     NodeFactory<N> getNodeFactory();
 
     /**
-     * Returns a {@link MutableModel} for navigating and modifying an XDM model.
+     * Returns a {@link MutableModel} for navigating and modifying an XDM model, never null.
      */
     MutableModel<N> getModel();
     
     /**
-     * Returns the associated processing context.
+     * Returns the associated processing context (which supplied this mutable
+     * context), never null.
      */
     ProcessingContext<N> getProcessingContext();
     
@@ -44,6 +41,7 @@ public interface MutableContext<N>
      * 
      * @param node
      *            The node over which the cursor is initially positioned. Cannot be <code>null</code>.
+     * @return a new mutable cursor positioned at the supplied node, never null.
      */
     MutableCursor<N> newCursor(N node);
 

@@ -20,14 +20,16 @@ import org.genxdm.bridgetest.TestBase;
 
 import org.junit.Test;
 
-// this is also the test for base/io/Reader
-// is it the test for nodes/Informer?  Bookmark is-a Informer and is-a NodeSource, too.
-// it may *not* be the test case for the navigator, though.
 public abstract class CursorTestBase<N>
     extends TestBase<N>
 {
     @Test
-    public void doSomething()
+    public void writes()
+    {
+    }
+    
+    @Test
+    public void comparisons()
     {
     }
 }
