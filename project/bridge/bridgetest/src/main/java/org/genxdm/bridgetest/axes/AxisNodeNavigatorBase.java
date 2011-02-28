@@ -20,6 +20,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 
+import javax.xml.XMLConstants;
+
 import org.genxdm.Feature;
 import org.genxdm.base.Model;
 import org.genxdm.base.ProcessingContext;
@@ -712,9 +714,69 @@ public abstract class AxisNodeNavigatorBase<N>
         Model<N> model = context.getModel();
         assertNotNull(model);
         
+        // little brothers and sisters are pests (and that's what following siblings are)
         ArrayList<N> pests = new ArrayList<N>();
-        // TODO
-        // no attributes, no namespaces
+        Iterable<N> fSibs = model.getFollowingSiblingAxis(doc);
+        assertNotNull(fSibs);
+        iterableToList(fSibs, pests);
+        assertEquals(0, pests.size()); // always empty for doc
+        
+        N de = model.getFirstChildElement(doc); // project element; use to find an attribute with 'sibs' and a namespace ditto.
+        // for attribute and namespace, the axis is always empty.
+        N a = model.getAttribute(de, XMLConstants.NULL_NS_URI, "name");
+        assertNotNull(a);
+        fSibs = model.getFollowingSiblingAxis(a);
+        assertNotNull(fSibs);
+        iterableToList(fSibs, pests);
+        assertEquals(0, pests.size());
+        
+        if (context.isSupported(Feature.NAMESPACE_AXIS))
+        {
+            N ns = getNamespaceNode(model, model.getFirstChildElementByName(de, "http://www.genxdm.org/nonsense", "nstest"), "gue");
+            assertNotNull(ns);
+            fSibs = model.getFollowingSiblingAxis(ns);
+            assertNotNull(fSibs);
+            iterableToList(fSibs, pests);
+            assertEquals(0, pests.size());
+        }
+        
+        // interesting case: the project element has no siblings
+        fSibs = model.getFollowingSiblingAxis(de);
+        assertNotNull(fSibs);
+        iterableToList(fSibs, pests);
+        assertEquals(0, pests.size());
+        
+        N first = model.getFirstChild(de); // text
+        N last = model.getLastChild(de); // text
+        
+        fSibs = model.getFollowingSiblingAxis(first);
+        assertNotNull(fSibs);
+        iterableToList(fSibs, pests);
+        assertEquals(14, pests.size());
+
+        fSibs = model.getFollowingSiblingAxis(last);
+        assertNotNull(fSibs);
+        iterableToList(fSibs, pests);
+        assertEquals(0, pests.size());
+        
+        first = model.getNextSiblingElement(first); // element
+        last = model.getPreviousSibling(model.getLastChild(model.getFirstChildElement(model.getPreviousSibling(last)))); // pi
+        
+        fSibs = model.getFollowingSiblingAxis(first);
+        assertNotNull(fSibs);
+        iterableToList(fSibs, pests);
+        assertEquals(13, pests.size());
+        
+        fSibs = model.getFollowingSiblingAxis(last);
+        assertNotNull(fSibs);
+        iterableToList(fSibs, pests);
+        assertEquals(1, pests.size());
+        
+        last = model.getPreviousSibling(model.getPreviousSibling(last)); // comment
+        fSibs = model.getFollowingSiblingAxis(last);
+        assertNotNull(fSibs);
+        iterableToList(fSibs, pests);
+        assertEquals(3, pests.size());
     }
     
     @Test
@@ -728,9 +790,69 @@ public abstract class AxisNodeNavigatorBase<N>
         Model<N> model = context.getModel();
         assertNotNull(model);
         
-        ArrayList<N> elders = new ArrayList<N>();
-        // TODO
-        // no attributes, no namespaces
+        // big brothers and sisters are bullies (see above)
+        ArrayList<N> bullies = new ArrayList<N>();
+        Iterable<N> pSibs = model.getPrecedingSiblingAxis(doc);
+        assertNotNull(pSibs);
+        iterableToList(pSibs, bullies);
+        assertEquals(0, bullies.size()); // always empty for doc
+        
+        N de = model.getFirstChildElement(doc); // project element; use to find an attribute with 'sibs' and a namespace ditto.
+        // for attribute and namespace, the axis is always empty.
+        N a = model.getAttribute(de, XMLConstants.NULL_NS_URI, "name");
+        assertNotNull(a);
+        pSibs = model.getPrecedingSiblingAxis(a);
+        assertNotNull(pSibs);
+        iterableToList(pSibs, bullies);
+        assertEquals(0, bullies.size());
+        
+        if (context.isSupported(Feature.NAMESPACE_AXIS))
+        {
+            N ns = getNamespaceNode(model, model.getFirstChildElementByName(de, "http://www.genxdm.org/nonsense", "nstest"), "gue");
+            assertNotNull(ns);
+            pSibs = model.getPrecedingSiblingAxis(ns);
+            assertNotNull(pSibs);
+            iterableToList(pSibs, bullies);
+            assertEquals(0, bullies.size());
+        }
+
+        // interesting case: the project element has no siblings
+        pSibs = model.getPrecedingSiblingAxis(de);
+        assertNotNull(pSibs);
+        iterableToList(pSibs, bullies);
+        assertEquals(0, bullies.size());
+        
+        N first = model.getFirstChild(de); //text
+        N last = model.getLastChild(de); // text
+        
+        pSibs = model.getPrecedingSiblingAxis(first);
+        assertNotNull(pSibs);
+        iterableToList(pSibs, bullies);
+        assertEquals(0, bullies.size());
+
+        pSibs = model.getPrecedingSiblingAxis(last);
+        assertNotNull(pSibs);
+        iterableToList(pSibs, bullies);
+        assertEquals(14, bullies.size());
+
+        first = model.getNextSiblingElement(first); // element
+        last = model.getPreviousSibling(model.getLastChild(model.getFirstChildElement(model.getPreviousSibling(last)))); // pi
+        
+        pSibs = model.getPrecedingSiblingAxis(first);
+        assertNotNull(pSibs);
+        iterableToList(pSibs, bullies);
+        assertEquals(1, bullies.size());
+        
+        pSibs = model.getPrecedingSiblingAxis(last);
+        assertNotNull(pSibs);
+        iterableToList(pSibs, bullies);
+        assertEquals(7, bullies.size());
+        
+        last = model.getPreviousSibling(model.getPreviousSibling(last)); // comment
+        pSibs = model.getPrecedingSiblingAxis(last);
+        assertNotNull(pSibs);
+        iterableToList(pSibs, bullies);
+        assertEquals(5, bullies.size());
     }
 
     @Test
@@ -753,6 +875,17 @@ public abstract class AxisNodeNavigatorBase<N>
     @Test
     public void preceding()
     {
+        // A note, for those of you following along at home.
+        // Though it seems 'natural' for "following" and "preceding"
+        // to partition a tree into two pieces around a single node,
+        // that's not what happens.  There is a partition, but it involves
+        // not following + preceding + self, but following + preceding + ancestor-or-self.
+        // This is *most* counterintuitive for 'preceding'--one doe not
+        // expect 'following' to include any ancestors, and following *does*
+        // include descendants.  It would seem reasonable for 'preceding',
+        // in parallel, to include ancestors--but it doesn't.
+        // both following and preceding are apt to produce non-well-formed
+        // fragments, as a consequence of these definitions.
         ProcessingContext<N> context = newProcessingContext();
         FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
@@ -774,53 +907,6 @@ public abstract class AxisNodeNavigatorBase<N>
             list.add(n);
     }
     
-//    /**
-//     * Returns the nodes along the ancestor axis using the specified node as the origin.
-//     * 
-//     * @param node
-//     *            The origin node.
-//     */
-//    Iterable<N> getAncestorAxis(N node);
-//
-//    /**
-//     * Returns the nodes along the ancestor-or-self axis using the specified node as the origin.
-//     * 
-//     * @param node
-//     *            The origin node.
-//     */
-//    Iterable<N> getAncestorOrSelfAxis(N node);
-//
-//    /**
-//     * Returns the nodes along the child axis using the specified node as the origin.
-//     * 
-//     * <br/>
-//     * 
-//     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-children">
-//     * dm:children</a> accessor in the XDM.
-//     * 
-//     * @param node
-//     *            The origin node.
-//     * 
-//     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-children
-//     */
-//    Iterable<N> getChildAxis(N node);
-//
-//    /**
-//     * Returns the nodes along the descendant axis using the specified node as the origin.
-//     * 
-//     * @param node
-//     *            The origin node.
-//     */
-//    Iterable<N> getDescendantAxis(N node);
-//
-//    /**
-//     * Returns the nodes along the descendant-or-self axis using the specified node as the origin.
-//     * 
-//     * @param node
-//     *            The origin node.
-//     */
-//    Iterable<N> getDescendantOrSelfAxis(N node);
-//
 //    /**
 //     * Returns the nodes along the following axis using the specified node as the origin.
 //     * 
