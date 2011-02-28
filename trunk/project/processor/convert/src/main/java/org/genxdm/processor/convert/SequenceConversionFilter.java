@@ -22,10 +22,10 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.DtdAttributeKind;
 import org.genxdm.exceptions.GxmlAtomCastException;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
 

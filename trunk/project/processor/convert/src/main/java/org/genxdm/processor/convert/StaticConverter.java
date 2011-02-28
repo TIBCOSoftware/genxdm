@@ -15,9 +15,9 @@
  */
 package org.genxdm.processor.convert;
 
-import org.genxdm.base.Cursor;
-import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.Cursor;
 import org.genxdm.exceptions.GxmlException;
+import org.genxdm.io.FragmentBuilder;
 
 public class StaticConverter
 {

@@ -23,12 +23,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.genxdm.Cursor;
+import org.genxdm.Model;
 import org.genxdm.NodeKind;
-import org.genxdm.base.Cursor;
-import org.genxdm.base.Model;
-import org.genxdm.base.ProcessingContext;
-import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.ProcessingContext;
 import org.genxdm.bridgetest.TestBase;
+import org.genxdm.io.FragmentBuilder;
 import org.genxdm.nodes.Bookmark;
 import org.junit.Test;
 

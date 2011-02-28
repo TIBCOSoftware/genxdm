@@ -18,7 +18,7 @@ package org.genxdm.nodes;
 import java.net.URI;
 
 import org.genxdm.NodeKind;
-import org.genxdm.base.io.Reader;
+import org.genxdm.io.Reader;
 import org.genxdm.names.NamespaceBinding;
 
 public interface Informer

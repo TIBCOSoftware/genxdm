@@ -20,7 +20,7 @@
  */
 package org.genxdm.processor.xpath.v10.iterators;
 
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 import org.genxdm.bridgekit.tree.Ordering;
 import org.genxdm.xpath.v10.expressions.ExprException;
 import org.genxdm.xpath.v10.iterators.NodeIterator;

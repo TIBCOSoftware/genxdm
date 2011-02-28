@@ -22,9 +22,9 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.Cursor;
+import org.genxdm.Model;
 import org.genxdm.NodeKind;
-import org.genxdm.base.Cursor;
-import org.genxdm.base.Model;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.exceptions.PreCondition;

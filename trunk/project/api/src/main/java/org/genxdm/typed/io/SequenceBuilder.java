@@ -15,7 +15,7 @@
  */
 package org.genxdm.typed.io;
 
-import org.genxdm.base.NodeSource;
+import org.genxdm.NodeSource;
 
 /**
  * An instance of this interface assembles the events into an XML tree representation.

@@ -39,10 +39,10 @@ import javax.xml.stream.events.StartDocument;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.genxdm.DtdAttributeKind;
-import org.genxdm.base.io.ContentHandler;
 import org.genxdm.exceptions.GxmlMarshalException;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.ContentHandler;
+import org.genxdm.io.DtdAttributeKind;
 
 public class XmlEventVisitor
     implements XMLStreamConstants

@@ -19,11 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.genxdm.NodeKind;
-import org.genxdm.base.mutable.MutableModel;
-import org.genxdm.base.mutable.NodeFactory;
 import org.genxdm.bridge.cx.base.XmlNodeBuilder;
 import org.genxdm.bridge.cx.base.XmlNodeModel;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.mutable.MutableModel;
+import org.genxdm.mutable.NodeFactory;
 
 public class XmlNodeMutator
     extends XmlNodeModel

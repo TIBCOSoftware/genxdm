@@ -19,8 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.genxdm.base.Cursor;
-import org.genxdm.base.Model;
+import org.genxdm.Cursor;
+import org.genxdm.Model;
 import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.nodes.Bookmark;
 

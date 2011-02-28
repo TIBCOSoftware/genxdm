@@ -19,9 +19,9 @@ import java.util.List;
 
 import javax.xml.XMLConstants;
 
-import org.genxdm.DtdAttributeKind;
 import org.genxdm.NodeKind;
 import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.xs.types.AtomicType;
 import org.genxdm.xs.types.Type;
 

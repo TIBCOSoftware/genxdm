@@ -22,7 +22,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.genxdm.base.Cursor;
+import org.genxdm.Cursor;
 import org.genxdm.bridge.dom.DomProcessingContext;
 import org.genxdm.bridgetest.CursorTestBase;
 import org.w3c.dom.Document;

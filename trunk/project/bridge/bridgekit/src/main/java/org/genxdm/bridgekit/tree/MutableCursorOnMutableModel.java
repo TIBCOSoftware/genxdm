@@ -15,9 +15,9 @@
  */
 package org.genxdm.bridgekit.tree;
 
-import org.genxdm.base.mutable.MutableCursor;
-import org.genxdm.base.mutable.MutableModel;
-import org.genxdm.base.mutable.NodeFactory;
+import org.genxdm.mutable.MutableCursor;
+import org.genxdm.mutable.MutableModel;
+import org.genxdm.mutable.NodeFactory;
 
 public class MutableCursorOnMutableModel<N>
     extends CursorOnModel<N>

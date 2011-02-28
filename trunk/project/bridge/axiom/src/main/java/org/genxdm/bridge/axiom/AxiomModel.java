@@ -35,10 +35,8 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
-import org.genxdm.DtdAttributeKind;
+import org.genxdm.Model;
 import org.genxdm.NodeKind;
-import org.genxdm.base.Model;
-import org.genxdm.base.io.ContentHandler;
 import org.genxdm.bridgekit.axes.IterableAncestorAxis;
 import org.genxdm.bridgekit.axes.IterableAncestorOrSelfAxis;
 import org.genxdm.bridgekit.axes.IterableChildAxis;
@@ -54,6 +52,8 @@ import org.genxdm.bridgekit.names.QNameComparator;
 import org.genxdm.bridgekit.tree.Ordering;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.ContentHandler;
+import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.names.NamespaceBinding;
 
 // TODO: from DGH; verify

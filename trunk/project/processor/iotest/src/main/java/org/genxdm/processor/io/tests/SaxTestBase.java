@@ -20,11 +20,11 @@ import java.io.InputStream;
 
 import junit.framework.TestCase;
 
+import org.genxdm.Cursor;
 import org.genxdm.NodeKind;
-import org.genxdm.base.Cursor;
-import org.genxdm.base.ProcessingContext;
-import org.genxdm.base.io.DocumentHandler;
+import org.genxdm.ProcessingContext;
 import org.genxdm.bridgekit.ProcessingContextFactory;
+import org.genxdm.io.DocumentHandler;
 // TODO: this sucks. it follows the old pattern in bridgetest, which is a bad
 // pattern.  it needs to follow the contract pattern instead.
 // noticed while adding a new test (which helps coverage, but doesn't prove anything)
