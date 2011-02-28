@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.bridgetest.base;
+package org.genxdm.bridgetest;
 
-import org.genxdm.base.Cursor;
-import org.genxdm.bridgetest.TestBase;
+import org.genxdm.Cursor;
 
 import org.junit.Test;
 

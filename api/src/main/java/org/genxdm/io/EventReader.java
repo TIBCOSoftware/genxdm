@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.base.io;
+package org.genxdm.io;
 
 import java.util.Iterator;
 
-import org.genxdm.EventKind;
 
 public interface EventReader
     extends Reader, Iterator<EventKind>

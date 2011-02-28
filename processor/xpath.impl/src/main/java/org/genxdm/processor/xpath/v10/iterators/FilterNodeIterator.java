@@ -20,7 +20,7 @@
  */
 package org.genxdm.processor.xpath.v10.iterators;
 
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 import org.genxdm.processor.xpath.v10.expressions.DelegateExprContext;
 import org.genxdm.xpath.v10.expressions.BooleanExpr;
 import org.genxdm.xpath.v10.expressions.ExprContextDynamic;

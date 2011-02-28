@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.base.io;
+package org.genxdm.io;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLReporter;
 
-import org.genxdm.Resolver;
 
 /**
  * Interface for manufacturing {@link DocumentHandler} instances

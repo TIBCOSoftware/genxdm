@@ -32,13 +32,13 @@ import javax.xml.stream.XMLReporter;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.genxdm.Resolver;
-import org.genxdm.base.Model;
-import org.genxdm.base.ProcessingContext;
-import org.genxdm.base.io.DocumentHandler;
-import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.Model;
+import org.genxdm.ProcessingContext;
 import org.genxdm.exceptions.GxmlMarshalException;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.DocumentHandler;
+import org.genxdm.io.FragmentBuilder;
+import org.genxdm.io.Resolver;
 import org.genxdm.processor.input.XmlEventVisitor;
 import org.genxdm.processor.output.ContentHandlerOnXmlStreamWriter;
 import org.xml.sax.ErrorHandler;

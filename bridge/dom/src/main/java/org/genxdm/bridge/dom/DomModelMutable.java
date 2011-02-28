@@ -18,8 +18,8 @@ package org.genxdm.bridge.dom;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.genxdm.base.mutable.MutableModel;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.mutable.MutableModel;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

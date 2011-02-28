@@ -20,7 +20,7 @@
  */
 package org.genxdm.xpath.v10.expressions;
 
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 
 /**
  * an XPath expression which evaluates to a String

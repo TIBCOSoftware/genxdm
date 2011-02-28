@@ -22,13 +22,13 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
-import org.genxdm.base.io.ContentHandler;
 import org.genxdm.bridge.dom.DomModel;
 import org.genxdm.bridge.dom.DomNID;
 import org.genxdm.bridge.dom.DomSupport;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.ContentHandler;
 import org.genxdm.names.NameSource;
 import org.genxdm.names.NamespaceBinding;
 import org.genxdm.typed.TypedContext;

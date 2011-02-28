@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.bridgetest;
+package org.genxdm.bridgetest.io;
 
 import java.net.URI;
 
-import org.genxdm.Resolved;
-import org.genxdm.Resolver;
+import org.genxdm.bridgetest.TestBase;
+import org.genxdm.io.Resolved;
+import org.genxdm.io.Resolver;
 
 import org.junit.Test;
 import org.junit.Ignore;

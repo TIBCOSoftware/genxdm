@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.tree;
 
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 
 /**
  * Generic utility to calculate the relative order of nodes.

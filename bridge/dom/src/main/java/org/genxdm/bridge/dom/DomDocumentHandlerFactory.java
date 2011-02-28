@@ -18,9 +18,9 @@ package org.genxdm.bridge.dom;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLReporter;
 
-import org.genxdm.Resolver;
-import org.genxdm.base.io.DocumentHandler;
-import org.genxdm.base.io.DocumentHandlerFactory;
+import org.genxdm.io.DocumentHandler;
+import org.genxdm.io.DocumentHandlerFactory;
+import org.genxdm.io.Resolver;
 import org.w3c.dom.Node;
 
 /**

@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.base;
+package org.genxdm;
 
 import java.util.Comparator;
 
 import org.genxdm.axes.AxisNodeNavigator;
 import org.genxdm.axes.NodeNavigator;
-import org.genxdm.base.io.ContentHandler;
 import org.genxdm.exceptions.GxmlException;
+import org.genxdm.io.ContentHandler;
 import org.genxdm.nodes.NodeInformer;
 
 /**

@@ -32,11 +32,11 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
-import org.genxdm.DtdAttributeKind;
-import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.exceptions.IllegalNullArgumentException;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.DtdAttributeKind;
+import org.genxdm.io.FragmentBuilder;
 
 public class AxiomFragmentBuilder
     implements FragmentBuilder<Object>

@@ -17,11 +17,11 @@ package org.genxdm.processor.convert;
 
 import java.util.List;
 
-import org.genxdm.base.Cursor;
-import org.genxdm.base.ProcessingContext;
-import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.Cursor;
+import org.genxdm.ProcessingContext;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.FragmentBuilder;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.io.SequenceBuilder;

@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.genxdm.DtdAttributeKind;
-import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.bridge.cx.tree.XmlAttributeNode;
 import org.genxdm.bridge.cx.tree.XmlCommentNode;
 import org.genxdm.bridge.cx.tree.XmlElementNode;
@@ -34,6 +32,8 @@ import org.genxdm.bridge.cx.tree.XmlPINode;
 import org.genxdm.bridge.cx.tree.XmlRootNode;
 import org.genxdm.bridge.cx.tree.XmlTextNode;
 import org.genxdm.exceptions.GxmlException;
+import org.genxdm.io.DtdAttributeKind;
+import org.genxdm.io.FragmentBuilder;
 
 public class XmlNodeBuilder
     implements FragmentBuilder<XmlNode>

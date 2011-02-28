@@ -23,10 +23,10 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.genxdm.DtdAttributeKind;
 import org.genxdm.NodeKind;
-import org.genxdm.base.io.FragmentBuilder;
 import org.genxdm.exceptions.GxmlException;
+import org.genxdm.io.DtdAttributeKind;
+import org.genxdm.io.FragmentBuilder;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

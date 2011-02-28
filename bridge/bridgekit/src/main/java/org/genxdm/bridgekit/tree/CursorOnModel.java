@@ -15,11 +15,11 @@
  */
 package org.genxdm.bridgekit.tree;
 
+import org.genxdm.Cursor;
+import org.genxdm.Model;
 import org.genxdm.NodeKind;
-import org.genxdm.base.Cursor;
-import org.genxdm.base.Model;
-import org.genxdm.base.io.ContentHandler;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.ContentHandler;
 import org.genxdm.nodes.Bookmark;
 
 public class CursorOnModel<N>

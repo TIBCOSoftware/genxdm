@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.base.io;
+package org.genxdm.io;
 
 import java.io.Closeable;
 import java.io.Flushable;
 import java.net.URI;
 
-import org.genxdm.DtdAttributeKind;
 import org.genxdm.exceptions.GxmlException;
 
 /**

@@ -17,9 +17,9 @@ package org.genxdm.bridgetest;
 
 import javax.xml.XMLConstants;
 
-import org.genxdm.base.Model;
-import org.genxdm.base.ProcessingContext;
-import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.Model;
+import org.genxdm.ProcessingContext;
+import org.genxdm.io.FragmentBuilder;
 import org.genxdm.names.NameSource;
 
 public abstract class ModelTestBase<N> 

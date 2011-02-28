@@ -18,10 +18,10 @@ package org.genxdm.compat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.genxdm.Model;
 import org.genxdm.NodeKind;
-import org.genxdm.base.Model;
-import org.genxdm.base.mutable.MutableModel;
-import org.genxdm.base.mutable.NodeFactory;
+import org.genxdm.mutable.MutableModel;
+import org.genxdm.mutable.NodeFactory;
 
 /**
  * Methods that provide similar functionality to DOM capability, where that capability

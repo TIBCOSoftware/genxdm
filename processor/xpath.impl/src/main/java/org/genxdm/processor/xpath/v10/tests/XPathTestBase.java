@@ -41,11 +41,11 @@ import org.genxdm.xpath.v10.variants.BooleanVariant;
 import org.genxdm.xpath.v10.variants.NumberVariant;
 import org.genxdm.xpath.v10.variants.StringVariant;
 import org.genxdm.Feature;
-import org.genxdm.Resolver;
-import org.genxdm.base.Model;
-import org.genxdm.base.ProcessingContext;
-import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.Model;
+import org.genxdm.ProcessingContext;
 import org.genxdm.bridgekit.ProcessingContextFactory;
+import org.genxdm.io.FragmentBuilder;
+import org.genxdm.io.Resolver;
 import org.genxdm.processor.xpath.v10.XPathToolkitFactoryImpl;
 
 public abstract class XPathTestBase<N> 

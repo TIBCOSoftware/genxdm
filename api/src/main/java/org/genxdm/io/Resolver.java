@@ -13,22 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.base.io;
+package org.genxdm.io;
 
-import org.genxdm.base.NodeSource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.net.URI;
+
 
 /**
- * An instance of this interface assembles the events into an XML tree representation.
- * 
- * The tree built by this interface contains text nodes in string form; it does not
- * contain any atoms or type information.
+ * Resolves requests for XML documents based upon a URI.
  */
-public interface FragmentBuilder<N>
-    extends ContentHandler, NodeSource<N>
+public interface Resolver
 {
-    /**
-     * Resets the builder by clearing the list of nodes that have been constructed in earlier executions.
-     */
-    void reset();
-
+	/**
+	 * Resolves a {@link URI} into an {@link InputStream} and a systemID.
+	 * 
+	 * @param location
+	 *            The {@link URI} to be resolved.
+	 * @throws IOException
+	 *             if an exception occurs while opening the {@link InputStream}.
+	 */
+	Resolved<InputStream> resolveInputStream(URI location) throws IOException;
+	
+	Resolved<Reader> resolveReader(URI location) throws IOException;
 }

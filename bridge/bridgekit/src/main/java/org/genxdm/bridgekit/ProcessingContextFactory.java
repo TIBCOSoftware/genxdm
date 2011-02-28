@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit;
 
-import org.genxdm.base.ProcessingContext;
+import org.genxdm.ProcessingContext;
 
 public interface ProcessingContextFactory<N>
 {

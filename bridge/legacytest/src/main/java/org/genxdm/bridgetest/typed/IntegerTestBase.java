@@ -20,7 +20,7 @@ import java.math.BigInteger;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.base.ProcessingContext;
+import org.genxdm.ProcessingContext;
 import org.genxdm.bridgetest.GxTestBase;
 import org.genxdm.exceptions.GxmlAtomCastException;
 import org.genxdm.exceptions.PreCondition;

@@ -15,7 +15,7 @@
  */
 package org.genxdm.typed;
 
-import org.genxdm.base.Cursor;
+import org.genxdm.Cursor;
 import org.genxdm.nodes.TypeInformer;
 
 /**

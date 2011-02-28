@@ -22,7 +22,7 @@ package org.genxdm.processor.xpath.v10.functions;
 
 import java.lang.reflect.Array;
 
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 import org.genxdm.xpath.v10.Function;
 import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
 import org.genxdm.xpath.v10.expressions.ConvertibleStringExpr;

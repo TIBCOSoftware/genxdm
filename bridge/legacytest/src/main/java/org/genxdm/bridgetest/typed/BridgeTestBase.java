@@ -29,7 +29,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.Feature;
 import org.genxdm.NodeKind;
-import org.genxdm.base.ProcessingContext;
+import org.genxdm.ProcessingContext;
 import org.genxdm.bridgekit.tree.Ordering;
 import org.genxdm.bridgetest.Axis;
 import org.genxdm.bridgetest.GxTestBase;

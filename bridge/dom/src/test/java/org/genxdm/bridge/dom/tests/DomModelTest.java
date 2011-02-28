@@ -23,7 +23,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 import org.genxdm.bridge.dom.DomProcessingContext;
 import org.genxdm.bridgetest.ModelTestBase;
 import org.w3c.dom.Attr;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.bridgetest.base.io;
+package org.genxdm.bridgetest.io;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -26,11 +26,11 @@ import java.util.List;
 
 import javax.xml.XMLConstants;
 
-import org.genxdm.DtdAttributeKind;
-import org.genxdm.base.ProcessingContext;
-import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.ProcessingContext;
 
 import org.genxdm.bridgetest.TestBase;
+import org.genxdm.io.DtdAttributeKind;
+import org.genxdm.io.FragmentBuilder;
 
 import org.junit.Test;
 
