@@ -24,10 +24,9 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.Model;
 import org.genxdm.exceptions.IllegalNullArgumentException;
-import org.genxdm.xpath.v10.expressions.ConvertibleVariantExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.variants.Variant;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.Variant;
 
 final class VariableRefExpr
     extends ConvertibleVariantExpr

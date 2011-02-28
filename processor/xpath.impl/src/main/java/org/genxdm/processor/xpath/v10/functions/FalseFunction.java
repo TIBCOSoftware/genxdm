@@ -20,9 +20,9 @@
  */
 package org.genxdm.processor.xpath.v10.functions;
 
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleExpr;
 import org.genxdm.processor.xpath.v10.expressions.FalseExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprContextStatic;
 
 /**
  * a function of 0 arguments that returns false

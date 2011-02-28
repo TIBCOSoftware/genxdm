@@ -26,10 +26,9 @@ import java.util.List;
 
 import org.genxdm.Model;
 import org.genxdm.processor.xpath.v10.iterators.ListNodeIterator;
-import org.genxdm.xpath.v10.expressions.ConvertibleNodeSetExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.NodeIterator;
 
 /**
  * A reverse axis (XPath) expression represents a Node set which may need to be seen in document order (thus reversed)

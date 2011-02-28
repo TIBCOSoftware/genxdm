@@ -15,11 +15,12 @@
  */
 package org.genxdm.processor.xpath.v10;
 
-import org.genxdm.xpath.v10.XPathToolkit;
 import org.genxdm.xpath.v10.XPathToolkitFactory;
+import org.genxdm.xpath.v10.extend.XPathExtendToolkit;
+import org.genxdm.xpath.v10.extend.XPathExtendToolkitFactory;
 
 public final class XPathToolkitFactoryImpl
-    implements XPathToolkitFactory
+    implements XPathExtendToolkitFactory
 {
 	private boolean inheritAttributes = false;
 	private boolean inheritNamespaces = true;
@@ -28,7 +29,7 @@ public final class XPathToolkitFactoryImpl
 	{
 	}
 
-	public XPathToolkit newXPathToolkit()
+	public XPathExtendToolkit newXPathToolkit()
 	{
 		return new XPathToolkitImpl(inheritAttributes, inheritNamespaces);
 	}

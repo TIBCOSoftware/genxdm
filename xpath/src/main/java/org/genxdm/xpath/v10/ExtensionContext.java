@@ -15,8 +15,6 @@
  */
 package org.genxdm.xpath.v10;
 
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.variants.Variant;
 
 public interface ExtensionContext<N>
 {

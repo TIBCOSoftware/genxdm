@@ -20,9 +20,9 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamicArgs;
-import org.genxdm.xpath.v10.variants.Variant;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprContextDynamicArgs;
+import org.genxdm.xpath.v10.Variant;
 
 public final class ExprContextDynamicArgsImpl<N> 
     implements ExprContextDynamicArgs<N>

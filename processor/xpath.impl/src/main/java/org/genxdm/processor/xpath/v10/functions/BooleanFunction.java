@@ -20,9 +20,9 @@
  */
 package org.genxdm.processor.xpath.v10.functions;
 
-import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprParseException;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprParseException;
+import org.genxdm.xpath.v10.extend.IConvertibleExpr;
 
 /**
  * a single argument XPath function which casts its argument to a boolean Function: boolean boolean(object)
@@ -44,7 +44,7 @@ public class BooleanFunction
     extends Function1
 {
 
-	ConvertibleExpr makeCallExpr(final ConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
+	IConvertibleExpr makeCallExpr(final IConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		// ConvertibleExprs know how to cast themselves to booleans
 		return e.makeBooleanExpr(statEnv);

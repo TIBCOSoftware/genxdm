@@ -22,10 +22,10 @@ package org.genxdm.processor.xpath.v10.expressions;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExtensionContext;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.variants.Variant;
+import org.genxdm.xpath.v10.Variant;
 
 /**
  * a base class for ExprContext classes that override some methods of an existing ExprContext, and delegate the rest of them to that existing ExprContest

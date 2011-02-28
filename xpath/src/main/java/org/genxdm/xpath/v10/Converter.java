@@ -16,9 +16,6 @@
 package org.genxdm.xpath.v10;
 
 import org.genxdm.Model;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
 
 public final class Converter
 {

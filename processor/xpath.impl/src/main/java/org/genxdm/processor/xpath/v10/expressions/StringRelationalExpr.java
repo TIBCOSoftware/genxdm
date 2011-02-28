@@ -22,10 +22,9 @@ package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
 import org.genxdm.processor.xpath.v10.relations.Relation;
-import org.genxdm.xpath.v10.expressions.ConvertibleBooleanExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.expressions.StringExpr;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.StringExpr;
 
 final class StringRelationalExpr 
     extends ConvertibleBooleanExpr

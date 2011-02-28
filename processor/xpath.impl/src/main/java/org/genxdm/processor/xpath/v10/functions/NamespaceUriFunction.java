@@ -21,19 +21,20 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
-import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleStringExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.expressions.ExprParseException;
-import org.genxdm.xpath.v10.expressions.NodeSetExpr;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleExpr;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleStringExpr;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.ExprParseException;
+import org.genxdm.xpath.v10.NodeSetExpr;
+import org.genxdm.xpath.v10.extend.IConvertibleExpr;
 
 public final class NamespaceUriFunction 
     extends FunctionOpt1
 {
 
-	ConvertibleExpr makeCallExpr(final ConvertibleExpr expr, final ExprContextStatic statEnv) throws ExprParseException
+	ConvertibleExpr makeCallExpr(final IConvertibleExpr expr, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		final NodeSetExpr nse = expr.makeNodeSetExpr(statEnv);
 		return new ConvertibleStringExpr()

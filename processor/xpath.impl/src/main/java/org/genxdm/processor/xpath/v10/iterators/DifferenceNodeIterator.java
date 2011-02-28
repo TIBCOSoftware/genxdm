@@ -21,8 +21,8 @@
 package org.genxdm.processor.xpath.v10.iterators;
 
 import org.genxdm.Model;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.NodeIterator;
 
 public final class DifferenceNodeIterator<N> implements NodeIterator<N>
 {

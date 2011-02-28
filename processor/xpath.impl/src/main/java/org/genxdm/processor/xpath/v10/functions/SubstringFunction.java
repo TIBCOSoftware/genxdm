@@ -21,16 +21,16 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleStringExpr;
 import org.genxdm.processor.xpath.v10.expressions.NumberConstantExpr;
-import org.genxdm.xpath.v10.Function;
-import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleStringExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.expressions.ExprParseException;
-import org.genxdm.xpath.v10.expressions.NumberExpr;
-import org.genxdm.xpath.v10.expressions.StringExpr;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.ExprParseException;
+import org.genxdm.xpath.v10.NumberExpr;
+import org.genxdm.xpath.v10.StringExpr;
+import org.genxdm.xpath.v10.extend.Function;
+import org.genxdm.xpath.v10.extend.IConvertibleExpr;
 
 public final class SubstringFunction 
     implements Function
@@ -68,7 +68,7 @@ public final class SubstringFunction
 		return "";
 	}
 
-	public ConvertibleExpr makeCallExpr(final ConvertibleExpr[] args, final ExprContextStatic statEnv) throws ExprParseException
+	public IConvertibleExpr makeCallExpr(final IConvertibleExpr[] args, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		if (args.length < 2 || args.length > 3)
 		{

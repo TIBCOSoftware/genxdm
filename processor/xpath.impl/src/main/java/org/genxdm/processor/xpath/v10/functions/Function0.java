@@ -20,10 +20,11 @@
  */
 package org.genxdm.processor.xpath.v10.functions;
 
-import org.genxdm.xpath.v10.Function;
-import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprParseException;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleExpr;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprParseException;
+import org.genxdm.xpath.v10.extend.Function;
+import org.genxdm.xpath.v10.extend.IConvertibleExpr;
 
 /**
  * base class for all functions taking no arguments
@@ -34,7 +35,7 @@ abstract class Function0
 
 	abstract ConvertibleExpr makeCallExpr(ExprContextStatic statEnv) throws ExprParseException;
 
-	public ConvertibleExpr makeCallExpr(final ConvertibleExpr e[], final ExprContextStatic statEnv) throws ExprParseException
+	public IConvertibleExpr makeCallExpr(final IConvertibleExpr[] e, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		if (e.length != 0)
 		{

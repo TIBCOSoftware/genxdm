@@ -20,7 +20,7 @@
  */
 package org.genxdm.processor.xpath.v10.expressions;
 
-import org.genxdm.xpath.v10.expressions.ExprParseException;
+import org.genxdm.xpath.v10.ExprParseException;
 
 /**
  * lexical analyser for XPath 1.0
