@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.base.mutable;
+package org.genxdm.mutable;
 
-import org.genxdm.base.Cursor;
+import org.genxdm.Cursor;
 
 public interface MutableCursor<N>
     extends Cursor<N>
