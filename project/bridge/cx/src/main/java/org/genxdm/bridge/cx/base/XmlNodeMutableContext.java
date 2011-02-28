@@ -15,15 +15,15 @@
  */
 package org.genxdm.bridge.cx.base;
 
-import org.genxdm.base.mutable.MutableContext;
-import org.genxdm.base.mutable.MutableCursor;
-import org.genxdm.base.mutable.MutableModel;
-import org.genxdm.base.mutable.NodeFactory;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridge.cx.tree.XmlNodeFactory;
 import org.genxdm.bridge.cx.tree.XmlNodeMutator;
 import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.mutable.MutableContext;
+import org.genxdm.mutable.MutableCursor;
+import org.genxdm.mutable.MutableModel;
+import org.genxdm.mutable.NodeFactory;
 
 public class XmlNodeMutableContext
     implements MutableContext<XmlNode>

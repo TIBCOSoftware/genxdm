@@ -20,8 +20,8 @@ import java.util.ArrayList;
 
 import javax.xml.XMLConstants;
 
-import org.genxdm.base.io.ContentHandler;
 import org.genxdm.exceptions.GxmlException;
+import org.genxdm.io.ContentHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;

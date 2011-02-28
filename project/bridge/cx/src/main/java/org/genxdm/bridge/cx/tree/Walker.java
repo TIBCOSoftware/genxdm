@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridge.cx.tree;
 
-import org.genxdm.base.io.ContentHandler;
+import org.genxdm.io.ContentHandler;
 
 public final class Walker
 {

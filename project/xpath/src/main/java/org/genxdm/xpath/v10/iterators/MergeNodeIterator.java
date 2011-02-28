@@ -23,7 +23,7 @@ package org.genxdm.xpath.v10.iterators;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 import org.genxdm.xpath.v10.expressions.ExprException;
 
 /**

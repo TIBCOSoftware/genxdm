@@ -27,12 +27,12 @@ import javax.xml.XMLConstants;
 
 import junit.framework.TestCase;
 
+import org.genxdm.Cursor;
 import org.genxdm.NodeKind;
-import org.genxdm.base.Cursor;
-import org.genxdm.base.ProcessingContext;
-import org.genxdm.base.io.DocumentHandler;
-import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.ProcessingContext;
 import org.genxdm.bridgekit.ProcessingContextFactory;
+import org.genxdm.io.DocumentHandler;
+import org.genxdm.io.FragmentBuilder;
 
 abstract public class RoundTripTestBase<N>
     extends TestCase

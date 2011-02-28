@@ -24,13 +24,13 @@ import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.genxdm.Resolved;
-import org.genxdm.Resolver;
-import org.genxdm.base.Model;
-import org.genxdm.base.ProcessingContext;
-import org.genxdm.base.io.DocumentHandler;
+import org.genxdm.Model;
+import org.genxdm.ProcessingContext;
 import org.genxdm.bridgekit.ProcessingContextFactory;
 import org.genxdm.exceptions.GxmlMarshalException;
+import org.genxdm.io.DocumentHandler;
+import org.genxdm.io.Resolved;
+import org.genxdm.io.Resolver;
 import org.genxdm.processor.w3c.xs.W3cXmlSchemaParser;
 import org.genxdm.processor.w3c.xs.validation.GxContentValidator;
 import org.genxdm.processor.w3c.xs.validation.GxValidatorCache;

@@ -19,9 +19,9 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.genxdm.DtdAttributeKind;
-import org.genxdm.base.mutable.NodeFactory;
 import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.io.DtdAttributeKind;
+import org.genxdm.mutable.NodeFactory;
 import org.genxdm.xs.types.Type;
 
 public class XmlNodeFactory

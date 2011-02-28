@@ -19,8 +19,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.base.io.ContentHandler;
 import org.genxdm.exceptions.GxmlException;
+import org.genxdm.io.ContentHandler;
 
 /**
  * <p>

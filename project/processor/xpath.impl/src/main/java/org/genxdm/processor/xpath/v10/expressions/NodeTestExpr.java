@@ -20,7 +20,7 @@
  */
 package org.genxdm.processor.xpath.v10.expressions;
 
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 import org.genxdm.processor.xpath.v10.patterns.Pattern;
 import org.genxdm.xpath.v10.expressions.ConvertibleNodeSetExpr;
 import org.genxdm.xpath.v10.expressions.ExprContextDynamic;

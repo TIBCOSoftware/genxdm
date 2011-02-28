@@ -30,10 +30,10 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.genxdm.DtdAttributeKind;
-import org.genxdm.base.io.ContentHandler;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.ContentHandler;
+import org.genxdm.io.DtdAttributeKind;
 
 public class ContentHandlerOnXmlStreamWriter
     implements ContentHandler

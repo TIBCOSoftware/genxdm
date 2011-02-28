@@ -22,11 +22,11 @@ import static org.junit.Assert.assertFalse;
 
 import javax.xml.XMLConstants;
 
+import org.genxdm.Cursor;
 import org.genxdm.NodeKind;
-import org.genxdm.base.Cursor;
-import org.genxdm.base.ProcessingContext;
-import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.ProcessingContext;
 import org.genxdm.bridgetest.TestBase;
+import org.genxdm.io.FragmentBuilder;
 import org.junit.Test;
 
 /**

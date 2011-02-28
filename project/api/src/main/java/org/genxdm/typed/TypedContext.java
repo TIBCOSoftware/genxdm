@@ -15,7 +15,7 @@
  */
 package org.genxdm.typed;
 
-import org.genxdm.base.ProcessingContext;
+import org.genxdm.ProcessingContext;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;

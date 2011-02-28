@@ -24,7 +24,7 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.genxdm.Feature;
-import org.genxdm.base.ProcessingContext;
+import org.genxdm.ProcessingContext;
 import org.genxdm.bridgetest.GxTestBase;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.names.NameSource;

@@ -22,8 +22,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.DtdAttributeKind;
 import org.genxdm.exceptions.GxmlException;
+import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;

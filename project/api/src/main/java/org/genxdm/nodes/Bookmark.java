@@ -15,9 +15,9 @@
  */
 package org.genxdm.nodes;
 
-import org.genxdm.base.Cursor;
-import org.genxdm.base.Model;
-import org.genxdm.base.NodeSource;
+import org.genxdm.Cursor;
+import org.genxdm.Model;
+import org.genxdm.NodeSource;
 
 /** A stateful, positionally-immutable wrapper around a node.
  * 

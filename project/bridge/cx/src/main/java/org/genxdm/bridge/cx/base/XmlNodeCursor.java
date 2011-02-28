@@ -19,13 +19,13 @@ import java.net.URI;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.Cursor;
 import org.genxdm.NodeKind;
-import org.genxdm.base.Cursor;
-import org.genxdm.base.io.ContentHandler;
 import org.genxdm.bridge.cx.tree.Walker;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridgekit.tree.Ordering;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.ContentHandler;
 import org.genxdm.names.NamespaceBinding;
 import org.genxdm.nodes.Bookmark;
 

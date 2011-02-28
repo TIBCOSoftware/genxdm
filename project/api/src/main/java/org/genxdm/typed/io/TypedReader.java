@@ -15,7 +15,7 @@
  */
 package org.genxdm.typed.io;
 
-import org.genxdm.base.io.EventReader;
+import org.genxdm.io.EventReader;
 import org.genxdm.nodes.TypeInformer;
 
 /**

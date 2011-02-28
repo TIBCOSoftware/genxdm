@@ -17,7 +17,7 @@ package org.genxdm.bridge.dom.enhanced;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.base.ProcessingContext;
+import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.dom.DomProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XmlAtomBridge;

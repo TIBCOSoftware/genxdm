@@ -17,7 +17,7 @@ package org.genxdm.bridgekit.axes;
 
 import java.util.Iterator;
 
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 import org.genxdm.exceptions.PreCondition;
 
 /**

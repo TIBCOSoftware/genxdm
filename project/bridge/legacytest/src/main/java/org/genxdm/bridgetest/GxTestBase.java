@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
 import junit.framework.TestCase;
 
 import org.genxdm.NodeKind;
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 import org.genxdm.bridgekit.ProcessingContextFactory;
 import org.genxdm.bridgekit.names.QNameComparator;
 

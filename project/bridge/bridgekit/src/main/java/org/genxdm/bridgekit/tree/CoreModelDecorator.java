@@ -22,7 +22,6 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
-import org.genxdm.base.io.ContentHandler;
 import org.genxdm.bridgekit.axes.IterableAncestorAxis;
 import org.genxdm.bridgekit.axes.IterableAncestorOrSelfAxis;
 import org.genxdm.bridgekit.axes.IterableChildAxis;
@@ -34,6 +33,7 @@ import org.genxdm.bridgekit.axes.IterableFollowingSiblingAxis;
 import org.genxdm.bridgekit.axes.IterablePrecedingAxis;
 import org.genxdm.bridgekit.axes.IterablePrecedingSiblingAxis;
 import org.genxdm.exceptions.GxmlException;
+import org.genxdm.io.ContentHandler;
 import org.genxdm.names.NamespaceBinding;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.io.SequenceHandler;

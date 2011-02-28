@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.axes;
 
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 import org.genxdm.exceptions.PreCondition;
 
 final class IteratorChildAxis<N> extends BaseImmutableIterator<N>
