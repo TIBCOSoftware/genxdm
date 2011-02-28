@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.base.mutable;
+package org.genxdm.mutable;
 
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 
 /** Provides modification of the Model based on the XQuery Update Facility,
  * but with immediate effect.
