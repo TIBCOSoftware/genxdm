@@ -22,8 +22,6 @@ public interface NodeFactory<N>
     /**
      * Creates a new attribute.
      * 
-     * @param owner
-     *            The document node that owns the new attribute.
      * @param namespaceURI
      *            The namespace-uri part of the attribute name.
      * @param localName
@@ -39,8 +37,6 @@ public interface NodeFactory<N>
     /**
      * Creates a new comment node.
      * 
-     * @param owner
-     *            The document node that owns the new namespace node.
      * @param data
      *            The string-value of the comment node.
      * @return The created comment node.
@@ -52,8 +48,6 @@ public interface NodeFactory<N>
     /**
      * Creates a new element node.
      * 
-     * @param owner
-     *            The document node that owns the element node.
      * @param namespaceURI
      *            The namespace-uri part of the name of the element node.
      * @param localName
@@ -67,8 +61,6 @@ public interface NodeFactory<N>
     /**
      * Creates a new namespace node.
      * 
-     * @param owner
-     *            The document node that owns the new namespace node.
      * @param prefix
      *            The prefix part of the namespace node.
      * @param namespaceURI
@@ -80,8 +72,6 @@ public interface NodeFactory<N>
     /**
      * Creates a new processing-instruction node.
      * 
-     * @param owner
-     *            The document node that owns the processing-instruction node.
      * @param target
      *            The target of the processing-instruction (dm:local-name).
      * @param data
@@ -93,8 +83,6 @@ public interface NodeFactory<N>
     /**
      * Creates a new text node.
      * 
-     * @param owner
-     *            The document node that owns the text node.
      * @param value
      *            The value of the text node as a {@link String} i.e. xs:untypedAtomic.
      * @return The created text node.
