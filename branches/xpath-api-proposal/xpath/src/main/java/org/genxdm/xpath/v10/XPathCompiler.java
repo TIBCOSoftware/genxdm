@@ -15,13 +15,6 @@
  */
 package org.genxdm.xpath.v10;
 
-import org.genxdm.xpath.v10.expressions.BooleanExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprParseException;
-import org.genxdm.xpath.v10.expressions.NodeSetExpr;
-import org.genxdm.xpath.v10.expressions.NumberExpr;
-import org.genxdm.xpath.v10.expressions.StringExpr;
-import org.genxdm.xpath.v10.expressions.VariantExpr;
 
 public interface XPathCompiler
 {

@@ -21,18 +21,19 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleExpr;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleNodeSetExpr;
 import org.genxdm.processor.xpath.v10.iterators.SingleNodeIterator;
-import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleNodeSetExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.expressions.ExprParseException;
-import org.genxdm.xpath.v10.expressions.NodeSetExpr;
-import org.genxdm.xpath.v10.expressions.StringExpr;
-import org.genxdm.xpath.v10.expressions.VariantExpr;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
-import org.genxdm.xpath.v10.variants.Variant;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.ExprParseException;
+import org.genxdm.xpath.v10.NodeIterator;
+import org.genxdm.xpath.v10.NodeSetExpr;
+import org.genxdm.xpath.v10.StringExpr;
+import org.genxdm.xpath.v10.Variant;
+import org.genxdm.xpath.v10.VariantExpr;
+import org.genxdm.xpath.v10.extend.IConvertibleExpr;
 
 /**
  * the XPath function id(x)
@@ -58,7 +59,7 @@ public final class IdFunction
 		return new SingleNodeIterator<N>(result);
 	}
 
-	ConvertibleExpr makeCallExpr(final ConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
+	ConvertibleExpr makeCallExpr(final IConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		if (e instanceof NodeSetExpr)
 		{

@@ -21,19 +21,20 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
-import org.genxdm.xpath.v10.expressions.ConvertibleBooleanExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.expressions.ExprParseException;
-import org.genxdm.xpath.v10.expressions.StringExpr;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleBooleanExpr;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleExpr;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.ExprParseException;
+import org.genxdm.xpath.v10.StringExpr;
+import org.genxdm.xpath.v10.extend.IConvertibleExpr;
 
 public final class StartsWithFunction 
     extends Function2
 {
 
-	ConvertibleExpr makeCallExpr(final ConvertibleExpr e1, final ConvertibleExpr e2, final ExprContextStatic statEnv) throws ExprParseException
+	ConvertibleExpr makeCallExpr(final IConvertibleExpr e1, final IConvertibleExpr e2, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		final StringExpr se1 = e1.makeStringExpr(statEnv);
 		final StringExpr se2 = e2.makeStringExpr(statEnv);

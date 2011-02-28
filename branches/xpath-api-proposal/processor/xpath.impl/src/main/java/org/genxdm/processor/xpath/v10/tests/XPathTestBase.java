@@ -23,23 +23,19 @@ import javax.xml.namespace.QName;
 
 import junit.framework.TestCase;
 
+import org.genxdm.xpath.v10.BooleanExpr;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprContextDynamicArgs;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.ExprParseException;
+import org.genxdm.xpath.v10.NodeIterator;
+import org.genxdm.xpath.v10.NodeSetExpr;
+import org.genxdm.xpath.v10.NumberExpr;
+import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.XPathCompiler;
 import org.genxdm.xpath.v10.XPathToolkit;
 import org.genxdm.xpath.v10.XPathToolkitFactory;
-import org.genxdm.xpath.v10.expressions.BooleanExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamicArgs;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprContextStaticArgs;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.expressions.ExprParseException;
-import org.genxdm.xpath.v10.expressions.NodeSetExpr;
-import org.genxdm.xpath.v10.expressions.NumberExpr;
-import org.genxdm.xpath.v10.expressions.StringExpr;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
-import org.genxdm.xpath.v10.variants.BooleanVariant;
-import org.genxdm.xpath.v10.variants.NumberVariant;
-import org.genxdm.xpath.v10.variants.StringVariant;
 import org.genxdm.Feature;
 import org.genxdm.Model;
 import org.genxdm.ProcessingContext;
@@ -47,6 +43,9 @@ import org.genxdm.bridgekit.ProcessingContextFactory;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.io.Resolver;
 import org.genxdm.processor.xpath.v10.XPathToolkitFactoryImpl;
+import org.genxdm.processor.xpath.v10.variants.BooleanVariant;
+import org.genxdm.processor.xpath.v10.variants.NumberVariant;
+import org.genxdm.processor.xpath.v10.variants.StringVariant;
 
 public abstract class XPathTestBase<N> 
     extends TestCase 
@@ -66,13 +65,11 @@ public abstract class XPathTestBase<N>
 
                 final XPathCompiler compiler = tools.newXPathCompiler();
 
-                final ExprContextStaticArgs sargs = tools.newExprContextStaticArgs();
-
-                final ExprContextStatic statEnv = sargs.build();
+                final ExprContextStatic sargs = tools.newExprContextStaticArgs();
 
                 try
                 {
-                        compiler.compileStringExpr("1+", statEnv);
+                        compiler.compileStringExpr("1+", sargs);
 
                         fail();
                 }
@@ -83,7 +80,7 @@ public abstract class XPathTestBase<N>
 
                 try
                 {
-                        compiler.compileStringExpr("(1", statEnv);
+                        compiler.compileStringExpr("(1", sargs);
 
                         fail();
                 }
@@ -102,16 +99,14 @@ public abstract class XPathTestBase<N>
 
                 final XPathCompiler compiler = tools.newXPathCompiler();
 
-                final ExprContextStaticArgs sargs = tools.newExprContextStaticArgs();
+                final ExprContextStatic sargs = tools.newExprContextStaticArgs();
 
                 final N contextNode = null;
 
                 sargs.declareVariable(new QName("http://www.example.com", "x"));
                 sargs.declareNamespace("p", "http://www.example.com");
 
-                final ExprContextStatic statEnv = sargs.build();
-
-                final StringExpr stringExpr = compiler.compileStringExpr("concat('Hello',', ',$p:x,'!')", statEnv);
+                final StringExpr stringExpr = compiler.compileStringExpr("concat('Hello',', ',$p:x,'!')", sargs);
 
                 final ExprContextDynamicArgs<N> dargs = tools.newExprContextDynamicArgs();
 
@@ -133,14 +128,12 @@ public abstract class XPathTestBase<N>
 
                 final XPathCompiler compiler = tools.newXPathCompiler();
 
-                final ExprContextStaticArgs sargs = tools.newExprContextStaticArgs();
+                final ExprContextStatic sargs = tools.newExprContextStaticArgs();
 
                 sargs.declareVariable(new QName("http://www.example.com", "x"));
                 sargs.declareNamespace("p", "http://www.example.com");
 
-                final ExprContextStatic statEnv = sargs.build();
-
-                final BooleanExpr compiledExpr = compiler.compileBooleanExpr("$p:x", statEnv);
+                final BooleanExpr compiledExpr = compiler.compileBooleanExpr("$p:x", sargs);
 
                 final ExprContextDynamicArgs<N> dargs = tools.newExprContextDynamicArgs();
 
@@ -162,14 +155,12 @@ public abstract class XPathTestBase<N>
 
                 final XPathCompiler compiler = tools.newXPathCompiler();
 
-                final ExprContextStaticArgs sargs = tools.newExprContextStaticArgs();
+                final ExprContextStatic sargs = tools.newExprContextStaticArgs();
 
                 sargs.declareVariable(new QName("http://www.example.com", "x"));
                 sargs.declareNamespace("p", "http://www.example.com");
 
-                final ExprContextStatic statEnv = sargs.build();
-
-                final StringExpr stringExpr = compiler.compileStringExpr("concat('Hello',', ',$p:x,'!')", statEnv);
+                final StringExpr stringExpr = compiler.compileStringExpr("concat('Hello',', ',$p:x,'!')", sargs);
 
                 final ExprContextDynamicArgs<N> dargs = tools.newExprContextDynamicArgs();
 
@@ -191,14 +182,12 @@ public abstract class XPathTestBase<N>
 
                 final XPathCompiler compiler = tools.newXPathCompiler();
 
-                final ExprContextStaticArgs sargs = tools.newExprContextStaticArgs();
+                final ExprContextStatic sargs = tools.newExprContextStaticArgs();
 
                 sargs.declareVariable(new QName("http://www.example.com", "x"));
                 sargs.declareNamespace("p", "http://www.example.com");
 
-                final ExprContextStatic statEnv = sargs.build();
-
-                final StringExpr stringExpr = compiler.compileStringExpr("concat('Hello',', ',$p:x,'!')", statEnv);
+                final StringExpr stringExpr = compiler.compileStringExpr("concat('Hello',', ',$p:x,'!')", sargs);
 
                 final ExprContextDynamicArgs<N> dargs = tools.newExprContextDynamicArgs();
 
@@ -221,11 +210,9 @@ public abstract class XPathTestBase<N>
 
                 final XPathCompiler compiler = tools.newXPathCompiler();
 
-                final ExprContextStaticArgs sargs = tools.newExprContextStaticArgs();
+                final ExprContextStatic sargs = tools.newExprContextStaticArgs();
 
-                final ExprContextStatic statEnv = sargs.build();
-
-                final NumberExpr expr = compiler.compileNumberExpr("1 + 2 * 3", statEnv);
+                final NumberExpr expr = compiler.compileNumberExpr("1 + 2 * 3", sargs);
 
                 final ExprContextDynamicArgs<N> dargs = tools.newExprContextDynamicArgs();
 
@@ -244,14 +231,12 @@ public abstract class XPathTestBase<N>
 
                 final XPathCompiler compiler = tools.newXPathCompiler();
 
-                final ExprContextStaticArgs sargs = tools.newExprContextStaticArgs();
-
-                final ExprContextStatic statEnv = sargs.build();
+                final ExprContextStatic sargs = tools.newExprContextStaticArgs();
 
                 final NumberExpr numberExpr;
                 try
                 {
-                        numberExpr = compiler.compileNumberExpr("last()", statEnv);
+                        numberExpr = compiler.compileNumberExpr("last()", sargs);
                 }
                 catch (final ExprParseException e)
                 {
@@ -335,16 +320,14 @@ public abstract class XPathTestBase<N>
 
                 final XPathCompiler compiler = tools.newXPathCompiler();
 
-                final ExprContextStaticArgs sargs = tools.newExprContextStaticArgs();
+                final ExprContextStatic sargs = tools.newExprContextStaticArgs();
 
                 sargs.declareNamespace("nsb", "http://b.example");
-
-                final ExprContextStatic statEnv = sargs.build();
 
                 final NodeSetExpr expr;
                 try
                 {
-                        expr = compiler.compileNodeSetExpr("namespace::*", statEnv);
+                        expr = compiler.compileNodeSetExpr("namespace::*", sargs);
                 }
                 catch (final ExprParseException e)
                 {
@@ -406,16 +389,14 @@ public abstract class XPathTestBase<N>
 
                 final XPathCompiler compiler = tools.newXPathCompiler();
 
-                final ExprContextStaticArgs sargs = tools.newExprContextStaticArgs();
+                final ExprContextStatic sargs = tools.newExprContextStaticArgs();
 
                 final N contextNode = null;
-
-                final ExprContextStatic statEnv = sargs.build();
 
                 final NumberExpr numberExpr;
                 try
                 {
-                        numberExpr = compiler.compileNumberExpr("position()", statEnv);
+                        numberExpr = compiler.compileNumberExpr("position()", sargs);
                 }
                 catch (final ExprParseException e)
                 {
@@ -456,17 +437,15 @@ public abstract class XPathTestBase<N>
 
                 final XPathCompiler compiler = tools.newXPathCompiler();
 
-                final ExprContextStaticArgs sargs = tools.newExprContextStaticArgs();
+                final ExprContextStatic sargs = tools.newExprContextStaticArgs();
 
                 sargs.declareVariable(new QName("http://www.example.com", "x"));
                 sargs.declareNamespace("p", "http://www.example.com");
 
-                final ExprContextStatic statEnv = sargs.build();
-
                 final StringExpr stringExpr;
                 try
                 {
-                        stringExpr = compiler.compileStringExpr("concat('Hello',', ',$p:x,'!')", statEnv);
+                        stringExpr = compiler.compileStringExpr("concat('Hello',', ',$p:x,'!')", sargs);
                 }
                 catch (final ExprParseException e)
                 {

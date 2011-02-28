@@ -22,9 +22,9 @@ package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
-import org.genxdm.xpath.v10.iterators.NodeIteratorOnIterator;
+import org.genxdm.processor.xpath.v10.iterators.NodeIteratorOnIterator;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeIterator;
 
 public final class AncestorOrSelfAxisExpr 
     extends ReverseAxisExpr

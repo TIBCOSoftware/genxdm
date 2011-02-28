@@ -21,15 +21,16 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleExpr;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleNodeSetExpr;
 import org.genxdm.processor.xpath.v10.iterators.DifferenceNodeIterator;
-import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleNodeSetExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.expressions.ExprParseException;
-import org.genxdm.xpath.v10.expressions.NodeSetExpr;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.ExprParseException;
+import org.genxdm.xpath.v10.NodeIterator;
+import org.genxdm.xpath.v10.NodeSetExpr;
+import org.genxdm.xpath.v10.extend.IConvertibleExpr;
 
 /**
  * James Clark's extension function: node-set xt:difference(node-set, node-set)
@@ -42,7 +43,7 @@ final class DifferenceFunction
 		super();
 	}
 
-	ConvertibleExpr makeCallExpr(final ConvertibleExpr e1, final ConvertibleExpr e2, final ExprContextStatic statEnv) throws ExprParseException
+	ConvertibleExpr makeCallExpr(final IConvertibleExpr e1, final IConvertibleExpr e2, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		final NodeSetExpr nse1 = e1.makeNodeSetExpr(statEnv);
 		final NodeSetExpr nse2 = e2.makeNodeSetExpr(statEnv);

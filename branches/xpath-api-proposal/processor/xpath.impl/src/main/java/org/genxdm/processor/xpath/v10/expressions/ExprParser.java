@@ -36,16 +36,16 @@ import org.genxdm.processor.xpath.v10.tests.ElementTest;
 import org.genxdm.processor.xpath.v10.tests.NamespaceTest;
 import org.genxdm.processor.xpath.v10.tests.NodeTypeTest;
 import org.genxdm.processor.xpath.v10.tests.ProcessingInstructionTest;
+import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.Converter;
-import org.genxdm.xpath.v10.Function;
-import org.genxdm.xpath.v10.expressions.BooleanExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleNodeSetExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprParseException;
-import org.genxdm.xpath.v10.expressions.NodeSetExpr;
-import org.genxdm.xpath.v10.expressions.NumberExpr;
-import org.genxdm.xpath.v10.expressions.VariantExpr;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprParseException;
+import org.genxdm.xpath.v10.NodeSetExpr;
+import org.genxdm.xpath.v10.NumberExpr;
+import org.genxdm.xpath.v10.VariantExpr;
+import org.genxdm.xpath.v10.extend.Function;
+import org.genxdm.xpath.v10.extend.IConvertibleExpr;
+import org.genxdm.xpath.v10.extend.IConvertibleNodeSetExpr;
 
 /**
  * XPath expression parser / compiler extends the lexer ExprTokenizer
@@ -142,7 +142,7 @@ final class ExprParser
 	/**
 	 * A ConvertibleExpr allows for the casting of one type to another for the purpose of making a comparison
 	 */
-	ConvertibleExpr makeRelationalExpr(final Relation rel, final ConvertibleExpr e1, final ConvertibleExpr e2) throws ExprParseException
+	ConvertibleExpr makeRelationalExpr(final Relation rel, final IConvertibleExpr e1, final IConvertibleExpr e2) throws ExprParseException
 	{
 		// OPT: have some more expressions for non-variant cases
 		if (e1 instanceof NodeSetExpr || e2 instanceof NodeSetExpr || e1 instanceof VariantExpr || e2 instanceof VariantExpr)
@@ -171,9 +171,9 @@ final class ExprParser
 	//
 	// XPath production #25 AdditiveExpr
 	//
-	private ConvertibleExpr parseAdditiveExpr() throws ExprParseException
+	private IConvertibleExpr parseAdditiveExpr() throws ExprParseException
 	{
-		ConvertibleExpr expr = parseMultiplicativeExpr();
+		IConvertibleExpr expr = parseMultiplicativeExpr();
 		loop: for (;;)
 		{
 			switch (currentToken)
@@ -196,9 +196,9 @@ final class ExprParser
 	//
 	// XPath production #22
 	//
-	private ConvertibleExpr parseAndExpr() throws ExprParseException
+	private IConvertibleExpr parseAndExpr() throws ExprParseException
 	{
-		ConvertibleExpr expr = parseEqualityExpr();
+		IConvertibleExpr expr = parseEqualityExpr();
 		while (currentToken == TOK_AND)
 		{
 			next();
@@ -215,14 +215,14 @@ final class ExprParser
 	//
 	// We return the Arguments as an array of ConvertibleExprs
 	//
-	private ConvertibleExpr[] parseArgs() throws ExprParseException
+	private IConvertibleExpr[] parseArgs() throws ExprParseException
 	{
 		if (currentToken == TOK_RPAR)
 		{
 			next();
 			return (ConvertibleExpr[])Array.newInstance(ConvertibleExpr.class, 0);
 		}
-		ConvertibleExpr[] args = (ConvertibleExpr[])Array.newInstance(ConvertibleExpr.class, 1);
+		IConvertibleExpr[] args = (IConvertibleExpr[])Array.newInstance(ConvertibleExpr.class, 1);
 		for (;;)
 		{
 			args[args.length - 1] = parseOrExpr();
@@ -231,7 +231,7 @@ final class ExprParser
 				break;
 			}
 			next();
-			ConvertibleExpr[] oldArgs = args;
+			IConvertibleExpr[] oldArgs = args;
 			args = (ConvertibleExpr[])Array.newInstance(ConvertibleExpr.class, oldArgs.length + 1);
 			System.arraycopy(oldArgs, 0, args, 0, oldArgs.length);
 		}
@@ -242,9 +242,9 @@ final class ExprParser
 	//
 	// XPath Production #23
 	//
-	private ConvertibleExpr parseEqualityExpr() throws ExprParseException
+	private IConvertibleExpr parseEqualityExpr() throws ExprParseException
 	{
-		ConvertibleExpr expr = parseRelationalExpr();
+		IConvertibleExpr expr = parseRelationalExpr();
 		loop: for (;;)
 		{
 			switch (currentToken)
@@ -264,10 +264,10 @@ final class ExprParser
 		return expr;
 	}
 
-	public ConvertibleExpr parseExpr() throws ExprParseException
+	public IConvertibleExpr parseExpr() throws ExprParseException
 	{
 		next();
-		ConvertibleExpr expr = parseOrExpr();
+		IConvertibleExpr expr = parseOrExpr();
 		if (currentToken != TOK_EOF)
 		{
 			throw new ExprParseException("unexpected token");
@@ -278,10 +278,10 @@ final class ExprParser
 	//
 	// XPath production #26
 	//
-	private ConvertibleExpr parseMultiplicativeExpr() throws ExprParseException
+	private IConvertibleExpr parseMultiplicativeExpr() throws ExprParseException
 	{
 		// get the first part
-		ConvertibleExpr expr = parseUnaryExpr();
+		IConvertibleExpr expr = parseUnaryExpr();
 		loop: for (;;)
 		{
 			switch (currentToken)
@@ -461,9 +461,9 @@ final class ExprParser
 	//
 	// XPath Production #21
 	//
-	private ConvertibleExpr parseOrExpr() throws ExprParseException
+	private IConvertibleExpr parseOrExpr() throws ExprParseException
 	{
-		ConvertibleExpr expr = parseAndExpr();
+		IConvertibleExpr expr = parseAndExpr();
 		while (currentToken == TOK_OR)
 		{
 			next();
@@ -475,7 +475,7 @@ final class ExprParser
 	//
 	// XPath production #19
 	//
-	private ConvertibleExpr parsePathExpr() throws ExprParseException
+	private IConvertibleExpr parsePathExpr() throws ExprParseException
 	{
 		if (tokenStartsStep())
 		{
@@ -508,7 +508,7 @@ final class ExprParser
 		// (production #3)
 		//
 
-		ConvertibleExpr expr = parsePrimaryExpr();
+		IConvertibleExpr expr = parsePrimaryExpr();
 
 		// Production 20 requires at least one primary expression
 		// and any number of predicates
@@ -562,9 +562,9 @@ final class ExprParser
 	// Number (prod #30) OR
 	// FunctionCall (prod #16)
 	//
-	private ConvertibleExpr parsePrimaryExpr() throws ExprParseException
+	private IConvertibleExpr parsePrimaryExpr() throws ExprParseException
 	{
-		ConvertibleExpr expr;
+		IConvertibleExpr expr;
 		switch (currentToken)
 		{
 			case TOK_VARIABLE_REF:
@@ -649,7 +649,7 @@ final class ExprParser
 				// return function.makeCallExpr(parseArgs(), node);
 				// }
 				// }
-				ConvertibleExpr[] args = parseArgs();
+				IConvertibleExpr[] args = parseArgs();
 				VariantExpr[] variantArgs = (VariantExpr[])Array.newInstance(VariantExpr.class, args.length);
 				for (int i = 0; i < args.length; i++)
 				{
@@ -674,9 +674,9 @@ final class ExprParser
 	// followed by a comparison operator and another
 	// RelationalExpr
 	//
-	private ConvertibleExpr parseRelationalExpr() throws ExprParseException
+	private IConvertibleExpr parseRelationalExpr() throws ExprParseException
 	{
-		ConvertibleExpr expr = parseAdditiveExpr();
+		IConvertibleExpr expr = parseAdditiveExpr();
 		loop: for (;;)
 		{
 			switch (currentToken)
@@ -715,7 +715,7 @@ final class ExprParser
 	//
 	// RelativeLocationPath -- XPath production #3
 	//
-	private ConvertibleNodeSetExpr parseRelativeLocationPath() throws ExprParseException
+	private IConvertibleNodeSetExpr parseRelativeLocationPath() throws ExprParseException
 	{
 		ConvertibleNodeSetExpr step = parseStep();
 		if (currentToken == TOK_SLASH)
@@ -778,7 +778,7 @@ final class ExprParser
 	// or a union expression (or group)
 	// or a path expression
 	//
-	private ConvertibleExpr parseUnaryExpr() throws ExprParseException
+	private IConvertibleExpr parseUnaryExpr() throws ExprParseException
 	{
 		if (currentToken == TOK_MINUS)
 		{
@@ -794,9 +794,9 @@ final class ExprParser
 	// any expression which may contain alternative
 	// path expressions (separated by the or operator "|")
 	//
-	private ConvertibleExpr parseUnionExpr() throws ExprParseException
+	private IConvertibleExpr parseUnionExpr() throws ExprParseException
 	{
-		ConvertibleExpr expr = parsePathExpr();
+		IConvertibleExpr expr = parsePathExpr();
 		while (currentToken == TOK_VBAR)
 		{
 			next();

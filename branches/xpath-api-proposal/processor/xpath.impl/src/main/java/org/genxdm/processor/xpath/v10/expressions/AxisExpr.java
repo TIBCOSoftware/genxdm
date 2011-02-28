@@ -21,8 +21,7 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.NodeKind;
-import org.genxdm.xpath.v10.expressions.BooleanExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleNodeSetExpr;
+import org.genxdm.xpath.v10.BooleanExpr;
 
 public abstract class AxisExpr
     extends ConvertibleNodeSetExpr 
