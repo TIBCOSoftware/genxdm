@@ -20,7 +20,7 @@
  */
 package org.genxdm.xpath.v10.expressions;
 
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 import org.genxdm.xpath.v10.Converter;
 import org.genxdm.xpath.v10.variants.BooleanVariant;
 import org.genxdm.xpath.v10.variants.Variant;

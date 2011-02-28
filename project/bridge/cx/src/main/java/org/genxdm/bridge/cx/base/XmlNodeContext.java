@@ -17,18 +17,18 @@ package org.genxdm.bridge.cx.base;
 
 import javax.xml.stream.XMLReporter;
 
+import org.genxdm.Cursor;
 import org.genxdm.Feature;
-import org.genxdm.Resolver;
-import org.genxdm.base.Cursor;
-import org.genxdm.base.Model;
-import org.genxdm.base.ProcessingContext;
-import org.genxdm.base.io.DocumentHandler;
-import org.genxdm.base.io.FragmentBuilder;
-import org.genxdm.base.mutable.MutableContext;
+import org.genxdm.Model;
+import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridge.cx.typed.TypedXmlNodeContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.DocumentHandler;
+import org.genxdm.io.FragmentBuilder;
+import org.genxdm.io.Resolver;
+import org.genxdm.mutable.MutableContext;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.processor.io.DefaultDocumentHandler;
 import org.genxdm.typed.TypedContext;

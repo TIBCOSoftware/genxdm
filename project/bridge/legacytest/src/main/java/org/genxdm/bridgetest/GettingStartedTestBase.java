@@ -21,9 +21,9 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
-import org.genxdm.base.Model;
-import org.genxdm.base.ProcessingContext;
-import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.Model;
+import org.genxdm.ProcessingContext;
+import org.genxdm.io.FragmentBuilder;
 import org.genxdm.bridgekit.tree.Ordering;
 import org.genxdm.names.NameSource;
 

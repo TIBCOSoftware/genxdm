@@ -15,7 +15,7 @@
  */
 package org.genxdm.typed;
 
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.nodes.TypedNodeInformer;
 import org.genxdm.typed.io.SequenceHandler;

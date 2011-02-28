@@ -20,7 +20,7 @@
  */
 package org.genxdm.processor.xpath.v10.patterns;
 
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
 import org.genxdm.xpath.v10.expressions.ExprException;
 

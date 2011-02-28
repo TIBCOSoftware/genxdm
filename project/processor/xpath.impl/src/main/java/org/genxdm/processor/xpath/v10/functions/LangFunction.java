@@ -22,7 +22,7 @@ package org.genxdm.processor.xpath.v10.functions;
 
 import javax.xml.XMLConstants;
 
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 import org.genxdm.xpath.v10.expressions.ConvertibleBooleanExpr;
 import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
 import org.genxdm.xpath.v10.expressions.ExprContextDynamic;

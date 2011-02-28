@@ -20,8 +20,8 @@
  */
 package org.genxdm.processor.xpath.v10.expressions;
 
+import org.genxdm.Model;
 import org.genxdm.NodeKind;
-import org.genxdm.base.Model;
 import org.genxdm.processor.xpath.v10.iterators.SingleNodeIterator;
 import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
 import org.genxdm.xpath.v10.iterators.NodeIterator;

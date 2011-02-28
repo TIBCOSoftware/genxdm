@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.bridgetest.base;
+package org.genxdm.bridgetest;
 
+import org.genxdm.Cursor;
 import org.genxdm.Feature;
-import org.genxdm.base.Cursor;
-import org.genxdm.base.Model;
-import org.genxdm.base.ProcessingContext;
-import org.genxdm.base.io.DocumentHandler;
-import org.genxdm.base.io.FragmentBuilder;
-import org.genxdm.base.mutable.MutableContext;
-import org.genxdm.bridgetest.TestBase;
+import org.genxdm.Model;
+import org.genxdm.ProcessingContext;
+import org.genxdm.io.DocumentHandler;
+import org.genxdm.io.FragmentBuilder;
+import org.genxdm.mutable.MutableContext;
 import org.genxdm.typed.TypedContext;
 
 import org.junit.Test;

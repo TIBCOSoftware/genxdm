@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridge.dom.tests;
 
-import org.genxdm.base.ProcessingContext;
+import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.dom.DomProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgetest.typed.CastingTestBase;

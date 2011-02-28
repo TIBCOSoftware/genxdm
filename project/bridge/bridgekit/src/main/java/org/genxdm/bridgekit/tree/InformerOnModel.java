@@ -19,8 +19,8 @@ import java.net.URI;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.Model;
 import org.genxdm.NodeKind;
-import org.genxdm.base.Model;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NamespaceBinding;
 import org.genxdm.nodes.Informer;

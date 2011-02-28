@@ -15,7 +15,7 @@
  */
 package org.genxdm.xpath.v10;
 
-import org.genxdm.base.Model;
+import org.genxdm.Model;
 import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
 import org.genxdm.xpath.v10.expressions.ExprException;
 import org.genxdm.xpath.v10.iterators.NodeIterator;

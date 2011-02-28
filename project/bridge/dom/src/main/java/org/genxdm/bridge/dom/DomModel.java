@@ -26,9 +26,8 @@ import java.util.Map;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.Model;
 import org.genxdm.NodeKind;
-import org.genxdm.base.Model;
-import org.genxdm.base.io.ContentHandler;
 import org.genxdm.bridge.dom.axes.AxisAncestorIterable;
 import org.genxdm.bridge.dom.axes.AxisAncestorOrSelfIterable;
 import org.genxdm.bridge.dom.axes.AxisChildElementIterable;
@@ -45,6 +44,7 @@ import org.genxdm.bridgekit.names.QNameComparator;
 import org.genxdm.bridgekit.tree.Ordering;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.ContentHandler;
 import org.genxdm.names.NamespaceBinding;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;

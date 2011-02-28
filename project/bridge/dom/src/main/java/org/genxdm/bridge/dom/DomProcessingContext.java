@@ -17,20 +17,20 @@ package org.genxdm.bridge.dom;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.genxdm.Cursor;
 import org.genxdm.Feature;
-import org.genxdm.base.Cursor;
-import org.genxdm.base.Model;
-import org.genxdm.base.ProcessingContext;
-import org.genxdm.base.io.FragmentBuilder;
-import org.genxdm.base.mutable.MutableContext;
-import org.genxdm.base.mutable.MutableCursor;
-import org.genxdm.base.mutable.MutableModel;
+import org.genxdm.Model;
+import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.dom.enhanced.DomSAProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.tree.BookmarkOnModel;
 import org.genxdm.bridgekit.tree.CursorOnModel;
 import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.FragmentBuilder;
+import org.genxdm.mutable.MutableContext;
+import org.genxdm.mutable.MutableCursor;
+import org.genxdm.mutable.MutableModel;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
 import org.w3c.dom.Node;

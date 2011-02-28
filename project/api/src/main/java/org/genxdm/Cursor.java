@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.base;
+package org.genxdm;
 
 import org.genxdm.axes.Repositioner;
-import org.genxdm.base.io.ContentHandler;
 import org.genxdm.exceptions.GxmlException;
+import org.genxdm.io.ContentHandler;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.nodes.Informer;
 

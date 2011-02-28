@@ -20,12 +20,12 @@ import java.net.URISyntaxException;
 
 import javax.xml.XMLConstants;
 
-import org.genxdm.DtdAttributeKind;
-import org.genxdm.base.Cursor;
-import org.genxdm.base.Model;
-import org.genxdm.base.io.FragmentBuilder;
+import org.genxdm.Cursor;
+import org.genxdm.Model;
 import org.genxdm.bridgekit.ProcessingContextFactory;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.DtdAttributeKind;
+import org.genxdm.io.FragmentBuilder;
 import org.genxdm.nodes.Bookmark;
 
 /** Base class for deriving contract-based test cases.

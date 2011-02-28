@@ -13,28 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.net.URI;
-
+package org.genxdm.io;
 
 /**
- * Resolves requests for XML documents based upon a URI.
+ * Enumeration representing possible types of events in the XQuery Data Model.
  */
-public interface Resolver
+public enum EventKind
 {
-	/**
-	 * Resolves a {@link URI} into an {@link InputStream} and a systemID.
-	 * 
-	 * @param location
-	 *            The {@link URI} to be resolved.
-	 * @throws IOException
-	 *             if an exception occurs while opening the {@link InputStream}.
-	 */
-	Resolved<InputStream> resolveInputStream(URI location) throws IOException;
-	
-	Resolved<Reader> resolveReader(URI location) throws IOException;
+    START_SEQUENCE,
+    END_SEQUENCE,
+
+    START_DOCUMENT,
+    END_DOCUMENT,
+
+    START_ELEMENT,
+    END_ELEMENT,
+
+    ATTRIBUTE,
+    CHARACTERS,
+    SPACE,
+    NAMESPACE,
+    PROCESSING_INSTRUCTION,
+    COMMENT,
+    ATOM
 }

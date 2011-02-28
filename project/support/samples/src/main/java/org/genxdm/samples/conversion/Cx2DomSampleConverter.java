@@ -15,7 +15,7 @@
  */
 package org.genxdm.samples.conversion;
 
-import org.genxdm.base.ProcessingContext;
+import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.cx.base.XmlNodeContext;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridge.dom.DomProcessingContext;

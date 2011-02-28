@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.base;
+package org.genxdm;
 
-import org.genxdm.base.io.DocumentHandler;
-import org.genxdm.base.io.DocumentHandlerFactory;
-import org.genxdm.base.io.FragmentBuilder;
-import org.genxdm.base.mutable.MutableContext;
+import org.genxdm.io.DocumentHandler;
+import org.genxdm.io.DocumentHandlerFactory;
+import org.genxdm.io.FragmentBuilder;
+import org.genxdm.mutable.MutableContext;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
 

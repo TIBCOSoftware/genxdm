@@ -21,9 +21,9 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 
-import org.genxdm.base.mutable.MutableModel;
-import org.genxdm.base.mutable.NodeFactory;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.mutable.MutableModel;
+import org.genxdm.mutable.NodeFactory;
 
 public class AxiomMutableModel
     extends AxiomModel

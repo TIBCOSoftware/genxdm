@@ -13,27 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm;
+package org.genxdm.io;
+
+import org.genxdm.NodeSource;
 
 /**
- * Enumeration representing possible types of events in the XQuery Data Model.
+ * An instance of this interface assembles the events into an XML tree representation.
+ * 
+ * The tree built by this interface contains text nodes in string form; it does not
+ * contain any atoms or type information.
  */
-public enum EventKind
+public interface FragmentBuilder<N>
+    extends ContentHandler, NodeSource<N>
 {
-    START_SEQUENCE,
-    END_SEQUENCE,
+    /**
+     * Resets the builder by clearing the list of nodes that have been constructed in earlier executions.
+     */
+    void reset();
 
-    START_DOCUMENT,
-    END_DOCUMENT,
-
-    START_ELEMENT,
-    END_ELEMENT,
-
-    ATTRIBUTE,
-    CHARACTERS,
-    SPACE,
-    NAMESPACE,
-    PROCESSING_INSTRUCTION,
-    COMMENT,
-    ATOM
 }
