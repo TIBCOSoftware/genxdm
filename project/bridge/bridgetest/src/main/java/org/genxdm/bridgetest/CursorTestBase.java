@@ -15,8 +15,14 @@
  */
 package org.genxdm.bridgetest;
 
-import org.genxdm.Cursor;
+import static org.junit.Assert.assertNotNull;
 
+import org.genxdm.Cursor;
+import org.genxdm.Feature;
+import org.genxdm.ProcessingContext;
+import org.genxdm.bridgetest.utilities.Events;
+import org.genxdm.exceptions.GxmlException;
+import org.genxdm.io.FragmentBuilder;
 import org.junit.Test;
 
 public abstract class CursorTestBase<N>
@@ -24,11 +30,31 @@ public abstract class CursorTestBase<N>
 {
     @Test
     public void writes()
+        throws GxmlException
     {
+        ProcessingContext<N> context = newProcessingContext();
+        
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        assertNotNull(builder);
+        Events<N> matcher = new Events<N>(builder);
+        if (!context.isSupported(Feature.DOCUMENT_URI))
+            matcher.ignoreDocumentURI();
+        matcher.record();
+        N doc = createComplexTestDocument(matcher);
+        assertNotNull(doc);
+
+        Cursor<N> cursor = context.newCursor(doc);
+        assertNotNull(cursor);
+
+        matcher.match();
+        cursor.write(matcher);
+        
+        // TODO: more comparisons?
     }
     
     @Test
     public void comparisons()
     {
+        // TODO
     }
 }
