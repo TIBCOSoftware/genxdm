@@ -1,7 +1,6 @@
 package org.genxdm.bridge.axiom.tests;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
-import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.axiom.AxiomProcessingContext;
 import org.genxdm.bridgetest.nodes.BookmarkBase;
 
@@ -10,9 +9,9 @@ public class AxiomBookmarkTest
 {
 
     @Override
-    public ProcessingContext<Object> newProcessingContext() {
+    public AxiomProcessingContext newProcessingContext()
+    {
         return new AxiomProcessingContext(new OMLinkedListImplFactory());
     }
-    
 
 }

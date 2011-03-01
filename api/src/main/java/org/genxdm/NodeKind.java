@@ -209,4 +209,5 @@ public enum NodeKind
 	public abstract boolean isNamespace();
 	
 	public abstract boolean isContainer();
+	
 }
