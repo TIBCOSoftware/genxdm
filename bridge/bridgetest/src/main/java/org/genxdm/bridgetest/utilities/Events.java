@@ -136,7 +136,7 @@ public class Events<N> implements FragmentBuilder<N>
             }
             case MATCH:
             {
-                childPreMatch();
+                closeStartTag();
                 Event e = recorded.remove();
                 if ( (e.kind != EventKind.COMMENT) || !e.value.equals(value) )
                     throw new GxmlException("Mismatch. Expected: " + e.toString()  + " ; Found: COMMENT{}{" + value + "}");
@@ -179,7 +179,7 @@ public class Events<N> implements FragmentBuilder<N>
             }
             case MATCH:
             {
-                childPreMatch();
+                closeStartTag();
                 Event e = recorded.remove();
                 if (e.kind != EventKind.END_ELEMENT)
                     throw new GxmlException("Mismatch. Expected: " + e.toString() + " ; Found: END_ELEMENT{}{}");
@@ -226,7 +226,7 @@ public class Events<N> implements FragmentBuilder<N>
             }
             case MATCH:
             {
-                childPreMatch();
+                closeStartTag();
                 Event e = recorded.remove();
                 if ( (e.kind != EventKind.PROCESSING_INSTRUCTION) || !e.name.equals(target) || !e.value.equals(data) )
                     throw new GxmlException("Mismatch. Expected: " + e.toString() + " ; Found: PROCESSING_INSTRUCTION{}" + target + "{" + data + "}");
@@ -273,7 +273,7 @@ public class Events<N> implements FragmentBuilder<N>
             }
             case MATCH:
             {
-                childPreMatch();
+                closeStartTag();
                 Event e = recorded.remove();
                 if ( (e.kind != EventKind.START_ELEMENT) || !e.namespace.equals(namespaceURI) || !e.name.equals(localName) )
                     throw new GxmlException("Mismatch. Expected: " + e.toString() + " ; Found: START_ELEMENT{" + namespaceURI + "}" + localName + "{}");
@@ -297,7 +297,7 @@ public class Events<N> implements FragmentBuilder<N>
             }
             case MATCH:
             {
-                childPreMatch();
+                closeStartTag();
                 Event e = recorded.remove();
                 if ( (e.kind != EventKind.CHARACTERS) || !e.value.equals(data) )
                     throw new GxmlException("Mismatch. Expected: " + e.toString() + " ; Found: CHARACTERS{}{" + data + "}");
@@ -305,7 +305,7 @@ public class Events<N> implements FragmentBuilder<N>
         }
     }
     
-    private void childPreMatch()
+    private void closeStartTag()
         throws GxmlException
     {
         if (!namespacesComplete)

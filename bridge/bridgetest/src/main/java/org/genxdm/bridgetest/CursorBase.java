@@ -15,22 +15,21 @@
  */
 package org.genxdm.bridgetest;
 
+import static org.junit.Assert.assertNotNull;
+
+import org.genxdm.Cursor;
 import org.genxdm.Feature;
-import org.genxdm.Model;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridgetest.utilities.Events;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.io.FragmentBuilder;
-
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
-
-public abstract class ModelTestBase<N>
+public abstract class CursorBase<N>
     extends TestBase<N>
 {
     @Test
-    public void streaming()
+    public void writes()
         throws GxmlException
     {
         ProcessingContext<N> context = newProcessingContext();
@@ -44,11 +43,11 @@ public abstract class ModelTestBase<N>
         N doc = createComplexTestDocument(matcher);
         assertNotNull(doc);
 
-        Model<N> model = context.getModel();
-        assertNotNull(model);
+        Cursor<N> cursor = context.newCursor(doc);
+        assertNotNull(cursor);
 
         matcher.match();
-        model.stream(doc, true, matcher);
+        cursor.write(matcher);
         
         // TODO: more comparisons?
     }
@@ -58,5 +57,4 @@ public abstract class ModelTestBase<N>
     {
         // TODO
     }
-    
 }

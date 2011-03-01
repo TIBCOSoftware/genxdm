@@ -39,7 +39,7 @@ import static org.junit.Assert.fail;
  *
  * @param <N> the node handle
  */
-public abstract class ContextTestBase<N> 
+public abstract class ContextBase<N> 
     extends TestBase<N> 
 {
     
