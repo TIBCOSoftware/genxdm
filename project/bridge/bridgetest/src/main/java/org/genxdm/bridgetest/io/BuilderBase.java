@@ -36,7 +36,7 @@ import org.junit.Test;
 
 // Note: this *also* handles the testing of ContentHandler and NodeSource,
 // since FragmentBuilder is the canonical implementation of both.
-public abstract class BuilderTestBase<N>
+public abstract class BuilderBase<N>
     extends TestBase<N>
 {
     @Test
