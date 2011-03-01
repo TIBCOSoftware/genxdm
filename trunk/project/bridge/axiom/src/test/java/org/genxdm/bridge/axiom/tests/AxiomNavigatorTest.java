@@ -16,13 +16,11 @@
 package org.genxdm.bridge.axiom.tests;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
-import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.axiom.AxiomProcessingContext;
 import org.genxdm.bridgetest.axes.NavigatorBase;
 
 /**
  * Test Class for Cursor unit tests for the Navigation methods for Axiom Tree Model. 
- * @author Ashutosh
  *
  */
 public class AxiomNavigatorTest
@@ -30,7 +28,7 @@ public class AxiomNavigatorTest
 {
 
     @Override
-    public ProcessingContext<Object> newProcessingContext()
+    public AxiomProcessingContext newProcessingContext()
     {
         return new AxiomProcessingContext(new OMLinkedListImplFactory());
     }
