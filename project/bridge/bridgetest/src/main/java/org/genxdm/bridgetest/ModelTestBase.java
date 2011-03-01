@@ -49,11 +49,14 @@ public abstract class ModelTestBase<N>
 
         matcher.match();
         model.stream(doc, true, matcher);
+        
+        // TODO: more comparisons?
     }
     
     @Test
     public void comparisons()
     {
+        // TODO
     }
     
 }
