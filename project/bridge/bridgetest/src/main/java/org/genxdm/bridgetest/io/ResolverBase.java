@@ -31,7 +31,7 @@ import static org.junit.Assert.assertNotNull;
  *
  * @author aaletal@gmail.com
  */
-abstract public class ResolverTestBase<N>
+abstract public class ResolverBase<N>
     extends TestBase<N>
 {
     /** Bridges testing resolution must implement.
