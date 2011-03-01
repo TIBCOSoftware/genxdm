@@ -1361,11 +1361,11 @@ public class AxiomModel
                     handler.text(text.getText());
                 }
                 break;
-                case DOCUMENT:
+            case DOCUMENT:
                 {
                     OMDocument doc = AxiomSupport.dynamicDowncastDocument(node);
                     // TODO: i don't think that this is quite right.
-                    handler.startDocument(getDocumentURI(node), null);
+                    handler.startDocument(getDocumentURI(node), "");
                     try
                     {
                         Iterator it = doc.getChildren();
