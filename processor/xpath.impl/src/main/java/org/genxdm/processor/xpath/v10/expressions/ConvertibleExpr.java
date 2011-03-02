@@ -20,38 +20,17 @@
  */
 package org.genxdm.processor.xpath.v10.expressions;
 
+import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.ExprContextStatic;
 import org.genxdm.xpath.v10.ExprParseException;
-import org.genxdm.xpath.v10.extend.IConvertibleBooleanExpr;
+import org.genxdm.xpath.v10.NumberExpr;
 import org.genxdm.xpath.v10.extend.IConvertibleExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleNumberExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleStringExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleVariantExpr;
-
 
 /**
  * An XPath expression (component) which can be cast to any of several types as needed
  */
 public abstract class ConvertibleExpr implements IConvertibleExpr 
 {
-	/* (non-Javadoc)
-	 * @see org.genxdm.xpath.v10.expressions.IConvertibleExpr#makeStringExpr(org.genxdm.xpath.v10.expressions.ExprContextStatic)
-	 */
-	@Override
-	public abstract IConvertibleStringExpr makeStringExpr(final ExprContextStatic statEnv);
-
-	/* (non-Javadoc)
-	 * @see org.genxdm.xpath.v10.expressions.IConvertibleExpr#makeBooleanExpr(org.genxdm.xpath.v10.expressions.ExprContextStatic)
-	 */
-	@Override
-	public abstract IConvertibleBooleanExpr makeBooleanExpr(final ExprContextStatic statEnv);
-
-	/* (non-Javadoc)
-	 * @see org.genxdm.xpath.v10.expressions.IConvertibleExpr#makeVariantExpr(org.genxdm.xpath.v10.expressions.ExprContextStatic)
-	 */
-	@Override
-	public abstract IConvertibleVariantExpr makeVariantExpr(final ExprContextStatic statEnv);
-
 	/* (non-Javadoc)
 	 * @see org.genxdm.xpath.v10.expressions.IConvertibleExpr#makeNodeSetExpr(org.genxdm.xpath.v10.expressions.ExprContextStatic)
 	 */
@@ -65,16 +44,16 @@ public abstract class ConvertibleExpr implements IConvertibleExpr
 	 * @see org.genxdm.xpath.v10.expressions.IConvertibleExpr#makeNumberExpr(org.genxdm.xpath.v10.expressions.ExprContextStatic)
 	 */
 	@Override
-	public IConvertibleNumberExpr makeNumberExpr(final ExprContextStatic statEnv)
+	public NumberExpr makeNumberExpr(final ExprContextStatic statEnv)
 	{
-		return makeStringExpr(statEnv).makeNumberExpr(statEnv);
+		return WrappedStringExpr.wrap(makeStringExpr(statEnv)).makeNumberExpr(statEnv);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.genxdm.xpath.v10.expressions.IConvertibleExpr#makePredicateExpr(org.genxdm.xpath.v10.expressions.ExprContextStatic)
 	 */
 	@Override
-	public IConvertibleBooleanExpr makePredicateExpr(final ExprContextStatic statEnv)
+	public BooleanExpr makePredicateExpr(final ExprContextStatic statEnv)
 	{
 		return makeBooleanExpr(statEnv);
 	}

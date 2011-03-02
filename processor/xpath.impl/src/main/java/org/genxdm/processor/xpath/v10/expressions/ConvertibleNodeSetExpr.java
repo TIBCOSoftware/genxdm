@@ -22,15 +22,15 @@ package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
 import org.genxdm.processor.xpath.v10.variants.NodeSetVariant;
+import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.Converter;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
 import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.Variant;
-import org.genxdm.xpath.v10.extend.IConvertibleBooleanExpr;
+import org.genxdm.xpath.v10.VariantExpr;
 import org.genxdm.xpath.v10.extend.IConvertibleNodeSetExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleStringExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleVariantExpr;
 
 /**
  * A compiled XPath pattern component which returns a Node set, but is convertible (castable) to a String expression, boolean expression or VariantExpression convertible (castable) to a String expression, boolean expression or VariantExpression convertible (castable) to
@@ -41,7 +41,7 @@ public abstract class ConvertibleNodeSetExpr
     implements IConvertibleNodeSetExpr
 {
 
-	public IConvertibleStringExpr makeStringExpr(ExprContextStatic statEnv)
+	public StringExpr makeStringExpr(ExprContextStatic statEnv)
 	{
 		return new ConvertibleStringExpr()
 		{
@@ -55,7 +55,7 @@ public abstract class ConvertibleNodeSetExpr
 	/**
      *
      */
-	public IConvertibleBooleanExpr makeBooleanExpr(ExprContextStatic statEnv)
+	public BooleanExpr makeBooleanExpr(ExprContextStatic statEnv)
 	{
 		return new ConvertibleBooleanExpr( )
 		{
@@ -78,7 +78,7 @@ public abstract class ConvertibleNodeSetExpr
 	/**
      *
      */
-	public IConvertibleVariantExpr makeVariantExpr(final ExprContextStatic statEnv)
+	public VariantExpr makeVariantExpr(final ExprContextStatic statEnv)
 	{
 		return new ConvertibleVariantExpr()
 		{

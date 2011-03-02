@@ -79,7 +79,7 @@ import org.genxdm.xpath.v10.ExprContextStatic;
 import org.genxdm.xpath.v10.NodeSetExpr;
 import org.genxdm.xpath.v10.XPathCompiler;
 import org.genxdm.xpath.v10.extend.Function;
-import org.genxdm.xpath.v10.extend.IConvertibleNodeSetExpr;
+import org.genxdm.xpath.v10.extend.IConvertibleExpr;
 import org.genxdm.xpath.v10.extend.XPathExtendToolkit;
 
 final class XPathToolkitImpl
@@ -167,7 +167,7 @@ final class XPathToolkitImpl
 	}
 
 	@Override
-	public IConvertibleNodeSetExpr createConvertibleNodeSetExpr(
+	public IConvertibleExpr createConvertibleNodeSetExpr(
 			NodeSetExpr nodeSetExpr, int optimizeFlags) {
 		return new WrappedNodeSetExpr(nodeSetExpr, optimizeFlags);
 	}

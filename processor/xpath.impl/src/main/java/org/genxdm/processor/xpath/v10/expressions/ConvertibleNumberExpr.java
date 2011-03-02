@@ -22,29 +22,29 @@ package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
 import org.genxdm.processor.xpath.v10.variants.NumberVariant;
+import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.Converter;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
 import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.NumberExpr;
+import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.Variant;
-import org.genxdm.xpath.v10.extend.IConvertibleBooleanExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleNumberExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleStringExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleVariantExpr;
+import org.genxdm.xpath.v10.VariantExpr;
 
 public abstract class ConvertibleNumberExpr 
     extends ConvertibleExpr
-    implements IConvertibleNumberExpr
+    implements NumberExpr
 {
 
 	@Override
-	public IConvertibleNumberExpr makeNumberExpr(final ExprContextStatic statEnv)
+	public NumberExpr makeNumberExpr(final ExprContextStatic statEnv)
 	{
 		return this;
 	}
 
 	@Override
-	public IConvertibleBooleanExpr makePredicateExpr(final ExprContextStatic statEnv)
+	public BooleanExpr makePredicateExpr(final ExprContextStatic statEnv)
 	{
 		return new ConvertibleBooleanExpr()
 		{
@@ -55,7 +55,7 @@ public abstract class ConvertibleNumberExpr
 		};
 	}
 
-	public IConvertibleBooleanExpr makeBooleanExpr(final ExprContextStatic statEnv)
+	public BooleanExpr makeBooleanExpr(final ExprContextStatic statEnv)
 	{
 		return new ConvertibleBooleanExpr()
 		{
@@ -66,7 +66,7 @@ public abstract class ConvertibleNumberExpr
 		};
 	}
 
-	public IConvertibleVariantExpr makeVariantExpr(final ExprContextStatic statEnv)
+	public VariantExpr makeVariantExpr(final ExprContextStatic statEnv)
 	{
 		return new ConvertibleVariantExpr()
 		{
@@ -77,7 +77,7 @@ public abstract class ConvertibleNumberExpr
 		};
 	}
 
-	public IConvertibleStringExpr makeStringExpr(final ExprContextStatic statEnv)
+	public StringExpr makeStringExpr(final ExprContextStatic statEnv)
 	{
 		return new ConvertibleStringExpr()
 		{

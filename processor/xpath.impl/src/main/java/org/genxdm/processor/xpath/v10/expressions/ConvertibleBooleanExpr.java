@@ -22,24 +22,24 @@ package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
 import org.genxdm.processor.xpath.v10.variants.BooleanVariant;
+import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.Converter;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
 import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.Variant;
-import org.genxdm.xpath.v10.extend.IConvertibleBooleanExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleStringExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleVariantExpr;
+import org.genxdm.xpath.v10.VariantExpr;
 
 /**
  * An expression which is a boolean, but depending on its use, may be converted to a Number, String or Object on its use, may be converted to a Number, String or Object
  */
 public abstract class ConvertibleBooleanExpr
     extends ConvertibleExpr
-    implements IConvertibleBooleanExpr
+    implements BooleanExpr
 {
 
-	public IConvertibleStringExpr makeStringExpr(final ExprContextStatic statEnv)
+	public StringExpr makeStringExpr(final ExprContextStatic statEnv)
 	{
 		return new ConvertibleStringExpr()
 		{
@@ -62,12 +62,12 @@ public abstract class ConvertibleBooleanExpr
 		};
 	}
 
-	public IConvertibleBooleanExpr makeBooleanExpr(final ExprContextStatic statEnv)
+	public BooleanExpr makeBooleanExpr(final ExprContextStatic statEnv)
 	{
 		return this;
 	}
 
-	public IConvertibleVariantExpr makeVariantExpr(final ExprContextStatic statEnv)
+	public VariantExpr makeVariantExpr(final ExprContextStatic statEnv)
 	{
 		return new ConvertibleVariantExpr()
 		{
