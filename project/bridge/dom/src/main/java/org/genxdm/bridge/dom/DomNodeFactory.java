@@ -87,12 +87,6 @@ public class DomNodeFactory
         return DomSupport.createElement(m_doc, namespaceURI, localName, prefix);
     }
 
-    public Node createNamespace(String prefix, String namespaceURI)
-    {
-        PreCondition.assertNotNull(m_doc, "m_doc");
-        return DomSupport.createNamespace(m_doc, prefix, namespaceURI);
-    }
-
     public Node createProcessingInstruction(String target, String data)
     {
         PreCondition.assertArgumentNotNull(data, "data");
