@@ -30,15 +30,15 @@ import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.Variant;
 import org.genxdm.xpath.v10.VariantExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleNodeSetExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleNodeSetExpr;
 
 /**
  * A compiled XPath pattern component which returns a Node set, but is convertible (castable) to a String expression, boolean expression or VariantExpression convertible (castable) to a String expression, boolean expression or VariantExpression convertible (castable) to
  * a String expression, boolean expression or VariantExpression convertible (castable) to a String expression, boolean expression or VariantExpression
  */
-public abstract class ConvertibleNodeSetExpr 
-    extends ConvertibleExpr
-    implements IConvertibleNodeSetExpr
+public abstract class ConvertibleNodeSetExprImpl 
+    extends ConvertibleExprImpl
+    implements ConvertibleNodeSetExpr
 {
 
 	public StringExpr makeStringExpr(ExprContextStatic statEnv)
@@ -47,7 +47,7 @@ public abstract class ConvertibleNodeSetExpr
 		{
 			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException
 			{
-				return Converter.toString(ConvertibleNodeSetExpr.this.nodeIterator(model, node, dynEnv), model);
+				return Converter.toString(ConvertibleNodeSetExprImpl.this.nodeIterator(model, node, dynEnv), model);
 			}
 		};
 	}
@@ -61,7 +61,7 @@ public abstract class ConvertibleNodeSetExpr
 		{
 			public <N> boolean booleanFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException
 			{
-				return Converter.toBoolean(ConvertibleNodeSetExpr.this.nodeIterator(model, node, dynEnv));
+				return Converter.toBoolean(ConvertibleNodeSetExprImpl.this.nodeIterator(model, node, dynEnv));
 			}
 		};
 	}
@@ -70,7 +70,7 @@ public abstract class ConvertibleNodeSetExpr
      *
      */
 	@Override
-	public ConvertibleNodeSetExpr makeNodeSetExpr(ExprContextStatic statEnv)
+	public ConvertibleNodeSetExprImpl makeNodeSetExpr(ExprContextStatic statEnv)
 	{
 		return this;
 	}
@@ -84,7 +84,7 @@ public abstract class ConvertibleNodeSetExpr
 		{
 			public <N> Variant<N> evaluateAsVariant(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
 			{
-				return new NodeSetVariant<N>(ConvertibleNodeSetExpr.this.nodeIterator(model, contextNode, dynEnv), model);
+				return new NodeSetVariant<N>(ConvertibleNodeSetExprImpl.this.nodeIterator(model, contextNode, dynEnv), model);
 			}
 		};
 	}
@@ -97,7 +97,7 @@ public abstract class ConvertibleNodeSetExpr
 	/**
 	 * Return an expression for this/expr
 	 */
-	public IConvertibleNodeSetExpr compose(final IConvertibleNodeSetExpr expr)
+	public ConvertibleNodeSetExpr compose(final ConvertibleNodeSetExpr expr)
 	{
 		final int opt1 = this.getOptimizeFlags();
 		final int opt2 = expr.getOptimizeFlags();

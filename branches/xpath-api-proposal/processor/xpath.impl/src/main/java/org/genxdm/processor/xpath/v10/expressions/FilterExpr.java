@@ -26,15 +26,15 @@ import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
-import org.genxdm.xpath.v10.extend.IConvertibleNodeSetExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleNodeSetExpr;
 
 final class FilterExpr 
-    extends ConvertibleNodeSetExpr
+    extends ConvertibleNodeSetExprImpl
 {
-	private final IConvertibleNodeSetExpr expr;
+	private final ConvertibleNodeSetExpr expr;
 	private final BooleanExpr predicate;
 
-	FilterExpr(final IConvertibleNodeSetExpr expr, final BooleanExpr predicate)
+	FilterExpr(final ConvertibleNodeSetExpr expr, final BooleanExpr predicate)
 	{
 		super();
 		this.expr = expr;

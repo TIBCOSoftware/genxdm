@@ -2,7 +2,7 @@ package org.genxdm.xpath.v10.extend;
 
 import org.genxdm.xpath.v10.NodeSetExpr;
 
-public interface IConvertibleNodeSetExpr extends NodeSetExpr, IConvertibleExpr {
+public interface ConvertibleNodeSetExpr extends NodeSetExpr, ConvertibleExpr {
 
 	/**
 	 * If this is set, then all nodes in the result of eval(x, c) are guaranteed to be in the subtree rooted at x.
@@ -18,5 +18,5 @@ public interface IConvertibleNodeSetExpr extends NodeSetExpr, IConvertibleExpr {
 
 	public int getOptimizeFlags();
 
-	public IConvertibleNodeSetExpr compose(final IConvertibleNodeSetExpr expr);
+	public ConvertibleNodeSetExpr compose(final ConvertibleNodeSetExpr expr);
 }

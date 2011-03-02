@@ -4,14 +4,14 @@ import org.genxdm.Model;
 import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprException;
-import org.genxdm.xpath.v10.extend.IConvertibleExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 public class WrappedBooleanExpr extends ConvertibleBooleanExpr {
 
-	public static IConvertibleExpr wrap(BooleanExpr expr) {
+	public static ConvertibleExpr wrap(BooleanExpr expr) {
 		
-		if (expr instanceof IConvertibleExpr) {
-			return (IConvertibleExpr) expr;
+		if (expr instanceof ConvertibleExpr) {
+			return (ConvertibleExpr) expr;
 		}
 		
 		return new WrappedBooleanExpr(expr);

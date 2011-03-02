@@ -35,7 +35,7 @@ import org.genxdm.xpath.v10.VariantExpr;
  * An expression which is a boolean, but depending on its use, may be converted to a Number, String or Object on its use, may be converted to a Number, String or Object
  */
 public abstract class ConvertibleBooleanExpr
-    extends ConvertibleExpr
+    extends ConvertibleExprImpl
     implements BooleanExpr
 {
 

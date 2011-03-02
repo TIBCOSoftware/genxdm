@@ -23,7 +23,7 @@ package org.genxdm.processor.xpath.v10.functions;
 import org.genxdm.processor.xpath.v10.expressions.WrappedBooleanExpr;
 import org.genxdm.xpath.v10.ExprContextStatic;
 import org.genxdm.xpath.v10.ExprParseException;
-import org.genxdm.xpath.v10.extend.IConvertibleExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 /**
  * a single argument XPath function which casts its argument to a boolean Function: boolean boolean(object)
@@ -45,7 +45,7 @@ public class BooleanFunction
     extends Function1
 {
 
-	IConvertibleExpr makeCallExpr(final IConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
+	ConvertibleExpr makeCallExpr(final ConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		// ConvertibleExprs know how to cast themselves to booleans
 		return WrappedBooleanExpr.wrap(e.makeBooleanExpr(statEnv) );

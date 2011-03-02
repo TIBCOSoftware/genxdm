@@ -38,7 +38,11 @@ import org.genxdm.processor.xpath.v10.expressions.ParentAxisExpr;
 import org.genxdm.processor.xpath.v10.expressions.PrecedingAxisExpr;
 import org.genxdm.processor.xpath.v10.expressions.PrecedingSiblingAxisExpr;
 import org.genxdm.processor.xpath.v10.expressions.SelfAxisExpr;
+import org.genxdm.processor.xpath.v10.expressions.WrappedBooleanExpr;
 import org.genxdm.processor.xpath.v10.expressions.WrappedNodeSetExpr;
+import org.genxdm.processor.xpath.v10.expressions.WrappedNumberExpr;
+import org.genxdm.processor.xpath.v10.expressions.WrappedStringExpr;
+import org.genxdm.processor.xpath.v10.expressions.WrappedVariantExpr;
 import org.genxdm.processor.xpath.v10.expressions.XPathCompilerImpl;
 import org.genxdm.processor.xpath.v10.functions.BooleanFunction;
 import org.genxdm.processor.xpath.v10.functions.CeilingFunction;
@@ -74,12 +78,16 @@ import org.genxdm.processor.xpath.v10.relations.GreaterThanEqualsRelation;
 import org.genxdm.processor.xpath.v10.relations.GreaterThanRelation;
 import org.genxdm.processor.xpath.v10.relations.NotEqualsRelation;
 import org.genxdm.processor.xpath.v10.relations.Relation;
+import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.ExprContextDynamicArgs;
 import org.genxdm.xpath.v10.ExprContextStatic;
 import org.genxdm.xpath.v10.NodeSetExpr;
+import org.genxdm.xpath.v10.NumberExpr;
+import org.genxdm.xpath.v10.StringExpr;
+import org.genxdm.xpath.v10.VariantExpr;
 import org.genxdm.xpath.v10.XPathCompiler;
 import org.genxdm.xpath.v10.extend.Function;
-import org.genxdm.xpath.v10.extend.IConvertibleExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 import org.genxdm.xpath.v10.extend.XPathExtendToolkit;
 
 final class XPathToolkitImpl
@@ -167,10 +175,29 @@ final class XPathToolkitImpl
 	}
 
 	@Override
-	public IConvertibleExpr createConvertibleNodeSetExpr(
+	public ConvertibleExpr wrapNodeSetExpr(
 			NodeSetExpr nodeSetExpr, int optimizeFlags) {
-		return new WrappedNodeSetExpr(nodeSetExpr, optimizeFlags);
+		return WrappedNodeSetExpr.wrap(nodeSetExpr, optimizeFlags);
 	}
-	
+
+	@Override
+	public ConvertibleExpr wrapBooleanExpr(BooleanExpr expr) {
+		return WrappedBooleanExpr.wrap(expr);
+	}
+
+	@Override
+	public ConvertibleExpr wrapNumberExpr(NumberExpr expr) {
+		return WrappedNumberExpr.wrap(expr);
+	}
+
+	@Override
+	public ConvertibleExpr wrapStringExpr(StringExpr expr) {
+		return WrappedStringExpr.wrap(expr);
+	}
+
+	@Override
+	public ConvertibleExpr wrapVariantExpr(VariantExpr expr) {
+		return WrappedVariantExpr.wrap(expr);
+	}
 	
 }

@@ -12,13 +12,13 @@ import org.genxdm.xpath.v10.NodeSetExpr;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.Variant;
 import org.genxdm.xpath.v10.VariantExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleNodeSetExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleNodeSetExpr;
 
-public class WrappedNodeSetExpr extends ConvertibleNodeSetExpr {
+public class WrappedNodeSetExpr extends ConvertibleNodeSetExprImpl {
 
-	public static IConvertibleNodeSetExpr wrap(NodeSetExpr expr, int optimizeFlags) {
-		if (expr instanceof IConvertibleNodeSetExpr) {
-			return (IConvertibleNodeSetExpr) expr;
+	public static ConvertibleNodeSetExpr wrap(NodeSetExpr expr, int optimizeFlags) {
+		if (expr instanceof ConvertibleNodeSetExpr) {
+			return (ConvertibleNodeSetExpr) expr;
 		}
 		
 		return new WrappedNodeSetExpr(expr, optimizeFlags);

@@ -28,7 +28,7 @@ import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.NodeSetExpr;
 
 final class UnionExpr
-    extends ConvertibleNodeSetExpr
+    extends ConvertibleNodeSetExprImpl
 {
 	private final NodeSetExpr expr1;
 	private final NodeSetExpr expr2;

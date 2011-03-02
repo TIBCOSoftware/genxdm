@@ -30,7 +30,7 @@ import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NumberExpr;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.extend.Function;
-import org.genxdm.xpath.v10.extend.IConvertibleExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 public final class SubstringFunction 
     implements Function
@@ -68,7 +68,7 @@ public final class SubstringFunction
 		return "";
 	}
 
-	public IConvertibleExpr makeCallExpr(final IConvertibleExpr[] args, final ExprContextStatic statEnv) throws ExprParseException
+	public ConvertibleExpr makeCallExpr(final ConvertibleExpr[] args, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		if (args.length < 2 || args.length > 3)
 		{

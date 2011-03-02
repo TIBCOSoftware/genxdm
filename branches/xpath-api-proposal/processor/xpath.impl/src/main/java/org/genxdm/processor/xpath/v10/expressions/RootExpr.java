@@ -30,7 +30,7 @@ import org.genxdm.xpath.v10.NodeSetExpr;
  * an XPath expression (component) that evaluates a sub-expression with a document root Node as the contextNode
  */
 final class RootExpr
-    extends ConvertibleNodeSetExpr 
+    extends ConvertibleNodeSetExprImpl 
 {
 	private final NodeSetExpr expr;
 

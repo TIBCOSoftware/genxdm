@@ -29,21 +29,21 @@ import org.genxdm.processor.xpath.v10.iterators.UnionNodeIterator;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
-import org.genxdm.xpath.v10.extend.IConvertibleNodeSetExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleNodeSetExpr;
 
 /**
  * an expression which composes two sub-expressions (for each node in expr1, evaluate expr2)
  */
 final class ComposeExpr
-    extends ConvertibleNodeSetExpr
+    extends ConvertibleNodeSetExprImpl
 {
-	private final IConvertibleNodeSetExpr expr1;
-	private final IConvertibleNodeSetExpr expr2;
+	private final ConvertibleNodeSetExpr expr1;
+	private final ConvertibleNodeSetExpr expr2;
 
 	/**
 	 * construct with two sub-expressions
 	 */
-	ComposeExpr(final IConvertibleNodeSetExpr expr1, final IConvertibleNodeSetExpr expr2)
+	ComposeExpr(final ConvertibleNodeSetExpr expr1, final ConvertibleNodeSetExpr expr2)
 	{
 		super();
 		this.expr1 = expr1;
