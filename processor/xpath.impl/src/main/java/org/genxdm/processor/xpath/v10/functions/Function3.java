@@ -20,19 +20,19 @@
  */
 package org.genxdm.processor.xpath.v10.functions;
 
-import org.genxdm.processor.xpath.v10.expressions.ConvertibleExpr;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.xpath.v10.ExprContextStatic;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.extend.Function;
-import org.genxdm.xpath.v10.extend.IConvertibleExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 abstract class Function3 
     implements Function
 {
 
-	abstract ConvertibleExpr makeCallExpr(IConvertibleExpr e1, IConvertibleExpr e2, IConvertibleExpr e3, ExprContextStatic statEnv) throws ExprParseException;
+	abstract ConvertibleExprImpl makeCallExpr(ConvertibleExpr e1, ConvertibleExpr e2, ConvertibleExpr e3, ExprContextStatic statEnv) throws ExprParseException;
 
-	public IConvertibleExpr makeCallExpr(final IConvertibleExpr[] e, final ExprContextStatic statEnv) throws ExprParseException
+	public ConvertibleExpr makeCallExpr(final ConvertibleExpr[] e, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		if (e.length != 3)
 		{

@@ -30,12 +30,12 @@ import org.genxdm.xpath.v10.NodeIterator;
  *
  */
 final class NodeTestExpr
-    extends ConvertibleNodeSetExpr
+    extends ConvertibleNodeSetExprImpl
 {
 	private final Pattern nodeTest;
-	private final ConvertibleNodeSetExpr expr;
+	private final ConvertibleNodeSetExprImpl expr;
 
-	NodeTestExpr(final ConvertibleNodeSetExpr expr, final Pattern nodeTest)
+	NodeTestExpr(final ConvertibleNodeSetExprImpl expr, final Pattern nodeTest)
 	{
 		super();
 		this.expr = expr;

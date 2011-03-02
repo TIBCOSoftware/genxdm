@@ -28,7 +28,7 @@ import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.Variant;
 import org.genxdm.xpath.v10.extend.Function;
-import org.genxdm.xpath.v10.extend.IConvertibleExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 /**
  * implements the system-property() function, XSLT 1.0, section 12.4
@@ -37,7 +37,7 @@ public final class SystemPropertyFunction
     implements Function
 {
 
-	public IConvertibleExpr makeCallExpr(final IConvertibleExpr[] e, final ExprContextStatic statEnv) throws ExprParseException
+	public ConvertibleExpr makeCallExpr(final ConvertibleExpr[] e, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		if (e.length != 1)
 		{

@@ -21,19 +21,19 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
-import org.genxdm.processor.xpath.v10.expressions.ConvertibleExpr;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleNumberExpr;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
 import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.StringExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 public final class StringLengthFunction 
     extends FunctionOpt1
 {
 
-	ConvertibleExpr makeCallExpr(final IConvertibleExpr e, final ExprContextStatic statEnv)
+	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e, final ExprContextStatic statEnv)
 	{
 		final StringExpr se = e.makeStringExpr(statEnv);
 		return new ConvertibleNumberExpr()

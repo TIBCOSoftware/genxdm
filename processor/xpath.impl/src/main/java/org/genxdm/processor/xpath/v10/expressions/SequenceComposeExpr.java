@@ -25,18 +25,18 @@ import org.genxdm.processor.xpath.v10.iterators.SequenceComposeNodeIterator;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
-import org.genxdm.xpath.v10.extend.IConvertibleNodeSetExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleNodeSetExpr;
 
 /**
  * Composition when expr1 is SINGLE_LEVEL and expr2 is STAYS_IN_SUBTREE.
  */
 final class SequenceComposeExpr 
-    extends ConvertibleNodeSetExpr
+    extends ConvertibleNodeSetExprImpl
 {
-	private final IConvertibleNodeSetExpr expr1;
-	private final IConvertibleNodeSetExpr expr2;
+	private final ConvertibleNodeSetExpr expr1;
+	private final ConvertibleNodeSetExpr expr2;
 
-	SequenceComposeExpr(final IConvertibleNodeSetExpr expr1, final IConvertibleNodeSetExpr expr2)
+	SequenceComposeExpr(final ConvertibleNodeSetExpr expr1, final ConvertibleNodeSetExpr expr2)
 	{
 		super();
 		this.expr1 = expr1;

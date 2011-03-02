@@ -21,8 +21,8 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
-import org.genxdm.processor.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.processor.xpath.v10.expressions.ConvertibleNodeSetExpr;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleNodeSetExprImpl;
 import org.genxdm.processor.xpath.v10.iterators.SingleNodeIterator;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
@@ -33,7 +33,7 @@ import org.genxdm.xpath.v10.NodeSetExpr;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.Variant;
 import org.genxdm.xpath.v10.VariantExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 /**
  * the XPath function id(x)
@@ -59,12 +59,12 @@ public final class IdFunction
 		return new SingleNodeIterator<N>(result);
 	}
 
-	ConvertibleExpr makeCallExpr(final IConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
+	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		if (e instanceof NodeSetExpr)
 		{
 			final NodeSetExpr nse = (NodeSetExpr)e;
-			return new ConvertibleNodeSetExpr()
+			return new ConvertibleNodeSetExprImpl()
 			{
 				public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException
 				{
@@ -75,7 +75,7 @@ public final class IdFunction
 		else if (e instanceof VariantExpr)
 		{
 			final VariantExpr ve = (VariantExpr)e;
-			return new ConvertibleNodeSetExpr()
+			return new ConvertibleNodeSetExprImpl()
 			{
 				public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException
 				{
@@ -94,7 +94,7 @@ public final class IdFunction
 		else
 		{
 			final StringExpr se = e.makeStringExpr(statEnv);
-			return new ConvertibleNodeSetExpr()
+			return new ConvertibleNodeSetExprImpl()
 			{
 				public <N> NodeIterator<N> nodeIterator(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
 				{

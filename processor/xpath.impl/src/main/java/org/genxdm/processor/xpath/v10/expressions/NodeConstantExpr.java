@@ -26,7 +26,7 @@ import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.NodeIterator;
 
 final class NodeConstantExpr<CN>
-    extends ConvertibleNodeSetExpr
+    extends ConvertibleNodeSetExprImpl
 {
 	private final CN node;
 

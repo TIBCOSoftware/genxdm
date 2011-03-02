@@ -1,6 +1,10 @@
 package org.genxdm.xpath.v10.extend;
 
+import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.NodeSetExpr;
+import org.genxdm.xpath.v10.NumberExpr;
+import org.genxdm.xpath.v10.StringExpr;
+import org.genxdm.xpath.v10.VariantExpr;
 import org.genxdm.xpath.v10.XPathToolkit;
 
 public interface XPathExtendToolkit extends XPathToolkit {
@@ -15,5 +19,13 @@ public interface XPathExtendToolkit extends XPathToolkit {
 	 */
 	Function declareFunction(String name, Function newFunction);
 	
-	IConvertibleExpr createConvertibleNodeSetExpr(NodeSetExpr nodeSetExpr, int optimizeFlags);
+	ConvertibleExpr wrapNodeSetExpr(NodeSetExpr nodeSetExpr, int optimizeFlags);
+	
+	ConvertibleExpr wrapBooleanExpr(BooleanExpr expr);
+	
+	ConvertibleExpr wrapNumberExpr(NumberExpr expr);
+	
+	ConvertibleExpr wrapStringExpr(StringExpr expr);
+	
+	ConvertibleExpr wrapVariantExpr(VariantExpr expr);
 }

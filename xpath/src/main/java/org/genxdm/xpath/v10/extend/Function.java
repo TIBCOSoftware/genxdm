@@ -28,5 +28,5 @@ import org.genxdm.xpath.v10.ExprParseException;
  */
 public interface Function
 {
-	IConvertibleExpr makeCallExpr(IConvertibleExpr[] args, ExprContextStatic statEnv) throws ExprParseException;
+	ConvertibleExpr makeCallExpr(ConvertibleExpr[] args, ExprContextStatic statEnv) throws ExprParseException;
 }

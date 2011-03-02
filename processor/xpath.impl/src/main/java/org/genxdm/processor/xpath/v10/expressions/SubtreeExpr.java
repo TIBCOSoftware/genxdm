@@ -33,11 +33,11 @@ import org.genxdm.xpath.v10.NodeIterator;
  */
 
 final class SubtreeExpr
-    extends ConvertibleNodeSetExpr
+    extends ConvertibleNodeSetExprImpl
 {
-	private final ConvertibleNodeSetExpr expr;
+	private final ConvertibleNodeSetExprImpl expr;
 
-	SubtreeExpr(final ConvertibleNodeSetExpr expr)
+	SubtreeExpr(final ConvertibleNodeSetExprImpl expr)
 	{
 		super();
 		this.expr = expr;

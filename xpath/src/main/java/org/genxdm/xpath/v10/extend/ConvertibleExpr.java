@@ -7,7 +7,7 @@ import org.genxdm.xpath.v10.NumberExpr;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.VariantExpr;
 
-public interface IConvertibleExpr {
+public interface ConvertibleExpr {
 
 	/**
 	 * cast it as a String expression
@@ -29,7 +29,7 @@ public interface IConvertibleExpr {
 	/**
 	 * cast it as a NodeSet expression
 	 */
-	public IConvertibleNodeSetExpr makeNodeSetExpr(
+	public ConvertibleNodeSetExpr makeNodeSetExpr(
 			final ExprContextStatic statEnv) throws ExprParseException;
 
 	/**

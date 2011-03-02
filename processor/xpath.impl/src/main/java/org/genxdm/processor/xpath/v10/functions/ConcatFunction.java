@@ -30,7 +30,7 @@ import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.extend.Function;
-import org.genxdm.xpath.v10.extend.IConvertibleExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 /**
  * represents the XPath Function: string concat(string, string, string*)
@@ -41,7 +41,7 @@ public final class ConcatFunction
     implements Function
 {
 
-	public IConvertibleExpr makeCallExpr(final IConvertibleExpr[] args, final ExprContextStatic statEnv) throws ExprParseException
+	public ConvertibleExpr makeCallExpr(final ConvertibleExpr[] args, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		final StringExpr[] se = (StringExpr[])Array.newInstance(StringExpr.class, args.length);
 		for (int i = 0; i < se.length; i++)

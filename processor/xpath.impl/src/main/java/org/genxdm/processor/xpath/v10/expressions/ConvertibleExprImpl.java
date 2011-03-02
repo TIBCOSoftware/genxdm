@@ -24,18 +24,18 @@ import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.ExprContextStatic;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NumberExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 /**
  * An XPath expression (component) which can be cast to any of several types as needed
  */
-public abstract class ConvertibleExpr implements IConvertibleExpr 
+public abstract class ConvertibleExprImpl implements ConvertibleExpr 
 {
 	/* (non-Javadoc)
 	 * @see org.genxdm.xpath.v10.expressions.IConvertibleExpr#makeNodeSetExpr(org.genxdm.xpath.v10.expressions.ExprContextStatic)
 	 */
 	@Override
-	public ConvertibleNodeSetExpr makeNodeSetExpr(final ExprContextStatic statEnv) throws ExprParseException
+	public ConvertibleNodeSetExprImpl makeNodeSetExpr(final ExprContextStatic statEnv) throws ExprParseException
 	{
 		throw new ExprParseException("value of expression cannot be converted to a node-set");
 	}

@@ -41,9 +41,9 @@ abstract class ReverseAxisExpr
 	 * @return a version of this which, when evaluated, returns a Node iterator in document order
 	 */
 	@Override
-	ConvertibleNodeSetExpr makeDocumentOrderExpr(final ConvertibleNodeSetExpr expr)
+	ConvertibleNodeSetExprImpl makeDocumentOrderExpr(final ConvertibleNodeSetExprImpl expr)
 	{
-		return new ConvertibleNodeSetExpr()
+		return new ConvertibleNodeSetExprImpl()
 		{
 			public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException
 			{

@@ -4,14 +4,14 @@ import org.genxdm.Model;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.StringExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 public class WrappedStringExpr extends ConvertibleStringExpr {
 
-	public static IConvertibleExpr wrap(StringExpr expr) {
+	public static ConvertibleExpr wrap(StringExpr expr) {
 		
-		if (expr instanceof IConvertibleExpr) {
-			return (IConvertibleExpr) expr;
+		if (expr instanceof ConvertibleExpr) {
+			return (ConvertibleExpr) expr;
 		}
 		
 		return new WrappedStringExpr(expr);

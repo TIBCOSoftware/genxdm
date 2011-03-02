@@ -32,7 +32,7 @@ import org.genxdm.xpath.v10.Variant;
 import org.genxdm.xpath.v10.VariantExpr;
 
 public abstract class ConvertibleStringExpr 
-    extends ConvertibleExpr 
+    extends ConvertibleExprImpl 
     implements StringExpr
 {
 

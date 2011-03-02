@@ -25,14 +25,14 @@ import org.genxdm.NodeKind;
 import org.genxdm.processor.xpath.v10.iterators.SingleNodeIterator;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.NodeIterator;
-import org.genxdm.xpath.v10.extend.IConvertibleNodeSetExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleNodeSetExpr;
 
 public final class SelfAxisExpr 
     extends AxisExpr
 {
 
 	@Override
-	public IConvertibleNodeSetExpr compose(final IConvertibleNodeSetExpr expr)
+	public ConvertibleNodeSetExpr compose(final ConvertibleNodeSetExpr expr)
 	{
 		return expr;
 	}

@@ -20,7 +20,7 @@
  */
 package org.genxdm.processor.xpath.v10.functions;
 
-import org.genxdm.processor.xpath.v10.expressions.ConvertibleExpr;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.TrueExpr;
 import org.genxdm.xpath.v10.ExprContextStatic;
 
@@ -28,7 +28,7 @@ public final class TrueFunction
     extends Function0
 {
 
-	ConvertibleExpr makeCallExpr(final ExprContextStatic statEnv)
+	ConvertibleExprImpl makeCallExpr(final ExprContextStatic statEnv)
 	{
 		return new TrueExpr();
 	}

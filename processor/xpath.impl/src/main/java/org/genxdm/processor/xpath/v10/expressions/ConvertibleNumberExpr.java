@@ -33,7 +33,7 @@ import org.genxdm.xpath.v10.Variant;
 import org.genxdm.xpath.v10.VariantExpr;
 
 public abstract class ConvertibleNumberExpr 
-    extends ConvertibleExpr
+    extends ConvertibleExprImpl
     implements NumberExpr
 {
 

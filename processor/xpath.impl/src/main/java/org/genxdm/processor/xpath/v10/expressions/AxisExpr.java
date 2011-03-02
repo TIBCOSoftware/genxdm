@@ -24,17 +24,17 @@ import org.genxdm.NodeKind;
 import org.genxdm.xpath.v10.BooleanExpr;
 
 public abstract class AxisExpr
-    extends ConvertibleNodeSetExpr 
+    extends ConvertibleNodeSetExprImpl 
 {
 
 	public abstract NodeKind getPrincipalNodeKind();
 
-	ConvertibleNodeSetExpr makeDocumentOrderExpr(final ConvertibleNodeSetExpr expr)
+	ConvertibleNodeSetExprImpl makeDocumentOrderExpr(final ConvertibleNodeSetExprImpl expr)
 	{
 		return expr;
 	}
 
-	ConvertibleNodeSetExpr makeFilterExpr(final ConvertibleNodeSetExpr expr, final BooleanExpr predicate)
+	ConvertibleNodeSetExprImpl makeFilterExpr(final ConvertibleNodeSetExprImpl expr, final BooleanExpr predicate)
 	{
 		return new FilterExpr(expr, predicate);
 	}

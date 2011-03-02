@@ -34,7 +34,7 @@ import org.genxdm.xpath.v10.VariantExpr;
  *
  */
 public abstract class ConvertibleVariantExpr 
-    extends ConvertibleExpr implements VariantExpr
+    extends ConvertibleExprImpl implements VariantExpr
 {
 
 	public VariantExpr makeVariantExpr(final ExprContextStatic statEnv)
@@ -97,9 +97,9 @@ public abstract class ConvertibleVariantExpr
 	}
 
 	@Override
-	public ConvertibleNodeSetExpr makeNodeSetExpr(final ExprContextStatic statEnv)
+	public ConvertibleNodeSetExprImpl makeNodeSetExpr(final ExprContextStatic statEnv)
 	{
-		return new ConvertibleNodeSetExpr()
+		return new ConvertibleNodeSetExprImpl()
 		{
 			public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, ExprContextDynamic<N> context) throws ExprException
 			{
