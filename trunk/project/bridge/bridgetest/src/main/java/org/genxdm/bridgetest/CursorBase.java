@@ -39,6 +39,8 @@ public abstract class CursorBase<N>
         Events<N> matcher = new Events<N>(builder);
         if (!context.isSupported(Feature.DOCUMENT_URI))
             matcher.ignoreDocumentURI();
+        if (!context.isSupported(Feature.NAMESPACE_AXIS))
+            matcher.ignoreExtraNamespaceDeclarations();
         matcher.record();
         N doc = createComplexTestDocument(matcher);
         assertNotNull(doc);
