@@ -22,26 +22,26 @@ package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
 import org.genxdm.processor.xpath.v10.variants.StringVariant;
+import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.Converter;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
 import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.Variant;
-import org.genxdm.xpath.v10.extend.IConvertibleBooleanExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleStringExpr;
-import org.genxdm.xpath.v10.extend.IConvertibleVariantExpr;
+import org.genxdm.xpath.v10.VariantExpr;
 
 public abstract class ConvertibleStringExpr 
     extends ConvertibleExpr 
-    implements IConvertibleStringExpr
+    implements StringExpr
 {
 
-	public IConvertibleStringExpr makeStringExpr(final ExprContextStatic statEnv)
+	public StringExpr makeStringExpr(final ExprContextStatic statEnv)
 	{
 		return this;
 	}
 
-	public IConvertibleBooleanExpr makeBooleanExpr(final ExprContextStatic statEnv)
+	public BooleanExpr makeBooleanExpr(final ExprContextStatic statEnv)
 	{
 		return new ConvertibleBooleanExpr()
 		{
@@ -52,7 +52,7 @@ public abstract class ConvertibleStringExpr
 		};
 	}
 
-	public IConvertibleVariantExpr makeVariantExpr(final ExprContextStatic statEnv)
+	public VariantExpr makeVariantExpr(final ExprContextStatic statEnv)
 	{
 		return new ConvertibleVariantExpr()
 		{

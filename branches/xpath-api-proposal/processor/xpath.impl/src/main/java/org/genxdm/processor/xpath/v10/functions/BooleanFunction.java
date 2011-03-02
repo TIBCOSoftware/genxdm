@@ -20,6 +20,7 @@
  */
 package org.genxdm.processor.xpath.v10.functions;
 
+import org.genxdm.processor.xpath.v10.expressions.WrappedBooleanExpr;
 import org.genxdm.xpath.v10.ExprContextStatic;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.extend.IConvertibleExpr;
@@ -47,6 +48,6 @@ public class BooleanFunction
 	IConvertibleExpr makeCallExpr(final IConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		// ConvertibleExprs know how to cast themselves to booleans
-		return e.makeBooleanExpr(statEnv);
+		return WrappedBooleanExpr.wrap(e.makeBooleanExpr(statEnv) );
 	}
 }

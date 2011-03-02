@@ -15,5 +15,5 @@ public interface XPathExtendToolkit extends XPathToolkit {
 	 */
 	Function declareFunction(String name, Function newFunction);
 	
-	IConvertibleNodeSetExpr createConvertibleNodeSetExpr(NodeSetExpr nodeSetExpr, int optimizeFlags);
+	IConvertibleExpr createConvertibleNodeSetExpr(NodeSetExpr nodeSetExpr, int optimizeFlags);
 }

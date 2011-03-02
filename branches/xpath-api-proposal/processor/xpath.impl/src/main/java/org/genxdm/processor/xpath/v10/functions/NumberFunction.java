@@ -20,6 +20,7 @@
  */
 package org.genxdm.processor.xpath.v10.functions;
 
+import org.genxdm.processor.xpath.v10.expressions.WrappedNumberExpr;
 import org.genxdm.xpath.v10.ExprContextStatic;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.extend.IConvertibleExpr;
@@ -30,6 +31,6 @@ public final class NumberFunction
 
 	IConvertibleExpr makeCallExpr(final IConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
 	{
-		return e.makeNumberExpr(statEnv);
+		return WrappedNumberExpr.wrap( e.makeNumberExpr(statEnv) );
 	}
 }
