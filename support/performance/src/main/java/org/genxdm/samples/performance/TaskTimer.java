@@ -17,7 +17,7 @@ package org.genxdm.samples.performance;
 
 import java.util.ArrayList;
 
-public class TaskTimer {
+public class TaskTimer { 
 	private ArrayList<TaskTimer> m_subtasks;
 	final private String m_name;
 	private long m_start;
