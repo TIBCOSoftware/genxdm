@@ -107,15 +107,7 @@ public class BridgePerfModule<N,A> implements PerfModule
 		m_testTransformation = Boolean.parseBoolean(props.getProperty(TEST_TRANSFORMATION_PROP_NAME, "false"));
 		m_testModelMutation = Boolean.parseBoolean(props.getProperty(TEST_MODEL_MUTATION_PROP_NAME, "false"));
 		m_testBuilderMutation = Boolean.parseBoolean(props.getProperty(TEST_BUILDER_MUTATION_PROP_NAME, "false"));
-		String moduleList = props.getProperty("modules");
-		if(moduleList != null)
-		{
-			StringTokenizer st = new StringTokenizer(moduleList, ",");
-			while(st.hasMoreTokens())
-			{
-				System.out.println(st.nextToken());
-			}
-		}
+
 		// Bridge injection.
 		String pcxFactoryClassName = props.getProperty(BRIDGE_FACTORY_CLASS);
 		if(pcxFactoryClassName != null)
