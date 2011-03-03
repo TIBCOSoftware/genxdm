@@ -17,7 +17,7 @@ package org.genxdm.samples.performance;
 
 import java.util.ArrayList;
 
-public class TaskTimer { 
+public class TaskTimer {
 	private ArrayList<TaskTimer> m_subtasks;
 	final private String m_name;
 	private long m_start;
@@ -54,46 +54,53 @@ public class TaskTimer {
 	}
 	public void startTimer()
 	{
-		m_start = System.currentTimeMillis();
+		m_start = System.nanoTime();
 		m_elapsed = 0;
 	}
 	public void stopTimer()
 	{
-		m_elapsed += System.currentTimeMillis() - m_start;
-		if(m_checkMemory)
+		if(m_start > 0)
 		{
-			addNote("Before gc: " + checkMemory(false));
-			addNote("After  gc: " + checkMemory(true));
+			m_elapsed += System.nanoTime() - m_start;
+			if(m_checkMemory)
+			{
+				addNote("Before gc: " + checkMemory(false));
+				addNote("After  gc: " + checkMemory(true));
+			}
 		}
 	}
 	public void pauseTimer()
 	{
-		m_elapsed += System.currentTimeMillis() - m_start;
+		m_elapsed += System.nanoTime() - m_start;
 	}
 	public void continueTimer()
 	{
-		m_start = System.currentTimeMillis();
+		m_start = System.nanoTime();
 	}
-	public long getElapsedTimeMillis()
+	public long getElapsedTimeNanos()
 	{
 		return m_elapsed;
 	}
 	public double getElapsedTimeSeconds()
 	{
-		return m_elapsed / 1000d;
+		return m_elapsed / 1000d / 1000000d;
 	}
-	public long getGroupElapsedTimeMillis()
+	public long getGroupElapsedTimeNanos()
 	{
 		long elapsed = m_elapsed;
 		for(TaskTimer subtask : getSubtasks())
 		{
-			elapsed += subtask.getGroupElapsedTimeMillis();
+			elapsed += subtask.getGroupElapsedTimeNanos();
 		}
 		return elapsed;
 	}
+	public double getGroupElapsedTimeMillis()
+	{
+		return getGroupElapsedTimeNanos() / 1000000d;
+	}
 	public double getGroupElapsedTimeSeconds()
 	{
-		return getGroupElapsedTimeMillis() / 1000d;
+		return getGroupElapsedTimeNanos() / 1000d / 1000000d;
 	}
 	public void addTask(TaskTimer taskTimer)
 	{
@@ -109,9 +116,29 @@ public class TaskTimer {
 	}
 	public String toString()
 	{
-		return toPrettyStringMillis("");
+		return toPrettyStringMillis("", 0);
 	}
-	public String toPrettyStringMillis(String indent)
+	public String toPrettyStringNanos(String indent, int includeSubtimes)
+	{
+		StringBuffer sb = new StringBuffer();
+		sb.append(indent).append(m_name).append(": ").append(getGroupElapsedTimeNanos()).append(" ns").append('\n');
+		if(m_notes != null)
+		{
+			for(String note : m_notes)
+			{
+				sb.append(indent).append('\t').append(note).append('\n');
+			}
+		}
+		if(includeSubtimes > 0)
+		{
+			for(TaskTimer subtask : getSubtasks())
+			{
+				sb.append(subtask.toPrettyStringNanos(indent.concat("\t"), includeSubtimes-1));
+			}
+		}
+		return sb.toString();
+	}
+	public String toPrettyStringMillis(String indent, int includeSubtimes)
 	{
 		StringBuffer sb = new StringBuffer();
 		sb.append(indent).append(m_name).append(": ").append(getGroupElapsedTimeMillis()).append(" ms").append('\n');
@@ -122,13 +149,16 @@ public class TaskTimer {
 				sb.append(indent).append('\t').append(note).append('\n');
 			}
 		}
-		for(TaskTimer subtask : getSubtasks())
+		if(includeSubtimes > 0)
 		{
-			sb.append(subtask.toPrettyStringMillis(indent.concat("\t")));
+			for(TaskTimer subtask : getSubtasks())
+			{
+				sb.append(subtask.toPrettyStringMillis(indent.concat("\t"), includeSubtimes-1));
+			}
 		}
 		return sb.toString();
 	}
-	public String toPrettyStringSeconds(String indent)
+	public String toPrettyStringSeconds(String indent, int includeSubtimes)
 	{
 		StringBuffer sb = new StringBuffer();
 		sb.append(indent).append(m_name).append(": ").append(getGroupElapsedTimeSeconds()).append(" sec").append('\n');
@@ -139,9 +169,12 @@ public class TaskTimer {
 				sb.append(indent).append('\t').append(note).append('\n');
 			}
 		}
-		for(TaskTimer subtask : getSubtasks())
+		if(includeSubtimes > 0)
 		{
-			sb.append(subtask.toPrettyStringSeconds(indent.concat("\t")));
+			for(TaskTimer subtask : getSubtasks())
+			{
+				sb.append(subtask.toPrettyStringSeconds(indent.concat("\t"), includeSubtimes-1));
+			}
 		}
 		return sb.toString();
 	}
