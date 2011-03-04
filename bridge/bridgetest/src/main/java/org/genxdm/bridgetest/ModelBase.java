@@ -15,35 +15,50 @@
  */
 package org.genxdm.bridgetest;
 
+import org.genxdm.Feature;
 import org.genxdm.Model;
-import org.genxdm.NodeKind;
 import org.genxdm.ProcessingContext;
-import org.genxdm.io.ContentHandler;
+import org.genxdm.bridgetest.utilities.Events;
+import org.genxdm.exceptions.GxmlException;
 import org.genxdm.io.FragmentBuilder;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
 
-// this tests very little; see the tests for node informer, node navigator, and node axis navigator.
-// all three of those should be passing when this one is turned on.
-public abstract class ModelTestBase<N>
+public abstract class ModelBase<N>
     extends TestBase<N>
 {
     @Test
     public void streaming()
+        throws GxmlException
     {
         ProcessingContext<N> context = newProcessingContext();
-        Model<N> model = context.getModel();
-        assertNotNull(model);
         
         FragmentBuilder<N> builder = context.newFragmentBuilder();
         assertNotNull(builder);
+        Events<N> matcher = new Events<N>(builder);
+        if (!context.isSupported(Feature.DOCUMENT_URI))
+            matcher.ignoreDocumentURI();
+        if (!context.isSupported(Feature.NAMESPACE_AXIS))
+            matcher.ignoreExtraNamespaceDeclarations();
+        matcher.record();
+        N doc = createComplexTestDocument(matcher);
+        assertNotNull(doc);
+
+        Model<N> model = context.getModel();
+        assertNotNull(model);
+
+        matcher.match();
+        model.stream(doc, true, matcher);
+        
+        // TODO: more comparisons?
     }
     
-    private boolean matchNode(N node, NodeKind kind, String ns, String name, String pf, String value)
+    @Test
+    public void comparisons()
     {
-        return false;
+        // TODO
     }
-//    void stream(N node, boolean copyNamespaces, ContentHandler handler) throws GxmlException;
+    
 }

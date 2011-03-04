@@ -1309,6 +1309,10 @@ public class AxiomModel
     public void stream(Object node, boolean copyNamespaces, ContentHandler handler)
         throws GxmlException
     {
+        // TODO: the use of 'finally' here results in errors that can be nearly
+        // impossible to debug; the original exception may be eaten by an exception
+        // tossed during finally (because no, calling end element when start element
+        // has been called may not actually work very well).
         switch (getNodeKind(node))
         {
             case ELEMENT:
@@ -1361,11 +1365,11 @@ public class AxiomModel
                     handler.text(text.getText());
                 }
                 break;
-                case DOCUMENT:
+            case DOCUMENT:
                 {
                     OMDocument doc = AxiomSupport.dynamicDowncastDocument(node);
                     // TODO: i don't think that this is quite right.
-                    handler.startDocument(getDocumentURI(node), null);
+                    handler.startDocument(getDocumentURI(node), "");
                     try
                     {
                         Iterator it = doc.getChildren();

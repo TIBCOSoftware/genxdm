@@ -59,17 +59,6 @@ public interface NodeFactory<N>
     N createElement(final String namespaceURI, final String localName, final String prefix);
 
     /**
-     * Creates a new namespace node.
-     * 
-     * @param prefix
-     *            The prefix part of the namespace node.
-     * @param namespaceURI
-     *            The string-value of the namespace node.
-     * @return The created namespace node.
-     */
-    N createNamespace(final String prefix, final String namespaceURI);
-
-    /**
      * Creates a new processing-instruction node.
      * 
      * @param target

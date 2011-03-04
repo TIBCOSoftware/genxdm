@@ -51,11 +51,6 @@ public class AxiomFactory
         return omFactory.createOMElement(localName, ns);
     }
 
-    public Object createNamespace(String prefix, String namespaceURI)
-    {
-        return omFactory.createOMNamespace(namespaceURI, prefix);
-    }
-
     public Object createProcessingInstruction(String target, String data)
     {
         return omFactory.createOMProcessingInstruction(null, target, data);

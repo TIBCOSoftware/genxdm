@@ -2,10 +2,10 @@ package org.genxdm.bridge.axiom.tests;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.genxdm.bridge.axiom.AxiomProcessingContext;
-import org.genxdm.bridgetest.io.BuilderBase;
+import org.genxdm.bridgetest.ModelBase;
 
-public class AxiomBuilderTest
-    extends BuilderBase<Object>
+public class AxiomModelTest
+    extends ModelBase<Object>
 {
 
     @Override
