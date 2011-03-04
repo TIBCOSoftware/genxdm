@@ -1,7 +1,7 @@
 /**
 Provides compliance tests for developers of GenXDM bridges.
 
-<p>This is the base package. The tests are defined as abstract base classes
+<p>This is the root package. The tests are defined as abstract base classes
 in packages corresponding to the API.  Implementing compliance testing is
 straightforward.</p>
 
@@ -54,14 +54,14 @@ The functionality of GenXDM demands it; the test infrastructure also makes
 certain demands.  The proper initial order:</p>
 
 <ol>
-  <li>bridgetest.base.ContextTestBase : the processing context test</li>
-  <li>bridgetest.base.io.BuilderTestBase : the fragment builder test</li>
+  <li>bridgetest.ContextBase : the processing context test (to reach other abstractions)</li>
+  <li>bridgetest.io.BuilderBase : the fragment builder test (to create trees)</li>
   <li><ul>
       <li>bridgetest.nodes.NodeInformerBase</li>
       <li>bridgetest.axes.NodeNavigatorBase</li>
       <li>bridgetest.axes.AxisNodeNavigatorBase</li>
-      <li>bridgetest.base.ModelTestBase</li>
-      </ul> : the model tests</li>
+      <li>bridgetest.base.ModelBase</li>
+      </ul> : the model tests (to verify tree data-model conformance)</li>
 </ol>
 
 <p>The subsequent sequence is less significant, but it is very important
@@ -70,7 +70,7 @@ enabled, in order to reduce the chaos (there is no way to force tests to
 execute in a particular order, so it is wisest to turn each test on as the
 testable functionality becomes available).  <code>bridgetest</code> relies
 upon the processing context and the fragment builder to create the tree models
-which are then navigated over.</p>
+which are then manipulated in the various tests.</p>
 
  **/
 package org.genxdm.bridgetest;
