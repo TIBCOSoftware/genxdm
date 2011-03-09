@@ -15,44 +15,19 @@
  */
 package org.genxdm.processor.xpath.v10;
 
-import org.genxdm.xpath.v10.XPathToolkitFactory;
 import org.genxdm.xpath.v10.extend.XPathExtendToolkit;
 import org.genxdm.xpath.v10.extend.XPathExtendToolkitFactory;
 
 public final class XPathToolkitFactoryImpl
     implements XPathExtendToolkitFactory
 {
-	private boolean inheritAttributes = false;
-	private boolean inheritNamespaces = true;
-
 	public XPathToolkitFactoryImpl()
 	{
 	}
 
 	public XPathExtendToolkit newXPathToolkit()
 	{
-		return new XPathToolkitImpl(inheritAttributes, inheritNamespaces);
+		return new XPathToolkitImpl();
 	}
 
-	public boolean getInheritAttributes()
-	{
-		return inheritAttributes;
-	}
-
-	public boolean getInheritNamespaces()
-	{
-		return inheritNamespaces;
-	}
-
-	public XPathToolkitFactory setInheritAttributes(final boolean inheritAttributes)
-	{
-		this.inheritAttributes = inheritAttributes;
-		return this;
-	}
-
-	public XPathToolkitFactory setInheritNamespaces(final boolean inheritNamespaces)
-	{
-		this.inheritNamespaces = inheritNamespaces;
-		return this;
-	}
 }

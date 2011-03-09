@@ -29,4 +29,8 @@ public interface ExprContextDynamicArgs<N>
 	void setContextPosition(int position);
 
 	void setContextSize(int size);
+
+	void setInheritAttributes(boolean inheritAttributes);
+
+	void setInheritNamespaces(boolean inheritNamespaces);
 }
