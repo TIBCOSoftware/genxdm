@@ -29,18 +29,15 @@ import org.genxdm.xpath.v10.NodeIterator;
 public final class AttributeAxisExpr 
     extends AxisExpr
 {
-	private final boolean inherit;
-
 	/**
 	 * Initializer for the attribute axis expression.
 	 * 
 	 * @param inherit
 	 *            Determines whether attributes in the reserved XML namespace will be inherited.
 	 */
-	public AttributeAxisExpr(final boolean inherit)
+	public AttributeAxisExpr()
 	{
 		super();
-		this.inherit = inherit;
 	}
 
 	@Override
@@ -56,6 +53,6 @@ public final class AttributeAxisExpr
 
 	public <N> NodeIterator<N> nodeIterator(final Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv)
 	{
-		return new NodeIteratorOnIterator<N>(model.getAttributeAxis(contextNode, inherit).iterator());
+		return new NodeIteratorOnIterator<N>(model.getAttributeAxis(contextNode, dynEnv.getInheritAttributes()).iterator());
 	}
 }

@@ -30,4 +30,9 @@ public interface ExprContextDynamic<N>
 	Variant<N> getVariableValue(QName name) throws ExprException;
 
 	ExtensionContext<N> getExtensionContext(String namespace) throws ExprException;
+
+	boolean getInheritAttributes();
+
+	boolean getInheritNamespaces();
+
 }

@@ -100,13 +100,13 @@ final class XPathToolkitImpl
 	private final HashMap<String, Function> functionTable = new HashMap<String, Function>();
 	private final HashMap<String, Relation> relationTable = new HashMap<String, Relation>();
 
-	public XPathToolkitImpl(final boolean inheritAttributes, final boolean inheritNamespaces)
+	public XPathToolkitImpl()
 	{
 		axisTable.put("child", new ChildAxisExpr());
 		axisTable.put("parent", new ParentAxisExpr());
 		axisTable.put("self", new SelfAxisExpr());
-		axisTable.put("attribute", new AttributeAxisExpr(inheritAttributes));
-		axisTable.put("namespace", new NamespaceAxisExpr(inheritNamespaces));
+		axisTable.put("attribute", new AttributeAxisExpr());
+		axisTable.put("namespace", new NamespaceAxisExpr());
 		axisTable.put("descendant-or-self", new DescendantOrSelfAxisExpr());
 		axisTable.put("descendant", new DescendantAxisExpr());
 		axisTable.put("ancestor-or-self", new AncestorOrSelfAxisExpr());
