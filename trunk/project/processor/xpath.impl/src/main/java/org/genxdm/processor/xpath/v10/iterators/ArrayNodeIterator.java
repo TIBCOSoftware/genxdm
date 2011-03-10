@@ -20,7 +20,7 @@
  */
 package org.genxdm.processor.xpath.v10.iterators;
 
-import org.genxdm.xpath.v10.iterators.NodeIterator;
+import org.genxdm.xpath.v10.NodeIterator;
 
 public final class ArrayNodeIterator<N> implements NodeIterator<N>
 {

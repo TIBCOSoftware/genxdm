@@ -22,8 +22,8 @@ package org.genxdm.processor.xpath.v10.iterators;
 
 import org.genxdm.Model;
 import org.genxdm.bridgekit.tree.Ordering;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.NodeIterator;
 
 /*
  * Remove duplicates. iteration is assumed to be in document order. 

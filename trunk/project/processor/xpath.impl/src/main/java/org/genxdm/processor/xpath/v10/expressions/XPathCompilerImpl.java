@@ -19,15 +19,15 @@ import java.util.HashMap;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.xpath.v10.relations.Relation;
-import org.genxdm.xpath.v10.Function;
+import org.genxdm.xpath.v10.BooleanExpr;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprParseException;
+import org.genxdm.xpath.v10.NodeSetExpr;
+import org.genxdm.xpath.v10.NumberExpr;
+import org.genxdm.xpath.v10.StringExpr;
+import org.genxdm.xpath.v10.VariantExpr;
 import org.genxdm.xpath.v10.XPathCompiler;
-import org.genxdm.xpath.v10.expressions.BooleanExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprParseException;
-import org.genxdm.xpath.v10.expressions.NodeSetExpr;
-import org.genxdm.xpath.v10.expressions.NumberExpr;
-import org.genxdm.xpath.v10.expressions.StringExpr;
-import org.genxdm.xpath.v10.expressions.VariantExpr;
+import org.genxdm.xpath.v10.extend.Function;
 
 public final class XPathCompilerImpl
     implements XPathCompiler

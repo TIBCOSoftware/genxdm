@@ -21,8 +21,7 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
-import org.genxdm.xpath.v10.expressions.ConvertibleBooleanExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprContextDynamic;
 
 public final class FalseExpr
     extends ConvertibleBooleanExpr

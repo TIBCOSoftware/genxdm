@@ -23,11 +23,11 @@ package org.genxdm.processor.xpath.v10.patterns;
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
 import org.genxdm.processor.xpath.v10.expressions.DelegateExprContext;
-import org.genxdm.xpath.v10.expressions.BooleanExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
-import org.genxdm.xpath.v10.iterators.NodeIteratorOnIterator;
+import org.genxdm.processor.xpath.v10.iterators.NodeIteratorOnIterator;
+import org.genxdm.xpath.v10.BooleanExpr;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.NodeIterator;
 
 /**
  * a pattern that has a predicate to eliminate some nodes

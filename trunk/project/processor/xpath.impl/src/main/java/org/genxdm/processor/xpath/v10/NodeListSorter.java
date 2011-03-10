@@ -26,8 +26,8 @@ import java.util.List;
 
 import org.genxdm.Model;
 import org.genxdm.processor.xpath.v10.iterators.ListNodeIterator;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.NodeIterator;
 
 /**
  * Like the name suggests, provides a mechanism to sort the nodes in a NodeIterator based upon the test of <code>Comparator</code>

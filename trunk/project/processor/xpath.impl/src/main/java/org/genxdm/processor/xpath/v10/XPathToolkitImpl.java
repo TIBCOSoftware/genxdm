@@ -30,7 +30,7 @@ import org.genxdm.processor.xpath.v10.expressions.ChildAxisExpr;
 import org.genxdm.processor.xpath.v10.expressions.DescendantAxisExpr;
 import org.genxdm.processor.xpath.v10.expressions.DescendantOrSelfAxisExpr;
 import org.genxdm.processor.xpath.v10.expressions.ExprContextDynamicArgsImpl;
-import org.genxdm.processor.xpath.v10.expressions.ExprContextStaticArgsImpl;
+import org.genxdm.processor.xpath.v10.expressions.ExprContextStaticImpl;
 import org.genxdm.processor.xpath.v10.expressions.FollowingAxisExpr;
 import org.genxdm.processor.xpath.v10.expressions.FollowingSiblingAxisExpr;
 import org.genxdm.processor.xpath.v10.expressions.NamespaceAxisExpr;
@@ -38,6 +38,11 @@ import org.genxdm.processor.xpath.v10.expressions.ParentAxisExpr;
 import org.genxdm.processor.xpath.v10.expressions.PrecedingAxisExpr;
 import org.genxdm.processor.xpath.v10.expressions.PrecedingSiblingAxisExpr;
 import org.genxdm.processor.xpath.v10.expressions.SelfAxisExpr;
+import org.genxdm.processor.xpath.v10.expressions.WrappedBooleanExpr;
+import org.genxdm.processor.xpath.v10.expressions.WrappedNodeSetExpr;
+import org.genxdm.processor.xpath.v10.expressions.WrappedNumberExpr;
+import org.genxdm.processor.xpath.v10.expressions.WrappedStringExpr;
+import org.genxdm.processor.xpath.v10.expressions.WrappedVariantExpr;
 import org.genxdm.processor.xpath.v10.expressions.XPathCompilerImpl;
 import org.genxdm.processor.xpath.v10.functions.BooleanFunction;
 import org.genxdm.processor.xpath.v10.functions.CeilingFunction;
@@ -73,14 +78,20 @@ import org.genxdm.processor.xpath.v10.relations.GreaterThanEqualsRelation;
 import org.genxdm.processor.xpath.v10.relations.GreaterThanRelation;
 import org.genxdm.processor.xpath.v10.relations.NotEqualsRelation;
 import org.genxdm.processor.xpath.v10.relations.Relation;
-import org.genxdm.xpath.v10.Function;
+import org.genxdm.xpath.v10.BooleanExpr;
+import org.genxdm.xpath.v10.ExprContextDynamicArgs;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.NodeSetExpr;
+import org.genxdm.xpath.v10.NumberExpr;
+import org.genxdm.xpath.v10.StringExpr;
+import org.genxdm.xpath.v10.VariantExpr;
 import org.genxdm.xpath.v10.XPathCompiler;
-import org.genxdm.xpath.v10.XPathToolkit;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamicArgs;
-import org.genxdm.xpath.v10.expressions.ExprContextStaticArgs;
+import org.genxdm.xpath.v10.extend.Function;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
+import org.genxdm.xpath.v10.extend.XPathExtendToolkit;
 
 final class XPathToolkitImpl
-    implements XPathToolkit
+    implements XPathExtendToolkit
 {
 	/**
 	 * Initialize these once at this toolkit level.
@@ -89,13 +100,13 @@ final class XPathToolkitImpl
 	private final HashMap<String, Function> functionTable = new HashMap<String, Function>();
 	private final HashMap<String, Relation> relationTable = new HashMap<String, Relation>();
 
-	public XPathToolkitImpl(final boolean inheritAttributes, final boolean inheritNamespaces)
+	public XPathToolkitImpl()
 	{
 		axisTable.put("child", new ChildAxisExpr());
 		axisTable.put("parent", new ParentAxisExpr());
 		axisTable.put("self", new SelfAxisExpr());
-		axisTable.put("attribute", new AttributeAxisExpr(inheritAttributes));
-		axisTable.put("namespace", new NamespaceAxisExpr(inheritNamespaces));
+		axisTable.put("attribute", new AttributeAxisExpr());
+		axisTable.put("namespace", new NamespaceAxisExpr());
 		axisTable.put("descendant-or-self", new DescendantOrSelfAxisExpr());
 		axisTable.put("descendant", new DescendantAxisExpr());
 		axisTable.put("ancestor-or-self", new AncestorOrSelfAxisExpr());
@@ -154,12 +165,39 @@ final class XPathToolkitImpl
 		return new ExprContextDynamicArgsImpl<N>();
 	}
 
-	public ExprContextStaticArgs newExprContextStaticArgs()
+	public ExprContextStatic newExprContextStaticArgs()
 	{
-		return new ExprContextStaticArgsImpl();
+		return new ExprContextStaticImpl();
 	}
 
 	public Function declareFunction(String name, Function newFunction) {
 		return functionTable.put(name, newFunction);
 	}
+
+	@Override
+	public ConvertibleExpr wrapNodeSetExpr(
+			NodeSetExpr nodeSetExpr, int optimizeFlags) {
+		return WrappedNodeSetExpr.wrap(nodeSetExpr, optimizeFlags);
+	}
+
+	@Override
+	public ConvertibleExpr wrapBooleanExpr(BooleanExpr expr) {
+		return WrappedBooleanExpr.wrap(expr);
+	}
+
+	@Override
+	public ConvertibleExpr wrapNumberExpr(NumberExpr expr) {
+		return WrappedNumberExpr.wrap(expr);
+	}
+
+	@Override
+	public ConvertibleExpr wrapStringExpr(StringExpr expr) {
+		return WrappedStringExpr.wrap(expr);
+	}
+
+	@Override
+	public ConvertibleExpr wrapVariantExpr(VariantExpr expr) {
+		return WrappedVariantExpr.wrap(expr);
+	}
+	
 }
