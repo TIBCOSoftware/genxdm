@@ -22,14 +22,14 @@ package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
 import org.genxdm.processor.xpath.v10.iterators.FilterNodeIterator;
-import org.genxdm.xpath.v10.expressions.BooleanExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleNodeSetExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
+import org.genxdm.xpath.v10.BooleanExpr;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.NodeIterator;
+import org.genxdm.xpath.v10.extend.ConvertibleNodeSetExpr;
 
 final class FilterExpr 
-    extends ConvertibleNodeSetExpr
+    extends ConvertibleNodeSetExprImpl
 {
 	private final ConvertibleNodeSetExpr expr;
 	private final BooleanExpr predicate;

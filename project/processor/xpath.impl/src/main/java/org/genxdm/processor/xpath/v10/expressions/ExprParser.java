@@ -36,16 +36,16 @@ import org.genxdm.processor.xpath.v10.tests.ElementTest;
 import org.genxdm.processor.xpath.v10.tests.NamespaceTest;
 import org.genxdm.processor.xpath.v10.tests.NodeTypeTest;
 import org.genxdm.processor.xpath.v10.tests.ProcessingInstructionTest;
+import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.Converter;
-import org.genxdm.xpath.v10.Function;
-import org.genxdm.xpath.v10.expressions.BooleanExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleNodeSetExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprParseException;
-import org.genxdm.xpath.v10.expressions.NodeSetExpr;
-import org.genxdm.xpath.v10.expressions.NumberExpr;
-import org.genxdm.xpath.v10.expressions.VariantExpr;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprParseException;
+import org.genxdm.xpath.v10.NodeSetExpr;
+import org.genxdm.xpath.v10.NumberExpr;
+import org.genxdm.xpath.v10.VariantExpr;
+import org.genxdm.xpath.v10.extend.Function;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleNodeSetExpr;
 
 /**
  * XPath expression parser / compiler extends the lexer ExprTokenizer
@@ -142,7 +142,7 @@ final class ExprParser
 	/**
 	 * A ConvertibleExpr allows for the casting of one type to another for the purpose of making a comparison
 	 */
-	ConvertibleExpr makeRelationalExpr(final Relation rel, final ConvertibleExpr e1, final ConvertibleExpr e2) throws ExprParseException
+	ConvertibleExprImpl makeRelationalExpr(final Relation rel, final ConvertibleExpr e1, final ConvertibleExpr e2) throws ExprParseException
 	{
 		// OPT: have some more expressions for non-variant cases
 		if (e1 instanceof NodeSetExpr || e2 instanceof NodeSetExpr || e1 instanceof VariantExpr || e2 instanceof VariantExpr)
@@ -220,9 +220,9 @@ final class ExprParser
 		if (currentToken == TOK_RPAR)
 		{
 			next();
-			return (ConvertibleExpr[])Array.newInstance(ConvertibleExpr.class, 0);
+			return (ConvertibleExprImpl[])Array.newInstance(ConvertibleExprImpl.class, 0);
 		}
-		ConvertibleExpr[] args = (ConvertibleExpr[])Array.newInstance(ConvertibleExpr.class, 1);
+		ConvertibleExpr[] args = (ConvertibleExpr[])Array.newInstance(ConvertibleExprImpl.class, 1);
 		for (;;)
 		{
 			args[args.length - 1] = parseOrExpr();
@@ -232,7 +232,7 @@ final class ExprParser
 			}
 			next();
 			ConvertibleExpr[] oldArgs = args;
-			args = (ConvertibleExpr[])Array.newInstance(ConvertibleExpr.class, oldArgs.length + 1);
+			args = (ConvertibleExprImpl[])Array.newInstance(ConvertibleExprImpl.class, oldArgs.length + 1);
 			System.arraycopy(oldArgs, 0, args, 0, oldArgs.length);
 		}
 		expectRpar(); // check currentToken to ensure it's ")"
@@ -538,9 +538,9 @@ final class ExprParser
 	//
 	// Productions #4 and #8
 	//
-	private ConvertibleNodeSetExpr parsePredicates(final AxisExpr axis, final Pattern nodeTest) throws ExprParseException
+	private ConvertibleNodeSetExprImpl parsePredicates(final AxisExpr axis, final Pattern nodeTest) throws ExprParseException
 	{
-		ConvertibleNodeSetExpr expr = axis;
+		ConvertibleNodeSetExprImpl expr = axis;
 		if (nodeTest != null)
 		{
 			expr = new NodeTestExpr(expr, nodeTest);
@@ -717,7 +717,7 @@ final class ExprParser
 	//
 	private ConvertibleNodeSetExpr parseRelativeLocationPath() throws ExprParseException
 	{
-		ConvertibleNodeSetExpr step = parseStep();
+		ConvertibleNodeSetExprImpl step = parseStep();
 		if (currentToken == TOK_SLASH)
 		{
 			next();
@@ -734,7 +734,7 @@ final class ExprParser
 	//
 	// XPath production #4
 	//
-	private ConvertibleNodeSetExpr parseStep() throws ExprParseException
+	private ConvertibleNodeSetExprImpl parseStep() throws ExprParseException
 	{
 		switch (currentToken)
 		{

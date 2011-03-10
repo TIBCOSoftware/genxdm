@@ -26,10 +26,9 @@ import java.util.List;
 
 import org.genxdm.Model;
 import org.genxdm.processor.xpath.v10.iterators.ListNodeIterator;
-import org.genxdm.xpath.v10.expressions.ConvertibleNodeSetExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.NodeIterator;
 
 /**
  * A reverse axis (XPath) expression represents a Node set which may need to be seen in document order (thus reversed)
@@ -42,9 +41,9 @@ abstract class ReverseAxisExpr
 	 * @return a version of this which, when evaluated, returns a Node iterator in document order
 	 */
 	@Override
-	ConvertibleNodeSetExpr makeDocumentOrderExpr(final ConvertibleNodeSetExpr expr)
+	ConvertibleNodeSetExprImpl makeDocumentOrderExpr(final ConvertibleNodeSetExprImpl expr)
 	{
-		return new ConvertibleNodeSetExpr()
+		return new ConvertibleNodeSetExprImpl()
 		{
 			public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException
 			{

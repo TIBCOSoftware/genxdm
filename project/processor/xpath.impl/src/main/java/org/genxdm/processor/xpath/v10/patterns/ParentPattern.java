@@ -22,8 +22,8 @@ package org.genxdm.processor.xpath.v10.patterns;
 
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprException;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprException;
 
 /**
  * represents the concatenation of step patterns, right to left in a LocationPathPattern
