@@ -23,19 +23,20 @@ package org.genxdm.processor.xpath.v10.functions;
 import java.text.DecimalFormat;
 
 import org.genxdm.Model;
-import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleStringExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.expressions.NumberExpr;
-import org.genxdm.xpath.v10.expressions.StringExpr;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleStringExpr;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.NumberExpr;
+import org.genxdm.xpath.v10.StringExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 public final class FormatNumberFunction 
     extends Function2
 {
 
-	ConvertibleExpr makeCallExpr(final ConvertibleExpr e1, final ConvertibleExpr e2, ExprContextStatic statEnv)
+	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e1, final ConvertibleExpr e2, ExprContextStatic statEnv)
 	{
 		final NumberExpr ne = e1.makeNumberExpr(statEnv);
 		final StringExpr se = e2.makeStringExpr(statEnv);

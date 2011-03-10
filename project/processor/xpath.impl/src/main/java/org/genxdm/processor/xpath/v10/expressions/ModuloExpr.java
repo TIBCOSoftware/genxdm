@@ -21,10 +21,9 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
-import org.genxdm.xpath.v10.expressions.ConvertibleNumberExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.expressions.NumberExpr;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.NumberExpr;
 
 final class ModuloExpr
     extends ConvertibleNumberExpr

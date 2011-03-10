@@ -17,13 +17,5 @@ package org.genxdm.xpath.v10;
 
 public interface XPathToolkitFactory
 {
-	boolean getInheritAttributes();
-
-	boolean getInheritNamespaces();
-
 	XPathToolkit newXPathToolkit();
-
-	XPathToolkitFactory setInheritAttributes(boolean inheritAttributes);
-
-	XPathToolkitFactory setInheritNamespaces(boolean inheritNamespaces);
 }

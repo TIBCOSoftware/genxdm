@@ -20,23 +20,31 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExtensionContext;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.variants.Variant;
+import org.genxdm.xpath.v10.Variant;
 
 final class ExprContextDynamicImpl<N> 
     implements ExprContextDynamic<N>
 {
+	private boolean m_inheritAttributes;
+	
+	private boolean m_inheritNamespaces;
+	
 	private final int position;
 	private final int size;
 	private final Map<QName, Variant<N>> variables;
 
-	public ExprContextDynamicImpl(final int position, final int size, final Map<? extends QName, ? extends Variant<N>> variables)
+	public ExprContextDynamicImpl(final int position, final int size,
+			final Map<? extends QName, ? extends Variant<N>> variables,
+					boolean inheritAttributes, boolean inheritNamespaces)
 	{
 		this.position = position;
 		this.size = size;
 		this.variables = new HashMap<QName, Variant<N>>(variables);
+		this.m_inheritAttributes = inheritAttributes;
+		this.m_inheritNamespaces = inheritNamespaces;
 	}
 
 	public int getContextPosition()
@@ -59,4 +67,15 @@ final class ExprContextDynamicImpl<N>
 	{
 		return variables.get(name);
 	}
+
+	@Override
+	public boolean getInheritAttributes() {
+		return m_inheritAttributes;
+	}
+
+	@Override
+	public boolean getInheritNamespaces() {
+		return m_inheritNamespaces;
+	}
+
 }

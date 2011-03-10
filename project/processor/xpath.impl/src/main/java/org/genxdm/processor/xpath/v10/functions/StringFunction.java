@@ -20,9 +20,10 @@
  */
 package org.genxdm.processor.xpath.v10.functions;
 
-import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprParseException;
+import org.genxdm.processor.xpath.v10.expressions.WrappedStringExpr;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprParseException;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 public final class StringFunction 
     extends FunctionOpt1
@@ -30,6 +31,6 @@ public final class StringFunction
 
 	ConvertibleExpr makeCallExpr(final ConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
 	{
-		return e.makeStringExpr(statEnv);
+		return WrappedStringExpr.wrap(e.makeStringExpr(statEnv));
 	}
 }

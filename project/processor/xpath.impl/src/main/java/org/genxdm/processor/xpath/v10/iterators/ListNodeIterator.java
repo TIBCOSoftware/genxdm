@@ -24,8 +24,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.NodeIterator;
 
 public class ListNodeIterator<N>
     implements NodeIterator<N>

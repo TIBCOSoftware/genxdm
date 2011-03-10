@@ -23,14 +23,14 @@ package org.genxdm.processor.xpath.v10.functions;
 import java.lang.reflect.Array;
 
 import org.genxdm.Model;
-import org.genxdm.xpath.v10.Function;
-import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleStringExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.expressions.ExprParseException;
-import org.genxdm.xpath.v10.expressions.StringExpr;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleStringExpr;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.ExprParseException;
+import org.genxdm.xpath.v10.StringExpr;
+import org.genxdm.xpath.v10.extend.Function;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 /**
  * represents the XPath Function: string concat(string, string, string*)

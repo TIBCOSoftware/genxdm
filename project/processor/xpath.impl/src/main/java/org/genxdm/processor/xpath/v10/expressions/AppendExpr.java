@@ -21,10 +21,9 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
-import org.genxdm.xpath.v10.expressions.ConvertibleStringExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.expressions.StringExpr;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.StringExpr;
 
 /**
  * Represents the concatenation of two String Expressions

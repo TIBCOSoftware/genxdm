@@ -22,18 +22,15 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprContextStatic;
 
-final class ExprContextStaticImpl 
+public final class ExprContextStaticImpl 
     implements ExprContextStatic
 {
-	private final Set<QName> variables;
-	private final Map<String, String> namespaces;
+	private final Set<QName> variables = new HashSet<QName>();
+	private final Map<String, String> namespaces = new HashMap<String, String>();
 
-	public ExprContextStaticImpl(final Set<? extends QName> variables, final Map<String, String> namespaces)
-	{
-		this.variables = new HashSet<QName>(variables);
-		this.namespaces = new HashMap<String, String>(namespaces);
+	public ExprContextStaticImpl() {
 	}
 
 	public boolean containsVariable(final QName name)
@@ -44,5 +41,21 @@ final class ExprContextStaticImpl
 	public String getNamespaceForPrefix(final String prefix)
 	{
 		return namespaces.get(prefix);
+	}
+
+	public void declareNamespace(final String prefix, final String namespace)
+	{
+		namespaces.put(prefix, namespace);
+	}
+
+	public void declareVariable(final QName name)
+	{
+		variables.add(name);
+	}
+
+	public void reset()
+	{
+		variables.clear();
+		namespaces.clear();
 	}
 }

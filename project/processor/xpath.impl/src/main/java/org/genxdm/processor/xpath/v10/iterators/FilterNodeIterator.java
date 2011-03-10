@@ -22,12 +22,10 @@ package org.genxdm.processor.xpath.v10.iterators;
 
 import org.genxdm.Model;
 import org.genxdm.processor.xpath.v10.expressions.DelegateExprContext;
-import org.genxdm.xpath.v10.expressions.BooleanExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.iterators.CloneableNodeIterator;
-import org.genxdm.xpath.v10.iterators.CloneableNodeIteratorImpl;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
+import org.genxdm.xpath.v10.BooleanExpr;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.NodeIterator;
 
 public final class FilterNodeIterator<N> 
     extends DelegateExprContext<N> 
