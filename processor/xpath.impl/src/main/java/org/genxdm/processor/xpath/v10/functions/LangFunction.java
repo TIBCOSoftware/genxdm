@@ -23,13 +23,14 @@ package org.genxdm.processor.xpath.v10.functions;
 import javax.xml.XMLConstants;
 
 import org.genxdm.Model;
-import org.genxdm.xpath.v10.expressions.ConvertibleBooleanExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.expressions.ExprParseException;
-import org.genxdm.xpath.v10.expressions.StringExpr;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleBooleanExpr;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.ExprParseException;
+import org.genxdm.xpath.v10.StringExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 public final class LangFunction 
     extends Function1
@@ -90,7 +91,7 @@ public final class LangFunction
 		return false;
 	}
 
-	ConvertibleExpr makeCallExpr(final ConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
+	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		final StringExpr se = e.makeStringExpr(statEnv);
 		return new ConvertibleBooleanExpr()

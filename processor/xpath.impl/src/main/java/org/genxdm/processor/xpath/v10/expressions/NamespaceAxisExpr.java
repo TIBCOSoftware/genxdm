@@ -22,27 +22,13 @@ package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
-import org.genxdm.xpath.v10.iterators.NodeIteratorOnIterator;
+import org.genxdm.processor.xpath.v10.iterators.NodeIteratorOnIterator;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeIterator;
 
 public final class NamespaceAxisExpr 
     extends AxisExpr
 {
-	private final boolean inherit;
-
-	/**
-	 * Initializer for the namespace axis expression.
-	 * 
-	 * @param inherit
-	 *            Determines whether prefix mappings will be inherited.
-	 */
-	public NamespaceAxisExpr(final boolean inherit)
-	{
-		super();
-		this.inherit = inherit;
-	}
-
 	@Override
 	public int getOptimizeFlags()
 	{
@@ -56,6 +42,6 @@ public final class NamespaceAxisExpr
 
 	public <N> NodeIterator<N> nodeIterator(final Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv)
 	{
-		return new NodeIteratorOnIterator<N>(model.getNamespaceAxis(contextNode, inherit).iterator());
+		return new NodeIteratorOnIterator<N>(model.getNamespaceAxis(contextNode, dynEnv.getInheritNamespaces()).iterator());
 	}
 }

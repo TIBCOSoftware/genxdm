@@ -23,7 +23,7 @@ package org.genxdm.processor.xpath.v10.tests;
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
 import org.genxdm.processor.xpath.v10.patterns.PathPatternBase;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprContextDynamic;
 
 public final class NamespaceTest 
     extends PathPatternBase

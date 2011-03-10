@@ -21,8 +21,8 @@
 package org.genxdm.processor.xpath.v10.relations;
 
 import org.genxdm.xpath.v10.Converter;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.variants.Variant;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.Variant;
 
 public abstract class NumericRelation 
     extends Relation

@@ -23,13 +23,14 @@ package org.genxdm.processor.xpath.v10.functions;
 import java.util.StringTokenizer;
 
 import org.genxdm.Model;
-import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleStringExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.expressions.ExprParseException;
-import org.genxdm.xpath.v10.expressions.StringExpr;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleStringExpr;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.ExprParseException;
+import org.genxdm.xpath.v10.StringExpr;
+import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 public final class NormalizeSpaceFunction 
     extends FunctionOpt1
@@ -48,7 +49,7 @@ public final class NormalizeSpaceFunction
 		return buf.toString();
 	}
 
-	ConvertibleExpr makeCallExpr(final ConvertibleExpr expr, ExprContextStatic statEnv) throws ExprParseException
+	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr expr, ExprContextStatic statEnv) throws ExprParseException
 	{
 		final StringExpr se = expr.makeStringExpr(statEnv);
 		return new ConvertibleStringExpr()

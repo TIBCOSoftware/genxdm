@@ -21,17 +21,17 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
-import org.genxdm.xpath.v10.expressions.ConvertibleExpr;
-import org.genxdm.xpath.v10.expressions.ConvertibleNumberExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprContextStatic;
-import org.genxdm.xpath.v10.expressions.ExprException;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
+import org.genxdm.processor.xpath.v10.expressions.ConvertibleNumberExpr;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.ExprException;
 
 public final class LastFunction 
     extends Function0
 {
 
-	ConvertibleExpr makeCallExpr(final ExprContextStatic statEnv)
+	ConvertibleExprImpl makeCallExpr(final ExprContextStatic statEnv)
 	{
 		return new ConvertibleNumberExpr()
 		{

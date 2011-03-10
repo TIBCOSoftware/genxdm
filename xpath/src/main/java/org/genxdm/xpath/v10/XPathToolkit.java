@@ -15,24 +15,13 @@
  */
 package org.genxdm.xpath.v10;
 
-import org.genxdm.xpath.v10.expressions.ExprContextDynamicArgs;
-import org.genxdm.xpath.v10.expressions.ExprContextStaticArgs;
 
 public interface XPathToolkit
 {
 	XPathCompiler newXPathCompiler();
 
-	ExprContextStaticArgs newExprContextStaticArgs();
+	ExprContextStatic newExprContextStaticArgs();
 
 	<N> ExprContextDynamicArgs<N> newExprContextDynamicArgs();
 	
-	/**
-	 * Extend the XPath engine by declaring a function.
-	 * 
-	 * @param name	The name of the function to add
-	 * @param newFunction	The implementation of the function.
-	 * 
-	 * @return	Any existing function declared with the same name.
-	 */
-	Function declareFunction(String name, Function newFunction);
 }

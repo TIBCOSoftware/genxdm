@@ -21,24 +21,23 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
-import org.genxdm.xpath.v10.expressions.ConvertibleNodeSetExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
-import org.genxdm.xpath.v10.iterators.NodeIteratorOnIterator;
-import org.genxdm.xpath.v10.iterators.SequenceComposeNodeIterator;
-import org.genxdm.xpath.v10.iterators.UnionNodeIterator;
+import org.genxdm.processor.xpath.v10.iterators.NodeIteratorOnIterator;
+import org.genxdm.processor.xpath.v10.iterators.SequenceComposeNodeIterator;
+import org.genxdm.processor.xpath.v10.iterators.UnionNodeIterator;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.NodeIterator;
 
 /**
  * descendants-or-self(node())/E when E has STAYS_IN_SUBTREE
  */
 
 final class SubtreeExpr
-    extends ConvertibleNodeSetExpr
+    extends ConvertibleNodeSetExprImpl
 {
-	private final ConvertibleNodeSetExpr expr;
+	private final ConvertibleNodeSetExprImpl expr;
 
-	SubtreeExpr(final ConvertibleNodeSetExpr expr)
+	SubtreeExpr(final ConvertibleNodeSetExprImpl expr)
 	{
 		super();
 		this.expr = expr;

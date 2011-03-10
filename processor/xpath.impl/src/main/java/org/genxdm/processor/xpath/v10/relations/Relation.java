@@ -21,12 +21,12 @@
 package org.genxdm.processor.xpath.v10.relations;
 
 import org.genxdm.Model;
+import org.genxdm.processor.xpath.v10.iterators.CloneableNodeIterator;
+import org.genxdm.processor.xpath.v10.iterators.CloneableNodeIteratorImpl;
 import org.genxdm.xpath.v10.Converter;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.iterators.CloneableNodeIterator;
-import org.genxdm.xpath.v10.iterators.CloneableNodeIteratorImpl;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
-import org.genxdm.xpath.v10.variants.Variant;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.NodeIterator;
+import org.genxdm.xpath.v10.Variant;
 
 public abstract class Relation 
 {

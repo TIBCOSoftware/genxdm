@@ -22,15 +22,21 @@ package org.genxdm.processor.xpath.v10.expressions;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExtensionContext;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.variants.Variant;
+import org.genxdm.xpath.v10.Variant;
 
 /**
- * a base class for ExprContext classes that override some methods of an existing ExprContext, and delegate the rest of them to that existing ExprContest
+ * an abstract base class for ExprContext classes that override some methods of an
+ * existing ExprContext, and delegate the rest of them to that existing ExprContest.
+ * 
+ * <p>Note that the position and size from the context are *not* implemented or delegated here, because
+ * the only reason to override this class is to provide new definitions of those
+ * values!
+ * </p>
  */
-public class DelegateExprContext<N> 
+public abstract class DelegateExprContext<N> 
     implements ExprContextDynamic<N>
 {
 	protected final ExprContextDynamic<N> origContext;
@@ -43,16 +49,6 @@ public class DelegateExprContext<N>
 		origContext = context;
 	}
 
-	public int getContextPosition() throws ExprException
-	{
-		return origContext.getContextPosition();
-	}
-
-	public int getContextSize() throws ExprException
-	{
-		return origContext.getContextSize();
-	}
-
 	public ExtensionContext<N> getExtensionContext(final String namespace) throws ExprException
 	{
 		return origContext.getExtensionContext(namespace);
@@ -62,4 +58,15 @@ public class DelegateExprContext<N>
 	{
 		return origContext.getVariableValue(name);
 	}
+
+	@Override
+	public boolean getInheritAttributes() {
+		return origContext.getInheritAttributes();
+	}
+
+	@Override
+	public boolean getInheritNamespaces() {
+		return origContext.getInheritNamespaces();
+	}
+
 }

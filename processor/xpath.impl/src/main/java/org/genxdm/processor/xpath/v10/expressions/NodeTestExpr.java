@@ -22,21 +22,20 @@ package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
 import org.genxdm.processor.xpath.v10.patterns.Pattern;
-import org.genxdm.xpath.v10.expressions.ConvertibleNodeSetExpr;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprException;
-import org.genxdm.xpath.v10.iterators.NodeIterator;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.NodeIterator;
 
 /**
  *
  */
 final class NodeTestExpr
-    extends ConvertibleNodeSetExpr
+    extends ConvertibleNodeSetExprImpl
 {
 	private final Pattern nodeTest;
-	private final ConvertibleNodeSetExpr expr;
+	private final ConvertibleNodeSetExprImpl expr;
 
-	NodeTestExpr(final ConvertibleNodeSetExpr expr, final Pattern nodeTest)
+	NodeTestExpr(final ConvertibleNodeSetExprImpl expr, final Pattern nodeTest)
 	{
 		super();
 		this.expr = expr;

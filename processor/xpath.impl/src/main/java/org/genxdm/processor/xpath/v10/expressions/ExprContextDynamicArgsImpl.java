@@ -20,9 +20,9 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xpath.v10.expressions.ExprContextDynamic;
-import org.genxdm.xpath.v10.expressions.ExprContextDynamicArgs;
-import org.genxdm.xpath.v10.variants.Variant;
+import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.ExprContextDynamicArgs;
+import org.genxdm.xpath.v10.Variant;
 
 public final class ExprContextDynamicArgsImpl<N> 
     implements ExprContextDynamicArgs<N>
@@ -30,6 +30,10 @@ public final class ExprContextDynamicArgsImpl<N>
 	private int position;
 	private int size;
 	private final Map<QName, Variant<N>> variables = new HashMap<QName, Variant<N>>();
+	private boolean m_inheritAttributes = false;
+	
+	// TODO not sure about this default...
+	private boolean m_inheritNamespaces = true;
 
 	public void bindVariableValue(final QName name, final Variant<N> value)
 	{
@@ -38,7 +42,7 @@ public final class ExprContextDynamicArgsImpl<N>
 
 	public ExprContextDynamic<N> build()
 	{
-		return new ExprContextDynamicImpl<N>(position, size, variables);
+		return new ExprContextDynamicImpl<N>(position, size, variables, m_inheritAttributes, m_inheritNamespaces);
 	}
 
 	public void reset()
@@ -54,5 +58,15 @@ public final class ExprContextDynamicArgsImpl<N>
 	public void setContextSize(final int size)
 	{
 		this.size = size;
+	}
+
+	@Override
+	public void setInheritAttributes(boolean inheritAttributes) {
+		m_inheritAttributes = inheritAttributes;
+	}
+
+	@Override
+	public void setInheritNamespaces(boolean inheritNamespaces) {
+		m_inheritNamespaces = inheritNamespaces;
 	}
 }
