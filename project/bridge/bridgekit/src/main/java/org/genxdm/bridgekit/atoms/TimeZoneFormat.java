@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.atoms;
 
-final class TimeZoneFormat
+public final class TimeZoneFormat
 {
 	private static final int TIMEZONE_LENGTH = 6;
 	private static final int SECONDS_PER_MINUTE = 60;

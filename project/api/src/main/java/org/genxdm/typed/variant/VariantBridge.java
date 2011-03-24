@@ -95,12 +95,12 @@ public interface VariantBridge<N, A>
 	/**
 	 * Converts a variant value (X) known to be {@link VariantKind#ITEM} to an item handle.
 	 */
-	Object getItem(XmlVariant value);
+	Item<N, A> getItem(XmlVariant value);
 
 	/**
 	 * Converts a variant value (X) known to be {@link VariantKind#ITEMS} to a list of item handles.
 	 */
-	Iterable<Object> getItemSet(XmlVariant value);
+	Iterable<Item<N, A>> getItemSet(XmlVariant value);
 
 	/**
 	 * Returns an enumeration representing the nature of a variant value allowing it to be correctly converted back to (I,N,A) representation.
@@ -133,12 +133,12 @@ public interface VariantBridge<N, A>
 	/**
 	 * Converts an item handle into a variant value (X).
 	 */
-	XmlVariant item(Object item);
+	XmlVariant item(Item<N, A> item);
 
 	/**
 	 * Converts a list of item handles to a variant value (X).
 	 */
-	XmlVariant itemSet(Iterable<Object> items);
+	XmlVariant itemSet(Iterable<Item<N, A>> items);
 
 	/**
 	 * Converts a node handle into a variant value (X).
