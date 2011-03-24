@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.typed.variant.Item;
 import org.genxdm.typed.variant.VariantBridge;
 import org.genxdm.typed.variant.VariantKind;
 import org.genxdm.typed.variant.XmlVariant;
@@ -112,15 +113,16 @@ public final class XmlVariantBridge implements VariantBridge<XmlNode, XmlAtom>
 		return (BigInteger)value.getObject();
 	}
 
-	public Object getItem(final XmlVariant value)
+	@SuppressWarnings("unchecked")
+    public Item<XmlNode, XmlAtom> getItem(final XmlVariant value)
 	{
-		return value.getObject();
+		return (Item<XmlNode, XmlAtom>)value.getObject();
 	}
 
 	@SuppressWarnings("unchecked")
-	public Iterable<Object> getItemSet(final XmlVariant value)
+	public Iterable<Item<XmlNode, XmlAtom>> getItemSet(final XmlVariant value)
 	{
-		return (Iterable<Object>)value.getObject();
+		return (Iterable<Item<XmlNode, XmlAtom>>)value.getObject();
 	}
 
 	public VariantKind getNature(final XmlVariant value)
@@ -170,12 +172,12 @@ public final class XmlVariantBridge implements VariantBridge<XmlNode, XmlAtom>
 		return XmlVariant.integerValue(intval);
 	}
 
-	public XmlVariant item(final Object item)
+	public XmlVariant item(final Item<XmlNode, XmlAtom> item)
 	{
 		return XmlVariant.item(item);
 	}
 
-	public XmlVariant itemSet(final Iterable<Object> items)
+	public XmlVariant itemSet(final Iterable<Item<XmlNode, XmlAtom>> items)
 	{
 		return XmlVariant.itemSet(items);
 	}
