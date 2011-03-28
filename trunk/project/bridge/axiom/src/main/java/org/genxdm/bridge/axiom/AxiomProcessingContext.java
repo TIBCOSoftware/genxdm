@@ -186,7 +186,6 @@ public class AxiomProcessingContext
         {
             this.factory = new AxiomFactory(PreCondition.assertNotNull(omfactory, "omfactory"));
             this.mmodel = new AxiomMutableModel(factory);
-            this.factory.setMutableModel(mmodel);
         }
         
         public AxiomProcessingContext getProcessingContext()

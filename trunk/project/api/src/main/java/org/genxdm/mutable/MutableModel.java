@@ -102,7 +102,7 @@ public interface MutableModel<N> extends Model<N>
      *         compatible with the supplied node (if that's an issue for
      *         the brige), never null.
      **/
-    NodeFactory<N> getFactoryForContext(N context);
+    NodeFactory<N> getFactory(N context);
 
     /**
      * Inserts the specified node as the following sibling of the supplied

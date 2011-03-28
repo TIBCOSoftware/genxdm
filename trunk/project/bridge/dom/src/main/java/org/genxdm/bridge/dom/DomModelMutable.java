@@ -32,7 +32,7 @@ public final class DomModelMutable
     extends DomModel implements MutableModel<Node>
 {
 
-    public DomNodeFactory getFactoryForContext(final Node context)
+    public DomNodeFactory getFactory(final Node context)
     {
         PreCondition.assertNotNull(context, "context");
         // TODO: cache this, probably with a least-recent first-dropped algo, rather
@@ -41,7 +41,7 @@ public final class DomModelMutable
         // we have one already or not.  verify that this really is a better solution than
         // creating a nodefactory each time; it's not a heavy abstraction (has only doc or
         // dbf as state).
-        return new DomNodeFactory(DomSupport.getOwner(context), this);
+        return new DomNodeFactory(DomSupport.getOwner(context));
     }
     
     public void appendChild(final Node parent, final Node newChild)
