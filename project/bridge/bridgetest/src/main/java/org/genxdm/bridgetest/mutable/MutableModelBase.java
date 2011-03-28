@@ -2,6 +2,7 @@ package org.genxdm.bridgetest.mutable;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,6 @@ import org.genxdm.ProcessingContext;
 import org.genxdm.bridgetest.TestBase;
 import org.genxdm.bridgetest.utilities.Events;
 import org.genxdm.io.FragmentBuilder;
-import org.genxdm.mutable.MutableContext;
 import org.genxdm.mutable.MutableModel;
 import org.genxdm.mutable.NodeFactory;
 import org.junit.Test;
@@ -61,10 +61,7 @@ public abstract class MutableModelBase<N>
         Iterable<N> sids = mutant.deleteChildren(element);
         assertNotNull(sids);
         int i = 0;
-        for (N n : sids)
-        {
-            i++;
-        }
+        for (N n : sids) { i++; }
         assertEquals(6, i);
         
         doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
@@ -93,8 +90,30 @@ public abstract class MutableModelBase<N>
     {
         ProcessingContext<N> context = newProcessingContext();
         N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
+        NodeFactory<N> factory = context.getMutableContext().getNodeFactory();
+        MutableModel<N> model = context.getMutableContext().getModel();
         
-        //TODO
+        N solo = factory.createAttribute("", "solo", "", "x");
+        
+        N a1 = factory.createAttribute("", "a1", "", "1");
+        N a2 = factory.createAttribute("", "a2", "", "2");
+        List<N> attlist = new ArrayList<N>(2);
+        attlist.add(a1);
+        attlist.add(a2);
+        
+        doc = model.getFirstChildElement(doc);
+        model.insertAttribute(doc, solo);
+        
+        int i = 0;
+        Iterable<N> atts = model.getAttributeAxis(doc, false);
+        for (N a : atts) { i++; }
+        assertEquals(2, i);
+        
+        model.insertAttributes(doc, attlist);
+        i = 0;
+        atts = model.getAttributeAxis(doc, false);
+        for (N a : atts) { i++; }
+        assertEquals(4, i);
     }
     
     @Test
@@ -102,6 +121,10 @@ public abstract class MutableModelBase<N>
     {
         ProcessingContext<N> context = newProcessingContext();
         N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
+        
+        // note: not having a namespace axis isn't an excuse
+        // namespace *support* is required, it's just that namespaces
+        // are allowed to be metadata, not nodes
         
         //TODO
     }
@@ -111,9 +134,91 @@ public abstract class MutableModelBase<N>
     {
         ProcessingContext<N> context = newProcessingContext();
         N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
-        // insertBefore, insertAfter
+        NodeFactory<N> factory = context.getMutableContext().getNodeFactory();
+        MutableModel<N> model = context.getMutableContext().getModel();
         
-        //TODO
+        N e1 = factory.createElement("", "e1", "");
+        N e2 = factory.createElement("", "e2", "");
+        N e3 = factory.createElement("", "e3", "");
+        
+        // insert element before pi
+        N mark = model.getLastChild(model.getFirstChild(doc));
+        N check = model.getPreviousSibling(mark);
+        model.insertBefore(mark, e3);
+        assertEquals(mark, model.getNextSibling(e3));
+        assertEquals(check, model.getPreviousSibling(e3));
+        
+        // insert element before text
+        mark = check;
+        check = model.getPreviousSibling(mark);
+        model.insertBefore(mark, e2);
+        assertEquals(mark, model.getNextSibling(e2));
+        assertEquals(check, model.getPreviousSibling(e2));
+        
+        // insert element before comment
+        mark = check;
+        check = model.getPreviousSibling(mark); // null!
+        assertNull(check);
+        model.insertBefore(mark, e1);
+        assertEquals(mark, model.getNextSibling(e1));
+        assertEquals(check, model.getPreviousSibling(e1)); // this should work, though.
+        
+        model.delete(e1);
+        model.delete(e2);
+
+        // insert element before element
+        check = model.getPreviousSibling(e3);
+        model.insertBefore(e3, e2);
+        assertEquals(e3, model.getNextSibling(e2));
+        assertEquals(check, model.getPreviousSibling(e2));
+        
+        // TODO: we should also insert text, comment, pi, before element text comment pi
+        // tedious.  this is the short version.  the tricky one of those is text,
+        // which has the potential (in some apis, at least) to collapse nodes when
+        // inserted as a sibling to a text node.
+        
+        model.delete(e2); // again, yes, 'cause we put it back in
+        model.delete(e3);
+        
+        // now do it again, the other way round.
+        mark = model.getFirstChild(model.getFirstChild(doc));
+        check = model.getNextSibling(mark);
+        model.insertAfter(mark, e1);
+        assertEquals(mark, model.getPreviousSibling(e1));
+        assertEquals(check, model.getNextSibling(e1));
+        
+        mark = check;
+        check = model.getNextSibling(mark);
+        model.insertAfter(mark, e2);
+        assertEquals(mark, model.getPreviousSibling(e2));
+        assertEquals(check, model.getNextSibling(e2));
+        
+        mark = check;
+        check = model.getNextSibling(mark); // null
+        assertNull(check);
+        model.insertAfter(mark, e3);
+        assertEquals(mark, model.getPreviousSibling(e3));
+        assertEquals(check, model.getNextSibling(e3));
+        
+        model.delete(e3);
+        model.delete(e2);
+        
+        check = model.getNextSibling(e1);
+        model.insertAfter(e1, e2);
+        assertEquals(e1, model.getPreviousSibling(e2));
+        assertEquals(check, model.getNextSibling(e2));
+        
+        
+        // TODO: now, sequences
+        
+        // TODO: we should test putting things in as siblings of the
+        // document element, too, but there's a world of potential hurt,
+        // there.  some apis won't permit text nodes (even ignorable whitespace,
+        // per the specification) as children of document.  an actual *document*
+        // node shouldn't let you put a second element there, but the xdm document
+        // in fact represents an xml entity, more accurately (but not even
+        // that, really; it's just the notional wrapper around a sequence,
+        // if you want to get down to cases like bare attributes).
     }
 
     @Test
@@ -121,8 +226,28 @@ public abstract class MutableModelBase<N>
     {
         ProcessingContext<N> context = newProcessingContext();
         N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
+        MutableModel<N> model = context.getMutableContext().getModel();
         
-        //TODO
+        N target = model.getFirstChild(model.getFirstChildElement(doc));
+        N marker = model.getNextSibling(target);
+        N result = model.delete(target); // delete comment
+        assertEquals(target, result);
+        target = marker;
+        marker = model.getNextSibling(target);
+        result = model.delete(target); // delete text
+        assertEquals(target, result);
+        target = marker;
+        marker = model.getParent(target);
+        result = model.delete(target); // delete pi
+        assertEquals(target, result);
+        // TODO: namespace?
+        target = model.getAttribute(marker, "", "att");
+        result = model.delete(target); // delete att
+        assertEquals(target, result);
+        // at this point, we could move the marker back to document, but why?
+        result = model.delete(marker); // delete element
+        assertEquals(marker, result);
+        // can't delete the document
     }
     
     @Test
@@ -160,123 +285,44 @@ public abstract class MutableModelBase<N>
         matcher.match();
         model.stream(doc2, true, matcher);
         
-        // TODO
-        // for shallow copy, just verify each node type ('cept namespace?)
-        // document (has uri)
-        // element "doc"
-        // attribute att=value
-        // [namespace? ns=ns
-        // comment "comment"
-        // text "text"
-        // pi "target" "data"
+        N mark = model.copyNode(doc, false);
+        // can't assert equals.  they're not "equal," even though they're
+        // copies of each other.
+        if (context.isSupported(Feature.DOCUMENT_URI))
+            assertEquals(model.getDocumentURI(doc), model.getDocumentURI(mark)); // all we can really do.
+        
+        mark = model.getFirstChild(doc);
+        N copy = model.copyNode(mark, false);
+        assertEquals(model.getNamespaceURI(mark), model.getNamespaceURI(copy));
+        assertEquals(model.getLocalName(mark), model.getLocalName(copy));
+        assertEquals(model.getPrefix(mark), model.getPrefix(copy)); // necessarily true?
+        
+        mark = model.getAttribute(mark, "", "att");
+        copy = model.copyNode(mark, false);
+        assertEquals(model.getNamespaceURI(mark), model.getNamespaceURI(copy));
+        assertEquals(model.getLocalName(mark), model.getLocalName(copy));
+        assertEquals(model.getPrefix(mark), model.getPrefix(copy)); // necessarily true?
+        assertEquals(model.getStringValue(mark), model.getStringValue(copy));
+        
+        if (context.isSupported(Feature.NAMESPACE_AXIS))
+        {
+            // TODO: namespace [ns = ns] ???
+        }
+        
+        mark = model.getFirstChild(model.getFirstChild(doc)); // comment
+        copy = model.copyNode(mark, false);
+        assertEquals(model.getStringValue(mark), model.getStringValue(copy));
+        
+        mark = model.getNextSibling(mark); // text
+        copy = model.copyNode(mark, false);
+        assertEquals(model.getStringValue(mark), model.getStringValue(copy));
+        
+        mark = model.getNextSibling(mark);
+        copy = model.copyNode(mark, false);
+        assertEquals(model.getLocalName(mark), model.getLocalName(copy));
+        assertEquals(model.getStringValue(mark), model.getStringValue(copy));
     }
     
-///**
-// * Removes a node from the tree.  Corresponds to XQuery Update Facility
-// * delete.
-// *
-// * @param target
-// *            The node to be removed.  If null, no action will be taken.
-// *            If the node has no parent, no action will be taken.
-// * 
-// * @return The node that has been removed; if null, then no node was removed.
-// **/
-//N delete(final N target);
-//
-///**
-// * Inserts the specified node as the following sibling of the supplied
-// * target node.
-// * Corresponds to XQuery Update Facility insertAfter.  This version
-// * is a convenience method that takes a single node rather than requiring
-// * construction of a list to hold a single-element sequence.
-// * 
-// * @param target
-// *            The node which will become the preceding sibling of the new
-// *            node.  Must be a text, element, comment, or processing
-// *            instruction node.  May not be null.
-// * @param content
-// *            The node to be added.  Must be a text, element,
-// *            comment, or processing instruction node.  May not be null.
-// **/
-//void insertAfter(final N target, final N content);
-//
-///**
-// * Inserts the specified node sequence, in order, as the following siblings 
-// * of the supplied target node.
-// * Corresponds to XQuery Update Facility insertAfter.
-// * 
-// * @param target
-// *            The node which will become the preceding sibling of the last
-// *            node in the supplied sequence.  Must be a text, element, 
-// *            comment, or processing instruction node.  May not be null.
-// * @param content
-// *            The sequence to be added.  May not be null,
-// *            but may be an empty sequence (in which case nothing happens).
-// *            Contents must conform to the contract for insertAfter.
-// **/
-//void insertAfter(final N target, final Iterable<N> content);
-//
-///**
-// * Inserts an attribute node into the attribute axis of an element.
-// * Corresponds to XQuery Update Facility insertAttributes.  This is a
-// * convenience method, permitting a single node rather than requiring
-// * construction of a single-element sequence container.
-// * 
-// * @param element
-// *            The element that will hold the attribute.  May not be null.
-// *            Must be an element node.
-// * @param attribute
-// *            The attribute to be inserted.  May not be null.  Must be
-// *            an attribute node.
-// **/
-//void insertAttribute(final N element, final N attribute);
-//
-///**
-// * Inserts an attribute node into the attribute axis of an element.
-// * Corresponds to XQuery Update Facility insertAttributes.
-// * 
-// * @param element
-// *            The element that will hold the attributes.  May not be null.
-// *            Must be an element node.
-// * @param attributes
-// *            The list of attributes to be inserted.  May not be null.  
-// *            May be empty.  Contents must be attribute nodes.
-// **/
-//void insertAttributes(final N element, final Iterable<N> attributes);
-//
-///**
-// * Inserts the specified node as the preceding sibling of the supplied
-// * target node.
-// * Corresponds to XQuery Update Facility insertBefore.  This version
-// * is a convenience method that takes a single node rather than requiring
-// * construction of a list to hold a single-element sequence.
-// * 
-// * @param target
-// *            The node which will become the following sibling of the new
-// *            node.  Must be a text, element, comment, or processing
-// *            instruction node.  May not be null.
-// * @param content
-// *            The node to be added.  Must be a text, element,
-// *            comment, or processing instruction node.  May not be null.
-// **/
-//void insertBefore(final N target, final N content);
-//
-///**
-// * Inserts the specified node sequence, in order, as the preceding siblings 
-// * of the supplied target node.
-// * Corresponds to XQuery Update Facility inserBefore.
-// * 
-// * @param target
-// *            The node which will become the following sibling of the last
-// *            node in the supplied sequence.  Must be a text, element, 
-// *            comment, or processing instruction node.  May not be null.
-// * @param content
-// *            The sequence to be added.  May not be null,
-// *            but may be an empty sequence (in which case nothing happens).
-// *            Contents must conform to the contract for insertBefore.
-// **/
-//void insertBefore(final N target, final Iterable<N> content);
-//
 ///**
 // * Inserts a namespace binding into the namespace axis of an element.
 // * This is an immediate-effect API equivalent to the delayed-effect
