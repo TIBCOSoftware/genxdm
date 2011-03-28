@@ -1309,47 +1309,37 @@ public class AxiomModel
     public void stream(Object node, boolean copyNamespaces, ContentHandler handler)
         throws GxmlException
     {
-        // TODO: the use of 'finally' here results in errors that can be nearly
-        // impossible to debug; the original exception may be eaten by an exception
-        // tossed during finally (because no, calling end element when start element
-        // has been called may not actually work very well).
         switch (getNodeKind(node))
         {
             case ELEMENT:
                 {
                     OMElement element = AxiomSupport.dynamicDowncastElement(node);
                     handler.startElement(element.getQName().getNamespaceURI(), element.getQName().getLocalPart(), element.getQName().getPrefix());
-                    try
+                    if (hasNamespaces(node))
                     {
-                        if (hasNamespaces(node))
+                        Iterator it = element.getAllDeclaredNamespaces();
+                        while (it.hasNext())
                         {
-                            Iterator it = element.getAllDeclaredNamespaces();
-                            while (it.hasNext())
-                            {
-                                stream(it.next(), copyNamespaces, handler);
-                            }
-                        }
-                        if (hasAttributes(node))
-                        {
-                            Iterator it = element.getAllAttributes();
-                            while (it.hasNext())
-                            {
-                                stream(it.next(), copyNamespaces, handler);
-                            }
-                        }
-                        if (hasChildren(node))
-                        {
-                            Iterator it = element.getChildren();
-                            while (it.hasNext())
-                            {
-                                stream(it.next(), copyNamespaces, handler);
-                            }
+                            stream(it.next(), copyNamespaces, handler);
                         }
                     }
-                    finally
+                    if (hasAttributes(node))
                     {
-                        handler.endElement();
+                        Iterator it = element.getAllAttributes();
+                        while (it.hasNext())
+                        {
+                            stream(it.next(), copyNamespaces, handler);
+                        }
                     }
+                    if (hasChildren(node))
+                    {
+                        Iterator it = element.getChildren();
+                        while (it.hasNext())
+                        {
+                            stream(it.next(), copyNamespaces, handler);
+                        }
+                    }
+                    handler.endElement();
                 }
                 break;
             case ATTRIBUTE:
@@ -1370,18 +1360,12 @@ public class AxiomModel
                     OMDocument doc = AxiomSupport.dynamicDowncastDocument(node);
                     // TODO: i don't think that this is quite right.
                     handler.startDocument(getDocumentURI(node), "");
-                    try
+                    Iterator it = doc.getChildren();
+                    while (it.hasNext())
                     {
-                        Iterator it = doc.getChildren();
-                        while (it.hasNext())
-                        {
-                            stream(it.next(), copyNamespaces, handler);
-                        }
+                        stream(it.next(), copyNamespaces, handler);
                     }
-                    finally
-                    {
-                        handler.endDocument();
-                    }
+                    handler.endDocument();
                 }
                 break;
             case NAMESPACE:

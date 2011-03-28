@@ -201,6 +201,9 @@ public class Events<N> implements FragmentBuilder<N>
     public void namespace(String prefix, String namespaceURI)
         throws GxmlException
     {
+        // TODO: if namespaces and attributes are (incorrectly)
+        // mixed, as might happen if one calls the contenthandler api
+        // directly, then recording will break.  Figure out a fix.
         switch (mode) {
             case RECORD:
             {
@@ -345,6 +348,7 @@ public class Events<N> implements FragmentBuilder<N>
                 throw new GxmlException("Namespace missing. No match for " + e.toString());
             if (!e.value.equals(matches.get(e)))
                 throw new GxmlException("Namespace value mismatch for " + e.toString() + " :: " + matches.get(e));
+//System.out.println("Removing namespace " + e.toString());
             matches.remove(e);
         }
         if (!matches.isEmpty() && !ignoreExtraNamespaces)

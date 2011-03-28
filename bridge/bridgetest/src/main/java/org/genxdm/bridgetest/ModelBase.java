@@ -37,6 +37,7 @@ public abstract class ModelBase<N>
         
         FragmentBuilder<N> builder = context.newFragmentBuilder();
         assertNotNull(builder);
+        // the events recorder/matcher does the hard work here, in case you were wondering.
         Events<N> matcher = new Events<N>(builder);
         if (!context.isSupported(Feature.DOCUMENT_URI))
             matcher.ignoreDocumentURI();
