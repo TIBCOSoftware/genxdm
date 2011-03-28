@@ -26,7 +26,7 @@ public interface MutableContext<N>
     NodeFactory<N> getNodeFactory();
 
     /**
-     * Returns a {@link MutableModel} for navigating and modifying an XDM model, never null.
+     * Returns a {@link MutableModel} for navigating and modifying an XDM, never null.
      */
     MutableModel<N> getModel();
     
@@ -37,7 +37,7 @@ public interface MutableContext<N>
     ProcessingContext<N> getProcessingContext();
     
     /**
-     * Returns a new {@link MutableCursor} for navigating the XDM model.
+     * Returns a new {@link MutableCursor} for navigating the XDM.
      * 
      * @param node
      *            The node over which the cursor is initially positioned. Cannot be <code>null</code>.
