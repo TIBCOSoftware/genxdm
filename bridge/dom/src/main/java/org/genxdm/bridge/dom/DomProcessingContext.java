@@ -138,7 +138,7 @@ public class DomProcessingContext
 
         public DomNodeFactory getNodeFactory()
         {
-            return new DomNodeFactory( getDocumentBuilderFactory(), mutant );
+            return new DomNodeFactory( getDocumentBuilderFactory() );
         }
 
         public ProcessingContext<Node> getProcessingContext()

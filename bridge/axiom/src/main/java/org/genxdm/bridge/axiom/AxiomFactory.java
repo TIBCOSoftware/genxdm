@@ -61,16 +61,5 @@ public class AxiomFactory
         return omFactory.createOMText(value);
     }
     
-    public AxiomMutableModel getMutableModel()
-    {
-        return model;
-    }
-    
-    void setMutableModel(AxiomMutableModel model)
-    {
-        this.model = model;
-    }
-
-    private AxiomMutableModel model;
     private final OMFactory omFactory;
 }
