@@ -41,7 +41,7 @@ public interface MutableCursor<N>
 
     Iterable<N> deleteChildren();
 
-    NodeFactory<N> getFactoryForContext();
+    NodeFactory<N> getFactory();
 
     void insertAfter(final N next);
 

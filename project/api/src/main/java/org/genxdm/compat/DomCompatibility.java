@@ -102,15 +102,15 @@ public class DomCompatibility {
 	 * 
 	 * @param <N>	The node kind.
 	 * 
-	 * @param factory	The factory for create attributes, if needed.
+	 * @param model	   The model to use for navigation, modification, and to obtain a factory, if needed.
 	 * @param element	The element for which the attribute will be updated/added.
 	 * @param namespace	The namespace for the attribute.
 	 * @param localName	The local name of the attribute
 	 * @param prefix	What prefix to associate with the attribute.
 	 * @param value		The value of the attribute.
 	 */
-	public static <N> void setAttribute(NodeFactory<N> factory, N element, String namespace, String localName, String prefix, String value) {
-		MutableModel<N> model = factory.getMutableModel();
+	public static <N> void setAttribute(MutableModel<N> model, N element, String namespace, String localName, String prefix, String value) {
+		NodeFactory<N> factory = model.getFactory(element);
 		N currAttr = model.getAttribute(element, namespace, localName);
 		if (currAttr != null) {
 			model.replaceValue(currAttr, value);
