@@ -20,7 +20,6 @@ import org.genxdm.Model;
 /** Provides modification of the Model based on the XQuery Update Facility,
  * but with immediate effect.
  *
- * @author Amy! &lt;aaletal@gmail.com>
  **/
 public interface MutableModel<N> extends Model<N>
 {
@@ -100,7 +99,7 @@ public interface MutableModel<N> extends Model<N>
      *                compatible.
      * @return a node factory for the associated bridge, which must be
      *         compatible with the supplied node (if that's an issue for
-     *         the brige), never null.
+     *         the bridge), never null.
      **/
     NodeFactory<N> getFactory(N context);
 

@@ -61,5 +61,5 @@ public class AxiomFactory
         return omFactory.createOMText(value);
     }
     
-    private final OMFactory omFactory;
+    final OMFactory omFactory;
 }

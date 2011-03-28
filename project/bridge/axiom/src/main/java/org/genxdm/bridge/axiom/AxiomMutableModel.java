@@ -15,12 +15,16 @@
  */
 package org.genxdm.bridge.axiom;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
-
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.mutable.MutableModel;
 import org.genxdm.mutable.NodeFactory;
@@ -62,8 +66,36 @@ public class AxiomMutableModel
 
     public Object copyNode(Object source, boolean deep)
     {
-        // TODO: implement
-        throw new UnsupportedOperationException();
+        if (deep)
+        {
+            AxiomFragmentBuilder builder = new AxiomFragmentBuilder(factory.omFactory, false);
+            stream(source, true, builder);
+            return builder.getNode();
+        }
+        else
+        {
+            // TODO:
+            // use the factory, luke.
+            switch (getNodeKind(source))
+            {
+                case DOCUMENT :
+                    break;
+                case ELEMENT :
+                    break;
+                case TEXT :
+                    break;
+                case COMMENT :
+                    break;
+                case PROCESSING_INSTRUCTION :
+                    break;
+                case ATTRIBUTE :
+                    break;
+                case NAMESPACE :
+                    break;
+                default :
+            }
+            return null; // temporary
+        }
     }
 
     /**
@@ -75,15 +107,39 @@ public class AxiomMutableModel
      */
     public Object delete(final Object target)
     {
-        // TODO: implement
-        throw new UnsupportedOperationException();
+        switch (getNodeKind(target))
+        {
+            case ATTRIBUTE : 
+                OMAttribute attribute = AxiomSupport.dynamicDowncastAttribute(target);
+                OMElement parent = attribute.getOwner();
+                parent.removeAttribute(attribute);
+                return attribute;
+            case NAMESPACE :
+                throw new UnsupportedOperationException();
+            case DOCUMENT :
+                throw new IllegalArgumentException("cannot delete document");
+            default :
+                OMNode node = AxiomSupport.dynamicDowncastNode(target);
+                return node.detach();
+        }
     }
 
     public Iterable<Object> deleteChildren(final Object target)
     {
-        // TODO: implement
         PreCondition.assertNotNull(target, "target");
-        throw new UnsupportedOperationException();
+        OMContainer container = AxiomSupport.dynamicDowncastContainer(target);
+        OMNode current = container.getFirstOMChild();
+        OMNode next = current.getNextOMSibling();
+        List<Object> list = new ArrayList<Object>();
+        while (current != null)
+        {
+            list.add(current);
+            current.detach();
+            current = next;
+            if (current != null)
+                next = current.getNextOMSibling();
+        }
+        return list;
     }
 
     public NodeFactory<Object> getFactory(Object node)
@@ -93,10 +149,11 @@ public class AxiomMutableModel
 
     public void insertAfter(final Object target, final Object content)
     {
-        // TODO: implement
         PreCondition.assertNotNull(target, "target");
         PreCondition.assertNotNull(content, "content");
-        throw new UnsupportedOperationException();
+        OMNode t = AxiomSupport.dynamicDowncastNode(target);
+        OMNode c = AxiomSupport.dynamicDowncastNode(content);
+        t.insertSiblingAfter(c);
     }
 
     public void insertAfter(final Object target, final Iterable<Object> content)
@@ -115,14 +172,14 @@ public class AxiomMutableModel
      *            The element that will hold the attribute.
      * @param attribute
      *            The attribute to be inserted.
-     * @return TODO
      */
-    public void insertAttribute(final Object element, final Object attribute)
+    public void insertAttribute(final Object target, final Object content)
     {
-        // TODO: implement
-        PreCondition.assertNotNull(element, "element");
-        PreCondition.assertNotNull(attribute, "attribute");
-        throw new UnsupportedOperationException();
+        PreCondition.assertNotNull(target, "element");
+        PreCondition.assertNotNull(content, "attribute");
+        OMElement element = AxiomSupport.dynamicDowncastElement(target);
+        OMAttribute attribute = AxiomSupport.dynamicDowncastAttribute(content);
+        element.addAttribute(attribute);
     }
 
     public void insertAttributes(final Object element, final Iterable<Object> attributes)
@@ -149,10 +206,11 @@ public class AxiomMutableModel
      */
     public void insertBefore(final Object target, final Object content)
     {
-        // TODO: implement
         PreCondition.assertNotNull(target, "target");
         PreCondition.assertNotNull(content, "content");
-        throw new UnsupportedOperationException();
+        OMNode t = AxiomSupport.dynamicDowncastNode(target);
+        OMNode c = AxiomSupport.dynamicDowncastNode(content);
+        t.insertSiblingBefore(c);
     }
 
     public void insertBefore(final Object target, final Iterable<Object> content)
@@ -184,17 +242,24 @@ public class AxiomMutableModel
 
     public void prependChild(final Object parent, final Object content)
     {
-        // TODO: implement
         PreCondition.assertNotNull(parent, "parent");
         PreCondition.assertNotNull(content, "content");
-        // downcast the parent
-        throw new UnsupportedOperationException();
+        OMContainer container = AxiomSupport.dynamicDowncastContainer(parent);
+        OMNode node = AxiomSupport.dynamicDowncastNode(content);
+        OMNode first = container.getFirstOMChild();
+        first.insertSiblingBefore(node);
     }
 
     public void prependChildren(final Object parent, final Iterable<Object> content)
     {
         PreCondition.assertNotNull(content, "content");
+        List<Object> reversed = new ArrayList<Object>();
         for (Object node : content)
+        {
+            reversed.add(node);
+        }
+        Collections.reverse(reversed);
+        for (Object node : reversed)
         {
             prependChild(parent, node);
         }
