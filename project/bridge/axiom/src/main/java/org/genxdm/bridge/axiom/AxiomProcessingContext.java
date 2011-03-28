@@ -29,11 +29,15 @@ import org.genxdm.ProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.tree.BookmarkOnModel;
 import org.genxdm.bridgekit.tree.CursorOnModel;
+import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 //import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.Resolver;
 import org.genxdm.mutable.MutableContext;
+import org.genxdm.mutable.MutableCursor;
+import org.genxdm.mutable.MutableModel;
+import org.genxdm.mutable.NodeFactory;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.processor.io.DefaultDocumentHandler;
 import org.genxdm.typed.TypedContext;
@@ -95,11 +99,9 @@ public class AxiomProcessingContext
 
     public MutableContext<Object> getMutableContext()
     {
-        // TODO: disabled temporarily, while completing base and the test suite.
-        return null;
-//        if (mutableContext == null)
-//            mutableContext = new AxioMutableContext();
-//        return mutableContext;
+        if (mutableContext == null)
+            mutableContext = new AxioMutableContext();
+        return mutableContext;
     }
     
     @SuppressWarnings("unchecked")
@@ -128,7 +130,8 @@ public class AxiomProcessingContext
         PreCondition.assertNotNull(feature, "feature");
         if (feature.startsWith(Feature.PREFIX))
         {
-            if (feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT) ) //||
+            if (feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT) ||
+                feature.equals(Feature.MUTABILITY) )
 //                feature.equals(Feature.NAMESPACE_AXIS) )
                 return true;
             // Axiom does not support document uri retrieval or xml:base.
@@ -140,8 +143,7 @@ public class AxiomProcessingContext
                 return false;
             // at the moment, neither of the following are supported.
             // however, they will be.
-            if (feature.equals(Feature.TYPED) &&
-                feature.equals(Feature.MUTABILITY) )
+            if (feature.equals(Feature.TYPED) )
                 return false;
         }
         return false;
@@ -178,41 +180,41 @@ public class AxiomProcessingContext
         return omfactory;
     }
     
-//    private class AxioMutableContext implements MutableContext<Object>
-//    {
-//        AxioMutableContext()
-//        {
-//            this.factory = new AxiomFactory(PreCondition.assertNotNull(omfactory, "omfactory"));
-//            this.mmodel = new AxiomMutableModel(factory);
-//            this.factory.setMutableModel(mmodel);
-//        }
-//        
-//        public AxiomProcessingContext getProcessingContext()
-//        {
-//            return AxiomProcessingContext.this;
-//        }
-//        
-//        public MutableModel<Object> getModel()
-//        {
-//            return mmodel;
-//        }
-//
-//        public NodeFactory<Object> getNodeFactory()
-//        {
-//            return factory;
-//        }
-//
-//        public MutableCursor<Object> newCursor(Object node)
-//        {
-//            return new MutableCursorOnMutableModel<Object>(node, mmodel);
-//        }
-//        private final AxiomFactory factory;
-//        private final AxiomMutableModel mmodel;
-//    }
+    private class AxioMutableContext implements MutableContext<Object>
+    {
+        AxioMutableContext()
+        {
+            this.factory = new AxiomFactory(PreCondition.assertNotNull(omfactory, "omfactory"));
+            this.mmodel = new AxiomMutableModel(factory);
+            this.factory.setMutableModel(mmodel);
+        }
+        
+        public AxiomProcessingContext getProcessingContext()
+        {
+            return AxiomProcessingContext.this;
+        }
+        
+        public MutableModel<Object> getModel()
+        {
+            return mmodel;
+        }
+
+        public NodeFactory<Object> getNodeFactory()
+        {
+            return factory;
+        }
+
+        public MutableCursor<Object> newCursor(Object node)
+        {
+            return new MutableCursorOnMutableModel<Object>(node, mmodel);
+        }
+        private final AxiomFactory factory;
+        private final AxiomMutableModel mmodel;
+    }
     
     private final AxiomModel model = new AxiomModel();
     private final OMFactory omfactory;
-//    private MutableContext<Object> mutableContext;
+    private MutableContext<Object> mutableContext;
     private Resolver resolver;
     private XMLReporter reporter;
 //    private AxiomSAProcessingContext saContext;
