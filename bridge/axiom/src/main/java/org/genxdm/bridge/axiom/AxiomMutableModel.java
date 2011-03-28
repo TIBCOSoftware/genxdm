@@ -74,27 +74,24 @@ public class AxiomMutableModel
         }
         else
         {
-            // TODO:
-            // use the factory, luke.
             switch (getNodeKind(source))
             {
                 case DOCUMENT :
-                    break;
+                    return factory.createDocument(getDocumentURI(source), null);
                 case ELEMENT :
-                    break;
+                    return factory.createElement(getNamespaceURI(source), getLocalName(source), getPrefix(source));
                 case TEXT :
-                    break;
+                    return factory.createText(getStringValue(source));
                 case COMMENT :
-                    break;
+                    return factory.createComment(getStringValue(source));
                 case PROCESSING_INSTRUCTION :
-                    break;
+                    return factory.createProcessingInstruction(getLocalName(source), getStringValue(source));
                 case ATTRIBUTE :
-                    break;
+                    return factory.createAttribute(getNamespaceURI(source), getLocalName(source), getPrefix(source), getStringValue(source));
                 case NAMESPACE :
-                    break;
                 default :
+                    throw new UnsupportedOperationException();
             }
-            return null; // temporary
         }
     }
 
@@ -216,7 +213,13 @@ public class AxiomMutableModel
     public void insertBefore(final Object target, final Iterable<Object> content)
     {
         PreCondition.assertNotNull(content, "content");
+        List<Object> reversed = new ArrayList<Object>();
         for (Object node : content)
+        {
+            reversed.add(node);
+        }
+        Collections.reverse(reversed);
+        for (Object node : reversed)
         {
             insertBefore(target, node);
         }

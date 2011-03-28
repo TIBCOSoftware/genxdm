@@ -42,6 +42,33 @@ import org.genxdm.nodes.Bookmark;
 import org.genxdm.processor.io.DefaultDocumentHandler;
 import org.genxdm.typed.TypedContext;
 
+/** ProcessingContext to support abstraction of the AxiOM LLOM tree model.
+ *
+ * Axiom isn't kind to XDM's notion of nodes.  Axiom's OMNode is the
+ * superinterface for OMElement, OMComment, OMProcessingInstruction,
+ * and OMText, but not for OMDocument, OMAttribute, or OMNamespace.
+ * OMContainer is the superinterface for OMElement and OMDocument. The most abstract unifier
+ * is OMSerializable, which is the superinterface of OMNode and OMContainer.
+ * Unfortunately, OMAttribute and OMNamespace are top-level interfaces.
+ * This is not a big deal for namespaces; we could advertise no support
+ * for the namespace axis (and we do, although for a different reason;
+ * there are traces here of implementation of the namespace axis, which
+ * were ultimately abandoned not because OMNamespace has no notion of
+ * parentage (that's fixable), but because something keeps defining extra
+ * namespaces for us (maybe us, being clumsy)).
+ * 
+ * As a consequence, we're forced to use Object as the representation for
+ * N, although in fact it's the union of OMContainer, OMNode, OMAttribute
+ * (and arguably OMNamespace).  That is, where Object is passed as the N,
+ * it <em>must be</em> OMContainer, OMNode, or OMAttribute; where it is
+ * returned, the same is true.
+ * 
+ * This isn't ideal: it means that we have to do a lot of casting.  But
+ * the Axiom stance that attributes are not nodes (are not even serializable)
+ * leaves us with little choice.  Interestingly, though it produces a certain
+ * amount of clumsiness, it isn't all that horrible.
+ *
+ */
 public class AxiomProcessingContext
     implements ProcessingContext<Object>
 {
