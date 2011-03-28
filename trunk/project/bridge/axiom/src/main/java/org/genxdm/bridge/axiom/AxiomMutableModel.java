@@ -20,10 +20,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.mutable.MutableModel;
@@ -287,11 +290,35 @@ public class AxiomMutableModel
 
     public String replaceValue(final Object target, final String value)
     {
-        // TODO: implement
         PreCondition.assertNotNull(target);
-        // verify that the target is appropriate: text, attribute, comment, or pi
-        // can value be null?
-        throw new UnsupportedOperationException();
+        String text = (value == null) ? "" : value;
+        String original = null;
+        switch (getNodeKind(target))
+        {
+            case TEXT :
+                // can't actually replace a text node's value, in axiom
+                OMText node = AxiomSupport.dynamicDowncastText(target);
+                node.insertSiblingBefore(factory.createText(value));
+                node.detach();
+                return node.getText();
+            case ATTRIBUTE :
+                OMAttribute attribute = AxiomSupport.dynamicDowncastAttribute(target);
+                original = attribute.getAttributeValue();
+                attribute.setAttributeValue(text);
+                return original;
+            case COMMENT :
+                OMComment comment = AxiomSupport.dynamicDowncastComment(target);
+                original = comment.getValue();
+                comment.setValue(text);
+                return original;
+            case PROCESSING_INSTRUCTION :
+                OMProcessingInstruction pi = AxiomSupport.dynamicDowncastProcessingInstruction(target);
+                original = pi.getValue();
+                pi.setValue(text);
+                return original;
+            default :
+                throw new UnsupportedOperationException();
+        }
     }
 
     private final AxiomFactory factory;

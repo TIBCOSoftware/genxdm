@@ -105,10 +105,11 @@
 
      <modules> 
         <module>api</module> <!-- api --> 
-        <module>bridge</module> <!-- container --> 
-        <module>processor</module> <!-- container -->
+        <module>bridge</module> <!-- implementations container --> 
+        <module>processor</module> <!-- processors container -->
         <module>xpath</module> <!-- api --> 
-        <module>support</module> <!-- container --> 
+        <module>support</module> <!-- samples and tutorials container -->
+        <!--module>tests</module--> <!-- conformance tests container -->
     </modules>
 
     <build>
