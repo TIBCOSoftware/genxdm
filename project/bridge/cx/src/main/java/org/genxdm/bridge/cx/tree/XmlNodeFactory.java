@@ -80,13 +80,6 @@ public class XmlNodeFactory
         return new XmlTextNode(value);
     }
     
-    public XmlNodeMutator getMutableModel()
-    {
-        if (model == null)
-            model = new XmlNodeMutator();
-        return model;
-    }
-    
     public XmlTextNode createText(List<? extends XmlAtom> data)
     {
         return new XmlTextNode(makeList(data));
@@ -102,5 +95,4 @@ public class XmlNodeFactory
         return list;
     }
     
-    private XmlNodeMutator model;
 }

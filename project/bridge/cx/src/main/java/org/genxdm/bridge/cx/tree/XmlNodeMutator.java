@@ -133,7 +133,7 @@ public class XmlNodeMutator
         return null;
     }
     
-    public NodeFactory<XmlNode> getFactoryForContext(XmlNode node)
+    public NodeFactory<XmlNode> getFactory(XmlNode node)
     {
         return factory;
     }

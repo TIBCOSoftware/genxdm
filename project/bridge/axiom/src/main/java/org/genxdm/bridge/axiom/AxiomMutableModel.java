@@ -86,7 +86,7 @@ public class AxiomMutableModel
         throw new UnsupportedOperationException();
     }
 
-    public NodeFactory<Object> getFactoryForContext(Object node)
+    public NodeFactory<Object> getFactory(Object node)
     {
         return factory;
     }

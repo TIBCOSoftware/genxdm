@@ -30,9 +30,9 @@ public class MutableCursorOnMutableModel<N>
         this.tmodel = model;
     }
     
-    public NodeFactory<N> getFactoryForContext()
+    public NodeFactory<N> getFactory()
     {
-        return tmodel.getFactoryForContext(node);
+        return tmodel.getFactory(node);
     }
 
     public void appendChild(final N newChild)
