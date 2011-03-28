@@ -66,8 +66,8 @@ abstract public class TestBase<N>
         
         builder.startDocument(uri, null);
         builder.startElement(XMLConstants.NULL_NS_URI, "doc", XMLConstants.DEFAULT_NS_PREFIX);
-        builder.attribute(XMLConstants.NULL_NS_URI, "att", XMLConstants.DEFAULT_NS_PREFIX, "value", null);
         builder.namespace("ns", "ns");
+        builder.attribute(XMLConstants.NULL_NS_URI, "att", XMLConstants.DEFAULT_NS_PREFIX, "value", null);
         builder.comment("comment");
         builder.text("text");
         builder.processingInstruction("target", "data");
