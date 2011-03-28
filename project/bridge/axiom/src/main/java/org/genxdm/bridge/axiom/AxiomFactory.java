@@ -17,8 +17,14 @@ package org.genxdm.bridge.axiom;
 
 import java.net.URI;
 
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMComment;
+import org.apache.axiom.om.OMDocument;
+import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
+import org.apache.axiom.om.OMProcessingInstruction;
+import org.apache.axiom.om.OMText;
 import org.genxdm.mutable.NodeFactory;
 
 public class AxiomFactory
@@ -30,33 +36,33 @@ public class AxiomFactory
         omFactory = delegate;
     }
 
-    public Object createAttribute(String namespaceURI, String localName, String prefix, String value)
+    public OMAttribute createAttribute(String namespaceURI, String localName, String prefix, String value)
     {
         return omFactory.createOMAttribute(localName, omFactory.createOMNamespace(namespaceURI, prefix), value);
     }
 
-    public Object createComment(String data)
+    public OMComment createComment(String data)
     {
         return omFactory.createOMComment(null, data);
     }
 
-    public Object createDocument(final URI uri, final String docTypeDecl)
+    public OMDocument createDocument(final URI uri, final String docTypeDecl)
     {
         return omFactory.createOMDocument();
     }
 
-    public Object createElement(String namespaceURI, String localName, String prefix)
+    public OMElement createElement(String namespaceURI, String localName, String prefix)
     {
         OMNamespace ns = omFactory.createOMNamespace(namespaceURI, prefix);
         return omFactory.createOMElement(localName, ns);
     }
 
-    public Object createProcessingInstruction(String target, String data)
+    public OMProcessingInstruction createProcessingInstruction(String target, String data)
     {
         return omFactory.createOMProcessingInstruction(null, target, data);
     }
 
-    public Object createText(String value)
+    public OMText createText(String value)
     {
         return omFactory.createOMText(value);
     }
