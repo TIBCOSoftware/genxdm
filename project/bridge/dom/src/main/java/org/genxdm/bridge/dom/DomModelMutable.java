@@ -16,6 +16,7 @@
 package org.genxdm.bridge.dom;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.genxdm.exceptions.PreCondition;
@@ -71,8 +72,14 @@ public final class DomModelMutable
     
     public void prependChildren(final Node parent, final Iterable<Node> content)
     {
-        // TODO: probably highly inefficient, but easy to implement.
+        // probably highly inefficient, but easy to implement.
+        List<Node> reversed = new ArrayList<Node>();
         for (Node node : content)
+        {
+            reversed.add(node);
+        }
+        Collections.reverse(reversed);
+        for (Node node : reversed)
         {
             prependChild(parent, node);
         }
@@ -81,7 +88,10 @@ public final class DomModelMutable
     public Node copyNode(final Node source, final boolean deep)
     {
         PreCondition.assertArgumentNotNull(source, "source");
-        return source.cloneNode(deep);
+        Node copy = source.cloneNode(deep);
+        if (copy instanceof Document)
+            ((Document)copy).setDocumentURI(((Document)source).getDocumentURI());
+        return copy;
     }
 
     public void insertBefore(final Node target, final Node content)
@@ -149,6 +159,10 @@ public final class DomModelMutable
     public Node delete(final Node target)
     {
         PreCondition.assertArgumentNotNull(target, "target");
+        if (target instanceof Attr)
+        {
+            return ((Attr)target).getOwnerElement().removeAttributeNode((Attr)target);
+        }
         Node parent = target.getParentNode();
         if (parent != null)
             return parent.removeChild(target);
@@ -171,6 +185,13 @@ public final class DomModelMutable
     {
         PreCondition.assertArgumentNotNull(content, "newChild");
         PreCondition.assertArgumentNotNull(target, "oldChild");
+        if (target instanceof Attr)
+        {
+            final Element owner = ((Attr)target).getOwnerElement();
+            Node old = owner.removeAttributeNode((Attr)target);
+            owner.setAttributeNode((Attr)ensureOwnership(target.getOwnerDocument(), content));
+            return old;
+        }
         final Node parent = target.getParentNode();
         if (parent != null)
             return parent.replaceChild(ensureOwnership(target.getOwnerDocument(), content), target);
@@ -221,7 +242,7 @@ public final class DomModelMutable
         	//
         	// attempts to work around the issue by traversing the descendant axis, or "normalize()" the
         	// source document both failed.
-            n = d.importNode(n, true);
+            return d.importNode(n, true);
         }
         return n;
     }
