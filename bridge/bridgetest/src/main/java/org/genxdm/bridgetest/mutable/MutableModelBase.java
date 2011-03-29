@@ -336,6 +336,10 @@ public abstract class MutableModelBase<N>
         assertEquals("no data", model.getStringValue(model.getLastChild(doc)));
         assertEquals("no data", model.getStringValue(target));
         
+        // TODO : test breaking things (expect an error):
+        // replacing an attribute with an element, or text with an attribute,
+        // for instance.
+        
         // replace node: attribute, child-node (text, element, comment, pi)
         // replacement nodes
         N att = factory.createAttribute("", "new", "", "none");
