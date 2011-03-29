@@ -2,10 +2,10 @@ package org.genxdm.bridge.axiom.tests;
 
 import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.genxdm.bridge.axiom.AxiomProcessingContext;
-import org.genxdm.bridgetest.CursorBase;
+import org.genxdm.bridgetest.io.BuilderBase;
 
-public class AxiomCursorTest
-    extends CursorBase<Object>
+public class BuilderTest
+    extends BuilderBase<Object>
 {
 
     @Override
