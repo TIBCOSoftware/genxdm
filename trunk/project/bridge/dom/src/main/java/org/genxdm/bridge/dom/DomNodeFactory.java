@@ -48,15 +48,14 @@ public class DomNodeFactory
     
     public Node createAttribute(String namespaceURI, String localName, String prefix, String value)
     {
-        PreCondition.assertNotNull(m_doc, "m_doc");
+        insureDocumentExists();
         return DomSupport.createAttributeUntyped(m_doc, namespaceURI, localName, prefix, value);
     }
 
     public Node createComment(String data)
     {
-        PreCondition.assertArgumentNotNull(data, "data");
-        PreCondition.assertNotNull(m_doc, "m_doc");
-        return DomSupport.createComment(m_doc, data);
+        insureDocumentExists();
+        return DomSupport.createComment(m_doc, (data == null) ? "" : data);
     }
 
     public Node createDocument(final URI uri, final String docTypeDecl)
@@ -75,22 +74,26 @@ public class DomNodeFactory
 
     public Node createElement(String namespaceURI, String localName, String prefix)
     {
-        PreCondition.assertNotNull(m_doc, "m_doc");
+        insureDocumentExists();
         return DomSupport.createElement(m_doc, namespaceURI, localName, prefix);
     }
 
     public Node createProcessingInstruction(String target, String data)
     {
-        PreCondition.assertArgumentNotNull(data, "data");
-        PreCondition.assertNotNull(m_doc, "m_doc");
-        return DomSupport.createProcessingInstruction(m_doc, target, data);
+        insureDocumentExists();
+        return DomSupport.createProcessingInstruction(m_doc, target, (data == null) ? "" : data);
     }
 
     public Node createText(String value)
     {
-        PreCondition.assertArgumentNotNull(value, "value");
-        PreCondition.assertNotNull(m_doc, "m_doc");
-        return DomSupport.createText(m_doc, value);
+        insureDocumentExists();
+        return DomSupport.createText(m_doc, (value == null) ? "" : value);
+    }
+    
+    private void insureDocumentExists()
+    {
+        if (m_doc == null)
+            createDocument(null, null);
     }
     
     private DocumentBuilderFactory m_dbf;
