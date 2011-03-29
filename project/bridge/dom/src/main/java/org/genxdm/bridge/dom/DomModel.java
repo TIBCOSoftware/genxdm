@@ -51,6 +51,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.TypeInfo;
 
 public class DomModel
     implements Model<Node>
@@ -243,10 +244,10 @@ public class DomModel
             }
             return names;
         }
-        else
-        {
+        if (node instanceof Element)
             return Collections.emptyList();
-        }
+        else
+            return null;
     }
 
     public String getAttributeStringValue(Node parent, String namespaceURI, String localName)
@@ -256,7 +257,7 @@ public class DomModel
 
     public URI getBaseURI(final Node node)
     {
-        // TODO: implement
+        // TODO: implement; currently Feature.BASE_URI marked unsupported.
         return null;//DomSupport.getBaseURI(node);
     }
     
@@ -734,12 +735,19 @@ public class DomModel
         if (isAttribute(node))
         {
             Attr attr = (Attr)node;
-            // TODO: do we need to special-case xml:id?
-            return attr.isId();
+            if (attr.isId())
+                return true;
+            if (attr.getNamespaceURI().equals(XMLConstants.XML_NS_URI) &&
+                    attr.getLocalName().equals("id") )
+                return true;
         }
-        if (isElement(node))
+        else if (isElement(node))
         {
-            // TODO: if it's PSVI, it may be an ID if there's a single value derived from xs:ID
+            for (Node att : getAttributeAxis(node, false) )
+            {
+                if (isId(att))
+                    return true;
+            }
         }
         return false;
     }
@@ -748,15 +756,17 @@ public class DomModel
     {
         if (isAttribute(node))
         {
-            //Attr attr = (Attr)node;
-            //TypeInfo ti = attr.getSchemaTypeInfo();
-            // TODO: now determine whether it's IDREF or IDREFS or xs:IDREF or xs:IDREFS
-            // fall through until that's done
+            Attr attr = (Attr)node;
+            TypeInfo ti = attr.getSchemaTypeInfo();
+            return ti.getTypeName().startsWith("IDREF");
         }
         if (isElement(node))
         {
-            // TODO: if it's PSVI, it returns true if any atom of its content is derived
-            // from xs:IDREF or xs:IDREFS
+            for (Node att : getAttributeAxis(node, false) )
+            {
+                if (isIdRefs(att))
+                    return true;
+            }
         }
         return false;
     }
