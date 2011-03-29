@@ -159,6 +159,8 @@ public class AxiomFragmentBuilder
             if (null != container)
             {
                 final OMProcessingInstruction pi = factory.createOMProcessingInstruction(container, target, data);
+                // Note AXIOM bug: https://issues.apache.org/jira/browse/AXIOM-359
+                pi.setValue(data);
                 container.addChild(pi);
                 currentNode = pi;
             }
@@ -196,13 +198,13 @@ public class AxiomFragmentBuilder
         IllegalNullArgumentException.check(namespaceURI, "namespaceURI");
         IllegalNullArgumentException.check(localName, "localName");
         IllegalNullArgumentException.check(prefix, "prefix");
-        final QName name = (prefix != null) ? new QName(namespaceURI, localName, prefix) : new QName(namespaceURI, localName, XMLConstants.DEFAULT_NS_PREFIX);
+    	OMNamespace ns = factory.createOMNamespace(namespaceURI, prefix);
         if (null != currentNode)
         {
             final OMContainer container = AxiomSupport.dynamicDowncastContainer(currentNode);
             if (null != container)
             {
-                final OMElement element = factory.createOMElement(name, container);
+                final OMElement element = factory.createOMElement(localName, ns, container);
                 currentNode = element;
             }
             else
@@ -212,7 +214,7 @@ public class AxiomFragmentBuilder
         }
         else
         {
-            final OMElement element = factory.createOMElement(name);
+            final OMElement element = factory.createOMElement(localName, ns);
             
             currentNode = element;
         }
