@@ -309,6 +309,8 @@ a lot of interesting namespace fun.  It's also got the text nodes.
     
     // this is an internal helper method to get a namespace node for testing.
     // it's got all sorts of checks to make it fail, so *don't* do that.
+    // also, it *will not work* if the namespace axis isn't supported,
+    // but it's the responsibility of the caller to check that first!
     protected N getNamespaceNode(Model<N> model, N element, String prefix)
     {
         PreCondition.assertNotNull(model);

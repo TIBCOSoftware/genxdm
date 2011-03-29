@@ -23,7 +23,7 @@ import org.genxdm.bridgetest.axes.NavigatorBase;
  * Test Class for Cursor unit tests for the Navigation methods for Axiom Tree Model. 
  *
  */
-public class AxiomNavigatorTest
+public class NavigatorTest
     extends NavigatorBase<Object>
 {
 

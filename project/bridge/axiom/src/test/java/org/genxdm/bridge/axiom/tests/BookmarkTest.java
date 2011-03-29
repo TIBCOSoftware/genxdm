@@ -4,7 +4,7 @@ import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.genxdm.bridge.axiom.AxiomProcessingContext;
 import org.genxdm.bridgetest.nodes.BookmarkBase;
 
-public class AxiomBookmarkTest
+public class BookmarkTest
     extends BookmarkBase<Object>
 {
 
