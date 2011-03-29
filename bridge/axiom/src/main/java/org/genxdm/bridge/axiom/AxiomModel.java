@@ -56,9 +56,6 @@ import org.genxdm.io.ContentHandler;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.names.NamespaceBinding;
 
-// TODO: from DGH; verify
-// Bugs in Axiom:
-// 1) OMNode.getPreviousSibling returns self for comment nodes. 
 public class AxiomModel
     implements Model<Object>
 {
