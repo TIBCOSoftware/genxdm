@@ -159,9 +159,11 @@ public class AxiomMutableModel
     public void insertAfter(final Object target, final Iterable<Object> content)
     {
         PreCondition.assertNotNull(content, "content");
+        Object lastPosition = target;
         for (Object node : content)
         {
-            insertAfter(target, node);
+            insertAfter(lastPosition, node);
+            lastPosition = node;
         }
     }
 
@@ -216,13 +218,8 @@ public class AxiomMutableModel
     public void insertBefore(final Object target, final Iterable<Object> content)
     {
         PreCondition.assertNotNull(content, "content");
-        List<Object> reversed = new ArrayList<Object>();
+        // this does *not* need to be reversed.
         for (Object node : content)
-        {
-            reversed.add(node);
-        }
-        Collections.reverse(reversed);
-        for (Object node : reversed)
         {
             insertBefore(target, node);
         }
@@ -282,10 +279,44 @@ public class AxiomMutableModel
      */
     public Object replace(final Object target, final Object content)
     {
-        // TODO: implement
         PreCondition.assertNotNull(target, "target");
         PreCondition.assertNotNull(content, "content");
-        throw new UnsupportedOperationException();
+        switch (getNodeKind(target))
+        {
+            case ATTRIBUTE :
+                if (getNodeKind(content).isAttribute())
+                {
+                    OMAttribute original = AxiomSupport.dynamicDowncastAttribute(target);
+                    OMAttribute replacement = AxiomSupport.dynamicDowncastAttribute(content);
+                    OMElement owner = original.getOwner();
+                    owner.removeAttribute(original);
+                    owner.addAttribute(replacement);
+                    return original;
+                }
+                throw new IllegalArgumentException();
+            case ELEMENT :
+            case TEXT :
+            case COMMENT :
+            case PROCESSING_INSTRUCTION :
+                if (getNodeKind(content).isChild())
+                {
+                    OMNode original = AxiomSupport.dynamicDowncastNode(target);
+                    OMNode replacement = AxiomSupport.dynamicDowncastNode(content);
+                    original.insertSiblingBefore(replacement);
+                    original.detach();
+                    return target;
+                }
+                throw new IllegalArgumentException();
+            case NAMESPACE :
+                // I don't think that this can be done.
+                // the implications are pretty bizarre, too, when you come
+                // down to it.  Anyway ... dunno if this will work in axiom,
+                // and I think replace is going to allow it not to work for
+                // namespaces.  Adding it to the unsupported group.
+            case DOCUMENT :
+            default :
+                throw new UnsupportedOperationException();
+        }
     }
 
     public String replaceValue(final Object target, final String value)

@@ -3,6 +3,7 @@ package org.genxdm.bridgetest.mutable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,7 @@ public abstract class MutableModelBase<N>
         Iterable<N> sids = mutant.deleteChildren(element);
         assertNotNull(sids);
         int i = 0;
-        for (N n : sids) { i++; }
+        for (@SuppressWarnings("unused")N n : sids) { i++; }
         assertEquals(6, i);
         
         doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
@@ -106,13 +107,13 @@ public abstract class MutableModelBase<N>
         
         int i = 0;
         Iterable<N> atts = model.getAttributeAxis(doc, false);
-        for (N a : atts) { i++; }
+        for (@SuppressWarnings("unused")N a : atts) { i++; }
         assertEquals(2, i);
         
         model.insertAttributes(doc, attlist);
         i = 0;
         atts = model.getAttributeAxis(doc, false);
-        for (N a : atts) { i++; }
+        for (@SuppressWarnings("unused") N a : atts) { i++; }
         assertEquals(4, i);
     }
     
@@ -121,12 +122,31 @@ public abstract class MutableModelBase<N>
     {
         ProcessingContext<N> context = newProcessingContext();
         N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
+        MutableModel<N> model = context. getMutableContext().getModel();
         
         // note: not having a namespace axis isn't an excuse
         // namespace *support* is required, it's just that namespaces
         // are allowed to be metadata, not nodes
         
-        //TODO
+        List<String> nnames = new ArrayList<String>();
+        N e = model.getFirstChildElement(doc);
+        for (String s : model.getNamespaceNames(e, false))
+        {
+            nnames.add(s);
+        }
+        model.insertNamespace(e, "new", "http://localhost/");
+        List<String> pnames = new ArrayList<String>();
+        for (String s : model.getNamespaceNames(e, false))
+        {
+            pnames.add(s);
+        }
+        assertTrue(pnames.size() > nnames.size());
+        for (String s : nnames)
+        {
+            if (!pnames.contains(s))
+                throw new IllegalStateException("lost a namespace somewhere:" + s);
+        }
+        assertTrue(pnames.contains("new"));
     }
     
     @Test
@@ -208,9 +228,33 @@ public abstract class MutableModelBase<N>
         assertEquals(e1, model.getPreviousSibling(e2));
         assertEquals(check, model.getNextSibling(e2));
         
+        // TODO: this is some basic sequence position and order checking.
+        // we're not being as complete as we were above, and we could
+        // afford to be, so add more here, when time permits.
+        model.delete(e2);
+        List<N> sibs = new ArrayList<N>(2);
+        sibs.add(e2);
+        sibs.add(e3);
+        // check is currently pointing at the comment.
+        // e1 is the first child.
+        assertEquals(e1, model.getPreviousSibling(check));
+        model.insertBefore(check, sibs);
+        assertEquals(e2, model.getNextSibling(e1));
+        assertEquals(e1, model.getPreviousSibling(e2));
+        assertEquals(e3, model.getPreviousSibling(check));
+        assertEquals(check, model.getNextSibling(e3));
         
-        // TODO: now, sequences
-        
+        // belt and suspenders: after removing from the tree, let's
+        // put 'em back in a different place.
+        model.delete(e2);
+        model.delete(e3);
+        mark = model.getNextSibling(check);
+        model.insertAfter(check, sibs);
+        assertEquals(e2, model.getNextSibling(check));
+        assertEquals(check, model.getPreviousSibling(e2));
+        assertEquals(e3, model.getPreviousSibling(mark));
+        assertEquals(mark, model.getNextSibling(e3));
+
         // TODO: we should test putting things in as siblings of the
         // document element, too, but there's a world of potential hurt,
         // there.  some apis won't permit text nodes (even ignorable whitespace,
@@ -240,7 +284,13 @@ public abstract class MutableModelBase<N>
         marker = model.getParent(target);
         result = model.delete(target); // delete pi
         assertEquals(target, result);
-        // TODO: namespace?
+        if (context.isSupported(Feature.NAMESPACE_AXIS))
+        {
+            // TODO: namespace?  only if namespace axis is not supported.
+            // otherwise, what does it mean to delete a namespace?
+            // also, there's no standard way to get a namespace as a node,
+            // except by iterating over the namespace axis.
+        }
         target = model.getAttribute(marker, "", "att");
         result = model.delete(target); // delete att
         assertEquals(target, result);
@@ -255,9 +305,84 @@ public abstract class MutableModelBase<N>
     {
         ProcessingContext<N> context = newProcessingContext();
         N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
-        // replace, replaceValue
+        NodeFactory<N> factory = context.getMutableContext().getNodeFactory();
+        MutableModel<N> model = context.getMutableContext().getModel();
         
-        //TODO
+        // replace value: attribute, text, comment, pi.
+        // note that there's no guarantee that a text or comment will
+        // retain identity.
+        doc = model.getFirstChildElement(doc);
+        N target = model.getAttribute(doc, "", "att");
+        String val = model.replaceValue(target, "none");
+        assertEquals("value", val);
+        assertEquals("none", model.getStringValue(target));
+        assertEquals("none", model.getAttributeStringValue(doc, "", "att"));
+        
+        target = model.getFirstChild(doc); // comment
+        val = model.replaceValue(target, "no comment");
+        assertEquals("comment", val);
+        assertEquals("no comment", model.getStringValue(model.getFirstChild(doc)));
+        // don't test the value of target; it may not have changed.
+        
+        target = model.getNextSibling(model.getFirstChild(doc)); // text
+        val = model.replaceValue(target, "no text");
+        assertEquals("text", val);
+        assertEquals("no text", model.getStringValue(model.getNextSibling(model.getFirstChild(doc))));
+        // don't test the value of target; it may not have changed.
+        
+        target = model.getLastChild(doc); // pi
+        val = model.replaceValue(target, "no data");
+        assertEquals("data", val);
+        assertEquals("no data", model.getStringValue(model.getLastChild(doc)));
+        assertEquals("no data", model.getStringValue(target));
+        
+        // replace node: attribute, child-node (text, element, comment, pi)
+        // replacement nodes
+        N att = factory.createAttribute("", "new", "", "none");
+        N elem = factory.createElement("", "elem", "");
+        N text = factory.createText("lorem ipsum");
+        // reset the document; it got confused up there
+        doc = model.getFirstChildElement(createSimpleAllKindsDocument(context.newFragmentBuilder()));
+        
+        // attribute test
+        target = model.getAttribute(doc, "", "att");
+        N old = model.replace(target, att);
+        assertEquals(target, old);
+        assertNotNull(model.getAttribute(doc, "", "new"));
+        assertEquals("none", model.getAttributeStringValue(doc, "", "new"));
+        assertEquals(doc, model.getParent(att));
+        
+        // replace comment with element (like uncommenting?)
+        target = model.getFirstChild(doc);
+        old = model.replace(target, elem);
+        assertEquals(target, old);
+        assertEquals(elem, model.getFirstChild(doc));
+        assertEquals(doc, model.getParent(elem));
+
+        // replace text with text (which is probably common enough)
+        target = model.getNextSibling(model.getFirstChild(doc));
+        old = model.replace(target, text);
+        assertEquals(target, old);
+        assertEquals(text, model.getNextSibling(model.getFirstChild(doc)));
+        assertEquals(doc, model.getParent(text));
+        
+        // use the removed text node to replace the new element node (common enough, i think)
+        // note that we have now created a tree with two neighboring text nodes, which is bad
+        // xdm.  not sure where that's supposed to get fixed.
+        text = old;
+        target = model.getFirstChild(doc);
+        old = model.replace(target, text);
+        assertEquals(target, old);
+        assertEquals(text, model.getFirstChild(doc));
+        assertEquals(doc, model.getParent(text));
+        
+        if (context.isSupported(Feature.NAMESPACE_AXIS))
+        {
+            // TODO: is it *really* meaningful to do this?
+            // it's a good way to produce ill-formed documents
+            // we also have the problem of creating a namespace node,
+            // which is going to require using a fragment builder.
+        }
     }
     
     @Test
@@ -307,6 +432,9 @@ public abstract class MutableModelBase<N>
         if (context.isSupported(Feature.NAMESPACE_AXIS))
         {
             // TODO: namespace [ns = ns] ???
+            // maybe we should use namespace bindings for this?
+            // and just ensure that prefixes we want are mapped?
+            // in which case, we don't care about the axis.
         }
         
         mark = model.getFirstChild(model.getFirstChild(doc)); // comment
@@ -323,24 +451,6 @@ public abstract class MutableModelBase<N>
         assertEquals(model.getStringValue(mark), model.getStringValue(copy));
     }
     
-///**
-// * Inserts a namespace binding into the namespace axis of an element.
-// * This is an immediate-effect API equivalent to the delayed-effect
-// * API specified in the XQuery Update Facility, propagateNamespace.
-// * 
-// * @param element
-// *            The element that will hold the namespace binding.  Must be
-// *            an element node.  May not be null.
-// * @param prefix
-// *            The prefix (local-name part of the dm:name) of the namespace node.
-// *            May not be null, but may be the empty string (default prefix).
-// * @param uri
-// *            The dm:string-value of the namespace node (the namespace URI).
-// *            May not be null, but may be the empty string (default/global namespace,
-// *            or namespace un-definition for Namespaces in XML 1.1).
-// **/
-//N insertNamespace(final N element, final String prefix, final String uri);
-//
 ///**
 // * Replaces a node.  Corresponds to XQuery Update Facility replaceNode
 // * (except that it's a single node replacement, not a sequence).

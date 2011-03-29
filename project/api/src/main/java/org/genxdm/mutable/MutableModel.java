@@ -267,6 +267,10 @@ public interface MutableModel<N> extends Model<N>
     /**
      * Replaces a node.  Corresponds to XQuery Update Facility replaceNode
      * (except that it's a single node replacement, not a sequence).
+     * 
+     * Note that if Feature.NAMESPACE_AXIS is not supported, then neither
+     * target nor content may be namespaces (the meaning of "replacing"
+     * a namespace is arguable in any event).
      *
      * @param target
      *            The old node to be replaced.  May be any node type except
@@ -286,6 +290,11 @@ public interface MutableModel<N> extends Model<N>
     /**
      * Replaces the value of a node with a new value.  Corresponds to
      * XQuery Update Facility replaceValue.
+     * 
+     * Implementation note: it is permissible for unnamed nodes (text and
+     * comments) to actually replace nodes, rather than values (implementations
+     * not uncommonly treat text nodes as immutable, as their only identity
+     * <em>is</em> their content+kind, and the same is true for comments).
      *
      * @param target The node for which the value is to be replaced.  Must
      *               be a text, attribute, comment, or processing instruction
