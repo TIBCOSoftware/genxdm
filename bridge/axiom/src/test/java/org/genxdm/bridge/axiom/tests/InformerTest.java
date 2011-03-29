@@ -24,7 +24,7 @@ import org.genxdm.bridgetest.nodes.InformerBase;
  * @author Ashutosh
  *
  */
-public class AxiomInformerTest 
+public class InformerTest 
 	extends InformerBase<Object>
 {
 
