@@ -1046,7 +1046,7 @@ public final class DomSupport implements DomConstants
         }
     }
 
-    public static <T> void setAnnotationType(final Node node, final T type)
+    public static void setAnnotationType(final Node node, final QName type)
     {
         // TODO: we could, potentially, store DTD types even in untyped API
         // to do so, though, we have to figure out how to define a QName for the DtdAttributeKind enumeration.

@@ -20,6 +20,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -27,6 +29,7 @@ import org.genxdm.NodeKind;
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.io.FragmentBuilder;
+import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -43,18 +46,21 @@ public class DomFragmentBuilder
     public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
         throws GxmlException
     {
+        DtdAttributeKind kind = (type == null) ? DtdAttributeKind.CDATA : type;
         if (m_depth > 0)
         {
-            final Node attribute = DomSupport.setAttributeUntyped(m_current, namespaceURI, localName, prefix, value);
-            // TODO: if we can get QNames for DtdAttributeKind, this should be non-null.
-            DomSupport.setAnnotationType(attribute, null);
+            final Attr attribute = DomSupport.setAttributeUntyped(m_current, namespaceURI, localName, prefix, value);
+            if ( (type == DtdAttributeKind.ID) ||
+                    (namespaceURI.equals(XMLConstants.XML_NS_URI) &&
+                     localName.equals("id")) )
+                ((Element)m_current).setIdAttributeNode(attribute, true);
+            DomSupport.setAnnotationType(attribute, new QName("http://www.w3.org/TR/REC-xml", kind.toString()));
         }
         else
         {
             startNodeProcessing();
             m_current = DomSupport.createAttributeUntyped(getOwner(), namespaceURI, localName, prefix, value);
-            // TODO: if we can get QNames for DtdAttributeKind, this should be non-null.
-            DomSupport.setAnnotationType(m_current, null);
+            DomSupport.setAnnotationType(m_current, new QName("http://www.w3.org/TR/REC-xml", kind.toString()));
             endNodeProcessing();
         }
     }
@@ -68,6 +74,8 @@ public class DomFragmentBuilder
     {
         flush();
         endNodeProcessing();
+        if (m_depth > 0)
+            throw new IllegalStateException("Document ended with unclosed elements.");
     }
 
     public void endElement() throws GxmlException
@@ -169,8 +177,15 @@ public class DomFragmentBuilder
     public void startDocument(final URI baseURI, final String docTypeDecl) 
         throws GxmlException
     {
-        startNodeProcessing();
-        m_current = newDocument(baseURI);
+        if (m_current == null)
+        {
+            startNodeProcessing();
+            m_current = newDocument(baseURI);
+        }
+        else
+        {
+            throw new IllegalStateException("A document cannot be contained by a document or element.");
+        }
     }
 
     public void startElement(final String namespaceURI, final String localName, final String prefix) 
@@ -197,6 +212,8 @@ public class DomFragmentBuilder
         throws GxmlException
     {
         push(strval, NodeKind.TEXT);
+        if ( (m_current != null) && (m_current instanceof Document) && (m_chBuffer.toString().trim().length() > 0))
+            throw new IllegalStateException("Non-whitespace text is not permitted in prolog or epilog.");
     }
 
     public void close()
@@ -209,6 +226,8 @@ public class DomFragmentBuilder
         m_depth = 0;
         m_nodes.clear();
         m_chBuffer.setLength(0);
+        m_current = null;
+        m_chNodeKind = null;
     }
 
 
@@ -221,6 +240,8 @@ public class DomFragmentBuilder
     {
         m_depth -= 1;
 
+        if (m_depth < 0)
+            throw new IllegalStateException("Closed a container that was never opened.");
         if (m_depth > 0)
         {
             m_current = DomSupport.getParentNode(m_current);
