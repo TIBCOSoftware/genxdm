@@ -40,8 +40,11 @@ public class NamedSiblingIterator extends BaseImmutableIterator<Node> {
 	public static boolean isMatch(Node node, String namespace, String localName) {
 		
 		if (node.getNodeType() == Node.ELEMENT_NODE) {
+		    String ns = node.getNamespaceURI();
+		    if (ns == null)
+		        ns = "";
 			if ( (localName == null || localName.equals(node.getLocalName())) &&
-					(namespace == null || namespace.equals(node.getNamespaceURI()) ) ){
+					(namespace == null || namespace.equals(ns) ) ){
 				return true;
 			}
 		}

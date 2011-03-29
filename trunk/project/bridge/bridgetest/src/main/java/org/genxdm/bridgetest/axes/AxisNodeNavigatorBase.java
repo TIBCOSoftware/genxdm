@@ -246,13 +246,14 @@ public abstract class AxisNodeNavigatorBase<N>
             iterableToList(namespaces, domains);
             assertEquals(3, domains.size());
             
+            // namespace nodes have an empty namespace axis
             n = getNamespaceNode(model, e, "gue");
-            namespaces = model.getNamespaceAxis(e, false);
+            namespaces = model.getNamespaceAxis(n, false);
             assertNotNull(namespaces);
             iterableToList(namespaces, domains);
             assertEquals(0, domains.size());
             
-            namespaces = model.getNamespaceAxis(e, true);
+            namespaces = model.getNamespaceAxis(n, true);
             assertNotNull(namespaces);
             iterableToList(namespaces, domains);
             assertEquals(0, domains.size());
