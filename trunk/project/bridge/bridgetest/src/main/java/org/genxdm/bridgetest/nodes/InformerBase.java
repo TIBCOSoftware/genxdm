@@ -177,12 +177,17 @@ public abstract class InformerBase<N>
         cursor.moveToParent();
 
         // TODO: see issue 50.  idrefs are problematic, at the moment.
+        // this workaround allows a specific implementation (dom) to
+        // bypass a check it would otherwise currently fail.
         cursor.moveToNextSibling(); // e4
-//        assertTrue(cursor.isIdRefs());
-//        cursor.moveToAttribute(XMLConstants.NULL_NS_URI, "ref");
-//        assertTrue(cursor.isIdRefs());
-//
-//        cursor.moveToParent();
+        if (!disableIdrefsTests)
+        {
+            assertTrue(cursor.isIdRefs());
+            cursor.moveToAttribute(XMLConstants.NULL_NS_URI, "ref");
+            assertTrue(cursor.isIdRefs());
+    
+            cursor.moveToParent();
+        }
         
         cursor.moveToNextSibling(); // e5
         assertTrue(cursor.isId());
@@ -586,5 +591,6 @@ public abstract class InformerBase<N>
         assertFalse(cursor.matches( XMLConstants.NULL_NS_URI, ""));
         
     }
-    
+
+    protected boolean disableIdrefsTests = false;
 }

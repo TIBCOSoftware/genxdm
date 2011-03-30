@@ -16,6 +16,7 @@
 package org.genxdm.bridge.cx.tree;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.genxdm.NodeKind;
@@ -158,7 +159,13 @@ public class XmlNodeMutator
     public void insertAfter(final XmlNode target, final Iterable<XmlNode> content)
     {
         PreCondition.assertNotNull(content, "content");
+        List<XmlNode> reversed = new ArrayList<XmlNode>();
         for (XmlNode node : content)
+        {
+            reversed.add(node);
+        }
+        Collections.reverse(reversed);
+        for (XmlNode node : reversed)
         {
             insertAfter(target, node);
         }
