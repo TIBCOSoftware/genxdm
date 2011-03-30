@@ -60,7 +60,6 @@ public class XmlNodeBuilder
     public void close()
         throws IOException
     {
-        // TODO Auto-generated method stub
         flush();
     }
 
@@ -87,8 +86,8 @@ public class XmlNodeBuilder
     {
         flushCatch();
         endNodeProcessing();
-//        if (depth > 0)
-//            throw new IllegalStateException("Missing one or more element end tags");
+        if (depth > 0)
+            throw new IllegalStateException("Missing one or more element end tags");
     }
 
     public void endElement()
@@ -160,8 +159,13 @@ public class XmlNodeBuilder
     public void startDocument(URI documentURI, String docTypeDecl)
         throws GxmlException
     {
-        depth++;
-        current = factory.createDocument(documentURI, docTypeDecl);
+        if (current == null)
+        {
+            depth++;
+            current = factory.createDocument(documentURI, docTypeDecl);
+        }
+        else
+            throw new IllegalStateException("A document cannot be contained by a document or element.");
     }
 
     public void startElement(String namespaceURI, String localName, String prefix)
@@ -188,6 +192,8 @@ public class XmlNodeBuilder
         depth++;
         if (current != null)
         {
+            if ( (current instanceof XmlRootNode) && (data.trim().length() > 0) )
+                throw new IllegalStateException("Non-whitespace text is not permitted in prolog or epilog.");
             final XmlTextNode text = factory.createText(data);
             mutator.appendChild(current, text);
             current = text;
@@ -203,6 +209,8 @@ public class XmlNodeBuilder
     {
         depth--;
         
+        if (depth < 0)
+            throw new IllegalStateException("Closed a container that was never opened.");
         if (depth > 0)
         {
             current = current.getParent();
