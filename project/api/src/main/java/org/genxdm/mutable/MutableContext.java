@@ -21,6 +21,13 @@ public interface MutableContext<N>
 {
     /** Provide the node factory associated with this context.
      * 
+     * Implementation note: for bridge implementations over tree models
+     * that require nodes to be created in the context of an existing document
+     * (e.g. DOM), it is far, <em>far</em> safer to use MutableModel.getFactory(N)
+     * or MutableCursor.getFactory().  Otherwise, while the nodes added to the
+     * tree will be "identical", they will not have object identity.  Also,
+     * this is more efficient, as well.
+     * 
      * @return a {@link NodeFactory} for creating new nodes, never null.
      */
     NodeFactory<N> getNodeFactory();

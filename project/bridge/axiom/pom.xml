@@ -28,9 +28,8 @@
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bridge-axiom</artifactId>
-    <version>0.3</version>
-    <!-- not quite down to 0.2, but definitely immature, needing real
-         attention. -->
+    <version>0.5</version>
+    <!-- about as good as dom, at this point. -->
     <name>GenXDM Axiom Bridge</name>
     
     <reporting>

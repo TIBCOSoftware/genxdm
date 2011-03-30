@@ -160,7 +160,7 @@ public class DomProcessingContext
     // we need to review the whole bridge, of course, but this is one
     // of the notable issues in it; if we have a static "default" one somewhere ...
     // well, we should only have *one*, dammit.
-    private static DocumentBuilderFactory sm_dbf;
+    static DocumentBuilderFactory sm_dbf;
     static {
         sm_dbf = DocumentBuilderFactory.newInstance();
         sm_dbf.setNamespaceAware(true);
