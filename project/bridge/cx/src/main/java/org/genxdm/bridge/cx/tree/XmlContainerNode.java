@@ -182,11 +182,14 @@ public class XmlContainerNode
             firstChild = child;
             lastChild = child;
             child.parent = this;
+            child.prevSibling = null;
+            child.nextSibling = null;
         }
         else
         {
             lastChild.nextSibling = child;
             child.prevSibling = lastChild;
+            child.nextSibling = null;
             lastChild = child;
             child.parent = this;
         }
@@ -219,6 +222,7 @@ public class XmlContainerNode
         else
         {
             firstChild = child;
+            child.prevSibling = null;
         }
         nextChild.prevSibling = child;
         child.nextSibling = nextChild;
