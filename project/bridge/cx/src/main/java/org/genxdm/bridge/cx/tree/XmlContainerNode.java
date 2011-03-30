@@ -38,11 +38,6 @@ public class XmlContainerNode
         return null;
     }
 
-    public Iterable<QName> getAttributeNames(boolean orderCanonical)
-    {
-        return null;
-    }
-
     public String getAttributeStringValue(String namespaceURI, String localName)
     {
         return null;

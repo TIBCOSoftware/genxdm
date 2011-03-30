@@ -60,11 +60,6 @@ public class XmlLeafNode
         return null;
     }
 
-    public Iterable<QName> getAttributeNames(boolean orderCanonical)
-    {
-        return new UnaryIterable<QName>(null);
-    }
-
     public String getAttributeStringValue(String namespaceURI, String localName)
     {
         return null;

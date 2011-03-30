@@ -29,7 +29,6 @@ import org.genxdm.bridgekit.names.DefaultNamespaceBinding;
 import org.genxdm.bridgekit.names.QNameComparator;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NamespaceBinding;
-import org.genxdm.xs.types.AtomicType;
 import org.genxdm.xs.types.Type;
 
 public final class XmlElementNode
@@ -168,7 +167,7 @@ public final class XmlElementNode
     }
 
     public boolean hasAttributes()
-    {;
+    {
         return (firstAttribute != null);
     }
 
@@ -184,22 +183,30 @@ public final class XmlElementNode
 
     public boolean isId()
     {
-        if ( (type != null) && type.isNative() && type.isAtomicType() )
+        if (firstAttribute != null)
         {
-            AtomicType<XmlAtom> atomicType = (AtomicType<XmlAtom>)type;
-            if (atomicType.isID())
-                return true;
+            XmlAttributeNode attribute = firstAttribute;
+            while (attribute != null)
+            {
+                if (attribute.isId())
+                    return true;
+                attribute = (XmlAttributeNode)attribute.nextSibling;
+            }
         }
         return false;
     }
 
     public boolean isIdRefs()
     {
-        if ( (type != null) && type.isNative() && type.isAtomicType() )
+        if (firstAttribute != null)
         {
-            AtomicType<XmlAtom> atomicType = (AtomicType<XmlAtom>)type;
-            if (atomicType.isIDREF() || atomicType.isIDREFS())
-                return true;
+            XmlAttributeNode attribute = firstAttribute;
+            while (attribute != null)
+            {
+                if (attribute.isIdRefs())
+                    return true;
+                attribute = (XmlAttributeNode)attribute.nextSibling;
+            }
         }
         return false;
     }
