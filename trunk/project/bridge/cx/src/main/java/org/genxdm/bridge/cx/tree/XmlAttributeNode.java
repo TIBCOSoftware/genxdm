@@ -56,6 +56,8 @@ public final class XmlAttributeNode
 
     public boolean isId()
     {
+        if (dtdType == DtdAttributeKind.ID)
+            return true;
         // true if namespace is xml and localname is id.
         if ( (namespaceURI != null) && namespaceURI.equals(XMLConstants.XML_NS_URI) &&
              localName.equals("id") )
@@ -67,13 +69,14 @@ public final class XmlAttributeNode
             if (atomicType.isID())
                 return true;
         }
-        if (dtdType == DtdAttributeKind.ID)
-            return true;
         return false;
     }
 
     public boolean isIdRefs()
     {
+        if ( (dtdType == DtdAttributeKind.IDREF) ||
+                (dtdType == DtdAttributeKind.IDREFS) )
+               return true;
         // true if type is xs:IDREF or xs:IDREFS
         if ( type.isNative() && type.isAtomicType() )
         {
@@ -81,9 +84,6 @@ public final class XmlAttributeNode
             if (atomicType.isIDREF() || atomicType.isIDREFS())
                 return true;
         }
-        if ( (dtdType == DtdAttributeKind.IDREF) ||
-             (dtdType == DtdAttributeKind.IDREFS) )
-            return true;
         return false;
     }
     

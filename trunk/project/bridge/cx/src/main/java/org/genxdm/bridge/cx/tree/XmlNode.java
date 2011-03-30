@@ -17,6 +17,8 @@ package org.genxdm.bridge.cx.tree;
 
 import java.net.URI;
 
+import javax.xml.namespace.QName;
+
 import org.genxdm.NodeKind;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.exceptions.PreCondition;
@@ -29,6 +31,11 @@ public abstract class XmlNode
     protected XmlNode(final NodeKind nodeKind)
     {
         this.nodeKind = PreCondition.assertNotNull(nodeKind, "nodeKind");
+    }
+
+    public Iterable<QName> getAttributeNames(boolean orderCanonical)
+    {
+        return null;
     }
 
     public URI getBaseURI()
