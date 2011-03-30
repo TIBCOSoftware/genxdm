@@ -36,9 +36,9 @@ public abstract class MutableModelBase<N>
     public void children()
     {
         ProcessingContext<N> context = newProcessingContext();
-        NodeFactory<N> factory = context.getMutableContext().getNodeFactory();
         MutableModel<N> mutant = context.getMutableContext().getModel();
         N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
+        NodeFactory<N> factory = mutant.getFactory(doc);
         Model<N> model = context.getModel();
         N element = model.getFirstChildElement(doc);
         
@@ -91,8 +91,8 @@ public abstract class MutableModelBase<N>
     {
         ProcessingContext<N> context = newProcessingContext();
         N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
-        NodeFactory<N> factory = context.getMutableContext().getNodeFactory();
         MutableModel<N> model = context.getMutableContext().getModel();
+        NodeFactory<N> factory = model.getFactory(doc);
         
         N solo = factory.createAttribute("", "solo", "", "x");
         
@@ -154,8 +154,8 @@ public abstract class MutableModelBase<N>
     {
         ProcessingContext<N> context = newProcessingContext();
         N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
-        NodeFactory<N> factory = context.getMutableContext().getNodeFactory();
         MutableModel<N> model = context.getMutableContext().getModel();
+        NodeFactory<N> factory = model.getFactory(doc);
         
         N e1 = factory.createElement("", "e1", "");
         N e2 = factory.createElement("", "e2", "");
@@ -305,8 +305,8 @@ public abstract class MutableModelBase<N>
     {
         ProcessingContext<N> context = newProcessingContext();
         N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
-        NodeFactory<N> factory = context.getMutableContext().getNodeFactory();
         MutableModel<N> model = context.getMutableContext().getModel();
+        NodeFactory<N> factory = model.getFactory(doc);
         
         // replace value: attribute, text, comment, pi.
         // note that there's no guarantee that a text or comment will
@@ -340,13 +340,14 @@ public abstract class MutableModelBase<N>
         // replacing an attribute with an element, or text with an attribute,
         // for instance.
         
+        // reset the document; it got confused up there
+        doc = model.getFirstChildElement(createSimpleAllKindsDocument(context.newFragmentBuilder()));
+        factory = model.getFactory(doc);
         // replace node: attribute, child-node (text, element, comment, pi)
         // replacement nodes
         N att = factory.createAttribute("", "new", "", "none");
         N elem = factory.createElement("", "elem", "");
         N text = factory.createText("lorem ipsum");
-        // reset the document; it got confused up there
-        doc = model.getFirstChildElement(createSimpleAllKindsDocument(context.newFragmentBuilder()));
         
         // attribute test
         target = model.getAttribute(doc, "", "att");
