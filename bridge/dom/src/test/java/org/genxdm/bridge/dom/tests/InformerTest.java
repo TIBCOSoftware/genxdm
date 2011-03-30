@@ -11,6 +11,7 @@ public class InformerTest
     @Override
     public DomProcessingContext newProcessingContext()
     {
+        disableIdrefsTests = true;
         return new DomProcessingContext();
     }
 

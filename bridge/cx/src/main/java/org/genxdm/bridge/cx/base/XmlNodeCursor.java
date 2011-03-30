@@ -233,16 +233,22 @@ public class XmlNodeCursor
 
     public boolean moveToNextSibling()
     {
+        if (node.isAttribute() || node.isNamespace())
+            return false;
         return moveToNode(node.getNextSibling());
     }
 
     public boolean moveToNextSiblingElement()
     {
+        if (node.isAttribute() || node.isNamespace())
+            return false;
         return moveToNode(node.getNextSiblingElement());
     }
 
     public boolean moveToNextSiblingElementByName(String namespaceURI, String localName)
     {
+        if (node.isAttribute() || node.isNamespace())
+            return false;
         return moveToNode(node.getNextSiblingElementByName(namespaceURI, localName));
     }
 
@@ -253,6 +259,8 @@ public class XmlNodeCursor
 
     public boolean moveToPreviousSibling()
     {
+        if (node.isAttribute() || node.isNamespace())
+            return false;
         return moveToNode(node.getPreviousSibling());
     }
 

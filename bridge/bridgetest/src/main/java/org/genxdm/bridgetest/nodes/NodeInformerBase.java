@@ -154,13 +154,17 @@ public abstract class NodeInformerBase<N>
         N attr = model.getAttribute(idNode, XMLConstants.NULL_NS_URI, "id");
         assertTrue(model.isId(attr));
 
-        // TODO:
-        // disabled idref checking for now.  i don't know if we
-        // can actually support it.  issue 50.
+        // TODO: we've modified this to permit implementations to disable
+        // idrefs checking (set the protected boolean disableIdrefsTests to
+        // true in the concrete subclass).  see issue 50.  this is a poor
+        // solution to a real problem in the dom implementation.
         N idRefNode = model.getNextSibling(idNode); // e4
-//        assertTrue(model.isIdRefs(idRefNode));
-//        attr = model.getAttribute(idRefNode, XMLConstants.NULL_NS_URI, "ref");
-//        assertTrue(model.isIdRefs(attr));
+        if (!disableIdrefsTests)
+        {
+            assertTrue(model.isIdRefs(idRefNode));
+            attr = model.getAttribute(idRefNode, XMLConstants.NULL_NS_URI, "ref");
+            assertTrue(model.isIdRefs(attr));
+        }
 
         idNode = model.getNextSibling(idRefNode); // e5
         assertTrue(model.isId(idNode));
@@ -556,4 +560,6 @@ public abstract class NodeInformerBase<N>
         assertFalse(model.matches(n, XMLConstants.NULL_NS_URI, ""));
         
     }
+    
+    protected boolean disableIdrefsTests = false;
 }
