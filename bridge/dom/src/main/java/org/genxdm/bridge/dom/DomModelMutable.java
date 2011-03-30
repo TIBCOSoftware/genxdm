@@ -99,6 +99,7 @@ public final class DomModelMutable
         PreCondition.assertNotNull(target, "target");
         PreCondition.assertNotNull(content, "content");
         final Node parent = target.getParentNode();
+System.out.println("parent of mark: " + ((parent == null) ? null : getLocalName(parent)));
         if (parent != null)
         {
             parent.insertBefore(ensureOwnership(target.getOwnerDocument(), content), target);

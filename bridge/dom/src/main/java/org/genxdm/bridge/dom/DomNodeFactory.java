@@ -39,6 +39,7 @@ public class DomNodeFactory
     public DomNodeFactory(Document doc) {
         PreCondition.assertNotNull(doc, "doc");
         m_doc = doc;
+        m_dbf = DomProcessingContext.sm_dbf;
     }
     
     public DocumentBuilderFactory getCachedDocumentBuilderFactory()
