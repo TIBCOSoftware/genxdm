@@ -104,12 +104,11 @@
     </reporting>
 
      <modules> 
-        <module>api</module> <!-- api --> 
+        <module>api</module> <!-- api container --> 
         <module>bridge</module> <!-- implementations container --> 
         <module>processor</module> <!-- processors container -->
-        <module>xpath</module> <!-- api --> 
         <module>support</module> <!-- samples and tutorials container -->
-        <!--module>tests</module--> <!-- conformance tests container -->
+        <module>tests</module> <!-- conformance tests container -->
     </modules>
 
     <build>

@@ -40,7 +40,6 @@
     <modules>
         <module>convert</module>
         <module>input-output</module>
-        <module>iotest</module>
         <module>w3c.xs</module>
         <module>w3c.xs.validation</module>
         <module>xpath.impl</module>
