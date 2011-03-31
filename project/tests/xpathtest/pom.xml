@@ -2,7 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <!-- Copyright (c) 2010 TIBCO Software Inc.
+    <!--
+    
+        Copyright (c) 2010 TIBCO Software Inc.
         
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
@@ -27,12 +29,11 @@
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>proc-iotest</artifactId>
-    <version>0.2</version>
-    <!-- Known incomplete, and even the completed stuff is arguably out of
-         date for the processor that it's exercising.  This needs to be
-         revisited when bridgetest revisions are complete. -->
-    <name>GenXDM Input/Output Processor Tests</name>
+    <artifactId>xpathtest</artifactId>
+    <version>0.5</version>
+    <!-- The version specified may be lower than it needs to be.  We need
+         a code review here to determine actual maturity level, I think. -->
+    <name>GenXDM XPath 1.0 Conformance tests</name>
 
     <reporting>
         <plugins>
@@ -54,21 +55,20 @@
     </reporting>
 
     <scm>
-        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/tests/iotest</connection>
-        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/tests/iotest</developerConnection>
-        <url>http://genxdm.googlecode.com/svn/trunk/project/tests/iotest</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/tests/xpathtest</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/tests/xpathtest</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/tests/xpathtest</url>
     </scm>
-
 
     <dependencies>
         <dependency>
             <groupId>org.genxdm</groupId>
-            <artifactId>proc-io</artifactId>
+            <artifactId>genxdm-xpath-api</artifactId>
             <version>[,2)</version>
         </dependency>
         <dependency>
             <groupId>org.genxdm</groupId>
-            <artifactId>bridgekit</artifactId>
+            <artifactId>proc-xpath</artifactId>
             <version>[,2)</version>
         </dependency>
         <dependency>

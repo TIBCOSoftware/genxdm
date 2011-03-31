@@ -22,7 +22,7 @@
     
     <parent>
         <groupId>org.genxdm</groupId>
-        <artifactId>project</artifactId>
+        <artifactId>apis</artifactId>
         <version>0.3</version>
     </parent>
     
@@ -60,9 +60,9 @@
     </reporting>
 
     <scm>
-        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/api</connection>
-        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/api</developerConnection>
-        <url>http://genxdm.googlecode.com/svn/trunk/project/api</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/api/core</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/api/core</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/api/core</url>
     </scm>
 
     <dependencies>
