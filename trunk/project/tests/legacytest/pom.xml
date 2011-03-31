@@ -22,7 +22,7 @@
     
     <parent>
         <groupId>org.genxdm</groupId>
-        <artifactId>bridge</artifactId>
+        <artifactId>tests</artifactId>
         <version>0.3</version>
     </parent>
     
@@ -56,9 +56,9 @@
     </reporting>
 
     <scm>
-        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/bridge/bridgetest</connection>
-        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/bridge/bridgetest</developerConnection>
-        <url>http://genxdm.googlecode.com/svn/trunk/project/bridge/bridgetest</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/tests/legacytest</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/tests/legacytest</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/tests/legacytest</url>
     </scm>
 
     <dependencies>

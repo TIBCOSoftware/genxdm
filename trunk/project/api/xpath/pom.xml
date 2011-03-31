@@ -22,7 +22,7 @@
     
     <parent>
         <groupId>org.genxdm</groupId>
-        <artifactId>project</artifactId>
+        <artifactId>apis</artifactId>
         <version>0.3</version>
     </parent>
     
@@ -57,9 +57,9 @@
     </reporting>
 
     <scm>
-        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/xpath</connection>
-        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/xpath</developerConnection>
-        <url>http://genxdm.googlecode.com/svn/trunk/project/xpath</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/api/xpath</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/api/xpath</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/api/xpath</url>
     </scm>
 
     <organization>
