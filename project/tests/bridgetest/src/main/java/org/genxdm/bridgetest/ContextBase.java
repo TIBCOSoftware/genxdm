@@ -178,11 +178,6 @@ public abstract class ContextBase<N>
         N[] nodes = context.nodeArray(6); // 6 is a guaranteed-random number.  snrk.
         assertNotNull(nodes);
         assertEquals(nodes.length, 6);
-        // TODO
-        // test node(), isNode(), and nodeArray().
-        // node() must return null if isNode() is false.
-        // node() must return null and isNode() must return false if a non-node is supplied.
-        // if a real N is passed, then isNode() must return true, and node() must return the same object.
     }
     
     @Test
