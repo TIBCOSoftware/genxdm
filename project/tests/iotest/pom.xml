@@ -27,7 +27,7 @@
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>proc-iotest</artifactId>
+    <artifactId>iotest</artifactId>
     <version>0.2</version>
     <!-- Known incomplete, and even the completed stuff is arguably out of
          date for the processor that it's exercising.  This needs to be
@@ -74,7 +74,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>[3.8.1,4.0.0)</version>
+            <version>[4.0.0,5.0.0)</version>
         </dependency>
     </dependencies>
 </project>

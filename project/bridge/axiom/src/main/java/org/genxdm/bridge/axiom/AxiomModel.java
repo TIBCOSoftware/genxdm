@@ -954,7 +954,11 @@ public class AxiomModel
             final Iterator<OMNamespace> namespaces = element.getAllDeclaredNamespaces();
             while (namespaces.hasNext())
             {
-                return true;
+                // oh, axiom, shame on you!
+                // the default namespace is reported as "declared"
+                OMNamespace ns = (OMNamespace)namespaces.next();
+                if (! (ns.getPrefix().equals("") && ns.getNamespaceURI().equals("")) )
+                    return true;
             }
             return false;
         }

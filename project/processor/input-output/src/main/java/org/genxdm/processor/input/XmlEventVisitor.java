@@ -58,11 +58,6 @@ public class XmlEventVisitor
         this.docURI = systemId;
     }
     
-    public void wrapFragment(URI systemId, String internalSS)
-        throws IOException, GxmlMarshalException
-    {
-    }
-    
     /** This guarantees that a document event will be fired.  Thus, there will always
      * be a single node returned by a FragmentBuilder.
      * 
@@ -88,19 +83,20 @@ public class XmlEventVisitor
         {
             throw new GxmlMarshalException(xse);
         }
-        parseFragment();
-        if (manualStart)
+        boolean endedDocument = parseFragment();
+        if (manualStart && !endedDocument)
             handler.endDocument();
     }
     
     /** This does the interesting work, overall.
      * 
      */
-    public void parseFragment()
+    public boolean parseFragment()
         throws IOException, GxmlMarshalException
     {
         // TODO: you can't actually call this, right now.
         // figure out a good way to enable fragment parsing.
+        boolean ended = false;
         while (reader.hasNext())
         {
             try
@@ -121,17 +117,21 @@ public class XmlEventVisitor
                 else if (!eventQueue.isEmpty())
                     processQueue(event);
                 else
-                    processEvent(event);
+                {
+                    if (processEvent(event))
+                        ended = true;
+                }
             }
             catch (XMLStreamException xse)
             {
                 throw new GxmlMarshalException(xse);
             }
         }
+        return ended;
     }
     
     @SuppressWarnings("unchecked")
-    private void processEvent(XMLEvent event)
+    private boolean processEvent(XMLEvent event)
         throws XMLStreamException
     {
         int eventType = event.getEventType();
@@ -235,12 +235,13 @@ public class XmlEventVisitor
             {
 //                EndDocument edoc = (EndDocument)event;
                 handler.endDocument();
-                break;
+                return true;
             }
             default :
                 // entity and notation declarations, entity references if unresolved.
                 throw new XMLStreamException("Unknown event type " + eventType);
         }
+        return false;
     }
     
     private void processQueue(XMLEvent event)
