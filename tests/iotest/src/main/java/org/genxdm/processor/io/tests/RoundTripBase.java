@@ -25,8 +25,6 @@ import java.nio.charset.Charset;
 
 import javax.xml.XMLConstants;
 
-import junit.framework.TestCase;
-
 import org.genxdm.Cursor;
 import org.genxdm.NodeKind;
 import org.genxdm.ProcessingContext;
@@ -34,20 +32,31 @@ import org.genxdm.bridgekit.ProcessingContextFactory;
 import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.FragmentBuilder;
 
-abstract public class RoundTripTestBase<N>
-    extends TestCase
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+// TODO: this should be testing that we can read and write the
+// same thing, every time.  Can we re-use the Events filter in
+// bridgetest to verify?  We should also have more documents.
+
+abstract public class RoundTripBase<N>
     implements ProcessingContextFactory<N>
 {
 
-    public void testRoundTrip001()
+    @Test
+    public void roundTripUglyDocument()
     {
         ProcessingContext<N> context = newProcessingContext();
-        N document = makeDocument001(context);
-        checkDocument001(context, document);
+        N document = makeUglyDocument(context);
+        checkUglyDocument(context, document);
         byte[] result = writeDocument(context, document, utf8);
-        checkBytes001(result);
+        assertNotNull(result);
         N doc2 = readDocument(context, new InputStreamReader(new ByteArrayInputStream(result), utf8));
-        checkDocument001(context, doc2);
+        checkUglyDocument(context, doc2);
     }
     
     private byte[] writeDocument(ProcessingContext<N> context, N document, Charset encoding)
@@ -87,7 +96,7 @@ abstract public class RoundTripTestBase<N>
         }
     }
     
-    private N makeDocument001(ProcessingContext<N> context)
+    private N makeUglyDocument(ProcessingContext<N> context)
     {
 /* approximately:
 <?xml version="1.0" encoding="UTF-8"?>
@@ -115,7 +124,7 @@ abstract public class RoundTripTestBase<N>
         return builder.getNode();
     }
     
-    private void checkDocument001(ProcessingContext<N> context, N document)
+    private void checkUglyDocument(ProcessingContext<N> context, N document)
     {
         assertNotNull(document);
         Cursor<N> cursor = context.newCursor(document);
@@ -124,11 +133,6 @@ abstract public class RoundTripTestBase<N>
         assertTrue(cursor.hasChildren());
     }
     
-    private void checkBytes001(byte[] content)
-    {
-        assertNotNull(content);
-    }
-
     private static Charset utf8 = Charset.forName("UTF-8");
 
 }
