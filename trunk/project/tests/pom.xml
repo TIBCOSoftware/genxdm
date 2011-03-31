@@ -29,7 +29,7 @@
     <packaging>pom</packaging>
     <version>0.3</version>
     <!-- version matches main project version; no other reason -->
-    <name>GenXDM Bridges</name>
+    <name>GenXDM Conformance Test modules</name>
 
     <scm>
         <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/tests</connection>
