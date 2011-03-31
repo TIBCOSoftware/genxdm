@@ -6,11 +6,28 @@
 
     <target name="aggregate" description="Aggregate the generated sites into a single site" if="_can_agg_">
         <echo>This is the cheap and sleazy approach.  There's got to be a better way.</echo>
-        <move todir="${target-dir}/genxdm-api">
+        <property name="api-target" location="${target-dir}/apis" />
+        <move todir="${api-target}">
             <fileset dir="api/target/site" />
         </move>
-        <move todir="${target-dir}/genxdm-xpath-api">
-            <fileset dir="xpath/target/site" />
+        <move todir="${api-target}/genxdm-api">
+            <fileset dir="api/core/target/site" />
+        </move>
+        <move todir="${api-target}/genxdm-xpath-api">
+            <fileset dir="api/xpath/target/site" />
+        </move>
+        <property name="tests-target" location="${target-dir}/tests" />
+        <move todir="${tests-target}">
+            <fileset dir="tests/target/site" />
+        </move>
+        <move todir="${tests-target}/bridgetest">
+            <fileset dir="tests/bridgetest/target/site" />
+        </move>
+        <move todir="${tests-target}/iotest">
+            <fileset dir="tests/iotest/target/site" />
+        </move>
+        <move todir="${tests-target}/xpathtest">
+            <fileset dir="tests/xpathtest/target/site" />
         </move>
         <property name="bridge-target" location="${target-dir}/bridge" />
         <move todir="${bridge-target}">
@@ -18,9 +35,6 @@
         </move>
         <move todir="${bridge-target}/bridgekit">
             <fileset dir="bridge/bridgekit/target/site" />
-        </move>
-        <move todir="${bridge-target}/bridgetest">
-            <fileset dir="bridge/bridgetest/target/site" />
         </move>
         <move todir="${bridge-target}/bridge-axiom">
             <fileset dir="bridge/axiom/target/site" />
@@ -40,9 +54,6 @@
         </move>
         <move todir="${proc-target}/proc-io">
             <fileset dir="processor/input-output/target/site" />
-        </move>
-        <move todir="${proc-target}/proc-iotest">
-            <fileset dir="processor/iotest/target/site" />
         </move>
         <move todir="${proc-target}/proc-w3cxs-val">
             <fileset dir="processor/w3c.xs.validation/target/site" />
