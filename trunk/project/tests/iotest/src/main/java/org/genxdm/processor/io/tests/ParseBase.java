@@ -18,26 +18,38 @@ package org.genxdm.processor.io.tests;
 import java.io.IOException;
 import java.io.InputStream;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import org.genxdm.Cursor;
 import org.genxdm.NodeKind;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridgekit.ProcessingContextFactory;
 import org.genxdm.io.DocumentHandler;
-// TODO: this sucks. it follows the old pattern in bridgetest, which is a bad
-// pattern.  it needs to follow the contract pattern instead.
-// noticed while adding a new test (which helps coverage, but doesn't prove anything)
-abstract public class SaxTestBase<N>
-    extends TestCase
+
+// TODO: this is a quick-and-dirty update of older code.  It isn't
+// acceptably contract based.  We also probably need to think about
+// using something like the Events filter to check content, perhaps.
+
+// Remember, contract-based.  This is the parse testing.
+
+abstract public class ParseBase<N>
     implements ProcessingContextFactory<N>
 {
-    public void testSimpleDocWithPIsAndComments()
+    @Test
+    public void simpleDocWithPIsAndComments()
     {
         parseTest1Doc("test1.xml");
     }
     
-    public void testSimpleDocWithPIsAndCommentsButNoDecl()
+    @Test
+    public void simpleDocWithPIsAndCommentsButNoDecl()
     {
         parseTest1Doc("test1-nodecl.xml");
     }

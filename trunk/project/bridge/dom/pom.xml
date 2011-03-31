@@ -76,12 +76,12 @@
             <version>[,2)</version>
             <scope>test</scope>
         </dependency>
-        <!--dependency>
+        <dependency>
             <groupId>org.genxdm</groupId>
-            <artifactId>proc-iotest</artifactId>
+            <artifactId>iotest</artifactId>
             <version>[,2)</version>
             <scope>test</scope>
-        </dependency-->
+        </dependency>
         <dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>xpathtest</artifactId>
