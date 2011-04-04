@@ -35,6 +35,10 @@ import javax.xml.stream.XMLReporter;
  */
 public interface DocumentHandlerFactory<N> {
 
+    XMLReporter getDefaultReporter();
+    
+    Resolver getDefaultResolver();
+    
 	/**
      * Returns a new builder for parsing and writing data models.
      */

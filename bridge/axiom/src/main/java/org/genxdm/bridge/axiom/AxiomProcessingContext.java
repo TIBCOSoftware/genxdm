@@ -108,6 +108,16 @@ public class AxiomProcessingContext
             ((DefaultDocumentHandler<Object>)handler).setReporter(reporter);
         return handler;
     }
+    
+    public XMLReporter getDefaultReporter()
+    {
+        return reporter;
+    }
+    
+    public Resolver getDefaultResolver()
+    {
+        return resolver;
+    }
 
     public void setDefaultReporter(XMLReporter reporter)
     {
