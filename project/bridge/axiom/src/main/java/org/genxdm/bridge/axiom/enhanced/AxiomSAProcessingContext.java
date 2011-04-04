@@ -15,6 +15,7 @@
  */
 package org.genxdm.bridge.axiom.enhanced;
 
+import java.net.URI;
 import java.util.EnumSet;
 
 import javax.xml.namespace.QName;
@@ -33,6 +34,7 @@ import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.TypedModel;
+import org.genxdm.typed.Validator;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
@@ -392,9 +394,16 @@ public final class AxiomSAProcessingContext
     
     public void register(final ComponentBag<XmlAtom> components)
 	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
+		// TODO implement
+		throw new UnsupportedOperationException();
 	}
+    
+    @Override
+    public Object validate(Object source, Validator<Object, XmlAtom> validator, URI namespace)
+    {
+        // TODO: implement
+        throw new UnsupportedOperationException();
+    }
     
     private final AxiomProcessingContext context;
 	private final AtomBridge<XmlAtom> atomBridge;

@@ -18,7 +18,6 @@ package org.genxdm;
 import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.DocumentHandlerFactory;
 import org.genxdm.io.FragmentBuilder;
-import org.genxdm.io.Resolver;
 import org.genxdm.mutable.MutableContext;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
