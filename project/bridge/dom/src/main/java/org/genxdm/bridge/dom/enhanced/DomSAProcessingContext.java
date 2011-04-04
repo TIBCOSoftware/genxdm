@@ -15,6 +15,8 @@
  */
 package org.genxdm.bridge.dom.enhanced;
 
+import java.net.URI;
+
 import javax.xml.namespace.QName;
 
 import org.genxdm.ProcessingContext;
@@ -29,6 +31,7 @@ import org.genxdm.names.NameSource;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.TypedModel;
+import org.genxdm.typed.Validator;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
@@ -355,6 +358,18 @@ public final class DomSAProcessingContext
 	{
 		PreCondition.assertFalse(isLocked(), "isLocked()");
 		m_cache.register(components);
+	}
+	
+	@Override
+	public Node validate(Node source, Validator<Node, XmlAtom> validator, URI namespace)
+	{
+	    SequenceBuilder<Node, XmlAtom> builder = newSequenceBuilder();
+	    validator.setSequenceBuilder(builder);
+	    validator.reset();
+	    m_model.stream(source, true, true, validator);
+	    // TODO: check for errors?
+	    
+	    return builder.getNode();
 	}
 
 	private final DomProcessingContext parent;
