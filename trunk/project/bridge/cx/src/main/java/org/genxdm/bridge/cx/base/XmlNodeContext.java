@@ -113,14 +113,26 @@ public final class XmlNodeContext
 
     public void setDefaultReporter(XMLReporter reporter)
     {
-        // TODO: implement
+        this.reporter = reporter;
     }
     
     public void setDefaultResolver(Resolver resolver)
     {
-        // TODO: implement
+        this.resolver = resolver;
+    }
+    
+    public XMLReporter getDefaultReporter()
+    {
+        return reporter;
+    }
+    
+    public Resolver getDefaultResolver()
+    {
+        return resolver;
     }
 
     private final XmlNodeModel model = new XmlNodeModel();
     private final XmlNodeMutableContext mutant;
+    private XMLReporter reporter;
+    private Resolver resolver;
 }

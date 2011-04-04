@@ -48,13 +48,25 @@ public class DomDocumentHandlerFactory implements DocumentHandlerFactory<Node> {
 
     public void setDefaultReporter(XMLReporter reporter)
     {
-        // TODO: implement
+        this.reporter = reporter;
     }
     
     public void setDefaultResolver(Resolver resolver)
     {
-        // TODO: implement
+        this.resolver = resolver;
+    }
+    
+    public XMLReporter getDefaultReporter()
+    {
+        return reporter;
+    }
+    
+    public Resolver getDefaultResolver()
+    {
+        return resolver;
     }
 
     private final DocumentBuilderFactory m_dbf;
+    private XMLReporter reporter;
+    private Resolver resolver;
 }
