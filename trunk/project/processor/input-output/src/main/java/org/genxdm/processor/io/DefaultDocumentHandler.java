@@ -38,6 +38,7 @@ import org.genxdm.exceptions.GxmlMarshalException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.FragmentBuilder;
+import org.genxdm.io.Resolved;
 import org.genxdm.io.Resolver;
 import org.genxdm.processor.input.XmlEventVisitor;
 import org.genxdm.processor.output.ContentHandlerOnXmlStreamWriter;
@@ -73,15 +74,26 @@ public class DefaultDocumentHandler<N>
         ipf.setProperty("javax.xml.stream.isReplacingEntityReferences", true);
     }
     
+    public boolean isValidating()
+    {
+        // TODO: if validation is enabled, return indicator.
+        return false;
+    }
+    
     public void setResolver(Resolver resolver)
     {
         this.resolver = resolver;
-        // TODO: wrap it so that the input parser can use it?
     }
     
     public void setReporter(XMLReporter reporter)
     {
         ipf.setProperty("javax.xml.stream.reporter", reporter);
+    }
+    
+    public void setValidating(boolean flag)
+    {
+        // TODO: implement?
+        throw new UnsupportedOperationException();
     }
 
     public N parse(InputStream byteStream, URI systemId)
@@ -137,7 +149,13 @@ public class DefaultDocumentHandler<N>
             return parse(source.getCharacterStream(), systemId);
         if (source.getByteStream() != null)
             return parse(source.getByteStream(), systemId);
-        // otherwise, we need to resolve.  TODO ? or not?
+        if (resolver != null)
+        {
+            // TODO: this might break, actually.
+            // also, this indicates that we're being lame with the resolver.
+            Resolved<Reader> rdr = resolver.resolveReader(URI.create(source.getSystemId())); 
+            return parse(rdr.getResource(), systemId);
+        }
         return null;
     }
 
@@ -194,47 +212,6 @@ public class DefaultDocumentHandler<N>
         visitor.parse();
         return builder.getNode();
     }
-
-    // TODO
-    // this is not the preferred solution.
-    // when the better (meaning: actually usable) implementation is available,
-    // this can go away.  Right now, no one really uses this implementation (meaning
-    // the whole class, though it's used as a base class).  Part of the proof of
-    // breakage (a concrete default that isn't usable isn't a default; it might be
-    // a reasonable abstract base class, but suggests that the need to specialize concretely
-    // points at a problem).
-//    protected N parseSAX(InputSource source, URI systemId)
-//        throws IOException, GxmlMarshalException
-//    {
-//        PreCondition.assertArgumentNotNull(source, "source");
-//        builder.reset();
-//        if (null != systemId)
-//        {
-//            source.setSystemId(systemId.toString());
-//        }
-//        try
-//        {
-//            spf.setNamespaceAware(true);
-//            SaxContentHandlerOnContentHandler adapter = new SaxContentHandlerOnContentHandler(builder);
-//            XMLReader reader = spf.newSAXParser().getXMLReader();
-//            reader.setContentHandler(adapter);
-//            reader.setProperty("http://xml.org/sax/properties/lexical-handler", adapter);
-//            if (errors != null)
-//            {
-//                reader.setErrorHandler(errors);
-//            }
-//            reader.parse(source);
-//        }
-//        catch (ParserConfigurationException pce)
-//        {
-//            throw new GxmlMarshalException(pce);
-//        }
-//        catch (final SAXException e)
-//        {
-//            throw new GxmlMarshalException(e);
-//        }
-//        return builder.getNode();
-//    }
 
     protected final XMLOutputFactory opf = XMLOutputFactory.newInstance();
     protected final XMLInputFactory ipf = XMLInputFactory.newInstance();

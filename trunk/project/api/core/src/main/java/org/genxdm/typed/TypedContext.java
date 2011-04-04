@@ -15,6 +15,8 @@
  */
 package org.genxdm.typed;
 
+import java.net.URI;
+
 import org.genxdm.ProcessingContext;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
@@ -93,5 +95,7 @@ public interface TypedContext<N, A>
 	TypedCursor<N, A> newCursor(N node);
 	
 	SequenceBuilder<N, A> newSequenceBuilder();
+	
+	N validate(N source, Validator<N, A> validator, URI schemaNamespace);
 
 }

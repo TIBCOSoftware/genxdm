@@ -31,14 +31,14 @@ import org.xml.sax.InputSource;
  * readers or input streams) to be built into a target
  * tree model; it also permits tree models to "serialize" onto parallel output
  * abstractions (writers and output streams). 
- * 
- * @author alewis@tibco.com
  *
  * @param <N> the Node handle.
  */
 
 public interface DocumentHandler<N>
 {
+    boolean isValidating();
+    
     /** Parse an input stream (bytes) as a document node.
      * 
      * This method typically delegates to parse(InputSource, systemId).
@@ -71,6 +71,8 @@ public interface DocumentHandler<N>
      * 
      */
     N parse(final InputSource source, final URI systemId) throws IOException, GxmlMarshalException;
+    
+    void setValidating(boolean flag);
 
 	/** Write XML, as bytes in a specified character encoding, to an output stream, unformatted.
 	 *
