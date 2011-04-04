@@ -64,10 +64,5 @@
             <artifactId>genxdm-api</artifactId>
             <version>[,2)</version>
         </dependency>
-        <!--dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>[3.8.1,4.0.0)</version>
-        </dependency-->
     </dependencies>
 </project>
