@@ -18,6 +18,7 @@ package org.genxdm;
 import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.DocumentHandlerFactory;
 import org.genxdm.io.FragmentBuilder;
+import org.genxdm.io.Resolver;
 import org.genxdm.mutable.MutableContext;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
@@ -116,7 +117,7 @@ public interface ProcessingContext<N> extends DocumentHandlerFactory<N>
      * Allocates an empty array of nodes.
      * 
      * @param size
-     *            The size of the array of nodes.
+     *            The size of the array of nodes.  May not be negative.
      */
     N[] nodeArray(int size);
 
