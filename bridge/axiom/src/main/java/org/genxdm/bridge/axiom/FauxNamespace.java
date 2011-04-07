@@ -25,7 +25,7 @@ import org.genxdm.exceptions.PreCondition;
  */
 final class FauxNamespace implements OMNamespace
 {
-	private final OMElement parent;
+	private final OMContainer parent;
 	private String prefix;
 	private String uri;
 	private OMNamespace namespace;
@@ -35,7 +35,7 @@ final class FauxNamespace implements OMNamespace
 	{
 		this.prefix = PreCondition.assertNotNull(prefix, "prefix");
 		this.uri = PreCondition.assertNotNull(uri, "uri");
-		this.parent = new FauxElement(root);
+		this.parent = root;
 	}
 	
 	// use to wrap namespaces so that getParent() works.
@@ -56,10 +56,16 @@ final class FauxNamespace implements OMNamespace
 	
 	public boolean equals(Object obj)
 	{
+        if (!(obj instanceof FauxNamespace))
+        	return false;
+        
 	    if (namespace != null)
 	        return namespace.equals(obj);
-        if (!(obj instanceof OMNamespace)) return false;
-        OMNamespace other = (OMNamespace)obj;
+	    FauxNamespace other = (FauxNamespace)obj;
+	    if (parent != other.getParent() ) {
+	    	return false;
+	    }
+	    
         String otherPrefix = other.getPrefix();
         return (uri.equals(other.getNamespaceURI()) &&
                 (prefix == null ? otherPrefix == null :
@@ -81,7 +87,7 @@ final class FauxNamespace implements OMNamespace
 		return uri;
 	}
 
-	public OMElement getParent()
+	public OMContainer getParent()
 	{
 		return parent;
 	}
@@ -95,8 +101,9 @@ final class FauxNamespace implements OMNamespace
 
     public int hashCode() 
     {
+    	int parentHash = parent != null ? parent.hashCode() : 0x3f3f3f3f;
         if (namespace != null)
-            return namespace.hashCode();
-        return uri.hashCode() ^ (prefix != null ? prefix.hashCode() : 0);
+            return namespace.hashCode() ^ parentHash;
+        return parentHash ^ uri.hashCode() ^ (prefix != null ? prefix.hashCode() : 0);
     }
 }
