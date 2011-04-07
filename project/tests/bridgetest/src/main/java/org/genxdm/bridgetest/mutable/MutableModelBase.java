@@ -263,6 +263,14 @@ public abstract class MutableModelBase<N>
         // in fact represents an xml entity, more accurately (but not even
         // that, really; it's just the notional wrapper around a sequence,
         // if you want to get down to cases like bare attributes).
+        
+        // DOM had a bug wherein inserting a collection of items before the document element
+        // could fail.
+        N docElem = model.getFirstChildElement(doc);
+        List<N> misc = new ArrayList<N>();
+        misc.add(factory.createComment("Something here."));
+        //misc.add(factory.createText("\n"));
+        model.insertBefore(docElem, misc);
     }
 
     @Test
@@ -272,7 +280,8 @@ public abstract class MutableModelBase<N>
         N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
         MutableModel<N> model = context.getMutableContext().getModel();
         
-        N target = model.getFirstChild(model.getFirstChildElement(doc));
+        N docElem = model.getFirstChildElement(doc);
+        N target = model.getFirstChild(docElem);
         N marker = model.getNextSibling(target);
         N result = model.delete(target); // delete comment
         assertEquals(target, result);
@@ -297,6 +306,9 @@ public abstract class MutableModelBase<N>
         // at this point, we could move the marker back to document, but why?
         result = model.delete(marker); // delete element
         assertEquals(marker, result);
+        
+        // Had a bug in AXIOM where the document was still pointing at the child even after delete.
+        assertNull(model.getFirstChildElement(doc));
         // can't delete the document
     }
     

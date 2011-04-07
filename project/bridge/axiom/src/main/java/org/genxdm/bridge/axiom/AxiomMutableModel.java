@@ -22,12 +22,14 @@ import java.util.List;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMNamespaceImpl;
+import org.apache.axiom.om.impl.OMNodeEx;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.mutable.MutableModel;
 import org.genxdm.mutable.NodeFactory;
@@ -120,7 +122,14 @@ public class AxiomMutableModel
                 throw new IllegalArgumentException("cannot delete document");
             default :
                 OMNode node = AxiomSupport.dynamicDowncastNode(target);
-                return node.detach();
+                OMContainer container = node.getParent();
+                
+                node.detach();
+                
+                if (container instanceof OMDocument && node instanceof OMElement) {
+                	((OMDocument) container).setOMDocumentElement(null);
+                }
+                return node;
         }
     }
 
@@ -212,7 +221,7 @@ public class AxiomMutableModel
         PreCondition.assertNotNull(content, "content");
         OMNode t = AxiomSupport.dynamicDowncastNode(target);
         OMNode c = AxiomSupport.dynamicDowncastNode(content);
-        t.insertSiblingBefore(c);
+        insertBeforeWorkAround(t, c);
     }
 
     public void insertBefore(final Object target, final Iterable<Object> content)
@@ -300,10 +309,18 @@ public class AxiomMutableModel
             case PROCESSING_INSTRUCTION :
                 if (getNodeKind(content).isChild())
                 {
-                    OMNode original = AxiomSupport.dynamicDowncastNode(target);
+                	OMNode original = AxiomSupport.dynamicDowncastNode(target);
                     OMNode replacement = AxiomSupport.dynamicDowncastNode(content);
-                    original.insertSiblingBefore(replacement);
+                	
+                	OMContainer originalParent = insertBeforeWorkAround(
+							original, replacement);
+
                     original.detach();
+                    
+                	if (originalParent instanceof OMDocument && replacement instanceof OMElement) {
+                		( (OMDocument) originalParent).setOMDocumentElement( (OMElement) replacement);
+                	}
+                	
                     return target;
                 }
                 throw new IllegalArgumentException();
@@ -319,6 +336,28 @@ public class AxiomMutableModel
         }
     }
 
+    /**
+     * This method exists as a work-around for AXIOM-360
+     * 
+     * @param target
+     * @param toInsertBefore
+     * @return
+     */
+	private OMContainer insertBeforeWorkAround(OMNode target,
+			OMNode toInsertBefore) {
+		// See comment below about AXIOM-360 - note we have to get the
+		// parent before detaching.
+		OMContainer originalParent = target.getParent();
+		
+		target.insertSiblingBefore(toInsertBefore);
+
+		// Note that the following three lines are a work-around for bug:
+		// https://issues.apache.org/jira/browse/AXIOM-360, in 1.2.11 of AXIOM
+		OMNodeEx replacementImpl = (OMNodeEx) toInsertBefore;
+		replacementImpl.setParent(originalParent);
+		return originalParent;
+	}
+
     public String replaceValue(final Object target, final String value)
     {
         PreCondition.assertNotNull(target);
@@ -329,7 +368,7 @@ public class AxiomMutableModel
             case TEXT :
                 // can't actually replace a text node's value, in axiom
                 OMText node = AxiomSupport.dynamicDowncastText(target);
-                node.insertSiblingBefore(factory.createText(value));
+                insertBeforeWorkAround(node, factory.createText(value));
                 node.detach();
                 return node.getText();
             case ATTRIBUTE :

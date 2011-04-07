@@ -77,7 +77,6 @@
             <groupId>org.apache.ws.commons.axiom</groupId>
             <artifactId>axiom-impl</artifactId>
             <version>[1.2.11,2.0.0)</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.genxdm</groupId>
