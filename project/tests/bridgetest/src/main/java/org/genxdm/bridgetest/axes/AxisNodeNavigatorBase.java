@@ -208,21 +208,21 @@ public abstract class AxisNodeNavigatorBase<N>
             iterableToList(namespaces, domains);
             assertEquals(0, domains.size());
             
-            N e = model.getFirstChildElement(doc);
+            N docElem = model.getFirstChildElement(doc);
             // an element node has a namespace axis; this one's empty,
             // except for the inherited namespace.
             
-            namespaces = model.getNamespaceAxis(e, false);
+            namespaces = model.getNamespaceAxis(docElem, false);
             assertNotNull(namespaces);
             iterableToList(namespaces, domains);
             assertEquals(0, domains.size());
             
-            namespaces = model.getNamespaceAxis(e, true);
+            namespaces = model.getNamespaceAxis(docElem, true);
             assertNotNull(namespaces);
             iterableToList(namespaces, domains);
             assertEquals(1, domains.size());
             
-            N n = model.getAttribute(e, "", "name");
+            N n = model.getAttribute(docElem, "", "name");
             namespaces = model.getNamespaceAxis(n, false);
             assertNotNull(namespaces);
             iterableToList(namespaces, domains);
@@ -233,21 +233,21 @@ public abstract class AxisNodeNavigatorBase<N>
             iterableToList(namespaces, domains);
             assertEquals(0, domains.size());
             
-            n = model.getLastChild(e);
-            e = model.getPreviousSibling(n);
-            namespaces = model.getNamespaceAxis(e, false);
+            n = model.getLastChild(docElem);
+            N nsTestElem = model.getPreviousSibling(n);
+            namespaces = model.getNamespaceAxis(nsTestElem, false);
             assertNotNull(namespaces);
             iterableToList(namespaces, domains);
 //for (N ns : namespaces) { System.out.println(model.getLocalName(ns)); System.out.println(model.getStringValue(ns));}
             assertEquals(2, domains.size());
             
-            namespaces = model.getNamespaceAxis(e, true);
+            namespaces = model.getNamespaceAxis(nsTestElem, true);
             assertNotNull(namespaces);
             iterableToList(namespaces, domains);
             assertEquals(3, domains.size());
             
             // namespace nodes have an empty namespace axis
-            n = getNamespaceNode(model, e, "gue");
+            n = getNamespaceNode(model, nsTestElem, "gue");
             namespaces = model.getNamespaceAxis(n, false);
             assertNotNull(namespaces);
             iterableToList(namespaces, domains);
@@ -258,18 +258,24 @@ public abstract class AxisNodeNavigatorBase<N>
             iterableToList(namespaces, domains);
             assertEquals(0, domains.size());
             
-            e = model.getFirstChildElement(e);
+            N gueElem = model.getFirstChildElement(nsTestElem);
             // this one also has namespaces. 2+2
-            namespaces = model.getNamespaceAxis(e, false);
+            namespaces = model.getNamespaceAxis(gueElem, false);
             iterableToList(namespaces, domains);
             assertEquals(2, domains.size());
             
-            namespaces = model.getNamespaceAxis(e, true);
+            namespaces = model.getNamespaceAxis(gueElem, true);
             iterableToList(namespaces, domains);
+            
+            // Note that it is a requirement that all the namespace nodes have the one node
+            // as parent.
+            for (N ns : namespaces) {
+            	assertEquals(gueElem, model.getParent(ns));
+            }
             assertEquals(4, domains.size());
             
             // get the last child.  that's a text node.
-            n = model.getLastChild(e);
+            n = model.getLastChild(gueElem);
             namespaces = model.getNamespaceAxis(n, false);
             assertNotNull(namespaces);
             iterableToList(namespaces, domains);
@@ -305,7 +311,7 @@ public abstract class AxisNodeNavigatorBase<N>
             assertEquals(0, domains.size());
             
             // get the firstchildelement.  0+4
-            n = model.getFirstChildElement(e);
+            n = model.getFirstChildElement(gueElem);
             namespaces = model.getNamespaceAxis(n, false);
             iterableToList(namespaces, domains);
             assertEquals(0, domains.size());

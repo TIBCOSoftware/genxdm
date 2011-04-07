@@ -112,7 +112,7 @@ public final class DomModelMutable
         final Node parent = target.getParentNode();
         if (parent != null)
         {
-            final Document owner = parent.getOwnerDocument();
+            final Document owner = target.getOwnerDocument();
             for (Node node : content)
             {
                 parent.insertBefore(ensureOwnership(owner, node), target);
@@ -129,7 +129,7 @@ public final class DomModelMutable
         // need a bloody closure, dammit
         if (parent != null)
         {
-            final Document owner = parent.getOwnerDocument();
+            final Document owner = target.getOwnerDocument();
             if (next != null)
                 parent.insertBefore(ensureOwnership(owner, content), next);
             else
@@ -145,7 +145,7 @@ public final class DomModelMutable
         final Node next = target.getNextSibling();
         if (parent != null)
         {
-            final Document owner = parent.getOwnerDocument();
+            final Document owner = target.getOwnerDocument();
             for (Node node : content)
             {
                 if (next != null)

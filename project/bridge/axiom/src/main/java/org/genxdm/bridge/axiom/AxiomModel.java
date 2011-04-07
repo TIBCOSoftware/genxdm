@@ -675,13 +675,13 @@ public class AxiomModel
         if (nodely != null)
         {
             OMNode next = nodely.getNextOMSibling();
-            do {
+            while (next != null) {
                 if (matches(next, NodeKind.ELEMENT, namespaceURI, localName))
                 {
                         return (OMElement)next;
                 }
                 next = next.getNextOMSibling();
-            } while (next != null);
+            }
         }
         // TODO: just guessing that if you want a sibling element, you've got an element.
         // however, this may not be true, so we may need to enhance the else, here.

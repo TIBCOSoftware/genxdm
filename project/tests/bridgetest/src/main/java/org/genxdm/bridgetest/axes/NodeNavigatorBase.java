@@ -217,6 +217,13 @@ public abstract class NodeNavigatorBase<N>
         assertNull(walker);
         walker = model.getPreviousSibling(fce);
         assertNull(walker);
+        
+        // Added this check because the AXIOM bridge had a bug where calling getNextSiblingByName
+        // with no more siblings would throw an NPE.
+        N lastChild = model.getLastChild(parent);
+        N shouldBeEmpty = model.getNextSiblingElementByName(lastChild, "http://example.org/broken", "dontfindme");
+        assertNull(shouldBeEmpty);
+
     }
     
     @Test
