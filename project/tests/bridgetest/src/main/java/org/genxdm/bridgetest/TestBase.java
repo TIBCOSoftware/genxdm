@@ -46,7 +46,6 @@ import org.genxdm.nodes.Bookmark;
  *
  * This is based on the original GxTestBase implementation, simplified.
  *
- * @author aaletal@gmail.com
  */
 abstract public class TestBase<N>
     implements ProcessingContextFactory<N>
