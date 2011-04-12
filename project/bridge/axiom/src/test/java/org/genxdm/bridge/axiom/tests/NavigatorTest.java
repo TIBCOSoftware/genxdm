@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2010-2011 TIBCO Software Inc.
+/*
+ * Copyright (c) 2011 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,6 @@ import org.apache.axiom.om.impl.llom.factory.OMLinkedListImplFactory;
 import org.genxdm.bridge.axiom.AxiomProcessingContext;
 import org.genxdm.bridgetest.axes.NavigatorBase;
 
-/**
- * Test Class for Cursor unit tests for the Navigation methods for Axiom Tree Model. 
- *
- */
 public class NavigatorTest
     extends NavigatorBase<Object>
 {
