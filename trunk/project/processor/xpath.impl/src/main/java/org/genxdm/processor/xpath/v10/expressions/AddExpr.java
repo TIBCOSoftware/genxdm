@@ -4,7 +4,7 @@
  * Portions copyright (c) 2002, Bill Lindsey : see copying.txt for license
  * details
  * 
- * Portions copyright (c) 2009-2010 TIBCO Software Inc.
+ * Portions copyright (c) 2009-2011 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
