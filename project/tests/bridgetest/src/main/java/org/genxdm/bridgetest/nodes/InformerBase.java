@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2011 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
