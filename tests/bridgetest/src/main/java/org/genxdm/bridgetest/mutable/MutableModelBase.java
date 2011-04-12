@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2011 TIBCO Software Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.genxdm.bridgetest.mutable;
 
 import static org.junit.Assert.assertEquals;
@@ -467,37 +482,4 @@ public abstract class MutableModelBase<N>
         assertEquals(model.getLocalName(mark), model.getLocalName(copy));
         assertEquals(model.getStringValue(mark), model.getStringValue(copy));
     }
-    
-///**
-// * Replaces a node.  Corresponds to XQuery Update Facility replaceNode
-// * (except that it's a single node replacement, not a sequence).
-// *
-// * @param target
-// *            The old node to be replaced.  May be any node type except
-// *            document; must not be null.
-// * @param content
-// *            The new node that will replace the old node.  When the target
-// *            node is an attribute, or namespace, this node must
-// *            be of the same type.  When the target is element, text,
-// *            comment, or processing instruction, this node must be one
-// *            of those four kinds (not a document, attribute, or namespace).
-// *            May not be null (use delete).
-// * 
-// * @return The node that was removed; if null, no action was taken.
-// */
-//N replace(final N target, final N content); //replace
-//
-///**
-// * Replaces the value of a node with a new value.  Corresponds to
-// * XQuery Update Facility replaceValue.
-// *
-// * @param target The node for which the value is to be replaced.  Must
-// *               be a text, attribute, comment, or processing instruction
-// *               node.  May not be null.
-// * @param value The replacement value.  If null, the empty string will
-// *              be used instead.
-// * @return the original textual value of the node. If null, then no
-// *         replacement was possible.
-// **/
-//String replaceValue(final N target, final String value);
 }
