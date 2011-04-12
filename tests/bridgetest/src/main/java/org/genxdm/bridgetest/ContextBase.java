@@ -35,8 +35,6 @@ import static org.junit.Assert.fail;
 
 /** Abstract base tests for the contract of ProcessingContext.
  * 
- * @author aaletal
- *
  * @param <N> the node handle
  */
 public abstract class ContextBase<N> 
