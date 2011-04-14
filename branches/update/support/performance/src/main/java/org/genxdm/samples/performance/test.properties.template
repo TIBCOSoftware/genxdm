@@ -1,9 +1,0 @@
-testCnt=2
-document=foo_instance.xml
-schema=foo_schema.xsd
-baseURI=/foo/files
-testParsing=true
-testSerialization=true
-testNavigation=true
-testValidation=true
-testMemoryUsage=false
