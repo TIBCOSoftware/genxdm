@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE doc [
+<!ATTLIST e3 id ID #IMPLIED>
+]>
+<doc xmlns="http://www.ietf.org" xmlns:w3c="http://www.w3.org">
+   <e1>
+      <e2 xmlns="">
+         <e3 id="E3"/>
+      </e2>
+   </e1>
+</doc>
