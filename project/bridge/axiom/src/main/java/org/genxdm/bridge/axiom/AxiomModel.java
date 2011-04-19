@@ -383,11 +383,11 @@ public class AxiomModel
         {
             if (inherit)
             {
-                return getNamespacesInScope(node);
+                return getNamespacesInScope(origin);
             }
             else
             {
-                return getNamespaces(node);
+                return getNamespaces(origin);
             }
         }
         return Collections.emptyList();
@@ -435,22 +435,19 @@ public class AxiomModel
                     }
                     else
                     {
-                        if (isNamespaceDeclarationRequired(prefix, uri, element))
+                        names.add(new NamespaceBinding()
                         {
-                            names.add(new NamespaceBinding()
+
+                            public String getNamespaceURI()
                             {
+                                return uri;
+                            }
 
-                                public String getNamespaceURI()
-                                {
-                                    return uri;
-                                }
-
-                                public String getPrefix()
-                                {
-                                    return prefix;
-                                }
-                            });
-                        }
+                            public String getPrefix()
+                            {
+                                return prefix;
+                            }
+                        });
                     }
                 }
                 return names;
@@ -512,41 +509,33 @@ public class AxiomModel
         return Collections.emptyList();
     }
 
-    public Iterable<Object> getNamespaces(final Object node)
+    public Iterable<Object> getNamespaces(final OMElement element)
     {
-        final OMElement element = AxiomSupport.dynamicDowncastElement(node);
-        if (null != element)
+        @SuppressWarnings("unchecked")
+        final Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
+        if (it.hasNext())
         {
-            @SuppressWarnings("unchecked")
-            final Iterator<OMNamespace> it = element.getAllDeclaredNamespaces();
-            if (it.hasNext())
+            final ArrayList<Object> namespaces = new ArrayList<Object>();
+            while (it.hasNext())
             {
-                final ArrayList<Object> namespaces = new ArrayList<Object>();
-                while (it.hasNext())
+                final OMNamespace namespace = it.next();
+                final String prefix = namespace.getPrefix();
+                final String uri = namespace.getNamespaceURI();
+                if (uri.length() == 0 && prefix.length() == 0)
                 {
-                    final OMNamespace namespace = it.next();
-                    final String prefix = namespace.getPrefix();
-                    final String uri = namespace.getNamespaceURI();
-                    if (uri.length() == 0 && prefix.length() == 0)
+                    if (isNamespaceCancellationRequired(element))
                     {
-                        if (isNamespaceCancellationRequired(element))
-                        {
-                            namespaces.add(new FauxNamespace(namespace, element));
-                        }
-                    }
-                    else
-                    {
-                        // ignore the xml namespace
-                        if (!prefix.equals("xml"))
-                            namespaces.add(new FauxNamespace(namespace, element));
+                        namespaces.add(new FauxNamespace(namespace, element));
                     }
                 }
-                return namespaces;
+                else
+                {
+                    // ignore the xml namespace
+                    if (!prefix.equals("xml"))
+                        namespaces.add(new FauxNamespace(namespace, element));
+                }
             }
-            else
-            {
-                return Collections.emptyList();
-            }
+            return namespaces;
         }
         else
         {
@@ -554,48 +543,40 @@ public class AxiomModel
         }
     }
 
-    public Iterable<Object> getNamespacesInScope(final Object node)
+    public Iterable<Object> getNamespacesInScope(final OMElement element)
     {
-        final OMElement element = AxiomSupport.dynamicDowncastElement(node);
-        if (null != element)
+        final LinkedList<OMElement> chain = new LinkedList<OMElement>();
+        OMElement ancestorOrSelf = element;
+        while (null != ancestorOrSelf)
         {
-            final LinkedList<OMElement> chain = new LinkedList<OMElement>();
-            OMElement ancestorOrSelf = element;
-            while (null != ancestorOrSelf)
+            chain.addFirst(ancestorOrSelf);
+            ancestorOrSelf = AxiomSupport.dynamicDowncastElement(ancestorOrSelf.getParent());
+        }
+        final Map<String, Object> namespaces = new HashMap<String, Object>();
+        for (final OMElement link : chain)
+        {
+            @SuppressWarnings("unchecked")
+            final Iterator<OMNamespace> it = link.getAllDeclaredNamespaces();
+            while (it.hasNext())
             {
-                chain.addFirst(ancestorOrSelf);
-                ancestorOrSelf = AxiomSupport.dynamicDowncastElement(ancestorOrSelf.getParent());
-            }
-            final Map<String, Object> namespaces = new HashMap<String, Object>();
-            for (final OMElement link : chain)
-            {
-                @SuppressWarnings("unchecked")
-                final Iterator<OMNamespace> it = link.getAllDeclaredNamespaces();
-                while (it.hasNext())
+                final OMNamespace namespace = it.next();
+                final String prefix = namespace.getPrefix();
+                final String uri = namespace.getNamespaceURI();
+                if (uri.length() == 0 && prefix.length() == 0)
                 {
-                    final OMNamespace namespace = it.next();
-                    final String prefix = namespace.getPrefix();
-                    final String uri = namespace.getNamespaceURI();
-                    if (uri.length() == 0 && prefix.length() == 0)
+                    if (namespaces.containsKey(prefix))
                     {
-                        if (namespaces.containsKey(prefix))
-                        {
-                            namespaces.remove(prefix);
-                        }
-                    }
-                    else
-                    {
-                        namespaces.put(prefix, new FauxNamespace(namespace, element));
+                        namespaces.remove(prefix);
                     }
                 }
+                else
+                {
+                    namespaces.put(prefix, new FauxNamespace(namespace, element));
+                }
             }
-            namespaces.put(XMLConstants.XML_NS_PREFIX, new FauxNamespace(XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI, (OMContainer)getRoot(node)));
-            return namespaces.values();
         }
-        else
-        {
-            return Collections.emptyList();
-        }
+        namespaces.put(XMLConstants.XML_NS_PREFIX, new FauxNamespace(XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI, (OMContainer)getRoot(element)));
+        return namespaces.values();
     }
 
     public String getNamespaceURI(Object node)

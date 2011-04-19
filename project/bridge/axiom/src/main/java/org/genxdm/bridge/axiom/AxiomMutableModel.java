@@ -248,7 +248,7 @@ public class AxiomMutableModel
     {
         OMNamespace ns = new OMNamespaceImpl(uri, prefix);
         OMElement omElem = AxiomSupport.staticDowncastElement(element);
-        omElem.setNamespace(ns);
+        omElem.declareNamespace(ns);
         return ns;
     }
 
