@@ -872,27 +872,78 @@ public abstract class AxisNodeNavigatorBase<N>
         assertNotNull(doc);
         Model<N> model = context.getModel();
         assertNotNull(model);
+
+        // As per XPath 2.0 specs following axis contains all nodes that are descendants of the root of the tree in which the context node is found,
+        //are not descendants of the context node, and occur after the context node in document order
+        //note that namespaces and attribute nodes are not allowed
+
+        ArrayList<N> followingList = new ArrayList<N>();
+        Iterable<N> followingIter = model.getFollowingAxis(doc);
+        assertNotNull(followingIter);
+        iterableToList(followingIter, followingList);
+        assertEquals(0, followingList.size()); // always empty for doc
+
+        N de = model.getFirstChildElement(doc); 
+        // unlike followingSiblingAxis this axis is not empty for attribute.
+        N a = model.getAttribute(de, XMLConstants.NULL_NS_URI, "name");
+        assertNotNull(a);
+        followingIter = model.getFollowingAxis(a);
+        assertNotNull(followingIter);
+        iterableToList(followingIter, followingList);
+        assertEquals(62, followingList.size());
+
+        if (context.isSupported(Feature.NAMESPACE_AXIS))
+        {
+            N ns = getNamespaceNode(model, model.getFirstChildElementByName(de, "http://www.genxdm.org/nonsense", "nstest"), "gue");
+            assertNotNull(ns);
+            followingIter = model.getFollowingAxis(ns);
+            assertNotNull(followingIter);
+            iterableToList(followingIter, followingList);
+            assertEquals(15, followingList.size());
+        }
+
+        // List of following nodes for project element is empty
+        followingIter = model.getFollowingAxis(de);
+        assertNotNull(followingIter);
+        iterableToList(followingIter, followingList);
+        assertEquals(0, followingList.size());
         
-        ArrayList<N> sheep = new ArrayList<N>();
-        // TODO
-        // note: no attributes, no namespaces, and no descendants.
-        // all descendants of following siblings and of ancestor's following siblings
+        N child = model.getFirstChildElementByName(de,XMLConstants.NULL_NS_URI,"fileset"); // fileset
+        followingIter = model.getFollowingAxis(child);
+        assertNotNull(followingIter);
+        iterableToList(followingIter, followingList);
+        assertEquals(50, followingList.size());
+
+        child = model.getFirstChildElementByName(de, "http://www.genxdm.org/nonsense", "nstest");
+        followingIter = model.getFollowingAxis(child);
+        assertNotNull(followingIter);
+        iterableToList(followingIter, followingList);
+        assertEquals(1, followingList.size());
+        
+        child = model.getPreviousSibling(child);// text element before 
+        followingIter = model.getFollowingAxis(child);
+        assertNotNull(followingIter);
+        iterableToList(followingIter, followingList);
+        assertEquals(16, followingList.size());
+        
+        // PI
+        child = model.getFirstChildElementByName(model.getFirstChildElementByName(de, "http://www.genxdm.org/nonsense", "nstest"), "http://great.underground.empire/adventure", "zork"); 
+        child = model.getPreviousSibling(model.getLastChild(child));
+        followingIter = model.getFollowingAxis(child);
+        assertNotNull(followingIter);
+        iterableToList(followingIter, followingList);
+        assertEquals(3, followingList.size());
+     
+        child = model.getPreviousSibling(model.getPreviousSibling(child)); // comment
+        followingIter = model.getFollowingAxis(child);
+        assertNotNull(followingIter);
+        iterableToList(followingIter, followingList);
+        assertEquals(5, followingList.size());
     }
-    
+
     @Test
     public void preceding()
     {
-        // A note, for those of you following along at home.
-        // Though it seems 'natural' for "following" and "preceding"
-        // to partition a tree into two pieces around a single node,
-        // that's not what happens.  There is a partition, but it involves
-        // not following + preceding + self, but following + preceding + ancestor-or-self.
-        // This is *most* counterintuitive for 'preceding'--one doe not
-        // expect 'following' to include any ancestors, and following *does*
-        // include descendants.  It would seem reasonable for 'preceding',
-        // in parallel, to include ancestors--but it doesn't.
-        // both following and preceding are apt to produce non-well-formed
-        // fragments, as a consequence of these definitions.
         ProcessingContext<N> context = newProcessingContext();
         FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
@@ -901,48 +952,78 @@ public abstract class AxisNodeNavigatorBase<N>
         Model<N> model = context.getModel();
         assertNotNull(model);
         
-        ArrayList<N> cousins = new ArrayList<N>();
-        // TODO
-        // oh, how fucking weird.  *cannot* include ancestors, but includes
-        // other descendants of the root of the tree that precede this node in doc order 
+        // As per XPath 2.0 specs following axis contains all nodes that are descendants of the root of the tree in which the context node is found,
+        //are not ancestor of the context node, and occur before the context node in document order
+        //note that namespaces and attribute nodes are not allowed
+
+        ArrayList<N> precedingList = new ArrayList<N>();
+        Iterable<N> pIter = model.getPrecedingAxis(doc);
+        assertNotNull(pIter);
+        iterableToList(pIter, precedingList);
+        assertEquals(0, precedingList.size()); // always empty for doc
+
+        N de = model.getFirstChildElement(doc); 
+        // unlike PrecedingSiblingAxis this axis is not empty for attribute.
+        N a = model.getAttribute(de, XMLConstants.NULL_NS_URI, "name");
+        assertNotNull(a);
+        pIter = model.getPrecedingAxis(a);
+        assertNotNull(pIter);
+        iterableToList(pIter, precedingList);
+        assertEquals(0, precedingList.size());
+        
+        if (context.isSupported(Feature.NAMESPACE_AXIS))
+        {
+            N ns = getNamespaceNode(model, model.getFirstChildElementByName(de, "http://www.genxdm.org/nonsense", "nstest"), "gue");
+            assertNotNull(ns);
+            pIter = model.getPrecedingAxis(ns);
+            assertNotNull(pIter);
+            iterableToList(pIter, precedingList);
+            assertEquals(46, precedingList.size());
+        }
+
+        // List of preceeding nodes for project element is empty
+        pIter = model.getPrecedingAxis(de);
+        assertNotNull(pIter);
+        iterableToList(pIter, precedingList);
+        assertEquals(0, precedingList.size());
+
+        N child = model.getFirstChildElementByName(de,XMLConstants.NULL_NS_URI,"fileset"); // fileset
+        pIter = model.getPrecedingAxis(child);
+        assertNotNull(pIter);
+        iterableToList(pIter, precedingList);
+        assertEquals(8, precedingList.size());
+
+        child = model.getFirstChildElementByName(de, "http://www.genxdm.org/nonsense", "nstest"); //nstest element 
+        pIter = model.getPrecedingAxis(child);
+        assertNotNull(pIter);
+        iterableToList(pIter, precedingList);
+        assertEquals(46, precedingList.size());
+
+        child = model.getPreviousSibling(child); // text element before nstest
+        pIter = model.getPrecedingAxis(child);
+        assertNotNull(pIter);
+        iterableToList(pIter, precedingList);
+        assertEquals(45, precedingList.size());
+
+        // PI
+        child = model.getFirstChildElementByName(model.getFirstChildElementByName(de, "http://www.genxdm.org/nonsense", "nstest"), "http://great.underground.empire/adventure", "zork"); 
+        child = model.getPreviousSibling(model.getLastChild(child));
+        pIter = model.getPrecedingAxis(child);
+        assertNotNull(pIter);
+        iterableToList(pIter, precedingList);
+        assertEquals(56, precedingList.size());
+
+        child = model.getPreviousSibling(model.getPreviousSibling(child));  // comment
+        pIter = model.getPrecedingAxis(child);
+        assertNotNull(pIter);
+        iterableToList(pIter, precedingList);
+        assertEquals(54, precedingList.size());
     }
-    
+
     private void iterableToList(Iterable<N> iterable, ArrayList<N> list)
     {
         list.clear();
         for (N n : iterable)
             list.add(n);
     }
-    
-//    /**
-//     * Returns the nodes along the following axis using the specified node as the origin.
-//     * 
-//     * @param node
-//     *            The origin node.
-//     */
-//    Iterable<N> getFollowingAxis(N node);
-//
-//    /**
-//     * Returns the nodes along the following-sibling axis using the specified node as the origin.
-//     * 
-//     * @param node
-//     *            The origin node.
-//     */
-//    Iterable<N> getFollowingSiblingAxis(N node);
-//
-//    /**
-//     * Returns the nodes along the preceding axis using the specified node as the origin.
-//     * 
-//     * @param node
-//     *            The origin node.
-//     */
-//    Iterable<N> getPrecedingAxis(N node);
-//
-//    /**
-//     * Returns the nodes along the preceding-sibling axis using the specified node as the origin.
-//     * 
-//     * @param node
-//     *            The origin node.
-//     */
-//    Iterable<N> getPrecedingSiblingAxis(N node);
 }
