@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.genxdm.NodeKind;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.mutable.MutableModel;
 import org.w3c.dom.Attr;
@@ -185,6 +186,21 @@ public final class DomModelMutable
     {
         PreCondition.assertArgumentNotNull(content, "newChild");
         PreCondition.assertArgumentNotNull(target, "oldChild");
+        NodeKind targetNodeKind = getNodeKind(target);
+        NodeKind contentNodeKind = getNodeKind(content);
+        PreCondition.assertTrue(targetNodeKind != NodeKind.DOCUMENT);
+        
+        if (targetNodeKind == NodeKind.ATTRIBUTE)
+            PreCondition.assertTrue(contentNodeKind == NodeKind.ATTRIBUTE);
+        else if (targetNodeKind == NodeKind.NAMESPACE)
+            PreCondition.assertTrue(contentNodeKind == NodeKind.NAMESPACE);
+        else
+        {
+            PreCondition.assertTrue( (contentNodeKind == NodeKind.TEXT) ||
+                                     (contentNodeKind == NodeKind.ELEMENT) ||
+                                     (contentNodeKind == NodeKind.COMMENT) ||
+                                     (contentNodeKind == NodeKind.PROCESSING_INSTRUCTION) );
+        }
         if (target instanceof Attr)
         {
             final Element owner = ((Attr)target).getOwnerElement();

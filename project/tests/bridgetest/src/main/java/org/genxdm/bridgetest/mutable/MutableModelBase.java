@@ -363,9 +363,46 @@ public abstract class MutableModelBase<N>
         assertEquals("no data", model.getStringValue(model.getLastChild(doc)));
         assertEquals("no data", model.getStringValue(target));
         
-        // TODO : test breaking things (expect an error):
-        // replacing an attribute with an element, or text with an attribute,
-        // for instance.
+        // test breaking things (expect an error):
+        
+        // replacing text node with attribute
+        target = model.getAttribute(doc, "", "att");
+        try
+        {
+            target =  model.replace(model.getNextSibling(model.getFirstChild(doc)), target);
+        }
+        catch (Throwable e) 
+        {
+            // expect something.  Different bridges seem to throw different
+            // exceptions, and Cx actually manages to produce an error.  So
+            // catch throwable.  Note that we should consider whether we ought
+            // to specify the sorts of failure that are 'correct'; an assertion
+            // error at this point might be a little inappropriate.
+        }
+        assertEquals(model.getAttribute(doc, "", "att"), target);
+        assertEquals("no text", model.getStringValue(model.getNextSibling(model.getFirstChild(doc))));
+
+        // replacing attribute with comment
+        target = model.getFirstChild(doc);
+        try
+        {
+            target = model.replace(model.getAttribute(doc, "", "att"), target);
+        }
+        catch (Throwable e) 
+        {
+            // see comment for text -> attribute
+        }
+        // TODO: how extensive should our breaking tests be?  This tests
+        // replacing "child" with attribute, and replacing attribute with
+        // "child", so it's at least the necessary minimum.  it might be worth
+        // while to test each of the four child node kinds as target and
+        // as replacement.
+        
+        assertEquals(model.getFirstChild(doc), target);
+        
+        //Below assertion passes in case of Axiom and CX bridge
+        //but it fails in case of DOM bridge as attribute gets removed during replace operation 
+        assertEquals("none", model.getAttributeStringValue(doc, "", "att"));
         
         // reset the document; it got confused up there
         doc = model.getFirstChildElement(createSimpleAllKindsDocument(context.newFragmentBuilder()));
