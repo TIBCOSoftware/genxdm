@@ -21,10 +21,10 @@ package org.genxdm.exceptions;
  */
 public final class GxmlMarshalException extends GxmlException
 {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public GxmlMarshalException(final Throwable cause)
-	{
-		super(cause);
-	}
+    public GxmlMarshalException(final Throwable cause)
+    {
+        super(cause);
+    }
 }

@@ -20,194 +20,194 @@ package org.genxdm;
  */
 public enum NodeKind
 {
-	/**
-	 * The <code>element</code> node kind.
-	 */
-	ELEMENT
-	{
-		public boolean isAttribute()
-		{
-			return false;
-		}
+    /**
+     * The <code>element</code> node kind.
+     */
+    ELEMENT
+    {
+        public boolean isAttribute()
+        {
+            return false;
+        }
 
-		public boolean isChild()
-		{
-			return true;
-		}
-		
-		public boolean isContainer()
-		{
-			return true;
-		}
+        public boolean isChild()
+        {
+            return true;
+        }
+        
+        public boolean isContainer()
+        {
+            return true;
+        }
 
-		public boolean isNamespace()
-		{
-			return false;
-		}
-	},
+        public boolean isNamespace()
+        {
+            return false;
+        }
+    },
 
-	/**
-	 * The <code>text</code> node kind.
-	 */
-	TEXT
-	{
-		public boolean isAttribute()
-		{
-			return false;
-		}
+    /**
+     * The <code>text</code> node kind.
+     */
+    TEXT
+    {
+        public boolean isAttribute()
+        {
+            return false;
+        }
 
-		public boolean isChild()
-		{
-			return true;
-		}
-		
-		public boolean isContainer()
-		{
-			return false;
-		}
+        public boolean isChild()
+        {
+            return true;
+        }
+        
+        public boolean isContainer()
+        {
+            return false;
+        }
 
-		public boolean isNamespace()
-		{
-			return false;
-		}
-	},
+        public boolean isNamespace()
+        {
+            return false;
+        }
+    },
 
-	/**
-	 * The <code>attribute</code> node kind.
-	 */
-	ATTRIBUTE
-	{
-		public boolean isAttribute()
-		{
-			return true;
-		}
+    /**
+     * The <code>attribute</code> node kind.
+     */
+    ATTRIBUTE
+    {
+        public boolean isAttribute()
+        {
+            return true;
+        }
 
-		public boolean isChild()
-		{
-			return false;
-		}
-		
-		public boolean isContainer()
-		{
-			return false;
-		}
+        public boolean isChild()
+        {
+            return false;
+        }
+        
+        public boolean isContainer()
+        {
+            return false;
+        }
 
-		public boolean isNamespace()
-		{
-			return false;
-		}
-	},
+        public boolean isNamespace()
+        {
+            return false;
+        }
+    },
 
-	/**
-	 * The <code>namespace</code> node kind.
-	 */
-	NAMESPACE
-	{
-		public boolean isAttribute()
-		{
-			return false;
-		}
+    /**
+     * The <code>namespace</code> node kind.
+     */
+    NAMESPACE
+    {
+        public boolean isAttribute()
+        {
+            return false;
+        }
 
-		public boolean isChild()
-		{
-			return false;
-		}
-		
-		public boolean isContainer()
-		{
-			return false;
-		}
+        public boolean isChild()
+        {
+            return false;
+        }
+        
+        public boolean isContainer()
+        {
+            return false;
+        }
 
-		public boolean isNamespace()
-		{
-			return true;
-		}
-	},
+        public boolean isNamespace()
+        {
+            return true;
+        }
+    },
 
-	/**
-	 * The <code>document</code> node kind.
-	 */
-	DOCUMENT
-	{
-		public boolean isAttribute()
-		{
-			return false;
-		}
+    /**
+     * The <code>document</code> node kind.
+     */
+    DOCUMENT
+    {
+        public boolean isAttribute()
+        {
+            return false;
+        }
 
-		public boolean isChild()
-		{
-			return false;
-		}
-		
-		public boolean isContainer()
-		{
-			return true;
-		}
+        public boolean isChild()
+        {
+            return false;
+        }
+        
+        public boolean isContainer()
+        {
+            return true;
+        }
 
-		public boolean isNamespace()
-		{
-			return false;
-		}
-	},
+        public boolean isNamespace()
+        {
+            return false;
+        }
+    },
 
-	/**
-	 * The <code>processing-instruction</code> node kind.
-	 */
-	PROCESSING_INSTRUCTION
-	{
-		public boolean isAttribute()
-		{
-			return false;
-		}
+    /**
+     * The <code>processing-instruction</code> node kind.
+     */
+    PROCESSING_INSTRUCTION
+    {
+        public boolean isAttribute()
+        {
+            return false;
+        }
 
-		public boolean isChild()
-		{
-			return true;
-		}
-		
-		public boolean isContainer()
-		{
-			return false;
-		}
+        public boolean isChild()
+        {
+            return true;
+        }
+        
+        public boolean isContainer()
+        {
+            return false;
+        }
 
-		public boolean isNamespace()
-		{
-			return false;
-		}
-	},
+        public boolean isNamespace()
+        {
+            return false;
+        }
+    },
 
-	/**
-	 * The <code>comment</code> node kind.
-	 */
-	COMMENT
-	{
-		public boolean isAttribute()
-		{
-			return false;
-		}
+    /**
+     * The <code>comment</code> node kind.
+     */
+    COMMENT
+    {
+        public boolean isAttribute()
+        {
+            return false;
+        }
 
-		public boolean isChild()
-		{
-			return true;
-		}
+        public boolean isChild()
+        {
+            return true;
+        }
 
-		public boolean isContainer()
-		{
-			return false;
-		}
-		
-		public boolean isNamespace()
-		{
-			return false;
-		}
-	};
+        public boolean isContainer()
+        {
+            return false;
+        }
+        
+        public boolean isNamespace()
+        {
+            return false;
+        }
+    };
 
-	public abstract boolean isAttribute();
+    public abstract boolean isAttribute();
 
-	public abstract boolean isChild();
+    public abstract boolean isChild();
 
-	public abstract boolean isNamespace();
-	
-	public abstract boolean isContainer();
-	
+    public abstract boolean isNamespace();
+    
+    public abstract boolean isContainer();
+    
 }

@@ -31,17 +31,17 @@ import org.genxdm.typed.io.SequenceHandler;
 public interface TypedModel<N, A> 
     extends Model<N>, TypedNodeInformer<N, A>
 {
-	/**
-	 * Support for streaming a node to a {@link SequenceHandler}.
-	 * 
-	 * @param node
-	 *            The node to be streamed.
-	 * @param copyNamespaces
-	 *            Determines whether namespaces nodes are streamed.
-	 * @param copyTypeAnnotations
-	 *            Determines whether type annotations are streamed.
-	 * @param handler
-	 *            The handler for events generated.
-	 */
-	void stream(N node, boolean copyNamespaces, boolean copyTypeAnnotations, SequenceHandler<A> handler) throws GxmlException;
+    /**
+     * Support for streaming a node to a {@link SequenceHandler}.
+     * 
+     * @param node
+     *            The node to be streamed.
+     * @param copyNamespaces
+     *            Determines whether namespaces nodes are streamed.
+     * @param copyTypeAnnotations
+     *            Determines whether type annotations are streamed.
+     * @param handler
+     *            The handler for events generated.
+     */
+    void stream(N node, boolean copyNamespaces, boolean copyTypeAnnotations, SequenceHandler<A> handler) throws GxmlException;
 }

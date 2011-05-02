@@ -23,15 +23,15 @@ import org.genxdm.exceptions.PreCondition;
 @SuppressWarnings("serial")
 public final class FacetEnumerationException extends FacetException
 {
-	private final String m_input;
+    private final String m_input;
 
-	public FacetEnumerationException(final String input)
-	{
-		m_input = PreCondition.assertArgumentNotNull(input, "input");
-	}
+    public FacetEnumerationException(final String input)
+    {
+        m_input = PreCondition.assertArgumentNotNull(input, "input");
+    }
 
-	public String getMessage()
-	{
-		return "Input, '" + m_input + "', does not match enumeration facets.";
-	}
+    public String getMessage()
+    {
+        return "Input, '" + m_input + "', does not match enumeration facets.";
+    }
 }

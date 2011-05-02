@@ -24,17 +24,17 @@ import org.genxdm.exceptions.PreCondition;
  */
 final class UberTypeArgumentOrSelfIterable implements Iterable<NativeType>
 {
-	private final NativeType m_origin;
-	private final boolean m_promotions;
+    private final NativeType m_origin;
+    private final boolean m_promotions;
 
-	public UberTypeArgumentOrSelfIterable(final NativeType origin, final boolean promotions)
-	{
-		m_origin = PreCondition.assertArgumentNotNull(origin, "origin");
-		m_promotions = promotions;
-	}
+    public UberTypeArgumentOrSelfIterable(final NativeType origin, final boolean promotions)
+    {
+        m_origin = PreCondition.assertArgumentNotNull(origin, "origin");
+        m_promotions = promotions;
+    }
 
-	public Iterator<NativeType> iterator()
-	{
-		return new UberTypeArgumentOrSelfIterator(m_origin, m_promotions);
-	}
+    public Iterator<NativeType> iterator()
+    {
+        return new UberTypeArgumentOrSelfIterator(m_origin, m_promotions);
+    }
 }

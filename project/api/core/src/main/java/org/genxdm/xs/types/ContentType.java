@@ -25,44 +25,44 @@ import org.genxdm.xs.constraints.ModelGroupUse;
  */
 public interface ContentType<A>
 {
-	/**
-	 * Returns the content model (i.e. a Particle) part of the {content type} property. <br/>
-	 * This is only valid when the kind part of the {content type} property is mixed or element-only.
-	 */
-	ModelGroupUse<A> getContentModel();
+    /**
+     * Returns the content model (i.e. a Particle) part of the {content type} property. <br/>
+     * This is only valid when the kind part of the {content type} property is mixed or element-only.
+     */
+    ModelGroupUse<A> getContentModel();
 
-	/**
-	 * Returns the {variety} of this content type object.
-	 */
-	ContentTypeKind getKind();
+    /**
+     * Returns the {variety} of this content type object.
+     */
+    ContentTypeKind getKind();
 
-	/**
-	 * Returns a simple type definition when the kind part is <em>{@link ContentTypeKind#Simple}</em>.
-	 */
-	SimpleType<A> getSimpleType();
+    /**
+     * Returns a simple type definition when the kind part is <em>{@link ContentTypeKind#Simple}</em>.
+     */
+    SimpleType<A> getSimpleType();
 
-	/**
-	 * Returns <code>true</code> if the {content type} property is Complex (Mixed or Element Only).
-	 */
-	boolean isComplex();
+    /**
+     * Returns <code>true</code> if the {content type} property is Complex (Mixed or Element Only).
+     */
+    boolean isComplex();
 
-	/**
-	 * Returns <code>true</code> if the {content type} property is Element Only.
-	 */
-	boolean isElementOnly();
+    /**
+     * Returns <code>true</code> if the {content type} property is Element Only.
+     */
+    boolean isElementOnly();
 
-	/**
-	 * Returns <code>true</code> if the {content type} property is Empty.
-	 */
-	boolean isEmpty();
+    /**
+     * Returns <code>true</code> if the {content type} property is Empty.
+     */
+    boolean isEmpty();
 
-	/**
-	 * Returns <code>true</code> if the {content type} property is Mixed.
-	 */
-	boolean isMixed();
+    /**
+     * Returns <code>true</code> if the {content type} property is Mixed.
+     */
+    boolean isMixed();
 
-	/**
-	 * Returns <code>true</code> if the {content type} property is Simple.
-	 */
-	boolean isSimple();
+    /**
+     * Returns <code>true</code> if the {content type} property is Simple.
+     */
+    boolean isSimple();
 }

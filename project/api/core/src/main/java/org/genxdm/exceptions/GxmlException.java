@@ -21,23 +21,23 @@ package org.genxdm.exceptions;
  */
 public class GxmlException extends RuntimeException
 {
-	public GxmlException()
-	{
-		super();
-	}
+    public GxmlException()
+    {
+        super();
+    }
 
-	public GxmlException(final String message)
-	{
-		super(message);
-	}
+    public GxmlException(final String message)
+    {
+        super(message);
+    }
 
-	public GxmlException(final String message, final Throwable cause)
-	{
-		super(message, cause);
-	}
+    public GxmlException(final String message, final Throwable cause)
+    {
+        super(message, cause);
+    }
 
-	public GxmlException(final Throwable cause)
-	{
-		super(cause);
-	}
+    public GxmlException(final Throwable cause)
+    {
+        super(cause);
+    }
 }

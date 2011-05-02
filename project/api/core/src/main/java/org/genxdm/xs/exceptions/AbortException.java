@@ -24,20 +24,20 @@ import org.genxdm.exceptions.PreCondition;
 @SuppressWarnings("serial")
 public final class AbortException extends Exception
 {
-	public AbortException(final SchemaException cause)
-	{
-		super(PreCondition.assertArgumentNotNull(cause, "cause"));
-	}
+    public AbortException(final SchemaException cause)
+    {
+        super(PreCondition.assertArgumentNotNull(cause, "cause"));
+    }
 
-	@Override
-	public SchemaException getCause()
-	{
-		return (SchemaException)super.getCause();
-	}
+    @Override
+    public SchemaException getCause()
+    {
+        return (SchemaException)super.getCause();
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return getCause().getMessage();
-	}
+    @Override
+    public String getMessage()
+    {
+        return getCause().getMessage();
+    }
 }

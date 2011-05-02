@@ -23,8 +23,8 @@ package org.genxdm.xs.types;
  */
 public interface DocumentNodeType<A> extends NodeType<A>
 {
-	/**
-	 * Returns the type of the content of the document node.
-	 */
-	SequenceType<A> getContentType();
+    /**
+     * Returns the type of the content of the document node.
+     */
+    SequenceType<A> getContentType();
 }

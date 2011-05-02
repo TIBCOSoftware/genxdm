@@ -27,30 +27,30 @@ import org.genxdm.xs.enums.ScopeExtent;
  */
 public interface IdentityConstraint<A> extends SchemaComponent<A>
 {
-	/**
-	 * Returns this constraint's {identity-constraint category} property. This is one of key, keyref or unique.
-	 */
-	IdentityConstraintKind getCategory();
+    /**
+     * Returns this constraint's {identity-constraint category} property. This is one of key, keyref or unique.
+     */
+    IdentityConstraintKind getCategory();
 
-	/**
-	 * Returns the {fields} property of the constraint, a non-empty list of restricted XPath expressions.
-	 */
-	List<RestrictedXPath> getFields();
+    /**
+     * Returns the {fields} property of the constraint, a non-empty list of restricted XPath expressions.
+     */
+    List<RestrictedXPath> getFields();
 
-	/**
-	 * In the case of keyref constraints, returns the corresponding key constraint with {identity-constraint category}
-	 * equal to key or unique.
-	 * 
-	 * @return a IdentityConstraint or null
-	 */
-	IdentityConstraint<A> getKeyConstraint();
+    /**
+     * In the case of keyref constraints, returns the corresponding key constraint with {identity-constraint category}
+     * equal to key or unique.
+     * 
+     * @return a IdentityConstraint or null
+     */
+    IdentityConstraint<A> getKeyConstraint();
 
-	QName getName();
+    QName getName();
 
-	ScopeExtent getScopeExtent();
+    ScopeExtent getScopeExtent();
 
-	/**
-	 * Returns the {selector} restricted XPath of the constraint.
-	 */
-	RestrictedXPath getSelector();
+    /**
+     * Returns the {selector} restricted XPath of the constraint.
+     */
+    RestrictedXPath getSelector();
 }

@@ -30,13 +30,13 @@ import org.genxdm.exceptions.SpillagePolicy;
  */
 public interface CastingContext<A>
 {
-	/**
-	 * Return the emulation mode which principally determines how numeric values are parsed and serialized.
-	 */
-	Emulation getEmulation();
+    /**
+     * Return the emulation mode which principally determines how numeric values are parsed and serialized.
+     */
+    Emulation getEmulation();
 
-	/**
-	 * Return a policy indicating the action to take for numeric operations resulting in overflow or underflow.
-	 */
-	SpillagePolicy getSpillagePolicy();
+    /**
+     * Return a policy indicating the action to take for numeric operations resulting in overflow or underflow.
+     */
+    SpillagePolicy getSpillagePolicy();
 }

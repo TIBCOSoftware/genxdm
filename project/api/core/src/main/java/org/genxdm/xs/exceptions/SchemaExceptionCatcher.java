@@ -23,8 +23,8 @@ import java.util.LinkedList;
 @SuppressWarnings("serial")
 public final class SchemaExceptionCatcher extends LinkedList<SchemaException> implements SchemaExceptionHandler
 {
-	public void error(final SchemaException exception)
-	{
-		add(exception);
-	}
+    public void error(final SchemaException exception)
+    {
+        add(exception);
+    }
 }

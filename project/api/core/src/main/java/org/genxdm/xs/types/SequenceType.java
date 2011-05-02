@@ -25,22 +25,22 @@ import org.genxdm.xs.enums.KeeneQuantifier;
  */
 public interface SequenceType<A>
 {
-	/**
-	 * Implementation of the visitor design pattern.
-	 * 
-	 * @param visitor
-	 *            The visitor of this type.
-	 */
-	void accept(SequenceTypeVisitor<A> visitor);
+    /**
+     * Implementation of the visitor design pattern.
+     * 
+     * @param visitor
+     *            The visitor of this type.
+     */
+    void accept(SequenceTypeVisitor<A> visitor);
 
-	/**
-	 * The prime method extracts all the item types from this type and combines them into a choice.
-	 */
-	PrimeType<A> prime();
+    /**
+     * The prime method extracts all the item types from this type and combines them into a choice.
+     */
+    PrimeType<A> prime();
 
-	/**
-	 * The quantifier method approximates the possible number of items in this type with the occurrence indicators
-	 * supported by the [XPath/XQuery] type system (?, +, *).
-	 */
-	KeeneQuantifier quantifier();
+    /**
+     * The quantifier method approximates the possible number of items in this type with the occurrence indicators
+     * supported by the [XPath/XQuery] type system (?, +, *).
+     */
+    KeeneQuantifier quantifier();
 }

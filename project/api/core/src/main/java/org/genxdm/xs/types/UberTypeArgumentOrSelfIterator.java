@@ -25,50 +25,50 @@ import org.genxdm.exceptions.PreCondition;
  */
 final class UberTypeArgumentOrSelfIterator implements Iterator<NativeType>
 {
-	private NativeType m_pending;
-	private final boolean m_promotions;
+    private NativeType m_pending;
+    private final boolean m_promotions;
 
-	public UberTypeArgumentOrSelfIterator(final NativeType origin, final boolean promotions)
-	{
-		m_pending = PreCondition.assertArgumentNotNull(origin, "origin");
-		m_promotions = promotions;
-	}
+    public UberTypeArgumentOrSelfIterator(final NativeType origin, final boolean promotions)
+    {
+        m_pending = PreCondition.assertArgumentNotNull(origin, "origin");
+        m_promotions = promotions;
+    }
 
-	public boolean hasNext()
-	{
-		return (null != m_pending);
-	}
+    public boolean hasNext()
+    {
+        return (null != m_pending);
+    }
 
-	public NativeType next()
-	{
-		if (null != m_pending)
-		{
-			final NativeType next = m_pending;
+    public NativeType next()
+    {
+        if (null != m_pending)
+        {
+            final NativeType next = m_pending;
 
-			m_pending = computePending(m_pending);
+            m_pending = computePending(m_pending);
 
-			return next;
-		}
-		else
-		{
-			throw new NoSuchElementException();
-		}
-	}
+            return next;
+        }
+        else
+        {
+            throw new NoSuchElementException();
+        }
+    }
 
-	private NativeType computePending(final NativeType type)
-	{
-		if (m_promotions)
-		{
-			return type.getPromotion();
-		}
-		else
-		{
-			return type.getParent();
-		}
-	}
+    private NativeType computePending(final NativeType type)
+    {
+        if (m_promotions)
+        {
+            return type.getPromotion();
+        }
+        else
+        {
+            return type.getParent();
+        }
+    }
 
-	public void remove()
-	{
-		throw new UnsupportedOperationException();
-	}
+    public void remove()
+    {
+        throw new UnsupportedOperationException();
+    }
 }

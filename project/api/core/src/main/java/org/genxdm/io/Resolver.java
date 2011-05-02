@@ -26,15 +26,15 @@ import java.net.URI;
  */
 public interface Resolver
 {
-	/**
-	 * Resolves a {@link URI} into an {@link InputStream} and a systemID.
-	 * 
-	 * @param location
-	 *            The {@link URI} to be resolved.
-	 * @throws IOException
-	 *             if an exception occurs while opening the {@link InputStream}.
-	 */
-	Resolved<InputStream> resolveInputStream(URI location) throws IOException;
-	
-	Resolved<Reader> resolveReader(URI location) throws IOException;
+    /**
+     * Resolves a {@link URI} into an {@link InputStream} and a systemID.
+     * 
+     * @param location
+     *            The {@link URI} to be resolved.
+     * @throws IOException
+     *             if an exception occurs while opening the {@link InputStream}.
+     */
+    Resolved<InputStream> resolveInputStream(URI location) throws IOException;
+    
+    Resolved<Reader> resolveReader(URI location) throws IOException;
 }

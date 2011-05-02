@@ -270,7 +270,7 @@ public abstract class AxisNodeNavigatorBase<N>
             // Note that it is a requirement that all the namespace nodes have the one node
             // as parent.
             for (N ns : namespaces) {
-            	assertEquals(gueElem, model.getParent(ns));
+                assertEquals(gueElem, model.getParent(ns));
             }
             assertEquals(4, domains.size());
             

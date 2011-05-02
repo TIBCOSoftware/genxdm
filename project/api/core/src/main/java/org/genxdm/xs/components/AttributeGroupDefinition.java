@@ -22,20 +22,20 @@ import org.genxdm.xs.constraints.AttributeUse;
  */
 public interface AttributeGroupDefinition<A> extends SchemaComponent<A>
 {
-	/**
-	 * Determines whether the {attribute uses} property is non-empty.
-	 */
-	boolean hasAttributeUses();
+    /**
+     * Determines whether the {attribute uses} property is non-empty.
+     */
+    boolean hasAttributeUses();
 
-	/**
-	 * Returns the {attribute uses} property of this Attribute Group Definition. <br/>
-	 * A set of attribute uses.
-	 */
-	Iterable<AttributeUse<A>> getAttributeUses();
+    /**
+     * Returns the {attribute uses} property of this Attribute Group Definition. <br/>
+     * A set of attribute uses.
+     */
+    Iterable<AttributeUse<A>> getAttributeUses();
 
-	/**
-	 * Returns the {attribute wildcard} property of this Attribute Group Definition. <br/>
-	 * Optional; may return <code>null</code>. A wildcard.
-	 */
-	SchemaWildcard<A> getWildcard();
+    /**
+     * Returns the {attribute wildcard} property of this Attribute Group Definition. <br/>
+     * Optional; may return <code>null</code>. A wildcard.
+     */
+    SchemaWildcard<A> getWildcard();
 }

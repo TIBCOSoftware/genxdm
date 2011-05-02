@@ -20,5 +20,5 @@ package org.genxdm.xs.exceptions;
  */
 public interface SchemaExceptionHandler
 {
-	void error(SchemaException exception) throws AbortException;
+    void error(SchemaException exception) throws AbortException;
 }

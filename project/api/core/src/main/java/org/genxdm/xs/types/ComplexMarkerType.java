@@ -23,8 +23,8 @@ package org.genxdm.xs.types;
  */
 public interface ComplexMarkerType<A> extends Type<A>
 {
-	/**
-	 * Returns the {content type} property.
-	 */
-	ContentType<A> getContentType();
+    /**
+     * Returns the {content type} property.
+     */
+    ContentType<A> getContentType();
 }
