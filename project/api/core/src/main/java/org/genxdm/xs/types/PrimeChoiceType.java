@@ -22,7 +22,7 @@ package org.genxdm.xs.types;
  */
 public interface PrimeChoiceType<A> extends PrimeType<A>, ChoiceType<A>
 {
-	PrimeType<A> getLHS();
+    PrimeType<A> getLHS();
 
-	PrimeType<A> getRHS();
+    PrimeType<A> getRHS();
 }

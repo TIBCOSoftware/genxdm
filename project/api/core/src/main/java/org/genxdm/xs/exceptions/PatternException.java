@@ -25,27 +25,27 @@ import org.genxdm.xs.facets.Pattern;
 @SuppressWarnings("serial")
 public final class PatternException extends SchemaException
 {
-	private final Pattern regexp;
-	private final String literal;
+    private final Pattern regexp;
+    private final String literal;
 
-	public PatternException(final Pattern regexp, final String literal)
-	{
-		super(ValidationOutcome.CVC_Pattern, "1");
-		this.regexp = PreCondition.assertArgumentNotNull(regexp, "regexp");
-		this.literal = PreCondition.assertArgumentNotNull(literal, "literal");
-	}
+    public PatternException(final Pattern regexp, final String literal)
+    {
+        super(ValidationOutcome.CVC_Pattern, "1");
+        this.regexp = PreCondition.assertArgumentNotNull(regexp, "regexp");
+        this.literal = PreCondition.assertArgumentNotNull(literal, "literal");
+    }
 
-	@Override
-	public String getMessage()
-	{
-		final String localMessage = "The literal '" + literal + "' is not among the set of character sequences denoted by the regular expression '" + regexp.getValue() + "'.";
+    @Override
+    public String getMessage()
+    {
+        final String localMessage = "The literal '" + literal + "' is not among the set of character sequences denoted by the regular expression '" + regexp.getValue() + "'.";
 
-		final StringBuilder message = new StringBuilder();
-		message.append(getOutcome().getSection());
-		message.append(".");
-		message.append(this.getPartNumber());
-		message.append(": ");
-		message.append(localMessage);
-		return message.toString();
-	}
+        final StringBuilder message = new StringBuilder();
+        message.append(getOutcome().getSection());
+        message.append(".");
+        message.append(this.getPartNumber());
+        message.append(": ");
+        message.append(localMessage);
+        return message.toString();
+    }
 }

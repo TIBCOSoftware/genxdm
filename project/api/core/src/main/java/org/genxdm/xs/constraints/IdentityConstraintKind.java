@@ -20,37 +20,37 @@ package org.genxdm.xs.constraints;
  */
 public enum IdentityConstraintKind
 {
-	/**
-	 * The identity-constraint definition asserts uniqueness, with respect to the content identified by {selector}, of
-	 * the tuples resulting from evaluation of the {fields} XPath expression(s).
-	 */
-	Unique,
+    /**
+     * The identity-constraint definition asserts uniqueness, with respect to the content identified by {selector}, of
+     * the tuples resulting from evaluation of the {fields} XPath expression(s).
+     */
+    Unique,
 
-	/**
-	 * The identity-constraint definition asserts uniqueness as for <em>unique</em>. key further asserts that all
-	 * selected content actually has such tuples.
-	 */
-	Key,
+    /**
+     * The identity-constraint definition asserts uniqueness as for <em>unique</em>. key further asserts that all
+     * selected content actually has such tuples.
+     */
+    Key,
 
-	/**
-	 * The identity-constraint definition asserts a correspondence, with respect to the content identified by
-	 * {selector}, of the tuples resulting from evaluation of the {fields} XPath expression(s), with those of the
-	 * {referenced key}.
-	 */
-	KeyRef;
+    /**
+     * The identity-constraint definition asserts a correspondence, with respect to the content identified by
+     * {selector}, of the tuples resulting from evaluation of the {fields} XPath expression(s), with those of the
+     * {referenced key}.
+     */
+    KeyRef;
 
-	public boolean isUnique()
-	{
-		return (this == Unique);
-	}
+    public boolean isUnique()
+    {
+        return (this == Unique);
+    }
 
-	public boolean isKey()
-	{
-		return (this == Key);
-	}
+    public boolean isKey()
+    {
+        return (this == Key);
+    }
 
-	public boolean isKeyRef()
-	{
-		return (this == KeyRef);
-	}
+    public boolean isKeyRef()
+    {
+        return (this == KeyRef);
+    }
 }

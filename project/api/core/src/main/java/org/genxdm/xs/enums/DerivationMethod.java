@@ -20,30 +20,30 @@ package org.genxdm.xs.enums;
  */
 public enum DerivationMethod
 {
-	Extension, List, Restriction, Substitution, Union;
+    Extension, List, Restriction, Substitution, Union;
 
-	public boolean isExtension()
-	{
-		return (this == Extension);
-	}
+    public boolean isExtension()
+    {
+        return (this == Extension);
+    }
 
-	public boolean isList()
-	{
-		return (this == List);
-	}
+    public boolean isList()
+    {
+        return (this == List);
+    }
 
-	public boolean isRestriction()
-	{
-		return (this == Restriction);
-	}
+    public boolean isRestriction()
+    {
+        return (this == Restriction);
+    }
 
-	public boolean isSubstitution()
-	{
-		return (this == Substitution);
-	}
+    public boolean isSubstitution()
+    {
+        return (this == Substitution);
+    }
 
-	public boolean isUnion()
-	{
-		return (this == Union);
-	}
+    public boolean isUnion()
+    {
+        return (this == Union);
+    }
 }

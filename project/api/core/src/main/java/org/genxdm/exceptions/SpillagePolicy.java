@@ -24,87 +24,87 @@ package org.genxdm.exceptions;
  */
 public enum SpillagePolicy
 {
-	/**
-	 * Raise an error for casts which result in underflows or overflows.
-	 */
-	DO_THE_RIGHT_THING
-	{
-		public boolean checkCapacity()
-		{
-			return true;
-		}
+    /**
+     * Raise an error for casts which result in underflows or overflows.
+     */
+    DO_THE_RIGHT_THING
+    {
+        public boolean checkCapacity()
+        {
+            return true;
+        }
 
-		public boolean raiseError()
-		{
-			return true;
-		}
-	},
+        public boolean raiseError()
+        {
+            return true;
+        }
+    },
 
-	/**
-	 * For casts which result in underflows or overflows, return, respectively, the smallest or largest number that can be represented in the target type.
-	 */
-	SWEEP_UNDER_THE_RUG
-	{
-		public boolean checkCapacity()
-		{
-			return true;
-		}
+    /**
+     * For casts which result in underflows or overflows, return, respectively, the smallest or largest number that can be represented in the target type.
+     */
+    SWEEP_UNDER_THE_RUG
+    {
+        public boolean checkCapacity()
+        {
+            return true;
+        }
 
-		public boolean raiseError()
-		{
-			return false;
-		}
-	},
+        public boolean raiseError()
+        {
+            return false;
+        }
+    },
 
-	/**
-	 * Do not explicitly check for underflows or overflows. Instead rely upon the behavior of the underlying JDK.
-	 */
-	HOPE_FOR_THE_BEST
-	{
-		public boolean checkCapacity()
-		{
-			return false;
-		}
+    /**
+     * Do not explicitly check for underflows or overflows. Instead rely upon the behavior of the underlying JDK.
+     */
+    HOPE_FOR_THE_BEST
+    {
+        public boolean checkCapacity()
+        {
+            return false;
+        }
 
-		public boolean raiseError()
-		{
-			return false;
-		}
-	};
+        public boolean raiseError()
+        {
+            return false;
+        }
+    };
 
-	public static SpillagePolicy lookup(final boolean checkCapacity, final boolean raiseError)
-	{
-		if (checkCapacity)
-		{
-			if (raiseError)
-			{
-				return SpillagePolicy.DO_THE_RIGHT_THING;
-			}
-			else
-			{
-				return SpillagePolicy.SWEEP_UNDER_THE_RUG;
-			}
-		}
-		else
-		{
-			if (raiseError)
-			{
-				throw new AssertionError();
-			}
-			else
-			{
-				return SpillagePolicy.HOPE_FOR_THE_BEST;
-			}
-		}
-	}
+    public static SpillagePolicy lookup(final boolean checkCapacity, final boolean raiseError)
+    {
+        if (checkCapacity)
+        {
+            if (raiseError)
+            {
+                return SpillagePolicy.DO_THE_RIGHT_THING;
+            }
+            else
+            {
+                return SpillagePolicy.SWEEP_UNDER_THE_RUG;
+            }
+        }
+        else
+        {
+            if (raiseError)
+            {
+                throw new AssertionError();
+            }
+            else
+            {
+                return SpillagePolicy.HOPE_FOR_THE_BEST;
+            }
+        }
+    }
 
-	/**
-	 * @return <code>true</code> if policy is {@link #DO_THE_RIGHT_THING} or {@link #SWEEP_UNDER_THE_RUG}.
-	 */
-	public abstract boolean checkCapacity();
+    /**
+     * @return <code>true</code> if policy is {@link #DO_THE_RIGHT_THING} or {@link #SWEEP_UNDER_THE_RUG}.
+     */
+    public abstract boolean checkCapacity();
 
-	/**
-	 * @return <code>true</code> if policy is {@link #DO_THE_RIGHT_THING}
-	 */
-	public abstract boolean raiseError();
+    /**
+     * @return <code>true</code> if policy is {@link #DO_THE_RIGHT_THING}
+     */
+    public abstract boolean raiseError();
 }

@@ -23,11 +23,11 @@ import org.genxdm.xs.types.SimpleMarkerType;
  */
 public interface AttributeDefinition<A> extends AttributeNodeType<A>, SchemaDataComponent<A>
 {
-	/**
-	 * Returns the {type definition} for the attribute declaration.
-	 * <p>
-	 * This may be a simple type definition or the simple ur-type definition.
-	 * </p>
-	 */
-	SimpleMarkerType<A> getType();
+    /**
+     * Returns the {type definition} for the attribute declaration.
+     * <p>
+     * This may be a simple type definition or the simple ur-type definition.
+     * </p>
+     */
+    SimpleMarkerType<A> getType();
 }

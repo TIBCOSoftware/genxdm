@@ -23,54 +23,54 @@ package org.genxdm.exceptions;
 @SuppressWarnings("serial")
 public class IllegalNullArgumentException extends IllegalArgumentException
 {
-	/**
-	 * Checks that the specified argument is not <code>null</code>.
-	 * 
-	 * @param <T>
-	 *            The type of the argument.
-	 * @param arg
-	 *            The argument to be checked.
-	 * @param argName
-	 *            The name of the argument as it appears in the interface.
-	 * @return The argument, if the argument is not <code>null</code>, otherwise nothing.
-	 * @throws IllegalNullArgumentException
-	 *             if the argument is null.
-	 */
-	public static <T> T check(final T arg, final String argName) throws IllegalNullArgumentException
-	{
-		if (argName != null)
-		{
-			if (arg != null)
-			{
-				return arg;
-			}
-			else
-			{
-				throw new IllegalNullArgumentException(argName);
-			}
-		}
-		else
-		{
-			throw new IllegalNullArgumentException("argName");
-		}
-	}
+    /**
+     * Checks that the specified argument is not <code>null</code>.
+     * 
+     * @param <T>
+     *            The type of the argument.
+     * @param arg
+     *            The argument to be checked.
+     * @param argName
+     *            The name of the argument as it appears in the interface.
+     * @return The argument, if the argument is not <code>null</code>, otherwise nothing.
+     * @throws IllegalNullArgumentException
+     *             if the argument is null.
+     */
+    public static <T> T check(final T arg, final String argName) throws IllegalNullArgumentException
+    {
+        if (argName != null)
+        {
+            if (arg != null)
+            {
+                return arg;
+            }
+            else
+            {
+                throw new IllegalNullArgumentException(argName);
+            }
+        }
+        else
+        {
+            throw new IllegalNullArgumentException("argName");
+        }
+    }
 
-	private static String messageArgumentCannotBeNull(final String argName)
-	{
-		assert (argName != null);
-		return ((argName == null ? "Argument" : argName) + " cannot be null.");
-	}
+    private static String messageArgumentCannotBeNull(final String argName)
+    {
+        assert (argName != null);
+        return ((argName == null ? "Argument" : argName) + " cannot be null.");
+    }
 
-	/**
-	 * <p>
-	 * Instantiates with the given argument name.
-	 * </p>
-	 * 
-	 * @param argName
-	 *            the name of the argument that was <code>null</code>.
-	 */
-	public IllegalNullArgumentException(final String argName)
-	{
-		super(messageArgumentCannotBeNull(argName));
-	}
+    /**
+     * <p>
+     * Instantiates with the given argument name.
+     * </p>
+     * 
+     * @param argName
+     *            the name of the argument that was <code>null</code>.
+     */
+    public IllegalNullArgumentException(final String argName)
+    {
+        super(messageArgumentCannotBeNull(argName));
+    }
 }

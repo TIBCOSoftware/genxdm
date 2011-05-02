@@ -25,15 +25,15 @@ import org.genxdm.xs.components.SchemaComponent;
  */
 public interface ElementNodeType<A> extends SchemaComponent<A>, NodeType<A>
 {
-	/**
-	 * The {type definition} property.
-	 */
-	SequenceType<A> getType();
+    /**
+     * The {type definition} property.
+     */
+    SequenceType<A> getType();
 
-	/**
-	 * Returns the {nillable} property for this element.
-	 * 
-	 * @return <code>true</code> if nillable, otherwise <code>false</code>.
-	 */
-	boolean isNillable();
+    /**
+     * Returns the {nillable} property for this element.
+     * 
+     * @return <code>true</code> if nillable, otherwise <code>false</code>.
+     */
+    boolean isNillable();
 }

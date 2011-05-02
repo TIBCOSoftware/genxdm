@@ -23,13 +23,13 @@ package org.genxdm.xs.types;
  */
 public interface InterleaveType<A> extends SequenceType<A>
 {
-	/**
-	 * The first sequence type.
-	 */
-	SequenceType<A> getLHS();
+    /**
+     * The first sequence type.
+     */
+    SequenceType<A> getLHS();
 
-	/**
-	 * The second sequence type.
-	 */
-	SequenceType<A> getRHS();
+    /**
+     * The second sequence type.
+     */
+    SequenceType<A> getRHS();
 }

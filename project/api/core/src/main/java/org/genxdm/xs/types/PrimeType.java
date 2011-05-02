@@ -17,22 +17,22 @@ package org.genxdm.xs.types;
 
 public interface PrimeType<A> extends SequenceType<A>
 {
-	PrimeTypeKind getKind();
+    PrimeTypeKind getKind();
 
-	boolean subtype(PrimeType<A> rhs);
+    boolean subtype(PrimeType<A> rhs);
 
-	boolean isChoice();
+    boolean isChoice();
 
-	/**
-	 * Determines whether this type is the "none" type.
-	 * <p>
-	 * This is a convenience method equivalent to checking the kind for the "none" type.
-	 * </p>
-	 */
-	boolean isNone();
+    /**
+     * Determines whether this type is the "none" type.
+     * <p>
+     * This is a convenience method equivalent to checking the kind for the "none" type.
+     * </p>
+     */
+    boolean isNone();
 
-	/**
-	 * Determines whether this type is one of the W3C XML Schema Built-in types.
-	 */
-	boolean isNative();
+    /**
+     * Determines whether this type is one of the W3C XML Schema Built-in types.
+     */
+    boolean isNative();
 }

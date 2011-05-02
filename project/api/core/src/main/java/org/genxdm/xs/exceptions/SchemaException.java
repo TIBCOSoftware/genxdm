@@ -24,35 +24,35 @@ import org.genxdm.xs.enums.ValidationOutcome;
 @SuppressWarnings("serial")
 public abstract class SchemaException extends Exception
 {
-	private final ValidationOutcome m_outcome;
-	private final String m_partNumber;
+    private final ValidationOutcome m_outcome;
+    private final String m_partNumber;
 
-	public SchemaException(final ValidationOutcome outcome, final String partNumber)
-	{
-		m_outcome = PreCondition.assertArgumentNotNull(outcome, "outcome");
-		m_partNumber = PreCondition.assertArgumentNotNull(partNumber, "partNumber");
-	}
+    public SchemaException(final ValidationOutcome outcome, final String partNumber)
+    {
+        m_outcome = PreCondition.assertArgumentNotNull(outcome, "outcome");
+        m_partNumber = PreCondition.assertArgumentNotNull(partNumber, "partNumber");
+    }
 
-	public SchemaException(final ValidationOutcome outcome, final String partNumber, final SchemaException cause)
-	{
-		super(cause);
-		m_outcome = PreCondition.assertArgumentNotNull(outcome, "outcome");
-		m_partNumber = PreCondition.assertArgumentNotNull(partNumber, "partNumber");
-	}
+    public SchemaException(final ValidationOutcome outcome, final String partNumber, final SchemaException cause)
+    {
+        super(cause);
+        m_outcome = PreCondition.assertArgumentNotNull(outcome, "outcome");
+        m_partNumber = PreCondition.assertArgumentNotNull(partNumber, "partNumber");
+    }
 
-	public final ValidationOutcome getOutcome()
-	{
-		return m_outcome;
-	}
+    public final ValidationOutcome getOutcome()
+    {
+        return m_outcome;
+    }
 
-	public final String getPartNumber()
-	{
-		return m_partNumber;
-	}
+    public final String getPartNumber()
+    {
+        return m_partNumber;
+    }
 
-	@Override
-	public SchemaException getCause()
-	{
-		return (SchemaException)super.getCause();
-	}
+    @Override
+    public SchemaException getCause()
+    {
+        return (SchemaException)super.getCause();
+    }
 }

@@ -25,20 +25,20 @@ import org.genxdm.xs.facets.TotalDigits;
 @SuppressWarnings("serial")
 public final class FacetTotalDigitsException extends FacetException
 {
-	private final int actualValue;
-	private final String displayString;
-	private final TotalDigits<?> expectedValue;
+    private final int actualValue;
+    private final String displayString;
+    private final TotalDigits<?> expectedValue;
 
-	public FacetTotalDigitsException(final int actualValue, final String value, final TotalDigits<?> totalDigits)
-	{
-		this.actualValue = actualValue;
-		this.displayString = PreCondition.assertArgumentNotNull(value, "value");
-		this.expectedValue = totalDigits;
-	}
+    public FacetTotalDigitsException(final int actualValue, final String value, final TotalDigits<?> totalDigits)
+    {
+        this.actualValue = actualValue;
+        this.displayString = PreCondition.assertArgumentNotNull(value, "value");
+        this.expectedValue = totalDigits;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The total number of digits(" + actualValue + ") in '" + displayString + "' exceeds the number allowed for the type(" + expectedValue.getTotalDigits() + ").";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The total number of digits(" + actualValue + ") in '" + displayString + "' exceeds the number allowed for the type(" + expectedValue.getTotalDigits() + ").";
+    }
 }

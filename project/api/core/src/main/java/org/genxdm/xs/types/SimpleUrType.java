@@ -20,8 +20,8 @@ package org.genxdm.xs.types;
  */
 public interface SimpleUrType<A> extends SimpleType<A>, PrimeType<A>
 {
-	/**
-	 * Returns the {base type definition}.
-	 */
-	ComplexUrType<A> getBaseType();
+    /**
+     * Returns the {base type definition}.
+     */
+    ComplexUrType<A> getBaseType();
 }

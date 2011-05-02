@@ -21,10 +21,10 @@ package org.genxdm.xs.exceptions;
  */
 public enum SchemaExceptionThrower implements SchemaExceptionHandler
 {
-	SINGLETON;
+    SINGLETON;
 
-	public void error(final SchemaException exception) throws AbortException
-	{
-		throw new AbortException(exception);
-	}
+    public void error(final SchemaException exception) throws AbortException
+    {
+        throw new AbortException(exception);
+    }
 }

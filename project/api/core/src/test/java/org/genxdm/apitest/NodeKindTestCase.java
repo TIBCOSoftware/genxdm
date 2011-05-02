@@ -24,87 +24,87 @@ import static org.junit.Assert.assertTrue;
 public final class NodeKindTestCase
 {
     @Test
-	public void testIsAttribute()
-	{
-		for (final NodeKind candidate : NodeKind.values())
-		{
-			switch (candidate)
-			{
-				case ATTRIBUTE:
-				{
-					assertTrue(candidate.name(), candidate.isAttribute());
-				}
-				break;
-				default:
-				{
-					assertFalse(candidate.name(), candidate.isAttribute());
-				}
-			}
-		}
-	}
+    public void testIsAttribute()
+    {
+        for (final NodeKind candidate : NodeKind.values())
+        {
+            switch (candidate)
+            {
+                case ATTRIBUTE:
+                {
+                    assertTrue(candidate.name(), candidate.isAttribute());
+                }
+                break;
+                default:
+                {
+                    assertFalse(candidate.name(), candidate.isAttribute());
+                }
+            }
+        }
+    }
 
-	@Test
-	public void testIsChild()
-	{
-		for (final NodeKind candidate : NodeKind.values())
-		{
-			switch (candidate)
-			{
-				case ELEMENT:
-				case TEXT:
-				case PROCESSING_INSTRUCTION:
-				case COMMENT:
-				{
-					assertTrue(candidate.name(), candidate.isChild());
-				}
-				break;
-				default:
-				{
-					assertFalse(candidate.name(), candidate.isChild());
-				}
-			}
-		}
-	}
+    @Test
+    public void testIsChild()
+    {
+        for (final NodeKind candidate : NodeKind.values())
+        {
+            switch (candidate)
+            {
+                case ELEMENT:
+                case TEXT:
+                case PROCESSING_INSTRUCTION:
+                case COMMENT:
+                {
+                    assertTrue(candidate.name(), candidate.isChild());
+                }
+                break;
+                default:
+                {
+                    assertFalse(candidate.name(), candidate.isChild());
+                }
+            }
+        }
+    }
 
-	@Test
-	public void testIsNamespace()
-	{
-		for (final NodeKind candidate : NodeKind.values())
-		{
-			switch (candidate)
-			{
-				case NAMESPACE:
-				{
-					assertTrue(candidate.name(), candidate.isNamespace());
-				}
-				break;
-				default:
-				{
-					assertFalse(candidate.name(), candidate.isNamespace());
-				}
-			}
-		}
-	}
-	
-	@Test
-	public void testIsContainer()
-	{
-	    for (final NodeKind candidate : NodeKind.values())
-	    {
-	        switch (candidate)
-	        {
-	            case DOCUMENT:
-	            case ELEMENT:
-	            {
-	                assertTrue(candidate.name(), candidate.isContainer());
-	            }
-	            break;
-	            default:
-	            {
-	                assertFalse(candidate.name(), candidate.isContainer());
-	            }
-	            
-	        }
-	    }
-	}
+    @Test
+    public void testIsNamespace()
+    {
+        for (final NodeKind candidate : NodeKind.values())
+        {
+            switch (candidate)
+            {
+                case NAMESPACE:
+                {
+                    assertTrue(candidate.name(), candidate.isNamespace());
+                }
+                break;
+                default:
+                {
+                    assertFalse(candidate.name(), candidate.isNamespace());
+                }
+            }
+        }
+    }
+    
+    @Test
+    public void testIsContainer()
+    {
+        for (final NodeKind candidate : NodeKind.values())
+        {
+            switch (candidate)
+            {
+                case DOCUMENT:
+                case ELEMENT:
+                {
+                    assertTrue(candidate.name(), candidate.isContainer());
+                }
+                break;
+                default:
+                {
+                    assertFalse(candidate.name(), candidate.isContainer());
+                }
+                
+            }
+        }
+    }
 }

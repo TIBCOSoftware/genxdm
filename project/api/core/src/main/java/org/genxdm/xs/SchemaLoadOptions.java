@@ -28,45 +28,45 @@ import org.genxdm.xs.resolve.CatalogResolver;
  */
 public final class SchemaLoadOptions
 {
-	private SchemaCatalog m_catalog;
-	private CatalogResolver m_resolver;
-	private HashMap<QName, String> m_options = new HashMap<QName, String>();
+    private SchemaCatalog m_catalog;
+    private CatalogResolver m_resolver;
+    private HashMap<QName, String> m_options = new HashMap<QName, String>();
 
-	public SchemaCatalog getCatalog()
-	{
-		return m_catalog;
-	}
+    public SchemaCatalog getCatalog()
+    {
+        return m_catalog;
+    }
 
-	public void setCatalog(final SchemaCatalog catalog)
-	{
-		m_catalog = PreCondition.assertArgumentNotNull(catalog, "catalog");
-	}
+    public void setCatalog(final SchemaCatalog catalog)
+    {
+        m_catalog = PreCondition.assertArgumentNotNull(catalog, "catalog");
+    }
 
-	public CatalogResolver getResolver()
-	{
-		return m_resolver;
-	}
+    public CatalogResolver getResolver()
+    {
+        return m_resolver;
+    }
 
-	public void setResolver(final CatalogResolver resolver)
-	{
-		m_resolver = PreCondition.assertArgumentNotNull(resolver, "resolver");
-	}
+    public void setResolver(final CatalogResolver resolver)
+    {
+        m_resolver = PreCondition.assertArgumentNotNull(resolver, "resolver");
+    }
 
-	public String getOption(final QName name)
-	{
-		PreCondition.assertArgumentNotNull(name, "name");
-		return m_options.get(name);
-	}
+    public String getOption(final QName name)
+    {
+        PreCondition.assertArgumentNotNull(name, "name");
+        return m_options.get(name);
+    }
 
-	public String setOption(final QName name, final String value)
-	{
-		PreCondition.assertArgumentNotNull(name, "name");
-		PreCondition.assertArgumentNotNull(value, "value");
-		return m_options.put(name, value);
-	}
+    public String setOption(final QName name, final String value)
+    {
+        PreCondition.assertArgumentNotNull(name, "name");
+        PreCondition.assertArgumentNotNull(value, "value");
+        return m_options.put(name, value);
+    }
 
-	public Iterable<QName> getOptionNames()
-	{
-		return m_options.keySet();
-	}
+    public Iterable<QName> getOptionNames()
+    {
+        return m_options.keySet();
+    }
 }

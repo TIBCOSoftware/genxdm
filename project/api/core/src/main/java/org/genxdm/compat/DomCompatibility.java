@@ -29,95 +29,95 @@ import org.genxdm.mutable.NodeFactory;
  */
 public class DomCompatibility {
 
-	/**
-	 * Finds the first descendant or self element that has the given namespace or name.  
-	 * @param <N>
-	 * @param model  What's the model that we're traversing?
-	 * @param node	What node are we starting with?
-	 * @param namespaceURI	What namespace are we searching for?  <code>null</code> implies any namespace
-	 * @param localName	What local name are we searching for?  <code>null</code> implies any local name.
-	 * @return
-	 */
-	public static <N> N getFirstDescendantOrSelfElementByName(Model<N> model, N node, String namespaceURI, 
+    /**
+     * Finds the first descendant or self element that has the given namespace or name.  
+     * @param <N>
+     * @param model  What's the model that we're traversing?
+     * @param node  What node are we starting with?
+     * @param namespaceURI  What namespace are we searching for?  <code>null</code> implies any namespace
+     * @param localName What local name are we searching for?  <code>null</code> implies any local name.
+     * @return
+     */
+    public static <N> N getFirstDescendantOrSelfElementByName(Model<N> model, N node, String namespaceURI, 
             String localName) {
-		
-		for (N possible : model.getDescendantOrSelfAxis(node)) {
-			if (model.getNodeKind(possible) == NodeKind.ELEMENT) {
-				if ( (namespaceURI == null || namespaceURI.equals(model.getNamespaceURI(possible)) )
-						&& (localName == null || localName.equals(model.getLocalName(possible)))) {
-					
-					return possible;
-				}
-			}
-		}
-		
-		return null;
-	}
-	
-	/**
-	 * Get all of the descendant elements matching a given namespace and local name.
-	 * @param <N>
-	 * @param model	Which model are we traversing.
-	 * @param node	From which node do we start?
-	 * @param namespaceURI	What's the namespace to use.  <code>null</code> matches any.
-	 * @param localName	What's the local name to find? <code>null</code> matches any.
-	 * 
-	 * @return	A list of the found element nodes.
-	 * 
-	 * TODO - This method should be rewritten to do name filtering on any iterator, so that we can do
-	 * filtering along any axis.  See JIRA issue GXOS-34
-	 */
-	public static <N> Iterable<N> getDescendantOrSelfElementsByName(Model<N> model, N node, String namespaceURI,
-			String localName) {
-		
-		List<N> result = new ArrayList<N>();
-		for (N possible : model.getDescendantOrSelfAxis(node)) {
-			if (model.getNodeKind(possible) == NodeKind.ELEMENT) {
-				if ( (namespaceURI == null || namespaceURI.equals(model.getNamespaceURI(possible)) )
-						&& (localName == null || localName.equals(model.getLocalName(possible)))) {
-					
-					result.add(possible);
-				}
-			}
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * Utility method to fill a list from an {@link Iterable}
-	 * @param <N>
-	 * @param axis
-	 * @return
-	 */
-	public static <N> List<N> listFromIterable(Iterable<N> axis) {
-		List<N> result = new ArrayList<N>();
-	    for (N node : axis)
-	        result.add(node);
-	    return result;
-	}
-	
-	/**
-	 * Either create or update an attribute on an element.
-	 * 
-	 * @param <N>	The node kind.
-	 * 
-	 * @param model	   The model to use for navigation, modification, and to obtain a factory, if needed.
-	 * @param element	The element for which the attribute will be updated/added.
-	 * @param namespace	The namespace for the attribute.
-	 * @param localName	The local name of the attribute
-	 * @param prefix	What prefix to associate with the attribute.
-	 * @param value		The value of the attribute.
-	 */
-	public static <N> void setAttribute(MutableModel<N> model, N element, String namespace, String localName, String prefix, String value) {
-		NodeFactory<N> factory = model.getFactory(element);
-		N currAttr = model.getAttribute(element, namespace, localName);
-		if (currAttr != null) {
-			model.replaceValue(currAttr, value);
-		}
-		else {
-			N newAttr = factory.createAttribute(namespace, localName, prefix, value);
-			model.insertAttribute(element, newAttr);
-		}
-	}
+        
+        for (N possible : model.getDescendantOrSelfAxis(node)) {
+            if (model.getNodeKind(possible) == NodeKind.ELEMENT) {
+                if ( (namespaceURI == null || namespaceURI.equals(model.getNamespaceURI(possible)) )
+                        && (localName == null || localName.equals(model.getLocalName(possible)))) {
+                    
+                    return possible;
+                }
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Get all of the descendant elements matching a given namespace and local name.
+     * @param <N>
+     * @param model Which model are we traversing.
+     * @param node  From which node do we start?
+     * @param namespaceURI  What's the namespace to use.  <code>null</code> matches any.
+     * @param localName What's the local name to find? <code>null</code> matches any.
+     * 
+     * @return  A list of the found element nodes.
+     * 
+     * TODO - This method should be rewritten to do name filtering on any iterator, so that we can do
+     * filtering along any axis.  See JIRA issue GXOS-34
+     */
+    public static <N> Iterable<N> getDescendantOrSelfElementsByName(Model<N> model, N node, String namespaceURI,
+            String localName) {
+        
+        List<N> result = new ArrayList<N>();
+        for (N possible : model.getDescendantOrSelfAxis(node)) {
+            if (model.getNodeKind(possible) == NodeKind.ELEMENT) {
+                if ( (namespaceURI == null || namespaceURI.equals(model.getNamespaceURI(possible)) )
+                        && (localName == null || localName.equals(model.getLocalName(possible)))) {
+                    
+                    result.add(possible);
+                }
+            }
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Utility method to fill a list from an {@link Iterable}
+     * @param <N>
+     * @param axis
+     * @return
+     */
+    public static <N> List<N> listFromIterable(Iterable<N> axis) {
+        List<N> result = new ArrayList<N>();
+        for (N node : axis)
+            result.add(node);
+        return result;
+    }
+    
+    /**
+     * Either create or update an attribute on an element.
+     * 
+     * @param <N>   The node kind.
+     * 
+     * @param model    The model to use for navigation, modification, and to obtain a factory, if needed.
+     * @param element   The element for which the attribute will be updated/added.
+     * @param namespace The namespace for the attribute.
+     * @param localName The local name of the attribute
+     * @param prefix    What prefix to associate with the attribute.
+     * @param value     The value of the attribute.
+     */
+    public static <N> void setAttribute(MutableModel<N> model, N element, String namespace, String localName, String prefix, String value) {
+        NodeFactory<N> factory = model.getFactory(element);
+        N currAttr = model.getAttribute(element, namespace, localName);
+        if (currAttr != null) {
+            model.replaceValue(currAttr, value);
+        }
+        else {
+            N newAttr = factory.createAttribute(namespace, localName, prefix, value);
+            model.insertAttribute(element, newAttr);
+        }
+    }
 }

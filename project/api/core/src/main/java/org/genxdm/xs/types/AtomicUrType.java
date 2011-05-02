@@ -20,10 +20,10 @@ package org.genxdm.xs.types;
  */
 public interface AtomicUrType<A> extends AtomicType<A>
 {
-	/**
-	 * Returns the {base type definition}
-	 */
-	SimpleUrType<A> getBaseType();
+    /**
+     * Returns the {base type definition}
+     */
+    SimpleUrType<A> getBaseType();
 
-	AtomicUrType<A> prime();
+    AtomicUrType<A> prime();
 }

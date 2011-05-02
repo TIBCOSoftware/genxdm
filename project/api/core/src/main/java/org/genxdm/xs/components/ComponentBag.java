@@ -30,43 +30,43 @@ import org.genxdm.xs.types.SimpleType;
  */
 public interface ComponentBag<A>
 {
-	/**
-	 * Returns the Attribute group definitions.
-	 */
-	Iterable<AttributeGroupDefinition<A>> getAttributeGroups();
+    /**
+     * Returns the Attribute group definitions.
+     */
+    Iterable<AttributeGroupDefinition<A>> getAttributeGroups();
 
-	/**
-	 * Returns the Attribute declarations.
-	 */
-	Iterable<AttributeDefinition<A>> getAttributes();
+    /**
+     * Returns the Attribute declarations.
+     */
+    Iterable<AttributeDefinition<A>> getAttributes();
 
-	/**
-	 * Returns the Complex type definitions.
-	 */
-	Iterable<ComplexType<A>> getComplexTypes();
+    /**
+     * Returns the Complex type definitions.
+     */
+    Iterable<ComplexType<A>> getComplexTypes();
 
-	/**
-	 * Returns the Element declarations.
-	 */
-	Iterable<ElementDefinition<A>> getElements();
+    /**
+     * Returns the Element declarations.
+     */
+    Iterable<ElementDefinition<A>> getElements();
 
-	/**
-	 * Returns the Identity-constraint definitions.
-	 */
-	Iterable<IdentityConstraint<A>> getIdentityConstraints();
+    /**
+     * Returns the Identity-constraint definitions.
+     */
+    Iterable<IdentityConstraint<A>> getIdentityConstraints();
 
-	/**
-	 * Returns the Model group definitions.
-	 */
-	Iterable<ModelGroup<A>> getModelGroups();
+    /**
+     * Returns the Model group definitions.
+     */
+    Iterable<ModelGroup<A>> getModelGroups();
 
-	/**
-	 * Returns the Notation declarations.
-	 */
-	Iterable<NotationDefinition<A>> getNotations();
+    /**
+     * Returns the Notation declarations.
+     */
+    Iterable<NotationDefinition<A>> getNotations();
 
-	/**
-	 * Returns the Simple type definitions.
-	 */
-	Iterable<SimpleType<A>> getSimpleTypes();
+    /**
+     * Returns the Simple type definitions.
+     */
+    Iterable<SimpleType<A>> getSimpleTypes();
 }

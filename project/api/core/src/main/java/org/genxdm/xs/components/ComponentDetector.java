@@ -22,48 +22,48 @@ import javax.xml.namespace.QName;
  */
 public interface ComponentDetector
 {
-	/**
-	 * Determines whether the specified attribute declaration exists.
-	 */
-	boolean hasAttribute(QName name);
+    /**
+     * Determines whether the specified attribute declaration exists.
+     */
+    boolean hasAttribute(QName name);
 
-	/**
-	 * Determines whether the specified attribute group definition exists.
-	 */
-	boolean hasAttributeGroup(QName name);
+    /**
+     * Determines whether the specified attribute group definition exists.
+     */
+    boolean hasAttributeGroup(QName name);
 
-	/**
-	 * Determines whether the specified Complex type definition exists.
-	 */
-	boolean hasComplexType(QName name);
+    /**
+     * Determines whether the specified Complex type definition exists.
+     */
+    boolean hasComplexType(QName name);
 
-	/**
-	 * Determines whether the specified element declaration exists.
-	 */
-	boolean hasElement(QName name);
+    /**
+     * Determines whether the specified element declaration exists.
+     */
+    boolean hasElement(QName name);
 
-	/**
-	 * Determines whether the specified identity-constraint definition exists.
-	 */
-	boolean hasIdentityConstraint(QName name);
+    /**
+     * Determines whether the specified identity-constraint definition exists.
+     */
+    boolean hasIdentityConstraint(QName name);
 
-	/**
-	 * Determines whether the specified model group definition exists.
-	 */
-	boolean hasModelGroup(QName name);
+    /**
+     * Determines whether the specified model group definition exists.
+     */
+    boolean hasModelGroup(QName name);
 
-	/**
-	 * Determines whether the specified notation declaration exists.
-	 */
-	boolean hasNotation(QName name);
+    /**
+     * Determines whether the specified notation declaration exists.
+     */
+    boolean hasNotation(QName name);
 
-	/**
-	 * Determines whether the specified Simple type definition exists.
-	 */
-	boolean hasSimpleType(QName name);
+    /**
+     * Determines whether the specified Simple type definition exists.
+     */
+    boolean hasSimpleType(QName name);
 
-	/**
-	 * Determines whether the specified type definition exists.
-	 */
-	boolean hasType(QName name);
+    /**
+     * Determines whether the specified type definition exists.
+     */
+    boolean hasType(QName name);
 }

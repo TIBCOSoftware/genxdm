@@ -26,12 +26,12 @@ import org.genxdm.xs.components.SchemaParticle;
  */
 public interface ElementUse<A> extends SchemaParticle<A>/* , HasValueConstraint<A> */
 {
-	ElementDefinition<A> getTerm();
+    ElementDefinition<A> getTerm();
 
-	/**
-	 * Returns the effective value constraint, may be <code>null</code>. [Definition:] Let the effective value
-	 * constraint of an attribute use be its {value constraint}, if present, otherwise its {attribute declaration}'s
-	 * {value constraint}.
-	 */
-	/* ValueConstraint<A> getEffectiveValueConstraint(); */
+    /**
+     * Returns the effective value constraint, may be <code>null</code>. [Definition:] Let the effective value
+     * constraint of an attribute use be its {value constraint}, if present, otherwise its {attribute declaration}'s
+     * {value constraint}.
+     */
+    /* ValueConstraint<A> getEffectiveValueConstraint(); */
 }

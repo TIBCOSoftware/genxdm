@@ -25,8 +25,8 @@ import org.genxdm.xs.components.SchemaComponent;
  */
 public interface AttributeNodeType<A> extends SchemaComponent<A>, NodeType<A>
 {
-	/**
-	 * The {type definition} property.
-	 */
-	SequenceType<A> getType();
+    /**
+     * The {type definition} property.
+     */
+    SequenceType<A> getType();
 }

@@ -25,24 +25,24 @@ import org.genxdm.xs.components.AttributeDefinition;
  */
 public interface AttributeUse<A> extends HasValueConstraint<A>
 {
-	/**
-	 * Returns the {required} property. <br/>
-	 * In the XML representation, this is <code>true</code> if the use [attribute] is present with actual value
-	 * required, otherwise <code>false</code>.
-	 */
-	boolean isRequired();
+    /**
+     * Returns the {required} property. <br/>
+     * In the XML representation, this is <code>true</code> if the use [attribute] is present with actual value
+     * required, otherwise <code>false</code>.
+     */
+    boolean isRequired();
 
-	/**
-	 * Returns the {attribute declaration} property. <br/>
-	 * In the XML representation, this is the (top-level) attribute declaration resolved by the actual value of the ref
-	 * [attribute].
-	 */
-	AttributeDefinition<A> getAttribute();
+    /**
+     * Returns the {attribute declaration} property. <br/>
+     * In the XML representation, this is the (top-level) attribute declaration resolved by the actual value of the ref
+     * [attribute].
+     */
+    AttributeDefinition<A> getAttribute();
 
-	/**
-	 * Returns the effective value constraint, may be <code>null</code>. [Definition:] Let the effective value
-	 * constraint of an attribute use be its {value constraint}, if present, otherwise its {attribute declaration}'s
-	 * {value constraint}.
-	 */
-	ValueConstraint<A> getEffectiveValueConstraint();
+    /**
+     * Returns the effective value constraint, may be <code>null</code>. [Definition:] Let the effective value
+     * constraint of an attribute use be its {value constraint}, if present, otherwise its {attribute declaration}'s
+     * {value constraint}.
+     */
+    ValueConstraint<A> getEffectiveValueConstraint();
 }

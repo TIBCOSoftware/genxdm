@@ -20,23 +20,23 @@ package org.genxdm.xs.components;
  */
 public interface SchemaParticle<A>
 {
-	/**
-	 * Returns the {max occurs} property for this particle.
-	 */
-	int getMaxOccurs();
+    /**
+     * Returns the {max occurs} property for this particle.
+     */
+    int getMaxOccurs();
 
-	/**
-	 * Returns the {min occurs} property for this particle.
-	 */
-	int getMinOccurs();
+    /**
+     * Returns the {min occurs} property for this particle.
+     */
+    int getMinOccurs();
 
-	/**
-	 * Returns the {particle term} property for this particle.
-	 */
-	ParticleTerm<A> getTerm();
+    /**
+     * Returns the {particle term} property for this particle.
+     */
+    ParticleTerm<A> getTerm();
 
-	/**
-	 * Returns <code>true</code> if the {max occurs} property is unbounded.
-	 */
-	boolean isMaxOccursUnbounded();
+    /**
+     * Returns <code>true</code> if the {max occurs} property is unbounded.
+     */
+    boolean isMaxOccursUnbounded();
 }

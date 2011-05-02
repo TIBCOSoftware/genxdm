@@ -23,8 +23,8 @@ package org.genxdm.xs.facets;
  */
 public interface Length<A> extends Facet<A>
 {
-	/**
-	 * Returns the exact length allowed for a datatype.
-	 */
-	int getValue();
+    /**
+     * Returns the exact length allowed for a datatype.
+     */
+    int getValue();
 }

@@ -22,50 +22,50 @@ import org.genxdm.xs.types.SimpleType;
 @SuppressWarnings("serial")
 public final class SimpleTypeException extends SchemaException
 {
-	private final String initialValue;
-	private final SimpleType<?> type;
+    private final String initialValue;
+    private final SimpleType<?> type;
 
-	public SimpleTypeException(final String initialValue, final SimpleType<?> type, final SchemaException cause)
-	{
-		super(ValidationOutcome.CVC_Simple_Type, "?", cause);
-		this.initialValue = PreCondition.assertArgumentNotNull(initialValue, "initialValue");
-		this.type = type;
-	}
+    public SimpleTypeException(final String initialValue, final SimpleType<?> type, final SchemaException cause)
+    {
+        super(ValidationOutcome.CVC_Simple_Type, "?", cause);
+        this.initialValue = PreCondition.assertArgumentNotNull(initialValue, "initialValue");
+        this.type = type;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		final String name;
-		if (null != type)
-		{
-			name = type.isAnonymous() ? "{anonymous}" : type.getName().toString();
-		}
-		else
-		{
-			name = "{unknown}";
-		}
-		final String localMessage = "The initial value '" + initialValue + "' is not valid with respect to the simple type definition '" + name + "'.";
+    @Override
+    public String getMessage()
+    {
+        final String name;
+        if (null != type)
+        {
+            name = type.isAnonymous() ? "{anonymous}" : type.getName().toString();
+        }
+        else
+        {
+            name = "{unknown}";
+        }
+        final String localMessage = "The initial value '" + initialValue + "' is not valid with respect to the simple type definition '" + name + "'.";
 
-		final StringBuilder message = new StringBuilder();
-		// message.append(getOutcome().getSection());
-		// message.append(".");
-		// message.append(getPartNumber());
-		// message.append(": ");
-		message.append(localMessage);
-		return message.toString();
-	}
+        final StringBuilder message = new StringBuilder();
+        // message.append(getOutcome().getSection());
+        // message.append(".");
+        // message.append(getPartNumber());
+        // message.append(": ");
+        message.append(localMessage);
+        return message.toString();
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof SimpleTypeException)
-		{
-			final SimpleTypeException other = (SimpleTypeException)obj;
-			return initialValue.equals(other.initialValue) && type.getName().equals(other.type.getName());
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof SimpleTypeException)
+        {
+            final SimpleTypeException other = (SimpleTypeException)obj;
+            return initialValue.equals(other.initialValue) && type.getName().equals(other.type.getName());
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

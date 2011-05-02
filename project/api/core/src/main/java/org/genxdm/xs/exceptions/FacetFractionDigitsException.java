@@ -24,17 +24,17 @@ import org.genxdm.xs.facets.FractionDigits;
 @SuppressWarnings("serial")
 public final class FacetFractionDigitsException extends FacetException
 {
-	private final String value;
-	private final FractionDigits<?> fractionDigits;
+    private final String value;
+    private final FractionDigits<?> fractionDigits;
 
-	public FacetFractionDigitsException(final String value, final FractionDigits<?> fractionDigits)
-	{
-		this.value = PreCondition.assertArgumentNotNull(value, "value");
-		this.fractionDigits = fractionDigits;
-	}
+    public FacetFractionDigitsException(final String value, final FractionDigits<?> fractionDigits)
+    {
+        this.value = PreCondition.assertArgumentNotNull(value, "value");
+        this.fractionDigits = fractionDigits;
+    }
 
-	public String getMessage()
-	{
-		return "The fraction number of digits(" + fractionDigits.getFractionDigits() + ") in '" + value + "' exceeds the number allowed for the type.";
-	}
+    public String getMessage()
+    {
+        return "The fraction number of digits(" + fractionDigits.getFractionDigits() + ") in '" + value + "' exceeds the number allowed for the type.";
+    }
 }

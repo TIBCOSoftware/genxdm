@@ -34,33 +34,33 @@ import java.util.List;
  */
 public interface ModelGroup<A> extends ParticleTerm<A>, SchemaComponent<A>
 {
-	public enum SmCompositor
-	{
-		Sequence, Choice, All;
+    public enum SmCompositor
+    {
+        Sequence, Choice, All;
 
-		public boolean isSequence()
-		{
-			return this == Sequence;
-		}
+        public boolean isSequence()
+        {
+            return this == Sequence;
+        }
 
-		public boolean isChoice()
-		{
-			return this == Choice;
-		}
+        public boolean isChoice()
+        {
+            return this == Choice;
+        }
 
-		public boolean isAll()
-		{
-			return this == All;
-		}
-	}
+        public boolean isAll()
+        {
+            return this == All;
+        }
+    }
 
-	/**
-	 * Returns the {compositor} property of this model group.
-	 */
-	SmCompositor getCompositor();
+    /**
+     * Returns the {compositor} property of this model group.
+     */
+    SmCompositor getCompositor();
 
-	/**
-	 * Returns the {particles} property of this model group.
-	 */
-	List<SchemaParticle<A>> getParticles();
+    /**
+     * Returns the {particles} property of this model group.
+     */
+    List<SchemaParticle<A>> getParticles();
 }

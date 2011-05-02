@@ -18,14 +18,14 @@ package org.genxdm.xs.exceptions;
 @SuppressWarnings("serial")
 public final class WildcardUnionNotExpressibleException extends WildcardUnionException
 {
-	public WildcardUnionNotExpressibleException()
-	{
-		super(PART_UNION_NOT_EXPRESSIBLE);
-	}
+    public WildcardUnionNotExpressibleException()
+    {
+        super(PART_UNION_NOT_EXPRESSIBLE);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "An intersection between a negation and a set which includes absent but not the negated namespace is not expressible.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "An intersection between a negation and a set which includes absent but not the negated namespace is not expressible.";
+    }
 }

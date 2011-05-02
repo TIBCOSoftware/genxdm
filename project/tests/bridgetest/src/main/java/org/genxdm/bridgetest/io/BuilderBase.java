@@ -29,7 +29,6 @@ import javax.xml.XMLConstants;
 import org.genxdm.ProcessingContext;
 
 import org.genxdm.bridgetest.TestBase;
-import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.io.FragmentBuilder;
 
 import org.junit.Test;

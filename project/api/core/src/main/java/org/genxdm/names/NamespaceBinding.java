@@ -20,17 +20,17 @@ package org.genxdm.names;
  */
 public interface NamespaceBinding
 {
-	/**
-	 * The namespace-uri part of the namespace binding.
-	 * 
-	 * @return The namespace-uri as a symbol.
-	 */
-	String getNamespaceURI();
+    /**
+     * The namespace-uri part of the namespace binding.
+     * 
+     * @return The namespace-uri as a symbol.
+     */
+    String getNamespaceURI();
 
-	/**
-	 * The prefix part of the namespace binding.
-	 * 
-	 * @return The prefix as a {@link String}.
-	 */
-	String getPrefix();
+    /**
+     * The prefix part of the namespace binding.
+     * 
+     * @return The prefix as a {@link String}.
+     */
+    String getPrefix();
 }

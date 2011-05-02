@@ -20,86 +20,86 @@ package org.genxdm.xs.types;
  */
 public enum ContentTypeKind
 {
-	/**
-	 * Indicates that a complex type has a complex type {content type} property; only elements are accepted.
-	 */
-	ElementOnly
-	{
-		public boolean isComplex()
-		{
-			return true;
-		}
+    /**
+     * Indicates that a complex type has a complex type {content type} property; only elements are accepted.
+     */
+    ElementOnly
+    {
+        public boolean isComplex()
+        {
+            return true;
+        }
 
-		public boolean isElementOnly()
-		{
-			return true;
-		}
-	},
+        public boolean isElementOnly()
+        {
+            return true;
+        }
+    },
 
-	/**
-	 * No child elements or text nodes are allowed.
-	 */
-	Empty
-	{
-		public boolean isComplex()
-		{
-			return false;
-		}
+    /**
+     * No child elements or text nodes are allowed.
+     */
+    Empty
+    {
+        public boolean isComplex()
+        {
+            return false;
+        }
 
-		public boolean isElementOnly()
-		{
-			return false;
-		}
-	},
+        public boolean isElementOnly()
+        {
+            return false;
+        }
+    },
 
-	/**
-	 * Indicates that a complex type has a complex type {content type} property and mixed is enabled; both text nodes and element nodes are accepted.
-	 */
-	Mixed
-	{
-		public boolean isComplex()
-		{
-			return true;
-		}
+    /**
+     * Indicates that a complex type has a complex type {content type} property and mixed is enabled; both text nodes and element nodes are accepted.
+     */
+    Mixed
+    {
+        public boolean isComplex()
+        {
+            return true;
+        }
 
-		public boolean isElementOnly()
-		{
-			return false;
-		}
-	},
+        public boolean isElementOnly()
+        {
+            return false;
+        }
+    },
 
-	/**
-	 * Indicates that a complex type has a simple type {content type} property.
-	 */
-	Simple
-	{
-		public boolean isComplex()
-		{
-			return false;
-		}
+    /**
+     * Indicates that a complex type has a simple type {content type} property.
+     */
+    Simple
+    {
+        public boolean isComplex()
+        {
+            return false;
+        }
 
-		public boolean isElementOnly()
-		{
-			return false;
-		}
-	};
+        public boolean isElementOnly()
+        {
+            return false;
+        }
+    };
 
-	public abstract boolean isComplex();
+    public abstract boolean isComplex();
 
-	public abstract boolean isElementOnly();
+    public abstract boolean isElementOnly();
 
-	public boolean isEmpty()
-	{
-		return this == Empty;
-	}
+    public boolean isEmpty()
+    {
+        return this == Empty;
+    }
 
-	public boolean isMixed()
-	{
-		return this == Mixed;
-	}
+    public boolean isMixed()
+    {
+        return this == Mixed;
+    }
 
-	public boolean isSimple()
-	{
-		return this == Simple;
-	}
+    public boolean isSimple()
+    {
+        return this == Simple;
+    }
 }
