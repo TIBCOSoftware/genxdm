@@ -27,51 +27,51 @@ import org.genxdm.xs.facets.MinLength;
 @SuppressWarnings("serial")
 public final class FacetMinLengthException extends FacetException
 {
-	private final MinLength<?> minLength;
-	private final int actualLength;
-	private final LengthFacetUOM uom;
+    private final MinLength<?> minLength;
+    private final int actualLength;
+    private final LengthFacetUOM uom;
 
-	public FacetMinLengthException(final MinLength<?> minLength, final int actualLength, final LengthFacetUOM uom)
-	{
-		super(ValidationOutcome.CVC_MinLength);
-		this.minLength = minLength;
-		this.actualLength = actualLength;
-		this.uom = PreCondition.assertArgumentNotNull(uom, "uom");
-	}
+    public FacetMinLengthException(final MinLength<?> minLength, final int actualLength, final LengthFacetUOM uom)
+    {
+        super(ValidationOutcome.CVC_MinLength);
+        this.minLength = minLength;
+        this.actualLength = actualLength;
+        this.uom = PreCondition.assertArgumentNotNull(uom, "uom");
+    }
 
-	@Override
-	public String getMessage()
-	{
-		final String localMessage;
-		switch (uom)
-		{
-			case Characters:
-			{
-				localMessage = "The length of the value (" + actualLength + "), as measured in characters must be greater than or equal to " + minLength.getMinLength() + ".";
-			}
-			break;
-			case Octets:
-			{
-				localMessage = "The length of the value (" + actualLength + "), as measured in octets of the binary data, must be greater than or equal to " + minLength.getMinLength() + ".";
-			}
-			break;
-			case ListItems:
-			{
-				localMessage = "The length of the value (" + actualLength + "), as measured in list items, must be greater than or equal to " + minLength.getMinLength() + ".";
-			}
-			break;
-			default:
-			{
-				throw new RuntimeException(uom.name());
-			}
-		}
+    @Override
+    public String getMessage()
+    {
+        final String localMessage;
+        switch (uom)
+        {
+            case Characters:
+            {
+                localMessage = "The length of the value (" + actualLength + "), as measured in characters must be greater than or equal to " + minLength.getMinLength() + ".";
+            }
+            break;
+            case Octets:
+            {
+                localMessage = "The length of the value (" + actualLength + "), as measured in octets of the binary data, must be greater than or equal to " + minLength.getMinLength() + ".";
+            }
+            break;
+            case ListItems:
+            {
+                localMessage = "The length of the value (" + actualLength + "), as measured in list items, must be greater than or equal to " + minLength.getMinLength() + ".";
+            }
+            break;
+            default:
+            {
+                throw new RuntimeException(uom.name());
+            }
+        }
 
-		final StringBuilder message = new StringBuilder();
-		message.append(getOutcome().getSection());
-		message.append(".");
-		message.append(getPartNumber());
-		message.append(": ");
-		message.append(localMessage);
-		return message.toString();
-	}
+        final StringBuilder message = new StringBuilder();
+        message.append(getOutcome().getSection());
+        message.append(".");
+        message.append(getPartNumber());
+        message.append(": ");
+        message.append(localMessage);
+        return message.toString();
+    }
 }

@@ -17,19 +17,19 @@ package org.genxdm.xs.components;
 
 public enum ComponentKind
 {
-	ATTRIBUTE(false),
-	ATTRIBUTE_GROUP(false),
-	COMPLEX_TYPE(true),
-	ELEMENT(false),
-	IDENTITY_CONSTRAINT(false),
-	MODEL_GROUP(false),
-	NOTATION(false),
-	SIMPLE_TYPE(true);
-	
-	public final boolean canBeAnonymous;
+    ATTRIBUTE(false),
+    ATTRIBUTE_GROUP(false),
+    COMPLEX_TYPE(true),
+    ELEMENT(false),
+    IDENTITY_CONSTRAINT(false),
+    MODEL_GROUP(false),
+    NOTATION(false),
+    SIMPLE_TYPE(true);
+    
+    public final boolean canBeAnonymous;
 
-	ComponentKind(final boolean canBeAnonymous)
-	{
-		this.canBeAnonymous = canBeAnonymous;
-	}
+    ComponentKind(final boolean canBeAnonymous)
+    {
+        this.canBeAnonymous = canBeAnonymous;
+    }
 }

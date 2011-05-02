@@ -21,12 +21,12 @@ package org.genxdm.xs.resolve;
  */
 public interface PrefixResolver
 {
-	/**
-	 * Look up a prefix and get the mapped Namespace URI.
-	 * 
-	 * @param prefix
-	 *            The prefix to look up, cannot be <code>null</code>.
-	 * @return The associated Namespace URI, or <code>null</code> if the prefix mapping does not exist.
-	 */
-	String getNamespaceURI(String prefix);
+    /**
+     * Look up a prefix and get the mapped Namespace URI.
+     * 
+     * @param prefix
+     *            The prefix to look up, cannot be <code>null</code>.
+     * @return The associated Namespace URI, or <code>null</code> if the prefix mapping does not exist.
+     */
+    String getNamespaceURI(String prefix);
 }

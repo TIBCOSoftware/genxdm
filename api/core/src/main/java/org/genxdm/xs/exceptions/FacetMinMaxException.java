@@ -26,55 +26,55 @@ import org.genxdm.xs.facets.Limit;
 @SuppressWarnings("serial")
 public final class FacetMinMaxException extends FacetException
 {
-	private final Limit<?> limit;
-	private final String actual;
+    private final Limit<?> limit;
+    private final String actual;
 
-	public FacetMinMaxException(final Limit<?> limit, final String actual)
-	{
-		super(getOutcome(limit.getKind()));
-		this.actual = PreCondition.assertArgumentNotNull(actual, "actual");
-		this.limit = PreCondition.assertArgumentNotNull(limit, "limit");
-	}
+    public FacetMinMaxException(final Limit<?> limit, final String actual)
+    {
+        super(getOutcome(limit.getKind()));
+        this.actual = PreCondition.assertArgumentNotNull(actual, "actual");
+        this.limit = PreCondition.assertArgumentNotNull(limit, "limit");
+    }
 
-	@Override
-	public String getMessage()
-	{
-		final String localMessage = "The instance value, '" + actual + "', is not valid with respect to the facet value, '" + limit.getLimit() + "'.";
+    @Override
+    public String getMessage()
+    {
+        final String localMessage = "The instance value, '" + actual + "', is not valid with respect to the facet value, '" + limit.getLimit() + "'.";
 
-		final StringBuilder message = new StringBuilder();
-		message.append(getOutcome().getSection());
-		message.append(".");
-		message.append(getPartNumber());
-		message.append(": ");
-		message.append(localMessage);
-		return message.toString();
-	}
+        final StringBuilder message = new StringBuilder();
+        message.append(getOutcome().getSection());
+        message.append(".");
+        message.append(getPartNumber());
+        message.append(": ");
+        message.append(localMessage);
+        return message.toString();
+    }
 
-	private static ValidationOutcome getOutcome(final FacetKind opcode)
-	{
-		PreCondition.assertArgumentNotNull(opcode, "opcode");
-		switch (opcode)
-		{
-			case MinInclusive:
-			{
-				return ValidationOutcome.CVC_MinInclusive;
-			}
-			case MinExclusive:
-			{
-				return ValidationOutcome.CVC_MinExclusive;
-			}
-			case MaxInclusive:
-			{
-				return ValidationOutcome.CVC_MaxInclusive;
-			}
-			case MaxExclusive:
-			{
-				return ValidationOutcome.CVC_MaxExclusive;
-			}
-			default:
-			{
-				throw new RuntimeException(opcode.name());
-			}
-		}
-	}
+    private static ValidationOutcome getOutcome(final FacetKind opcode)
+    {
+        PreCondition.assertArgumentNotNull(opcode, "opcode");
+        switch (opcode)
+        {
+            case MinInclusive:
+            {
+                return ValidationOutcome.CVC_MinInclusive;
+            }
+            case MinExclusive:
+            {
+                return ValidationOutcome.CVC_MinExclusive;
+            }
+            case MaxInclusive:
+            {
+                return ValidationOutcome.CVC_MaxInclusive;
+            }
+            case MaxExclusive:
+            {
+                return ValidationOutcome.CVC_MaxExclusive;
+            }
+            default:
+            {
+                throw new RuntimeException(opcode.name());
+            }
+        }
+    }
 }

@@ -28,23 +28,23 @@ import org.genxdm.xs.types.SimpleType;
 
 public interface Schema<A> extends ComponentBag<A>, ComponentProvider<A>
 {
-	void declareAttribute(final AttributeDefinition<A> attribute);
+    void declareAttribute(final AttributeDefinition<A> attribute);
 
-	void declareElement(final ElementDefinition<A> element);
+    void declareElement(final ElementDefinition<A> element);
 
-	void declareNotation(final NotationDefinition<A> notation);
+    void declareNotation(final NotationDefinition<A> notation);
 
-	void defineAttributeGroup(final AttributeGroupDefinition<A> attributeGroup);
+    void defineAttributeGroup(final AttributeGroupDefinition<A> attributeGroup);
 
-	void defineComplexType(final ComplexType<A> complexType);
+    void defineComplexType(final ComplexType<A> complexType);
 
-	void defineIdentityConstraint(final IdentityConstraint<A> identityConstraint);
+    void defineIdentityConstraint(final IdentityConstraint<A> identityConstraint);
 
-	void defineModelGroup(final ModelGroup<A> modelGroup);
+    void defineModelGroup(final ModelGroup<A> modelGroup);
 
-	void defineSimpleType(final SimpleType<A> simpleType);
+    void defineSimpleType(final SimpleType<A> simpleType);
 
-	Iterable<String> getNamespaces();
+    Iterable<String> getNamespaces();
 
-	void register(ComponentBag<A> components);
+    void register(ComponentBag<A> components);
 }

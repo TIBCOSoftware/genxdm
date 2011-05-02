@@ -23,15 +23,15 @@ package org.genxdm.xs.types;
  */
 public interface AtomicType<A> extends SimpleType<A>, PrimeType<A>
 {
-	/**
-	 * Returns the most derived native atomic type of this atomic type definition.
-	 */
-	NativeType getNativeType();
+    /**
+     * Returns the most derived native atomic type of this atomic type definition.
+     */
+    NativeType getNativeType();
 
-	/**
-	 * Returns the most derived native atomic type definition of this atomic type definition.
-	 */
-	AtomicType<A> getNativeTypeDefinition();
+    /**
+     * Returns the most derived native atomic type definition of this atomic type definition.
+     */
+    AtomicType<A> getNativeTypeDefinition();
 
-	AtomicType<A> prime();
+    AtomicType<A> prime();
 }

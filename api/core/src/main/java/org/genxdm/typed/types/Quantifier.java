@@ -78,534 +78,534 @@ import org.genxdm.exceptions.PreCondition;
  */
 public enum Quantifier
 {
-	NONE(0), EMPTY(4), EXACTLY_ONE(2), OPTIONAL(6), ONE_OR_MORE(3), ZERO_OR_MORE(7);
+    NONE(0), EMPTY(4), EXACTLY_ONE(2), OPTIONAL(6), ONE_OR_MORE(3), ZERO_OR_MORE(7);
 
-	final int m_mask;
+    final int m_mask;
 
-	private Quantifier(final int mask)
-	{
-		m_mask = mask;
-	}
+    private Quantifier(final int mask)
+    {
+        m_mask = mask;
+    }
 
-	public boolean contains(final Quantifier other)
-	{
-		PreCondition.assertArgumentNotNull(other, "other");
-		return (m_mask & other.m_mask) == other.m_mask;
-	}
+    public boolean contains(final Quantifier other)
+    {
+        PreCondition.assertArgumentNotNull(other, "other");
+        return (m_mask & other.m_mask) == other.m_mask;
+    }
 
-	/**
-	 * Determines whether this quantifier is contained in the specified set of quantifiers.
-	 */
-	public boolean in(final Quantifier... others)
-	{
-		PreCondition.assertArgumentNotNull(others, "others");
-		for (final Quantifier other : others)
-		{
-			if ((m_mask & other.m_mask) == other.m_mask)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
+    /**
+     * Determines whether this quantifier is contained in the specified set of quantifiers.
+     */
+    public boolean in(final Quantifier... others)
+    {
+        PreCondition.assertArgumentNotNull(others, "others");
+        for (final Quantifier other : others)
+        {
+            if ((m_mask & other.m_mask) == other.m_mask)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	public Quantifier sum(final Quantifier other)
-	{
-		PreCondition.assertArgumentNotNull(other, "other");
-		switch (this)
-		{
-			case NONE:
-			{
-				return NONE;
-			}
-			case EXACTLY_ONE:
-			{
-				switch (other)
-				{
-					case NONE:
-					{
-						return NONE;
-					}
-					default:
-					{
-						return ONE_OR_MORE;
-					}
-				}
-			}
-			case EMPTY:
-			case OPTIONAL:
-			{
-				switch (other)
-				{
-					case NONE:
-					{
-						return NONE;
-					}
-					case EXACTLY_ONE:
-					case ONE_OR_MORE:
-					{
-						return ONE_OR_MORE;
-					}
-					case EMPTY:
-					{
-						return ZERO_OR_MORE;
-					}
-					default:
-					{
-						return ZERO_OR_MORE;
-					}
-				}
-			}
-			case ONE_OR_MORE:
-			{
-				switch (other)
-				{
-					case NONE:
-					{
-						return NONE;
-					}
-					default:
-					{
-						return ONE_OR_MORE;
-					}
-				}
-			}
-			case ZERO_OR_MORE:
-			{
-				switch (other)
-				{
-					case NONE:
-					{
-						return NONE;
-					}
-					case EMPTY:
-					{
-						return ZERO_OR_MORE;
-					}
-					case EXACTLY_ONE:
-					{
-						return ONE_OR_MORE;
-					}
-					case OPTIONAL:
-					{
-						return ZERO_OR_MORE;
-					}
-					case ONE_OR_MORE:
-					{
-						return ONE_OR_MORE;
-					}
-					case ZERO_OR_MORE:
-					{
-						return ZERO_OR_MORE;
-					}
-					default:
-					{
-						throw new AssertionError(other);
-					}
-				}
-			}
-			default:
-			{
-				throw new AssertionError(this);
-			}
-		}
-	}
+    public Quantifier sum(final Quantifier other)
+    {
+        PreCondition.assertArgumentNotNull(other, "other");
+        switch (this)
+        {
+            case NONE:
+            {
+                return NONE;
+            }
+            case EXACTLY_ONE:
+            {
+                switch (other)
+                {
+                    case NONE:
+                    {
+                        return NONE;
+                    }
+                    default:
+                    {
+                        return ONE_OR_MORE;
+                    }
+                }
+            }
+            case EMPTY:
+            case OPTIONAL:
+            {
+                switch (other)
+                {
+                    case NONE:
+                    {
+                        return NONE;
+                    }
+                    case EXACTLY_ONE:
+                    case ONE_OR_MORE:
+                    {
+                        return ONE_OR_MORE;
+                    }
+                    case EMPTY:
+                    {
+                        return ZERO_OR_MORE;
+                    }
+                    default:
+                    {
+                        return ZERO_OR_MORE;
+                    }
+                }
+            }
+            case ONE_OR_MORE:
+            {
+                switch (other)
+                {
+                    case NONE:
+                    {
+                        return NONE;
+                    }
+                    default:
+                    {
+                        return ONE_OR_MORE;
+                    }
+                }
+            }
+            case ZERO_OR_MORE:
+            {
+                switch (other)
+                {
+                    case NONE:
+                    {
+                        return NONE;
+                    }
+                    case EMPTY:
+                    {
+                        return ZERO_OR_MORE;
+                    }
+                    case EXACTLY_ONE:
+                    {
+                        return ONE_OR_MORE;
+                    }
+                    case OPTIONAL:
+                    {
+                        return ZERO_OR_MORE;
+                    }
+                    case ONE_OR_MORE:
+                    {
+                        return ONE_OR_MORE;
+                    }
+                    case ZERO_OR_MORE:
+                    {
+                        return ZERO_OR_MORE;
+                    }
+                    default:
+                    {
+                        throw new AssertionError(other);
+                    }
+                }
+            }
+            default:
+            {
+                throw new AssertionError(this);
+            }
+        }
+    }
 
-	public Quantifier choice(final Quantifier other)
-	{
-		PreCondition.assertArgumentNotNull(other, "other");
-		switch (this)
-		{
-			case NONE:
-			{
-				// none is the identity for choice.
-				return other;
-			}
-			case EMPTY:
-			{
-				switch (other)
-				{
-					case NONE:
-					{
-						return NONE;
-					}
-					case EMPTY:
-					{
-						return EMPTY;
-					}
-					case EXACTLY_ONE:
-					{
-						return OPTIONAL;
-					}
-					case OPTIONAL:
-					{
-						return OPTIONAL;
-					}
-					case ONE_OR_MORE:
-					{
-						return ZERO_OR_MORE;
-					}
-					case ZERO_OR_MORE:
-					{
-						return ZERO_OR_MORE;
-					}
-					default:
-					{
-						throw new AssertionError(other);
-					}
-				}
-			}
-			case EXACTLY_ONE:
-			{
-				switch (other)
-				{
-					case EMPTY:
-					{
-						return OPTIONAL;
-					}
-					case EXACTLY_ONE:
-					{
-						return EXACTLY_ONE;
-					}
-					case OPTIONAL:
-					{
-						return OPTIONAL;
-					}
-					case ONE_OR_MORE:
-					{
-						return ONE_OR_MORE;
-					}
-					case ZERO_OR_MORE:
-					{
-						return ZERO_OR_MORE;
-					}
-					default:
-					{
-						throw new AssertionError(other);
-					}
-				}
-			}
-			case ONE_OR_MORE:
-			{
-				switch (other)
-				{
-					case NONE:
-					{
-						return NONE;
-					}
-					case EMPTY:
-					{
-						return ZERO_OR_MORE;
-					}
-					case EXACTLY_ONE:
-					case ONE_OR_MORE:
-					{
-						return ONE_OR_MORE;
-					}
-					case OPTIONAL:
-					case ZERO_OR_MORE:
-					{
-						return ZERO_OR_MORE;
-					}
-					default:
-					{
-						throw new AssertionError("lhs=" + this + ", rhs=" + other);
-					}
-				}
-			}
-			case OPTIONAL:
-			{
-				switch (other)
-				{
-					case NONE:
-					{
-						return other;
-					}
-					case EMPTY:
-					{
-						return OPTIONAL;
-					}
-					case EXACTLY_ONE:
-					case OPTIONAL:
-					{
-						return OPTIONAL;
-					}
-					case ONE_OR_MORE:
-					case ZERO_OR_MORE:
-					{
-						return ZERO_OR_MORE;
-					}
-					default:
-					{
-						throw new AssertionError(other);
-					}
-				}
-			}
-			case ZERO_OR_MORE:
-			{
-				switch (other)
-				{
-					case NONE:
-					{
-						return NONE;
-					}
-					default:
-					{
-						return ZERO_OR_MORE;
-					}
-				}
-			}
-			default:
-			{
-				throw new AssertionError("lhs=" + this + ", rhs=" + other);
-			}
-		}
-	}
+    public Quantifier choice(final Quantifier other)
+    {
+        PreCondition.assertArgumentNotNull(other, "other");
+        switch (this)
+        {
+            case NONE:
+            {
+                // none is the identity for choice.
+                return other;
+            }
+            case EMPTY:
+            {
+                switch (other)
+                {
+                    case NONE:
+                    {
+                        return NONE;
+                    }
+                    case EMPTY:
+                    {
+                        return EMPTY;
+                    }
+                    case EXACTLY_ONE:
+                    {
+                        return OPTIONAL;
+                    }
+                    case OPTIONAL:
+                    {
+                        return OPTIONAL;
+                    }
+                    case ONE_OR_MORE:
+                    {
+                        return ZERO_OR_MORE;
+                    }
+                    case ZERO_OR_MORE:
+                    {
+                        return ZERO_OR_MORE;
+                    }
+                    default:
+                    {
+                        throw new AssertionError(other);
+                    }
+                }
+            }
+            case EXACTLY_ONE:
+            {
+                switch (other)
+                {
+                    case EMPTY:
+                    {
+                        return OPTIONAL;
+                    }
+                    case EXACTLY_ONE:
+                    {
+                        return EXACTLY_ONE;
+                    }
+                    case OPTIONAL:
+                    {
+                        return OPTIONAL;
+                    }
+                    case ONE_OR_MORE:
+                    {
+                        return ONE_OR_MORE;
+                    }
+                    case ZERO_OR_MORE:
+                    {
+                        return ZERO_OR_MORE;
+                    }
+                    default:
+                    {
+                        throw new AssertionError(other);
+                    }
+                }
+            }
+            case ONE_OR_MORE:
+            {
+                switch (other)
+                {
+                    case NONE:
+                    {
+                        return NONE;
+                    }
+                    case EMPTY:
+                    {
+                        return ZERO_OR_MORE;
+                    }
+                    case EXACTLY_ONE:
+                    case ONE_OR_MORE:
+                    {
+                        return ONE_OR_MORE;
+                    }
+                    case OPTIONAL:
+                    case ZERO_OR_MORE:
+                    {
+                        return ZERO_OR_MORE;
+                    }
+                    default:
+                    {
+                        throw new AssertionError("lhs=" + this + ", rhs=" + other);
+                    }
+                }
+            }
+            case OPTIONAL:
+            {
+                switch (other)
+                {
+                    case NONE:
+                    {
+                        return other;
+                    }
+                    case EMPTY:
+                    {
+                        return OPTIONAL;
+                    }
+                    case EXACTLY_ONE:
+                    case OPTIONAL:
+                    {
+                        return OPTIONAL;
+                    }
+                    case ONE_OR_MORE:
+                    case ZERO_OR_MORE:
+                    {
+                        return ZERO_OR_MORE;
+                    }
+                    default:
+                    {
+                        throw new AssertionError(other);
+                    }
+                }
+            }
+            case ZERO_OR_MORE:
+            {
+                switch (other)
+                {
+                    case NONE:
+                    {
+                        return NONE;
+                    }
+                    default:
+                    {
+                        return ZERO_OR_MORE;
+                    }
+                }
+            }
+            default:
+            {
+                throw new AssertionError("lhs=" + this + ", rhs=" + other);
+            }
+        }
+    }
 
-	public Quantifier product(final Quantifier other)
-	{
-		PreCondition.assertArgumentNotNull(other, "other");
-		switch (this)
-		{
-			case NONE:
-			{
-				return NONE;
-			}
-			case EXACTLY_ONE:
-			{
-				return other;
-			}
-			case ONE_OR_MORE:
-			{
-				switch (other)
-				{
-					case NONE:
-					{
-						return NONE;
-					}
-					case EMPTY:
-					{
-						return EMPTY;
-					}
-					case EXACTLY_ONE:
-					case ONE_OR_MORE:
-					{
-						return ONE_OR_MORE;
-					}
-					case OPTIONAL:
-					case ZERO_OR_MORE:
-					{
-						return ZERO_OR_MORE;
-					}
-					default:
-					{
-						throw new AssertionError("lhs=" + this + ", rhs=" + other);
-					}
-				}
-			}
-			case EMPTY:
-			{
-				switch (other)
-				{
-					case NONE:
-					{
-						return NONE;
-					}
-					default:
-					{
-						return EMPTY;
-					}
-				}
-			}
-			case OPTIONAL:
-			{
-				switch (other)
-				{
-					case NONE:
-					{
-						return NONE;
-					}
-					case EMPTY:
-					{
-						return EMPTY;
-					}
-					case EXACTLY_ONE:
-					case OPTIONAL:
-					{
-						return OPTIONAL;
-					}
-					case ONE_OR_MORE:
-					case ZERO_OR_MORE:
-					{
-						return ZERO_OR_MORE;
-					}
-					default:
-					{
-						throw new AssertionError("lhs=" + this + ", rhs=" + other);
-					}
-				}
-			}
-			case ZERO_OR_MORE:
-			{
-				switch (other)
-				{
-					case NONE:
-					{
-						return NONE;
-					}
-					default:
-					{
-						return ZERO_OR_MORE;
-					}
-				}
-			}
-			default:
-			{
-				throw new AssertionError("lhs=" + this + ", rhs=" + other);
-			}
-		}
-	}
+    public Quantifier product(final Quantifier other)
+    {
+        PreCondition.assertArgumentNotNull(other, "other");
+        switch (this)
+        {
+            case NONE:
+            {
+                return NONE;
+            }
+            case EXACTLY_ONE:
+            {
+                return other;
+            }
+            case ONE_OR_MORE:
+            {
+                switch (other)
+                {
+                    case NONE:
+                    {
+                        return NONE;
+                    }
+                    case EMPTY:
+                    {
+                        return EMPTY;
+                    }
+                    case EXACTLY_ONE:
+                    case ONE_OR_MORE:
+                    {
+                        return ONE_OR_MORE;
+                    }
+                    case OPTIONAL:
+                    case ZERO_OR_MORE:
+                    {
+                        return ZERO_OR_MORE;
+                    }
+                    default:
+                    {
+                        throw new AssertionError("lhs=" + this + ", rhs=" + other);
+                    }
+                }
+            }
+            case EMPTY:
+            {
+                switch (other)
+                {
+                    case NONE:
+                    {
+                        return NONE;
+                    }
+                    default:
+                    {
+                        return EMPTY;
+                    }
+                }
+            }
+            case OPTIONAL:
+            {
+                switch (other)
+                {
+                    case NONE:
+                    {
+                        return NONE;
+                    }
+                    case EMPTY:
+                    {
+                        return EMPTY;
+                    }
+                    case EXACTLY_ONE:
+                    case OPTIONAL:
+                    {
+                        return OPTIONAL;
+                    }
+                    case ONE_OR_MORE:
+                    case ZERO_OR_MORE:
+                    {
+                        return ZERO_OR_MORE;
+                    }
+                    default:
+                    {
+                        throw new AssertionError("lhs=" + this + ", rhs=" + other);
+                    }
+                }
+            }
+            case ZERO_OR_MORE:
+            {
+                switch (other)
+                {
+                    case NONE:
+                    {
+                        return NONE;
+                    }
+                    default:
+                    {
+                        return ZERO_OR_MORE;
+                    }
+                }
+            }
+            default:
+            {
+                throw new AssertionError("lhs=" + this + ", rhs=" + other);
+            }
+        }
+    }
 
-	public boolean isNone()
-	{
-		return (this == NONE);
-	}
+    public boolean isNone()
+    {
+        return (this == NONE);
+    }
 
-	public boolean isEmpty()
-	{
-		return (this == EMPTY);
-	}
+    public boolean isEmpty()
+    {
+        return (this == EMPTY);
+    }
 
-	public boolean isOptional()
-	{
-		return (this == OPTIONAL);
-	}
+    public boolean isOptional()
+    {
+        return (this == OPTIONAL);
+    }
 
-	public boolean isExactlyOne()
-	{
-		return (this == EXACTLY_ONE);
-	}
+    public boolean isExactlyOne()
+    {
+        return (this == EXACTLY_ONE);
+    }
 
-	/**
-	 * Computes the quantifier for a type V when it is replaced by V[1] according to the following table: <br/>
-	 * <table border="1">
-	 * <tr>
-	 * <th>this</th>
-	 * <th>aggregate</th>
-	 * </tr>
-	 * <tr>
-	 * <td>?</td>
-	 * <td>?</td>
-	 * </tr>
-	 * <tr>
-	 * <td>*</td>
-	 * <td>?</td>
-	 * </tr>
-	 * <tr>
-	 * <td>1</td>
-	 * <td>1</td>
-	 * </tr>
-	 * <tr>
-	 * <td>+</td>
-	 * <td>1</td>
-	 * </tr>
-	 * <tr>
-	 * <td>none</td>
-	 * <td>none</td>
-	 * </tr>
-	 * <tr>
-	 * <td>empty</td>
-	 * <td>empty</td>
-	 * </tr>
-	 * </table>
-	 */
-	public Quantifier single()
-	{
-		switch (this)
-		{
-			case OPTIONAL:
-				return OPTIONAL;
-			case ZERO_OR_MORE:
-				return OPTIONAL;
-			case EXACTLY_ONE:
-				return EXACTLY_ONE;
-			case ONE_OR_MORE:
-				return EXACTLY_ONE;
-			case NONE:
-				return NONE;
-			case EMPTY:
-				return EMPTY;
-			default:
-			{
-				throw new AssertionError(name());
-			}
-		}
-	}
+    /**
+     * Computes the quantifier for a type V when it is replaced by V[1] according to the following table: <br/>
+     * <table border="1">
+     * <tr>
+     * <th>this</th>
+     * <th>aggregate</th>
+     * </tr>
+     * <tr>
+     * <td>?</td>
+     * <td>?</td>
+     * </tr>
+     * <tr>
+     * <td>*</td>
+     * <td>?</td>
+     * </tr>
+     * <tr>
+     * <td>1</td>
+     * <td>1</td>
+     * </tr>
+     * <tr>
+     * <td>+</td>
+     * <td>1</td>
+     * </tr>
+     * <tr>
+     * <td>none</td>
+     * <td>none</td>
+     * </tr>
+     * <tr>
+     * <td>empty</td>
+     * <td>empty</td>
+     * </tr>
+     * </table>
+     */
+    public Quantifier single()
+    {
+        switch (this)
+        {
+            case OPTIONAL:
+                return OPTIONAL;
+            case ZERO_OR_MORE:
+                return OPTIONAL;
+            case EXACTLY_ONE:
+                return EXACTLY_ONE;
+            case ONE_OR_MORE:
+                return EXACTLY_ONE;
+            case NONE:
+                return NONE;
+            case EMPTY:
+                return EMPTY;
+            default:
+            {
+                throw new AssertionError(name());
+            }
+        }
+    }
 
-	@Override
-	public String toString()
-	{
-		switch (this)
-		{
-			case NONE:
-				return "none";
-			case EXACTLY_ONE:
-				return "1";
-			case ONE_OR_MORE:
-				return "+";
-			case EMPTY:
-				return "empty";
-			case OPTIONAL:
-				return "?";
-			case ZERO_OR_MORE:
-				return "*";
-			default:
-			{
-				throw new AssertionError(name());
-			}
-		}
-	}
+    @Override
+    public String toString()
+    {
+        switch (this)
+        {
+            case NONE:
+                return "none";
+            case EXACTLY_ONE:
+                return "1";
+            case ONE_OR_MORE:
+                return "+";
+            case EMPTY:
+                return "empty";
+            case OPTIONAL:
+                return "?";
+            case ZERO_OR_MORE:
+                return "*";
+            default:
+            {
+                throw new AssertionError(name());
+            }
+        }
+    }
 
-	/**
-	 * Approximates the schema minOccurs and maxOccurs with the {@link Quantifier}.
-	 * 
-	 * @param minOccurs
-	 *            The min-occurs value.
-	 * @param maxOccurs
-	 *            The max-occurs value.
-	 * @return The {@link Quantifier} approximation.
-	 */
-	public static Quantifier approximate(final int minOccurs, final int maxOccurs)
-	{
-		if (minOccurs == 0)
-		{
-			if (maxOccurs == 0)
-			{
-				return Quantifier.EMPTY;
-			}
-			else if (maxOccurs == 1)
-			{
-				return Quantifier.OPTIONAL;
-			}
-			else
-			{
-				return Quantifier.ZERO_OR_MORE;
-			}
-		}
-		else if (minOccurs == 1)
-		{
-			if (maxOccurs == 1)
-			{
-				return Quantifier.EXACTLY_ONE;
-			}
-			else
-			{
-				return Quantifier.ONE_OR_MORE;
-			}
-		}
-		else
-		{
-			return Quantifier.ONE_OR_MORE;
-		}
-	}
+    /**
+     * Approximates the schema minOccurs and maxOccurs with the {@link Quantifier}.
+     * 
+     * @param minOccurs
+     *            The min-occurs value.
+     * @param maxOccurs
+     *            The max-occurs value.
+     * @return The {@link Quantifier} approximation.
+     */
+    public static Quantifier approximate(final int minOccurs, final int maxOccurs)
+    {
+        if (minOccurs == 0)
+        {
+            if (maxOccurs == 0)
+            {
+                return Quantifier.EMPTY;
+            }
+            else if (maxOccurs == 1)
+            {
+                return Quantifier.OPTIONAL;
+            }
+            else
+            {
+                return Quantifier.ZERO_OR_MORE;
+            }
+        }
+        else if (minOccurs == 1)
+        {
+            if (maxOccurs == 1)
+            {
+                return Quantifier.EXACTLY_ONE;
+            }
+            else
+            {
+                return Quantifier.ONE_OR_MORE;
+            }
+        }
+        else
+        {
+            return Quantifier.ONE_OR_MORE;
+        }
+    }
 }

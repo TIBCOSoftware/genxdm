@@ -47,16 +47,16 @@ public interface DocumentHandler<N>
      * @param systemId the URI of the document, if available; may be null
      * @return a document node resulting from the parse
      */
-	N parse(final InputStream byteStream, final URI systemId) throws IOException, GxmlMarshalException;
-	
-	/** Parse a reader (characters) as a document node.
-	 * 
-	 * This method typically delegates to parse(InputSource, systemId).
-	 * 
-	 * @param characterStream the input; may not be null
-	 * @param systemId the URI of the document, if available; may be null
-	 * @return a document node resulting from the parse
-	 */
+    N parse(final InputStream byteStream, final URI systemId) throws IOException, GxmlMarshalException;
+    
+    /** Parse a reader (characters) as a document node.
+     * 
+     * This method typically delegates to parse(InputSource, systemId).
+     * 
+     * @param characterStream the input; may not be null
+     * @param systemId the URI of the document, if available; may be null
+     * @return a document node resulting from the parse
+     */
     N parse(final Reader characterStream, final URI systemId) throws IOException, GxmlMarshalException;
     
     /** Parse a SAX InputSource to a document node.
@@ -74,27 +74,27 @@ public interface DocumentHandler<N>
     
     void setValidating(boolean flag);
 
-	/** Write XML, as bytes in a specified character encoding, to an output stream, unformatted.
-	 *
-	 * The output makes no attempt to format or pretty-print the output, but guarantees
-	 * well-formedness (for core XML and for namespaces), and tries to be compact (that
-	 * is, no newlines or spaces will be introduced).
-	 * 
-	 * @param byteStream the target output stream; may not be null
-	 * @param source the starting node from which to traverse (usually a document node); may not be null
-	 * @param encoding the encoding in which to write characters as bytes; if null, or an unsupported encoding
-	 *   for the JVM, "UTF-8" will be used.
-	 */
-	void write(final OutputStream byteStream, final N source, String encoding) throws IOException, GxmlMarshalException;
-	
-	/** Write XML, as characters, to a Writer, unformatted.
-	 * 
-	 * The output makes no attempt to format or pretty-print the output, but guarantees
-	 * well-formedness (for core XML and for namespaces), and tries to be compact (that
-	 * is, no newlines or spaces will be introduced).
-	 * 
-	 * @param characterStream the target Writer; may not be null
-	 * @param source the starting node from which to traverse (usually a document node); may not be null
-	 */
-	void write(final Writer characterStream, final N source) throws IOException, GxmlMarshalException;
+    /** Write XML, as bytes in a specified character encoding, to an output stream, unformatted.
+     *
+     * The output makes no attempt to format or pretty-print the output, but guarantees
+     * well-formedness (for core XML and for namespaces), and tries to be compact (that
+     * is, no newlines or spaces will be introduced).
+     * 
+     * @param byteStream the target output stream; may not be null
+     * @param source the starting node from which to traverse (usually a document node); may not be null
+     * @param encoding the encoding in which to write characters as bytes; if null, or an unsupported encoding
+     *   for the JVM, "UTF-8" will be used.
+     */
+    void write(final OutputStream byteStream, final N source, String encoding) throws IOException, GxmlMarshalException;
+    
+    /** Write XML, as characters, to a Writer, unformatted.
+     * 
+     * The output makes no attempt to format or pretty-print the output, but guarantees
+     * well-formedness (for core XML and for namespaces), and tries to be compact (that
+     * is, no newlines or spaces will be introduced).
+     * 
+     * @param characterStream the target Writer; may not be null
+     * @param source the starting node from which to traverse (usually a document node); may not be null
+     */
+    void write(final Writer characterStream, final N source) throws IOException, GxmlMarshalException;
 }

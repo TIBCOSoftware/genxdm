@@ -22,13 +22,13 @@ import org.genxdm.xs.exceptions.PatternException;
  */
 public interface Pattern
 {
-	/**
-	 * The lexical form of the pattern.
-	 */
-	String getValue();
+    /**
+     * The lexical form of the pattern.
+     */
+    String getValue();
 
-	/**
-	 * Checks the passed <em>String</em> value according to this <em>pattern</em> facet.
-	 */
-	void validate(String input) throws PatternException;
+    /**
+     * Checks the passed <em>String</em> value according to this <em>pattern</em> facet.
+     */
+    void validate(String input) throws PatternException;
 }

@@ -32,10 +32,10 @@ import org.genxdm.xs.enums.ProcessContentsMode;
  */
 public interface SchemaWildcard<A> extends ParticleTerm<A>
 {
-	NamespaceConstraint getNamespaceConstraint();
+    NamespaceConstraint getNamespaceConstraint();
 
-	/**
-	 * Returns how this term should be processed once it is matches against this wildcard term.
-	 */
-	ProcessContentsMode getProcessContents();
+    /**
+     * Returns how this term should be processed once it is matches against this wildcard term.
+     */
+    ProcessContentsMode getProcessContents();
 }

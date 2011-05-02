@@ -29,73 +29,73 @@ import org.genxdm.xs.types.NativeType;
 @SuppressWarnings("serial")
 public final class GxmlAtomCastException extends Exception
 {
-	private final QName errorCode;
-	private final QName sourceType;
-	private final String sourceValue;
-	private final QName targetType;
+    private final QName errorCode;
+    private final QName sourceType;
+    private final String sourceValue;
+    private final QName targetType;
 
-	public GxmlAtomCastException(final String sourceValue, final QName targetType, final QName errorCode)
-	{
-		this(sourceValue, NativeType.UNTYPED_ATOMIC.toQName(), targetType, errorCode);
-	}
+    public GxmlAtomCastException(final String sourceValue, final QName targetType, final QName errorCode)
+    {
+        this(sourceValue, NativeType.UNTYPED_ATOMIC.toQName(), targetType, errorCode);
+    }
 
-	public GxmlAtomCastException(final String sourceValue, final QName sourceType, final QName targetType, final QName errorCode)
-	{
-		this.sourceValue = PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
-		this.sourceType = PreCondition.assertArgumentNotNull(sourceType, "sourceType");
-		this.targetType = PreCondition.assertArgumentNotNull(targetType, "targetType");
-		this.errorCode = PreCondition.assertArgumentNotNull(errorCode, "errorCode");
-	}
+    public GxmlAtomCastException(final String sourceValue, final QName sourceType, final QName targetType, final QName errorCode)
+    {
+        this.sourceValue = PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
+        this.sourceType = PreCondition.assertArgumentNotNull(sourceType, "sourceType");
+        this.targetType = PreCondition.assertArgumentNotNull(targetType, "targetType");
+        this.errorCode = PreCondition.assertArgumentNotNull(errorCode, "errorCode");
+    }
 
-	public GxmlAtomCastException(final String sourceValue, final QName sourceType, final QName targetType, final QName errorCode, final Throwable cause)
-	{
-		super(cause);
-		this.sourceValue = PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
-		this.sourceType = PreCondition.assertArgumentNotNull(sourceType, "sourceType");
-		this.targetType = PreCondition.assertArgumentNotNull(targetType, "targetType");
-		this.errorCode = PreCondition.assertArgumentNotNull(errorCode, "errorCode");
-	}
+    public GxmlAtomCastException(final String sourceValue, final QName sourceType, final QName targetType, final QName errorCode, final Throwable cause)
+    {
+        super(cause);
+        this.sourceValue = PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
+        this.sourceType = PreCondition.assertArgumentNotNull(sourceType, "sourceType");
+        this.targetType = PreCondition.assertArgumentNotNull(targetType, "targetType");
+        this.errorCode = PreCondition.assertArgumentNotNull(errorCode, "errorCode");
+    }
 
-	public GxmlAtomCastException(final String sourceValue, final QName targetType, final QName errorCode, final Throwable cause)
-	{
-		this(sourceValue, NativeType.UNTYPED_ATOMIC.toQName(), targetType, errorCode, cause);
-	}
+    public GxmlAtomCastException(final String sourceValue, final QName targetType, final QName errorCode, final Throwable cause)
+    {
+        this(sourceValue, NativeType.UNTYPED_ATOMIC.toQName(), targetType, errorCode, cause);
+    }
 
-	/**
-	 * Returns the error code.
-	 */
-	public QName getErrorCode()
-	{
-		return errorCode;
-	}
+    /**
+     * Returns the error code.
+     */
+    public QName getErrorCode()
+    {
+        return errorCode;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "source=" + sourceType + "('" + sourceValue + "'), target='" + targetType + "', errorCode='" + errorCode + "'";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "source=" + sourceType + "('" + sourceValue + "'), target='" + targetType + "', errorCode='" + errorCode + "'";
+    }
 
-	/**
-	 * Returns the target data type name.
-	 */
-	public QName getSourceType()
-	{
-		return sourceType;
-	}
+    /**
+     * Returns the target data type name.
+     */
+    public QName getSourceType()
+    {
+        return sourceType;
+    }
 
-	/**
-	 * Returns the source value.
-	 */
-	public String getSourceValue()
-	{
-		return sourceValue;
-	}
+    /**
+     * Returns the source value.
+     */
+    public String getSourceValue()
+    {
+        return sourceValue;
+    }
 
-	/**
-	 * Returns the target data type name.
-	 */
-	public QName getTargetType()
-	{
-		return targetType;
-	}
+    /**
+     * Returns the target data type name.
+     */
+    public QName getTargetType()
+    {
+        return targetType;
+    }
 }

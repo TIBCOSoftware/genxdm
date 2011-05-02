@@ -23,8 +23,8 @@ package org.genxdm.xs.constraints;
  */
 public interface HasValueConstraint<A>
 {
-	/**
-	 * Returns the {value constraint} property, may be <code>null</code>.
-	 */
-	ValueConstraint<A> getValueConstraint();
+    /**
+     * Returns the {value constraint} property, may be <code>null</code>.
+     */
+    ValueConstraint<A> getValueConstraint();
 }

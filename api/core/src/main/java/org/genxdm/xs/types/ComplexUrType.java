@@ -22,18 +22,18 @@ import org.genxdm.xs.components.SchemaWildcard;
  */
 public interface ComplexUrType<A> extends ComplexType<A>
 {
-	/**
-	 * Returns the {base type definition} property.
-	 */
-	ComplexUrType<A> getBaseType();
+    /**
+     * Returns the {base type definition} property.
+     */
+    ComplexUrType<A> getBaseType();
 
-	/**
-	 * Returns the {attribute wildcard} property for a complex type.
-	 */
-	SchemaWildcard<A> getAttributeWildcard();
+    /**
+     * Returns the {attribute wildcard} property for a complex type.
+     */
+    SchemaWildcard<A> getAttributeWildcard();
 
-	/**
-	 * Returns the {content type} property.
-	 */
-	ContentType<A> getContentType();
+    /**
+     * Returns the {content type} property.
+     */
+    ContentType<A> getContentType();
 }

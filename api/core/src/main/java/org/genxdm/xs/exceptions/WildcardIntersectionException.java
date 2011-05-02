@@ -20,16 +20,16 @@ import org.genxdm.xs.enums.ValidationOutcome;
 @SuppressWarnings("serial")
 abstract public class WildcardIntersectionException extends ComponentConstraintException
 {
-	public static final String PART_INTERSECTION_NOT_EXPRESSIBLE = "5";
+    public static final String PART_INTERSECTION_NOT_EXPRESSIBLE = "5";
 
-	public WildcardIntersectionException(final String partNumber)
-	{
-		super(ValidationOutcome.SCC_Attribute_Wildcard_Intersection, partNumber);
-	}
+    public WildcardIntersectionException(final String partNumber)
+    {
+        super(ValidationOutcome.SCC_Attribute_Wildcard_Intersection, partNumber);
+    }
 
-	public WildcardIntersectionException(final String partNumber, final SchemaException cause)
-	{
-		super(ValidationOutcome.SCC_Attribute_Wildcard_Intersection, partNumber, cause);
-	}
+    public WildcardIntersectionException(final String partNumber, final SchemaException cause)
+    {
+        super(ValidationOutcome.SCC_Attribute_Wildcard_Intersection, partNumber, cause);
+    }
 
 }

@@ -23,13 +23,13 @@ import org.genxdm.xs.enums.ValidationOutcome;
 @SuppressWarnings("serial")
 public abstract class FacetException extends SchemaException
 {
-	public FacetException()
-	{
-		super(ValidationOutcome.CVC_Facet, "1");
-	}
+    public FacetException()
+    {
+        super(ValidationOutcome.CVC_Facet, "1");
+    }
 
-	public FacetException(final ValidationOutcome outcome)
-	{
-		super(outcome, "1");
-	}
+    public FacetException(final ValidationOutcome outcome)
+    {
+        super(outcome, "1");
+    }
 }

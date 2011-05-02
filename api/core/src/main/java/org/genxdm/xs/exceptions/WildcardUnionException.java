@@ -20,10 +20,10 @@ import org.genxdm.xs.enums.ValidationOutcome;
 @SuppressWarnings("serial")
 abstract public class WildcardUnionException extends ComponentConstraintException
 {
-	public static final String PART_UNION_NOT_EXPRESSIBLE = "5.3";
+    public static final String PART_UNION_NOT_EXPRESSIBLE = "5.3";
 
-	public WildcardUnionException(final String partNumber)
-	{
-		super(ValidationOutcome.SCC_Attribute_Wildcard_Union, partNumber);
-	}
+    public WildcardUnionException(final String partNumber)
+    {
+        super(ValidationOutcome.SCC_Attribute_Wildcard_Union, partNumber);
+    }
 }

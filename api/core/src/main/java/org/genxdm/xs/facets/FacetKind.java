@@ -20,5 +20,5 @@ package org.genxdm.xs.facets;
  */
 public enum FacetKind
 {
-	Enumeration, FractionDigits, Length, MaxExclusive, MaxInclusive, MaxLength, MinExclusive, MinInclusive, MinLength, Pattern, TotalDigits, Whitespace;
+    Enumeration, FractionDigits, Length, MaxExclusive, MaxInclusive, MaxLength, MinExclusive, MinInclusive, MinLength, Pattern, TotalDigits, Whitespace;
 }

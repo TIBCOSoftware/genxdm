@@ -65,23 +65,23 @@ public interface SequenceHandler<A> extends ContentHandler
 
     void text(List<? extends A> data) throws GxmlException;
 
-	/**
-	 * Receive notification of an atomic value as an item in the sequence.
-	 * <p/>
-	 * The callee will call this method to report each atom in the sequence.
-	 * 
-	 * @param atom
-	 *            The atomic value.
-	 */
-	void atom(A atom) throws GxmlException;
+    /**
+     * Receive notification of an atomic value as an item in the sequence.
+     * <p/>
+     * The callee will call this method to report each atom in the sequence.
+     * 
+     * @param atom
+     *            The atomic value.
+     */
+    void atom(A atom) throws GxmlException;
 
-	/**
-	 * Receive notification of the end of a sequence.
-	 */
-	void endSequence() throws GxmlException;
+    /**
+     * Receive notification of the end of a sequence.
+     */
+    void endSequence() throws GxmlException;
 
-	/**
-	 * Receive notification of the start of a sequence.
-	 */
-	void startSequence() throws GxmlException;
+    /**
+     * Receive notification of the start of a sequence.
+     */
+    void startSequence() throws GxmlException;
 }

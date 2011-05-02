@@ -32,24 +32,24 @@ import org.genxdm.xs.enums.DerivationMethod;
  */
 public interface ComplexType<A> extends ComplexMarkerType<A>
 {
-	/**
-	 * Returns the {attribute uses} property for a complex type.
-	 */
-	Map<QName, AttributeUse<A>> getAttributeUses();
+    /**
+     * Returns the {attribute uses} property for a complex type.
+     */
+    Map<QName, AttributeUse<A>> getAttributeUses();
 
-	/**
-	 * Returns the {attribute wildcard} property for a complex type.
-	 */
-	SchemaWildcard<A> getAttributeWildcard();
+    /**
+     * Returns the {attribute wildcard} property for a complex type.
+     */
+    SchemaWildcard<A> getAttributeWildcard();
 
-	/**
-	 * Returns the {content type} property.
-	 */
-	ContentType<A> getContentType();
+    /**
+     * Returns the {content type} property.
+     */
+    ContentType<A> getContentType();
 
-	/**
-	 * Returns the {prohibited substitutions} property. This is a run-time constraint on the types. A subset of
-	 * {extension, restriction}.
-	 */
-	Set<DerivationMethod> getProhibitedSubstitutions();
+    /**
+     * Returns the {prohibited substitutions} property. This is a run-time constraint on the types. A subset of
+     * {extension, restriction}.
+     */
+    Set<DerivationMethod> getProhibitedSubstitutions();
 }

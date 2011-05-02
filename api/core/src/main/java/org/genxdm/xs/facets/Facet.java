@@ -25,20 +25,20 @@ import org.genxdm.xs.types.SimpleType;
  */
 public interface Facet<A>
 {
-	/**
-	 * Determines whether the facet is fixed.
-	 */
-	boolean isFixed();
+    /**
+     * Determines whether the facet is fixed.
+     */
+    boolean isFixed();
 
-	FacetKind getKind();
+    FacetKind getKind();
 
-	/**
-	 * Checks the passed <em>typed value</em> according to this facet.
-	 * 
-	 * @param actualValue
-	 *            The actual value.
-	 * @param simpleType
-	 *            The type that validated the actual value.
-	 */
-	void validate(List<? extends A> actualValue, SimpleType<A> simpleType) throws FacetException;
+    /**
+     * Checks the passed <em>typed value</em> according to this facet.
+     * 
+     * @param actualValue
+     *            The actual value.
+     * @param simpleType
+     *            The type that validated the actual value.
+     */
+    void validate(List<? extends A> actualValue, SimpleType<A> simpleType) throws FacetException;
 }

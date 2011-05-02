@@ -30,49 +30,49 @@ import org.genxdm.exceptions.IllegalNullArgumentException;
  */
 public final class Resolved<E>
 {
-	private final URI location;
-	private final E resource;
-	private final URI systemId;
+    private final URI location;
+    private final E resource;
+    private final URI systemId;
 
-	/**
-	 * Initializer.
-	 * 
-	 * @param location
-	 *            The original location specified for the resource to be resolved.
-	 * @param resource
-	 *            The resource that has been resolved.
-	 * @param systemId
-	 *            The systemId of the resolved resource.
-	 */
-	public Resolved(final URI location, final E resource, final URI systemId)
-	{
-		this.location = IllegalNullArgumentException.check(location, "location");
-		this.resource = IllegalNullArgumentException.check(resource, "resource");
-		this.systemId = IllegalNullArgumentException.check(systemId, "systemId");
-	}
+    /**
+     * Initializer.
+     * 
+     * @param location
+     *            The original location specified for the resource to be resolved.
+     * @param resource
+     *            The resource that has been resolved.
+     * @param systemId
+     *            The systemId of the resolved resource.
+     */
+    public Resolved(final URI location, final E resource, final URI systemId)
+    {
+        this.location = IllegalNullArgumentException.check(location, "location");
+        this.resource = IllegalNullArgumentException.check(resource, "resource");
+        this.systemId = IllegalNullArgumentException.check(systemId, "systemId");
+    }
 
-	/**
-	 * Returns the original location specified for the resource.
-	 */
-	public URI getLocation()
-	{
-		return location;
-	}
+    /**
+     * Returns the original location specified for the resource.
+     */
+    public URI getLocation()
+    {
+        return location;
+    }
 
-	/**
-	 * Returns the resource that has been resolved.
-	 */
-	public E getResource()
-	{
-		return resource;
-	}
+    /**
+     * Returns the resource that has been resolved.
+     */
+    public E getResource()
+    {
+        return resource;
+    }
 
-	/**
-	 * Returns the systemId of the resolved resource. This may be used as a base-uri for resolving nested resource
-	 * references.
-	 */
-	public URI getSystemId()
-	{
-		return systemId;
-	}
+    /**
+     * Returns the systemId of the resolved resource. This may be used as a base-uri for resolving nested resource
+     * references.
+     */
+    public URI getSystemId()
+    {
+        return systemId;
+    }
 }

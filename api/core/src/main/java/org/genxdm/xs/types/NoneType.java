@@ -25,8 +25,8 @@ import javax.xml.namespace.QName;
  */
 public interface NoneType<A> extends PrimeType<A>
 {
-	/**
-	 * Returns the optional error code. May be <code>null</code>.
-	 */
-	QName getErrorCode();
+    /**
+     * Returns the optional error code. May be <code>null</code>.
+     */
+    QName getErrorCode();
 }

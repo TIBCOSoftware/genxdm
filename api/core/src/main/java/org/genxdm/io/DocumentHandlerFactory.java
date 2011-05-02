@@ -39,7 +39,7 @@ public interface DocumentHandlerFactory<N> {
     
     Resolver getDefaultResolver();
     
-	/**
+    /**
      * Returns a new builder for parsing and writing data models.
      */
     DocumentHandler<N> newDocumentHandler();

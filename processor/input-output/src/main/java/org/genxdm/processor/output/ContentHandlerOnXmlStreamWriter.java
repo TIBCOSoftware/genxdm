@@ -53,8 +53,8 @@ public class ContentHandlerOnXmlStreamWriter
         catch (XMLStreamException xse)
         {
             //throw new IOException(xse);
-        	// Note - JDK 1.5 compatibility - doesn't take "throwable" as an argument.
-        	throw new IOException(xse.toString());
+            // Note - JDK 1.5 compatibility - doesn't take "throwable" as an argument.
+            throw new IOException(xse.toString());
         }
     }
 
@@ -68,8 +68,8 @@ public class ContentHandlerOnXmlStreamWriter
         catch (XMLStreamException xse)
         {
             //throw new IOException(xse);
-        	// Note - JDK 1.5 compatibility - doesn't take "throwable" as an argument.
-        	throw new IOException(xse.toString());
+            // Note - JDK 1.5 compatibility - doesn't take "throwable" as an argument.
+            throw new IOException(xse.toString());
         }
     }
 

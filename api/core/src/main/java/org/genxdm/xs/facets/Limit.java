@@ -26,20 +26,20 @@ import org.genxdm.xs.types.SimpleType;
  */
 public interface Limit<A> extends Facet<A>
 {
-	/**
-	 * The value of the facet.
-	 */
-	A getLimit();
+    /**
+     * The value of the facet.
+     */
+    A getLimit();
 
-	/**
-	 * Validates the specified atom, with the specified type against this facet.
-	 * 
-	 * @param atom
-	 *            The atom to be validated.
-	 * @param simpleType
-	 *            The type of the atom.
-	 * @throws FacetMinMaxException
-	 *             if the atom does not comply with the facet.
-	 */
-	void validate(A atom, SimpleType<A> simpleType) throws FacetMinMaxException;
+    /**
+     * Validates the specified atom, with the specified type against this facet.
+     * 
+     * @param atom
+     *            The atom to be validated.
+     * @param simpleType
+     *            The type of the atom.
+     * @throws FacetMinMaxException
+     *             if the atom does not comply with the facet.
+     */
+    void validate(A atom, SimpleType<A> simpleType) throws FacetMinMaxException;
 }
