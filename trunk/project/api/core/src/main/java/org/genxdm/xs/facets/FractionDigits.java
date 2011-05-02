@@ -23,8 +23,8 @@ package org.genxdm.xs.facets;
  */
 public interface FractionDigits<A> extends Facet<A>
 {
-	/**
-	 * Returns the fractionDigits value which is the maximum number of digits in the fractional portion of a number.
-	 */
-	int getFractionDigits();
+    /**
+     * Returns the fractionDigits value which is the maximum number of digits in the fractional portion of a number.
+     */
+    int getFractionDigits();
 }

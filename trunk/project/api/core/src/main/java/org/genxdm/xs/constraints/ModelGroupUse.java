@@ -26,13 +26,13 @@ import org.genxdm.xs.components.SchemaParticle;
  */
 public interface ModelGroupUse<A> extends SchemaParticle<A>
 {
-	/**
-	 * Returns the {particle term} property for this usage which is a model group.
-	 */
-	ModelGroup<A> getTerm();
+    /**
+     * Returns the {particle term} property for this usage which is a model group.
+     */
+    ModelGroup<A> getTerm();
 
-	/**
-	 * Determines whether this particle is Emptiable (See W3C XML Schema Definition Language (XSD) Part 1: Structures).
-	 */
-	boolean isEmptiable();
+    /**
+     * Determines whether this particle is Emptiable (See W3C XML Schema Definition Language (XSD) Part 1: Structures).
+     */
+    boolean isEmptiable();
 }

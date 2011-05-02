@@ -23,13 +23,13 @@ package org.genxdm.xs.types;
  */
 public interface ChoiceType<A> extends SequenceType<A>
 {
-	/**
-	 * Returns the first choice type.
-	 */
-	SequenceType<A> getLHS();
+    /**
+     * Returns the first choice type.
+     */
+    SequenceType<A> getLHS();
 
-	/**
-	 * Returns the second choice type.
-	 */
-	SequenceType<A> getRHS();
+    /**
+     * Returns the second choice type.
+     */
+    SequenceType<A> getRHS();
 }

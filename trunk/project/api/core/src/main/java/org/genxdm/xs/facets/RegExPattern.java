@@ -20,12 +20,12 @@ package org.genxdm.xs.facets;
  */
 public interface RegExPattern
 {
-	/**
-	 * Determines whether the input matches this compiled regular expression pattern.
-	 * 
-	 * @param input
-	 *            The input string.
-	 * @return <code>true<code> if the input matches the pattern, otherwise <code>false</code>.
-	 */
-	boolean matches(String input);
+    /**
+     * Determines whether the input matches this compiled regular expression pattern.
+     * 
+     * @param input
+     *            The input string.
+     * @return <code>true<code> if the input matches the pattern, otherwise <code>false</code>.
+     */
+    boolean matches(String input);
 }

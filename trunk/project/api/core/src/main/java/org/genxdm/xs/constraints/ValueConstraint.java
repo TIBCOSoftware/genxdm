@@ -26,53 +26,53 @@ import org.genxdm.exceptions.PreCondition;
  */
 public final class ValueConstraint<A>
 {
-	public enum Kind
-	{
-		Fixed, Default;
+    public enum Kind
+    {
+        Fixed, Default;
 
-		public boolean isFixed()
-		{
-			return (this == Fixed);
-		}
+        public boolean isFixed()
+        {
+            return (this == Fixed);
+        }
 
-		public boolean isDefault()
-		{
-			return (this == Default);
-		}
-	}
+        public boolean isDefault()
+        {
+            return (this == Default);
+        }
+    }
 
-	private final Kind variety;
-	private final List<A> value;
-	private final String lexicalForm;
+    private final Kind variety;
+    private final List<A> value;
+    private final String lexicalForm;
 
-	public ValueConstraint(final Kind variety, final List<A> value, final String lexicalForm)
-	{
-		this.variety = PreCondition.assertArgumentNotNull(variety, "variety");
-		this.value = Collections.unmodifiableList(new ArrayList<A>(PreCondition.assertArgumentNotNull(value, "value")));
-		this.lexicalForm = PreCondition.assertArgumentNotNull(lexicalForm, "lexicalForm");
-	}
+    public ValueConstraint(final Kind variety, final List<A> value, final String lexicalForm)
+    {
+        this.variety = PreCondition.assertArgumentNotNull(variety, "variety");
+        this.value = Collections.unmodifiableList(new ArrayList<A>(PreCondition.assertArgumentNotNull(value, "value")));
+        this.lexicalForm = PreCondition.assertArgumentNotNull(lexicalForm, "lexicalForm");
+    }
 
-	/**
-	 * Returns the the {variety} property of the value constraint.
-	 */
-	public Kind getVariety()
-	{
-		return variety;
-	}
+    /**
+     * Returns the the {variety} property of the value constraint.
+     */
+    public Kind getVariety()
+    {
+        return variety;
+    }
 
-	/**
-	 * Returns the the {value} property of the value constraint.
-	 */
-	public List<A> getValue()
-	{
-		return value;
-	}
+    /**
+     * Returns the the {value} property of the value constraint.
+     */
+    public List<A> getValue()
+    {
+        return value;
+    }
 
-	/**
-	 * Returns the {lexical form} property of the value constraint.
-	 */
-	public String getLexicalForm()
-	{
-		return lexicalForm;
-	}
+    /**
+     * Returns the {lexical form} property of the value constraint.
+     */
+    public String getLexicalForm()
+    {
+        return lexicalForm;
+    }
 }

@@ -23,8 +23,8 @@ package org.genxdm.xs.types;
  */
 public interface ListSimpleType<A> extends SimpleType<A>
 {
-	/**
-	 * Returns the {item type definition} of the list type.
-	 */
-	SimpleType<A> getItemType();
+    /**
+     * Returns the {item type definition} of the list type.
+     */
+    SimpleType<A> getItemType();
 }

@@ -23,13 +23,13 @@ package org.genxdm.xs.types;
  */
 public interface ConcatType<A> extends SequenceType<A>
 {
-	/**
-	 * Returns the first sequence type in the sequence.
-	 */
-	SequenceType<A> getLHS();
+    /**
+     * Returns the first sequence type in the sequence.
+     */
+    SequenceType<A> getLHS();
 
-	/**
-	 * Returns the second sequence type in the sequence.
-	 */
-	SequenceType<A> getRHS();
+    /**
+     * Returns the second sequence type in the sequence.
+     */
+    SequenceType<A> getRHS();
 }

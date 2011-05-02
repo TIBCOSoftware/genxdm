@@ -23,8 +23,8 @@ package org.genxdm.xs.facets;
  */
 public interface MinLength<A> extends Facet<A>
 {
-	/**
-	 * Returns the minimum length allowed for a datatype.
-	 */
-	int getMinLength();
+    /**
+     * Returns the minimum length allowed for a datatype.
+     */
+    int getMinLength();
 }

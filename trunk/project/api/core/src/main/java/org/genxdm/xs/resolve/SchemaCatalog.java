@@ -26,27 +26,27 @@ import java.net.URI;
  */
 public interface SchemaCatalog
 {
-	/**
-	 * Invoked for xsi:schemaLocation hints.
-	 * 
-	 * @param baseURI
-	 *            The base URI of the containing schema document.
-	 * @param namespace
-	 *            The namespace specified by the hint.
-	 * @param schemaLocation
-	 *            The schema location specified.
-	 * @return A systemId for use by a resolver.
-	 */
-	URI resolveNamespaceAndSchemaLocation(URI baseURI, URI namespace, URI schemaLocation);
+    /**
+     * Invoked for xsi:schemaLocation hints.
+     * 
+     * @param baseURI
+     *            The base URI of the containing schema document.
+     * @param namespace
+     *            The namespace specified by the hint.
+     * @param schemaLocation
+     *            The schema location specified.
+     * @return A systemId for use by a resolver.
+     */
+    URI resolveNamespaceAndSchemaLocation(URI baseURI, URI namespace, URI schemaLocation);
 
-	/**
-	 * Invoked for xsi:noNamespaceSchemaLocation hints.
-	 * 
-	 * @param baseURI
-	 *            The base URI of the containing schema document.
-	 * @param schemaLocation
-	 *            The schema location specified.
-	 * @return A systemId for use by a resolver.
-	 */
-	URI resolveLocation(URI baseURI, URI schemaLocation);
+    /**
+     * Invoked for xsi:noNamespaceSchemaLocation hints.
+     * 
+     * @param baseURI
+     *            The base URI of the containing schema document.
+     * @param schemaLocation
+     *            The schema location specified.
+     * @return A systemId for use by a resolver.
+     */
+    URI resolveLocation(URI baseURI, URI schemaLocation);
 }

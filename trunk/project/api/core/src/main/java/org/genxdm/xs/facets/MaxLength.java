@@ -23,8 +23,8 @@ package org.genxdm.xs.facets;
  */
 public interface MaxLength<A> extends Facet<A>
 {
-	/**
-	 * Returns the maximum length allowed for a datatype.
-	 */
-	int getMaxLength();
+    /**
+     * Returns the maximum length allowed for a datatype.
+     */
+    int getMaxLength();
 }

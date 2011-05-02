@@ -46,10 +46,10 @@ public interface ProcessingContext<N> extends DocumentHandlerFactory<N>
      */
     Bookmark<N> bookmark(N node);
     
-	/**
-	 * Returns a {@link Model} for navigating an XDM model.
-	 */
-	Model<N> getModel();
+    /**
+     * Returns a {@link Model} for navigating an XDM model.
+     */
+    Model<N> getModel();
 
     /**
      * Indicates whether this processing context supports mutation of trees in-memory.
@@ -88,18 +88,18 @@ public interface ProcessingContext<N> extends DocumentHandlerFactory<N>
     boolean isSupported(String feature);
     
     /**
-	 * Returns a new {@link Cursor} for navigating the XDM model.
-	 * 
-	 * @param node
-	 *            The node over which the cursor is initially positioned. Cannot be <code>null</code>.
-	 */
-	Cursor<N> newCursor(N node);
+     * Returns a new {@link Cursor} for navigating the XDM model.
+     * 
+     * @param node
+     *            The node over which the cursor is initially positioned. Cannot be <code>null</code>.
+     */
+    Cursor<N> newCursor(N node);
 
 
     /**
-	 * Returns a new {@link DocumentHandler} for constructing and writing data models.
-	 */
-	FragmentBuilder<N> newFragmentBuilder();
+     * Returns a new {@link DocumentHandler} for constructing and writing data models.
+     */
+    FragmentBuilder<N> newFragmentBuilder();
 
     /**
      * Applies the node() test to the item.

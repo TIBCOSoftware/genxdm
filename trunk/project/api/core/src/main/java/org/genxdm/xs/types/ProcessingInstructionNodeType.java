@@ -23,8 +23,8 @@ package org.genxdm.xs.types;
  */
 public interface ProcessingInstructionNodeType<A> extends NodeType<A>
 {
-	/**
-	 * Returns the name of the processing-instruction.
-	 */
-	String getName();
+    /**
+     * Returns the name of the processing-instruction.
+     */
+    String getName();
 }

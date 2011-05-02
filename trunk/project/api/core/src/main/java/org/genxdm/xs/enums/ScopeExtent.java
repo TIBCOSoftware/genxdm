@@ -20,5 +20,5 @@ package org.genxdm.xs.enums;
  */
 public enum ScopeExtent
 {
-	Global, Local;
+    Global, Local;
 }

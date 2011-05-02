@@ -26,5 +26,5 @@ import org.genxdm.xs.components.SchemaWildcard;
  */
 public interface WildcardUse<A> extends SchemaParticle<A>
 {
-	SchemaWildcard<A> getTerm();
+    SchemaWildcard<A> getTerm();
 }

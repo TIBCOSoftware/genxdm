@@ -30,72 +30,72 @@ import org.genxdm.xs.types.Type;
  */
 public interface ElementDefinition<A> extends ElementNodeType<A>, SchemaDataComponent<A>, ParticleTerm<A>
 {
-	/**
-	 * {disallowed substitutions} property. <br/>
-	 * Returns the set of derivation methods that are blocked from substitution. Determines whether this element can be
-	 * used for a xsi:type or substitution group substitution.
-	 * <p/>
-	 * This is a instance constraint.
-	 */
-	Set<DerivationMethod> getDisallowedSubtitutions();
+    /**
+     * {disallowed substitutions} property. <br/>
+     * Returns the set of derivation methods that are blocked from substitution. Determines whether this element can be
+     * used for a xsi:type or substitution group substitution.
+     * <p/>
+     * This is a instance constraint.
+     */
+    Set<DerivationMethod> getDisallowedSubtitutions();
 
-	/**
-	 * Returns the {identity-constraints definitions} for this element.
-	 */
-	Iterable<IdentityConstraint<A>> getIdentityConstraints();
+    /**
+     * Returns the {identity-constraints definitions} for this element.
+     */
+    Iterable<IdentityConstraint<A>> getIdentityConstraints();
 
-	/**
-	 * The {scope} property.
-	 */
-	ScopeExtent getScopeExtent();
+    /**
+     * The {scope} property.
+     */
+    ScopeExtent getScopeExtent();
 
-	/**
-	 * The element declaration resolved to by the actual value of the substitutionGroup [attribute], if present,
-	 * otherwise <code>null</code>.
-	 * <p/>
-	 * Returns the head element of the substitution group that this element belongs to. May be <code>null</code> if there
-	 * is no substitution group for this element.
-	 */
-	ElementDefinition<A> getSubstitutionGroup();
+    /**
+     * The element declaration resolved to by the actual value of the substitutionGroup [attribute], if present,
+     * otherwise <code>null</code>.
+     * <p/>
+     * Returns the head element of the substitution group that this element belongs to. May be <code>null</code> if there
+     * is no substitution group for this element.
+     */
+    ElementDefinition<A> getSubstitutionGroup();
 
-	/**
-	 * Returns the set of derivation methods that are final. Determines whether this element can be used as the head of
-	 * a substitution group for elements whose types are derived by extension or restriction from the type of the
-	 * element.
-	 * <p/>
-	 * This is a schema constraint.
-	 */
-	Set<DerivationMethod> getSubstitutionGroupExclusions();
+    /**
+     * Returns the set of derivation methods that are final. Determines whether this element can be used as the head of
+     * a substitution group for elements whose types are derived by extension or restriction from the type of the
+     * element.
+     * <p/>
+     * This is a schema constraint.
+     */
+    Set<DerivationMethod> getSubstitutionGroupExclusions();
 
-	/**
-	 * Returns the elements that are members of the group with this element as the head.
-	 */
-	Iterable<ElementDefinition<A>> getSubstitutionGroupMembers();
+    /**
+     * Returns the elements that are members of the group with this element as the head.
+     */
+    Iterable<ElementDefinition<A>> getSubstitutionGroupMembers();
 
-	/**
-	 * The {type definition} property.
-	 */
-	Type<A> getType();
+    /**
+     * The {type definition} property.
+     */
+    Type<A> getType();
 
-	/**
-	 * Determines (quickly) whether this element has {identity-constraints definitions}.
-	 */
-	boolean hasIdentityConstraints();
+    /**
+     * Determines (quickly) whether this element has {identity-constraints definitions}.
+     */
+    boolean hasIdentityConstraints();
 
-	/**
-	 * Determines whether this element declaration is affiliated with a substitution group.
-	 */
-	boolean hasSubstitutionGroup();
+    /**
+     * Determines whether this element declaration is affiliated with a substitution group.
+     */
+    boolean hasSubstitutionGroup();
 
-	/**
-	 * Determines if the substitution group, with this element as the head, has members.
-	 */
-	boolean hasSubstitutionGroupMembers();
+    /**
+     * Determines if the substitution group, with this element as the head, has members.
+     */
+    boolean hasSubstitutionGroupMembers();
 
-	/**
-	 * Returns the {abstract} property for this element.
-	 * 
-	 * @return <code>true</code> if abstract, otherwise <code>false</code>.
-	 */
-	boolean isAbstract();
+    /**
+     * Returns the {abstract} property for this element.
+     * 
+     * @return <code>true</code> if abstract, otherwise <code>false</code>.
+     */
+    boolean isAbstract();
 }

@@ -24,30 +24,30 @@ import org.genxdm.xs.enums.ScopeExtent;
  */
 public interface SchemaComponent<A>
 {
-	/**
-	 * The {name} and {target namespace} properties.
-	 */
-	QName getName();
+    /**
+     * The {name} and {target namespace} properties.
+     */
+    QName getName();
 
-	/**
-	 * The {name} property.
-	 */
-	String getLocalName();
+    /**
+     * The {name} property.
+     */
+    String getLocalName();
 
-	/**
-	 * The {target namespace} property.
-	 */
-	String getTargetNamespace();
+    /**
+     * The {target namespace} property.
+     */
+    String getTargetNamespace();
 
-	/**
-	 * The {scope} property of this component.
-	 */
-	ScopeExtent getScopeExtent();
+    /**
+     * The {scope} property of this component.
+     */
+    ScopeExtent getScopeExtent();
 
-	/**
-	 * A component is anonymous if it does not explicitly have a name in a schema document.
-	 * 
-	 * A component may be assigned a processing-context unique name if it is anonymous.
-	 */
-	boolean isAnonymous();
+    /**
+     * A component is anonymous if it does not explicitly have a name in a schema document.
+     * 
+     * A component may be assigned a processing-context unique name if it is anonymous.
+     */
+    boolean isAnonymous();
 }

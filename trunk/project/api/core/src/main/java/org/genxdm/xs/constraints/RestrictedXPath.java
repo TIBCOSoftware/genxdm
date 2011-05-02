@@ -21,52 +21,52 @@ package org.genxdm.xs.constraints;
  */
 public interface RestrictedXPath
 {
-	/**
-	 * returns true if path started with ".//"
-	 */
-	boolean isRelocatable();
+    /**
+     * returns true if path started with ".//"
+     */
+    boolean isRelocatable();
 
-	/**
-	 * returns true if path ended with "@something"
-	 */
-	boolean isAttribute();
+    /**
+     * returns true if path ended with "@something"
+     */
+    boolean isAttribute();
 
-	/**
-	 * Gives the number of steps for this branch of the expression
-	 */
-	int getStepLength();
+    /**
+     * Gives the number of steps for this branch of the expression
+     */
+    int getStepLength();
 
-	/**
-	 * Returns the index of the highest step. This depends upon the xpath expression itself.
-	 */
-	int getUBoundStep();
+    /**
+     * Returns the index of the highest step. This depends upon the xpath expression itself.
+     */
+    int getUBoundStep();
 
-	/**
-	 * @param index
-	 *            zero-based, must be less than {@link #getStepLength}
-	 * @return a namespace URI, or null for this step
-	 */
-	String getStepNamespace(int index);
+    /**
+     * @param index
+     *            zero-based, must be less than {@link #getStepLength}
+     * @return a namespace URI, or null for this step
+     */
+    String getStepNamespace(int index);
 
-	/**
-	 * @param index
-	 *            zero-based, must be less than {@link #getStepLength}
-	 * @return an unqualified name, or WILDCARD
-	 */
-	String getStepLocalName(int index);
+    /**
+     * @param index
+     *            zero-based, must be less than {@link #getStepLength}
+     * @return an unqualified name, or WILDCARD
+     */
+    String getStepLocalName(int index);
 
-	boolean isWildcardNamespace(int index);
+    boolean isWildcardNamespace(int index);
 
-	boolean isWildcardLocalName(int index);
+    boolean isWildcardLocalName(int index);
 
-	/**
-	 * Determines whether the step specified is "." which is shorthand for "self::node()". <br/>
-	 * Any node will match this step.
-	 */
-	boolean isContextNode(int index);
+    /**
+     * Determines whether the step specified is "." which is shorthand for "self::node()". <br/>
+     * Any node will match this step.
+     */
+    boolean isContextNode(int index);
 
-	/**
-	 * Return the next XPath in a succession of alternates.
-	 */
-	RestrictedXPath getAlternate();
+    /**
+     * Return the next XPath in a succession of alternates.
+     */
+    RestrictedXPath getAlternate();
 }

@@ -39,9 +39,9 @@ public interface NodeNavigator<N>
     /**
      * Return the element that has the specified ID
      * 
-     * @param context	Any node from the document for which the ID 
+     * @param context   Any node from the document for which the ID 
      *                  lookup is being done; may not be null.
-     * @param id		The id being searched for, may not be null.
+     * @param id        The id being searched for, may not be null.
      * 
      * @return the element node (in the same document as the context node)
      * that has the specified ID, or <code>null</code> if no such element exists.

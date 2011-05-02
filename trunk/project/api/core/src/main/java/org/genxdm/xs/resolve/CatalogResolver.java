@@ -24,5 +24,5 @@ import java.net.URI;
  */
 public interface CatalogResolver
 {
-	InputStream resolveInputStream(URI catalogURI) throws IOException;
+    InputStream resolveInputStream(URI catalogURI) throws IOException;
 }

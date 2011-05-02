@@ -25,8 +25,8 @@ import java.util.List;
  */
 public interface EnumerationDefinition<A>
 {
-	/**
-	 * A set of values from the value space of the base type definition.
-	 */
-	List<A> getValue();
+    /**
+     * A set of values from the value space of the base type definition.
+     */
+    List<A> getValue();
 }

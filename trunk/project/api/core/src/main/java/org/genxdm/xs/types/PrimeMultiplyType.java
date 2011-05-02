@@ -22,5 +22,5 @@ package org.genxdm.xs.types;
  */
 public interface PrimeMultiplyType<A> extends PrimeType<A>, MultiplyType<A>
 {
-	PrimeType<A> getArgument();
+    PrimeType<A> getArgument();
 }

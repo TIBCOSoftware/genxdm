@@ -33,93 +33,93 @@ import org.genxdm.xs.resolve.PrefixResolver;
  */
 public interface SimpleType<A> extends SimpleMarkerType<A>
 {
-	Iterable<EnumerationDefinition<A>> getEnumerations();
+    Iterable<EnumerationDefinition<A>> getEnumerations();
 
-	Facet<A> getFacetOfKind(FacetKind facetKind);
+    Facet<A> getFacetOfKind(FacetKind facetKind);
 
-	Iterable<Facet<A>> getFacets();
+    Iterable<Facet<A>> getFacets();
 
-	NativeType getNativeType();
+    NativeType getNativeType();
 
-	SimpleType<A> getNativeTypeDefinition();
+    SimpleType<A> getNativeTypeDefinition();
 
-	/**
-	 * Returns the pattern facets for this derivation step, may be <code>null</code>.
-	 */
-	Iterable<Pattern> getPatterns();
+    /**
+     * Returns the pattern facets for this derivation step, may be <code>null</code>.
+     */
+    Iterable<Pattern> getPatterns();
 
-	WhiteSpacePolicy getWhiteSpacePolicy();
+    WhiteSpacePolicy getWhiteSpacePolicy();
 
-	boolean hasEnumerations();
+    boolean hasEnumerations();
 
-	boolean hasFacetOfKind(FacetKind facetKind);
+    boolean hasFacetOfKind(FacetKind facetKind);
 
-	boolean hasFacets();
+    boolean hasFacets();
 
-	/**
-	 * Determines whether this derivation step has pattern facets.
-	 */
-	boolean hasPatterns();
+    /**
+     * Determines whether this derivation step has pattern facets.
+     */
+    boolean hasPatterns();
 
-	/**
-	 * Determines whether the {variety} property is <b>atomic</b>.
-	 */
-	boolean isAtomicType();
+    /**
+     * Determines whether the {variety} property is <b>atomic</b>.
+     */
+    boolean isAtomicType();
 
-	/**
-	 * Returns whether this type is derived from xs:ID
-	 */
-	boolean isID();
+    /**
+     * Returns whether this type is derived from xs:ID
+     */
+    boolean isID();
 
-	/**
-	 * Returns whether this type is derived from xs:IDREF
-	 */
-	boolean isIDREF();
+    /**
+     * Returns whether this type is derived from xs:IDREF
+     */
+    boolean isIDREF();
 
-	/**
-	 * Returns whether this type is derived from xs:IDREFS
-	 */
-	boolean isIDREFS();
+    /**
+     * Returns whether this type is derived from xs:IDREFS
+     */
+    boolean isIDREFS();
 
-	/**
-	 * Determines whether the {variety} property is <b>list</b>.
-	 */
-	boolean isListType();
+    /**
+     * Determines whether the {variety} property is <b>list</b>.
+     */
+    boolean isListType();
 
-	/**
-	 * Determines whether the {variety} property is <b>union</b>.
-	 */
-	boolean isUnionType();
+    /**
+     * Determines whether the {variety} property is <b>union</b>.
+     */
+    boolean isUnionType();
 
-	/**
-	 * Normalize this type (simple types only). This applies the whitespace pseudo-facet for the type in question. List
-	 * does collapse processing; atomic types delegate to the atom manager's own normalization routines (typically also
-	 * collapse, but possibly replace or preserve).
-	 * 
-	 * @param initialValue
-	 *            The lexical value (in XML Schema terms, the initial value). Must not be null.
-	 * @return A normalized string, which may be identical to the initial value, and is never null (in XML Schema terms,
-	 *         the normalized value).
-	 */
-	String normalize(String initialValue);
+    /**
+     * Normalize this type (simple types only). This applies the whitespace pseudo-facet for the type in question. List
+     * does collapse processing; atomic types delegate to the atom manager's own normalization routines (typically also
+     * collapse, but possibly replace or preserve).
+     * 
+     * @param initialValue
+     *            The lexical value (in XML Schema terms, the initial value). Must not be null.
+     * @return A normalized string, which may be identical to the initial value, and is never null (in XML Schema terms,
+     *         the normalized value).
+     */
+    String normalize(String initialValue);
 
-	List<A> validate(List<? extends A> value) throws DatatypeException;
+    List<A> validate(List<? extends A> value) throws DatatypeException;
 
-	/**
-	 * Determines whether the supplied string literal is valid with respect to this type definition and, if successful,
-	 * calculates the value space representation of the literal.
-	 * <p/>
-	 * Applies only to simple type definitions.
-	 * <p/>
-	 * The lexical facets of the value are first checked and then it is parsed and expanded to bring it into the value
-	 * space defined by this type. Validation then proceeds by checking facets appropriate to this type.
-	 * 
-	 * @param initialValue
-	 *            The string literal to be validated.
-	 * @throws DatatypeException
-	 *             If the string literal is not valid with respect to this type definition.
-	 */
-	List<A> validate(String initialValue) throws DatatypeException;
+    /**
+     * Determines whether the supplied string literal is valid with respect to this type definition and, if successful,
+     * calculates the value space representation of the literal.
+     * <p/>
+     * Applies only to simple type definitions.
+     * <p/>
+     * The lexical facets of the value are first checked and then it is parsed and expanded to bring it into the value
+     * space defined by this type. Validation then proceeds by checking facets appropriate to this type.
+     * 
+     * @param initialValue
+     *            The string literal to be validated.
+     * @throws DatatypeException
+     *             If the string literal is not valid with respect to this type definition.
+     */
+    List<A> validate(String initialValue) throws DatatypeException;
 
-	List<A> validate(String initialValue, final PrefixResolver resolver) throws DatatypeException;
+    List<A> validate(String initialValue, final PrefixResolver resolver) throws DatatypeException;
 }

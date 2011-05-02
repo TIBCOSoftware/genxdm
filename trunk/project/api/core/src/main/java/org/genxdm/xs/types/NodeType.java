@@ -22,8 +22,8 @@ import org.genxdm.NodeKind;
  */
 public interface NodeType<A> extends PrimeType<A>
 {
-	/**
-	 * Returns the node type .
-	 */
-	NodeKind getNodeKind();
+    /**
+     * Returns the node type .
+     */
+    NodeKind getNodeKind();
 }

@@ -23,8 +23,8 @@ package org.genxdm.xs.facets;
  */
 public interface TotalDigits<A> extends Facet<A>
 {
-	/**
-	 * Returns the maximum number of decimal digits allowed for a number.
-	 */
-	int getTotalDigits();
+    /**
+     * Returns the maximum number of decimal digits allowed for a number.
+     */
+    int getTotalDigits();
 }

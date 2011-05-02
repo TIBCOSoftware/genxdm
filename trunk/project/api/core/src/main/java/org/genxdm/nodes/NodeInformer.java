@@ -84,22 +84,22 @@ public interface NodeInformer<N>
      */
     URI getDocumentURI(N node);
 
-	/**
-	 * Returns the local-name property of the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name">
-	 * dm:node-name</a>.
-	 * 
-	 * <br/>
-	 * 
-	 * <p>
-	 * TEXT, COMMENT, and DOCUMENT nodes return <code>null</code>; they have no name.
-	 * </p>
-	 * 
-	 * <p>Other node types should never return <code>null</code>.  Note that in the
-	 * case of namespace nodes, the <code>dm:node-name</code> accessor indicates that
-	 * it returns an empty sequence in the case of an "empty" prefix (as in
-	 * <code>xmlns=...</code>).  This API, however, dictates that an empty string
-	 * will be returned in that particular case.</p>
-	 *  
+    /**
+     * Returns the local-name property of the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name">
+     * dm:node-name</a>.
+     * 
+     * <br/>
+     * 
+     * <p>
+     * TEXT, COMMENT, and DOCUMENT nodes return <code>null</code>; they have no name.
+     * </p>
+     * 
+     * <p>Other node types should never return <code>null</code>.  Note that in the
+     * case of namespace nodes, the <code>dm:node-name</code> accessor indicates that
+     * it returns an empty sequence in the case of an "empty" prefix (as in
+     * <code>xmlns=...</code>).  This API, however, dictates that an empty string
+     * will be returned in that particular case.</p>
+     *  
      * @param node
      *            The node for which the node local-name is required.
      *            
@@ -144,15 +144,15 @@ public interface NodeInformer<N>
      */
     Iterable<String> getNamespaceNames(N node, boolean orderCanonical);
 
-	/**
-	 * Returns the namespace-uri part of the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name">
-	 * dm:node-name</a>.
-	 * 
-	 * <br/>
-	 * 
-	 * DOCUMENT, COMMENT, and TEXT nodes return <code>null</code>; they have no name.
-	 * 
-	 * Other node types should never return <code>null</code>.
+    /**
+     * Returns the namespace-uri part of the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name">
+     * dm:node-name</a>.
+     * 
+     * <br/>
+     * 
+     * DOCUMENT, COMMENT, and TEXT nodes return <code>null</code>; they have no name.
+     * 
+     * Other node types should never return <code>null</code>.
      * @param node
      *            The node for which the node namespace-uri is required.
      * 
@@ -190,19 +190,19 @@ public interface NodeInformer<N>
      */
     NodeKind getNodeKind(N node);
 
-	/**
-	 * Returns the prefix part of the dm:node-name.
-	 * 
-	 * <br/>
-	 * 
-	 * DOCUMENT, COMMENT, and TEXT nodes return <code>null</code>; they have no name.
-	 * 
-	 * Other node types should never return <code>null</code>.
-	 * This is just a hint because it usually contains the prefix of the original document. The prefix will not be
-	 * updated to reflect in scope namespaces.
+    /**
+     * Returns the prefix part of the dm:node-name.
+     * 
+     * <br/>
+     * 
+     * DOCUMENT, COMMENT, and TEXT nodes return <code>null</code>; they have no name.
+     * 
+     * Other node types should never return <code>null</code>.
+     * This is just a hint because it usually contains the prefix of the original document. The prefix will not be
+     * updated to reflect in scope namespaces.
      * @param node
      *            The node for which the node prefix hint is required.
-	 */
+     */
     String getPrefix(N node);
 
     /**

@@ -23,13 +23,13 @@ package org.genxdm.xs.types;
  */
 public interface UnionSimpleType<A> extends SimpleType<A>
 {
-	/**
-	 * Returns the {base type definition} of this union type.
-	 */
-	SimpleType<A> getBaseType();
+    /**
+     * Returns the {base type definition} of this union type.
+     */
+    SimpleType<A> getBaseType();
 
-	/**
-	 * Returns the member types for union and list simple types. For list types, there will be a single member type.
-	 */
-	Iterable<SimpleType<A>> getMemberTypes();
+    /**
+     * Returns the member types for union and list simple types. For list types, there will be a single member type.
+     */
+    Iterable<SimpleType<A>> getMemberTypes();
 }

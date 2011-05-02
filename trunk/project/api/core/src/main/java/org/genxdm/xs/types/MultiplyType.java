@@ -25,13 +25,13 @@ import org.genxdm.xs.enums.KeeneQuantifier;
  */
 public interface MultiplyType<A> extends SequenceType<A>
 {
-	/**
-	 * Returns the argument type that is multiplied.
-	 */
-	SequenceType<A> getArgument();
+    /**
+     * Returns the argument type that is multiplied.
+     */
+    SequenceType<A> getArgument();
 
-	/**
-	 * Returns the cardinality of the argument type.
-	 */
-	KeeneQuantifier getMultiplier();
+    /**
+     * Returns the cardinality of the argument type.
+     */
+    KeeneQuantifier getMultiplier();
 }

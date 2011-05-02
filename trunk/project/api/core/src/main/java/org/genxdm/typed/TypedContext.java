@@ -35,27 +35,27 @@ import org.genxdm.xs.Schema;
 public interface TypedContext<N, A> 
     extends Schema<A>
 {
-	/**
-	 * Returns the bridge used for atom interaction.
-	 */
-	AtomBridge<A> getAtomBridge();
+    /**
+     * Returns the bridge used for atom interaction.
+     */
+    AtomBridge<A> getAtomBridge();
 
-	/**
-	 * Returns the bridge used for meta-data interaction.
-	 */
-	MetaBridge<A> getMetaBridge();
+    /**
+     * Returns the bridge used for meta-data interaction.
+     */
+    MetaBridge<A> getMetaBridge();
 
-	/**
-	 * Returns the {@link TypedModel} for navigating the document model. <br/>
-	 */
-	TypedModel<N, A> getModel();
-	
-	/**
-	 * Returns the associated ProcessingContext
-	 */
-	ProcessingContext<N> getProcessingContext();
-	
-	VariantBridge<N, A> getVariantBridge();
+    /**
+     * Returns the {@link TypedModel} for navigating the document model. <br/>
+     */
+    TypedModel<N, A> getModel();
+    
+    /**
+     * Returns the associated ProcessingContext
+     */
+    ProcessingContext<N> getProcessingContext();
+    
+    VariantBridge<N, A> getVariantBridge();
 
     /**
      * Determines whether the item is an atom.
@@ -83,19 +83,19 @@ public interface TypedContext<N, A>
      */
     boolean isLocked();
 
-	/**
-	 * The processing context is in an unlocked state after it has been created. While in this state an implementation is not required to provide safe multi-threaded access. Locking the processing context guarantees that the processing context is safe for access by
-	 * different threads. In practice this will mean that further loading of schema resources is prohibited.
-	 */
-	void lock();
+    /**
+     * The processing context is in an unlocked state after it has been created. While in this state an implementation is not required to provide safe multi-threaded access. Locking the processing context guarantees that the processing context is safe for access by
+     * different threads. In practice this will mean that further loading of schema resources is prohibited.
+     */
+    void lock();
 
-	/**
-	 * Returns a cursor for navigating the tree part of the data model.
-	 */
-	TypedCursor<N, A> newCursor(N node);
-	
-	SequenceBuilder<N, A> newSequenceBuilder();
-	
-	N validate(N source, Validator<N, A> validator, URI schemaNamespace);
+    /**
+     * Returns a cursor for navigating the tree part of the data model.
+     */
+    TypedCursor<N, A> newCursor(N node);
+    
+    SequenceBuilder<N, A> newSequenceBuilder();
+    
+    N validate(N source, Validator<N, A> validator, URI schemaNamespace);
 
 }

@@ -25,43 +25,43 @@ import org.genxdm.exceptions.PreCondition;
 @SuppressWarnings("serial")
 public class AtomCastRuntimeException extends RuntimeException
 {
-	private final QName errorCode;
-	private final String sourceValue;
-	private final QName targetType;
+    private final QName errorCode;
+    private final String sourceValue;
+    private final QName targetType;
 
-	public AtomCastRuntimeException(final String sourceValue, final QName targetType, final QName errorCode)
-	{
-		this.sourceValue = PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
-		this.targetType = PreCondition.assertArgumentNotNull(targetType, "targetType");
-		this.errorCode = PreCondition.assertArgumentNotNull(errorCode, "errorCode");
-	}
+    public AtomCastRuntimeException(final String sourceValue, final QName targetType, final QName errorCode)
+    {
+        this.sourceValue = PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
+        this.targetType = PreCondition.assertArgumentNotNull(targetType, "targetType");
+        this.errorCode = PreCondition.assertArgumentNotNull(errorCode, "errorCode");
+    }
 
-	public AtomCastRuntimeException(final String sourceValue, final QName targetType, final QName errorCode, final Throwable cause)
-	{
-		super(cause);
-		this.sourceValue = PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
-		this.targetType = PreCondition.assertArgumentNotNull(targetType, "targetType");
-		this.errorCode = PreCondition.assertArgumentNotNull(errorCode, "errorCode");
-	}
+    public AtomCastRuntimeException(final String sourceValue, final QName targetType, final QName errorCode, final Throwable cause)
+    {
+        super(cause);
+        this.sourceValue = PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
+        this.targetType = PreCondition.assertArgumentNotNull(targetType, "targetType");
+        this.errorCode = PreCondition.assertArgumentNotNull(errorCode, "errorCode");
+    }
 
-	public QName getErrorCode()
-	{
-		return errorCode;
-	}
+    public QName getErrorCode()
+    {
+        return errorCode;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "sourceValue=" + sourceValue + ", targetType='" + targetType + "', errorCode='" + errorCode + "'";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "sourceValue=" + sourceValue + ", targetType='" + targetType + "', errorCode='" + errorCode + "'";
+    }
 
-	public String getSourceValue()
-	{
-		return sourceValue;
-	}
+    public String getSourceValue()
+    {
+        return sourceValue;
+    }
 
-	public QName getTargetType()
-	{
-		return targetType;
-	}
+    public QName getTargetType()
+    {
+        return targetType;
+    }
 }
