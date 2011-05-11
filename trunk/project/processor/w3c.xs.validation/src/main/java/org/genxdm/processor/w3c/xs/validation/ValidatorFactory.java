@@ -16,45 +16,40 @@
 package org.genxdm.processor.w3c.xs.validation;
 
 import org.genxdm.names.NameSource;
-import org.genxdm.processor.w3c.xs.validation.api.VxValidationHost;
-import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCache;
+import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCacheFactory;
 import org.genxdm.processor.w3c.xs.validation.impl.ValidationFactoryImpl;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.ElementDefinition;
 
 
-public final class ValidatorCacheFactory<N, A>
+public final class ValidatorFactory<N, A>
 {
 	private final AtomBridge<A> atomBridge;
 	private final VxValidatorCacheFactory<A> factory;
 	private final NameSource nameBridge = new NameSource();
 
-	public ValidatorCacheFactory(final TypedContext<N, A> pcx)
+	public ValidatorFactory(final TypedContext<N, A> pcx)
 	{
-		final VxValidationHost<A> vxHost = new ValidationHost<N, A>(pcx);
-		this.factory = new ValidationFactoryImpl<A>(vxHost);
+		this.factory = new ValidationFactoryImpl<A>(pcx, pcx.getAtomBridge());
 		this.atomBridge = pcx.getAtomBridge();
 	}
 
-	public ValidatorCache<N, A> newValidatorCache()
+    public XdmContentValidator<N, A> newXdmContentValidator()
+    {
+        final VxValidator<A> kernel = factory.newValidatorCache().newValidator();
+        return new XdmContentValidatorImpl<N, A>(kernel, atomBridge, nameBridge);
+    }
+
+    public SAXContentValidator<N, A> newSAXContentValidator()
+    {
+        final VxValidator<A> kernel = factory.newValidatorCache().newValidator();
+        return new SAXContentValidatorImpl<N, A>(kernel, nameBridge);
+    }
+    
+	public ValidatorFactory<N, A> schemaDocumentLocationStrategy(final SchemaDocumentLocationStrategy schemaDocumentLocationStrategy)
 	{
-		final VxValidatorCache<A> validation = factory.newValidatorCache();
-
-		return new ValidatorCacheImpl<N, A>(validation, atomBridge, nameBridge);
-	}
-
-	public ValidatorCache<N, A> newValidatorCache(final ElementDefinition<A> elementDeclaration)
-	{
-		final VxValidatorCache<A> validation = factory.newValidatorCache(elementDeclaration);
-
-		return new ValidatorCacheImpl<N, A>(validation, atomBridge, nameBridge);
-	}
-
-	public ValidatorCacheFactory<N, A> schemaDocumentLocationStrategy(final GxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy)
-	{
-		factory.setSchemaDocumentLocationStrategy(new GxSchemaDocumentLocationStrategyAdapter(schemaDocumentLocationStrategy));
+		factory.setSchemaDocumentLocationStrategy(new SchemaDocumentLocationStrategyAdapter(schemaDocumentLocationStrategy));
 		return this;
 	}
 }

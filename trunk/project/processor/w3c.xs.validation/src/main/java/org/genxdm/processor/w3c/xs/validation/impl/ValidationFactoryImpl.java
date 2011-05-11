@@ -16,31 +16,34 @@
 package org.genxdm.processor.w3c.xs.validation.impl;
 
 import org.genxdm.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrategy;
-import org.genxdm.processor.w3c.xs.validation.api.VxValidationHost;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCache;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCacheFactory;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
 
 
 public final class ValidationFactoryImpl<A> implements VxValidatorCacheFactory<A>
 {
-	private final VxValidationHost<A> host;
-	private VxSchemaDocumentLocationStrategy sdl;
+    private final ComponentProvider<A> components;
+    private final AtomBridge<A> atoms;
+    private VxSchemaDocumentLocationStrategy sdl;
 
-	public ValidationFactoryImpl(final VxValidationHost<A> host)
+	public ValidationFactoryImpl(final ComponentProvider<A> cp, final AtomBridge<A> ab)
 	{
-		this.host = PreCondition.assertArgumentNotNull(host, "host");
+		this.components = PreCondition.assertArgumentNotNull(cp, "ComponentProvider");
+		this.atoms = PreCondition.assertNotNull(ab, "AtomBridge");
 	}
 
 	public VxValidatorCache<A> newValidatorCache()
 	{
-		return new ValidationCache<A>(null, host, sdl);
+		return new ValidationCache<A>(null, components, atoms, sdl);
 	}
 
 	public VxValidatorCache<A> newValidatorCache(final ElementDefinition<A> elementDeclaration)
 	{
 		PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration");
-		return new ValidationCache<A>(elementDeclaration, host, sdl);
+		return new ValidationCache<A>(elementDeclaration, components, atoms, sdl);
 	}
 
 	public VxValidatorCacheFactory<A> setSchemaDocumentLocationStrategy(final VxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy)

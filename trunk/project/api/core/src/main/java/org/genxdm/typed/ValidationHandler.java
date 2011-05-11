@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2009-2010 TIBCO Software Inc.
+/*
+ * Copyright (c) 2011 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.validation;
+package org.genxdm.typed;
 
-import org.genxdm.xs.exceptions.SchemaExceptionHandler;
+import org.genxdm.typed.io.SequenceHandler;
 
-public interface GxValidatorConfig
+public interface ValidationHandler<N, A>
+    extends SequenceHandler<A>, Validator<N, A>
 {
-	void reset();
-
-	void setExceptionHandler(SchemaExceptionHandler handler);
 }

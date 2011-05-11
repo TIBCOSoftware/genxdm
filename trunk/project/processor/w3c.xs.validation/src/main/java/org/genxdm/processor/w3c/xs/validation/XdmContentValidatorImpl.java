@@ -27,19 +27,20 @@ import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
+import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCacheFactory;
+import org.genxdm.processor.w3c.xs.validation.impl.ValidationFactoryImpl;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.Emulation;
 import org.genxdm.xs.Schema;
 import org.genxdm.xs.exceptions.AbortException;
-import org.genxdm.xs.exceptions.SchemaExceptionCatcher;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
 
-final class ContentValidatorImpl<N, A> implements ContentValidator<N, A>
+final class XdmContentValidatorImpl<N, A> implements XdmContentValidator<N, A>
 {
-	public ContentValidatorImpl(final VxValidator<A> kernel, final AtomBridge<A> atomBridge, final NameSource nameBridge)
-	{
+    public XdmContentValidatorImpl(final VxValidator<A> kernel, final AtomBridge<A> atomBridge, final NameSource nameBridge)
+    {
 		this.kernel = kernel;
 		this.atomBridge = atomBridge;
 	}
@@ -203,44 +204,49 @@ final class ContentValidatorImpl<N, A> implements ContentValidator<N, A>
     }
 
     @Override
-    public SchemaExceptionCatcher getSchemaExceptionCatcher()
+    public SchemaExceptionHandler getSchemaExceptionHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return errors;
     }
 
     @Override
     public SequenceBuilder<N, A> getSequenceBuilder()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return builder;
     }
 
     @Override
     public void setSchema(Schema<A> cache)
     {
-        // TODO Auto-generated method stub
-        
+        VxValidatorCacheFactory<A> factory = new ValidationFactoryImpl<A>(cache, atomBridge);
+        kernel = factory.newValidatorCache().newValidator();
+        kernel.setExceptionHandler(errors);
+        kernel.setOutputHandler(new OutputAdapter<A>(builder));
     }
 
     @Override
     public void setSchemaExceptionHandler(SchemaExceptionHandler errors)
     {
+        this.errors = errors;
         kernel.setExceptionHandler(errors);
     }
 
     @Override
     public void setSequenceBuilder(SequenceBuilder<N, A> builder)
     {
-        kernel.setOutputHandler(new GxOutputAdapter<A>(builder));
+        this.builder = builder;
+        kernel.setOutputHandler(new OutputAdapter<A>(builder));
     }
+
+    private SequenceBuilder<N, A> builder;
+    private SchemaExceptionHandler errors;
+    private VxValidator<A> kernel;
 
     private final AtomBridge<A> atomBridge;
     private final LinkedList<VxMapping<QName, String>> m_attributes = new LinkedList<VxMapping<QName, String>>();
     // The name of the element that has yet to be passed to the validation kernel
     // because we are buffering namespace and attribute events.
     private QName m_elementName = null;
-    private final VxValidator<A> kernel;
     private final LinkedList<VxMapping<String, String>> m_namespaces = new LinkedList<VxMapping<String, String>>();
 
 }

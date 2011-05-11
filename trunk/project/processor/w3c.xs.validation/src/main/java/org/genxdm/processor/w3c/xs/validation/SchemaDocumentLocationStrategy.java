@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.validation.api;
+package org.genxdm.processor.w3c.xs.validation;
 
-import org.genxdm.names.NameSource;
-import org.genxdm.typed.types.AtomBridge;
+import java.io.IOException;
+import java.net.URI;
 
-public interface VxValidationHost<A>
+public interface SchemaDocumentLocationStrategy
 {
-	VxMetaBridge<A> getMetaBridge();
+	void noNamespaceSchemaLocation(URI baseURI, URI schemaLocation) throws IOException;
 
-	AtomBridge<A> getAtomBridge();
-
-	NameSource getNameBridge();
+	void schemaLocation(URI baseURI, URI namespace, URI schemaLocation) throws IOException;
 }

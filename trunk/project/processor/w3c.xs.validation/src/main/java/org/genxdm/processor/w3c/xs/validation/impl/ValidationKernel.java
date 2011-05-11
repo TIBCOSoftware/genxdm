@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.exception.CvcElementFixedValueOverriddenSimpleException;
 import org.genxdm.processor.w3c.xs.exception.CvcElementUnexpectedChildInNilledElementException;
 import org.genxdm.processor.w3c.xs.exception.CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException;
@@ -31,9 +32,9 @@ import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
 import org.genxdm.processor.w3c.xs.validation.api.VxOutputHandler;
 import org.genxdm.processor.w3c.xs.validation.api.VxPSVI;
 import org.genxdm.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrategy;
-import org.genxdm.processor.w3c.xs.validation.api.VxValidationHost;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
 import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.xs.enums.ProcessContentsMode;
@@ -114,18 +115,18 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 	private final StringBuilder m_text = new StringBuilder();
 	private URI documentURI;
 
-	public ValidationKernel(final VxValidationHost<A> host, final ValidationCache<A> cache, final VxSchemaDocumentLocationStrategy sdl)
+	public ValidationKernel(final ComponentProvider<A> definitions, final AtomBridge<A> atomBridge, final ValidationCache<A> cache, final VxSchemaDocumentLocationStrategy sdl)
 	{
-		PreCondition.assertArgumentNotNull(host, "host");
-		m_atomBridge = host.getAtomBridge();
-		m_namespaces = new ValidationPrefixResolver(host.getNameBridge());
-		m_attributes = new AttributeManager<A>(host.getMetaBridge(), m_atomBridge, host.getNameBridge());
+		m_atomBridge = PreCondition.assertNotNull(atomBridge);
+		NameSource names = new NameSource();
+		m_namespaces = new ValidationPrefixResolver(names);
+		m_attributes = new AttributeManager<A>(definitions, m_atomBridge, names);
 		m_currentItem = m_documentItem = new ValidationItem<A>();
 		// A strict start is necessary to ensure that the root element has a declaration.
 		// However, the specification does not seem very clear on what should be the starting mode.
-		m_currentPSVI = m_documentPSVI = new ModelPSVI<A>(ProcessContentsMode.Strict, host.getMetaBridge(), cache);
+		m_currentPSVI = m_documentPSVI = new ModelPSVI<A>(ProcessContentsMode.Strict, definitions, cache);
 
-		m_mac = new ModelAnalyzerImpl<A>(host.getMetaBridge(), cache);
+		m_mac = new ModelAnalyzerImpl<A>(definitions, cache);
 		this.sdl = sdl;
 	}
 
@@ -523,7 +524,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		m_nodeIndex = -1;
 		m_icm.reset();
 	}
-
+	
 	public void setExceptionHandler(final SchemaExceptionHandler handler)
 	{
 		m_errors = PreCondition.assertArgumentNotNull(handler, "handler");
