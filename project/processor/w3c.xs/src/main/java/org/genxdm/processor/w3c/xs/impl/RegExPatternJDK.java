@@ -13,14 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
+import java.util.regex.Pattern;
+
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.facets.RegExPattern;
 
-public interface SmRegExCompiler
+final class RegExPatternJDK implements RegExPattern
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
+	private final Pattern m_pattern;
 
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+	public RegExPatternJDK(final Pattern pattern)
+	{
+		m_pattern = PreCondition.assertArgumentNotNull(pattern, "pattern");
+	}
+
+	public boolean matches(final String input)
+	{
+		PreCondition.assertArgumentNotNull(input, "input");
+		return m_pattern.matcher(input).matches();
+	}
 }

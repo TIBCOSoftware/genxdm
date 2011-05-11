@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
+import java.math.BigInteger;
 
-public interface SmRegExCompiler
+final class XMLFractionDigitsFacet<A> extends XMLFacet<A>
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
+	public boolean fixed = false;
+	public BigInteger value = null;
 
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+	public XMLFractionDigitsFacet(final XMLType<A> simpleType, final SrcFrozenLocation location)
+	{
+		super(simpleType, location);
+	}
 }

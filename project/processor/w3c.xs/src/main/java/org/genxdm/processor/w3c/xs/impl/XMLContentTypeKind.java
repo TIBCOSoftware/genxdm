@@ -13,14 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
-
-public interface SmRegExCompiler
+/**
+ * In the XML Representation we don't have Empty and we start out assuming ElementOnly
+ * <br/>
+ * Empty is a special case that is computed for the schema model.
+ */
+enum XMLContentTypeKind
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
+    ElementOnly,
+    Mixed,
+    Simple;
 
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+    public boolean isSimple()
+    {
+        return (this == Simple);
+    }
+
+    public boolean isComplex()
+    {
+        return (this == ElementOnly) || (this == Mixed);
+    }
+
+    public boolean isElementOnly()
+    {
+        return (this == ElementOnly);
+    }
+
+    public boolean isMixed()
+    {
+        return (this == Mixed);
+    }
 }

@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
+import org.genxdm.xs.constraints.RestrictedXPath;
+import org.genxdm.xs.exceptions.SimpleTypeException;
+import org.genxdm.xs.resolve.PrefixResolver;
 
-public interface SmRegExCompiler
+/**
+ * A parser of restricted XPath expressions.
+ * 
+ */
+interface SmRestrictedXPathParser
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
-
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+	RestrictedXPath parseXPath(final String xpath, final PrefixResolver prefixes) throws SimpleTypeException;
 }
