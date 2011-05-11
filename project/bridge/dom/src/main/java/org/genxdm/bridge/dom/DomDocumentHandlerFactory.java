@@ -66,7 +66,7 @@ public class DomDocumentHandlerFactory implements DocumentHandlerFactory<Node> {
         return resolver;
     }
 
-    private final DocumentBuilderFactory m_dbf;
+    final DocumentBuilderFactory m_dbf;
     private XMLReporter reporter;
     private Resolver resolver;
 }
