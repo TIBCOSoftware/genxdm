@@ -16,6 +16,11 @@ Like many guidelines, these are very much aspirational, rather than being strict
    * Use package-info.java, not package.html
  * If code is left incomplete for later revision, use TODO in a comment
 
+= Legal =
+
+ * Every java file, and every file containing creative content, must contain a copyright statement
+ * The copyright statement must reference ASL 2.0
+
 = Conforming =
 
  * Use spaces instead of tabs
