@@ -19,6 +19,7 @@ import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.xs.Schema;
 import org.genxdm.xs.exceptions.SchemaExceptionCatcher;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
 public interface Validator<N, A>
     extends SequenceHandler<A>
@@ -31,7 +32,7 @@ public interface Validator<N, A>
     
     void setSchema(Schema<A> cache);
     
-    void setSchemaExceptionCatcher(SchemaExceptionCatcher errors);
+    void setSchemaExceptionHandler(SchemaExceptionHandler errors);
     
     void setSequenceBuilder(SequenceBuilder<N, A> builder);
 
