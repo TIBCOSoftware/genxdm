@@ -87,8 +87,6 @@ import org.genxdm.xs.resolve.CatalogResolver;
 import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
 
-import com.ctc.wstx.stax.WstxInputFactory;
-
 /**
  * Implementation Notes:
  * <ul>
@@ -5786,11 +5784,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			cache.m_seenSystemIds.add(systemId);
 		}
 
-		// Hardwire a dependency on the Woodstox Parser.
-		// This avoids the OSGi class loading issues and provides consistency.
-		// The downside is that we can't substitute a different parser.
-		final XMLInputFactory factory = WstxInputFactory.newInstance();
-		// final XMLInputFactory factory = XMLInputFactory.newInstance();
+		final XMLInputFactory factory = XMLInputFactory.newInstance();
 
 		final XMLStreamReader reader;
 		try
