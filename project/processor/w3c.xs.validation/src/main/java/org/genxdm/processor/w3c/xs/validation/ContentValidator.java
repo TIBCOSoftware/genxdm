@@ -15,11 +15,11 @@
  */
 package org.genxdm.processor.w3c.xs.validation;
 
-import org.genxdm.typed.io.SequenceHandler;
+import org.genxdm.typed.Validator;
 
 /**
  * A "push" style streaming validator.
  */
-public interface GxContentValidator<A> extends SequenceHandler<A>, GxValidatorConfig
+public interface ContentValidator<N, A> extends Validator<N, A>
 {
 }
