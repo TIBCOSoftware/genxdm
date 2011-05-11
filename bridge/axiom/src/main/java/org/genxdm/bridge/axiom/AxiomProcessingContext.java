@@ -169,7 +169,6 @@ public class AxiomProcessingContext
         {
             if (feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT) ||
                 feature.equals(Feature.MUTABILITY) )
-//                feature.equals(Feature.NAMESPACE_AXIS) )
                 return true;
             // Axiom does not support document uri retrieval or xml:base.
             // disable namespace axis until we can figure out if we can

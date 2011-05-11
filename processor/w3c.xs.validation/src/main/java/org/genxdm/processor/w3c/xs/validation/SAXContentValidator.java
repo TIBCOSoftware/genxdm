@@ -15,13 +15,12 @@
  */
 package org.genxdm.processor.w3c.xs.validation;
 
-import org.genxdm.typed.io.SequenceHandler;
+import org.genxdm.typed.Validator;
 import org.xml.sax.ContentHandler;
 
 /**
  * A "push" style streaming validator that consumes SAX events and emits typed values and annotated content.
  */
-public interface SAXContentValidator<A> extends ContentHandler, GxValidatorConfig
+public interface SAXContentValidator<N, A> extends ContentHandler, Validator<N, A>
 {
-    void setSequenceHandler(SequenceHandler<A> handler);
 }

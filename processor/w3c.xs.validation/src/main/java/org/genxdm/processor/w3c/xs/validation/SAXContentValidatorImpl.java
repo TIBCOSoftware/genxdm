@@ -22,17 +22,19 @@ import java.util.LinkedList;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
-import org.genxdm.typed.io.SequenceHandler;
+import org.genxdm.typed.io.SequenceBuilder;
+import org.genxdm.xs.Schema;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 
-public final class SAXContentValidatorImpl<A> implements SAXContentValidator<A>
+public final class SAXContentValidatorImpl<N, A> implements SAXContentValidator<N, A>
 {
 	/**
 	 * The standard "prefix" for xmlns attributes followed by a colon.
@@ -135,16 +137,6 @@ public final class SAXContentValidatorImpl<A> implements SAXContentValidator<A>
 		m_locator = locator;
 	}
 
-	public void setExceptionHandler(final SchemaExceptionHandler handler)
-	{
-		m_kernel.setExceptionHandler(handler);
-	}
-
-	public void setSequenceHandler(final SequenceHandler<A> handler)
-	{
-		m_kernel.setOutputHandler(new GxOutputAdapter<A>(handler));
-	}
-	
 	public void skippedEntity(final String name)
 	{
 	}
@@ -231,4 +223,37 @@ public final class SAXContentValidatorImpl<A> implements SAXContentValidator<A>
 	{
 		m_namespaces.add(new VxMapping<String, String>(prefix, uri));
 	}
+
+    @Override
+    public SchemaExceptionHandler getSchemaExceptionHandler()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public SequenceBuilder<N, A> getSequenceBuilder()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void setSchema(Schema<A> cache)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setSchemaExceptionHandler(SchemaExceptionHandler errors)
+    {
+        m_kernel.setExceptionHandler(errors);
+    }
+
+    @Override
+    public void setSequenceBuilder(SequenceBuilder<N, A> builder)
+    {
+        m_kernel.setOutputHandler(new OutputAdapter<A>(builder));
+    }
 }

@@ -21,11 +21,11 @@ import java.net.URI;
 import org.genxdm.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrategy;
 
 
-public final class GxSchemaDocumentLocationStrategyAdapter implements VxSchemaDocumentLocationStrategy
+public final class SchemaDocumentLocationStrategyAdapter implements VxSchemaDocumentLocationStrategy
 {
-	private final GxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy;
+	private final SchemaDocumentLocationStrategy schemaDocumentLocationStrategy;
 
-	public GxSchemaDocumentLocationStrategyAdapter(final GxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy)
+	public SchemaDocumentLocationStrategyAdapter(final SchemaDocumentLocationStrategy schemaDocumentLocationStrategy)
 	{
 		this.schemaDocumentLocationStrategy = schemaDocumentLocationStrategy;
 	}

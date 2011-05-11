@@ -23,6 +23,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.NodeKind;
 import org.genxdm.processor.w3c.xs.exception.CvcElementAbstractException;
 import org.genxdm.processor.w3c.xs.exception.CvcElementDeclarationAndTypeException;
 import org.genxdm.processor.w3c.xs.exception.CvcElementFixedAndNilledException;
@@ -44,14 +45,13 @@ import org.genxdm.processor.w3c.xs.exception.SccSimpleTypeDerivationRestrictionE
 import org.genxdm.processor.w3c.xs.exception.SmUnexpectedElementException;
 import org.genxdm.processor.w3c.xs.exception.SmUnexpectedEndException;
 import org.genxdm.processor.w3c.xs.exception.SrcFrozenLocation;
-import org.genxdm.processor.w3c.xs.validation.api.VxMetaBridge;
 import org.genxdm.processor.w3c.xs.validation.api.VxPSVI;
+import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.xs.enums.DerivationMethod;
-import org.genxdm.NodeKind;
 import org.genxdm.xs.enums.ProcessContentsMode;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.ComponentConstraintException;
@@ -82,7 +82,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 	}
 
 	private final ValidationCache<A> cache;
-	private final VxMetaBridge<A> metaBridge;
+	private final ComponentProvider<A> metaBridge;
 
 	private ModelPSVI<A> m_childItem; // for recycling
 
@@ -127,7 +127,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 	public final ArrayList<IdentityScope<A>> m_identityScopes = new ArrayList<IdentityScope<A>>();
 	public final HashMap<IdentityConstraint<A>, IdentityScope<A>> m_keyScopes = new HashMap<IdentityConstraint<A>, IdentityScope<A>>();
 
-	private ModelPSVI(final ModelPSVI<A> parent, final NodeKind nodeKind, final ProcessContentsMode processContents, final VxMetaBridge<A> metaBridge, final ValidationCache<A> cache)
+	private ModelPSVI(final ModelPSVI<A> parent, final NodeKind nodeKind, final ProcessContentsMode processContents, final ComponentProvider<A> metaBridge, final ValidationCache<A> cache)
 	{
 		this.m_parentItem = parent;
 		this.m_nodeKind = PreCondition.assertArgumentNotNull(nodeKind, "nodeKind");
@@ -136,7 +136,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 		reset(processContents);
 	}
 
-	public ModelPSVI(final ProcessContentsMode processContents, final VxMetaBridge<A> metaBridge, final ValidationCache<A> cache)
+	public ModelPSVI(final ProcessContentsMode processContents, final ComponentProvider<A> metaBridge, final ValidationCache<A> cache)
 	{
 		this(null, NodeKind.DOCUMENT, processContents, metaBridge, cache);
 	}

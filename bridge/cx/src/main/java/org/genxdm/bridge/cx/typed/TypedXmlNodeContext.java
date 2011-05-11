@@ -31,7 +31,7 @@ import org.genxdm.names.NameSource;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.TypedModel;
-import org.genxdm.typed.Validator;
+import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
@@ -45,7 +45,7 @@ import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.exceptions.SchemaException;
-import org.genxdm.xs.exceptions.SchemaExceptionCatcher;
+import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.types.AtomicType;
 import org.genxdm.xs.types.AtomicUrType;
 import org.genxdm.xs.types.ComplexType;
@@ -363,17 +363,17 @@ public class TypedXmlNodeContext
     }
     
     @Override
-    public XmlNode validate(XmlNode source, Validator<XmlNode, XmlAtom> validator, URI namespace)
+    public XmlNode validate(XmlNode source, ValidationHandler<XmlNode, XmlAtom> validator, URI namespace)
     {
         SequenceBuilder<XmlNode, XmlAtom> builder = newSequenceBuilder();
         validator.setSequenceBuilder(builder);
         model.stream(source, true, true, validator);
-        SchemaExceptionCatcher errors = validator.getSchemaExceptionCatcher();
+        SchemaExceptionHandler errors = validator.getSchemaExceptionHandler();
         // TODO: check the errors?
-        for (SchemaException error : errors)
-        {
-            // ???
-        }
+//        for (SchemaException error : errors)
+//        {
+//            // ???
+//        }
 
         return builder.getNode();
     }
