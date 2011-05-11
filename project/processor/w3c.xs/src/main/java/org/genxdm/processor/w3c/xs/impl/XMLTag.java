@@ -13,14 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
+import org.genxdm.exceptions.PreCondition;
 
-public interface SmRegExCompiler
+abstract class XMLTag<A>
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
+	public A id;
+	private SrcFrozenLocation m_location;
 
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+	public XMLTag()
+	{
+		m_location = null;
+	}
+
+	public XMLTag(final SrcFrozenLocation location)
+	{
+		setLocation(location);
+	}
+
+	public SrcFrozenLocation getLocation()
+	{
+		return m_location;
+	}
+
+	public void setLocation(final SrcFrozenLocation location)
+	{
+		m_location = PreCondition.assertArgumentNotNull(location, "location");
+	}
 }

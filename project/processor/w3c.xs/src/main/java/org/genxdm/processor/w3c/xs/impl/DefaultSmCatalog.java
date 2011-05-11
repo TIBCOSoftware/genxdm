@@ -13,14 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
+import java.net.URI;
 
-public interface SmRegExCompiler
+import org.genxdm.xs.resolve.SchemaCatalog;
+
+enum DefaultSmCatalog implements SchemaCatalog
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
+	SINGLETON;
 
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+	public URI resolveLocation(URI baseURI, URI schemaLocation)
+	{
+		return schemaLocation;
+	}
+
+	public URI resolveNamespaceAndSchemaLocation(URI baseURI, URI namespace, URI schemaLocation)
+	{
+		return schemaLocation;
+	}
+
 }

@@ -13,14 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
+import java.math.BigInteger;
 
-public interface SmRegExCompiler
+final class XMLParticleWithElementTerm<A> extends XMLParticle<A>
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
+	public final XMLValueConstraint valueConstraint;
 
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+	public XMLParticleWithElementTerm(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLElement<A> element, final XMLValueConstraint valueConstraint, final SrcFrozenLocation location)
+	{
+		super(minOccurs, maxOccurs, element, location);
+		this.valueConstraint = valueConstraint;
+	}
+
+	public XMLElement<A> getTerm()
+	{
+		return (XMLElement<A>)super.getTerm();
+	}
 }

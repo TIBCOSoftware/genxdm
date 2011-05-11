@@ -13,14 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
+import java.util.HashMap;
 
-public interface SmRegExCompiler
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.resolve.PrefixResolver;
+
+final class SmPrefixResolverOnHashMap implements PrefixResolver
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
+	private final HashMap<String, String> m_map;
 
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+	public SmPrefixResolverOnHashMap(final HashMap<String, String> map)
+	{
+		this.m_map = PreCondition.assertArgumentNotNull(map, "map");
+	}
+
+	public String getNamespaceURI(final String prefix)
+	{
+		return m_map.get(PreCondition.assertArgumentNotNull(prefix, "prefix"));
+	}
 }

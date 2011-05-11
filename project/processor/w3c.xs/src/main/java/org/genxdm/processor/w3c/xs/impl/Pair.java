@@ -13,14 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
-
-public interface SmRegExCompiler
+/**
+ * A type-safe pair of objects.
+ */
+final class Pair<X, Y>
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
+	private final X m_x;
+	private final Y m_y;
 
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+	public Pair(final X x, final Y y)
+	{
+		m_x = x;
+		m_y = y;
+	}
+
+	public X getX()
+	{
+		return m_x;
+	}
+
+	public X getFirst()
+	{
+		return m_x;
+	}
+
+	public X getLeft()
+	{
+		return m_x;
+	}
+
+	public Y getY()
+	{
+		return m_y;
+	}
+
+	public Y getSecond()
+	{
+		return m_y;
+	}
+
+	public Y getRight()
+	{
+		return m_y;
+	}
 }
