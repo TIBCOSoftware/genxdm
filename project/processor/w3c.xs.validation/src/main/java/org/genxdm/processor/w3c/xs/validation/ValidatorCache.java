@@ -15,34 +15,10 @@
  */
 package org.genxdm.processor.w3c.xs.validation;
 
-import org.genxdm.names.NameSource;
-import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
-import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCache;
-import org.genxdm.typed.types.AtomBridge;
 
-
-final class ValidatorCache<A> implements GxValidatorCache<A>
+public interface ValidatorCache<N, A>
 {
-	private final VxValidatorCache<A> validation;
-	private final AtomBridge<A> atomBridge;
-	private final NameSource nameBridge;
+	ContentValidator<N, A> newContentValidator();
 
-	public ValidatorCache(final VxValidatorCache<A> validation, final AtomBridge<A> atomBridge, final NameSource nameBridge)
-	{
-		this.validation = validation;
-		this.atomBridge = atomBridge;
-		this.nameBridge = nameBridge;
-	}
-
-	public GxContentValidator<A> newContentValidator()
-	{
-		final VxValidator<A> kernel = validation.newValidator();
-		return new GxContentValidatorImpl<A>(kernel, atomBridge, nameBridge);
-	}
-
-	public SAXContentValidator<A> newSAXContentValidator()
-	{
-		final VxValidator<A> kernel = validation.newValidator();
-		return new SAXContentValidatorImpl<A>(kernel, nameBridge);
-	}
+	SAXContentValidator<A> newSAXContentValidator();
 }

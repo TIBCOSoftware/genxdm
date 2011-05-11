@@ -13,9 +13,9 @@ import java.util.Properties;
 import org.genxdm.Feature;
 import org.genxdm.io.Resolved;
 import org.genxdm.processor.w3c.xs.W3cXmlSchemaParser;
-import org.genxdm.processor.w3c.xs.validation.GxContentValidator;
-import org.genxdm.processor.w3c.xs.validation.GxValidatorCache;
-import org.genxdm.processor.w3c.xs.validation.GxValidatorCacheFactory;
+import org.genxdm.processor.w3c.xs.validation.ContentValidator;
+import org.genxdm.processor.w3c.xs.validation.ValidatorCache;
+import org.genxdm.processor.w3c.xs.validation.ValidatorCache;
 import org.genxdm.processor.w3c.xs.validation.ValidatorCacheFactory;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.xs.SchemaLoadOptions;
@@ -36,7 +36,7 @@ class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 	}
 	String m_schemaFile;
 	SchemaExceptionCatcher m_errors;
-    GxContentValidator<A> m_validator;
+    ContentValidator<A> m_validator;
     boolean m_copyTypeAnnotations = false;
     
     @Override
@@ -79,7 +79,7 @@ class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
         
 		// Create a validator...
 		final GxValidatorCacheFactory<A> vcf = new ValidatorCacheFactory<N, A>(typedContext);
-		final GxValidatorCache<A> vc = vcf.newValidatorCache();
+		final ValidatorCache<A> vc = vcf.newValidatorCache();
 		m_validator = vc.newContentValidator();
 	}
 	
