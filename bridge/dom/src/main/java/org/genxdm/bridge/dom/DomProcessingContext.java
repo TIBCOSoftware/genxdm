@@ -27,6 +27,7 @@ import org.genxdm.bridgekit.tree.BookmarkOnModel;
 import org.genxdm.bridgekit.tree.CursorOnModel;
 import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.mutable.MutableContext;
 import org.genxdm.mutable.MutableCursor;
@@ -113,9 +114,14 @@ public class DomProcessingContext
         return new CursorOnModel<Node>(node, model);
     }
 
+    @Override
+    public DocumentHandler<Node> newDocumentHandler() {
+        return new DomDocumentHandler(this);
+    }
+
     public FragmentBuilder<Node> newFragmentBuilder()
     {
-        return new DomFragmentBuilder(getDocumentBuilderFactory() );
+        return new DomFragmentBuilder(m_dbf);
     }
 
     public Node node(Object item)
@@ -140,7 +146,7 @@ public class DomProcessingContext
 
         public DomNodeFactory getNodeFactory()
         {
-            return new DomNodeFactory( getDocumentBuilderFactory() );
+            return new DomNodeFactory(m_dbf);
         }
 
         public ProcessingContext<Node> getProcessingContext()

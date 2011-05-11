@@ -51,6 +51,11 @@ public class DomDocumentHandler extends DefaultDocumentHandler<Node> {
 		
 		m_dbf = dbf;
 	}
+	
+	DomDocumentHandler(DomProcessingContext context) {
+	    super(context);
+	    m_dbf = context.m_dbf;
+	}
 
 	
 	@Override
@@ -109,12 +114,6 @@ public class DomDocumentHandler extends DefaultDocumentHandler<Node> {
 			m_db.reset();
 		}
 		
-		// now, set the error handler.
-        if (errors != null)
-        {
-        	m_db.setErrorHandler(errors);
-        }
-        
         return m_db;
 	}
 	

@@ -24,7 +24,6 @@ import java.io.Writer;
 import java.net.URI;
 import java.nio.charset.Charset;
 
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -42,7 +41,6 @@ import org.genxdm.io.Resolved;
 import org.genxdm.io.Resolver;
 import org.genxdm.processor.input.XmlEventVisitor;
 import org.genxdm.processor.output.ContentHandlerOnXmlStreamWriter;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 
 /** A generic DocumentHandler suitable for specializing for return by any
@@ -219,8 +217,4 @@ public class DefaultDocumentHandler<N>
     private final Model<N> model;
     private Resolver resolver;
 
-    // these two are deprecated: subclasses (which shouldn't exist) use them.
-    protected final SAXParserFactory spf = SAXParserFactory.newInstance();
-    protected ErrorHandler errors;
-    
 }
