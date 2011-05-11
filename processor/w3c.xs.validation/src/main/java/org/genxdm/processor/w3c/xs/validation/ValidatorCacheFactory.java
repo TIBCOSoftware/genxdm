@@ -25,7 +25,7 @@ import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.ElementDefinition;
 
 
-public final class ValidatorCacheFactory<N, A> implements GxValidatorCacheFactory<A>
+public final class ValidatorCacheFactory<N, A>
 {
 	private final AtomBridge<A> atomBridge;
 	private final VxValidatorCacheFactory<A> factory;
@@ -38,21 +38,21 @@ public final class ValidatorCacheFactory<N, A> implements GxValidatorCacheFactor
 		this.atomBridge = pcx.getAtomBridge();
 	}
 
-	public GxValidatorCache<A> newValidatorCache()
+	public ValidatorCache<N, A> newValidatorCache()
 	{
 		final VxValidatorCache<A> validation = factory.newValidatorCache();
 
-		return new ValidatorCache<A>(validation, atomBridge, nameBridge);
+		return new ValidatorCacheImpl<N, A>(validation, atomBridge, nameBridge);
 	}
 
-	public GxValidatorCache<A> newValidatorCache(final ElementDefinition<A> elementDeclaration)
+	public ValidatorCache<N, A> newValidatorCache(final ElementDefinition<A> elementDeclaration)
 	{
 		final VxValidatorCache<A> validation = factory.newValidatorCache(elementDeclaration);
 
-		return new ValidatorCache<A>(validation, atomBridge, nameBridge);
+		return new ValidatorCacheImpl<N, A>(validation, atomBridge, nameBridge);
 	}
 
-	public GxValidatorCacheFactory<A> schemaDocumentLocationStrategy(final GxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy)
+	public ValidatorCacheFactory<N, A> schemaDocumentLocationStrategy(final GxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy)
 	{
 		factory.setSchemaDocumentLocationStrategy(new GxSchemaDocumentLocationStrategyAdapter(schemaDocumentLocationStrategy));
 		return this;

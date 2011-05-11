@@ -27,24 +27,18 @@ import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
-import org.genxdm.typed.io.SequenceHandler;
+import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.Emulation;
+import org.genxdm.xs.Schema;
 import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaExceptionCatcher;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
 
-final class GxContentValidatorImpl<A> implements GxContentValidator<A>
+final class ContentValidatorImpl<N, A> implements ContentValidator<N, A>
 {
-	private final AtomBridge<A> atomBridge;
-	private final LinkedList<VxMapping<QName, String>> m_attributes = new LinkedList<VxMapping<QName, String>>();
-	// The name of the element that has yet to be passed to the validation kernel
-	// because we are buffering namespace and attribute events.
-	private QName m_elementName = null;
-	private final VxValidator<A> kernel;
-	private final LinkedList<VxMapping<String, String>> m_namespaces = new LinkedList<VxMapping<String, String>>();
-
-	public GxContentValidatorImpl(final VxValidator<A> kernel, final AtomBridge<A> atomBridge, final NameSource nameBridge)
+	public ContentValidatorImpl(final VxValidator<A> kernel, final AtomBridge<A> atomBridge, final NameSource nameBridge)
 	{
 		this.kernel = kernel;
 		this.atomBridge = atomBridge;
@@ -129,16 +123,6 @@ final class GxContentValidatorImpl<A> implements GxContentValidator<A>
 		kernel.reset();
 	}
 
-	public void setExceptionHandler(final SchemaExceptionHandler handler)
-	{
-		kernel.setExceptionHandler(handler);
-	}
-
-	public void setSequenceHandler(final SequenceHandler<A> handler)
-	{
-		kernel.setOutputHandler(new GxOutputAdapter<A>(handler));
-	}
-	
 	public void startDocument(final URI documentURI, final String docTypeDecl) 
 	    throws GxmlException
 	{
@@ -217,4 +201,46 @@ final class GxContentValidatorImpl<A> implements GxContentValidator<A>
         // TODO Auto-generated method stub
         
     }
+
+    @Override
+    public SchemaExceptionCatcher getSchemaExceptionCatcher()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public SequenceBuilder<N, A> getSequenceBuilder()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void setSchema(Schema<A> cache)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setSchemaExceptionHandler(SchemaExceptionHandler errors)
+    {
+        kernel.setExceptionHandler(errors);
+    }
+
+    @Override
+    public void setSequenceBuilder(SequenceBuilder<N, A> builder)
+    {
+        kernel.setOutputHandler(new GxOutputAdapter<A>(builder));
+    }
+
+    private final AtomBridge<A> atomBridge;
+    private final LinkedList<VxMapping<QName, String>> m_attributes = new LinkedList<VxMapping<QName, String>>();
+    // The name of the element that has yet to be passed to the validation kernel
+    // because we are buffering namespace and attribute events.
+    private QName m_elementName = null;
+    private final VxValidator<A> kernel;
+    private final LinkedList<VxMapping<String, String>> m_namespaces = new LinkedList<VxMapping<String, String>>();
+
 }
