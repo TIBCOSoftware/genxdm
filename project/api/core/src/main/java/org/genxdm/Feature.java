@@ -32,14 +32,19 @@ public interface Feature
     // return true if there is a mutable extension for this bridge.
     // getMutableContext must return non-null
     static final String MUTABILITY = PREFIX + "mutable";
+    
     // return true if there is a typed extension for this bridge.
     // getTypedContext must return non-null.
+    // at least one of TYPE_ANNOTATION or TYPED_VALUE must also be true
     static final String TYPED = PREFIX + "type";
-    // these are not used; they basically describe whether type names
-    // and typed values are returned by the typed api.  we will decide
-    // whether to keep them later.
-//    static final String TYPE_ANNOTATION = PREFIX + "type/annotation";
-//    static final String TYPED_VALUE = PREFIX + "type/typed-value";
+    // if type annotations are supported, return true.
+    // must not return true if TYPED is false
+    // must return type annotations if this is true
+    static final String TYPE_ANNOTATION = PREFIX + TYPED + "/annotation";
+    // if typed values are supported, return true.
+    // must not return true if TYPED is false
+    // must return atoms (not just untyped-atomic) if true.
+    static final String TYPED_VALUE = PREFIX + TYPED + "/typed-value";
     
 
     static final String UNSUPPORTED_MESSAGE = "Feature is not supported";

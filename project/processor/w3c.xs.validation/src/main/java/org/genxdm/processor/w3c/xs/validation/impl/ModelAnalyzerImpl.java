@@ -19,8 +19,8 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.processor.w3c.xs.exception.CvcNoRootElementException;
 import org.genxdm.processor.w3c.xs.exception.SrcFrozenLocation;
-import org.genxdm.processor.w3c.xs.validation.api.VxMetaBridge;
 import org.genxdm.processor.w3c.xs.validation.api.VxPSVI;
+import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.enums.ProcessContentsMode;
 import org.genxdm.xs.exceptions.AbortException;
@@ -40,7 +40,7 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 	// Document state flag. Have we received the document element?
 	private boolean m_rootStartDone;
 
-	public ModelAnalyzerImpl(final VxMetaBridge<A> metaBridge, final ValidationCache<A> cache)
+	public ModelAnalyzerImpl(final ComponentProvider<A> metaBridge, final ValidationCache<A> cache)
 	{
 		this.m_currentPSVI = this.m_documentPSVI = new ModelPSVI<A>(ProcessContentsMode.Strict, metaBridge, cache);
 	}

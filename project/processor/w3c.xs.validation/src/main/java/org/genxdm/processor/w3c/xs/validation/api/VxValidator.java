@@ -27,21 +27,21 @@ import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
 public interface VxValidator<A>
 {
-	void characters(char ch[], int start, int length) throws IOException, AbortException;
+    void characters(char ch[], int start, int length) throws IOException, AbortException;
 
-	void endDocument() throws IOException, AbortException;
+    void endDocument() throws IOException, AbortException;
 
-	VxPSVI<A> endElement() throws IOException, AbortException;
+    VxPSVI<A> endElement() throws IOException, AbortException;
 
-	void reset();
+    void reset();
 
-	void setExceptionHandler(final SchemaExceptionHandler handler);
+    void setExceptionHandler(final SchemaExceptionHandler handler);
 
-	void setOutputHandler(VxOutputHandler<A> handler);
+    void setOutputHandler(VxOutputHandler<A> handler);
 
-	void startDocument(URI documentURI) throws IOException, AbortException;
+    void startDocument(URI documentURI) throws IOException, AbortException;
 
-	void startElement(final QName elementName, final LinkedList<VxMapping<String, String>> namespaces, final LinkedList<VxMapping<QName, String>> attributes) throws IOException, AbortException;
+    void startElement(final QName elementName, final LinkedList<VxMapping<String, String>> namespaces, final LinkedList<VxMapping<QName, String>> attributes) throws IOException, AbortException;
 
-	void text(List<? extends A> value) throws IOException, AbortException;
+    void text(List<? extends A> value) throws IOException, AbortException;
 }
