@@ -13,14 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
+import java.math.BigInteger;
 
-public interface SmRegExCompiler
+final class XMLLength<A> extends XMLFacet<A>
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
+	public BigInteger minLength = null;
+	public BigInteger maxLength = null;
+	public boolean fixed = false;
 
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+	public XMLLength(final XMLType<A> type, final SrcFrozenLocation location)
+	{
+		super(type, location);
+	}
 }

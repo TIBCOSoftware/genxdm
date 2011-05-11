@@ -19,6 +19,8 @@ import java.io.InputStream;
 import java.net.URI;
 
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.processor.w3c.xs.impl.RegExCompilerJDK;
+import org.genxdm.processor.w3c.xs.impl.XMLParserImpl;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.SchemaLoadOptions;
 import org.genxdm.xs.components.ComponentBag;

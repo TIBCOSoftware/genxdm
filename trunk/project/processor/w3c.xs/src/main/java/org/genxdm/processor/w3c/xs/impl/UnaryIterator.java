@@ -13,14 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
+import java.util.Iterator;
 
-public interface SmRegExCompiler
+final class UnaryIterator<E> implements Iterator<E>
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
+	private E m_thing;
 
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+	public UnaryIterator(final E thing)
+	{
+		m_thing = thing;
+	}
+
+	public boolean hasNext()
+	{
+		return (null != m_thing);
+	}
+
+	public E next()
+	{
+		final E pending = m_thing;
+
+		m_thing = null;
+
+		return pending;
+	}
+
+	public void remove()
+	{
+		throw new UnsupportedOperationException();
+	}
 }

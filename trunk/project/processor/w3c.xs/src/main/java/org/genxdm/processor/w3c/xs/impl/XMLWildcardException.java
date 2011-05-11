@@ -13,14 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.exceptions.SchemaException;
 
-public interface SmRegExCompiler
+@SuppressWarnings("serial")
+final class XMLWildcardException extends Exception
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
+	public XMLWildcardException(final SchemaException cause)
+	{
+		super(PreCondition.assertArgumentNotNull(cause, "cause"));
+	}
 
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+	@Override
+	public SchemaException getCause()
+	{
+		return (SchemaException)super.getCause();
+	}
 }

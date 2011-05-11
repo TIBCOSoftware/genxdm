@@ -13,14 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
+import javax.xml.namespace.QName;
 
-public interface SmRegExCompiler
+import org.genxdm.exceptions.PreCondition;
+
+abstract class XMLComponent<A> extends XMLTag<A>
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
+	private final XMLScope<A> scope;
 
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+	public XMLComponent(final XMLScope<A> scope)
+	{
+		this.scope = PreCondition.assertArgumentNotNull(scope, "scope");
+	}
+
+	public XMLComponent(final XMLScope<A> scope, final SrcFrozenLocation location)
+	{
+		super(location);
+		this.scope = PreCondition.assertArgumentNotNull(scope, "scope");
+	}
+
+	public abstract QName getName();
+
+	public final XMLScope<A> getScope()
+	{
+		return scope;
+	}
 }
