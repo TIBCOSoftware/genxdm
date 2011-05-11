@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
+import java.util.HashMap;
 
-public interface SmRegExCompiler
+@SuppressWarnings("serial")
+final class CmTable<T> extends HashMap<Integer, HashMap<T, Integer>>
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
-
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+    public static final Integer END = Integer.MAX_VALUE;
 }

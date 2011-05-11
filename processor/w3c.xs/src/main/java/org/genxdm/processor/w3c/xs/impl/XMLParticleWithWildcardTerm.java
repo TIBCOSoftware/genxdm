@@ -13,14 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
+import java.math.BigInteger;
 
-public interface SmRegExCompiler
+final class XMLParticleWithWildcardTerm<A> extends XMLParticle<A>
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
+	public XMLParticleWithWildcardTerm(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLWildcard<A> wildcard, final SrcFrozenLocation location)
+	{
+		super(minOccurs, maxOccurs, wildcard, location);
+	}
 
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+	public XMLWildcard<A> getTerm()
+	{
+		return (XMLWildcard<A>)super.getTerm();
+	}
 }

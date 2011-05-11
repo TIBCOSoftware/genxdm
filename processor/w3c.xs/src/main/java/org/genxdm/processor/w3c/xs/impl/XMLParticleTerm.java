@@ -13,14 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
-
-public interface SmRegExCompiler
+interface XMLParticleTerm<A>
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
-
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
 }

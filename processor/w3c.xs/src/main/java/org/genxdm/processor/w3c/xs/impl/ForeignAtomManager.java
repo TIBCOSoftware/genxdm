@@ -13,14 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.processor.w3c.xs.impl.SmRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
+import javax.xml.namespace.QName;
 
-public interface SmRegExCompiler
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.enums.WhiteSpacePolicy;
+
+final class ForeignAtomManager<A>
 {
-	RegExPattern compile(String regex) throws SmRegExCompileException;
+	public final QName atomType;
+	public final QName baseType;
+	public final WhiteSpacePolicy ws;
 
-	RegExPattern compile(String regex, String flags) throws SmRegExCompileException;
+	ForeignAtomManager(final QName atomType, final QName baseType, final WhiteSpacePolicy ws)
+	{
+		this.atomType = PreCondition.assertArgumentNotNull(atomType, "atomType");
+		this.baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");
+		this.ws = ws;
+	}
 }
