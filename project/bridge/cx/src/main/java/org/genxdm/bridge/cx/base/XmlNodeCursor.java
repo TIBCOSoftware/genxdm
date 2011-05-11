@@ -79,6 +79,8 @@ public class XmlNodeCursor
 
     public boolean hasNextSibling()
     {
+        if (node.isAttribute() || node.isNamespace())
+            return false;
         return node.hasNextSibling();
     }
 
@@ -89,6 +91,8 @@ public class XmlNodeCursor
 
     public boolean hasPreviousSibling()
     {
+        if (node.isAttribute() || node.isNamespace())
+            return false;
         return node.hasPreviousSibling();
     }
 

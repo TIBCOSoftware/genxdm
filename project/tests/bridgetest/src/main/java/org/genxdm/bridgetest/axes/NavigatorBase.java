@@ -23,6 +23,7 @@ import static org.junit.Assert.assertFalse;
 import javax.xml.XMLConstants;
 
 import org.genxdm.Cursor;
+import org.genxdm.Feature;
 import org.genxdm.NodeKind;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridgetest.TestBase;
@@ -242,7 +243,17 @@ public abstract class NavigatorBase<N>
         isMoved = cursor.moveToPreviousSibling();
         assertFalse(isMoved);
 
-        // TODO: Find a way to get Namespace Node from Cursor and test sibling methods for it.
+        //namespace
+        if (context.isSupported(Feature.NAMESPACE_AXIS))
+        {
+            N nstest = context.getModel().getChildElementsByName(context.getModel().getFirstChild(doc), "http://www.genxdm.org/nonsense", "nstest").iterator().next();
+            cursor.moveTo(getNamespaceNode(context.getModel(), nstest, "gue"));
+            assertEquals(NodeKind.NAMESPACE, cursor.getNodeKind());
+            assertFalse(cursor.hasNextSibling());
+            assertFalse(cursor.moveToNextSibling());
+            assertFalse(cursor.hasPreviousSibling());
+            assertFalse(cursor.moveToPreviousSibling());
+        }
     }
 
     @Test
@@ -306,8 +317,16 @@ public abstract class NavigatorBase<N>
         cursor.moveToRoot();
         assertEquals(cursor.getNodeId(), cursor2.getNodeId());
         
-
-        //TODO : Find a way to navigate to namespace node from Cursor and write a test for the same.
+        //namespace
+        if (context.isSupported(Feature.NAMESPACE_AXIS))
+        {
+            N nstest = context.getModel().getChildElementsByName(context.getModel().getFirstChild(doc), "http://www.genxdm.org/nonsense", "nstest").iterator().next();
+            cursor.moveTo(getNamespaceNode(context.getModel(), nstest, "gue"));
+            assertEquals(NodeKind.NAMESPACE, cursor.getNodeKind());
+            assertTrue(cursor.moveToParent());
+            cursor.moveToRoot();
+            assertTrue(cursor.getNodeId().equals(cursor2.getNodeId()));
+        }
 
         // element node
         assertTrue(cursor.moveToFirstChildElement());
