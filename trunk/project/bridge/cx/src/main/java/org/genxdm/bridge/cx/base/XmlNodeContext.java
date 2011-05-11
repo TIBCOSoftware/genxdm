@@ -102,7 +102,7 @@ public final class XmlNodeContext
 
     public DocumentHandler<XmlNode> newDocumentHandler()
     {
-        return new DefaultDocumentHandler<XmlNode>(newFragmentBuilder(), model);
+        return new DefaultDocumentHandler<XmlNode>(this);
     }
 
     public DocumentHandler<XmlNode> newDocumentHandler(XMLReporter reporter, Resolver resolver)
