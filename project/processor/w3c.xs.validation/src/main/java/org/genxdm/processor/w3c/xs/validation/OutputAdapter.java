@@ -20,17 +20,18 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.validation.api.VxOutputHandler;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.Type;
 
 
-public class GxOutputAdapter<A> implements VxOutputHandler<A>
+public class OutputAdapter<A> implements VxOutputHandler<A>
 {
 	private final SequenceHandler<A> handler;
 
-	public GxOutputAdapter(final SequenceHandler<A> handler)
+	public OutputAdapter(final SequenceHandler<A> handler)
 	{
 		this.handler = PreCondition.assertArgumentNotNull(handler, "handler");
 	}

@@ -37,11 +37,11 @@ import org.genxdm.processor.w3c.xs.exception.CvcUnexpectedAttributeException;
 import org.genxdm.processor.w3c.xs.exception.SmAttributeUseException;
 import org.genxdm.processor.w3c.xs.exception.SmMissingAttributeException;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
-import org.genxdm.processor.w3c.xs.validation.api.VxMetaBridge;
 import org.genxdm.processor.w3c.xs.validation.api.VxOutputHandler;
 import org.genxdm.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrategy;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.AttributeUse;
 import org.genxdm.xs.constraints.NamespaceConstraint;
@@ -69,7 +69,7 @@ final class AttributeManager<A>
 	private Type<A> m_localType = null;
 	private final HashMap<QName, Pair<A, SimpleType<A>>> m_xsiAtoms = new HashMap<QName, Pair<A, SimpleType<A>>>();
 	private final HashMap<QName, Pair<List<? extends A>, SimpleType<A>>> m_xsiLists = new HashMap<QName, Pair<List<? extends A>, SimpleType<A>>>();
-	private final VxMetaBridge<A> metaBridge;
+	private final ComponentProvider<A> metaBridge;
 	private final NameSource nameBridge;
 	private final String W3C_XML_SCHEMA_INSTANCE_NS_URI;
 	private final String XSI_NIL;
@@ -77,7 +77,7 @@ final class AttributeManager<A>
 	private final String XSI_SCHEMA_LOCATION;
 	private final String XSI_TYPE;
 
-	AttributeManager(final VxMetaBridge<A> metaBridge, final AtomBridge<A> atomBridge, final NameSource nameBridge)
+	AttributeManager(final ComponentProvider<A> metaBridge, final AtomBridge<A> atomBridge, final NameSource nameBridge)
 	{
 		this.metaBridge = PreCondition.assertArgumentNotNull(metaBridge, "metaBridge");
 		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");

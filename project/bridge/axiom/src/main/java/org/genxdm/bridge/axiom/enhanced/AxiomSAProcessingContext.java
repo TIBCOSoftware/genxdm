@@ -34,7 +34,7 @@ import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.TypedModel;
-import org.genxdm.typed.Validator;
+import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
@@ -399,7 +399,7 @@ public final class AxiomSAProcessingContext
 	}
     
     @Override
-    public Object validate(Object source, Validator<Object, XmlAtom> validator, URI namespace)
+    public Object validate(Object source, ValidationHandler<Object, XmlAtom> validator, URI namespace)
     {
         // TODO: implement
         throw new UnsupportedOperationException();

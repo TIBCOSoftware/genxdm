@@ -96,6 +96,6 @@ public interface TypedContext<N, A>
     
     SequenceBuilder<N, A> newSequenceBuilder();
     
-    N validate(N source, Validator<N, A> validator, URI schemaNamespace);
+    N validate(N source, ValidationHandler<N, A> validator, URI schemaNamespace);
 
 }

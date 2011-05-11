@@ -31,7 +31,7 @@ import org.genxdm.names.NameSource;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.TypedModel;
-import org.genxdm.typed.Validator;
+import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
@@ -361,7 +361,7 @@ public final class DomSAProcessingContext
 	}
 	
 	@Override
-	public Node validate(Node source, Validator<Node, XmlAtom> validator, URI namespace)
+	public Node validate(Node source, ValidationHandler<Node, XmlAtom> validator, URI namespace)
 	{
 	    SequenceBuilder<Node, XmlAtom> builder = newSequenceBuilder();
 	    validator.setSequenceBuilder(builder);

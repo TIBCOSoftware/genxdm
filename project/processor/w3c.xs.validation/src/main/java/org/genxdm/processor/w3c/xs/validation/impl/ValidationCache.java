@@ -21,8 +21,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrategy;
-import org.genxdm.processor.w3c.xs.validation.api.VxValidationHost;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCache;
 import org.genxdm.processor.w3c.xs.validation.regex.api.RegExBridge;
@@ -30,10 +30,12 @@ import org.genxdm.processor.w3c.xs.validation.regex.api.RegExFactory;
 import org.genxdm.processor.w3c.xs.validation.regex.api.RegExMachine;
 import org.genxdm.processor.w3c.xs.validation.regex.api.RegExPattern;
 import org.genxdm.processor.w3c.xs.validation.regex.impl.nfa.NfaFactory;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
-import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.components.ParticleTerm;
+import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.ContentType;
 
@@ -42,24 +44,26 @@ final class ValidationCache<A> implements VxValidatorCache<A>
 {
 	@SuppressWarnings("unused")
 	private final ElementDefinition<A> elementDeclaration;
-	private final VxValidationHost<A> host;
+	private final ComponentProvider<A> provider;
+	private final AtomBridge<A> bridge;
 	private final VxSchemaDocumentLocationStrategy sdl;
 
 	private final ConcurrentHashMap<ComplexType<A>, RegExPattern<ValidationExpr<A, ParticleTerm<A>>, QName>> m_patterns = new ConcurrentHashMap<ComplexType<A>, RegExPattern<ValidationExpr<A, ParticleTerm<A>>, QName>>();
 
 	private final RegExBridge<ValidationExpr<A, ParticleTerm<A>>, QName> m_regexb;
 
-	ValidationCache(final ElementDefinition<A> elementDeclaration, final VxValidationHost<A> host, final VxSchemaDocumentLocationStrategy sdl)
+	ValidationCache(final ElementDefinition<A> elementDeclaration, final ComponentProvider<A> provider, final AtomBridge<A> atomBridge, final VxSchemaDocumentLocationStrategy sdl)
 	{
 		this.elementDeclaration = elementDeclaration;
-		this.host = host;
-		m_regexb = new ValidationRegExBridge<A>(host.getNameBridge());
+		this.provider = provider;
+		this.bridge = atomBridge;
+		m_regexb = new ValidationRegExBridge<A>(new NameSource());
 		this.sdl = sdl;
 	}
 
 	public VxValidator<A> newValidator()
 	{
-		return new ValidationKernel<A>(host, this, sdl);
+		return new ValidationKernel<A>(provider, bridge, this, sdl);
 	}
 
 	SmContentFiniteStateMachine<A> getMachine(final ComplexType<A> complexType)

@@ -15,6 +15,8 @@
  */
 package org.genxdm.processor.w3c.xs.validation.api;
 
+import org.genxdm.exceptions.PreCondition;
+
 /**
  * A mapping from a key to a value. <br/>
  * The key cannot be null. The value may be null.
