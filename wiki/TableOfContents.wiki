@@ -5,6 +5,7 @@
    * [GenXSpecs Supported Specifications]
    * [CodingConventions Coding Conventions]
    * (In process) Introduction to the API
+   * [GenXdmReleases Release Information]
  * [GenXdmProposal GenXDM Overview (from Apache Proposal)]
  * Administrative
    * [ReleaseProcess The Release Process]
