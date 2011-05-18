@@ -72,6 +72,12 @@ public class TypedXmlNodeBuilder
         // TODO Auto-generated method stub
 
     }
+    
+    public Iterable<XmlAtom> getSequence()
+    {
+        // TODO generated method stub
+        return null;
+    }
 
     public void startElement(String namespaceURI, String localName, String prefix, QName type)
         throws GxmlException

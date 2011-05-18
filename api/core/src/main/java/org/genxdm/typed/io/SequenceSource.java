@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2011 TIBCO Software Inc.
+ * Copyright (c) 2011 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,10 @@
  */
 package org.genxdm.typed.io;
 
+import org.genxdm.NodeSource;
 
-/**
- * An instance of this interface assembles the events into an XML tree representation.
- * 
- * The tree built by this interface is expected to contain type annotations, and atoms
- * in place of character data (or in addition to).  The model produced, in other words,
- * is schema aware.
- */
-public interface SequenceBuilder<N, A>
-    extends SequenceHandler<A>, SequenceSource<N, A>
+public interface SequenceSource<N, A>
+    extends NodeSource<N>
 {
-    /**
-     * Resets the builder by clearing the list of nodes that have been constructed in earlier executions.
-     */
-    void reset();
-
-
+    Iterable<A> getSequence();
 }
