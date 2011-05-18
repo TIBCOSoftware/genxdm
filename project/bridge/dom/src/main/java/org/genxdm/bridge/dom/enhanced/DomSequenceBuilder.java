@@ -30,6 +30,10 @@ import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.Emulation;
 import org.w3c.dom.Node;
 
+// TODO: how the f^&* did we manage to leave an unspecialized parameter in here?
+// fix it.  It should be XmlAtom.  If someone wants a different A for a typed
+// DOM, they need to be defining the bridge for it (since you couldn't get it
+// from this bridge, and so the remaining genericity is pointless and stupid)
 final class DomSequenceBuilder<A>
     extends DomFragmentBuilder
     implements SequenceBuilder<Node, A>
@@ -86,6 +90,12 @@ final class DomSequenceBuilder<A>
     {
         // TODO Auto-generated method stub
         
+    }
+    
+    public Iterable<A> getSequence()
+    {
+        // TODO generated method stub
+        return null;
     }
 
     private final AtomBridge<A> m_atomBridge;
