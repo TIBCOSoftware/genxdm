@@ -333,7 +333,7 @@ public abstract class XPathBase<N>
             builder.endDocument();
         }
 
-        final N documentNode = builder.getNodes().get(0);
+        final N documentNode = builder.getNode();
         final N fooElement = model.getFirstChildElement(documentNode);
         final N barElement = model.getFirstChildElement(fooElement);
 
