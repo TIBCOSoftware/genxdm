@@ -31,8 +31,8 @@ import org.genxdm.typed.types.AtomBridge;
 final class AxiomSequenceBuilder 
     implements SequenceBuilder<Object, XmlAtom>
 {
-	public AxiomSequenceBuilder(final AxiomSAProcessingContext pcx, final OMFactory factory, final boolean ignoreComments)
-	{
+    public AxiomSequenceBuilder(final AxiomSAProcessingContext pcx, final OMFactory factory, final boolean ignoreComments)
+    {
 		this.pcx = pcx;
 		this.base = pcx.getProcessingContext().newFragmentBuilder();
 	}
@@ -142,6 +142,12 @@ final class AxiomSequenceBuilder
     {
         // TODO Auto-generated method stub
         
+    }
+    
+    public Iterable<XmlAtom> getSequence()
+    {
+        // TODO generated method stub
+        return null;
     }
 
     private final AxiomSAProcessingContext pcx;
