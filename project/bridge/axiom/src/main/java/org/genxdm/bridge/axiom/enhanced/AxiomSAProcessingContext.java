@@ -19,6 +19,7 @@ import java.net.URI;
 import java.util.EnumSet;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLReporter;
 
 import org.genxdm.bridge.axiom.AxiomProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
@@ -29,13 +30,16 @@ import org.genxdm.bridgekit.tree.CursorOnTypedModel;
 import org.genxdm.bridgekit.xs.MetaBridgeOnSchemaTypeBridgeAdapter;
 import org.genxdm.bridgekit.xs.SchemaTypeBridgeFactory;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.Resolver;
 import org.genxdm.names.NameSource;
 import org.genxdm.nodes.Bookmark;
+import org.genxdm.processor.io.ValidatingDocumentHandler;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.io.SequenceBuilder;
+import org.genxdm.typed.io.TypedDocumentHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
 import org.genxdm.typed.variant.VariantBridge;
@@ -392,6 +396,13 @@ public final class AxiomSAProcessingContext
 	    return new AxiomSequenceBuilder(this, context.getOMFactory(), true);
     }
     
+    @Override
+    public TypedDocumentHandler<Object, XmlAtom> newDocumentHandler(ValidationHandler<Object, XmlAtom> validator, XMLReporter reporter, Resolver resolver)
+    {
+        // TODO Auto-generated method stub
+        return new ValidatingDocumentHandler<Object, XmlAtom>(this, validator, reporter, resolver);
+    }
+
     public void register(final ComponentBag<XmlAtom> components)
 	{
 		// TODO implement

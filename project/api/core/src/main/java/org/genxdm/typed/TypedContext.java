@@ -19,6 +19,7 @@ import java.net.URI;
 
 import org.genxdm.ProcessingContext;
 import org.genxdm.typed.io.SequenceBuilder;
+import org.genxdm.typed.io.TypedDocumentHandlerFactory;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
 import org.genxdm.typed.variant.VariantBridge;
@@ -33,7 +34,7 @@ import org.genxdm.xs.Schema;
  *            The atom handle.
  */
 public interface TypedContext<N, A> 
-    extends Schema<A>
+    extends Schema<A>, TypedDocumentHandlerFactory<N, A>
 {
     /**
      * Returns the bridge used for atom interaction.
