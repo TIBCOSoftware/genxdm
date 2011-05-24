@@ -23,7 +23,6 @@ import org.genxdm.Model;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridge.cx.typed.TypedXmlNodeContext;
-import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.FragmentBuilder;
@@ -31,7 +30,6 @@ import org.genxdm.io.Resolver;
 import org.genxdm.mutable.MutableContext;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.processor.io.DefaultDocumentHandler;
-import org.genxdm.typed.TypedContext;
 
 public final class XmlNodeContext
     implements ProcessingContext<XmlNode>
@@ -57,9 +55,11 @@ public final class XmlNodeContext
     }
 
     @SuppressWarnings("unchecked")
-	public TypedContext<XmlNode, XmlAtom> getTypedContext()
+    public TypedXmlNodeContext getTypedContext()
     {
-        return new TypedXmlNodeContext(this);
+        if (typedContext == null)
+            typedContext = new TypedXmlNodeContext(this);
+        return typedContext;
     }
 
     public boolean isNode(Object item)
@@ -105,12 +105,12 @@ public final class XmlNodeContext
         return new DefaultDocumentHandler<XmlNode>(this);
     }
 
-    public DocumentHandler<XmlNode> newDocumentHandler(XMLReporter reporter, Resolver resolver)
+    public DocumentHandler<XmlNode> newDocumentHandler(final XMLReporter reporter, final Resolver resolver)
     {
         // TODO: implement
         return newDocumentHandler();
     }
-
+    
     public void setDefaultReporter(XMLReporter reporter)
     {
         this.reporter = reporter;
@@ -130,9 +130,10 @@ public final class XmlNodeContext
     {
         return resolver;
     }
-
+    
     private final XmlNodeModel model = new XmlNodeModel();
     private final XmlNodeMutableContext mutant;
+    private TypedXmlNodeContext typedContext;
     private XMLReporter reporter;
     private Resolver resolver;
 }
