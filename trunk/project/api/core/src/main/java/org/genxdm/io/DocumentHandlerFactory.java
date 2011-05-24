@@ -44,9 +44,9 @@ public interface DocumentHandlerFactory<N> {
      */
     DocumentHandler<N> newDocumentHandler();
     
-    DocumentHandler<N> newDocumentHandler(XMLReporter reporter, Resolver resolver);
-
-    void setDefaultReporter(XMLReporter reporter);
+    DocumentHandler<N> newDocumentHandler(final XMLReporter reporter, final Resolver resolver);
     
-    void setDefaultResolver(Resolver resolver);
+    void setDefaultReporter(final XMLReporter reporter);
+    
+    void setDefaultResolver(final Resolver resolver);
 }

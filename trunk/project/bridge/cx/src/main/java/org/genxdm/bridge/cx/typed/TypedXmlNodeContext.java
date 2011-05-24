@@ -18,6 +18,7 @@ package org.genxdm.bridge.cx.typed;
 import java.net.URI;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLReporter;
 
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.cx.base.XmlNodeContext;
@@ -27,7 +28,9 @@ import org.genxdm.bridgekit.atoms.XmlAtomBridge;
 import org.genxdm.bridgekit.xs.MetaBridgeOnSchemaTypeBridgeAdapter;
 import org.genxdm.bridgekit.xs.SchemaTypeBridgeFactory;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.Resolver;
 import org.genxdm.names.NameSource;
+import org.genxdm.processor.io.ValidatingDocumentHandler;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.TypedModel;
@@ -44,7 +47,6 @@ import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.constraints.IdentityConstraint;
-import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.types.AtomicType;
 import org.genxdm.xs.types.AtomicUrType;
@@ -355,6 +357,11 @@ public class TypedXmlNodeContext
     {
         return new TypedXmlNodeBuilder(this);
     }
+    
+    public ValidatingDocumentHandler<XmlNode, XmlAtom> newDocumentHandler(final ValidationHandler<XmlNode, XmlAtom> validator, final XMLReporter reporter, final Resolver resolver)
+    {
+        return new ValidatingDocumentHandler<XmlNode, XmlAtom>(this, validator, reporter, resolver);
+    }
 
     public void register(ComponentBag<XmlAtom> components)
     {
@@ -368,7 +375,7 @@ public class TypedXmlNodeContext
         SequenceBuilder<XmlNode, XmlAtom> builder = newSequenceBuilder();
         validator.setSequenceBuilder(builder);
         model.stream(source, true, true, validator);
-        SchemaExceptionHandler errors = validator.getSchemaExceptionHandler();
+//        SchemaExceptionHandler errors = validator.getSchemaExceptionHandler();
         // TODO: check the errors?
 //        for (SchemaException error : errors)
 //        {

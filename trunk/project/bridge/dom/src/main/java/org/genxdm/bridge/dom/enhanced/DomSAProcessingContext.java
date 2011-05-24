@@ -18,6 +18,7 @@ package org.genxdm.bridge.dom.enhanced;
 import java.net.URI;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLReporter;
 
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.dom.DomProcessingContext;
@@ -27,7 +28,9 @@ import org.genxdm.bridgekit.tree.CursorOnTypedModel;
 import org.genxdm.bridgekit.xs.MetaBridgeOnSchemaTypeBridgeAdapter;
 import org.genxdm.bridgekit.xs.SchemaTypeBridgeFactory;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.Resolver;
 import org.genxdm.names.NameSource;
+import org.genxdm.processor.io.ValidatingDocumentHandler;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.TypedModel;
@@ -352,6 +355,12 @@ public final class DomSAProcessingContext
 	public SequenceBuilder<Node, XmlAtom> newSequenceBuilder()
 	{
 		return new DomSequenceBuilder<XmlAtom>(parent.getDocumentBuilderFactory(), this);
+	}
+	
+	@Override
+	public ValidatingDocumentHandler<Node, XmlAtom> newDocumentHandler(final ValidationHandler<Node, XmlAtom> validator, final XMLReporter reporter, final Resolver resolver)
+	{
+	    return new ValidatingDocumentHandler<Node, XmlAtom>(this, validator, reporter, resolver);
 	}
 
 	public void register(final ComponentBag<XmlAtom> components)

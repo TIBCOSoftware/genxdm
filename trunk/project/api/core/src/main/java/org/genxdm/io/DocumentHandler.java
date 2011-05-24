@@ -37,8 +37,6 @@ import org.xml.sax.InputSource;
 
 public interface DocumentHandler<N>
 {
-    boolean isValidating();
-    
     /** Parse an input stream (bytes) as a document node.
      * 
      * This method typically delegates to parse(InputSource, systemId).
@@ -71,8 +69,6 @@ public interface DocumentHandler<N>
      * 
      */
     N parse(final InputSource source, final URI systemId) throws IOException, GxmlMarshalException;
-    
-    void setValidating(boolean flag);
 
     /** Write XML, as bytes in a specified character encoding, to an output stream, unformatted.
      *
