@@ -20,15 +20,13 @@ import org.genxdm.xs.components.SchemaComponent;
 /**
  * Indicates that this type is a element node.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface ElementNodeType<A> extends SchemaComponent<A>, NodeType<A>
+public interface ElementNodeType extends SchemaComponent, NodeType
 {
     /**
      * The {type definition} property.
      */
-    SequenceType<A> getType();
+    SequenceType getType();
 
     /**
      * Returns the {nillable} property for this element.

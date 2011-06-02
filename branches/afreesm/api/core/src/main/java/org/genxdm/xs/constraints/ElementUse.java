@@ -21,12 +21,12 @@ import org.genxdm.xs.components.SchemaParticle;
 /**
  * Describes the use of an element declaration.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface ElementUse<A> extends SchemaParticle<A>/* , HasValueConstraint<A> */
+// TODO: the commented-out bits here were commented-out when we found them.
+// why are they here?  Remove them, or uncomment them.
+public interface ElementUse extends SchemaParticle/* , HasValueConstraint<A> */
 {
-    ElementDefinition<A> getTerm();
+    ElementDefinition getTerm();
 
     /**
      * Returns the effective value constraint, may be <code>null</code>. [Definition:] Let the effective value

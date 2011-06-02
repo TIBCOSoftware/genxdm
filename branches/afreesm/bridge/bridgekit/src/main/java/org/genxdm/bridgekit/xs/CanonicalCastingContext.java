@@ -19,7 +19,7 @@ import org.genxdm.exceptions.SpillagePolicy;
 import org.genxdm.typed.types.CastingContext;
 import org.genxdm.typed.types.Emulation;
 
-public class CanonicalCastingContext<A> implements CastingContext<A>
+public class CanonicalCastingContext implements CastingContext
 {
 	public Emulation getEmulation()
 	{

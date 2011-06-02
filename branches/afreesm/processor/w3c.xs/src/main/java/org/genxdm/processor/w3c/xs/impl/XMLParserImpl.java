@@ -32,32 +32,30 @@ import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.resolve.SchemaCatalog;
 import org.genxdm.xs.resolve.CatalogResolver;
 
-final public class XMLParserImpl<A>
+final public class XMLParserImpl
 {
 	/**
 	 * Injected during initialization, already contains native and xsi schema components.
 	 */
-	private final ComponentProvider<A> cache;
-	private final AtomBridge<A> atomBridge;
+	private final ComponentProvider cache;
 
 	private SchemaCatalog m_catalog;
 	private CatalogResolver m_resolver;
 	private SmRegExCompiler m_regexc;
 	private boolean m_processRepeatedNamespaces = true;
 
-	public XMLParserImpl(final ComponentProvider<A> cache, final AtomBridge<A> atomBridge)
+	public XMLParserImpl(final ComponentProvider cache)
 	{
 		this.cache = PreCondition.assertArgumentNotNull(cache, "cache");
-		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
 	}
 
-	public ComponentBag<A> parse(final URI schemaLocation, final InputStream istream, final URI systemId) throws SchemaException
+	public ComponentBag parse(final URI schemaLocation, final InputStream istream, final URI systemId) throws SchemaException
 	{
 		// This convenience routine is implemented in terms of the more general routine.
 		final SchemaExceptionCatcher errors = new SchemaExceptionCatcher();
 		try
 		{
-			final ComponentBag<A> components = parse(schemaLocation, istream, systemId, errors);
+			final ComponentBag components = parse(schemaLocation, istream, systemId, errors);
 			if (errors.size() > 0)
 			{
 				// Only the first error is reported.
@@ -75,7 +73,7 @@ final public class XMLParserImpl<A>
 		}
 	}
 
-	public ComponentBag<A> parse(final URI schemaLocation, final InputStream istream, final URI systemId, final SchemaExceptionHandler errors) throws AbortException
+	public ComponentBag parse(final URI schemaLocation, final InputStream istream, final URI systemId, final SchemaExceptionHandler errors) throws AbortException
 	{
 		PreCondition.assertArgumentNotNull(istream, "istream");
 		// PreCondition.assertArgumentNotNull(systemId, "systemId");

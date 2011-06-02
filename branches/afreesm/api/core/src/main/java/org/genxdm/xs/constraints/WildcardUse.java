@@ -21,10 +21,8 @@ import org.genxdm.xs.components.SchemaWildcard;
 /**
  * Describes the use of a wildcard.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface WildcardUse<A> extends SchemaParticle<A>
+public interface WildcardUse extends SchemaParticle
 {
-    SchemaWildcard<A> getTerm();
+    SchemaWildcard getTerm();
 }

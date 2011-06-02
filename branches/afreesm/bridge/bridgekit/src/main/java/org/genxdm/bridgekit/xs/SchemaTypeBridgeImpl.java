@@ -61,38 +61,38 @@ import org.genxdm.xs.types.SimpleUrType;
 import org.genxdm.xs.types.TextNodeType;
 import org.genxdm.xs.types.Type;
 
-final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
+final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 {
-	private final AtomicUrType<A> ANY_ATOMIC_TYPE;
-	private final ComplexUrType<A> ANY_COMPLEX_TYPE;
-	private final SimpleUrType<A> ANY_SIMPLE_TYPE;
+	private final AtomicUrType ANY_ATOMIC_TYPE;
+	private final ComplexUrType ANY_COMPLEX_TYPE;
+	private final SimpleUrType ANY_SIMPLE_TYPE;
 
-	// private final DocumentNodeType<A> DOCUMENT;
-	// private final ElementNodeType<A> ELEMENT;
-	private final CommentNodeType<A> COMMENT;
+	// private final DocumentNodeType DOCUMENT;
+	// private final ElementNodeType ELEMENT;
+	private final CommentNodeType COMMENT;
 
-	private final ConcurrentHashMap<Type<A>, ArrayList<AttributeUse<A>>> m_attributeUses = new ConcurrentHashMap<Type<A>, ArrayList<AttributeUse<A>>>();
+	private final ConcurrentHashMap<Type, ArrayList<AttributeUse>> m_attributeUses = new ConcurrentHashMap<Type, ArrayList<AttributeUse>>();
 
-	private final SchemaCacheImpl<A> m_cache;
+	private final SchemaCacheImpl m_cache;
 	private final NameSource m_nameBridge;
 
-	private final ProcessingInstructionNodeType<A> PROCESSING_INSTRUCTION;
-	private final TextNodeType<A> TEXT;
+	private final ProcessingInstructionNodeType PROCESSING_INSTRUCTION;
+	private final TextNodeType TEXT;
     private static final String ESCAPE = "\u001B";
 	private final QName WILDNAME = new QName(ESCAPE, ESCAPE);
 
-	public SchemaTypeBridgeImpl(final AtomBridge<A> atomBridge)
+	public SchemaTypeBridgeImpl(final AtomBridge atomBridge)
 	{
-		m_cache = new SchemaCacheImpl<A>(PreCondition.assertArgumentNotNull(atomBridge, "atomBridge"));
+		m_cache = new SchemaCacheImpl(PreCondition.assertArgumentNotNull(atomBridge, "atomBridge"));
 		m_nameBridge = atomBridge.getNameBridge();
 
 		ANY_COMPLEX_TYPE = m_cache.getComplexUrType();
 		ANY_SIMPLE_TYPE = m_cache.getSimpleUrType();
 		ANY_ATOMIC_TYPE = m_cache.getAtomicUrType();
-		// ELEMENT = new ElementNodeTypeImpl<A>(WILDNAME, null, false, m_cache);
-		COMMENT = new CommentNodeTypeImpl<A>(m_cache);
-		PROCESSING_INSTRUCTION = new ProcessingInstructionNodeTypeImpl<A>(null, m_cache);
-		TEXT = new TextNodeTypeImpl<A>(m_cache);
+		// ELEMENT = new ElementNodeTypeImpl(WILDNAME, null, false, m_cache);
+		COMMENT = new CommentNodeTypeImpl(m_cache);
+		PROCESSING_INSTRUCTION = new ProcessingInstructionNodeTypeImpl(null, m_cache);
+		TEXT = new TextNodeTypeImpl(m_cache);
 	}
 
 	private void assertNotLocked()
@@ -100,11 +100,11 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		PreCondition.assertFalse(m_cache.isLocked());
 	}
 
-	public SequenceType<A> atomSet(final SequenceType<A> type)
+	public SequenceType atomSet(final SequenceType type)
 	{
 		if (type instanceof SimpleType<?>)
 		{
-			return (SimpleType<A>) type;
+			return (SimpleType) type;
 		}
 		else
 		{
@@ -114,14 +114,14 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 	}
 
 	@SuppressWarnings("unchecked")
-	public SequenceType<A> attributeAxis(final SequenceType<A> type)
+	public SequenceType attributeAxis(final SequenceType type)
 	{
-		final PrimeType<A> prime = type.prime();
+		final PrimeType prime = type.prime();
 		switch (prime.getKind())
 		{
 		case CHOICE:
 		{
-			final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>) prime;
+			final PrimeChoiceType choiceType = (PrimeChoiceType) prime;
 			return multiply(choice(attributeAxis(choiceType.getLHS()), attributeAxis(choiceType.getRHS())), type.quantifier());
 		}
 		case ELEMENT:
@@ -130,11 +130,11 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 		case SCHEMA_ELEMENT:
 		{
-			final ElementDefinition<A> elementDecl = (ElementDefinition<A>) prime;
-			final Type<A> smType = elementDecl.getType();
+			final ElementDefinition elementDecl = (ElementDefinition) prime;
+			final Type smType = elementDecl.getType();
 			if (smType instanceof ComplexType)
 			{
-				final ComplexType<A> complexType = (ComplexType<A>) smType;
+				final ComplexType complexType = (ComplexType) smType;
 				return attributeAxisFromComplexType(complexType, elementDecl);
 			}
 			else if (smType instanceof SimpleType)
@@ -149,7 +149,7 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 		case COMPLEX:
 		{
-			final ComplexType<A> complexType = (ComplexType<A>) prime;
+			final ComplexType complexType = (ComplexType) prime;
 			return attributeAxisFromComplexType(complexType, null);
 		}
 		case NONE:
@@ -163,13 +163,13 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 	}
 
-	private SequenceType<A> attributeAxisFromComplexType(final ComplexType<A> complexType, final ElementDefinition<A> parentAxis)
+	private SequenceType attributeAxisFromComplexType(final ComplexType complexType, final ElementDefinition parentAxis)
 	{
-		final ArrayList<AttributeUse<A>> attributeUses = ensureAttributeUses(complexType);
-		SequenceType<A> result = null;
-		for (final AttributeUse<A> attributeUse : attributeUses)
+		final ArrayList<AttributeUse> attributeUses = ensureAttributeUses(complexType);
+		SequenceType result = null;
+		for (final AttributeUse attributeUse : attributeUses)
 		{
-			final SequenceType<A> attributeType = attributeUseType(attributeUse, parentAxis);
+			final SequenceType attributeType = attributeUseType(attributeUse, parentAxis);
 			if (result == null)
 			{
 				result = attributeType;
@@ -182,11 +182,11 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		return result == null ? emptyType() : result;
 	}
 
-	public AttributeNodeType<A> attributeType(final QName name, final SequenceType<A> type)
+	public AttributeNodeType attributeType(final QName name, final SequenceType type)
 	{
 		if (null != name)
 		{
-			return new AttributeNodeTypeImpl<A>(name, type, m_cache);
+			return new AttributeNodeTypeImpl(name, type, m_cache);
 		}
 		else
 		{
@@ -194,12 +194,12 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 	}
 
-	private SequenceType<A> attributeUseType(final AttributeUse<A> attributeUse, final ElementDefinition<A> parentAxis)
+	private SequenceType attributeUseType(final AttributeUse attributeUse, final ElementDefinition parentAxis)
 	{
-		final AttributeDefinition<A> attribute = attributeUse.getAttribute();
+		final AttributeDefinition attribute = attributeUse.getAttribute();
 		if (null != parentAxis)
 		{
-			return multiply(new AttributeDeclWithParentAxisType<A>(attribute, parentAxis), attributeUse.isRequired() ? KeeneQuantifier.EXACTLY_ONE : KeeneQuantifier.OPTIONAL);
+			return multiply(new AttributeDeclWithParentAxisType(attribute, parentAxis), attributeUse.isRequired() ? KeeneQuantifier.EXACTLY_ONE : KeeneQuantifier.OPTIONAL);
 		}
 		else
 		{
@@ -207,65 +207,65 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 	}
 
-	public AttributeNodeType<A> attributeWild(final SequenceType<A> type)
+	public AttributeNodeType attributeWild(final SequenceType type)
 	{
-		return new AttributeNodeTypeImpl<A>(WILDNAME, type, m_cache);
+		return new AttributeNodeTypeImpl(WILDNAME, type, m_cache);
 	}
 
 	@SuppressWarnings("unchecked")
-	public SequenceType<A> childAxis(final SequenceType<A> focus)
+	public SequenceType childAxis(final SequenceType focus)
 	{
-		final PrimeType<A> prime = focus.prime();
+		final PrimeType prime = focus.prime();
 		switch (prime.getKind())
 		{
 		case CHOICE:
 		{
-			final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>) prime;
+			final PrimeChoiceType choiceType = (PrimeChoiceType) prime;
 			return multiply(choice(childAxis(choiceType.getLHS()), childAxis(choiceType.getRHS())), focus.quantifier());
 		}
 		case DOCUMENT:
 		{
-			final DocumentNodeType<A> documentNodeType = (DocumentNodeType<A>) prime;
-			final SequenceType<A> contentType = documentNodeType.getContentType();
+			final DocumentNodeType documentNodeType = (DocumentNodeType) prime;
+			final SequenceType contentType = documentNodeType.getContentType();
 			if (null != contentType)
 			{
 				return contentType;
 			}
 			else
 			{
-				final ElementNodeType<A> elementType = elementWild(null, true);
-				final TextNodeType<A> textType = textType();
-				final CommentNodeType<A> commentType = commentType();
-				final ProcessingInstructionNodeType<A> processingInstructionType = processingInstructionType(null);
+				final ElementNodeType elementType = elementWild(null, true);
+				final TextNodeType textType = textType();
+				final CommentNodeType commentType = commentType();
+				final ProcessingInstructionNodeType processingInstructionType = processingInstructionType(null);
 
 				return multiply(zeroOrMore(choice(elementType, choice(textType, choice(commentType, processingInstructionType)))), focus.quantifier());
 			}
 		}
 		case ELEMENT:
 		{
-			final ElementNodeType<A> element = (ElementNodeType<A>) prime;
-			final SequenceType<A> dataType = element.getType();
+			final ElementNodeType element = (ElementNodeType) prime;
+			final SequenceType dataType = element.getType();
 			if (subtype(dataType, zeroOrMore(nodeType())))
 			{
 				return dataType;
 			}
 			else
 			{
-				final PrimeType<A> elementType = elementWild(null, true);
-				final TextNodeType<A> textType = textType();
-				final CommentNodeType<A> commentType = commentType();
-				final ProcessingInstructionNodeType<A> processingInstructionType = processingInstructionType(null);
+				final PrimeType elementType = elementWild(null, true);
+				final TextNodeType textType = textType();
+				final CommentNodeType commentType = commentType();
+				final ProcessingInstructionNodeType processingInstructionType = processingInstructionType(null);
 
 				return multiply(zeroOrMore(choice(elementType, choice(textType, choice(commentType, processingInstructionType)))), focus.quantifier());
 			}
 		}
 		case SCHEMA_ELEMENT:
 		{
-			final ElementDefinition<A> elementDecl = (ElementDefinition<A>) prime;
-			final Type<A> type = elementDecl.getType();
+			final ElementDefinition elementDecl = (ElementDefinition) prime;
+			final Type type = elementDecl.getType();
 			if (type instanceof ComplexType)
 			{
-				final ComplexType<A> complexType = (ComplexType<A>) type;
+				final ComplexType complexType = (ComplexType) type;
 				return childAxisFromComplexType(complexType, elementDecl);
 			}
 			else if (type instanceof SimpleType)
@@ -281,7 +281,7 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		case COMPLEX:
 		{
 			// TODO: This appears to be unreachable...
-			final ComplexType<A> complexType = (ComplexType<A>) prime;
+			final ComplexType complexType = (ComplexType) prime;
 			return childAxisFromComplexType(complexType, null);
 		}
 		case NONE:
@@ -297,9 +297,9 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 
 	// TODO: The suggestion here is that we can factor out this function, maybe embed in the
 	// complex type so that it can be cached.
-	private SequenceType<A> childAxisFromComplexType(final ComplexType<A> complexType, final ElementDefinition<A> parentDecl)
+	private SequenceType childAxisFromComplexType(final ComplexType complexType, final ElementDefinition parentDecl)
 	{
-		final ContentType<A> contentType = complexType.getContentType();
+		final ContentType contentType = complexType.getContentType();
 		if (contentType.isMixed() || contentType.isElementOnly())
 		{
 			return modelGroupUseType(contentType.getContentModel(), parentDecl);
@@ -311,79 +311,79 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 	}
 
-	public SequenceType<A> choice(final SequenceType<A> lhs, final SequenceType<A> rhs)
+	public SequenceType choice(final SequenceType lhs, final SequenceType rhs)
 	{
 		return ZChoiceType.choice(lhs, rhs);
 	}
 
-	public CommentNodeType<A> commentType()
+	public CommentNodeType commentType()
 	{
 		return COMMENT;
 	}
 
-	public SequenceType<A> concat(final SequenceType<A> lhs, final SequenceType<A> rhs)
+	public SequenceType concat(final SequenceType lhs, final SequenceType rhs)
 	{
 		return ZConcatType.concat(lhs, rhs);
 	}
 
-	public void declareAttribute(final AttributeDefinition<A> attribute)
+	public void declareAttribute(final AttributeDefinition attribute)
 	{
 		assertNotLocked();
 		m_cache.declareAttribute(attribute);
 	}
 
-	public void declareElement(final ElementDefinition<A> element)
+	public void declareElement(final ElementDefinition element)
 	{
 		assertNotLocked();
 		m_cache.declareElement(element);
 	}
 
-	public void declareNotation(final NotationDefinition<A> notation)
+	public void declareNotation(final NotationDefinition notation)
 	{
 		assertNotLocked();
 		m_cache.declareNotation(notation);
 	}
 
-	public void defineAttributeGroup(final AttributeGroupDefinition<A> attributeGroup)
+	public void defineAttributeGroup(final AttributeGroupDefinition attributeGroup)
 	{
 		assertNotLocked();
 		m_cache.defineAttributeGroup(attributeGroup);
 	}
 
-	public void defineComplexType(final ComplexType<A> complexType)
+	public void defineComplexType(final ComplexType complexType)
 	{
 		assertNotLocked();
 		m_cache.defineComplexType(complexType);
 	}
 
-	public void defineIdentityConstraint(final IdentityConstraint<A> identityConstraint)
+	public void defineIdentityConstraint(final IdentityConstraint identityConstraint)
 	{
 		assertNotLocked();
 		m_cache.defineIdentityConstraint(identityConstraint);
 	}
 
-	public void defineModelGroup(final ModelGroup<A> modelGroup)
+	public void defineModelGroup(final ModelGroup modelGroup)
 	{
 		assertNotLocked();
 		m_cache.defineModelGroup(modelGroup);
 	}
 
-	public void defineSimpleType(final SimpleType<A> simpleType)
+	public void defineSimpleType(final SimpleType simpleType)
 	{
 		assertNotLocked();
 		m_cache.defineSimpleType(simpleType);
 	}
 
-	public DocumentNodeType<A> documentType(final SequenceType<A> contentType)
+	public DocumentNodeType documentType(final SequenceType contentType)
 	{
 		return m_cache.documentType(contentType);
 	}
 
-	public ElementNodeType<A> elementType(final QName name, final SequenceType<A> type, final boolean nillable)
+	public ElementNodeType elementType(final QName name, final SequenceType type, final boolean nillable)
 	{
 		if (null != name)
 		{
-			return new ElementNodeTypeImpl<A>(name, type, nillable, m_cache);
+			return new ElementNodeTypeImpl(name, type, nillable, m_cache);
 		}
 		else
 		{
@@ -391,14 +391,14 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 	}
 
-	private SequenceType<A> elementUseType(final ElementUse<A> elementUse, final ElementDefinition<A> parentDecl)
+	private SequenceType elementUseType(final ElementUse elementUse, final ElementDefinition parentDecl)
 	{
 		final int minOccurs = elementUse.getMinOccurs();
 		final int maxOccurs = elementUse.getMaxOccurs();
-		final ElementDefinition<A> elementDecl = elementUse.getTerm();
+		final ElementDefinition elementDecl = elementUse.getTerm();
 		if (null != parentDecl)
 		{
-			return multiply(new ElementDeclWithParentAxisType<A>(elementDecl, parentDecl), KeeneQuantifier.approximate(minOccurs, maxOccurs));
+			return multiply(new ElementDeclWithParentAxisType(elementDecl, parentDecl), KeeneQuantifier.approximate(minOccurs, maxOccurs));
 		}
 		else
 		{
@@ -406,27 +406,27 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 	}
 
-	public ElementNodeType<A> elementWild(final SequenceType<A> type, final boolean nillable)
+	public ElementNodeType elementWild(final SequenceType type, final boolean nillable)
 	{
-		return new ElementNodeTypeImpl<A>(WILDNAME, type, nillable, m_cache);
+		return new ElementNodeTypeImpl(WILDNAME, type, nillable, m_cache);
 	}
 
-	public EmptyType<A> emptyType()
+	public EmptyType emptyType()
 	{
 		return m_cache.empty();
 	}
 
-	private ArrayList<AttributeUse<A>> ensureAttributeUses(final ComplexType<A> complexType)
+	private ArrayList<AttributeUse> ensureAttributeUses(final ComplexType complexType)
 	{
-		final ArrayList<AttributeUse<A>> cachedAttributeUses = m_attributeUses.get(complexType);
+		final ArrayList<AttributeUse> cachedAttributeUses = m_attributeUses.get(complexType);
 		if (null != cachedAttributeUses)
 		{
 			return cachedAttributeUses;
 		}
 		else
 		{
-			final ArrayList<AttributeUse<A>> attributeUses = new ArrayList<AttributeUse<A>>();
-			for (final AttributeUse<A> attributeUse : complexType.getAttributeUses().values())
+			final ArrayList<AttributeUse> attributeUses = new ArrayList<AttributeUse>();
+			for (final AttributeUse attributeUse : complexType.getAttributeUses().values())
 			{
 				attributeUses.add(attributeUse);
 			}
@@ -440,111 +440,111 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		return m_cache.generateUniqueName();
 	}
 
-	public AtomBridge<A> getAtomBridge()
+	public AtomBridge getAtomBridge()
 	{
 		return m_cache.getAtomBridge();
 	}
 
-	public AtomicType<A> getAtomicType(final QName name)
+	public AtomicType getAtomicType(final QName name)
 	{
 		return m_cache.getAtomicType(name);
 	}
 
-	public AtomicType<A> getAtomicType(final NativeType name)
+	public AtomicType getAtomicType(final NativeType name)
 	{
 		return m_cache.getAtomicType(name);
 	}
 
-	public AtomicUrType<A> getAtomicUrType()
+	public AtomicUrType getAtomicUrType()
 	{
 		return ANY_ATOMIC_TYPE;
 	}
 
-	public AttributeDefinition<A> getAttributeDeclaration(final QName attributeName)
+	public AttributeDefinition getAttributeDeclaration(final QName attributeName)
 	{
 		return m_cache.getAttributeDeclaration(attributeName);
 	}
 
-	public AttributeGroupDefinition<A> getAttributeGroup(final QName name)
+	public AttributeGroupDefinition getAttributeGroup(final QName name)
 	{
 		return m_cache.getAttributeGroup(name);
 	}
 
-	public Iterable<AttributeGroupDefinition<A>> getAttributeGroups()
+	public Iterable<AttributeGroupDefinition> getAttributeGroups()
 	{
 		return m_cache.getAttributeGroups();
 	}
 
-	public Iterable<AttributeDefinition<A>> getAttributes()
+	public Iterable<AttributeDefinition> getAttributes()
 	{
 		return m_cache.getAttributes();
 	}
 
-	public ComplexType<A> getComplexType(final QName name)
+	public ComplexType getComplexType(final QName name)
 	{
 		return m_cache.getComplexType(name);
 	}
 
-	public Iterable<ComplexType<A>> getComplexTypes()
+	public Iterable<ComplexType> getComplexTypes()
 	{
 		return m_cache.getComplexTypes();
 	}
 
-	public ComplexUrType<A> getComplexUrType()
+	public ComplexUrType getComplexUrType()
 	{
 		return ANY_COMPLEX_TYPE;
 	}
 
-	public ElementDefinition<A> getElementDeclaration(final QName elementName)
+	public ElementDefinition getElementDeclaration(final QName elementName)
 	{
 		return m_cache.getElementDeclaration(elementName);
 	}
 
-	public Iterable<ElementDefinition<A>> getElements()
+	public Iterable<ElementDefinition> getElements()
 	{
 		return m_cache.getElements();
 	}
 
-	public IdentityConstraint<A> getIdentityConstraint(final QName name)
+	public IdentityConstraint getIdentityConstraint(final QName name)
 	{
 		return m_cache.getIdentityConstraint(name);
 	}
 
-	public Iterable<IdentityConstraint<A>> getIdentityConstraints()
+	public Iterable<IdentityConstraint> getIdentityConstraints()
 	{
 		return m_cache.getIdentityConstraints();
 	}
 
-	public ModelGroup<A> getModelGroup(final QName name)
+	public ModelGroup getModelGroup(final QName name)
 	{
 		return m_cache.getModelGroup(name);
 	}
 
-	public Iterable<ModelGroup<A>> getModelGroups()
+	public Iterable<ModelGroup> getModelGroups()
 	{
 		return m_cache.getModelGroups();
 	}
 
-	public QName getName(final SequenceType<A> type)
+	public QName getName(final SequenceType type)
 	{
 		if (type instanceof Type<?>)
 		{
-			final Type<A> itemType = (Type<A>) type;
+			final Type itemType = (Type) type;
 			return itemType.getName();
 		}
 		else if (type instanceof AttributeDefinition<?>)
 		{
-			final AttributeDefinition<A> attType = (AttributeDefinition<A>) type;
+			final AttributeDefinition attType = (AttributeDefinition) type;
 			return attType.getName();
 		}
 		else if (type instanceof AttributeNodeType<?>)
 		{
-			final AttributeNodeType<A> attributeNodeType = (AttributeNodeType<A>) type;
+			final AttributeNodeType attributeNodeType = (AttributeNodeType) type;
 			return attributeNodeType.getName();
 		}
 		else if (type instanceof ElementNodeType<?>)
 		{
-			final ElementNodeType<A> elementNodeType = (ElementNodeType<A>) type;
+			final ElementNodeType elementNodeType = (ElementNodeType) type;
 			return elementNodeType.getName();
 		}
 		else
@@ -563,11 +563,11 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		return m_cache.getNamespaces();
 	}
 
-	public NativeType getNearestBuiltInType(final SequenceType<A> arg)
+	public NativeType getNearestBuiltInType(final SequenceType arg)
 	{
 		if (arg instanceof SimpleType<?>)
 		{
-			final SimpleType<A> atomicType = (SimpleType<A>) arg;
+			final SimpleType atomicType = (SimpleType) arg;
 			final QName name = atomicType.getName();
 			return m_nameBridge.nativeType(name);
 		}
@@ -577,37 +577,37 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 	}
 
-	public NotationDefinition<A> getNotationDeclaration(final QName name)
+	public NotationDefinition getNotationDeclaration(final QName name)
 	{
 		return m_cache.getNotationDeclaration(name);
 	}
 
-	public Iterable<NotationDefinition<A>> getNotations()
+	public Iterable<NotationDefinition> getNotations()
 	{
 		return m_cache.getNotations();
 	}
 
-	public SimpleType<A> getSimpleType(final QName name)
+	public SimpleType getSimpleType(final QName name)
 	{
 		return m_cache.getSimpleType(name);
 	}
 
-	public SimpleType<A> getSimpleType(final NativeType name)
+	public SimpleType getSimpleType(final NativeType name)
 	{
 		return m_cache.getSimpleType(name);
 	}
 
-	public Iterable<SimpleType<A>> getSimpleTypes()
+	public Iterable<SimpleType> getSimpleTypes()
 	{
 		return m_cache.getSimpleTypes();
 	}
 
-	public SimpleUrType<A> getSimpleUrType()
+	public SimpleUrType getSimpleUrType()
 	{
 		return ANY_SIMPLE_TYPE;
 	}
 
-	public Type<A> getTypeDefinition(final QName name)
+	public Type getTypeDefinition(final QName name)
 	{
 		if (null != name)
 		{
@@ -642,12 +642,12 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 	}
 
-	public Type<A> getTypeDefinition(final NativeType nativeType)
+	public Type getTypeDefinition(final NativeType nativeType)
 	{
 		return m_cache.getTypeDefinition(nativeType);
 	}
 
-	public SequenceType<A> handle(SequenceType<A> sequenceType)
+	public SequenceType handle(SequenceType sequenceType)
 	{
 		return sequenceType;
 	}
@@ -697,7 +697,7 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		return m_cache.hasType(name);
 	}
 
-	public SequenceType<A> interleave(final SequenceType<A> lhs, final SequenceType<A> rhs)
+	public SequenceType interleave(final SequenceType lhs, final SequenceType rhs)
 	{
 		return ZInterleaveType.interleave(lhs, rhs);
 	}
@@ -707,7 +707,7 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		return m_cache.isLocked();
 	}
 
-	public boolean isNative(final SequenceType<A> arg)
+	public boolean isNative(final SequenceType arg)
 	{
 		if (arg instanceof PrimeType<?>)
 		{
@@ -719,12 +719,12 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 	}
 
-	public boolean isNone(final SequenceType<A> type)
+	public boolean isNone(final SequenceType type)
 	{
 		return (type instanceof NoneType<?>);
 	}
 
-	public PrimeType<A> itemType()
+	public PrimeType itemType()
 	{
 		return m_cache.item();
 	}
@@ -734,17 +734,17 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		m_cache.lock();
 	}
 
-	private SequenceType<A> modelGroupUseType(final ModelGroupUse<A> modelGroupUse, final ElementDefinition<A> parentDecl)
+	private SequenceType modelGroupUseType(final ModelGroupUse modelGroupUse, final ElementDefinition parentDecl)
 	{
 		final int minOccurs = modelGroupUse.getMinOccurs();
 		final int maxOccurs = modelGroupUse.getMaxOccurs();
-		final ModelGroup<A> modelGroup = modelGroupUse.getTerm();
+		final ModelGroup modelGroup = modelGroupUse.getTerm();
 		final ModelGroup.SmCompositor compositor = modelGroup.getCompositor();
 
-		SequenceType<A> contentModel = null;
-		for (final SchemaParticle<A> particle : modelGroup.getParticles())
+		SequenceType contentModel = null;
+		for (final SchemaParticle particle : modelGroup.getParticles())
 		{
-			final SequenceType<A> type = particle(particle, parentDecl);
+			final SequenceType type = particle(particle, parentDecl);
 			if (null != contentModel)
 			{
 				switch (compositor)
@@ -786,7 +786,7 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 	}
 
-	public SequenceType<A> multiply(final SequenceType<A> argument, final KeeneQuantifier multiplier)
+	public SequenceType multiply(final SequenceType argument, final KeeneQuantifier multiplier)
 	{
 		PreCondition.assertArgumentNotNull(argument, "argument");
 		if (null != argument)
@@ -815,32 +815,32 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 	}
 
-	public NamespaceNodeType<A> namespaceType()
+	public NamespaceNodeType namespaceType()
 	{
 		return m_cache.namespace();
 	}
 
-	public PrimeType<A> nodeType()
+	public PrimeType nodeType()
 	{
 		return m_cache.node();
 	}
 
-	public NoneType<A> noneType()
+	public NoneType noneType()
 	{
-		return new NoneTypeImpl<A>();
+		return new NoneTypeImpl();
 	}
 
-	public NoneType<A> noneType(final QName errorCode)
+	public NoneType noneType(final QName errorCode)
 	{
-		return new NoneTypeImpl<A>(errorCode);
+		return new NoneTypeImpl(errorCode);
 	}
 
-	public SequenceType<A> oneOrMore(final SequenceType<A> type)
+	public SequenceType oneOrMore(final SequenceType type)
 	{
 		return multiply(type, KeeneQuantifier.ONE_OR_MORE);
 	}
 
-	public SequenceType<A> optional(final SequenceType<A> type)
+	public SequenceType optional(final SequenceType type)
 	{
 		if (null != type)
 		{
@@ -852,19 +852,19 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 	}
 
-	private SequenceType<A> particle(final SchemaParticle<A> particle, final ElementDefinition<A> parentDecl)
+	private SequenceType particle(final SchemaParticle particle, final ElementDefinition parentDecl)
 	{
 		if (particle instanceof ElementUse<?>)
 		{
-			return elementUseType((ElementUse<A>) particle, parentDecl);
+			return elementUseType((ElementUse) particle, parentDecl);
 		}
 		else if (particle instanceof ModelGroupUse<?>)
 		{
-			return modelGroupUseType((ModelGroupUse<A>) particle, parentDecl);
+			return modelGroupUseType((ModelGroupUse) particle, parentDecl);
 		}
 		else if (particle instanceof WildcardUse<?>)
 		{
-			return wildcardUseType((WildcardUse<A>) particle, parentDecl);
+			return wildcardUseType((WildcardUse) particle, parentDecl);
 		}
 		else
 		{
@@ -873,7 +873,7 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 	}
 
-	public ProcessingInstructionNodeType<A> processingInstructionType(final String name)
+	public ProcessingInstructionNodeType processingInstructionType(final String name)
 	{
 		if (null != name)
 		{
@@ -885,72 +885,72 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 	}
 
-	public void register(final ComponentBag<A> components)
+	public void register(final ComponentBag components)
 	{
 		assertNotLocked();
 		m_cache.register(components);
 	}
 
-	public boolean sameAs(final SequenceType<A> one, final SequenceType<A> two)
+	public boolean sameAs(final SequenceType one, final SequenceType two)
 	{
 		PreCondition.assertArgumentNotNull(one, "one");
 		PreCondition.assertArgumentNotNull(two, "two");
 		return subtype(one, two) && subtype(two, one);
 	}
 
-	public AttributeDefinition<A> schemaAttribute(final QName attributeName)
+	public AttributeDefinition schemaAttribute(final QName attributeName)
 	{
 		return m_cache.getAttributeDeclaration(attributeName);
 	}
 
-	public ElementDefinition<A> schemaElement(final QName elementName)
+	public ElementDefinition schemaElement(final QName elementName)
 	{
 		return m_cache.getElementDeclaration(elementName);
 	}
 
-	public SequenceType<A> schemaType(final QName typeName)
+	public SequenceType schemaType(final QName typeName)
 	{
 		return m_cache.getTypeDefinition(typeName);
 	}
 
-	public boolean subtype(final SequenceType<A> lhs, final SequenceType<A> rhs)
+	public boolean subtype(final SequenceType lhs, final SequenceType rhs)
 	{
 		PreCondition.assertArgumentNotNull(lhs, "lhs");
 		PreCondition.assertArgumentNotNull(rhs, "rhs");
 		return SchemaSupport.subtype(lhs, rhs);
 	}
 
-	public TextNodeType<A> textType()
+	public TextNodeType textType()
 	{
 		return TEXT;
 	}
 
 	@SuppressWarnings("unchecked")
-	public SequenceType<A>[] typeArray(final int size)
+	public SequenceType[] typeArray(final int size)
 	{
 		return new SequenceType[size];
 	}
 
-	private SequenceType<A> wildcardUseType(final WildcardUse<A> wildcardUse, final ElementDefinition<A> parentDecl)
+	private SequenceType wildcardUseType(final WildcardUse wildcardUse, final ElementDefinition parentDecl)
 	{
 		final int minOccurs = wildcardUse.getMinOccurs();
 		final int maxOccurs = wildcardUse.getMaxOccurs();
-		final SchemaWildcard<A> term = wildcardUse.getTerm();
+		final SchemaWildcard term = wildcardUse.getTerm();
 		// final ProcessContentsMode processContents = term.getProcessContents();
 		final NamespaceConstraint namespaceConstraint = term.getNamespaceConstraint();
 		switch (namespaceConstraint.getMode())
 		{
 		case Any:
 		{
-			return multiply(new ElementNodeWithParentAxisType<A>(elementWild(null, true), parentDecl), KeeneQuantifier.approximate(minOccurs, maxOccurs));
+			return multiply(new ElementNodeWithParentAxisType(elementWild(null, true), parentDecl), KeeneQuantifier.approximate(minOccurs, maxOccurs));
 		}
 		case Include:
 		{
-			SequenceType<A> type = null;
+			SequenceType type = null;
 			for (final String namespace : namespaceConstraint.getNamespaces())
 			{
-				final ElementNodeWithParentAxisType<A> append = 
-				    new ElementNodeWithParentAxisType<A>(new ElementNodeTypeImpl<A>(new QName(namespace, null), null, true, m_cache), parentDecl);
+				final ElementNodeWithParentAxisType append = 
+				    new ElementNodeWithParentAxisType(new ElementNodeTypeImpl(new QName(namespace, null), null, true, m_cache), parentDecl);
 				if (null != type)
 				{
 					type = choice(type, append);
@@ -966,7 +966,7 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		{
 			// TODO: How do we define a regular expression type that excludes certain namespaces?
 			// TODO: We don't even have the concept of AND.
-			return multiply(new ElementNodeWithParentAxisType<A>(new ElementNodeTypeImpl<A>(WILDNAME, null, true, m_cache), parentDecl), KeeneQuantifier.approximate(minOccurs,
+			return multiply(new ElementNodeWithParentAxisType(new ElementNodeTypeImpl(WILDNAME, null, true, m_cache), parentDecl), KeeneQuantifier.approximate(minOccurs,
 					maxOccurs));
 		}
 		default:
@@ -976,7 +976,7 @@ final class SchemaTypeBridgeImpl<A> implements SchemaTypeBridge<A>
 		}
 	}
 
-	public SequenceType<A> zeroOrMore(final SequenceType<A> type)
+	public SequenceType zeroOrMore(final SequenceType type)
 	{
 		return multiply(type, KeeneQuantifier.ZERO_OR_MORE);
 	}

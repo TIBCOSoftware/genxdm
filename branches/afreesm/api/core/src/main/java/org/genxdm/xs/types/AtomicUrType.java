@@ -18,12 +18,12 @@ package org.genxdm.xs.types;
 /**
  * Marker interface for the Atomic Ur-Type (xs:anyAtomicType).
  */
-public interface AtomicUrType<A> extends AtomicType<A>
+public interface AtomicUrType extends AtomicType
 {
     /**
      * Returns the {base type definition}
      */
-    SimpleUrType<A> getBaseType();
+    SimpleUrType getBaseType();
 
-    AtomicUrType<A> prime();
+    AtomicUrType prime();
 }

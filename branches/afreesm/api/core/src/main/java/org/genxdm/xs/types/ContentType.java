@@ -20,16 +20,14 @@ import org.genxdm.xs.constraints.ModelGroupUse;
 /**
  * The Content Type of a Complex Type Definition.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface ContentType<A>
+public interface ContentType
 {
     /**
      * Returns the content model (i.e. a Particle) part of the {content type} property. <br/>
      * This is only valid when the kind part of the {content type} property is mixed or element-only.
      */
-    ModelGroupUse<A> getContentModel();
+    ModelGroupUse getContentModel();
 
     /**
      * Returns the {variety} of this content type object.
@@ -39,7 +37,7 @@ public interface ContentType<A>
     /**
      * Returns a simple type definition when the kind part is <em>{@link ContentTypeKind#Simple}</em>.
      */
-    SimpleType<A> getSimpleType();
+    SimpleType getSimpleType();
 
     /**
      * Returns <code>true</code> if the {content type} property is Complex (Mixed or Element Only).

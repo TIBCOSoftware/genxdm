@@ -18,9 +18,7 @@ package org.genxdm.xs.types;
 /**
  * Reserved.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface NodeUrType<A> extends PrimeType<A>
+public interface NodeUrType extends PrimeType
 {
 }

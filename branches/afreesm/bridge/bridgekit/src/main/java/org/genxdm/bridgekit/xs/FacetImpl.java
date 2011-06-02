@@ -20,7 +20,7 @@ import org.genxdm.xs.facets.Facet;
 /**
  * Abstract base class for implementations of {@link Facet}
  */
-abstract class FacetImpl<A> extends LockableImpl implements Facet<A>
+abstract class FacetImpl extends LockableImpl implements Facet
 {
 	private final boolean isFixed;
 

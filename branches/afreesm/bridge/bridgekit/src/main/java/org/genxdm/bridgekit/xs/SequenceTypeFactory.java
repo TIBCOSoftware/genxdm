@@ -27,25 +27,25 @@ import org.genxdm.xs.types.Type;
 /**
  * Keep private. This will go away.
  */
-interface SequenceTypeFactory<A>
+interface SequenceTypeFactory
 {
-	PrimeType<A> comment();
+	PrimeType comment();
 
-	EmptyType<A> empty();
+	EmptyType empty();
 
-	Type<A> getTypeDefinition(QName dataType);
+	Type getTypeDefinition(QName dataType);
 
-	Type<A> getTypeDefinition(NativeType nativeType);
+	Type getTypeDefinition(NativeType nativeType);
 
-	PrimeType<A> item();
+	PrimeType item();
 
-	SequenceType<A> itemSet();
+	SequenceType itemSet();
 
-	NamespaceNodeType<A> namespace();
+	NamespaceNodeType namespace();
 
-	PrimeType<A> node();
+	PrimeType node();
 
-	PrimeType<A> processingInstruction(String name);
+	PrimeType processingInstruction(String name);
 
-	PrimeType<A> text();
+	PrimeType text();
 }

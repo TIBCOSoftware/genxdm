@@ -18,10 +18,8 @@ package org.genxdm.xs.facets;
 /**
  * The xs:fractionDigits facet.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface FractionDigits<A> extends Facet<A>
+public interface FractionDigits extends Facet
 {
     /**
      * Returns the fractionDigits value which is the maximum number of digits in the fractional portion of a number.

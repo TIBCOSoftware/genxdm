@@ -17,6 +17,7 @@ package org.genxdm.xs.types;
 
 import java.util.List;
 
+import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.EnumerationDefinition;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
 import org.genxdm.xs.exceptions.DatatypeException;
@@ -28,20 +29,18 @@ import org.genxdm.xs.resolve.PrefixResolver;
 /**
  * A Simple Type definition.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface SimpleType<A> extends SimpleMarkerType<A>
+public interface SimpleType extends SimpleMarkerType
 {
-    Iterable<EnumerationDefinition<A>> getEnumerations();
+    Iterable<EnumerationDefinition> getEnumerations();
 
-    Facet<A> getFacetOfKind(FacetKind facetKind);
+    Facet getFacetOfKind(FacetKind facetKind);
 
-    Iterable<Facet<A>> getFacets();
+    Iterable<Facet> getFacets();
 
     NativeType getNativeType();
 
-    SimpleType<A> getNativeTypeDefinition();
+    SimpleType getNativeTypeDefinition();
 
     /**
      * Returns the pattern facets for this derivation step, may be <code>null</code>.
@@ -103,7 +102,7 @@ public interface SimpleType<A> extends SimpleMarkerType<A>
      */
     String normalize(String initialValue);
 
-    List<A> validate(List<? extends A> value) throws DatatypeException;
+    <A> List<A> validate(List<? extends A> value, AtomBridge<A> bridge) throws DatatypeException;
 
     /**
      * Determines whether the supplied string literal is valid with respect to this type definition and, if successful,
@@ -119,7 +118,7 @@ public interface SimpleType<A> extends SimpleMarkerType<A>
      * @throws DatatypeException
      *             If the string literal is not valid with respect to this type definition.
      */
-    List<A> validate(String initialValue) throws DatatypeException;
+    <A> List<A> validate(String initialValue, AtomBridge<A> bridge) throws DatatypeException;
 
-    List<A> validate(String initialValue, final PrefixResolver resolver) throws DatatypeException;
+    <A> List<A> validate(String initialValue, final PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException;
 }

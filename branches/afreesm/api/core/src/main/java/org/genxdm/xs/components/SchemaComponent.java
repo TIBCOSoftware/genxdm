@@ -22,7 +22,7 @@ import org.genxdm.xs.enums.ScopeExtent;
 /**
  * The common interface for all schema components (things that are named).
  */
-public interface SchemaComponent<A>
+public interface SchemaComponent
 {
     /**
      * The {name} and {target namespace} properties.

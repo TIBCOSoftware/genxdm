@@ -27,25 +27,23 @@ import org.genxdm.xs.enums.DerivationMethod;
 /**
  * A Complex Type Definition.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface ComplexType<A> extends ComplexMarkerType<A>
+public interface ComplexType extends ComplexMarkerType
 {
     /**
      * Returns the {attribute uses} property for a complex type.
      */
-    Map<QName, AttributeUse<A>> getAttributeUses();
+    Map<QName, AttributeUse> getAttributeUses();
 
     /**
      * Returns the {attribute wildcard} property for a complex type.
      */
-    SchemaWildcard<A> getAttributeWildcard();
+    SchemaWildcard getAttributeWildcard();
 
     /**
      * Returns the {content type} property.
      */
-    ContentType<A> getContentType();
+    ContentType getContentType();
 
     /**
      * Returns the {prohibited substitutions} property. This is a run-time constraint on the types. A subset of
