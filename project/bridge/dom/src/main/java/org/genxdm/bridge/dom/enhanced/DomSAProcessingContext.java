@@ -35,6 +35,7 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.ValidationHandler;
+import org.genxdm.typed.Validator;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
@@ -60,7 +61,7 @@ import org.w3c.dom.Node;
 public final class DomSAProcessingContext 
     implements TypedContext<Node, XmlAtom>
 {
-	public DomSAProcessingContext(DomProcessingContext parent)
+    public DomSAProcessingContext(DomProcessingContext parent)
 	{
 		this.atomBridge = new XmlAtomBridge(this, new NameSource());
 		this.m_cache = new SchemaTypeBridgeFactory<XmlAtom>(atomBridge).newMetaBridge();
@@ -358,7 +359,7 @@ public final class DomSAProcessingContext
 	}
 	
 	@Override
-	public ValidatingDocumentHandler<Node, XmlAtom> newDocumentHandler(final ValidationHandler<Node, XmlAtom> validator, final XMLReporter reporter, final Resolver resolver)
+	public ValidatingDocumentHandler<Node, XmlAtom> newDocumentHandler(final Validator<XmlAtom> validator, final XMLReporter reporter, final Resolver resolver)
 	{
 	    return new ValidatingDocumentHandler<Node, XmlAtom>(this, validator, reporter, resolver);
 	}
@@ -370,10 +371,11 @@ public final class DomSAProcessingContext
 	}
 	
 	@Override
-	public Node validate(Node source, ValidationHandler<Node, XmlAtom> validator, URI namespace)
+	public Node validate(Node source, ValidationHandler<XmlAtom> validator, URI namespace)
 	{
 	    SequenceBuilder<Node, XmlAtom> builder = newSequenceBuilder();
-	    validator.setSequenceBuilder(builder);
+	    // TODO: can we instead modify the existing tree and return it?
+	    validator.setSequenceHandler(builder);
 	    validator.reset();
 	    m_model.stream(source, true, true, validator);
 	    // TODO: check for errors?

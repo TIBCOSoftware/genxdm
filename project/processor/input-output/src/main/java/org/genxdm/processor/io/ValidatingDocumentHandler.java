@@ -26,9 +26,10 @@ import javax.xml.stream.XMLReporter;
 
 import org.genxdm.exceptions.GxmlMarshalException;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.Resolved;
 import org.genxdm.io.Resolver;
 import org.genxdm.typed.TypedContext;
-import org.genxdm.typed.ValidationHandler;
+import org.genxdm.typed.Validator;
 import org.genxdm.typed.io.TypedDocumentHandler;
 import org.xml.sax.InputSource;
 
@@ -36,7 +37,7 @@ public class ValidatingDocumentHandler<N, A>
     implements TypedDocumentHandler<N, A>
 {
 
-    public ValidatingDocumentHandler(final TypedContext<N, A> context, final ValidationHandler<N, A> validator, final XMLReporter reporter, final Resolver resolver)
+    public ValidatingDocumentHandler(final TypedContext<N, A> context, final Validator<A> validator, final XMLReporter reporter, final Resolver resolver)
     {
         this.context = PreCondition.assertNotNull(context, "context");
         this.validator = PreCondition.assertNotNull(validator, "validator");
@@ -64,7 +65,17 @@ public class ValidatingDocumentHandler<N, A>
     public N parse(InputSource source, URI systemId)
         throws IOException, GxmlMarshalException
     {
-        // TODO Auto-generated method stub
+        if (source.getCharacterStream() != null)
+            return parse(source.getCharacterStream(), systemId);
+        if (source.getByteStream() != null)
+            return parse(source.getByteStream(), systemId);
+        if (resolver != null)
+        {
+            // TODO: this might break, actually.
+            // also, this indicates that we're being lame with the resolver.
+            Resolved<Reader> rdr = resolver.resolveReader(URI.create(source.getSystemId())); 
+            return parse(rdr.getResource(), systemId);
+        }
         return null;
     }
 
@@ -85,13 +96,13 @@ public class ValidatingDocumentHandler<N, A>
     }
     
     @Override
-    public ValidationHandler<N, A> getValidator()
+    public Validator<A> getValidator()
     {
         return validator;
     }
     
     private final TypedContext<N, A> context;
-    private final ValidationHandler<N, A> validator;
+    private final Validator<A> validator;
     private Resolver resolver;
     private XMLReporter reporter;
 }
