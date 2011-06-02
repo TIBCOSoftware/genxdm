@@ -312,16 +312,6 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 		return new XmlGregorian(EPOCH_YEAR, month, dayOfMonth, 0, 0, 0, BigDecimal.ZERO, timezone, NativeType.GMONTHDAY);
 	}
 
-	public XmlIntegerDerived createNonNegativeInteger(final BigInteger value)
-	{
-		return XmlIntegerDerived.valueOf(value, NativeType.NON_NEGATIVE_INTEGER);
-	}
-
-	public XmlIntegerDerived createNonPositiveInteger(final BigInteger value)
-	{
-		return XmlIntegerDerived.valueOf(value, NativeType.NON_POSITIVE_INTEGER);
-	}
-
 	public XmlNOTATION createNOTATION(final String namespaceURI, final String localName, final String prefix)
 	{
 		return new XmlNOTATION(namespaceURI, localName, prefix);

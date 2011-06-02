@@ -21,6 +21,6 @@ import org.xml.sax.ContentHandler;
 /**
  * A "push" style streaming validator that consumes SAX events and emits typed values and annotated content.
  */
-public interface SAXContentValidator<N, A> extends ContentHandler, Validator<N, A>
+public interface SAXContentValidator<A> extends ContentHandler, Validator<A>
 {
 }

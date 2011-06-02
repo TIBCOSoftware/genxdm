@@ -1,14 +1,14 @@
 package org.genxdm.typed;
 
-import org.genxdm.typed.io.SequenceBuilder;
+import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.xs.Schema;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
-public interface Validator<N, A>
+public interface Validator<A>
 {
     SchemaExceptionHandler getSchemaExceptionHandler();
     
-    SequenceBuilder<N, A> getSequenceBuilder();
+    SequenceHandler<A> getSequenceHandler();
     
     void reset();
     
@@ -16,6 +16,6 @@ public interface Validator<N, A>
     
     void setSchemaExceptionHandler(SchemaExceptionHandler errors);
     
-    void setSequenceBuilder(SequenceBuilder<N, A> builder);
+    void setSequenceHandler(SequenceHandler<A> handler);
 
 }

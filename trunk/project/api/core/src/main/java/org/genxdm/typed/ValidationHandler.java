@@ -17,7 +17,7 @@ package org.genxdm.typed;
 
 import org.genxdm.typed.io.SequenceHandler;
 
-public interface ValidationHandler<N, A>
-    extends SequenceHandler<A>, Validator<N, A>
+public interface ValidationHandler<A>
+    extends SequenceHandler<A>, Validator<A>
 {
 }

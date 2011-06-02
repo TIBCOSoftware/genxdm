@@ -35,6 +35,7 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.ValidationHandler;
+import org.genxdm.typed.Validator;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
@@ -47,7 +48,6 @@ import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.constraints.IdentityConstraint;
-import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.types.AtomicType;
 import org.genxdm.xs.types.AtomicUrType;
 import org.genxdm.xs.types.ComplexType;
@@ -357,12 +357,14 @@ public class TypedXmlNodeContext
     {
         return new TypedXmlNodeBuilder(this);
     }
-    
-    public ValidatingDocumentHandler<XmlNode, XmlAtom> newDocumentHandler(final ValidationHandler<XmlNode, XmlAtom> validator, final XMLReporter reporter, final Resolver resolver)
+
+    @Override
+    public ValidatingDocumentHandler<XmlNode, XmlAtom> newDocumentHandler(final Validator<XmlAtom> validator, final XMLReporter reporter, final Resolver resolver)
     {
         return new ValidatingDocumentHandler<XmlNode, XmlAtom>(this, validator, reporter, resolver);
     }
 
+    @Override
     public void register(ComponentBag<XmlAtom> components)
     {
         PreCondition.assertFalse(isLocked(), "isLocked()");
@@ -370,10 +372,12 @@ public class TypedXmlNodeContext
     }
     
     @Override
-    public XmlNode validate(XmlNode source, ValidationHandler<XmlNode, XmlAtom> validator, URI namespace)
+    public XmlNode validate(XmlNode source, ValidationHandler<XmlAtom> validator, URI namespace)
     {
         SequenceBuilder<XmlNode, XmlAtom> builder = newSequenceBuilder();
-        validator.setSequenceBuilder(builder);
+        // TODO: this assumes building a new tree and returning it.
+        // can we instead provide a tool that walks the existing tree and modifies it?
+        validator.setSequenceHandler(builder);
         model.stream(source, true, true, validator);
 //        SchemaExceptionHandler errors = validator.getSchemaExceptionHandler();
         // TODO: check the errors?

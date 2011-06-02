@@ -29,7 +29,7 @@ import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCacheFactory;
 import org.genxdm.processor.w3c.xs.validation.impl.ValidationFactoryImpl;
-import org.genxdm.typed.io.SequenceBuilder;
+import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.Emulation;
 import org.genxdm.xs.Schema;
@@ -37,7 +37,7 @@ import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
 
-final class XdmContentValidatorImpl<N, A> implements XdmContentValidator<N, A>
+final class XdmContentValidatorImpl<A> implements XdmContentValidator<A>
 {
     public XdmContentValidatorImpl(final VxValidator<A> kernel, final AtomBridge<A> atomBridge, final NameSource nameBridge)
     {
@@ -210,9 +210,9 @@ final class XdmContentValidatorImpl<N, A> implements XdmContentValidator<N, A>
     }
 
     @Override
-    public SequenceBuilder<N, A> getSequenceBuilder()
+    public SequenceHandler<A> getSequenceHandler()
     {
-        return builder;
+        return handler;
     }
 
     @Override
@@ -221,7 +221,7 @@ final class XdmContentValidatorImpl<N, A> implements XdmContentValidator<N, A>
         VxValidatorCacheFactory<A> factory = new ValidationFactoryImpl<A>(cache, atomBridge);
         kernel = factory.newValidatorCache().newValidator();
         kernel.setExceptionHandler(errors);
-        kernel.setOutputHandler(new OutputAdapter<A>(builder));
+        kernel.setOutputHandler(new OutputAdapter<A>(handler));
     }
 
     @Override
@@ -232,13 +232,13 @@ final class XdmContentValidatorImpl<N, A> implements XdmContentValidator<N, A>
     }
 
     @Override
-    public void setSequenceBuilder(SequenceBuilder<N, A> builder)
+    public void setSequenceHandler(SequenceHandler<A> handler)
     {
-        this.builder = builder;
-        kernel.setOutputHandler(new OutputAdapter<A>(builder));
+        this.handler = handler;
+        kernel.setOutputHandler(new OutputAdapter<A>(handler));
     }
 
-    private SequenceBuilder<N, A> builder;
+    private SequenceHandler<A> handler;
     private SchemaExceptionHandler errors;
     private VxValidator<A> kernel;
 

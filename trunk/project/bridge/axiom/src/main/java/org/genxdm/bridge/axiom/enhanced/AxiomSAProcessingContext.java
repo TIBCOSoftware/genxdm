@@ -38,6 +38,7 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.ValidationHandler;
+import org.genxdm.typed.Validator;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.TypedDocumentHandler;
 import org.genxdm.typed.types.AtomBridge;
@@ -397,7 +398,7 @@ public final class AxiomSAProcessingContext
     }
     
     @Override
-    public TypedDocumentHandler<Object, XmlAtom> newDocumentHandler(ValidationHandler<Object, XmlAtom> validator, XMLReporter reporter, Resolver resolver)
+    public TypedDocumentHandler<Object, XmlAtom> newDocumentHandler(Validator<XmlAtom> validator, XMLReporter reporter, Resolver resolver)
     {
         // TODO Auto-generated method stub
         return new ValidatingDocumentHandler<Object, XmlAtom>(this, validator, reporter, resolver);
@@ -410,7 +411,7 @@ public final class AxiomSAProcessingContext
 	}
     
     @Override
-    public Object validate(Object source, ValidationHandler<Object, XmlAtom> validator, URI namespace)
+    public Object validate(Object source, ValidationHandler<XmlAtom> validator, URI namespace)
     {
         // TODO: implement
         throw new UnsupportedOperationException();
