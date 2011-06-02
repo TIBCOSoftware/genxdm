@@ -26,7 +26,7 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
-import org.genxdm.typed.io.SequenceBuilder;
+import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.xs.Schema;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.xml.sax.Attributes;
@@ -34,43 +34,8 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 
-public final class SAXContentValidatorImpl<N, A> implements SAXContentValidator<N, A>
+public final class SAXContentValidatorImpl<A> implements SAXContentValidator<A>
 {
-	/**
-	 * The standard "prefix" for xmlns attributes followed by a colon.
-	 */
-	private static final String XMLNS_COLON = XMLConstants.XMLNS_ATTRIBUTE + ":";
-
-	/**
-	 * Determines if the attribute is in the "http://www.w3.org/2000/xmlns/" namespace. This is determined by seeing if
-	 * the attribute qualified name string identically matches "xmlns" or whether it starts with "xmlns" and is followed
-	 * by a colon. A null attribute qualified name string is defined to be an illegal argument.
-	 * 
-	 * @param qname
-	 *            The qualified name string of the attribute.
-	 * @return <CODE>true</CODE> if the attribute is in this namespace, otherwise <CODE>false</CODE>.
-	 * @throws IllegalArgumentException
-	 *             If the qname is null.
-	 */
-	public static boolean isNamespaceAttribute(final String qname) throws IllegalArgumentException
-	{
-		PreCondition.assertArgumentNotNull(qname, "qname");
-		if (XMLConstants.XMLNS_ATTRIBUTE.equals(qname))
-		{
-			return true;
-		}
-		else
-		{
-			return (qname.startsWith(XMLNS_COLON));
-		}
-	}
-
-	private final LinkedList<VxMapping<QName, String>> m_attributes = new LinkedList<VxMapping<QName, String>>();
-	private final VxValidator<A> m_kernel;
-	private Locator m_locator;
-
-	private final LinkedList<VxMapping<String, String>> m_namespaces = new LinkedList<VxMapping<String, String>>();
-
 	public SAXContentValidatorImpl(final VxValidator<A> kernel, final NameSource nameBridge)
 	{
 		m_kernel = kernel;
@@ -232,7 +197,7 @@ public final class SAXContentValidatorImpl<N, A> implements SAXContentValidator<
     }
 
     @Override
-    public SequenceBuilder<N, A> getSequenceBuilder()
+    public SequenceHandler<A> getSequenceHandler()
     {
         // TODO Auto-generated method stub
         return null;
@@ -252,8 +217,44 @@ public final class SAXContentValidatorImpl<N, A> implements SAXContentValidator<
     }
 
     @Override
-    public void setSequenceBuilder(SequenceBuilder<N, A> builder)
+    public void setSequenceHandler(SequenceHandler<A> handler)
     {
-        m_kernel.setOutputHandler(new OutputAdapter<A>(builder));
+        m_kernel.setOutputHandler(new OutputAdapter<A>(handler));
     }
+
+    /**
+     * Determines if the attribute is in the "http://www.w3.org/2000/xmlns/" namespace. This is determined by seeing if
+     * the attribute qualified name string identically matches "xmlns" or whether it starts with "xmlns" and is followed
+     * by a colon. A null attribute qualified name string is defined to be an illegal argument.
+     * 
+     * @param qname
+     *            The qualified name string of the attribute.
+     * @return <CODE>true</CODE> if the attribute is in this namespace, otherwise <CODE>false</CODE>.
+     * @throws IllegalArgumentException
+     *             If the qname is null.
+     */
+    public static boolean isNamespaceAttribute(final String qname) throws IllegalArgumentException
+    {
+        PreCondition.assertArgumentNotNull(qname, "qname");
+        if (XMLConstants.XMLNS_ATTRIBUTE.equals(qname))
+        {
+            return true;
+        }
+        else
+        {
+            return (qname.startsWith(XMLNS_COLON));
+        }
+    }
+
+    /**
+     * The standard "prefix" for xmlns attributes followed by a colon.
+     */
+    private static final String XMLNS_COLON = XMLConstants.XMLNS_ATTRIBUTE + ":";
+
+    private final LinkedList<VxMapping<QName, String>> m_attributes = new LinkedList<VxMapping<QName, String>>();
+    private final VxValidator<A> m_kernel;
+    private Locator m_locator;
+
+    private final LinkedList<VxMapping<String, String>> m_namespaces = new LinkedList<VxMapping<String, String>>();
+
 }

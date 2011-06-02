@@ -16,7 +16,7 @@
 package org.genxdm.typed.io;
 
 import org.genxdm.io.DocumentHandler;
-import org.genxdm.typed.ValidationHandler;
+import org.genxdm.typed.Validator;
 
 /** A handler for creating typed documents.
  * 
@@ -31,5 +31,5 @@ import org.genxdm.typed.ValidationHandler;
 public interface TypedDocumentHandler<N, A>
     extends DocumentHandler<N>
 {
-    ValidationHandler<N, A> getValidator();
+    Validator<A> getValidator();
 }

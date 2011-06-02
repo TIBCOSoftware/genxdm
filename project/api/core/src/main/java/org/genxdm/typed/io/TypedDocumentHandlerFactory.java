@@ -18,9 +18,9 @@ package org.genxdm.typed.io;
 import javax.xml.stream.XMLReporter;
 
 import org.genxdm.io.Resolver;
-import org.genxdm.typed.ValidationHandler;
+import org.genxdm.typed.Validator;
 
 public interface TypedDocumentHandlerFactory<N, A>
 {
-    TypedDocumentHandler<N, A> newDocumentHandler(final ValidationHandler<N, A> validator, final XMLReporter reporter, final Resolver resolver);
+    TypedDocumentHandler<N, A> newDocumentHandler(final Validator<A> validator, final XMLReporter reporter, final Resolver resolver);
 }

@@ -22,34 +22,34 @@ import org.genxdm.processor.w3c.xs.validation.impl.ValidationFactoryImpl;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.types.AtomBridge;
 
-
 public final class ValidatorFactory<N, A>
 {
-	private final AtomBridge<A> atomBridge;
-	private final VxValidatorCacheFactory<A> factory;
-	private final NameSource nameBridge = new NameSource();
 
-	public ValidatorFactory(final TypedContext<N, A> pcx)
-	{
-		this.factory = new ValidationFactoryImpl<A>(pcx, pcx.getAtomBridge());
-		this.atomBridge = pcx.getAtomBridge();
-	}
-
-    public XdmContentValidator<N, A> newXdmContentValidator()
+    public ValidatorFactory(final TypedContext<N, A> pcx)
     {
-        final VxValidator<A> kernel = factory.newValidatorCache().newValidator();
-        return new XdmContentValidatorImpl<N, A>(kernel, atomBridge, nameBridge);
+        this.factory = new ValidationFactoryImpl<A>(pcx, pcx.getAtomBridge());
+        this.atomBridge = pcx.getAtomBridge();
     }
 
-    public SAXContentValidator<N, A> newSAXContentValidator()
+    public XdmContentValidator<A> newXdmContentValidator()
     {
         final VxValidator<A> kernel = factory.newValidatorCache().newValidator();
-        return new SAXContentValidatorImpl<N, A>(kernel, nameBridge);
+        return new XdmContentValidatorImpl<A>(kernel, atomBridge, nameBridge);
     }
-    
-	public ValidatorFactory<N, A> schemaDocumentLocationStrategy(final SchemaDocumentLocationStrategy schemaDocumentLocationStrategy)
-	{
-		factory.setSchemaDocumentLocationStrategy(new SchemaDocumentLocationStrategyAdapter(schemaDocumentLocationStrategy));
-		return this;
-	}
+
+    public SAXContentValidator<A> newSAXContentValidator()
+    {
+        final VxValidator<A> kernel = factory.newValidatorCache().newValidator();
+        return new SAXContentValidatorImpl<A>(kernel, nameBridge);
+    }
+
+    public ValidatorFactory<N, A> schemaDocumentLocationStrategy(final SchemaDocumentLocationStrategy schemaDocumentLocationStrategy)
+    {
+        factory.setSchemaDocumentLocationStrategy(new SchemaDocumentLocationStrategyAdapter(schemaDocumentLocationStrategy));
+        return this;
+    }
+
+    private final AtomBridge<A> atomBridge;
+    private final VxValidatorCacheFactory<A> factory;
+    private final NameSource nameBridge = new NameSource();
 }

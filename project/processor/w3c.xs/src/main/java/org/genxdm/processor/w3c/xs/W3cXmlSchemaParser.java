@@ -30,48 +30,53 @@ import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
 public final class W3cXmlSchemaParser<A>
 {
-	private final AtomBridge<A> atomBridge;
+    public W3cXmlSchemaParser(final AtomBridge<A> atomBridge)
+    {
+        this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
+        this.regexc = DEFAULT_REGEX_COMPILER;
+    }
 
-	// The default Regular Expression compiler is backed by the JDK.
-	private static final SmRegExCompiler DEFAULT_REGEX_COMPILER = new RegExCompilerJDK();
+    public ComponentBag<A> parse(final URI schemaLocation, final InputStream istream,
+                                 final URI systemId, final SchemaExceptionHandler errors,
+                                 final SchemaLoadOptions args, final ComponentProvider<A> components)
+        throws AbortException
+    {
+        PreCondition.assertArgumentNotNull(istream, "istream");
+        PreCondition.assertArgumentNotNull(components, "components");
+        final XMLParserImpl<A> parser = new XMLParserImpl<A>(components, atomBridge);
 
-	// The actual Regular Expression compiler may be changed.
-	private SmRegExCompiler regexc;
+        parser.setCatalog(args.getCatalog());
+        parser.setResolver(args.getResolver());
+        parser.setRegExCompiler(regexc);
 
-	public W3cXmlSchemaParser(final AtomBridge<A> atomBridge)
-	{
-		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
-		this.regexc = DEFAULT_REGEX_COMPILER;
-	}
+        return parser.parse(schemaLocation, istream, systemId, errors);
+    }
 
-	public ComponentBag<A> parse(final URI schemaLocation, final InputStream istream, final URI systemId, final SchemaExceptionHandler errors, final SchemaLoadOptions args, final ComponentProvider<A> components) throws AbortException
-	{
-		PreCondition.assertArgumentNotNull(istream, "istream");
-		PreCondition.assertArgumentNotNull(components, "components");
-		final XMLParserImpl<A> parser = new XMLParserImpl<A>(components, atomBridge);
+    /**
+     * Override the default (JDK-based) Regular Expression compiler.
+     * 
+     * @param regexc
+     *            The new compiler. May be <code>null</code> to reset to
+     *            default.
+     */
+    public void setRegExCompiler(final SmRegExCompiler regexc)
+    {
+        if (null != regexc)
+        {
+            this.regexc = regexc;
+        } 
+        else
+        {
+            this.regexc = DEFAULT_REGEX_COMPILER;
+        }
+    }
 
-		parser.setCatalog(args.getCatalog());
-		parser.setResolver(args.getResolver());
-		parser.setRegExCompiler(regexc);
+    private final AtomBridge<A> atomBridge;
 
-		return parser.parse(schemaLocation, istream, systemId, errors);
-	}
+    // The default Regular Expression compiler is backed by the JDK.
+    private static final SmRegExCompiler DEFAULT_REGEX_COMPILER = new RegExCompilerJDK();
 
-	/**
-	 * Override the default (JDK-based) Regular Expression compiler.
-	 * 
-	 * @param regexc
-	 *            The new compiler. May be <code>null</code> to reset to default.
-	 */
-	public void setRegExCompiler(final SmRegExCompiler regexc)
-	{
-		if (null != regexc)
-		{
-			this.regexc = regexc;
-		}
-		else
-		{
-			this.regexc = DEFAULT_REGEX_COMPILER;
-		}
-	}
+    // The actual Regular Expression compiler may be changed.
+    private SmRegExCompiler regexc;
+
 }
