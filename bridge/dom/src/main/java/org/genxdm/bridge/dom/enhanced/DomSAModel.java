@@ -52,7 +52,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 		this.pcx = PreCondition.assertArgumentNotNull(pcx, "pcx");
 		this.baseModel = new org.genxdm.bridge.dom.DomModel();
 		this.m_metaBridge = PreCondition.assertArgumentNotNull(pcx.getMetaBridge(), "metaBridge");
-		this.m_atomBridge = m_metaBridge.getAtomBridge();
+		this.m_atomBridge = pcx.getAtomBridge();
 		this.nameBridge = m_atomBridge.getNameBridge();
 	}
 
@@ -260,7 +260,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 	{
 		if (null != node)
 		{
-			final AtomBridge<XmlAtom> atomBridge = m_metaBridge.getAtomBridge();
+			final AtomBridge<XmlAtom> atomBridge = pcx.getAtomBridge();
 			switch (getNodeKind(node))
 			{
 				case TEXT:
@@ -272,16 +272,16 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 				case ATTRIBUTE:
 				{
 					final QName typeName = DomSupport.getAnnotationType(node, m_metaBridge);
-					final Type<XmlAtom> type = pcx.getTypeDefinition(typeName);
-					if (type instanceof SimpleType<?>)
+					final Type type = pcx.getTypeDefinition(typeName);
+					if (type instanceof SimpleType)
 					{
-						final SimpleType<XmlAtom> simpleType = (SimpleType<XmlAtom>)type;
+						final SimpleType simpleType = (SimpleType)type;
 						final String stringValue = getStringValue(node);
 						try
 						{
 							// return type.validate(stringValue, new PrefixResolverOnNode<Node, A, String>(node, this,
 							// m_nameBridge));
-							return simpleType.validate(stringValue);
+							return simpleType.validate(stringValue, atomBridge);
 						}
 						catch (final DatatypeException e)
 						{
@@ -639,7 +639,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 
     protected final AtomBridge<XmlAtom> m_atomBridge;
 
-    protected final MetaBridge<XmlAtom> m_metaBridge;
+    protected final MetaBridge m_metaBridge;
     /**
      * The name bridge is important for ensuring that symbols obey the right semantics. Because the DOM may have been created elsewhere, we must be cautious and ensure that strings are converted to symbols.
      */

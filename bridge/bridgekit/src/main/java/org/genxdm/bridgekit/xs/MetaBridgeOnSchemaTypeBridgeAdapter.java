@@ -19,9 +19,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.names.NameSource;
 import org.genxdm.names.NamespaceResolver;
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
 import org.genxdm.typed.types.MetaVisitor;
 import org.genxdm.typed.types.Quantifier;
@@ -45,7 +43,7 @@ import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.TextNodeType;
 import org.genxdm.xs.types.Type;
 
-public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<A>
+public final class MetaBridgeOnSchemaTypeBridgeAdapter implements MetaBridge
 {
 	private static KeeneQuantifier convert(final Quantifier gq)
 	{
@@ -117,21 +115,18 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	private final AtomBridge<A> atomBridge;
+	private final SchemaTypeBridge metaBridge;
 
-	private final SchemaTypeBridge<A> metaBridge;
-
-	public MetaBridgeOnSchemaTypeBridgeAdapter(final SchemaTypeBridge<A> metaBridge, final AtomBridge<A> atomBridge)
+	public MetaBridgeOnSchemaTypeBridgeAdapter(final SchemaTypeBridge metaBridge)
 	{
 		this.metaBridge = PreCondition.assertArgumentNotNull(metaBridge, "metaBridge");
-		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
 	}
 
-	public void accept(final SequenceType<A> type, final MetaVisitor<A> visitor)
+	public void accept(final SequenceType type, final MetaVisitor visitor)
 	{
-		if (type instanceof SimpleType<?>)
+		if (type instanceof SimpleType)
 		{
-			final SimpleType<A> simpleType = (SimpleType<A>)type;
+			final SimpleType simpleType = (SimpleType)type;
 			if (simpleType.isAtomicType())
 			{
 				visitor.atomicType(simpleType, simpleType.getName(), simpleType.getBaseType());
@@ -141,59 +136,59 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 				throw new AssertionError("TODO");
 			}
 		}
-		else if (type instanceof AttributeNodeType<?>)
+		else if (type instanceof AttributeNodeType)
 		{
-			final AttributeNodeType<A> attribute = (AttributeNodeType<A>)type;
+			final AttributeNodeType attribute = (AttributeNodeType)type;
 			visitor.attributeType(attribute, attribute.getName(), attribute.getType());
 		}
-		else if (type instanceof ChoiceType<?>)
+		else if (type instanceof ChoiceType)
 		{
-			final ChoiceType<A> choice = (ChoiceType<A>)type;
+			final ChoiceType choice = (ChoiceType)type;
 			visitor.choiceType(choice, choice.getLHS(), choice.getRHS());
 		}
-		else if (type instanceof CommentNodeType<?>)
+		else if (type instanceof CommentNodeType)
 		{
-			final CommentNodeType<A> comment = (CommentNodeType<A>)type;
+			final CommentNodeType comment = (CommentNodeType)type;
 			visitor.textType(comment);
 		}
-		else if (type instanceof DocumentNodeType<?>)
+		else if (type instanceof DocumentNodeType)
 		{
-			final DocumentNodeType<A> document = (DocumentNodeType<A>)type;
+			final DocumentNodeType document = (DocumentNodeType)type;
 			visitor.documentType(document, document.getContentType());
 		}
-		else if (type instanceof ElementNodeType<?>)
+		else if (type instanceof ElementNodeType)
 		{
-			final ElementNodeType<A> element = (ElementNodeType<A>)type;
+			final ElementNodeType element = (ElementNodeType)type;
 			visitor.elementType(element, element.getName(), element.getType(), element.isNillable());
 		}
-		else if (type instanceof EmptyType<?>)
+		else if (type instanceof EmptyType)
 		{
-			final EmptyType<A> emptyType = (EmptyType<A>)type;
+			final EmptyType emptyType = (EmptyType)type;
 			visitor.emptyType(emptyType);
 		}
-		else if (type instanceof MultiplyType<?>)
+		else if (type instanceof MultiplyType)
 		{
-			final MultiplyType<A> multiply = (MultiplyType<A>)type;
+			final MultiplyType multiply = (MultiplyType)type;
 			visitor.multiplyType(multiply, multiply.getArgument(), convert(multiply.getMultiplier()));
 		}
-		else if (type instanceof NamespaceNodeType<?>)
+		else if (type instanceof NamespaceNodeType)
 		{
-			final NamespaceNodeType<A> namespace = (NamespaceNodeType<A>)type;
+			final NamespaceNodeType namespace = (NamespaceNodeType)type;
 			visitor.namespaceType(namespace);
 		}
-		else if (type instanceof NoneType<?>)
+		else if (type instanceof NoneType)
 		{
-			final NoneType<A> errorType = (NoneType<A>)type;
+			final NoneType errorType = (NoneType)type;
 			visitor.noneType(errorType);
 		}
-		else if (type instanceof ProcessingInstructionNodeType<?>)
+		else if (type instanceof ProcessingInstructionNodeType)
 		{
-			final ProcessingInstructionNodeType<A> pi = (ProcessingInstructionNodeType<A>)type;
+			final ProcessingInstructionNodeType pi = (ProcessingInstructionNodeType)type;
 			visitor.processingInstructionType(pi, pi.getName());
 		}
-		else if (type instanceof TextNodeType<?>)
+		else if (type instanceof TextNodeType)
 		{
-			final TextNodeType<A> text = (TextNodeType<A>)type;
+			final TextNodeType text = (TextNodeType)type;
 			visitor.textType(text);
 		}
 		else
@@ -202,14 +197,14 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public SequenceType<A> ancestorAxis(final SequenceType<A> type)
+	public SequenceType ancestorAxis(final SequenceType type)
 	{
-		final PrimeType<A> prime = type.prime();
+		final PrimeType prime = type.prime();
 		switch (prime.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)prime;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)prime;
 				return metaBridge.multiply(choice(ancestorAxis(choiceType.getLHS()), ancestorAxis(choiceType.getRHS())), type.quantifier());
 			}
 			case DOCUMENT:
@@ -238,54 +233,54 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public SequenceType<A> ancestorOrSelfAxis(final SequenceType<A> contextType)
+	public SequenceType ancestorOrSelfAxis(final SequenceType contextType)
 	{
 		return zeroOrMore(nodeType());
 	}
 
-	public SequenceType<A> atomSet(final SequenceType<A> type)
+	public SequenceType atomSet(final SequenceType type)
 	{
 		return metaBridge.atomSet(type);
 	}
 
-	public SequenceType<A> attributeAxis(final SequenceType<A> type)
+	public SequenceType attributeAxis(final SequenceType type)
 	{
 		return metaBridge.attributeAxis(type);
 	}
 
-	public SequenceType<A> attributeType(final QName name, final SequenceType<A> type)
+	public SequenceType attributeType(final QName name, final SequenceType type)
 	{
 		return metaBridge.attributeType(name, type);
 	}
 
-	private SequenceType<A> branchChildAxis()
+	private SequenceType branchChildAxis()
 	{
-		final ElementNodeType<A> elementType = metaBridge.elementWild(null, true);
-		final TextNodeType<A> textType = metaBridge.textType();
-		final CommentNodeType<A> commentType = metaBridge.commentType();
-		final ProcessingInstructionNodeType<A> processingInstructionType = metaBridge.processingInstructionType(null);
+		final ElementNodeType elementType = metaBridge.elementWild(null, true);
+		final TextNodeType textType = metaBridge.textType();
+		final CommentNodeType commentType = metaBridge.commentType();
+		final ProcessingInstructionNodeType processingInstructionType = metaBridge.processingInstructionType(null);
 
 		return zeroOrMore(choice(elementType, choice(textType, choice(commentType, processingInstructionType))));
 	}
 
-	public SequenceType<A> childAxis(final SequenceType<A> type)
+	public SequenceType childAxis(final SequenceType type)
 	{
 		return metaBridge.childAxis(type);
 	}
 
-	public SequenceType<A> choice(final SequenceType<A> one, final SequenceType<A> two)
+	public SequenceType choice(final SequenceType one, final SequenceType two)
 	{
 		return metaBridge.choice(one, two);
 	}
 
-	public SequenceType<A> commentTest(final SequenceType<A> arg)
+	public SequenceType commentTest(final SequenceType arg)
 	{
-		final PrimeType<A> primeType = arg.prime();
+		final PrimeType primeType = arg.prime();
 		switch (primeType.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)primeType;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)primeType;
 
 				return metaBridge.multiply(choice(commentTest(choiceType.getLHS()), commentTest(choiceType.getRHS())), arg.quantifier());
 			}
@@ -304,21 +299,21 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public CommentNodeType<A> commentType()
+	public CommentNodeType commentType()
 	{
 		return metaBridge.commentType();
 	}
 
-	public SequenceType<A> concat(final SequenceType<A> lhs, final SequenceType<A> rhs)
+	public SequenceType concat(final SequenceType lhs, final SequenceType rhs)
 	{
 		return metaBridge.concat(lhs, rhs);
 	}
 
-	public SequenceType<A> contentType(final SequenceType<A> type)
+	public SequenceType contentType(final SequenceType type)
 	{
-		if (type instanceof DocumentNodeType<?>)
+		if (type instanceof DocumentNodeType)
 		{
-			return ((DocumentNodeType<A>)type).getContentType();
+			return ((DocumentNodeType)type).getContentType();
 		}
 		else
 		{
@@ -326,32 +321,32 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public SequenceType<A> descendantAxis(final SequenceType<A> type)
+	public SequenceType descendantAxis(final SequenceType type)
 	{
-		final PrimeType<A> prime = type.prime();
+		final PrimeType prime = type.prime();
 		switch (prime.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)prime;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)prime;
 				return metaBridge.multiply(choice(descendantAxis(choiceType.getLHS()), descendantAxis(choiceType.getRHS())), type.quantifier());
 			}
 			case DOCUMENT:
 			case ELEMENT:
 			{
-				final ElementNodeType<A> elementType = metaBridge.elementWild(null, true);
-				final TextNodeType<A> textType = metaBridge.textType();
-				final CommentNodeType<A> commentType = metaBridge.commentType();
-				final ProcessingInstructionNodeType<A> processingInstructionType = metaBridge.processingInstructionType(null);
+				final ElementNodeType elementType = metaBridge.elementWild(null, true);
+				final TextNodeType textType = metaBridge.textType();
+				final CommentNodeType commentType = metaBridge.commentType();
+				final ProcessingInstructionNodeType processingInstructionType = metaBridge.processingInstructionType(null);
 
 				return metaBridge.multiply(zeroOrMore(choice(elementType, choice(textType, choice(commentType, processingInstructionType)))), type.quantifier());
 			}
 			case SCHEMA_ELEMENT:
 			{
-				final ElementNodeType<A> elementType = metaBridge.elementWild(null, true);
-				final TextNodeType<A> textType = metaBridge.textType();
-				final CommentNodeType<A> commentType = metaBridge.commentType();
-				final ProcessingInstructionNodeType<A> processingInstructionType = metaBridge.processingInstructionType(null);
+				final ElementNodeType elementType = metaBridge.elementWild(null, true);
+				final TextNodeType textType = metaBridge.textType();
+				final CommentNodeType commentType = metaBridge.commentType();
+				final ProcessingInstructionNodeType processingInstructionType = metaBridge.processingInstructionType(null);
 
 				return metaBridge.multiply(zeroOrMore(choice(elementType, choice(textType, choice(commentType, processingInstructionType)))), type.quantifier());
 			}
@@ -366,21 +361,21 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public SequenceType<A> descendantOrSelfAxis(final SequenceType<A> type)
+	public SequenceType descendantOrSelfAxis(final SequenceType type)
 	{
-		final PrimeType<A> prime = type.prime();
+		final PrimeType prime = type.prime();
 		switch (prime.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)prime;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)prime;
 				return metaBridge.multiply(choice(descendantOrSelfAxis(choiceType.getLHS()), descendantOrSelfAxis(choiceType.getRHS())), type.quantifier());
 			}
 			case ELEMENT:
 			case SCHEMA_ELEMENT:
 			case DOCUMENT:
 			{
-				final SequenceType<A> kids = branchChildAxis();
+				final SequenceType kids = branchChildAxis();
 				return metaBridge.multiply(choice(kids, prime), type.quantifier());
 			}
 			case ATTRIBUTE:
@@ -403,19 +398,19 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public DocumentNodeType<A> documentType(final SequenceType<A> contentType)
+	public DocumentNodeType documentType(final SequenceType contentType)
 	{
 		return metaBridge.documentType(contentType);
 	}
 
-	public SequenceType<A> elementTest(final SequenceType<A> arg)
+	public SequenceType elementTest(final SequenceType arg)
 	{
-		final PrimeType<A> primeType = arg.prime();
+		final PrimeType primeType = arg.prime();
 		switch (primeType.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)primeType;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)primeType;
 
 				return metaBridge.multiply(choice(elementTest(choiceType.getLHS()), elementTest(choiceType.getRHS())), arg.quantifier());
 			}
@@ -431,29 +426,29 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public SequenceType<A> elementType(final QName name, final SequenceType<A> type, final boolean nillable)
+	public SequenceType elementType(final QName name, final SequenceType type, final boolean nillable)
 	{
 		return metaBridge.elementType(name, type, nillable);
 	}
 
-	public EmptyType<A> emptyType()
+	public EmptyType emptyType()
 	{
 		return metaBridge.emptyType();
 	}
 
-	public SequenceType<A> followingAxis(final SequenceType<A> contextType)
+	public SequenceType followingAxis(final SequenceType contextType)
 	{
 		return zeroOrMore(nodeType());
 	}
 
-	public SequenceType<A> followingSiblingAxis(final SequenceType<A> type)
+	public SequenceType followingSiblingAxis(final SequenceType type)
 	{
-		final PrimeType<A> prime = type.prime();
+		final PrimeType prime = type.prime();
 		switch (prime.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)prime;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)prime;
 				return metaBridge.multiply(choice(followingSiblingAxis(choiceType.getLHS()), followingSiblingAxis(choiceType.getRHS())), type.quantifier());
 			}
 			case ATTRIBUTE:
@@ -479,10 +474,10 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 			case PROCESSING_INSTRUCTION:
 			case TEXT:
 			{
-				final ElementNodeType<A> elementType = metaBridge.elementWild(null, true);
-				final TextNodeType<A> textType = metaBridge.textType();
-				final CommentNodeType<A> commentType = metaBridge.commentType();
-				final ProcessingInstructionNodeType<A> processingInstructionType = metaBridge.processingInstructionType(null);
+				final ElementNodeType elementType = metaBridge.elementWild(null, true);
+				final TextNodeType textType = metaBridge.textType();
+				final CommentNodeType commentType = metaBridge.commentType();
+				final ProcessingInstructionNodeType processingInstructionType = metaBridge.processingInstructionType(null);
 
 				return metaBridge.multiply(zeroOrMore(choice(elementType, choice(textType, choice(commentType, processingInstructionType)))), type.quantifier());
 			}
@@ -497,16 +492,11 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public AtomBridge<A> getAtomBridge()
+	public SequenceType getBinaryLHS(final SequenceType type)
 	{
-		return atomBridge;
-	}
-
-	public SequenceType<A> getBinaryLHS(final SequenceType<A> type)
-	{
-		if (type instanceof ChoiceType<?>)
+		if (type instanceof ChoiceType)
 		{
-			final ChoiceType<A> choice = (ChoiceType<A>)type;
+			final ChoiceType choice = (ChoiceType)type;
 			return choice.getLHS();
 		}
 		else
@@ -515,11 +505,11 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public SequenceType<A> getBinaryRHS(final SequenceType<A> type)
+	public SequenceType getBinaryRHS(final SequenceType type)
 	{
-		if (type instanceof ChoiceType<?>)
+		if (type instanceof ChoiceType)
 		{
-			final ChoiceType<A> choice = (ChoiceType<A>)type;
+			final ChoiceType choice = (ChoiceType)type;
 			return choice.getRHS();
 		}
 		else
@@ -528,11 +518,11 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public QName getErrorCode(final SequenceType<A> noneType)
+	public QName getErrorCode(final SequenceType noneType)
 	{
-		if (noneType instanceof NoneType<?>)
+		if (noneType instanceof NoneType)
 		{
-			final NoneType<A> error = (NoneType<A>)noneType;
+			final NoneType error = (NoneType)noneType;
 			return error.getErrorCode();
 		}
 		else
@@ -543,109 +533,104 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public QName getName(final SequenceType<A> type)
+	public QName getName(final SequenceType type)
 	{
 		return metaBridge.getName(type);
 	}
 
-	public NameSource getNameBridge()
-	{
-		return atomBridge.getNameBridge();
-	}
-
-	public Type<A> getType(final QName typeName)
+	public Type getType(final QName typeName)
 	{
 		return metaBridge.getTypeDefinition(typeName);
 	}
 
-	public Type<A> getType(final NativeType nativeType)
+	public Type getType(final NativeType nativeType)
 	{
 		return metaBridge.getTypeDefinition(nativeType);
 	}
 
-	public SequenceType<A> handle(final SequenceType<A> sequenceType)
+	public SequenceType handle(final SequenceType sequenceType)
 	{
 		return sequenceType;
 	}
 
-	public SequenceType<A> interleave(final SequenceType<A> one, final SequenceType<A> two)
+	public SequenceType interleave(final SequenceType one, final SequenceType two)
 	{
 		return metaBridge.interleave(one, two);
 	}
 
-	public boolean isAttributeNodeType(final SequenceType<A> type)
+	public boolean isAttributeNodeType(final SequenceType type)
 	{
-		return type instanceof AttributeNodeType<?>;
+		return type instanceof AttributeNodeType;
 	}
 
-	public boolean isChoice(final SequenceType<A> type)
+	public boolean isChoice(final SequenceType type)
 	{
-		return (type instanceof ChoiceType<?>);
+		return (type instanceof ChoiceType);
 	}
 
-	public boolean isCommentNodeType(final SequenceType<A> type)
+	public boolean isCommentNodeType(final SequenceType type)
 	{
-		return type instanceof CommentNodeType<?>;
+		return type instanceof CommentNodeType;
 	}
 
-	public boolean isDocumentNodeType(final SequenceType<A> type)
+	public boolean isDocumentNodeType(final SequenceType type)
 	{
-		return type instanceof DocumentNodeType<?>;
+		return type instanceof DocumentNodeType;
 	}
 
-	public boolean isElementNodeType(final SequenceType<A> type)
+	public boolean isElementNodeType(final SequenceType type)
 	{
-		return (type instanceof ElementNodeType<?>);
+		return (type instanceof ElementNodeType);
 	}
 
-	public boolean isEmpty(final SequenceType<A> type)
+	public boolean isEmpty(final SequenceType type)
 	{
-		return type instanceof EmptyType<?>;
+		return type instanceof EmptyType;
 	}
 
-	public boolean isNamespaceNodeType(final SequenceType<A> type)
+	public boolean isNamespaceNodeType(final SequenceType type)
 	{
-		return type instanceof NamespaceNodeType<?>;
+		return type instanceof NamespaceNodeType;
 	}
 
-	public boolean isNone(final SequenceType<A> type)
+	public boolean isNone(final SequenceType type)
 	{
-		return (type instanceof NoneType<?>);
+		return (type instanceof NoneType);
 	}
 
-	public boolean isProcessingInstructionNodeType(final SequenceType<A> type)
+	public boolean isProcessingInstructionNodeType(final SequenceType type)
 	{
-		return type instanceof ProcessingInstructionNodeType<?>;
+		return type instanceof ProcessingInstructionNodeType;
 	}
 
-	public boolean isTextNodeType(final SequenceType<A> type)
+	public boolean isTextNodeType(final SequenceType type)
 	{
-		return type instanceof TextNodeType<?>;
+		return type instanceof TextNodeType;
 	}
 
-	public SequenceType<A> itemType()
+	public SequenceType itemType()
 	{
 		return metaBridge.itemType();
 	}
 
-	public SequenceType<A> multiply(final SequenceType<A> argument, final Quantifier multiplier)
+	public SequenceType multiply(final SequenceType argument, final Quantifier multiplier)
 	{
 		return metaBridge.multiply(argument, convert(multiplier));
 	}
 
-	public SequenceType<A> namespaceAxis(final SequenceType<A> contextType)
+	public SequenceType namespaceAxis(final SequenceType contextType)
 	{
 		return zeroOrMore(nodeType());
 	}
 
-	public SequenceType<A> namespaceTest(final SequenceType<A> arg)
+	public SequenceType namespaceTest(final SequenceType arg)
 	{
-		final PrimeType<A> primeType = arg.prime();
+		final PrimeType primeType = arg.prime();
 		switch (primeType.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)primeType;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)primeType;
 
 				return metaBridge.multiply(choice(namespaceTest(choiceType.getLHS()), namespaceTest(choiceType.getRHS())), arg.quantifier());
 			}
@@ -660,19 +645,19 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public NamespaceNodeType<A> namespaceType()
+	public NamespaceNodeType namespaceType()
 	{
 		return metaBridge.namespaceType();
 	}
 
-	public SequenceType<A> nodeTest(final SequenceType<A> arg)
+	public SequenceType nodeTest(final SequenceType arg)
 	{
-		final PrimeType<A> primeType = arg.prime();
+		final PrimeType primeType = arg.prime();
 		switch (primeType.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)primeType;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)primeType;
 
 				return metaBridge.multiply(choice(nodeTest(choiceType.getLHS()), nodeTest(choiceType.getRHS())), arg.quantifier());
 			}
@@ -702,49 +687,49 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public SequenceType<A> nodeType()
+	public SequenceType nodeType()
 	{
 		return metaBridge.nodeType();
 	}
 
-	public SequenceType<A> noneType()
+	public SequenceType noneType()
 	{
 		return metaBridge.noneType();
 	}
 
-	public SequenceType<A> noneType(final QName errorCode)
+	public SequenceType noneType(final QName errorCode)
 	{
 		return metaBridge.noneType(errorCode);
 	}
 
-	public SequenceType<A> oneOrMore(final SequenceType<A> type)
+	public SequenceType oneOrMore(final SequenceType type)
 	{
 		return metaBridge.oneOrMore(type);
 	}
 
-	public SequenceType<A> optional(final SequenceType<A> type)
+	public SequenceType optional(final SequenceType type)
 	{
 		return metaBridge.optional(type);
 	}
 
-	public SequenceType<A> parentAxis(final SequenceType<A> contextType)
+	public SequenceType parentAxis(final SequenceType contextType)
 	{
 		return optional(nodeType());
 	}
 
-	public SequenceType<A> precedingAxis(final SequenceType<A> contextType)
+	public SequenceType precedingAxis(final SequenceType contextType)
 	{
 		return zeroOrMore(nodeType());
 	}
 
-	public SequenceType<A> precedingSiblingAxis(final SequenceType<A> type)
+	public SequenceType precedingSiblingAxis(final SequenceType type)
 	{
-		final PrimeType<A> prime = type.prime();
+		final PrimeType prime = type.prime();
 		switch (prime.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)prime;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)prime;
 				return metaBridge.multiply(choice(precedingSiblingAxis(choiceType.getLHS()), precedingSiblingAxis(choiceType.getRHS())), type.quantifier());
 			}
 			case ATTRIBUTE:
@@ -770,10 +755,10 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 			case PROCESSING_INSTRUCTION:
 			case TEXT:
 			{
-				final ElementNodeType<A> elementType = metaBridge.elementWild(null, true);
-				final TextNodeType<A> textType = metaBridge.textType();
-				final CommentNodeType<A> commentType = metaBridge.commentType();
-				final ProcessingInstructionNodeType<A> processingInstructionType = metaBridge.processingInstructionType(null);
+				final ElementNodeType elementType = metaBridge.elementWild(null, true);
+				final TextNodeType textType = metaBridge.textType();
+				final CommentNodeType commentType = metaBridge.commentType();
+				final ProcessingInstructionNodeType processingInstructionType = metaBridge.processingInstructionType(null);
 
 				return metaBridge.multiply(zeroOrMore(choice(elementType, choice(textType, choice(commentType, processingInstructionType)))), type.quantifier());
 			}
@@ -788,19 +773,19 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public PrimeType<A> prime(final SequenceType<A> type)
+	public PrimeType prime(final SequenceType type)
 	{
 		return type.prime();
 	}
 
-	public SequenceType<A> processingInstructionTest(final SequenceType<A> arg, final String name)
+	public SequenceType processingInstructionTest(final SequenceType arg, final String name)
 	{
-		final PrimeType<A> primeType = arg.prime();
+		final PrimeType primeType = arg.prime();
 		switch (primeType.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)primeType;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)primeType;
 				return metaBridge.multiply(choice(processingInstructionTest(choiceType.getLHS(), name), processingInstructionTest(choiceType.getRHS(), name)), arg.quantifier());
 			}
 			case PROCESSING_INSTRUCTION:
@@ -814,46 +799,46 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public ProcessingInstructionNodeType<A> processingInstructionType(final String name)
+	public ProcessingInstructionNodeType processingInstructionType(final String name)
 	{
 		return metaBridge.processingInstructionType(name);
 	}
 
-	public Quantifier quantifier(final SequenceType<A> type)
+	public Quantifier quantifier(final SequenceType type)
 	{
 		return convert(type.quantifier());
 	}
 
-	public boolean sameAs(final SequenceType<A> one, final SequenceType<A> two)
+	public boolean sameAs(final SequenceType one, final SequenceType two)
 	{
 		PreCondition.assertArgumentNotNull(one, "one");
 		PreCondition.assertArgumentNotNull(two, "two");
 		return metaBridge.sameAs(one, two);
 	}
 
-	public SequenceType<A> schemaAttribute(final QName attributeName)
+	public SequenceType schemaAttribute(final QName attributeName)
 	{
 		return metaBridge.getAttributeDeclaration(attributeName);
 	}
 
-	public SequenceType<A> schemaElement(final QName elementName)
+	public SequenceType schemaElement(final QName elementName)
 	{
 		return metaBridge.getElementDeclaration(elementName);
 	}
 
-	public SequenceType<A> schemaType(final QName typeName)
+	public SequenceType schemaType(final QName typeName)
 	{
 		return metaBridge.getTypeDefinition(typeName);
 	}
 
-	public SequenceType<A> selfAxis(final SequenceType<A> type)
+	public SequenceType selfAxis(final SequenceType type)
 	{
-		final PrimeType<A> prime = type.prime();
+		final PrimeType prime = type.prime();
 		switch (prime.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)prime;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)prime;
 				return metaBridge.multiply(choice(selfAxis(choiceType.getLHS()), selfAxis(choiceType.getRHS())), type.quantifier());
 			}
 			case EMPTY:
@@ -873,19 +858,19 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public boolean subtype(final SequenceType<A> lhs, final SequenceType<A> rhs)
+	public boolean subtype(final SequenceType lhs, final SequenceType rhs)
 	{
 		return metaBridge.subtype(lhs, rhs);
 	}
 
-	public SequenceType<A> textTest(final SequenceType<A> arg)
+	public SequenceType textTest(final SequenceType arg)
 	{
-		final PrimeType<A> primeType = arg.prime();
+		final PrimeType primeType = arg.prime();
 		switch (primeType.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)primeType;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)primeType;
 				return metaBridge.multiply(choice(textTest(choiceType.getLHS()), textTest(choiceType.getRHS())), arg.quantifier());
 			}
 			case TEXT:
@@ -903,23 +888,22 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter<A> implements MetaBridge<
 		}
 	}
 
-	public TextNodeType<A> textType()
+	public TextNodeType textType()
 	{
 		return metaBridge.textType();
 	}
 
-	public String toString(final SequenceType<A> type, final NamespaceResolver mappings, final String defaultElementAndTypeNamespace) throws GxmlException
+	public String toString(final SequenceType type, final NamespaceResolver mappings, final String defaultElementAndTypeNamespace) throws GxmlException
 	{
 		return type.toString();
 	}
 
-	@SuppressWarnings("unchecked")
-	public SequenceType<A>[] typeArray(final int size)
+	public SequenceType[] typeArray(final int size)
 	{
 		return new SequenceType[size];
 	}
 
-	public SequenceType<A> zeroOrMore(final SequenceType<A> type)
+	public SequenceType zeroOrMore(final SequenceType type)
 	{
 		return metaBridge.zeroOrMore(type);
 	}

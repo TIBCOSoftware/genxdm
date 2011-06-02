@@ -18,9 +18,7 @@ package org.genxdm.xs.types;
 /**
  * Indicates that this type is a comment node.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface CommentNodeType<A> extends NodeType<A>
+public interface CommentNodeType extends NodeType
 {
 }

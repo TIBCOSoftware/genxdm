@@ -37,7 +37,7 @@ import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.Type;
 
-abstract class AbstractDurationType<A> extends AbstractAtomType<A>
+abstract class AbstractDurationType extends AbstractAtomType
 {
 	public static final int HOURS_PER_DAY = 24;
 	public static final long HOURS_PER_DAY_LONG = 24;
@@ -84,12 +84,12 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		}
 	}
 
-	public AbstractDurationType(final QName name, final Type<A> baseType, final AtomBridge<A> atomBridge)
+	public AbstractDurationType(final QName name, final Type baseType)
 	{
-		super(name, baseType, atomBridge);
+		super(name, baseType);
 	}
 
-	public final void accept(SequenceTypeVisitor<A> visitor)
+	public final void accept(SequenceTypeVisitor visitor)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -101,19 +101,19 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		throw new AssertionError("TODO");
 	}
 
-	public final Iterable<EnumerationDefinition<A>> getEnumerations()
+	public final Iterable<EnumerationDefinition> getEnumerations()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public final Facet<A> getFacetOfKind(FacetKind facetKind)
+	public final Facet getFacetOfKind(FacetKind facetKind)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public final Iterable<Facet<A>> getFacets()
+	public final Iterable<Facet> getFacets()
 	{
 		return Collections.emptyList();
 	}
@@ -175,7 +175,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		return false;
 	}
 
-	private final A parseDuration(final String srcval, final NativeType targetType) throws DatatypeException
+	private final <A> A parseDuration(final String srcval, final NativeType targetType, AtomBridge<A> bridge) throws DatatypeException
 	{
 		PreCondition.assertArgumentNotNull(srcval, "srcval");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
@@ -382,7 +382,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 					{
 						case DURATION:
 						{
-							return atomBridge.createDuration(months(negative, year, month), seconds(negative, day, hour, minute, second));
+							return bridge.createDuration(months(negative, year, month), seconds(negative, day, hour, minute, second));
 						}
 						case DURATION_DAYTIME:
 						case DURATION_YEARMONTH:
@@ -402,11 +402,11 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 					{
 						case DURATION_YEARMONTH:
 						{
-							return atomBridge.createYearMonthDuration(months(negative, year, month));
+							return bridge.createYearMonthDuration(months(negative, year, month));
 						}
 						case DURATION:
 						{
-							return atomBridge.createDuration(months(negative, year, month), BigDecimal.ZERO);
+							return bridge.createDuration(months(negative, year, month), BigDecimal.ZERO);
 						}
 						case DURATION_DAYTIME:
 						{
@@ -428,11 +428,11 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 					{
 						case DURATION_DAYTIME:
 						{
-							return atomBridge.createDayTimeDuration(seconds(negative, day, hour, minute, second));
+							return bridge.createDayTimeDuration(seconds(negative, day, hour, minute, second));
 						}
 						case DURATION:
 						{
-							return atomBridge.createDuration(0, seconds(negative, day, hour, minute, second));
+							return bridge.createDuration(0, seconds(negative, day, hour, minute, second));
 						}
 						case DURATION_YEARMONTH:
 						{
@@ -457,13 +457,13 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		}
 	}
 
-	public final List<A> validate(final String initialValue) throws DatatypeException
+	public final <A> List<A> validate(final String initialValue, AtomBridge<A> bridge) throws DatatypeException
 	{
 		try
 		{
 			// Note that trimming eliminates a leading plus-sign, but leaves leading minus-sign.
 			final String trimmed = trim(initialValue);
-			return atomBridge.wrapAtom(parseDuration(trimmed, getNativeType()));
+			return bridge.wrapAtom(parseDuration(trimmed, getNativeType(), bridge));
 		}
 		catch (final NumberFormatException e)
 		{
@@ -471,7 +471,7 @@ abstract class AbstractDurationType<A> extends AbstractAtomType<A>
 		}
 	}
 
-	public final List<A> validate(String initialValue, PrefixResolver resolver) throws DatatypeException
+	public final <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");

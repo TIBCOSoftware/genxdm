@@ -27,9 +27,9 @@ public final class FacetTotalDigitsException extends FacetException
 {
     private final int actualValue;
     private final String displayString;
-    private final TotalDigits<?> expectedValue;
+    private final TotalDigits expectedValue;
 
-    public FacetTotalDigitsException(final int actualValue, final String value, final TotalDigits<?> totalDigits)
+    public FacetTotalDigitsException(final int actualValue, final String value, final TotalDigits totalDigits)
     {
         this.actualValue = actualValue;
         this.displayString = PreCondition.assertArgumentNotNull(value, "value");

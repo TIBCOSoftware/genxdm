@@ -26,7 +26,7 @@ import org.genxdm.xs.types.SequenceType;
 /**
  * A processing context parameterized by atom(s) and type(s).
  */
-public interface MetaBridge<A>
+public interface MetaBridge
 {
     /**
      * Implementation of the visitor pattern.
@@ -36,27 +36,27 @@ public interface MetaBridge<A>
      * @param visitor
      *            The visitor.
      */
-    void accept(SequenceType<A> type, MetaVisitor<A> visitor);
+    void accept(SequenceType type, MetaVisitor visitor);
 
     /**
      * Computes the type resulting from the application of the ancestor axis.
      */
-    SequenceType<A> ancestorAxis(SequenceType<A> type);
+    SequenceType ancestorAxis(SequenceType type);
 
     /**
      * Computes the type resulting from the application of the ancestor-or-self axis.
      */
-    SequenceType<A> ancestorOrSelfAxis(SequenceType<A> type);
+    SequenceType ancestorOrSelfAxis(SequenceType type);
 
     /**
      * Returns a type denoting fn:data(arg).
      */
-    SequenceType<A> atomSet(SequenceType<A> type);
+    SequenceType atomSet(SequenceType type);
 
     /**
      * Computes the type resulting from the application of the attribute axis.
      */
-    SequenceType<A> attributeAxis(SequenceType<A> type);
+    SequenceType attributeAxis(SequenceType type);
 
     /**
      * Returns a type denoting an attribute of the specified name and type.
@@ -66,32 +66,32 @@ public interface MetaBridge<A>
      * @param type
      *            The type of the attribute. May be <code>null</code> for xs:anySimpleType.
      */
-    SequenceType<A> attributeType(QName name, SequenceType<A> type);
+    SequenceType attributeType(QName name, SequenceType type);
 
     /**
      * Computes the type resulting from the application of the child axis.
      */
-    SequenceType<A> childAxis(SequenceType<A> type);
+    SequenceType childAxis(SequenceType type);
 
     /**
      * Returns a type denoting a choice of two types.
      */
-    SequenceType<A> choice(SequenceType<A> one, SequenceType<A> two);
+    SequenceType choice(SequenceType one, SequenceType two);
 
     /**
      * Applies the comment() test to the argument.
      */
-    SequenceType<A> commentTest(SequenceType<A> arg);
+    SequenceType commentTest(SequenceType arg);
 
     /**
      * Returns a type denoting a single comment node.
      */
-    SequenceType<A> commentType();
+    SequenceType commentType();
 
     /**
      * Returns a type denoting the combined sequence of two types.
      */
-    SequenceType<A> concat(SequenceType<A> lhs, SequenceType<A> rhs);
+    SequenceType concat(SequenceType lhs, SequenceType rhs);
 
     /**
      * <table border="1">
@@ -105,27 +105,27 @@ public interface MetaBridge<A>
      * </tr>
      * </table>
      */
-    SequenceType<A> contentType(SequenceType<A> type);
+    SequenceType contentType(SequenceType type);
 
     /**
      * Computes the type resulting from the application of the descendant axis.
      */
-    SequenceType<A> descendantAxis(SequenceType<A> type);
+    SequenceType descendantAxis(SequenceType type);
 
     /**
      * Computes the type resulting from the application of the descendant-or-self axis.
      */
-    SequenceType<A> descendantOrSelfAxis(SequenceType<A> type);
+    SequenceType descendantOrSelfAxis(SequenceType type);
 
     /**
      * Returns a type denoting a single document node with the specified content.
      */
-    SequenceType<A> documentType(SequenceType<A> contentType);
+    SequenceType documentType(SequenceType contentType);
 
     /**
      * Applies an element() test to the argument.
      */
-    SequenceType<A> elementTest(SequenceType<A> arg);
+    SequenceType elementTest(SequenceType arg);
 
     /**
      * Returns a type denoting an element of the specified name, type and nillability.
@@ -138,37 +138,32 @@ public interface MetaBridge<A>
      * @param nillable
      *            The nillable flag.
      */
-    SequenceType<A> elementType(QName name, SequenceType<A> type, boolean nillable);
+    SequenceType elementType(QName name, SequenceType type, boolean nillable);
 
     /**
      * Returns a type denoting "empty-sequence()".
      */
-    SequenceType<A> emptyType();
+    SequenceType emptyType();
 
     /**
      * Computes the type resulting from the application of the following axis.
      */
-    SequenceType<A> followingAxis(SequenceType<A> type);
+    SequenceType followingAxis(SequenceType type);
 
     /**
      * Computes the type resulting from the application of the following-sibling axis.
      */
-    SequenceType<A> followingSiblingAxis(SequenceType<A> type);
-
-    /**
-     * Returns the {@link AtomBridge} implementation.
-     */
-    AtomBridge<A> getAtomBridge();
+    SequenceType followingSiblingAxis(SequenceType type);
 
     /**
      * Returns the Left-Hand-Side type in a binary type.
      */
-    SequenceType<A> getBinaryLHS(SequenceType<A> type);
+    SequenceType getBinaryLHS(SequenceType type);
 
     /**
      * Returns the Right-Hand-Side type in a binary type.
      */
-    SequenceType<A> getBinaryRHS(SequenceType<A> type);
+    SequenceType getBinaryRHS(SequenceType type);
 
     /**
      * Returns the name of the specified type definition.
@@ -176,12 +171,7 @@ public interface MetaBridge<A>
      * @param type
      *            The type definition.
      */
-    QName getName(SequenceType<A> type);
-
-    /**
-     * Returns the {@link NameSource} implementation.
-     */
-    NameSource getNameBridge();
+    QName getName(SequenceType type);
 
     /**
      * Returns the specified type definition given a built in type.
@@ -189,7 +179,7 @@ public interface MetaBridge<A>
      * @param nativeType
      *            The built in type definition.
      */
-    SequenceType<A> getType(NativeType nativeType);
+    SequenceType getType(NativeType nativeType);
 
     /**
      * Returns a type definition with the specified name.
@@ -198,57 +188,57 @@ public interface MetaBridge<A>
      *            The name of the type definition.
      * @return The type definition. May be <code>null</code> if the type does not exist.
      */
-    SequenceType<A> getType(QName typeName);
+    SequenceType getType(QName typeName);
 
     /**
      * Converts the specified type into an opaque handle.
      */
-    SequenceType<A> handle(SequenceType<A> sequenceType);
+    SequenceType handle(SequenceType sequenceType);
 
     /**
      * Returns a type denoting the interleave of two types.
      */
-    SequenceType<A> interleave(SequenceType<A> one, SequenceType<A> two);
+    SequenceType interleave(SequenceType one, SequenceType two);
 
     /**
      * Determines whether the specified type is an attribute node type.
      */
-    boolean isAttributeNodeType(SequenceType<A> type);
+    boolean isAttributeNodeType(SequenceType type);
 
     /**
      * Determines whether the specified type is a union of two types.
      */
-    boolean isChoice(SequenceType<A> type);
+    boolean isChoice(SequenceType type);
 
     /**
      * Determines whether the specified type is a comment node type.
      */
-    boolean isCommentNodeType(SequenceType<A> type);
+    boolean isCommentNodeType(SequenceType type);
 
     /**
      * Determines whether the specified type is a document node type.
      */
-    boolean isDocumentNodeType(SequenceType<A> type);
+    boolean isDocumentNodeType(SequenceType type);
 
     /**
      * Determines whether the specified type is an element node type.
      */
-    boolean isElementNodeType(SequenceType<A> type);
+    boolean isElementNodeType(SequenceType type);
 
     /**
      * Determines whether the specified type is the <code>empty</code> type.
      */
-    boolean isEmpty(SequenceType<A> type);
+    boolean isEmpty(SequenceType type);
 
     /**
      * Determines whether the specified type is a namespace node type.
      */
-    boolean isNamespaceNodeType(SequenceType<A> type);
+    boolean isNamespaceNodeType(SequenceType type);
 
     /**
      * Determines whether the specified type is the <code>none</code> type.
      */
-    boolean isNone(SequenceType<A> type);
+    boolean isNone(SequenceType type);
 
     /**
      * Returns the error code for a type which must be <code>none</code>.
@@ -257,57 +247,57 @@ public interface MetaBridge<A>
      *            The none type.
      * @return The error code. May be <code>null</code>.
      */
-    QName getErrorCode(SequenceType<A> noneType);
+    QName getErrorCode(SequenceType noneType);
 
     /**
      * Determines whether the specified type is a processing-instruction node type.
      */
-    boolean isProcessingInstructionNodeType(SequenceType<A> type);
+    boolean isProcessingInstructionNodeType(SequenceType type);
 
     /**
      * Determines whether the specified type is a text node type.
      */
-    boolean isTextNodeType(SequenceType<A> type);
+    boolean isTextNodeType(SequenceType type);
 
     /**
      * Returns a type denoting a single item.
      */
-    SequenceType<A> itemType();
+    SequenceType itemType();
 
     /**
      * Multiplies the cardinality of the specified type by a specified cardinality.
      */
-    SequenceType<A> multiply(SequenceType<A> argument, Quantifier multiplier);
+    SequenceType multiply(SequenceType argument, Quantifier multiplier);
 
     /**
      * Computes the type resulting from the application of the namespace axis.
      */
-    SequenceType<A> namespaceAxis(SequenceType<A> type);
+    SequenceType namespaceAxis(SequenceType type);
 
     /**
      * Applies the namespace() test to the argument.
      */
-    SequenceType<A> namespaceTest(SequenceType<A> arg);
+    SequenceType namespaceTest(SequenceType arg);
 
     /**
      * Returns a type denoting a single namespace node.
      */
-    SequenceType<A> namespaceType();
+    SequenceType namespaceType();
 
     /**
      * Applies the node() test to the argument.
      */
-    SequenceType<A> nodeTest(SequenceType<A> arg);
+    SequenceType nodeTest(SequenceType arg);
 
     /**
      * Returns a type denoting a single node.
      */
-    SequenceType<A> nodeType();
+    SequenceType nodeType();
 
     /**
      * Returns a type denoting an error.
      */
-    SequenceType<A> noneType();
+    SequenceType noneType();
 
     /**
      * Returns a type denoting an error with an error code.
@@ -315,74 +305,74 @@ public interface MetaBridge<A>
      * @param errorCode
      *            The error code. May be <code>null</code>.
      */
-    SequenceType<A> noneType(QName errorCode);
+    SequenceType noneType(QName errorCode);
 
     /**
      * Multiply the cardinality of the specified type by optional (+).
      */
-    SequenceType<A> oneOrMore(SequenceType<A> type);
+    SequenceType oneOrMore(SequenceType type);
 
     /**
      * Multiply the cardinality of the specified type by optional (?).
      */
-    SequenceType<A> optional(SequenceType<A> type);
+    SequenceType optional(SequenceType type);
 
     /**
      * Computes the type resulting from the application of the parent axis.
      */
-    SequenceType<A> parentAxis(SequenceType<A> type);
+    SequenceType parentAxis(SequenceType type);
 
     /**
      * Computes the type resulting from the application of the preceding axis.
      */
-    SequenceType<A> precedingAxis(SequenceType<A> type);
+    SequenceType precedingAxis(SequenceType type);
 
     /**
      * Computes the type resulting from the application of the preceding-sibling axis.
      */
-    SequenceType<A> precedingSiblingAxis(SequenceType<A> type);
+    SequenceType precedingSiblingAxis(SequenceType type);
 
     /**
      * Extracts all item types from the argument type and combines them into a choice.
      */
-    SequenceType<A> prime(SequenceType<A> type);
+    SequenceType prime(SequenceType type);
 
     /**
      * Applies the processing-instruction(name) test to the argument.
      */
-    SequenceType<A> processingInstructionTest(SequenceType<A> arg, String name);
+    SequenceType processingInstructionTest(SequenceType arg, String name);
 
     /**
      * Returns a type denoting a single processing-instruction node.
      */
-    SequenceType<A> processingInstructionType(String name);
+    SequenceType processingInstructionType(String name);
 
     /**
      * Approximates the possible number of items in the argument type.
      */
-    Quantifier quantifier(SequenceType<A> type);
+    Quantifier quantifier(SequenceType type);
 
-    boolean sameAs(SequenceType<A> one, SequenceType<A> two);
+    boolean sameAs(SequenceType one, SequenceType two);
 
     /**
      * Returns a type denoting "schema-attribute(attributeName)".
      */
-    SequenceType<A> schemaAttribute(QName attributeName);
+    SequenceType schemaAttribute(QName attributeName);
 
     /**
      * Returns a type denoting "schema-element(elementName)".
      */
-    SequenceType<A> schemaElement(QName elementDeclaration);
+    SequenceType schemaElement(QName elementDeclaration);
 
     /**
      * Returns a type denoting "schema-type(typeName)".
      */
-    SequenceType<A> schemaType(QName typeName);
+    SequenceType schemaType(QName typeName);
 
     /**
      * Computes the type resulting from the application of the self axis.
      */
-    SequenceType<A> selfAxis(SequenceType<A> type);
+    SequenceType selfAxis(SequenceType type);
 
     /**
      * Determines whether the actual type is a sub-type of the expected type.
@@ -390,17 +380,17 @@ public interface MetaBridge<A>
      * @param lhs
      * @param rhs
      */
-    boolean subtype(SequenceType<A> lhs, SequenceType<A> rhs);
+    boolean subtype(SequenceType lhs, SequenceType rhs);
 
     /**
      * Applies the text() test to the argument.
      */
-    SequenceType<A> textTest(SequenceType<A> arg);
+    SequenceType textTest(SequenceType arg);
 
     /**
      * Returns a type denoting a single text node.
      */
-    SequenceType<A> textType();
+    SequenceType textType();
 
     /**
      * Computes the String representation of the specified type in SequenceType syntax.
@@ -412,7 +402,7 @@ public interface MetaBridge<A>
      * @param defaultElementAndTypeNamespace
      *            The default namespace for element names.
      */
-    String toString(SequenceType<A> type, NamespaceResolver mappings, String defaultElementAndTypeNamespace) throws GxmlException;
+    String toString(SequenceType type, NamespaceResolver mappings, String defaultElementAndTypeNamespace) throws GxmlException;
 
     /**
      * Allocates an empty array of types.
@@ -420,10 +410,10 @@ public interface MetaBridge<A>
      * @param size
      *            The size of the array of types.
      */
-    SequenceType<A>[] typeArray(int size);
+    SequenceType[] typeArray(int size);
 
     /**
      * Multiply the cardinality of the specified type by optional (*).
      */
-    SequenceType<A> zeroOrMore(SequenceType<A> type);
+    SequenceType zeroOrMore(SequenceType type);
 }

@@ -17,16 +17,18 @@ package org.genxdm.xs.components;
 
 import java.util.List;
 
+import org.genxdm.typed.types.AtomBridge;
+
 /**
  * A list of atomic values specified by an xs:enumeration.
  * 
  * @param <A>
  *            The atom handle.
  */
-public interface EnumerationDefinition<A>
+public interface EnumerationDefinition
 {
     /**
      * A set of values from the value space of the base type definition.
      */
-    List<A> getValue();
+    <A> List<A> getValue(AtomBridge<A> bridge);
 }

@@ -16,6 +16,7 @@
 package org.genxdm.xs.exceptions;
 
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.enums.ValidationOutcome;
 import org.genxdm.xs.facets.FacetKind;
 import org.genxdm.xs.facets.Limit;
@@ -26,20 +27,22 @@ import org.genxdm.xs.facets.Limit;
 @SuppressWarnings("serial")
 public final class FacetMinMaxException extends FacetException
 {
-    private final Limit<?> limit;
+    private final Limit limit;
     private final String actual;
+    private final AtomBridge<?> bridge;
 
-    public FacetMinMaxException(final Limit<?> limit, final String actual)
+    public FacetMinMaxException(final Limit limit, final String actual, final AtomBridge<?> bridge)
     {
         super(getOutcome(limit.getKind()));
         this.actual = PreCondition.assertArgumentNotNull(actual, "actual");
         this.limit = PreCondition.assertArgumentNotNull(limit, "limit");
+        this.bridge = PreCondition.assertArgumentNotNull(bridge, "bridge");
     }
 
     @Override
     public String getMessage()
     {
-        final String localMessage = "The instance value, '" + actual + "', is not valid with respect to the facet value, '" + limit.getLimit() + "'.";
+        final String localMessage = "The instance value, '" + actual + "', is not valid with respect to the facet value, '" + limit.getLimit(bridge) + "'.";
 
         final StringBuilder message = new StringBuilder();
         message.append(getOutcome().getSection());

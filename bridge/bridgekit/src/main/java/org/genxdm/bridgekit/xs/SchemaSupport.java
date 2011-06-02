@@ -33,13 +33,13 @@ public final class SchemaSupport
 	/**
 	 * Determines whether lhs is derived from rhs based upon walking up from lhs towards the complex Ur-type.
 	 */
-	public static <A> boolean subtype(final Type<A> lhs, final Type<A> rhs)
+	public static boolean subtype(final Type lhs, final Type rhs)
 	{
 		PreCondition.assertArgumentNotNull(lhs, "lhs");
 		PreCondition.assertArgumentNotNull(rhs, "rhs");
 		if (!rhs.isComplexUrType())
 		{
-			Type<A> currentType = lhs;
+			Type currentType = lhs;
 			while (true)
 			{
 				if (currentType == rhs)
@@ -69,7 +69,7 @@ public final class SchemaSupport
 	/**
 	 * Determines whether the candidateType is derived from the ancestorTYpe based upon walking up from lhs towards the complex Ur-type.
 	 */
-	public static <A> boolean derivedFromType(final Type<A> candidateType, final Type<A> ancestorType, final Set<DerivationMethod> derivationMethods, final NameSource nameBridge)
+	public static  boolean derivedFromType(final Type candidateType, final Type ancestorType, final Set<DerivationMethod> derivationMethods, final NameSource nameBridge)
 	{
 		PreCondition.assertArgumentNotNull(candidateType, "candidateType");
 		PreCondition.assertArgumentNotNull(ancestorType, "ancestorType");
@@ -79,14 +79,14 @@ public final class SchemaSupport
 		return derivedFrom(candidateType, ancestorType.getTargetNamespace(), ancestorType.getLocalName(), derivationMethods, nameBridge);
 	}
 
-	public static <A> boolean derivedFrom(final Type<A> candidateType, final String namespace, final String localName, final Set<DerivationMethod> derivationMethods, final NameSource nameBridge)
+	public static  boolean derivedFrom(final Type candidateType, final String namespace, final String localName, final Set<DerivationMethod> derivationMethods, final NameSource nameBridge)
 	{
 		PreCondition.assertArgumentNotNull(candidateType, "candidateType");
 		PreCondition.assertArgumentNotNull(namespace, "namespace");
 		PreCondition.assertArgumentNotNull(localName, "localName");
 		PreCondition.assertArgumentNotNull(derivationMethods, "derivationMethods");
 
-		Type<A> currentType = candidateType;
+		Type currentType = candidateType;
 
 		if (currentType.isComplexUrType())
 		{
@@ -131,7 +131,7 @@ public final class SchemaSupport
 		}
 	}
 
-	public static <A> boolean subtype(final SequenceType<A> lhs, final SequenceType<A> rhs)
+	public static  boolean subtype(final SequenceType lhs, final SequenceType rhs)
 	{
 		PreCondition.assertArgumentNotNull(lhs, "lhs");
 		PreCondition.assertArgumentNotNull(rhs, "rhs");
@@ -146,8 +146,8 @@ public final class SchemaSupport
 		{
 			if (qRHS.contains(qLHS))
 			{
-				final PrimeType<A> pLHS = lhs.prime();
-				final PrimeType<A> pRHS = rhs.prime();
+				final PrimeType pLHS = lhs.prime();
+				final PrimeType pRHS = rhs.prime();
 				return pLHS.subtype(pRHS);
 			}
 			else

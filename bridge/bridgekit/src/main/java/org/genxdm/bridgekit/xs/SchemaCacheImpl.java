@@ -54,45 +54,45 @@ import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.SimpleUrType;
 import org.genxdm.xs.types.Type;
 
-final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, Schema<A>
+final class SchemaCacheImpl implements SchemaCache, ComponentProvider, Schema
 {
-	private final AtomicUrTypeImpl<A> ANY_ATOMIC_TYPE;
-	private final ComplexUrTypeImpl<A> ANY_COMPLEX_TYPE;
-	private final PrimeType<A> ANY_ITEM;
-	private final PrimeType<A> ANY_KIND;
-	private final SimpleUrTypeImpl<A> ANY_SIMPLE_TYPE;
+	private final AtomicUrTypeImpl ANY_ATOMIC_TYPE;
+	private final ComplexUrTypeImpl ANY_COMPLEX_TYPE;
+	private final PrimeType ANY_ITEM;
+	private final PrimeType ANY_KIND;
+	private final SimpleUrTypeImpl ANY_SIMPLE_TYPE;
 	private final AtomBridge<A> atomBridge;
-	private final AttributeNodeType<A> ATTRIBUTE;
+	private final AttributeNodeType ATTRIBUTE;
 
-	private final BuiltInSchema<A> BUILT_IN;
-	private final NodeType<A> COMMENT;
-	private final DocumentNodeType<A> DOCUMENT;
-	private final ElementNodeType<A> ELEMENT;
-	private final EmptyType<A> EMPTY;
-	final ConcurrentHashMap<QName, AttributeGroupDefinition<A>> m_attributeGroups = new ConcurrentHashMap<QName, AttributeGroupDefinition<A>>();
-	final ConcurrentHashMap<QName, AttributeDefinition<A>> m_attributes = new ConcurrentHashMap<QName, AttributeDefinition<A>>();
+	private final BuiltInSchema BUILT_IN;
+	private final NodeType COMMENT;
+	private final DocumentNodeType DOCUMENT;
+	private final ElementNodeType ELEMENT;
+	private final EmptyType EMPTY;
+	final ConcurrentHashMap<QName, AttributeGroupDefinition> m_attributeGroups = new ConcurrentHashMap<QName, AttributeGroupDefinition>();
+	final ConcurrentHashMap<QName, AttributeDefinition> m_attributes = new ConcurrentHashMap<QName, AttributeDefinition>();
 
-	final ConcurrentHashMap<QName, ComplexType<A>> m_complexTypes = new ConcurrentHashMap<QName, ComplexType<A>>();
-	final ConcurrentHashMap<QName, ElementDefinition<A>> m_elements = new ConcurrentHashMap<QName, ElementDefinition<A>>();
-	final ConcurrentHashMap<QName, IdentityConstraint<A>> m_identityConstraints = new ConcurrentHashMap<QName, IdentityConstraint<A>>();
+	final ConcurrentHashMap<QName, ComplexType> m_complexTypes = new ConcurrentHashMap<QName, ComplexType>();
+	final ConcurrentHashMap<QName, ElementDefinition> m_elements = new ConcurrentHashMap<QName, ElementDefinition>();
+	final ConcurrentHashMap<QName, IdentityConstraint> m_identityConstraints = new ConcurrentHashMap<QName, IdentityConstraint>();
 	private boolean m_isLocked = false;
-	final ConcurrentHashMap<QName, ModelGroup<A>> m_modelGroups = new ConcurrentHashMap<QName, ModelGroup<A>>();
+	final ConcurrentHashMap<QName, ModelGroup> m_modelGroups = new ConcurrentHashMap<QName, ModelGroup>();
 	private int m_nextType = 0;
-	final ConcurrentHashMap<QName, NotationDefinition<A>> m_notations = new ConcurrentHashMap<QName, NotationDefinition<A>>();
-	private final ConcurrentHashMap<QName, SimpleType<A>> m_simpleTypes = new ConcurrentHashMap<QName, SimpleType<A>>();
+	final ConcurrentHashMap<QName, NotationDefinition> m_notations = new ConcurrentHashMap<QName, NotationDefinition>();
+	private final ConcurrentHashMap<QName, SimpleType> m_simpleTypes = new ConcurrentHashMap<QName, SimpleType>();
 	private final NameSource nameBridge;
-	private final NamespaceNodeType<A> NAMESPACE;
+	private final NamespaceNodeType NAMESPACE;
 	/**
 	 * The set of namespaces of all components. We build this during registration, which acts as the gateway.
 	 */
 	private final Set<String> namespaces = new HashSet<String>();
-	private final ProcessingInstructionNodeType<A> PROCESSING_INSTRUCTION;
+	private final ProcessingInstructionNodeType PROCESSING_INSTRUCTION;
 
-	private final NodeType<A> TEXT;
+	private final NodeType TEXT;
 	private static final String ESCAPE = "\u001B";
 	private final QName WILDNAME = new QName(ESCAPE, ESCAPE);
 
-	public SchemaCacheImpl(final AtomBridge<A> atomBridge)
+	public SchemaCacheImpl(final AtomBridge atomBridge)
 	{
 		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
 		this.nameBridge = atomBridge.getNameBridge();
@@ -100,30 +100,30 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		assertNotLocked();
 
 		final String W3C_XML_SCHEMA_NS_URI = XMLConstants.W3C_XML_SCHEMA_NS_URI;
-		this.ANY_COMPLEX_TYPE = new ComplexUrTypeImpl<A>(W3C_XML_SCHEMA_NS_URI, nameBridge);
-		this.ANY_SIMPLE_TYPE = new SimpleUrTypeImpl<A>(W3C_XML_SCHEMA_NS_URI, atomBridge, this);
-		this.ANY_ATOMIC_TYPE = new AtomicUrTypeImpl<A>(W3C_XML_SCHEMA_NS_URI, ANY_SIMPLE_TYPE, atomBridge);
+		this.ANY_COMPLEX_TYPE = new ComplexUrTypeImpl(W3C_XML_SCHEMA_NS_URI, nameBridge);
+		this.ANY_SIMPLE_TYPE = new SimpleUrTypeImpl(W3C_XML_SCHEMA_NS_URI, atomBridge, this);
+		this.ANY_ATOMIC_TYPE = new AtomicUrTypeImpl(W3C_XML_SCHEMA_NS_URI, ANY_SIMPLE_TYPE, atomBridge);
 
 		defineComplexType(ANY_COMPLEX_TYPE);
 		defineSimpleType(ANY_SIMPLE_TYPE);
 		defineSimpleType(ANY_ATOMIC_TYPE);
 
-		BUILT_IN = new BuiltInSchema<A>(W3C_XML_SCHEMA_NS_URI, this);
+		BUILT_IN = new BuiltInSchema(W3C_XML_SCHEMA_NS_URI, this);
 		register(BUILT_IN);
-		register(new XmlSchema<A>(this));
-		register(new XsiSchema<A>(this));
+		register(new XmlSchema(this));
+		register(new XsiSchema(this));
 
-		ELEMENT = new ElementNodeTypeImpl<A>(WILDNAME, null, false, this);
-		NAMESPACE = new NamespaceNodeTypeImpl<A>(this);
-		ATTRIBUTE = new AttributeNodeTypeImpl<A>(WILDNAME, null, this);
-		COMMENT = new CommentNodeTypeImpl<A>(this);
-		PROCESSING_INSTRUCTION = new ProcessingInstructionNodeTypeImpl<A>(null, this);
-		TEXT = new TextNodeTypeImpl<A>(this);
-		final SequenceType<A> X = ZMultiplyType.zeroOrMore(ZPrimeChoiceType.choice(ELEMENT, ZPrimeChoiceType.choice(TEXT, ZPrimeChoiceType.choice(COMMENT, PROCESSING_INSTRUCTION))));
-		DOCUMENT = new DocumentNodeTypeImpl<A>(X, this);
+		ELEMENT = new ElementNodeTypeImpl(WILDNAME, null, false, this);
+		NAMESPACE = new NamespaceNodeTypeImpl(this);
+		ATTRIBUTE = new AttributeNodeTypeImpl(WILDNAME, null, this);
+		COMMENT = new CommentNodeTypeImpl(this);
+		PROCESSING_INSTRUCTION = new ProcessingInstructionNodeTypeImpl(null, this);
+		TEXT = new TextNodeTypeImpl(this);
+		final SequenceType X = ZMultiplyType.zeroOrMore(ZPrimeChoiceType.choice(ELEMENT, ZPrimeChoiceType.choice(TEXT, ZPrimeChoiceType.choice(COMMENT, PROCESSING_INSTRUCTION))));
+		DOCUMENT = new DocumentNodeTypeImpl(X, this);
 		ANY_KIND = ZPrimeChoiceType.choice(ELEMENT, ZPrimeChoiceType.choice(ATTRIBUTE, ZPrimeChoiceType.choice(TEXT, ZPrimeChoiceType.choice(DOCUMENT, ZPrimeChoiceType.choice(COMMENT, ZPrimeChoiceType.choice(NAMESPACE, PROCESSING_INSTRUCTION))))));
 		ANY_ITEM = ZPrimeChoiceType.choice(ANY_KIND, ANY_ATOMIC_TYPE);
-		EMPTY = new ZEmptyType<A>();
+		EMPTY = new ZEmptyType();
 	}
 
 	private void assertNotLocked()
@@ -131,7 +131,7 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		PreCondition.assertFalse(m_isLocked, "isLocked -> true");
 	}
 
-	private QName checkComponent(final SchemaComponent<A> component, final ComponentKind kind)
+	private QName checkComponent(final SchemaComponent component, final ComponentKind kind)
 	{
 		PreCondition.assertArgumentNotNull(component);
 		if (!kind.canBeAnonymous)
@@ -141,12 +141,12 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		return PreCondition.assertArgumentNotNull(component.getName());
 	}
 
-	public PrimeType<A> comment()
+	public PrimeType comment()
 	{
 		return COMMENT;
 	}
 
-	public void declareAttribute(final AttributeDefinition<A> attribute)
+	public void declareAttribute(final AttributeDefinition attribute)
 	{
 		final QName name = checkComponent(attribute, ComponentKind.ATTRIBUTE);
 		if (!m_attributes.containsKey(name))
@@ -156,7 +156,7 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		}
 	}
 
-	public void declareElement(final ElementDefinition<A> element)
+	public void declareElement(final ElementDefinition element)
 	{
 		final QName name = checkComponent(element, ComponentKind.ELEMENT);
 		if (!m_elements.containsKey(name))
@@ -166,7 +166,7 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		}
 	}
 
-	public void declareNotation(final NotationDefinition<A> notation)
+	public void declareNotation(final NotationDefinition notation)
 	{
 		final QName name = checkComponent(notation, ComponentKind.NOTATION);
 		if (!m_notations.containsKey(name))
@@ -176,7 +176,7 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		}
 	}
 
-	public void defineAttributeGroup(final AttributeGroupDefinition<A> attributeGroup)
+	public void defineAttributeGroup(final AttributeGroupDefinition attributeGroup)
 	{
 		final QName name = checkComponent(attributeGroup, ComponentKind.ATTRIBUTE_GROUP);
 		if (!m_attributeGroups.containsKey(name))
@@ -186,7 +186,7 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		}
 	}
 
-	public void defineComplexType(final ComplexType<A> complexType)
+	public void defineComplexType(final ComplexType complexType)
 	{
 		final QName name = checkComponent(complexType, ComponentKind.COMPLEX_TYPE);
 		if (!m_complexTypes.containsKey(name))
@@ -196,7 +196,7 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		}
 	}
 
-	public void defineIdentityConstraint(final IdentityConstraint<A> identityConstraint)
+	public void defineIdentityConstraint(final IdentityConstraint identityConstraint)
 	{
 		final QName name = checkComponent(identityConstraint, ComponentKind.IDENTITY_CONSTRAINT);
 		if (!m_identityConstraints.containsKey(name))
@@ -206,7 +206,7 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		}
 	}
 
-	public void defineModelGroup(final ModelGroup<A> modelGroup)
+	public void defineModelGroup(final ModelGroup modelGroup)
 	{
 		final QName name = checkComponent(modelGroup, ComponentKind.MODEL_GROUP);
 		if (!m_modelGroups.containsKey(name))
@@ -216,7 +216,7 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		}
 	}
 
-	public void defineSimpleType(final SimpleType<A> simpleType)
+	public void defineSimpleType(final SimpleType simpleType)
 	{
 		final QName name = checkComponent(simpleType, ComponentKind.SIMPLE_TYPE);
 		if (!m_simpleTypes.containsKey(name))
@@ -226,11 +226,11 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		}
 	}
 
-	public DocumentNodeType<A> documentType(final SequenceType<A> contentType)
+	public DocumentNodeType documentType(final SequenceType contentType)
 	{
 		if (null != contentType)
 		{
-			return new DocumentNodeTypeImpl<A>(contentType, this);
+			return new DocumentNodeTypeImpl(contentType, this);
 		}
 		else
 		{
@@ -238,12 +238,12 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		}
 	}
 
-	public ElementNodeType<A> elementWild(final SequenceType<A> type, final boolean nillable)
+	public ElementNodeType elementWild(final SequenceType type, final boolean nillable)
 	{
-		return new ElementNodeTypeImpl<A>(WILDNAME, type, nillable, this);
+		return new ElementNodeTypeImpl(WILDNAME, type, nillable, this);
 	}
 
-	public EmptyType<A> empty()
+	public EmptyType empty()
 	{
 		return EMPTY;
 	}
@@ -254,17 +254,12 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		return new QName("http://www.tibco.com/gXML-SA/local-types", "type-".concat(Integer.toString(m_nextType++)));
 	}
 
-	public AtomBridge<A> getAtomBridge()
+	public AtomicType getAtomicType(final QName name)
 	{
-		return atomBridge;
-	}
-
-	public AtomicType<A> getAtomicType(final QName name)
-	{
-		final SimpleType<A> simpleType = m_simpleTypes.get(name);
+		final SimpleType simpleType = m_simpleTypes.get(name);
 		if (simpleType.isAtomicType())
 		{
-			return (AtomicType<A>)simpleType;
+			return (AtomicType)simpleType;
 		}
 		else
 		{
@@ -272,12 +267,12 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		}
 	}
 
-	public AtomicType<A> getAtomicType(final NativeType nativeType)
+	public AtomicType getAtomicType(final NativeType nativeType)
 	{
-		final Type<A> type = getTypeDefinition(nativeType);
+		final Type type = getTypeDefinition(nativeType);
 		if (type.isAtomicType())
 		{
-			return (AtomicType<A>)type;
+			return (AtomicType)type;
 		}
 		else
 		{
@@ -285,78 +280,78 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		}
 	}
 
-	public AtomicUrType<A> getAtomicUrType()
+	public AtomicUrType getAtomicUrType()
 	{
 		return ANY_ATOMIC_TYPE;
 	}
 
-	public AttributeDefinition<A> getAttributeDeclaration(final QName name)
+	public AttributeDefinition getAttributeDeclaration(final QName name)
 	{
 		PreCondition.assertArgumentNotNull(name, "name");
 		return m_attributes.get(name);
 	}
 
-	public AttributeGroupDefinition<A> getAttributeGroup(final QName name)
+	public AttributeGroupDefinition getAttributeGroup(final QName name)
 	{
 		PreCondition.assertArgumentNotNull(name, "name");
 		return m_attributeGroups.get(name);
 	}
 
-	public Iterable<AttributeGroupDefinition<A>> getAttributeGroups()
+	public Iterable<AttributeGroupDefinition> getAttributeGroups()
 	{
 		return m_attributeGroups.values();
 	}
 
-	public Iterable<AttributeDefinition<A>> getAttributes()
+	public Iterable<AttributeDefinition> getAttributes()
 	{
 		return m_attributes.values();
 	}
 
-	public ComplexType<A> getComplexType(final QName name)
+	public ComplexType getComplexType(final QName name)
 	{
 		PreCondition.assertArgumentNotNull(name, "name");
 		return m_complexTypes.get(name);
 	}
 
-	public Iterable<ComplexType<A>> getComplexTypes()
+	public Iterable<ComplexType> getComplexTypes()
 	{
 		return m_complexTypes.values();
 	}
 
-	public ComplexUrType<A> getComplexUrType()
+	public ComplexUrType getComplexUrType()
 	{
 		return ANY_COMPLEX_TYPE;
 	}
 
-	public ElementDefinition<A> getElementDeclaration(final QName name)
+	public ElementDefinition getElementDeclaration(final QName name)
 	{
 		PreCondition.assertArgumentNotNull(name, "name");
 		return m_elements.get(name);
 	}
 
-	public Iterable<ElementDefinition<A>> getElements()
+	public Iterable<ElementDefinition> getElements()
 	{
 		return m_elements.values();
 	}
 
-	public IdentityConstraint<A> getIdentityConstraint(final QName name)
+	public IdentityConstraint getIdentityConstraint(final QName name)
 	{
 		PreCondition.assertArgumentNotNull(name, "name");
 		return m_identityConstraints.get(name);
 	}
 
-	public Iterable<IdentityConstraint<A>> getIdentityConstraints()
+	public Iterable<IdentityConstraint> getIdentityConstraints()
 	{
 		return m_identityConstraints.values();
 	}
 
-	public ModelGroup<A> getModelGroup(final QName name)
+	public ModelGroup getModelGroup(final QName name)
 	{
 		PreCondition.assertArgumentNotNull(name, "name");
 		return m_modelGroups.get(name);
 	}
 
-	public Iterable<ModelGroup<A>> getModelGroups()
+	public Iterable<ModelGroup> getModelGroups()
 	{
 		return m_modelGroups.values();
 	}
@@ -371,29 +366,29 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		return namespaces;
 	}
 
-	public NotationDefinition<A> getNotationDeclaration(final QName name)
+	public NotationDefinition getNotationDeclaration(final QName name)
 	{
 		PreCondition.assertArgumentNotNull(name, "name");
 		return m_notations.get(name);
 	}
 
-	public Iterable<NotationDefinition<A>> getNotations()
+	public Iterable<NotationDefinition> getNotations()
 	{
 		return m_notations.values();
 	}
 
-	public SimpleType<A> getSimpleType(final QName name)
+	public SimpleType getSimpleType(final QName name)
 	{
 		PreCondition.assertArgumentNotNull(name, "name");
 		return m_simpleTypes.get(name);
 	}
 
-	public SimpleType<A> getSimpleType(final NativeType nativeType)
+	public SimpleType getSimpleType(final NativeType nativeType)
 	{
-		final Type<A> type = getTypeDefinition(nativeType);
+		final Type type = getTypeDefinition(nativeType);
 		if (type instanceof SimpleType<?>)
 		{
-			return (SimpleType<A>)type;
+			return (SimpleType)type;
 		}
 		else
 		{
@@ -401,17 +396,17 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		}
 	}
 
-	public Iterable<SimpleType<A>> getSimpleTypes()
+	public Iterable<SimpleType> getSimpleTypes()
 	{
 		return m_simpleTypes.values();
 	}
 
-	public SimpleUrType<A> getSimpleUrType()
+	public SimpleUrType getSimpleUrType()
 	{
 		return ANY_SIMPLE_TYPE;
 	}
 
-	public Type<A> getTypeDefinition(final QName name)
+	public Type getTypeDefinition(final QName name)
 	{
 		PreCondition.assertArgumentNotNull(name, "name");
 		if (m_complexTypes.containsKey(name))
@@ -440,7 +435,7 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		}
 	}
 
-	public Type<A> getTypeDefinition(final NativeType nativeType)
+	public Type getTypeDefinition(final NativeType nativeType)
 	{
 		switch (nativeType)
 		{
@@ -722,12 +717,12 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		return m_isLocked;
 	}
 
-	public PrimeType<A> item()
+	public PrimeType item()
 	{
 		return ANY_ITEM;
 	}
 
-	public SequenceType<A> itemSet()
+	public SequenceType itemSet()
 	{
 		return ZMultiplyType.zeroOrMore(item());
 	}
@@ -737,17 +732,17 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		m_isLocked = true;
 	}
 
-	public NamespaceNodeType<A> namespace()
+	public NamespaceNodeType namespace()
 	{
 		return NAMESPACE;
 	}
 
-	public PrimeType<A> node()
+	public PrimeType node()
 	{
 		return ANY_KIND;
 	}
 
-	public ProcessingInstructionNodeType<A> processingInstruction(final String name)
+	public ProcessingInstructionNodeType processingInstruction(final String name)
 	{
 		if (null == name)
 		{
@@ -755,11 +750,11 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		}
 		else
 		{
-			return new ProcessingInstructionNodeTypeImpl<A>(name, this);
+			return new ProcessingInstructionNodeTypeImpl(name, this);
 		}
 	}
 
-	private void recordNamespace(final SchemaComponent<A> component)
+	private void recordNamespace(final SchemaComponent component)
 	{
 		if (!component.isAnonymous())
 		{
@@ -767,47 +762,47 @@ final class SchemaCacheImpl<A> implements SchemaCache<A>, ComponentProvider<A>, 
 		}
 	}
 
-	public void register(final ComponentBag<A> components)
+	public void register(final ComponentBag components)
 	{
 		assertNotLocked();
 		if (null != components)
 		{
-			for (final SimpleType<A> simpleType : components.getSimpleTypes())
+			for (final SimpleType simpleType : components.getSimpleTypes())
 			{
 				defineSimpleType(simpleType);
 			}
-			for (final ComplexType<A> complexType : components.getComplexTypes())
+			for (final ComplexType complexType : components.getComplexTypes())
 			{
 				defineComplexType(complexType);
 			}
-			for (final AttributeDefinition<A> attribute : components.getAttributes())
+			for (final AttributeDefinition attribute : components.getAttributes())
 			{
 				declareAttribute(attribute);
 			}
-			for (final ElementDefinition<A> element : components.getElements())
+			for (final ElementDefinition element : components.getElements())
 			{
 				declareElement(element);
 			}
-			for (final AttributeGroupDefinition<A> attributeGroup : components.getAttributeGroups())
+			for (final AttributeGroupDefinition attributeGroup : components.getAttributeGroups())
 			{
 				defineAttributeGroup(attributeGroup);
 			}
-			for (final IdentityConstraint<A> identityConstraint : components.getIdentityConstraints())
+			for (final IdentityConstraint identityConstraint : components.getIdentityConstraints())
 			{
 				defineIdentityConstraint(identityConstraint);
 			}
-			for (final ModelGroup<A> modelGroup : components.getModelGroups())
+			for (final ModelGroup modelGroup : components.getModelGroups())
 			{
 				defineModelGroup(modelGroup);
 			}
-			for (final NotationDefinition<A> notation : components.getNotations())
+			for (final NotationDefinition notation : components.getNotations())
 			{
 				declareNotation(notation);
 			}
 		}
 	}
 
-	public PrimeType<A> text()
+	public PrimeType text()
 	{
 		return TEXT;
 	}

@@ -38,41 +38,39 @@ import org.genxdm.xs.types.SimpleUrType;
 /**
  * Keep private. This can go away.
  */
-interface SchemaCache<A> extends SequenceTypeFactory<A>
+interface SchemaCache extends SequenceTypeFactory
 {
-	DocumentNodeType<A> documentType(SequenceType<A> contentType);
+	DocumentNodeType documentType(SequenceType contentType);
 
-	ElementNodeType<A> elementWild(SequenceType<A> type, boolean nillable);
+	ElementNodeType elementWild(SequenceType type, boolean nillable);
 
-	AtomBridge<A> getAtomBridge();
+	AtomicType getAtomicType(QName name);
 
-	AtomicType<A> getAtomicType(QName name);
+	AtomicType getAtomicType(NativeType nativeType);
 
-	AtomicType<A> getAtomicType(NativeType nativeType);
+	AtomicUrType getAtomicUrType();
 
-	AtomicUrType<A> getAtomicUrType();
+	AttributeDefinition getAttributeDeclaration(QName name);
 
-	AttributeDefinition<A> getAttributeDeclaration(QName name);
+	AttributeGroupDefinition getAttributeGroup(QName name);
 
-	AttributeGroupDefinition<A> getAttributeGroup(QName name);
+	ComplexType getComplexType(QName name);
 
-	ComplexType<A> getComplexType(QName name);
+	ComplexUrType getComplexUrType();
 
-	ComplexUrType<A> getComplexUrType();
+	ElementDefinition getElementDeclaration(QName name);
 
-	ElementDefinition<A> getElementDeclaration(QName name);
+	IdentityConstraint getIdentityConstraint(QName name);
 
-	IdentityConstraint<A> getIdentityConstraint(QName name);
-
-	ModelGroup<A> getModelGroup(QName name);
+	ModelGroup getModelGroup(QName name);
 
 	NameSource getNameBridge();
 
-	SimpleType<A> getSimpleType(QName name);
+	SimpleType getSimpleType(QName name);
 
-	SimpleType<A> getSimpleType(NativeType nativeType);
+	SimpleType getSimpleType(NativeType nativeType);
 
-	SimpleUrType<A> getSimpleUrType();
+	SimpleUrType getSimpleUrType();
 
 	boolean hasAttribute(QName name);
 

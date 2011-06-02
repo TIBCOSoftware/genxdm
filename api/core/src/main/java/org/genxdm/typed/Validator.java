@@ -12,7 +12,7 @@ public interface Validator<A>
     
     void reset();
     
-    void setSchema(Schema<A> cache);
+    void setSchema(Schema cache);
     
     void setSchemaExceptionHandler(SchemaExceptionHandler errors);
     

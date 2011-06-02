@@ -19,12 +19,12 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.NodeKind;
 import org.genxdm.xs.types.NodeType;
 
-abstract class AbstractBranchNodeType<A> extends AbstractPrimeExcludingNoneType<A> implements NodeType<A>
+abstract class AbstractBranchNodeType extends AbstractPrimeExcludingNoneType implements NodeType
 {
-	protected final SchemaCache<A> cache;
+	protected final SchemaCache cache;
 	private final NodeKind nodeKind;
 
-	public AbstractBranchNodeType(final NodeKind nodeKind, final SchemaCache<A> cache)
+	public AbstractBranchNodeType(final NodeKind nodeKind, final SchemaCache cache)
 	{
 		this.nodeKind = PreCondition.assertArgumentNotNull(nodeKind);
 		this.cache = cache;

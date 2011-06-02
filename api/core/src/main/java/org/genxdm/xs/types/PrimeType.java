@@ -15,11 +15,11 @@
  */
 package org.genxdm.xs.types;
 
-public interface PrimeType<A> extends SequenceType<A>
+public interface PrimeType extends SequenceType
 {
     PrimeTypeKind getKind();
 
-    boolean subtype(PrimeType<A> rhs);
+    boolean subtype(PrimeType rhs);
 
     boolean isChoice();
 

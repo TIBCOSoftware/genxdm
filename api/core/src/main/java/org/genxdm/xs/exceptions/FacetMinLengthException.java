@@ -27,11 +27,11 @@ import org.genxdm.xs.facets.MinLength;
 @SuppressWarnings("serial")
 public final class FacetMinLengthException extends FacetException
 {
-    private final MinLength<?> minLength;
+    private final MinLength minLength;
     private final int actualLength;
     private final LengthFacetUOM uom;
 
-    public FacetMinLengthException(final MinLength<?> minLength, final int actualLength, final LengthFacetUOM uom)
+    public FacetMinLengthException(final MinLength minLength, final int actualLength, final LengthFacetUOM uom)
     {
         super(ValidationOutcome.CVC_MinLength);
         this.minLength = minLength;

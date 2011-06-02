@@ -18,10 +18,8 @@ package org.genxdm.xs.facets;
 /**
  * The xs:minLength facet.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface MinLength<A> extends Facet<A>
+public interface MinLength extends Facet
 {
     /**
      * Returns the minimum length allowed for a datatype.

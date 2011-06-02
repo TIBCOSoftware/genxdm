@@ -31,26 +31,19 @@ import org.genxdm.xs.facets.Limit;
 import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
 
-public final class FacetValueCompImpl<A> extends FacetImpl<A> implements Limit<A>
+public final class FacetValueCompImpl extends FacetImpl implements Limit
 {
-	private final ValueComparator<A> m_comparator;
-	private final FacetKind m_kind;
-	private final QName m_uberType;
-	private final A m_value;
-	private final AtomBridge<A> m_atomBridge;
-	private final CastingContext<A> castingContext = new CanonicalCastingContext<A>();;
 
-	public FacetValueCompImpl(final A value, final FacetKind kind, final SimpleType<A> type, final boolean isFixed, final AtomBridge<A> atomBridge)
+	public FacetValueCompImpl(final A value, final FacetKind kind, final SimpleType type, final boolean isFixed, final AtomBridge<A> atomBridge)
 	{
 		super(isFixed);
 
 		this.m_value = PreCondition.assertArgumentNotNull(value, "value");
 		this.m_kind = PreCondition.assertArgumentNotNull(kind, "kind");
-		this.m_atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
 
 		// TODO: If it is a list type we might have to work one way, union,
 		// another
-		final SimpleType<A> nativeType = type.getNativeTypeDefinition();
+		final SimpleType nativeType = type.getNativeTypeDefinition();
 		this.m_uberType = nativeType.getName();
 
 		final A rhsAtom = castAsUberType(PreCondition.assertArgumentNotNull(value, "value"), m_uberType, atomBridge);
@@ -62,12 +55,14 @@ public final class FacetValueCompImpl<A> extends FacetImpl<A> implements Limit<A
 		return m_kind;
 	}
 
-	public A getLimit()
+	@Override
+	public <A> A getLimit(AtomBridge<A> bridge)
 	{
 		return m_value;
 	}
 
-	public void validate(final A atom, final SimpleType<A> simpleType) throws FacetMinMaxException
+	@Override
+	public <A> void validate(final A atom, final SimpleType simpleType, AtomBridge<A> bridge) throws FacetMinMaxException
 	{
 		PreCondition.assertArgumentNotNull(atom, "atom");
 		PreCondition.assertArgumentNotNull(simpleType, "simpleType");
@@ -77,7 +72,7 @@ public final class FacetValueCompImpl<A> extends FacetImpl<A> implements Limit<A
 
 			if (!m_comparator.compare(lhsAtom))
 			{
-				final String actual = m_atomBridge.getC14NForm(lhsAtom);
+				final String actual = bridge.getC14NForm(lhsAtom);
 				throw new FacetMinMaxException(this, actual);
 			}
 		}
@@ -187,15 +182,16 @@ public final class FacetValueCompImpl<A> extends FacetImpl<A> implements Limit<A
 		}
 	}
 
-	public void validate(final List<? extends A> actualValue, final SimpleType<A> simpleType) throws FacetException
+	@Override
+	public <A> void validate(final List<? extends A> actualValue, final SimpleType simpleType, AtomBridge<A> bridge) throws FacetException
 	{
 		for (final A atom : actualValue)
 		{
-			validate(atom, simpleType);
+			validate(atom, simpleType, bridge);
 		}
 	}
 
-	private A castAsUberType(final A atom, final QName uberType, final AtomBridge<A> atomBridge)
+	private <A> A castAsUberType(final A atom, final QName uberType, final AtomBridge<A> atomBridge)
 	{
 		try
 		{
@@ -206,4 +202,9 @@ public final class FacetValueCompImpl<A> extends FacetImpl<A> implements Limit<A
 			throw new AssertionError(e);
 		}
 	}
+    
+    private final FacetKind m_kind;
+    private final QName m_uberType;
+    private final A m_value;
+    private final CastingContext castingContext = new CanonicalCastingContext();
 }

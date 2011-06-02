@@ -20,10 +20,8 @@ import javax.xml.namespace.QName;
 /**
  * The error or "none" type when nothing is returned.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface NoneType<A> extends PrimeType<A>
+public interface NoneType extends PrimeType
 {
     /**
      * Returns the optional error code. May be <code>null</code>.

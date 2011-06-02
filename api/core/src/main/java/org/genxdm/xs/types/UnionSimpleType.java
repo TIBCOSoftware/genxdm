@@ -18,18 +18,16 @@ package org.genxdm.xs.types;
 /**
  * A type that is a union of other simple types.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface UnionSimpleType<A> extends SimpleType<A>
+public interface UnionSimpleType extends SimpleType
 {
     /**
      * Returns the {base type definition} of this union type.
      */
-    SimpleType<A> getBaseType();
+    SimpleType getBaseType();
 
     /**
      * Returns the member types for union and list simple types. For list types, there will be a single member type.
      */
-    Iterable<SimpleType<A>> getMemberTypes();
+    Iterable<SimpleType> getMemberTypes();
 }

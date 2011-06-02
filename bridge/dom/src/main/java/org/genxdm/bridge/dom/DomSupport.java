@@ -218,7 +218,7 @@ public final class DomSupport implements DomConstants
         }
     }
 
-    public static QName getAnnotationType(final Node node, final MetaBridge<?> metaBridge)
+    public static QName getAnnotationType(final Node node, final MetaBridge metaBridge)
     {
         PreCondition.assertArgumentNotNull(node, "node");
         if (supportsCoreLevel3(node))
@@ -822,21 +822,21 @@ public final class DomSupport implements DomConstants
 
     public static <A> List<? extends A> getTypedValue(final Node node, final String separator, final Emulation emulation, final TypedContext<Node, A> pcx)
     {
-        final MetaBridge<A> metaBridge = pcx.getMetaBridge();
-        final AtomBridge<A> atomBridge = metaBridge.getAtomBridge();
+        final MetaBridge metaBridge = pcx.getMetaBridge();
+        final AtomBridge<A> atomBridge = pcx.getAtomBridge();
         switch (getNodeKind(node))
         {
             case ELEMENT:
             {
                 final QName typeName = getAnnotationType(node, metaBridge);
-                final Type<A> type = pcx.getTypeDefinition(typeName);
-                if (type instanceof SimpleType<?>)
+                final Type type = pcx.getTypeDefinition(typeName);
+                if (type instanceof SimpleType)
                 {
-                    final SimpleType<A> simpleType = (SimpleType<A>)type;
+                    final SimpleType simpleType = (SimpleType)type;
                     final String stringValue = getStringValue(node, separator, emulation);
                     try
                     {
-                        return simpleType.validate(stringValue);
+                        return simpleType.validate(stringValue, pcx.getAtomBridge());
                     }
                     catch (final DatatypeException e)
                     {
@@ -1119,48 +1119,49 @@ public final class DomSupport implements DomConstants
         }
     }
 
-    public static <A> void setTypedValue(final Node node, final List<? extends A> value, final Emulation emulation, final MetaBridge<A> metaBridge)
-    {
-        if (null != value)
-        {
-            if (supportsCoreLevel3(node))
-            {
-                switch (node.getNodeType())
-                {
-                    case Node.ATTRIBUTE_NODE:
-                    case Node.DOCUMENT_NODE:
-                    case Node.ELEMENT_NODE:
-                    {
-                        final AtomBridge<A> atomBridge = metaBridge.getAtomBridge();
-                        node.setTextContent(emulation.atomsToString(value, atomBridge));
-                    }
-                    break;
-                    case Node.CDATA_SECTION_NODE:
-                    case Node.COMMENT_NODE:
-                    case Node.PROCESSING_INSTRUCTION_NODE:
-                    case Node.TEXT_NODE:
-                    {
-                        final AtomBridge<A> atomBridge = metaBridge.getAtomBridge();
-                        node.setTextContent(emulation.atomsToString(value, atomBridge));
-                    }
-                    break;
-                    default:
-                    {
-                        throw new UnsupportedOperationException(Short.toString(node.getNodeType()));
-                    }
-                }
-            }
-            else
-            {
-                // TODO: Log something to indicate lack of DOM Level 3 support.
-                // LOG.warn("DOM does not support DOM CORE, version 3.0: Node.setTextContent()");
-            }
-        }
-        else
-        {
-            throw new IllegalArgumentException();
-        }
-    }
+    // not used, and no longer working (atom bridge not available from metabridge)
+//    public static <A> void setTypedValue(final Node node, final List<? extends A> value, final Emulation emulation, final MetaBridge metaBridge)
+//    {
+//        if (null != value)
+//        {
+//            if (supportsCoreLevel3(node))
+//            {
+//                switch (node.getNodeType())
+//                {
+//                    case Node.ATTRIBUTE_NODE:
+//                    case Node.DOCUMENT_NODE:
+//                    case Node.ELEMENT_NODE:
+//                    {
+//                        final AtomBridge<A> atomBridge = metaBridge.getAtomBridge();
+//                        node.setTextContent(emulation.atomsToString(value, atomBridge));
+//                    }
+//                    break;
+//                    case Node.CDATA_SECTION_NODE:
+//                    case Node.COMMENT_NODE:
+//                    case Node.PROCESSING_INSTRUCTION_NODE:
+//                    case Node.TEXT_NODE:
+//                    {
+//                        final AtomBridge<A> atomBridge = metaBridge.getAtomBridge();
+//                        node.setTextContent(emulation.atomsToString(value, atomBridge));
+//                    }
+//                    break;
+//                    default:
+//                    {
+//                        throw new UnsupportedOperationException(Short.toString(node.getNodeType()));
+//                    }
+//                }
+//            }
+//            else
+//            {
+//                // TODO: Log something to indicate lack of DOM Level 3 support.
+//                // LOG.warn("DOM does not support DOM CORE, version 3.0: Node.setTextContent()");
+//            }
+//        }
+//        else
+//        {
+//            throw new IllegalArgumentException();
+//        }
+//    }
 
     /**
      * Deterimines whether the first namespace is a subset of the second. <br/>

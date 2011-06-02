@@ -18,9 +18,7 @@ package org.genxdm.xs.types;
 /**
  * Indicates that this type is a text node.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface TextNodeType<A> extends NodeType<A>
+public interface TextNodeType extends NodeType
 {
 }

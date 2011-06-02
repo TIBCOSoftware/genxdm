@@ -28,7 +28,7 @@ import org.genxdm.xs.types.Type;
  * local to some other element. <br/>
  * An element declaration is an association between a name and a type.
  */
-public interface ElementDefinition<A> extends ElementNodeType<A>, SchemaDataComponent<A>, ParticleTerm<A>
+public interface ElementDefinition extends ElementNodeType, SchemaDataComponent, ParticleTerm
 {
     /**
      * {disallowed substitutions} property. <br/>
@@ -42,7 +42,7 @@ public interface ElementDefinition<A> extends ElementNodeType<A>, SchemaDataComp
     /**
      * Returns the {identity-constraints definitions} for this element.
      */
-    Iterable<IdentityConstraint<A>> getIdentityConstraints();
+    Iterable<IdentityConstraint> getIdentityConstraints();
 
     /**
      * The {scope} property.
@@ -56,7 +56,7 @@ public interface ElementDefinition<A> extends ElementNodeType<A>, SchemaDataComp
      * Returns the head element of the substitution group that this element belongs to. May be <code>null</code> if there
      * is no substitution group for this element.
      */
-    ElementDefinition<A> getSubstitutionGroup();
+    ElementDefinition getSubstitutionGroup();
 
     /**
      * Returns the set of derivation methods that are final. Determines whether this element can be used as the head of
@@ -70,12 +70,12 @@ public interface ElementDefinition<A> extends ElementNodeType<A>, SchemaDataComp
     /**
      * Returns the elements that are members of the group with this element as the head.
      */
-    Iterable<ElementDefinition<A>> getSubstitutionGroupMembers();
+    Iterable<ElementDefinition> getSubstitutionGroupMembers();
 
     /**
      * The {type definition} property.
      */
-    Type<A> getType();
+    Type getType();
 
     /**
      * Determines (quickly) whether this element has {identity-constraints definitions}.
