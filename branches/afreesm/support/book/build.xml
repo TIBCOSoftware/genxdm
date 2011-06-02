@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<project name="validate-book" default="validate">
+    <target name="validate">
+        <xmlvalidate file="src/docbkx/book.xml">
+            <dtd publicId="-//OASIS//DTD DocBook XML V4.4//EN"
+                 location="dtd/docbookx.dtd" />
+        </xmlvalidate>
+    </target>
+</project>
