@@ -265,27 +265,6 @@ public interface AtomBridge<A>
     A createMonthDay(int month, int dayOfMonth, int timezone);
 
     /**
-     * Returns an xs:nonNegativeInteger based upon the value.
-     * 
-     * @deprecated Use {@link #createIntegerDerived}
-     */
-    @Deprecated
-    A createNonNegativeInteger(BigInteger value);
-
-    /**
-     * Creates an xs:nonPositiveInteger from an integer argument.
-     * 
-     * @deprecated Use {@link #createIntegerDerived}
-     * 
-     * @param value
-     *            The integer argument to convert. May be <code>null</code> resulting in <code>null</code> being returned.
-     * @throws IllegalArgumentException
-     *             if the value argument is greater than zero.
-     */
-    @Deprecated
-    A createNonPositiveInteger(BigInteger value) throws IllegalArgumentException;
-
-    /**
      * Constructs an xs:NOTATION.
      * 
      * @param namespaceURI

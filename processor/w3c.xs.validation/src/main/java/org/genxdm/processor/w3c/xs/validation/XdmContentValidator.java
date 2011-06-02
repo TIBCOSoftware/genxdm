@@ -20,6 +20,6 @@ import org.genxdm.typed.ValidationHandler;
 /**
  * A "push" style streaming validator.
  */
-public interface XdmContentValidator<N, A> extends ValidationHandler<N, A>
+public interface XdmContentValidator<A> extends ValidationHandler<A>
 {
 }

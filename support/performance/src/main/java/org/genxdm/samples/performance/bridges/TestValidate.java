@@ -34,7 +34,7 @@ class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 	}
 	String m_schemaFile;
 	SchemaExceptionCatcher m_errors;
-    XdmContentValidator<N, A> m_validator;
+    XdmContentValidator<A> m_validator;
     boolean m_copyTypeAnnotations = false;
     
     @Override
