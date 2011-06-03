@@ -106,8 +106,7 @@ final class BuiltInSchema implements ComponentBag
 	 */
 	public BuiltInSchema(final String W3C_XML_SCHEMA_NS_URI, final SchemaCacheImpl cache)
 	{
-		final AtomBridge atomBridge = cache.getAtomBridge();
-		final NameSource nameBridge = atomBridge.getNameBridge();
+		final NameSource nameBridge = new NameSource();
 
 		ANY_COMPLEX_TYPE = cache.getComplexUrType();
 		ANY_SIMPLE_TYPE = cache.getSimpleUrType();
@@ -117,51 +116,51 @@ final class BuiltInSchema implements ComponentBag
 		UNTYPED = new ComplexTypeImpl(name(W3C_XML_SCHEMA_NS_URI, "untyped"), true, false, ScopeExtent.Global, ANY_COMPLEX_TYPE, DerivationMethod.Restriction, EMPTY_ATTRIBUTE_USES, ANY_COMPLEX_TYPE.getContentType(), EnumSet
 				.noneOf(DerivationMethod.class), nameBridge, cache);
 		UNTYPED.setAttributeWildcard(ANY_COMPLEX_TYPE.getAttributeWildcard());
-		UNTYPED_ATOMIC = new UntypedAtomicType(name(W3C_XML_SCHEMA_NS_URI, "untypedAtomic"), ANY_ATOMIC_TYPE, atomBridge);
+		UNTYPED_ATOMIC = new UntypedAtomicType(name(W3C_XML_SCHEMA_NS_URI, "untypedAtomic"), ANY_ATOMIC_TYPE);
 
-		STRING = new StringType(name(W3C_XML_SCHEMA_NS_URI, "string"), ANY_ATOMIC_TYPE, atomBridge);
-		NORMALIZED_STRING = new NormalizedStringType(name(W3C_XML_SCHEMA_NS_URI, "normalizedString"), STRING, atomBridge);
-		TOKEN = new TokenType(name(W3C_XML_SCHEMA_NS_URI, "token"), NORMALIZED_STRING, atomBridge);
-		LANGUAGE = new LanguageType(name(W3C_XML_SCHEMA_NS_URI, "language"), TOKEN, atomBridge);
-		NMTOKEN = new NMTOKENType(name(W3C_XML_SCHEMA_NS_URI, "NMTOKEN"), TOKEN, atomBridge);
-		NAME = new NameType(name(W3C_XML_SCHEMA_NS_URI, "Name"), TOKEN, atomBridge);
-		NCNAME = new NCNameType(name(W3C_XML_SCHEMA_NS_URI, "NCName"), NAME, atomBridge);
-		ID = new IDType(name(W3C_XML_SCHEMA_NS_URI, "ID"), NCNAME, atomBridge);
-		IDREF = new IDREFType(name(W3C_XML_SCHEMA_NS_URI, "IDREF"), NCNAME, atomBridge);
-		ENTITY = new ENTITYType(name(W3C_XML_SCHEMA_NS_URI, "ENTITY"), NCNAME, atomBridge);
-		DOUBLE = new DoubleType(name(W3C_XML_SCHEMA_NS_URI, "double"), ANY_ATOMIC_TYPE, atomBridge);
-		FLOAT = new FloatType(name(W3C_XML_SCHEMA_NS_URI, "float"), ANY_ATOMIC_TYPE, atomBridge);
-		BOOLEAN = new BooleanType(name(W3C_XML_SCHEMA_NS_URI, "boolean"), ANY_ATOMIC_TYPE, atomBridge);
-		DECIMAL = new DecimalType(name(W3C_XML_SCHEMA_NS_URI, "decimal"), ANY_ATOMIC_TYPE, atomBridge);
-		INTEGER = new IntegerType(name(W3C_XML_SCHEMA_NS_URI, "integer"), DECIMAL, atomBridge);
-		LONG = new LongType(name(W3C_XML_SCHEMA_NS_URI, "long"), INTEGER, atomBridge);
-		INT = new IntType(name(W3C_XML_SCHEMA_NS_URI, "int"), LONG, atomBridge);
-		SHORT = new ShortType(name(W3C_XML_SCHEMA_NS_URI, "short"), INT, atomBridge);
-		BYTE = new ByteType(name(W3C_XML_SCHEMA_NS_URI, "byte"), SHORT, atomBridge);
-		NON_POSITIVE_INTEGER = new IntegerDerivedType(NativeType.NON_POSITIVE_INTEGER, name(W3C_XML_SCHEMA_NS_URI, "nonPositiveInteger"), INTEGER, atomBridge);
-		NEGATIVE_INTEGER = new IntegerDerivedType(NativeType.NEGATIVE_INTEGER, name(W3C_XML_SCHEMA_NS_URI, "negativeInteger"), NON_POSITIVE_INTEGER, atomBridge);
-		NON_NEGATIVE_INTEGER = new IntegerDerivedType(NativeType.NON_NEGATIVE_INTEGER, name(W3C_XML_SCHEMA_NS_URI, "nonNegativeInteger"), INTEGER, atomBridge);
-		POSITIVE_INTEGER = new IntegerDerivedType(NativeType.POSITIVE_INTEGER, name(W3C_XML_SCHEMA_NS_URI, "positiveInteger"), NON_NEGATIVE_INTEGER, atomBridge);
-		UNSIGNED_LONG = new IntegerDerivedType(NativeType.UNSIGNED_LONG, name(W3C_XML_SCHEMA_NS_URI, "unsignedLong"), NON_NEGATIVE_INTEGER, atomBridge);
-		UNSIGNED_INT = new IntegerDerivedType(NativeType.UNSIGNED_INT, name(W3C_XML_SCHEMA_NS_URI, "unsignedInt"), UNSIGNED_LONG, atomBridge);
-		UNSIGNED_SHORT = new IntegerDerivedType(NativeType.UNSIGNED_SHORT, name(W3C_XML_SCHEMA_NS_URI, "unsignedShort"), UNSIGNED_INT, atomBridge);
-		UNSIGNED_BYTE = new IntegerDerivedType(NativeType.UNSIGNED_BYTE, name(W3C_XML_SCHEMA_NS_URI, "unsignedByte"), UNSIGNED_SHORT, atomBridge);
-		DATE = new GregorianType(NativeType.DATE, name(W3C_XML_SCHEMA_NS_URI, "date"), ANY_ATOMIC_TYPE, atomBridge);
-		DATETIME = new GregorianType(NativeType.DATETIME, name(W3C_XML_SCHEMA_NS_URI, "dateTime"), ANY_ATOMIC_TYPE, atomBridge);
-		TIME = new GregorianType(NativeType.TIME, name(W3C_XML_SCHEMA_NS_URI, "time"), ANY_ATOMIC_TYPE, atomBridge);
-		GYEARMONTH = new GregorianType(NativeType.GYEARMONTH, name(W3C_XML_SCHEMA_NS_URI, "gYearMonth"), ANY_ATOMIC_TYPE, atomBridge);
-		GYEAR = new GregorianType(NativeType.GYEAR, name(W3C_XML_SCHEMA_NS_URI, "gYear"), ANY_ATOMIC_TYPE, atomBridge);
-		GMONTHDAY = new GregorianType(NativeType.GMONTHDAY, name(W3C_XML_SCHEMA_NS_URI, "gMonthDay"), ANY_ATOMIC_TYPE, atomBridge);
-		GDAY = new GregorianType(NativeType.GDAY, name(W3C_XML_SCHEMA_NS_URI, "gDay"), ANY_ATOMIC_TYPE, atomBridge);
-		GMONTH = new GregorianType(NativeType.GMONTH, name(W3C_XML_SCHEMA_NS_URI, "gMonth"), ANY_ATOMIC_TYPE, atomBridge);
-		HEX_BINARY = new HexBinaryType(name(W3C_XML_SCHEMA_NS_URI, "hexBinary"), ANY_ATOMIC_TYPE, atomBridge);
-		BASE64_BINARY = new Base64BinaryType(name(W3C_XML_SCHEMA_NS_URI, "base64Binary"), ANY_ATOMIC_TYPE, atomBridge);
-		QNAME = new QNameType(name(W3C_XML_SCHEMA_NS_URI, "QName"), ANY_ATOMIC_TYPE, atomBridge);
-		ANY_URI = new AnyURIType(name(W3C_XML_SCHEMA_NS_URI, "anyURI"), ANY_ATOMIC_TYPE, atomBridge);
-		NOTATION = new NotationType(name(W3C_XML_SCHEMA_NS_URI, "NOTATION"), ANY_ATOMIC_TYPE, atomBridge);
-		DURATION = new DurationType(name(W3C_XML_SCHEMA_NS_URI, "duration"), ANY_ATOMIC_TYPE, atomBridge);
-		DURATION_YEARMONTH = new YearMonthDurationType(name(W3C_XML_SCHEMA_NS_URI, "yearMonthDuration"), DURATION, atomBridge);
-		DURATION_DAYTIME = new DayTimeDurationType(name(W3C_XML_SCHEMA_NS_URI, "dayTimeDuration"), DURATION, atomBridge);
+		STRING = new StringType(name(W3C_XML_SCHEMA_NS_URI, "string"), ANY_ATOMIC_TYPE);
+		NORMALIZED_STRING = new NormalizedStringType(name(W3C_XML_SCHEMA_NS_URI, "normalizedString"), STRING);
+		TOKEN = new TokenType(name(W3C_XML_SCHEMA_NS_URI, "token"), NORMALIZED_STRING);
+		LANGUAGE = new LanguageType(name(W3C_XML_SCHEMA_NS_URI, "language"), TOKEN);
+		NMTOKEN = new NMTOKENType(name(W3C_XML_SCHEMA_NS_URI, "NMTOKEN"), TOKEN);
+		NAME = new NameType(name(W3C_XML_SCHEMA_NS_URI, "Name"), TOKEN);
+		NCNAME = new NCNameType(name(W3C_XML_SCHEMA_NS_URI, "NCName"), NAME);
+		ID = new IDType(name(W3C_XML_SCHEMA_NS_URI, "ID"), NCNAME);
+		IDREF = new IDREFType(name(W3C_XML_SCHEMA_NS_URI, "IDREF"), NCNAME);
+		ENTITY = new ENTITYType(name(W3C_XML_SCHEMA_NS_URI, "ENTITY"), NCNAME);
+		DOUBLE = new DoubleType(name(W3C_XML_SCHEMA_NS_URI, "double"), ANY_ATOMIC_TYPE);
+		FLOAT = new FloatType(name(W3C_XML_SCHEMA_NS_URI, "float"), ANY_ATOMIC_TYPE);
+		BOOLEAN = new BooleanType(name(W3C_XML_SCHEMA_NS_URI, "boolean"), ANY_ATOMIC_TYPE);
+		DECIMAL = new DecimalType(name(W3C_XML_SCHEMA_NS_URI, "decimal"), ANY_ATOMIC_TYPE);
+		INTEGER = new IntegerType(name(W3C_XML_SCHEMA_NS_URI, "integer"), DECIMAL);
+		LONG = new LongType(name(W3C_XML_SCHEMA_NS_URI, "long"), INTEGER);
+		INT = new IntType(name(W3C_XML_SCHEMA_NS_URI, "int"), LONG);
+		SHORT = new ShortType(name(W3C_XML_SCHEMA_NS_URI, "short"), INT);
+		BYTE = new ByteType(name(W3C_XML_SCHEMA_NS_URI, "byte"), SHORT);
+		NON_POSITIVE_INTEGER = new IntegerDerivedType(NativeType.NON_POSITIVE_INTEGER, name(W3C_XML_SCHEMA_NS_URI, "nonPositiveInteger"), INTEGER);
+		NEGATIVE_INTEGER = new IntegerDerivedType(NativeType.NEGATIVE_INTEGER, name(W3C_XML_SCHEMA_NS_URI, "negativeInteger"), NON_POSITIVE_INTEGER);
+		NON_NEGATIVE_INTEGER = new IntegerDerivedType(NativeType.NON_NEGATIVE_INTEGER, name(W3C_XML_SCHEMA_NS_URI, "nonNegativeInteger"), INTEGER);
+		POSITIVE_INTEGER = new IntegerDerivedType(NativeType.POSITIVE_INTEGER, name(W3C_XML_SCHEMA_NS_URI, "positiveInteger"), NON_NEGATIVE_INTEGER);
+		UNSIGNED_LONG = new IntegerDerivedType(NativeType.UNSIGNED_LONG, name(W3C_XML_SCHEMA_NS_URI, "unsignedLong"), NON_NEGATIVE_INTEGER);
+		UNSIGNED_INT = new IntegerDerivedType(NativeType.UNSIGNED_INT, name(W3C_XML_SCHEMA_NS_URI, "unsignedInt"), UNSIGNED_LONG);
+		UNSIGNED_SHORT = new IntegerDerivedType(NativeType.UNSIGNED_SHORT, name(W3C_XML_SCHEMA_NS_URI, "unsignedShort"), UNSIGNED_INT);
+		UNSIGNED_BYTE = new IntegerDerivedType(NativeType.UNSIGNED_BYTE, name(W3C_XML_SCHEMA_NS_URI, "unsignedByte"), UNSIGNED_SHORT);
+		DATE = new GregorianType(NativeType.DATE, name(W3C_XML_SCHEMA_NS_URI, "date"), ANY_ATOMIC_TYPE);
+		DATETIME = new GregorianType(NativeType.DATETIME, name(W3C_XML_SCHEMA_NS_URI, "dateTime"), ANY_ATOMIC_TYPE);
+		TIME = new GregorianType(NativeType.TIME, name(W3C_XML_SCHEMA_NS_URI, "time"), ANY_ATOMIC_TYPE);
+		GYEARMONTH = new GregorianType(NativeType.GYEARMONTH, name(W3C_XML_SCHEMA_NS_URI, "gYearMonth"), ANY_ATOMIC_TYPE);
+		GYEAR = new GregorianType(NativeType.GYEAR, name(W3C_XML_SCHEMA_NS_URI, "gYear"), ANY_ATOMIC_TYPE);
+		GMONTHDAY = new GregorianType(NativeType.GMONTHDAY, name(W3C_XML_SCHEMA_NS_URI, "gMonthDay"), ANY_ATOMIC_TYPE);
+		GDAY = new GregorianType(NativeType.GDAY, name(W3C_XML_SCHEMA_NS_URI, "gDay"), ANY_ATOMIC_TYPE);
+		GMONTH = new GregorianType(NativeType.GMONTH, name(W3C_XML_SCHEMA_NS_URI, "gMonth"), ANY_ATOMIC_TYPE);
+		HEX_BINARY = new HexBinaryType(name(W3C_XML_SCHEMA_NS_URI, "hexBinary"), ANY_ATOMIC_TYPE);
+		BASE64_BINARY = new Base64BinaryType(name(W3C_XML_SCHEMA_NS_URI, "base64Binary"), ANY_ATOMIC_TYPE);
+		QNAME = new QNameType(name(W3C_XML_SCHEMA_NS_URI, "QName"), ANY_ATOMIC_TYPE);
+		ANY_URI = new AnyURIType(name(W3C_XML_SCHEMA_NS_URI, "anyURI"), ANY_ATOMIC_TYPE);
+		NOTATION = new NotationType(name(W3C_XML_SCHEMA_NS_URI, "NOTATION"), ANY_ATOMIC_TYPE);
+		DURATION = new DurationType(name(W3C_XML_SCHEMA_NS_URI, "duration"), ANY_ATOMIC_TYPE);
+		DURATION_YEARMONTH = new YearMonthDurationType(name(W3C_XML_SCHEMA_NS_URI, "yearMonthDuration"), DURATION);
+		DURATION_DAYTIME = new DayTimeDurationType(name(W3C_XML_SCHEMA_NS_URI, "dayTimeDuration"), DURATION);
 
 		// register(ANY_COMPLEX_TYPE);
 		register(UNTYPED);
@@ -212,9 +211,9 @@ final class BuiltInSchema implements ComponentBag
 		register(DURATION_YEARMONTH);
 		register(DURATION_DAYTIME);
 
-		IDREFS = new ListTypeImpl(name(W3C_XML_SCHEMA_NS_URI, "IDREFS"), false, ScopeExtent.Global, IDREF, ANY_SIMPLE_TYPE, null, cache.getAtomBridge());
-		NMTOKENS = new ListTypeImpl(name(W3C_XML_SCHEMA_NS_URI, "NMTOKENS"), false, ScopeExtent.Global, NMTOKEN, ANY_SIMPLE_TYPE, null, cache.getAtomBridge());
-		ENTITIES = new ListTypeImpl(name(W3C_XML_SCHEMA_NS_URI, "ENTITIES"), false, ScopeExtent.Global, ENTITY, ANY_SIMPLE_TYPE, null, cache.getAtomBridge());
+		IDREFS = new ListTypeImpl(name(W3C_XML_SCHEMA_NS_URI, "IDREFS"), false, ScopeExtent.Global, IDREF, ANY_SIMPLE_TYPE, null);
+		NMTOKENS = new ListTypeImpl(name(W3C_XML_SCHEMA_NS_URI, "NMTOKENS"), false, ScopeExtent.Global, NMTOKEN, ANY_SIMPLE_TYPE, null);
+		ENTITIES = new ListTypeImpl(name(W3C_XML_SCHEMA_NS_URI, "ENTITIES"), false, ScopeExtent.Global, ENTITY, ANY_SIMPLE_TYPE, null);
 
 		register(IDREFS);
 		register(NMTOKENS);

@@ -44,9 +44,9 @@ import org.genxdm.xs.types.Type;
 /**
  * A complex type, but not the Complex Ur-Type.
  */
-public final class ComplexTypeImpl<A> extends TypeImpl<A> implements ComplexType<A>, PrimeType<A>
+public final class ComplexTypeImpl extends TypeImpl implements ComplexType, PrimeType
 {
-	private static <A> SchemaWildcard<A> computeAttributeWildcard(final Type<A> baseType, final DerivationMethod derivation)
+	private static  SchemaWildcard computeAttributeWildcard(final Type baseType, final DerivationMethod derivation)
 	{
 		if (derivation.isRestriction())
 		{
@@ -54,9 +54,9 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements ComplexType
 		}
 		if (derivation.isExtension())
 		{
-			if (baseType instanceof ComplexType<?>)
+			if (baseType instanceof ComplexType)
 			{
-				return ((ComplexType<A>)baseType).getAttributeWildcard();
+				return ((ComplexType)baseType).getAttributeWildcard();
 			}
 			else
 			{
@@ -70,23 +70,23 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements ComplexType
 	}
 
 	private final boolean isNative;
-	private final Map<QName, AttributeUse<A>> m_attributeUses;
+	private final Map<QName, AttributeUse> m_attributeUses;
 	/**
 	 * {attribute wildcard} is mutable
 	 */
-	private SchemaWildcard<A> m_attributeWildcard = null;
-	private final Type<A> m_baseType;
+	private SchemaWildcard m_attributeWildcard = null;
+	private final Type m_baseType;
 
 	private final Set<DerivationMethod> m_block;
 
 	private final Set<DerivationMethod> m_blockUnmodifiable;
 
-	private final ComponentProvider<A> m_cache;
+	private final ComponentProvider m_cache;
 
 	/**
 	 * {content type} is mutable.
 	 */
-	private ContentType<A> m_contentType;
+	private ContentType m_contentType;
 
 	/**
 	 * {final} is mutable.
@@ -98,8 +98,8 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements ComplexType
 	 */
 	private boolean m_isAbstract = false;
 
-	public ComplexTypeImpl(final QName name, final boolean isNative, final boolean isAnonymous, final ScopeExtent scope, final Type<A> baseType, final DerivationMethod derivation, final Map<QName, AttributeUse<A>> attributeUses,
-			final ContentType<A> contentType, final Set<DerivationMethod> block, final NameSource nameBridge, final ComponentProvider<A> cache)
+	public ComplexTypeImpl(final QName name, final boolean isNative, final boolean isAnonymous, final ScopeExtent scope, final Type baseType, final DerivationMethod derivation, final Map<QName, AttributeUse> attributeUses,
+			final ContentType contentType, final Set<DerivationMethod> block, final NameSource nameBridge, final ComponentProvider cache)
 	{
 		super(PreCondition.assertArgumentNotNull(name, "name"), isAnonymous, scope, derivation, nameBridge);
 		this.isNative = isNative;
@@ -112,32 +112,32 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements ComplexType
 		m_attributeWildcard = computeAttributeWildcard(baseType, derivation);
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public SequenceType<A> atomSet()
+	public SequenceType atomSet()
 	{
 		return m_cache.getAtomicType(NativeType.UNTYPED_ATOMIC);
 	}
 
-	public Map<QName, AttributeUse<A>> getAttributeUses()
+	public Map<QName, AttributeUse> getAttributeUses()
 	{
 		return m_attributeUses;
 	}
 
-	public SchemaWildcard<A> getAttributeWildcard()
+	public SchemaWildcard getAttributeWildcard()
 	{
 		return m_attributeWildcard;
 	}
 
-	public Type<A> getBaseType()
+	public Type getBaseType()
 	{
 		return m_baseType;
 	}
 
-	public ContentType<A> getContentType()
+	public ContentType getContentType()
 	{
 		return m_contentType;
 	}
@@ -203,7 +203,7 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements ComplexType
 		return false;
 	}
 
-	public final PrimeType<A> prime()
+	public final PrimeType prime()
 	{
 		return this;
 	}
@@ -219,7 +219,7 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements ComplexType
 		m_isAbstract = isAbstract;
 	}
 
-	public void setAttributeWildcard(final SchemaWildcard<A> attributeWildcard)
+	public void setAttributeWildcard(final SchemaWildcard attributeWildcard)
 	{
 		assertNotLocked();
 		m_attributeWildcard = attributeWildcard;
@@ -238,7 +238,7 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements ComplexType
 		}
 	}
 
-	public void setContentType(final ContentType<A> contentType)
+	public void setContentType(final ContentType contentType)
 	{
 		assertNotLocked();
 		m_contentType = PreCondition.assertArgumentNotNull(contentType, "name");
@@ -259,26 +259,26 @@ public final class ComplexTypeImpl<A> extends TypeImpl<A> implements ComplexType
 		}
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		PreCondition.assertArgumentNotNull(rhs, "type");
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 				// case ANY_TYPE:
 				// case COMPLEX:
 				// {
-				// final ComplexType<A> complexType = (ComplexType<A>)rhs;
+				// final ComplexType complexType = (ComplexType)rhs;
 				// return SchemaSupport.subtype(this, complexType);
 				// }
 			case ELEMENT:
 			{
 				@SuppressWarnings("unused")
-				final ElementNodeType<A> element = (ElementNodeType<A>)rhs;
+				final ElementNodeType element = (ElementNodeType)rhs;
 				return false;
 			}
 			default:

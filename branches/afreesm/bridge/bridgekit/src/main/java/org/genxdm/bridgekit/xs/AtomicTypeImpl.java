@@ -42,7 +42,7 @@ import org.genxdm.xs.types.SimpleType;
  * This is strictly used for derived atomic values
  * </p>
  */
-public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements AtomicType<A>
+public final class AtomicTypeImpl extends SimpleTypeImpl implements AtomicType
 {
 	private static String collapseWhiteSpace(final String text)
 	{
@@ -173,31 +173,31 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements Atomic
 		return text.replace('\t', ' ').replace('\n', ' ').replace('\r', ' ');
 	}
 
-	private final AtomicType<A> baseType;
+	private final AtomicType baseType;
 
-	public AtomicTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final AtomicType<A> baseType, final WhiteSpacePolicy whiteSpace, final AtomBridge<A> atomBridge)
+	public AtomicTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final AtomicType baseType, final WhiteSpacePolicy whiteSpace)
 	{
-		super(name, isAnonymous, scope, DerivationMethod.Restriction, whiteSpace, atomBridge);
+		super(name, isAnonymous, scope, DerivationMethod.Restriction, whiteSpace);
 		this.baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public SequenceType<A> atomSet()
+	public SequenceType atomSet()
 	{
 		// Atomization has no effect.
 		return this;
 	}
 
-	protected List<A> compile(final String initialValue) throws DatatypeException
+	protected <A> List<A> compile(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		final String normalizedValue = normalize(initialValue);
 		try
 		{
-			final List<A> compiled = baseType.validate(initialValue);
+			final List<A> compiled = baseType.validate(initialValue, atomBridge);
 			if (compiled.size() == 1)
 			{
 				final A baseAtom = compiled.get(0);
@@ -215,12 +215,12 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements Atomic
 		}
 	}
 
-	protected List<A> compile(final String initialValue, final PrefixResolver resolver) throws DatatypeException
+	protected <A> List<A> compile(final String initialValue, final PrefixResolver resolver, AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		final String normalizedValue = normalize(initialValue);
 		try
 		{
-			final List<A> compiled = baseType.validate(initialValue, resolver);
+			final List<A> compiled = baseType.validate(initialValue, resolver, atomBridge);
 			if (compiled.size() == 1)
 			{
 				final A baseAtom = compiled.get(0);
@@ -238,7 +238,7 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements Atomic
 		}
 	}
 
-	public SimpleType<A> getBaseType()
+	public SimpleType getBaseType()
 	{
 		return baseType;
 	}
@@ -253,7 +253,7 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements Atomic
 		return baseType.getNativeType();
 	}
 
-	public AtomicType<A> getNativeTypeDefinition()
+	public AtomicType getNativeTypeDefinition()
 	{
 		return baseType.getNativeTypeDefinition();
 	}
@@ -340,7 +340,7 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements Atomic
 		}
 	}
 
-	public final AtomicType<A> prime()
+	public final AtomicType prime()
 	{
 		return this;
 	}
@@ -350,13 +350,13 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements Atomic
 		return KeeneQuantifier.EXACTLY_ONE;
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case ANY_ATOMIC_TYPE:
@@ -367,7 +367,7 @@ public final class AtomicTypeImpl<A> extends SimpleTypeImpl<A> implements Atomic
 			}
 			case ATOM:
 			{
-				final AtomicType<A> atomicType = (AtomicType<A>)rhs;
+				final AtomicType atomicType = (AtomicType)rhs;
 				return SchemaSupport.subtype(this, atomicType);
 			}
 			case EMPTY:

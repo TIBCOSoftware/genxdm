@@ -19,7 +19,7 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.components.ParticleTerm;
 
-abstract class ParticleImpl<A> extends LockableImpl implements SchemaParticle<A>
+abstract class ParticleImpl extends LockableImpl implements SchemaParticle
 {
 	private static void checkOccurs(final int minOccurs, final int maxOccurs, final boolean isMaxOccursUnbounded)
 	{
@@ -30,9 +30,9 @@ abstract class ParticleImpl<A> extends LockableImpl implements SchemaParticle<A>
 	private final int m_minOccurs;
 	private final boolean isMaxOccursUnbounded;
 
-	protected final ParticleTerm<A> m_term;
+	protected final ParticleTerm m_term;
 
-	public ParticleImpl(final int minOccurs, final int maxOccurs, final boolean isMaxOccursUnbounded, final ParticleTerm<A> term)
+	public ParticleImpl(final int minOccurs, final int maxOccurs, final boolean isMaxOccursUnbounded, final ParticleTerm term)
 	{
 		checkOccurs(minOccurs, maxOccurs, isMaxOccursUnbounded);
 		m_minOccurs = minOccurs;

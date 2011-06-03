@@ -22,6 +22,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.EnumerationDefinition;
 import org.genxdm.xs.enums.DerivationMethod;
@@ -40,35 +41,33 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.Type;
 
-final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implements AtomicUrType<A>
+final class AtomicUrTypeImpl extends AbstractPrimeExcludingNoneType implements AtomicUrType
 {
-	private final AtomBridge<A> m_atomBridge;
-	private final SimpleUrTypeImpl<A> m_baseType;
+	private final SimpleUrTypeImpl m_baseType;
 	private final QName m_name;
 
-	public AtomicUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final SimpleUrTypeImpl<A> baseType, final AtomBridge<A> atomBridge)
+	public AtomicUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final SimpleUrTypeImpl baseType)
 	{
-		this.m_atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
 		this.m_name = new QName(W3C_XML_SCHEMA_NS_URI, "anyAtomicType");
 		this.m_baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
 
 	public boolean derivedFrom(final String namespace, final String name, final Set<DerivationMethod> derivationMethods)
 	{
-		return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods, m_atomBridge.getNameBridge());
+		return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods, new NameSource());
 	}
 
-	public boolean derivedFromType(final Type<A> ancestorType, final Set<DerivationMethod> derivationMethods)
+	public boolean derivedFromType(final Type ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
-		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods, m_atomBridge.getNameBridge());
+		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods, new NameSource());
 	}
 
-	public SimpleUrTypeImpl<A> getBaseType()
+	public SimpleUrTypeImpl getBaseType()
 	{
 		return m_baseType;
 	}
@@ -78,17 +77,17 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return DerivationMethod.Restriction;
 	}
 
-	public Iterable<EnumerationDefinition<A>> getEnumerations()
+	public Iterable<EnumerationDefinition> getEnumerations()
 	{
 		throw new AssertionError(getName());
 	}
 
-	public Facet<A> getFacetOfKind(final FacetKind facetKind)
+	public Facet getFacetOfKind(final FacetKind facetKind)
 	{
 		throw new AssertionError(getName());
 	}
 
-	public Iterable<Facet<A>> getFacets()
+	public Iterable<Facet> getFacets()
 	{
 		throw new AssertionError(getName());
 	}
@@ -123,7 +122,7 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		throw new AssertionError(getName());
 	}
 
-	public AtomicType<A> getNativeTypeDefinition()
+	public AtomicType getNativeTypeDefinition()
 	{
 		return this;
 	}
@@ -238,18 +237,18 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return initialValue;
 	}
 
-	public AtomicUrType<A> prime()
+	public AtomicUrType prime()
 	{
 		return this;
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case ANY_ATOMIC_TYPE:
@@ -271,19 +270,19 @@ final class AtomicUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return "xs:anyAtomicType";
 	}
 
-	public List<A> validate(final List<? extends A> value)
+	public <A> List<A> validate(final List<? extends A> value, AtomBridge<A> atomBridge)
 	{
-		final String strval = m_atomBridge.getC14NString(value);
-		return m_atomBridge.wrapAtom(m_atomBridge.createUntypedAtomic(strval));
+		final String strval = atomBridge.getC14NString(value);
+		return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(strval));
 	}
 
-	public List<A> validate(final String initialValue)
+	public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge)
 	{
-		return m_atomBridge.wrapAtom(m_atomBridge.createUntypedAtomic(initialValue));
+		return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(initialValue));
 	}
 
-	public List<A> validate(final String value, final PrefixResolver resolver)
+	public <A> List<A> validate(final String value, final PrefixResolver resolver, AtomBridge<A> atomBridge)
 	{
-		return validate(value);
+		return validate(value, atomBridge);
 	}
 }

@@ -24,27 +24,27 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class DocumentNodeTypeImpl<A> extends AbstractBranchNodeType<A> implements DocumentNodeType<A>
+final class DocumentNodeTypeImpl extends AbstractBranchNodeType implements DocumentNodeType
 {
-	private final SequenceType<A> m_contentType;
+	private final SequenceType m_contentType;
 
-	public DocumentNodeTypeImpl(final SequenceType<A> contentType, final SchemaCache<A> cache)
+	public DocumentNodeTypeImpl(final SequenceType contentType, final SchemaCache cache)
 	{
 		super(NodeKind.DOCUMENT, cache);
 		m_contentType = PreCondition.assertArgumentNotNull(contentType, "contentType");
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public DocumentNodeType<A> prime()
+	public DocumentNodeType prime()
 	{
 		return this;
 	}
 
-	public SequenceType<A> getContentType()
+	public SequenceType getContentType()
 	{
 		return m_contentType;
 	}
@@ -54,19 +54,19 @@ final class DocumentNodeTypeImpl<A> extends AbstractBranchNodeType<A> implements
 		return PrimeTypeKind.DOCUMENT;
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case DOCUMENT:
 			{
-				final DocumentNodeType<A> documentType = (DocumentNodeType<A>)rhs;
-				final SequenceType<A> documentElementType = documentType.getContentType();
+				final DocumentNodeType documentType = (DocumentNodeType)rhs;
+				final SequenceType documentElementType = documentType.getContentType();
 				if (null != documentElementType)
 				{
 					if (null != m_contentType)

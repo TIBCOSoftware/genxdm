@@ -23,23 +23,23 @@ import org.genxdm.xs.components.ParticleTerm;
 import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.ModelGroupUse;
 
-public final class ParticleWithModelGroupTerm<A> extends ParticleImpl<A> implements ModelGroupUse<A>
+public final class ParticleWithModelGroupTerm extends ParticleImpl implements ModelGroupUse
 {
-	public ParticleWithModelGroupTerm(final int minOccurs, final ModelGroup<A> modelGroup)
+	public ParticleWithModelGroupTerm(final int minOccurs, final ModelGroup modelGroup)
 	{
 		super(minOccurs, -1, true, modelGroup);
 	}
 
-	public ParticleWithModelGroupTerm(final int minOccurs, final int maxOccurs, final ModelGroup<A> modelGroup)
+	public ParticleWithModelGroupTerm(final int minOccurs, final int maxOccurs, final ModelGroup modelGroup)
 	{
 		super(minOccurs, maxOccurs, false, modelGroup);
 		PreCondition.assertTrue(maxOccurs >= 0, "maxOccurs >= 0");
 	}
 
-	public ModelGroup<A> getTerm()
+	public ModelGroup getTerm()
 	{
 		// We know this is safe by construction.
-		return (ModelGroup<A>)m_term;
+		return (ModelGroup)m_term;
 	}
 
 	public boolean isEmptiable()
@@ -47,7 +47,7 @@ public final class ParticleWithModelGroupTerm<A> extends ParticleImpl<A> impleme
 		return isEmptiable(this);
 	}
 
-	private static <A> boolean isEmptiable(final ModelGroupUse<A> particle)
+	private static  boolean isEmptiable(final ModelGroupUse particle)
 	{
 		if (particle.getMinOccurs() > 0)
 		{
@@ -63,23 +63,23 @@ public final class ParticleWithModelGroupTerm<A> extends ParticleImpl<A> impleme
 		return true;
 	}
 
-	private static <A> boolean isEmptiable(final ModelGroup<A> group)
+	private static  boolean isEmptiable(final ModelGroup group)
 	{
-		for (final SchemaParticle<A> particle : group.getParticles())
+		for (final SchemaParticle particle : group.getParticles())
 		{
-			final ParticleTerm<A> term = particle.getTerm();
-			if (term instanceof ElementDefinition<?> || term instanceof SchemaWildcard<?>)
+			final ParticleTerm term = particle.getTerm();
+			if (term instanceof ElementDefinition || term instanceof SchemaWildcard)
 			{
 				if (particle.getMinOccurs() > 0)
 				{
 					return false;
 				}
 			}
-			else if (term instanceof ModelGroup<?>)
+			else if (term instanceof ModelGroup)
 			{
 				if (particle.getMinOccurs() > 0)
 				{
-					if (!isEmptiable((ModelGroup<A>)term))
+					if (!isEmptiable((ModelGroup)term))
 					{
 						return false;
 					}

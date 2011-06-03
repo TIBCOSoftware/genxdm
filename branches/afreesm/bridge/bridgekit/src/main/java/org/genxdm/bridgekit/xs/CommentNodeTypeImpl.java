@@ -22,14 +22,14 @@ import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class CommentNodeTypeImpl<A> extends AbstractLeafNodeType<A> implements CommentNodeType<A>
+final class CommentNodeTypeImpl extends AbstractLeafNodeType implements CommentNodeType
 {
-	public CommentNodeTypeImpl(final SchemaCache<A> cache)
+	public CommentNodeTypeImpl(final SchemaCache cache)
 	{
 		super(NodeKind.COMMENT, cache);
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
@@ -39,18 +39,18 @@ final class CommentNodeTypeImpl<A> extends AbstractLeafNodeType<A> implements Co
 		return PrimeTypeKind.COMMENT;
 	}
 
-	public PrimeType<A> prime()
+	public PrimeType prime()
 	{
 		return this;
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case COMMENT:

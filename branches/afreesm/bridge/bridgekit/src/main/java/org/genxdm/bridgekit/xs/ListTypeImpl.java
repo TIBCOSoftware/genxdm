@@ -36,39 +36,39 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.Type;
 
-public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements ListSimpleType<A>
+public final class ListTypeImpl extends SimpleTypeImpl implements ListSimpleType
 {
-	private final Type<A> baseType;
-	private final SimpleType<A> itemType;
+	private final Type baseType;
+	private final SimpleType itemType;
 
-	public ListTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final SimpleType<A> itemType, final Type<A> baseType, final WhiteSpacePolicy whiteSpace, final AtomBridge<A> atomBridge)
+	public ListTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final SimpleType itemType, final Type baseType, final WhiteSpacePolicy whiteSpace)
 	{
-		super(name, isAnonymous, scope, DerivationMethod.List, whiteSpace, atomBridge);
+		super(name, isAnonymous, scope, DerivationMethod.List, whiteSpace);
 		this.itemType = PreCondition.assertArgumentNotNull(itemType, "itemType");
 		this.baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
 
 	@SuppressWarnings("unused")
-	private List<A> compile(final List<? extends A> value) throws DatatypeException
+	private <A> List<A> compile(final List<? extends A> value, AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		PreCondition.assertArgumentNotNull(value, "value");
 
 		final String strval = atomBridge.getC14NString(value);
 
 		final ArrayList<A> compiled = new ArrayList<A>();
-		final SimpleType<A> itemType = this.getItemType();
+		final SimpleType itemType = this.getItemType();
 		final StringTokenizer tokenizer = new StringTokenizer(strval, " ");
 		while (tokenizer.hasMoreTokens())
 		{
 			final String token = tokenizer.nextToken();
 			try
 			{
-				final List<A> itemResult = itemType.validate(token);
+				final List<A> itemResult = itemType.validate(token, atomBridge);
 				for (final A atom : itemResult)
 				{
 					compiled.add(atom);
@@ -82,12 +82,12 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements ListSimp
 		return compiled;
 	}
 
-	protected List<A> compile(final String initialValue) throws DatatypeException
+	protected <A> List<A> compile(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		PreCondition.assertArgumentNotNull(initialValue, "value");
 
 		final ArrayList<A> compiled = new ArrayList<A>();
-		final SimpleType<A> itemType = this.getItemType();
+		final SimpleType itemType = this.getItemType();
 		final StringTokenizer tokenizer = new StringTokenizer(initialValue, " ");
 		while (tokenizer.hasMoreTokens())
 		{
@@ -95,7 +95,7 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements ListSimp
 			final String normal = itemType.normalize(token);
 			try
 			{
-				final List<? extends A> itemResult = itemType.validate(normal);
+				final List<? extends A> itemResult = itemType.validate(normal, atomBridge);
 				for (final A atom : itemResult)
 				{
 					compiled.add(atom);
@@ -109,12 +109,12 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements ListSimp
 		return compiled;
 	}
 
-	protected List<A> compile(final String initialValue, final PrefixResolver resolver) throws DatatypeException
+	protected <A> List<A> compile(final String initialValue, final PrefixResolver resolver, AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		PreCondition.assertArgumentNotNull(initialValue, "value");
 
 		final ArrayList<A> compiled = new ArrayList<A>();
-		final SimpleType<A> itemType = this.getItemType();
+		final SimpleType itemType = this.getItemType();
 		final StringTokenizer tokenizer = new StringTokenizer(initialValue, " ");
 		while (tokenizer.hasMoreTokens())
 		{
@@ -122,7 +122,7 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements ListSimp
 			final String normal = itemType.normalize(token);
 			try
 			{
-				final List<? extends A> itemResult = itemType.validate(normal, resolver);
+				final List<? extends A> itemResult = itemType.validate(normal, resolver, atomBridge);
 				for (final A atom : itemResult)
 				{
 					compiled.add(atom);
@@ -136,12 +136,12 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements ListSimp
 		return compiled;
 	}
 
-	public Type<A> getBaseType()
+	public Type getBaseType()
 	{
 		return baseType;
 	}
 
-	public SimpleType<A> getItemType()
+	public SimpleType getItemType()
 	{
 		return itemType;
 	}
@@ -205,7 +205,7 @@ public final class ListTypeImpl<A> extends SimpleTypeImpl<A> implements ListSimp
 	}
 
 	@Override
-	public PrimeType<A> prime()
+	public PrimeType prime()
 	{
 		return itemType.prime();
 	}

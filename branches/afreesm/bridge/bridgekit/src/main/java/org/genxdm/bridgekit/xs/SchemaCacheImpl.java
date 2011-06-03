@@ -61,7 +61,6 @@ final class SchemaCacheImpl implements SchemaCache, ComponentProvider, Schema
 	private final PrimeType ANY_ITEM;
 	private final PrimeType ANY_KIND;
 	private final SimpleUrTypeImpl ANY_SIMPLE_TYPE;
-	private final AtomBridge<A> atomBridge;
 	private final AttributeNodeType ATTRIBUTE;
 
 	private final BuiltInSchema BUILT_IN;
@@ -92,17 +91,16 @@ final class SchemaCacheImpl implements SchemaCache, ComponentProvider, Schema
 	private static final String ESCAPE = "\u001B";
 	private final QName WILDNAME = new QName(ESCAPE, ESCAPE);
 
-	public SchemaCacheImpl(final AtomBridge atomBridge)
+	public SchemaCacheImpl()
 	{
-		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
-		this.nameBridge = atomBridge.getNameBridge();
+		this.nameBridge = new NameSource();
 
 		assertNotLocked();
 
 		final String W3C_XML_SCHEMA_NS_URI = XMLConstants.W3C_XML_SCHEMA_NS_URI;
 		this.ANY_COMPLEX_TYPE = new ComplexUrTypeImpl(W3C_XML_SCHEMA_NS_URI, nameBridge);
-		this.ANY_SIMPLE_TYPE = new SimpleUrTypeImpl(W3C_XML_SCHEMA_NS_URI, atomBridge, this);
-		this.ANY_ATOMIC_TYPE = new AtomicUrTypeImpl(W3C_XML_SCHEMA_NS_URI, ANY_SIMPLE_TYPE, atomBridge);
+		this.ANY_SIMPLE_TYPE = new SimpleUrTypeImpl(W3C_XML_SCHEMA_NS_URI, this);
+		this.ANY_ATOMIC_TYPE = new AtomicUrTypeImpl(W3C_XML_SCHEMA_NS_URI, ANY_SIMPLE_TYPE);
 
 		defineComplexType(ANY_COMPLEX_TYPE);
 		defineSimpleType(ANY_SIMPLE_TYPE);
@@ -386,7 +384,7 @@ final class SchemaCacheImpl implements SchemaCache, ComponentProvider, Schema
 	public SimpleType getSimpleType(final NativeType nativeType)
 	{
 		final Type type = getTypeDefinition(nativeType);
-		if (type instanceof SimpleType<?>)
+		if (type instanceof SimpleType)
 		{
 			return (SimpleType)type;
 		}
