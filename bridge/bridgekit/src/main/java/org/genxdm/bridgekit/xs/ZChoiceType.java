@@ -22,9 +22,9 @@ import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class ZChoiceType<A> implements ChoiceType<A>
+final class ZChoiceType implements ChoiceType
 {
-	public static <A> SequenceType<A> choice(final SequenceType<A> lhs, final SequenceType<A> rhs)
+	public static  SequenceType choice(final SequenceType lhs, final SequenceType rhs)
 	{
 		// Make an attempt to simplify, but not approximate the type expression by detecting
 		// "none" type subtrees which are the identity element for choice. However we must use
@@ -55,31 +55,31 @@ final class ZChoiceType<A> implements ChoiceType<A>
 		}
 		else
 		{
-			return new ZChoiceType<A>(lhs, rhs);
+			return new ZChoiceType(lhs, rhs);
 		}
 	}
 
-	private final SequenceType<A> m_lhs;
+	private final SequenceType m_lhs;
 
-	private final SequenceType<A> m_rhs;
+	private final SequenceType m_rhs;
 
-	private ZChoiceType(final SequenceType<A> lhs, final SequenceType<A> rhs)
+	private ZChoiceType(final SequenceType lhs, final SequenceType rhs)
 	{
 		m_lhs = PreCondition.assertArgumentNotNull(lhs);
 		m_rhs = PreCondition.assertArgumentNotNull(rhs);
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public SequenceType<A> getLHS()
+	public SequenceType getLHS()
 	{
 		return m_lhs;
 	}
 
-	public SequenceType<A> getRHS()
+	public SequenceType getRHS()
 	{
 		return m_rhs;
 	}
@@ -89,7 +89,7 @@ final class ZChoiceType<A> implements ChoiceType<A>
 		return true;
 	}
 
-	public PrimeType<A> prime()
+	public PrimeType prime()
 	{
 		return ZPrimeChoiceType.choice(m_lhs.prime(), m_rhs.prime());
 	}

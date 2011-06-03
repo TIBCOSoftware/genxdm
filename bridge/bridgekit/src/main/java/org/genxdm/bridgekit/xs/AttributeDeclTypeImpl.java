@@ -28,17 +28,17 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.SimpleMarkerType;
 import org.genxdm.xs.types.SimpleType;
 
-public final class AttributeDeclTypeImpl<A> extends DataComponentImpl<A> implements AttributeDefinition<A>
+public final class AttributeDeclTypeImpl extends DataComponentImpl implements AttributeDefinition
 {
-	private SimpleMarkerType<A> m_type;
+	private SimpleMarkerType m_type;
 
-	public AttributeDeclTypeImpl(final QName name, final ScopeExtent scope, final SimpleMarkerType<A> type)
+	public AttributeDeclTypeImpl(final QName name, final ScopeExtent scope, final SimpleMarkerType type)
 	{
 		super(name, scope);
 		this.m_type = PreCondition.assertArgumentNotNull(type, "type");
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
@@ -53,7 +53,7 @@ public final class AttributeDeclTypeImpl<A> extends DataComponentImpl<A> impleme
 		return NodeKind.ATTRIBUTE;
 	}
 
-	public SimpleMarkerType<A> getType()
+	public SimpleMarkerType getType()
 	{
 		return m_type;
 	}
@@ -74,7 +74,7 @@ public final class AttributeDeclTypeImpl<A> extends DataComponentImpl<A> impleme
 		return false;
 	}
 
-	public PrimeType<A> prime()
+	public PrimeType prime()
 	{
 		return this;
 	}
@@ -84,17 +84,17 @@ public final class AttributeDeclTypeImpl<A> extends DataComponentImpl<A> impleme
 		return KeeneQuantifier.EXACTLY_ONE;
 	}
 
-	public void setType(final SimpleType<A> type)
+	public void setType(final SimpleType type)
 	{
 		assertNotLocked();
 		m_type = PreCondition.assertArgumentNotNull(type, "type");
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
-		if (rhs instanceof AttributeDefinition<?>)
+		if (rhs instanceof AttributeDefinition)
 		{
-			AttributeDefinition<A> rhsAttDecl = (AttributeDefinition<A>)rhs;
+			AttributeDefinition rhsAttDecl = (AttributeDefinition)rhs;
 			if (rhsAttDecl.getScopeExtent() == ScopeExtent.Global)
 			{
 				if (getName().equals(rhsAttDecl.getName()))

@@ -81,10 +81,10 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
     private static final String ESCAPE = "\u001B";
 	private final QName WILDNAME = new QName(ESCAPE, ESCAPE);
 
-	public SchemaTypeBridgeImpl(final AtomBridge atomBridge)
+	public SchemaTypeBridgeImpl()
 	{
-		m_cache = new SchemaCacheImpl(PreCondition.assertArgumentNotNull(atomBridge, "atomBridge"));
-		m_nameBridge = atomBridge.getNameBridge();
+		m_cache = new SchemaCacheImpl();
+		m_nameBridge = new NameSource();
 
 		ANY_COMPLEX_TYPE = m_cache.getComplexUrType();
 		ANY_SIMPLE_TYPE = m_cache.getSimpleUrType();

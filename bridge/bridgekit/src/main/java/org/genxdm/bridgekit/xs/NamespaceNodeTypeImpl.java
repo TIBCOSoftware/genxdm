@@ -22,14 +22,14 @@ import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class NamespaceNodeTypeImpl<A> extends AbstractLeafNodeType<A> implements NamespaceNodeType<A>
+final class NamespaceNodeTypeImpl extends AbstractLeafNodeType implements NamespaceNodeType
 {
-	NamespaceNodeTypeImpl(final SchemaCacheImpl<A> cache)
+	NamespaceNodeTypeImpl(final SchemaCacheImpl cache)
 	{
 		super(NodeKind.NAMESPACE, cache);
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
@@ -39,18 +39,18 @@ final class NamespaceNodeTypeImpl<A> extends AbstractLeafNodeType<A> implements 
 		return PrimeTypeKind.NAMESPACE;
 	}
 
-	public NamespaceNodeType<A> prime()
+	public NamespaceNodeType prime()
 	{
 		return this;
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case NAMESPACE:

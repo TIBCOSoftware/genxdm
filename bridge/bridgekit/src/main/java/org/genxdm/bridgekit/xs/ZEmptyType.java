@@ -22,15 +22,15 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class ZEmptyType<A> implements EmptyType<A>
+final class ZEmptyType implements EmptyType
 {
 	public ZEmptyType()
 	{
 	}
 
-	public PrimeType<A> prime()
+	public PrimeType prime()
 	{
-		return new NoneTypeImpl<A>();
+		return new NoneTypeImpl();
 	}
 
 	public KeeneQuantifier quantifier()
@@ -43,7 +43,7 @@ final class ZEmptyType<A> implements EmptyType<A>
 		return false;
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		return rhs.quantifier().contains(KeeneQuantifier.EMPTY);
 	}
@@ -63,7 +63,7 @@ final class ZEmptyType<A> implements EmptyType<A>
 		return false;
 	}
 
-	public SequenceType<A> atomSet()
+	public SequenceType atomSet()
 	{
 		return this;
 	}
@@ -74,7 +74,7 @@ final class ZEmptyType<A> implements EmptyType<A>
 		return "empty";
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}

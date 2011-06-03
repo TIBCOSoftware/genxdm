@@ -22,14 +22,14 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.TextNodeType;
 
-final class TextNodeTypeImpl<A> extends AbstractLeafNodeType<A> implements TextNodeType<A>
+final class TextNodeTypeImpl extends AbstractLeafNodeType implements TextNodeType
 {
-	public TextNodeTypeImpl(final SchemaCache<A> cache)
+	public TextNodeTypeImpl(final SchemaCache cache)
 	{
 		super(NodeKind.TEXT, cache);
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
@@ -39,18 +39,18 @@ final class TextNodeTypeImpl<A> extends AbstractLeafNodeType<A> implements TextN
 		return PrimeTypeKind.TEXT;
 	}
 
-	public TextNodeType<A> prime()
+	public TextNodeType prime()
 	{
 		return this;
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case TEXT:
