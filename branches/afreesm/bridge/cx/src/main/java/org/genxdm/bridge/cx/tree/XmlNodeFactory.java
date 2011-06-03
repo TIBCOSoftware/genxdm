@@ -40,7 +40,7 @@ public class XmlNodeFactory
         return new XmlAttributeNode(namespaceURI, localName, prefix, type, value);
     }
     
-    public XmlAttributeNode createAttribute(String namespaceURI, String localName, String prefix, List<? extends XmlAtom> data, Type<XmlAtom> type)
+    public XmlAttributeNode createAttribute(String namespaceURI, String localName, String prefix, List<? extends XmlAtom> data, Type type)
     {
         return new XmlAttributeNode(namespaceURI, localName, prefix, type, makeList(data));
     }
@@ -60,7 +60,7 @@ public class XmlNodeFactory
         return new XmlElementNode(namespaceURI, localName, prefix, null);
     }
     
-    public XmlElementNode createElement(String namespaceURI, String localName, String prefix, Type<XmlAtom> type)
+    public XmlElementNode createElement(String namespaceURI, String localName, String prefix, Type type)
     {
         return new XmlElementNode(namespaceURI, localName, prefix, type);
     }
