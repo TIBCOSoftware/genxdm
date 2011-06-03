@@ -37,11 +37,11 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.Type;
 
-public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implements ElementDefinition<A>
+public final class ElementDeclTypeImpl extends DataComponentImpl implements ElementDefinition
 {
 	private final EnumSet<DerivationMethod> m_block = EnumSet.noneOf(DerivationMethod.class);
 	private final Set<DerivationMethod> m_blockUnmodifiable = Collections.unmodifiableSet(m_block);
-	private final HashMap<QName, IdentityConstraint<A>> m_constraints = new HashMap<QName, IdentityConstraint<A>>();
+	private final HashMap<QName, IdentityConstraint> m_constraints = new HashMap<QName, IdentityConstraint>();
 	private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
 	private final Set<DerivationMethod> m_finalUnmodifiable = Collections.unmodifiableSet(m_final);
 
@@ -58,33 +58,33 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 	/**
 	 * The {substitution group} (head) is mutable.
 	 */
-	private ElementDeclTypeImpl<A> m_substitutionGroup = null;
+	private ElementDeclTypeImpl m_substitutionGroup = null;
 
-	private final HashSet<ElementDefinition<A>> m_substitutionGroupMembers = new HashSet<ElementDefinition<A>>();
+	private final HashSet<ElementDefinition> m_substitutionGroupMembers = new HashSet<ElementDefinition>();
 
 	/**
 	 * The {type} property is mutable.
 	 */
-	private Type<A> m_type;
+	private Type m_type;
 
-	public ElementDeclTypeImpl(final QName name, final ScopeExtent scope, final Type<A> type)
+	public ElementDeclTypeImpl(final QName name, final ScopeExtent scope, final Type type)
 	{
 		super(name, scope);
 		this.m_type = PreCondition.assertArgumentNotNull(type, "type");
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public void addIdentityConstraint(final IdentityConstraint<A> identityConstraint)
+	public void addIdentityConstraint(final IdentityConstraint identityConstraint)
 	{
 		PreCondition.assertArgumentNotNull(identityConstraint, "identityConstraint");
 		m_constraints.put(identityConstraint.getName(), identityConstraint);
 	}
 
-	public void addSubstitutionGroupMember(final ElementDefinition<A> member)
+	public void addSubstitutionGroupMember(final ElementDefinition member)
 	{
 		assertNotLocked();
 		PreCondition.assertArgumentNotNull(member, "member");
@@ -96,7 +96,7 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		return m_blockUnmodifiable;
 	}
 
-	public Iterable<IdentityConstraint<A>> getIdentityConstraints()
+	public Iterable<IdentityConstraint> getIdentityConstraints()
 	{
 		return m_constraints.values();
 	}
@@ -111,7 +111,7 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		return NodeKind.ELEMENT;
 	}
 
-	public ElementDefinition<A> getSubstitutionGroup()
+	public ElementDefinition getSubstitutionGroup()
 	{
 		return m_substitutionGroup;
 	}
@@ -121,12 +121,12 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		return m_finalUnmodifiable;
 	}
 
-	public Iterable<ElementDefinition<A>> getSubstitutionGroupMembers()
+	public Iterable<ElementDefinition> getSubstitutionGroupMembers()
 	{
 		return m_substitutionGroupMembers;
 	}
 
-	public Type<A> getType()
+	public Type getType()
 	{
 		return m_type;
 	}
@@ -177,7 +177,7 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		return false;
 	}
 
-	public PrimeType<A> prime()
+	public PrimeType prime()
 	{
 		return this;
 	}
@@ -187,7 +187,7 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		return KeeneQuantifier.EXACTLY_ONE;
 	}
 
-	public void removeSubstitutionGroupMember(final ElementDefinition<A> member)
+	public void removeSubstitutionGroupMember(final ElementDefinition member)
 	{
 		assertNotLocked();
 		PreCondition.assertArgumentNotNull(member, "member");
@@ -232,7 +232,7 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		m_isNillable = isNillable;
 	}
 
-	public void setSubstitutionGroup(final ElementDeclTypeImpl<A> substitutionGroup)
+	public void setSubstitutionGroup(final ElementDeclTypeImpl substitutionGroup)
 	{
 		assertNotLocked();
 		if (m_substitutionGroup != substitutionGroup)
@@ -249,7 +249,7 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 		}
 	}
 
-	public void setType(final Type<A> type)
+	public void setType(final Type type)
 	{
 		assertNotLocked();
 		m_type = PreCondition.assertArgumentNotNull(type, "type");
@@ -268,12 +268,12 @@ public final class ElementDeclTypeImpl<A> extends DataComponentImpl<A> implement
 			}
 			case SCHEMA_ELEMENT:
 			{
-				final ElementDefinition<A> other = (ElementDefinition<A>)rhs;
+				final ElementDefinition other = (ElementDefinition)rhs;
 				return getName().equals(other.getName());
 			}
 			case ELEMENT:
 			{
-				final ElementNodeType<A> other = (ElementNodeType<A>)rhs;
+				final ElementNodeType other = (ElementNodeType)rhs;
 				return getName().equals(other.getName());
 			}
 			case COMPLEX:

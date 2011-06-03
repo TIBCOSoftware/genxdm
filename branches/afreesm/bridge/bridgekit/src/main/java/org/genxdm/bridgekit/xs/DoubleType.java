@@ -35,7 +35,7 @@ import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.SimpleType;
 
-final class DoubleType<A> extends AbstractAtomType<A>
+final class DoubleType extends AbstractAtomType
 {
 	private static final String LEGACY_NEGATIVE_INFINITY_LITERAL = "-Infinity";
 	private static final int LEGACY_NEGATIVE_INFINITY_LITERAL_LENGTH = 9;
@@ -48,12 +48,12 @@ final class DoubleType<A> extends AbstractAtomType<A>
 	private static final String NAN_LITERAL = "NaN";
 	private static final int NAN_LITERAL_LENGTH = 3;
 
-	public DoubleType(final QName name, final SimpleType<A> baseType, final AtomBridge<A> atomBridge)
+	public DoubleType(final QName name, final SimpleType baseType)
 	{
-		super(name, baseType, atomBridge);
+		super(name, baseType);
 	}
 
-	public void accept(SequenceTypeVisitor<A> visitor)
+	public void accept(SequenceTypeVisitor visitor)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -65,19 +65,19 @@ final class DoubleType<A> extends AbstractAtomType<A>
 		throw new AssertionError("TODO");
 	}
 
-	public Iterable<EnumerationDefinition<A>> getEnumerations()
+	public Iterable<EnumerationDefinition> getEnumerations()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public Facet<A> getFacetOfKind(FacetKind facetKind)
+	public Facet getFacetOfKind(FacetKind facetKind)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public Iterable<Facet<A>> getFacets()
+	public Iterable<Facet> getFacets()
 	{
 		return Collections.emptyList();
 	}
@@ -144,7 +144,7 @@ final class DoubleType<A> extends AbstractAtomType<A>
 		return false;
 	}
 
-	public List<A> validate(final String strval) throws DatatypeException
+	public <A> List<A> validate(final String strval, AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		try
 		{
@@ -197,7 +197,7 @@ final class DoubleType<A> extends AbstractAtomType<A>
 		}
 	}
 
-	public List<A> validate(String initialValue, PrefixResolver resolver) throws DatatypeException
+	public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");

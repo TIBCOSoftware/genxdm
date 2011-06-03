@@ -24,6 +24,7 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
 import org.genxdm.xs.exceptions.AtomCastException;
+import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.exceptions.FacetException;
 import org.genxdm.xs.exceptions.FacetMinMaxException;
 import org.genxdm.xs.facets.FacetKind;
@@ -34,20 +35,14 @@ import org.genxdm.xs.types.SimpleType;
 public final class FacetValueCompImpl extends FacetImpl implements Limit
 {
 
-	public FacetValueCompImpl(final A value, final FacetKind kind, final SimpleType type, final boolean isFixed, final AtomBridge<A> atomBridge)
+	public FacetValueCompImpl(final String value, final FacetKind kind, final SimpleType type, final boolean isFixed)
 	{
 		super(isFixed);
 
 		this.m_value = PreCondition.assertArgumentNotNull(value, "value");
 		this.m_kind = PreCondition.assertArgumentNotNull(kind, "kind");
+		this.baseType = PreCondition.assertArgumentNotNull(type, "type");
 
-		// TODO: If it is a list type we might have to work one way, union,
-		// another
-		final SimpleType nativeType = type.getNativeTypeDefinition();
-		this.m_uberType = nativeType.getName();
-
-		final A rhsAtom = castAsUberType(PreCondition.assertArgumentNotNull(value, "value"), m_uberType, atomBridge);
-		m_comparator = calculateComparator(rhsAtom, kind, nativeType.getNativeType(), atomBridge);
 	}
 
 	public FacetKind getKind()
@@ -58,7 +53,7 @@ public final class FacetValueCompImpl extends FacetImpl implements Limit
 	@Override
 	public <A> A getLimit(AtomBridge<A> bridge)
 	{
-		return m_value;
+		return calculateValue(bridge);
 	}
 
 	@Override
@@ -66,19 +61,27 @@ public final class FacetValueCompImpl extends FacetImpl implements Limit
 	{
 		PreCondition.assertArgumentNotNull(atom, "atom");
 		PreCondition.assertArgumentNotNull(simpleType, "simpleType");
-		try
-		{
-			final A lhsAtom = castAsUberType(atom, m_uberType, m_atomBridge);
 
-			if (!m_comparator.compare(lhsAtom))
+		// TODO: If it is a list type we might have to work one way, union,
+        // another
+        SimpleType uberType = baseType.getNativeTypeDefinition();
+
+        final A rhsAtom = castAsUberType(getLimit(bridge), uberType.getName(), bridge);
+        ValueComparator<A> comparator = calculateComparator(rhsAtom, m_kind, uberType.getNativeType(), bridge);
+		
+        try
+		{
+			final A lhsAtom = castAsUberType(atom, uberType.getName(), bridge);
+
+			if (!comparator.compare(lhsAtom))
 			{
 				final String actual = bridge.getC14NForm(lhsAtom);
-				throw new FacetMinMaxException(this, actual);
+				throw new FacetMinMaxException(this, actual, bridge);
 			}
 		}
 		catch (final AtomCastException e)
 		{
-			throw new FacetMinMaxException(this, e.getSourceValue());
+			throw new FacetMinMaxException(this, e.getSourceValue(), bridge);
 		}
 	}
 
@@ -202,9 +205,37 @@ public final class FacetValueCompImpl extends FacetImpl implements Limit
 			throw new AssertionError(e);
 		}
 	}
+	
+	// TODO: this is quick and dirty, just to make it compile.
+	// it's stolen from the parser, which produces problems of its own.
+	private <A> A calculateValue(AtomBridge<A> bridge)
+//	    throws DatatypeException
+	{
+	    // TODO: this fails to handle schema errors at parse time.  hmmm.
+//        final List<A> atomicValue;
+//        {
+//            try
+//            {
+                //atomicValue = baseType.validate(m_value, bridge);
+	    try {
+	    return baseType.validate(m_value, bridge).get(0);
+	    } catch (DatatypeException dte) {
+	        throw new RuntimeException(dte);
+	    }
+//            }
+//            catch (final DatatypeException dte)
+//            {
+//                final SimpleTypeException ste = new SimpleTypeException(m_value, baseType, dte);
+//                final QName elementName = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, xmlFacet.elementName);
+//                final QName attributeName = new QName(XMLRepresentation.LN_VALUE);
+//                final SrcFrozenLocation location = xmlFacet.getLocation();
+//                throw new SmAttributeUseException(elementName, attributeName, location, ste);
+//            }
+//        }
+	}
     
     private final FacetKind m_kind;
-    private final QName m_uberType;
-    private final A m_value;
+    private final SimpleType baseType;
+    private final String m_value;
     private final CastingContext castingContext = new CanonicalCastingContext();
 }

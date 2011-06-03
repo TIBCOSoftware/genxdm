@@ -17,16 +17,15 @@ package org.genxdm.bridgekit.xs;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
 
-final class DurationType<A> extends AbstractDurationType<A>
+final class DurationType extends AbstractDurationType
 {
 
-	public DurationType(final QName name, final SimpleType<A> baseType, final AtomBridge<A> atomBridge)
+	public DurationType(final QName name, final SimpleType baseType)
 	{
-		super(name, baseType, atomBridge);
+		super(name, baseType);
 	}
 
 	public NativeType getNativeType()
