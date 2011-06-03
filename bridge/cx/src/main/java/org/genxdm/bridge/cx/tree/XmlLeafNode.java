@@ -38,7 +38,7 @@ import org.genxdm.xs.types.Type;
 public class XmlLeafNode
     extends XmlNode
 {
-    protected XmlLeafNode(final NodeKind nodeKind, final Type<XmlAtom> type, final List<? extends XmlAtom> data)
+    protected XmlLeafNode(final NodeKind nodeKind, final Type type, final List<? extends XmlAtom> data)
     {
         super(nodeKind);
         if (type == null)
@@ -145,7 +145,7 @@ public class XmlLeafNode
         return getUntypedValue();
     }
     
-    public Type<XmlAtom> getType()
+    public Type getType()
     {
         return type;
     }
@@ -242,6 +242,7 @@ public class XmlLeafNode
     }
 
     protected List<XmlAtom> atoms;
-    protected final Type<XmlAtom> type;
-    private static final Type<XmlAtom> UNTYPED_ATOMIC_TYPE = new SchemaTypeBridgeFactory<XmlAtom>(new XmlAtomBridge(null, new NameSource())).newMetaBridge().getAtomicType(NativeType.UNTYPED_ATOMIC);
+    protected final Type type;
+    // TODO: this hackery should not be necessary.
+    private static final Type UNTYPED_ATOMIC_TYPE = new SchemaTypeBridgeFactory().newMetaBridge().getAtomicType(NativeType.UNTYPED_ATOMIC);
 }
