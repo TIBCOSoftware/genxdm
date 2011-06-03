@@ -16,20 +16,19 @@
 package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.exceptions.FacetException;
 import org.genxdm.xs.exceptions.FacetMinLengthException;
 import org.genxdm.xs.facets.FacetKind;
 import org.genxdm.xs.facets.LengthFacetUOM;
 import org.genxdm.xs.facets.MinLength;
 
-public final class FacetMinLengthImpl<A> extends FacetLengthCommonImpl<A> implements MinLength<A>
+public final class FacetMinLengthImpl extends FacetLengthCommonImpl implements MinLength
 {
 	private final int minLength;
 
-	public FacetMinLengthImpl(final int minLength, final boolean isFixed, final AtomBridge<A> atomBridge)
+	public FacetMinLengthImpl(final int minLength, final boolean isFixed)
 	{
-		super(isFixed, atomBridge, FacetKind.MinLength);
+		super(isFixed, FacetKind.MinLength);
 		PreCondition.assertTrue(minLength >= 0, "minLength >= 0");
 		this.minLength = minLength;
 	}

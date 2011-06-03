@@ -123,7 +123,7 @@ import org.genxdm.xs.types.UnionSimpleType;
  * distracting arguments to methods. The use of a static entry point and a private initializer protects against multiple
  * invocations.
  */
-final class XMLSchemaConverter<A>
+final class XMLSchemaConverter
 {
 	/**
 	 * Integer.MAX_VALUE as a BigInteger; needed to ensure that we throw an exception rather than attempt to convert
@@ -131,12 +131,12 @@ final class XMLSchemaConverter<A>
 	 */
 	private static final BigInteger MAX_INT_SIZE = BigInteger.valueOf(Integer.MAX_VALUE);
 
-	public static <A> Pair<SmComponentBagImpl<A>, XMLComponentLocator<A>> convert(final SmRegExCompiler regexc, final ComponentProvider<A> rtmCache, final AtomBridge<A> atomBridge, final XMLSchemaCache<A> xmlCache, final SchemaExceptionHandler errors) throws AbortException
+	public static  Pair<SmComponentBagImpl, XMLComponentLocator> convert(final SmRegExCompiler regexc, final ComponentProvider rtmCache, final XMLSchemaCache xmlCache, final SchemaExceptionHandler errors) throws AbortException
 	{
-		final SmComponentBagImpl<A> schema = new SmComponentBagImpl<A>();
-		final XMLComponentLocator<A> locations = new XMLComponentLocator<A>();
+		final SmComponentBagImpl schema = new SmComponentBagImpl();
+		final XMLComponentLocator locations = new XMLComponentLocator();
 
-		final XMLSchemaConverter<A> converter = new XMLSchemaConverter<A>(regexc, rtmCache, atomBridge, xmlCache, schema, locations, errors);
+		final XMLSchemaConverter converter = new XMLSchemaConverter(regexc, rtmCache, xmlCache, schema, locations, errors);
 
 		xmlCache.computeSubstitutionGroups();
 
@@ -148,7 +148,7 @@ final class XMLSchemaConverter<A>
 		converter.convertModelGroups();
 		converter.convertNotations();
 
-		return new Pair<SmComponentBagImpl<A>, XMLComponentLocator<A>>(schema, locations);
+		return new Pair<SmComponentBagImpl, XMLComponentLocator>(schema, locations);
 	}
 
 	static boolean isMaxOccursUnbounded(final BigInteger maxOccurs) throws SicOversizedIntegerException
@@ -207,13 +207,13 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private static <A> boolean subtype(final Type<A> lhs, final Type<A> rhs)
+	private static  boolean subtype(final Type lhs, final Type rhs)
 	{
 		PreCondition.assertArgumentNotNull(lhs, "lhs");
 		PreCondition.assertArgumentNotNull(rhs, "rhs");
 		if (!rhs.isComplexUrType())
 		{
-			Type<A> currentType = lhs;
+			Type currentType = lhs;
 			while (true)
 			{
 				if (currentType == rhs)
@@ -240,42 +240,40 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private final AtomBridge<A> atomBridge;
-	private final ContentType<A> EMPTY_CONTENT = new ContentTypeImpl<A>();
-	private final XMLCycles<A> m_cycles;
+	private final ContentType EMPTY_CONTENT = new ContentTypeImpl();
+	private final XMLCycles m_cycles;
 
 	private final SchemaExceptionHandler m_errors;
 
-	private final ComponentProvider<A> m_existingCache;
+	private final ComponentProvider m_existingCache;
 
-	private final XMLSchemaCache<A> m_inCache;
+	private final XMLSchemaCache m_inCache;
 
-	private final XMLComponentLocator<A> m_locations;
+	private final XMLComponentLocator m_locations;
 	private final NameSource nameBridge;
 
-	private final SmComponentBagImpl<A> m_outBag;
+	private final SmComponentBagImpl m_outBag;
 
 	private final SmRegExCompiler regexc;
 
-	private XMLSchemaConverter(final SmRegExCompiler regexc, final ComponentProvider<A> outCache, final AtomBridge<A> atomBridge, final XMLSchemaCache<A> inCache, final SmComponentBagImpl<A> schema, final XMLComponentLocator<A> locations, final SchemaExceptionHandler errors)
+	private XMLSchemaConverter(final SmRegExCompiler regexc, final ComponentProvider outCache, final XMLSchemaCache inCache, final SmComponentBagImpl schema, final XMLComponentLocator locations, final SchemaExceptionHandler errors)
 	{
 		this.regexc = regexc;
 		this.m_existingCache = outCache;
-		this.atomBridge = atomBridge;
-		this.nameBridge = atomBridge.getNameBridge();
+		this.nameBridge = new NameSource();
 		this.m_inCache = inCache;
 		this.m_outBag = schema;
 		this.m_locations = locations;
 		this.m_errors = errors;
-		this.m_cycles = new XMLCycles<A>();
+		this.m_cycles = new XMLCycles();
 	}
 
-	private SchemaWildcard<A> attributeWildcard(final Type<A> baseType)
+	private SchemaWildcard attributeWildcard(final Type baseType)
 	{
-		if (baseType instanceof ComplexType<?>)
+		if (baseType instanceof ComplexType)
 		{
-			final ComplexType<A> complexBase = (ComplexType<A>)baseType;
-			final SchemaWildcard<A> attributeWildcard = complexBase.getAttributeWildcard();
+			final ComplexType complexBase = (ComplexType)baseType;
+			final SchemaWildcard attributeWildcard = complexBase.getAttributeWildcard();
 			if (null != attributeWildcard)
 			{
 				return attributeWildcard;
@@ -285,7 +283,7 @@ final class XMLSchemaConverter<A>
 				return null;
 			}
 		}
-		else if (baseType instanceof SimpleType<?>)
+		else if (baseType instanceof SimpleType)
 		{
 			return null;
 		}
@@ -295,9 +293,9 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SchemaWildcard<A> attributeWildcard(final XMLType<A> complexType) throws AbortException, SchemaException
+	private SchemaWildcard attributeWildcard(final XMLType complexType) throws AbortException, SchemaException
 	{
-		final XMLWildcard<A> localWildcard = complexType.attributeWildcard;
+		final XMLWildcard localWildcard = complexType.attributeWildcard;
 
 		final DerivationMethod derivation = complexType.getDerivationMethod();
 		switch (derivation)
@@ -308,10 +306,10 @@ final class XMLSchemaConverter<A>
 			}
 			case Extension:
 			{
-				final SchemaWildcard<A> baseWildcard = attributeWildcard(complexType.getBaseRef());
+				final SchemaWildcard baseWildcard = attributeWildcard(complexType.getBaseRef());
 				if (null != baseWildcard)
 				{
-					final SchemaWildcard<A> completeWildcard = completeWildcard(complexType.getAttributeGroups(), localWildcard);
+					final SchemaWildcard completeWildcard = completeWildcard(complexType.getAttributeGroups(), localWildcard);
 					if (null == completeWildcard)
 					{
 						return baseWildcard;
@@ -322,7 +320,7 @@ final class XMLSchemaConverter<A>
 						// wildcard.
 						// {namespace constraint} is union of the complete and
 						// base wildcard.
-						return new WildcardImpl<A>(completeWildcard.getProcessContents(), completeWildcard.getNamespaceConstraint().union(baseWildcard.getNamespaceConstraint()));
+						return new WildcardImpl(completeWildcard.getProcessContents(), completeWildcard.getNamespaceConstraint().union(baseWildcard.getNamespaceConstraint()));
 					}
 				}
 				else
@@ -338,13 +336,13 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SchemaWildcard<A> attributeWildcard(final XMLTypeRef<A> typeRef) throws AbortException, SchemaException
+	private SchemaWildcard attributeWildcard(final XMLTypeRef typeRef) throws AbortException, SchemaException
 	{
-		final Type<A> type = convertType(typeRef);
+		final Type type = convertType(typeRef);
 		return attributeWildcard(type);
 	}
 
-	private SchemaWildcard<A> completeWildcard(final Iterable<XMLAttributeGroup<A>> attributeGroups, final XMLWildcard<A> localWildcard) throws AbortException, SchemaException
+	private SchemaWildcard completeWildcard(final Iterable<XMLAttributeGroup> attributeGroups, final XMLWildcard localWildcard) throws AbortException, SchemaException
 	{
 		NamespaceConstraint constraint = null;
 
@@ -353,10 +351,10 @@ final class XMLSchemaConverter<A>
 		ProcessContentsMode processContents = null;
 		if (null != attributeGroups)
 		{
-			for (final XMLAttributeGroup<A> xmlAttributeGroup : attributeGroups)
+			for (final XMLAttributeGroup xmlAttributeGroup : attributeGroups)
 			{
-				final AttributeGroupDefinition<A> attributeGroup = convertAttributeGroup(xmlAttributeGroup);
-				final SchemaWildcard<A> groupWildcard = attributeGroup.getWildcard();
+				final AttributeGroupDefinition attributeGroup = convertAttributeGroup(xmlAttributeGroup);
+				final SchemaWildcard groupWildcard = attributeGroup.getWildcard();
 				if (null != groupWildcard)
 				{
 					if (null == constraint)
@@ -377,7 +375,7 @@ final class XMLSchemaConverter<A>
 			// If nothing is found in the <attributeGroup>[children]...
 			if (null != localWildcard)
 			{
-				return new WildcardImpl<A>(localWildcard.getProcessContents(), convert(localWildcard.getNamespaceConstraint()));
+				return new WildcardImpl(localWildcard.getProcessContents(), convert(localWildcard.getNamespaceConstraint()));
 			}
 			else
 			{
@@ -392,14 +390,14 @@ final class XMLSchemaConverter<A>
 				// wildcard.
 				// {namespace constraint} defined by Attribute Wildcard
 				// Intersection.
-				return new WildcardImpl<A>(localWildcard.getProcessContents(), convert(localWildcard.getNamespaceConstraint()).intersection(constraint));
+				return new WildcardImpl(localWildcard.getProcessContents(), convert(localWildcard.getNamespaceConstraint()).intersection(constraint));
 			}
 			else
 			{
 				// {process contents} from first <attributeGroup>[children]
 				// {namespace constraint} from the <attributeGroup>[children]
 				// {annotation} is absent.
-				return new WildcardImpl<A>(processContents, constraint);
+				return new WildcardImpl(processContents, constraint);
 			}
 		}
 	}
@@ -407,11 +405,11 @@ final class XMLSchemaConverter<A>
 	/**
 	 * Expand temporary variables used to hold syntactic constructs for attribute uses and wildcards.
 	 */
-	private Map<QName, AttributeUse<A>> computeAttributeUses(final XMLType<A> complexType) throws AbortException, SchemaException
+	private Map<QName, AttributeUse> computeAttributeUses(final XMLType complexType) throws AbortException, SchemaException
 	{
-		final HashMap<QName, AttributeUse<A>> attributeUses = new HashMap<QName, AttributeUse<A>>();
+		final HashMap<QName, AttributeUse> attributeUses = new HashMap<QName, AttributeUse>();
 
-		for (final XMLAttributeUse<A> attributeUse : complexType.getAttributeUses())
+		for (final XMLAttributeUse attributeUse : complexType.getAttributeUses())
 		{
 			final QName attributeName = attributeUse.getDeclaration().getName();
 			try
@@ -431,14 +429,14 @@ final class XMLSchemaConverter<A>
 			}
 		}
 
-		for (final XMLAttributeGroup<A> xmlAttributeGroup : complexType.getAttributeGroups())
+		for (final XMLAttributeGroup xmlAttributeGroup : complexType.getAttributeGroups())
 		{
-			final AttributeGroupDefinition<A> attributeGroup = convertAttributeGroup(xmlAttributeGroup);
+			final AttributeGroupDefinition attributeGroup = convertAttributeGroup(xmlAttributeGroup);
 			if (attributeGroup.hasAttributeUses())
 			{
-				for (final AttributeUse<A> attributeUse : attributeGroup.getAttributeUses())
+				for (final AttributeUse attributeUse : attributeGroup.getAttributeUses())
 				{
-					final AttributeDefinition<A> attribute = attributeUse.getAttribute();
+					final AttributeDefinition attribute = attributeUse.getAttribute();
 					final QName attributeName = attribute.getName();
 					if (!attributeUses.containsKey(attributeName))
 					{
@@ -456,11 +454,11 @@ final class XMLSchemaConverter<A>
 		{
 			case Restriction:
 			{
-				final Type<A> typeB = convertType(complexType.getBaseRef());
-				if (typeB instanceof ComplexType<?>)
+				final Type typeB = convertType(complexType.getBaseRef());
+				if (typeB instanceof ComplexType)
 				{
-					final ComplexType<A> complexTypeB = (ComplexType<A>)typeB;
-					for (final AttributeUse<A> attributeUse : complexTypeB.getAttributeUses().values())
+					final ComplexType complexTypeB = (ComplexType)typeB;
+					for (final AttributeUse attributeUse : complexTypeB.getAttributeUses().values())
 					{
 						final QName attributeName = attributeUse.getAttribute().getName();
 						if (!complexType.prohibited.contains(attributeName))
@@ -483,11 +481,11 @@ final class XMLSchemaConverter<A>
 			break;
 			case Extension:
 			{
-				final Type<A> typeB = convertType(complexType.getBaseRef());
-				if (typeB instanceof ComplexType<?>)
+				final Type typeB = convertType(complexType.getBaseRef());
+				if (typeB instanceof ComplexType)
 				{
-					final ComplexType<A> complexTypeB = (ComplexType<A>)typeB;
-					for (final AttributeUse<A> attributeUse : complexTypeB.getAttributeUses().values())
+					final ComplexType complexTypeB = (ComplexType)typeB;
+					for (final AttributeUse attributeUse : complexTypeB.getAttributeUses().values())
 					{
 						final QName attributeName = attributeUse.getAttribute().getName();
 						attributeUses.put(attributeName, attributeUse);
@@ -508,11 +506,11 @@ final class XMLSchemaConverter<A>
 	 * Compile the enumeration facets for this type. <br/>
 	 * Enumeration facets are not inherited during compilation, but must be subsets of base types.
 	 */
-	private void computeEnumerations(final SimpleType<A> baseType, final XMLType<A> type, final SimpleTypeImpl<A> target) throws AbortException
+	private void computeEnumerations(final SimpleType baseType, final XMLType type, final SimpleTypeImpl target) throws AbortException
 	{
 		if (type.getEnumerations().size() > 0)
 		{
-			for (final XMLEnumeration<A> pattern : type.getEnumerations())
+			for (final XMLEnumeration pattern : type.getEnumerations())
 			{
 				try
 				{
@@ -526,13 +524,13 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private void computeFacets(final SimpleType<A> baseType, final XMLType<A> type, final SimpleTypeImpl<A> target) throws AbortException, SchemaException
+	private void computeFacets(final SimpleType baseType, final XMLType type, final SimpleTypeImpl target) throws AbortException, SchemaException
 	{
-		for (final XMLTotalDigitsFacet<A> xmlFacet : type.getTotalDigitsFacets())
+		for (final XMLTotalDigitsFacet xmlFacet : type.getTotalDigitsFacets())
 		{
 			target.addFacet(totalDigits(xmlFacet));
 		}
-		for (final XMLFractionDigitsFacet<A> xmlFacet : type.getFractionDigitsFacets())
+		for (final XMLFractionDigitsFacet xmlFacet : type.getFractionDigitsFacets())
 		{
 			target.addFacet(fractionDigits(xmlFacet));
 		}
@@ -540,18 +538,18 @@ final class XMLSchemaConverter<A>
 		// for types derived from QName or NOTATION.
 		if (!subtype(target, m_existingCache.getAtomicType(NativeType.QNAME)) && !subtype(target, m_existingCache.getAtomicType(NativeType.NOTATION)))
 		{
-			for (final XMLLength<A> xmlFacet : type.getLengthFacets())
+			for (final XMLLength xmlFacet : type.getLengthFacets())
 			{
 				target.addFacet(length(xmlFacet));
 			}
 		}
-		for (final XMLMinMaxFacet<A> xmlFacet : type.getMinMaxFacets())
+		for (final XMLMinMaxFacet xmlFacet : type.getMinMaxFacets())
 		{
 			if (baseType.isAtomicType())
 			{
 				try
 				{
-					target.addFacet(minmax(xmlFacet, (SimpleType<A>)baseType));
+					target.addFacet(minmax(xmlFacet, (SimpleType)baseType));
 				}
 				catch (final SchemaException e)
 				{
@@ -561,7 +559,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private ContentType<A> computeLocallyEmptyContent(final XMLType<A> complexType) throws SchemaException, AbortException
+	private ContentType computeLocallyEmptyContent(final XMLType complexType) throws SchemaException, AbortException
 	{
 		final DerivationMethod derivation = complexType.getDerivationMethod();
 		switch (derivation)
@@ -572,16 +570,16 @@ final class XMLSchemaConverter<A>
 			}
 			case Extension:
 			{
-				final Type<A> baseType = convertType(complexType.getBaseRef());
-				if (baseType instanceof ComplexType<?>)
+				final Type baseType = convertType(complexType.getBaseRef());
+				if (baseType instanceof ComplexType)
 				{
-					final ComplexType<A> complexBase = (ComplexType<A>)baseType;
+					final ComplexType complexBase = (ComplexType)baseType;
 					return complexBase.getContentType();
 				}
-				else if (baseType instanceof SimpleType<?>)
+				else if (baseType instanceof SimpleType)
 				{
-					final SimpleType<A> simpleBase = (SimpleType<A>)baseType;
-					return new ContentTypeImpl<A>(simpleBase);
+					final SimpleType simpleBase = (SimpleType)baseType;
+					return new ContentTypeImpl(simpleBase);
 				}
 				else
 				{
@@ -599,11 +597,11 @@ final class XMLSchemaConverter<A>
 	 * Compile the pattern facets for this type. <br/>
 	 * Pattern facets are not inherited during compilation.
 	 */
-	private void computePatterns(final LinkedList<XMLPatternFacet<A>> xmlFacets, final SimpleTypeImpl<A> target) throws AbortException
+	private void computePatterns(final LinkedList<XMLPatternFacet> xmlFacets, final SimpleTypeImpl target) throws AbortException
 	{
 		if (xmlFacets.size() > 0)
 		{
-			for (final XMLPatternFacet<A> pattern : xmlFacets)
+			for (final XMLPatternFacet pattern : xmlFacets)
 			{
 				try
 				{
@@ -660,7 +658,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private AttributeDefinition<A> convertAttribute(final XMLAttribute<A> xmlAttribute) throws AbortException, SchemaException
+	private AttributeDefinition convertAttribute(final XMLAttribute xmlAttribute) throws AbortException, SchemaException
 	{
 		final QName name = xmlAttribute.getName();
 		final ScopeExtent scope = convertScope(xmlAttribute.getScope());
@@ -683,10 +681,10 @@ final class XMLSchemaConverter<A>
 				m_cycles.attributes.push(xmlAttribute);
 			}
 		}
-		final AttributeDeclTypeImpl<A> attribute;
+		final AttributeDeclTypeImpl attribute;
 		try
 		{
-			attribute = new AttributeDeclTypeImpl<A>(name, scope, m_existingCache.getSimpleUrType());
+			attribute = new AttributeDeclTypeImpl(name, scope, m_existingCache.getSimpleUrType());
 			if (scope == ScopeExtent.Global)
 			{
 				m_outBag.add(attribute);
@@ -700,10 +698,10 @@ final class XMLSchemaConverter<A>
 				m_cycles.attributes.pop();
 			}
 		}
-		final Type<A> attributeType = convertType(xmlAttribute.typeRef);
-		if (attributeType instanceof SimpleType<?>)
+		final Type attributeType = convertType(xmlAttribute.typeRef);
+		if (attributeType instanceof SimpleType)
 		{
-			attribute.setType((SimpleType<A>)attributeType);
+			attribute.setType((SimpleType)attributeType);
 		}
 		else
 		{
@@ -713,7 +711,7 @@ final class XMLSchemaConverter<A>
 		{
 			try
 			{
-				attribute.setValueConstraint(convertValueConstraint(XMLRepresentation.LN_ATTRIBUTE, xmlAttribute.m_valueConstraint, (SimpleType<A>)attribute.getType()));
+				attribute.setValueConstraint(convertValueConstraint(XMLRepresentation.LN_ATTRIBUTE, xmlAttribute.m_valueConstraint, (SimpleType)attribute.getType()));
 			}
 			catch (final SchemaException e)
 			{
@@ -723,7 +721,7 @@ final class XMLSchemaConverter<A>
 		return attribute;
 	}
 
-	private AttributeGroupDefinition<A> convertAttributeGroup(final XMLAttributeGroup<A> xmlAttributeGroup) throws AbortException, SchemaException
+	private AttributeGroupDefinition convertAttributeGroup(final XMLAttributeGroup xmlAttributeGroup) throws AbortException, SchemaException
 	{
 		final QName agName = PreCondition.assertArgumentNotNull(xmlAttributeGroup.getName(), "name");
 		final ScopeExtent scope = convertScope(xmlAttributeGroup.getScope());
@@ -748,19 +746,19 @@ final class XMLSchemaConverter<A>
 		}
 		try
 		{
-			final HashMap<QName, AttributeUse<A>> attributeUses = new HashMap<QName, AttributeUse<A>>();
-			for (final XMLAttributeGroup<A> group : xmlAttributeGroup.getGroups())
+			final HashMap<QName, AttributeUse> attributeUses = new HashMap<QName, AttributeUse>();
+			for (final XMLAttributeGroup group : xmlAttributeGroup.getGroups())
 			{
-				final AttributeGroupDefinition<A> attributeGroup = convertAttributeGroup(group);
+				final AttributeGroupDefinition attributeGroup = convertAttributeGroup(group);
 				if (attributeGroup.hasAttributeUses())
 				{
-					for (final AttributeUse<A> attributeUse : attributeGroup.getAttributeUses())
+					for (final AttributeUse attributeUse : attributeGroup.getAttributeUses())
 					{
 						attributeUses.put(attributeUse.getAttribute().getName(), attributeUse);
 					}
 				}
 			}
-			for (final XMLAttributeUse<A> attributeUse : xmlAttributeGroup.getAttributeUses())
+			for (final XMLAttributeUse attributeUse : xmlAttributeGroup.getAttributeUses())
 			{
 				final QName name = attributeUse.getDeclaration().getName();
 				try
@@ -772,9 +770,9 @@ final class XMLSchemaConverter<A>
 					m_errors.error(e);
 				}
 			}
-			final SchemaWildcard<A> completeWildcard = completeWildcard(xmlAttributeGroup.getGroups(), xmlAttributeGroup.wildcard);
-			final AttributeGroupDefinition<A> attributeGroup;
-			attributeGroup = new AttributeGroupImpl<A>(agName, scope, attributeUses.values(), completeWildcard);
+			final SchemaWildcard completeWildcard = completeWildcard(xmlAttributeGroup.getGroups(), xmlAttributeGroup.wildcard);
+			final AttributeGroupDefinition attributeGroup;
+			attributeGroup = new AttributeGroupImpl(agName, scope, attributeUses.values(), completeWildcard);
 
 			if (attributeGroup.getScopeExtent() == ScopeExtent.Global)
 			{
@@ -794,7 +792,7 @@ final class XMLSchemaConverter<A>
 
 	private void convertAttributeGroups() throws AbortException
 	{
-		for (final XMLAttributeGroup<A> source : m_inCache.m_attributeGroups.values())
+		for (final XMLAttributeGroup source : m_inCache.m_attributeGroups.values())
 		{
 			try
 			{
@@ -809,7 +807,7 @@ final class XMLSchemaConverter<A>
 
 	private void convertAttributes() throws AbortException
 	{
-		for (final XMLAttribute<A> source : m_inCache.m_attributes.values())
+		for (final XMLAttribute source : m_inCache.m_attributes.values())
 		{
 			try
 			{
@@ -822,16 +820,16 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private AttributeUse<A> convertAttributeUse(final XMLAttributeUse<A> xmlAttributeUse) throws AbortException, SchemaException
+	private AttributeUse convertAttributeUse(final XMLAttributeUse xmlAttributeUse) throws AbortException, SchemaException
 	{
-		final AttributeDefinition<A> attribute = convertAttribute(xmlAttributeUse.getDeclaration());
-		final AttributeUseImpl<A> attributeUse = new AttributeUseImpl<A>(xmlAttributeUse.isRequired(), attribute);
+		final AttributeDefinition attribute = convertAttribute(xmlAttributeUse.getDeclaration());
+		final AttributeUseImpl attributeUse = new AttributeUseImpl(xmlAttributeUse.isRequired(), attribute);
 		if (null != xmlAttributeUse.getValueConstraint())
 		{
-			final Type<A> attributeType = attribute.getType();
-			if (attributeType instanceof SimpleType<?>)
+			final Type attributeType = attribute.getType();
+			if (attributeType instanceof SimpleType)
 			{
-				final SimpleType<A> simpleType = (SimpleType<A>)attributeType;
+				final SimpleType simpleType = (SimpleType)attributeType;
 				try
 				{
 					attributeUse.setValueConstraint(convertValueConstraint(XMLRepresentation.LN_ATTRIBUTE, xmlAttributeUse.getValueConstraint(), simpleType));
@@ -841,7 +839,7 @@ final class XMLSchemaConverter<A>
 					m_errors.error(e);
 				}
 			}
-			else if (attributeType instanceof SimpleUrType<?>)
+			else if (attributeType instanceof SimpleUrType)
 			{
 				// TODO: Do we set the value constraint with xs:untypedAtomic?
 			}
@@ -853,7 +851,7 @@ final class XMLSchemaConverter<A>
 		return attributeUse;
 	}
 
-	private ComplexType<A> convertComplexType(final QName outName, final boolean isAnonymous, final XMLType<A> xmlComplexType) throws AbortException, SchemaException
+	private ComplexType convertComplexType(final QName outName, final boolean isAnonymous, final XMLType xmlComplexType) throws AbortException, SchemaException
 	{
 		final ScopeExtent scope = convertScope(xmlComplexType.getScope());
 		if (scope == ScopeExtent.Global)
@@ -876,19 +874,19 @@ final class XMLSchemaConverter<A>
 		try
 		{
 
-			final Map<QName, AttributeUse<A>> attributeUses = computeAttributeUses(xmlComplexType);
-			final Type<A> baseType = convertType(xmlComplexType.getBaseRef());
+			final Map<QName, AttributeUse> attributeUses = computeAttributeUses(xmlComplexType);
+			final Type baseType = convertType(xmlComplexType.getBaseRef());
 
 			// Constructing and registering the complex type allows it to be
 			// referenced in the {content type} property.
-			final ComplexTypeImpl<A> complexType;
+			final ComplexTypeImpl complexType;
 			if (null != attributeUses)
 			{
-				complexType = new ComplexTypeImpl<A>(outName, false, isAnonymous, scope, baseType, xmlComplexType.getDerivationMethod(), attributeUses, EMPTY_CONTENT, xmlComplexType.getBlock(), nameBridge, m_existingCache);
+				complexType = new ComplexTypeImpl(outName, false, isAnonymous, scope, baseType, xmlComplexType.getDerivationMethod(), attributeUses, EMPTY_CONTENT, xmlComplexType.getBlock(), nameBridge, m_existingCache);
 			}
 			else
 			{
-				complexType = new ComplexTypeImpl<A>(outName, false, isAnonymous, scope, baseType, xmlComplexType.getDerivationMethod(), null, EMPTY_CONTENT, xmlComplexType.getBlock(), nameBridge, m_existingCache);
+				complexType = new ComplexTypeImpl(outName, false, isAnonymous, scope, baseType, xmlComplexType.getDerivationMethod(), null, EMPTY_CONTENT, xmlComplexType.getBlock(), nameBridge, m_existingCache);
 			}
 			m_outBag.add(complexType);
 			m_locations.m_complexTypeLocations.put(complexType, xmlComplexType.getLocation());
@@ -927,14 +925,14 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private ContentType<A> convertContentType(final XMLType<A> xmlComplexType) throws AbortException, SchemaException
+	private ContentType convertContentType(final XMLType xmlComplexType) throws AbortException, SchemaException
 	{
 		final DerivationMethod derivation = xmlComplexType.getDerivationMethod();
 
 		if (xmlComplexType.m_contentKind.isComplex())
 		{
 			final boolean mixed = xmlComplexType.m_contentKind.isMixed();
-			final ModelGroupUse<A> effectiveContent = effectiveContent(mixed, xmlComplexType.m_contentModel);
+			final ModelGroupUse effectiveContent = effectiveContent(mixed, xmlComplexType.m_contentModel);
 			if (derivation.isRestriction())
 			{
 				if (null == effectiveContent)
@@ -945,7 +943,7 @@ final class XMLSchemaConverter<A>
 				{
 					if (mixed)
 					{
-						return new ContentTypeImpl<A>(mixed, effectiveContent);
+						return new ContentTypeImpl(mixed, effectiveContent);
 					}
 					else
 					{
@@ -955,25 +953,25 @@ final class XMLSchemaConverter<A>
 						}
 						else
 						{
-							return new ContentTypeImpl<A>(mixed, effectiveContent);
+							return new ContentTypeImpl(mixed, effectiveContent);
 						}
 					}
 				}
 			}
 			else if (derivation.isExtension())
 			{
-				final Type<A> typeB = convertType(xmlComplexType.getBaseRef());
-				if (typeB instanceof ComplexType<?>)
+				final Type typeB = convertType(xmlComplexType.getBaseRef());
+				if (typeB instanceof ComplexType)
 				{
-					final ComplexType<A> complexTypeB = (ComplexType<A>)typeB;
-					final ContentType<A> contentTypeB = complexTypeB.getContentType();
+					final ComplexType complexTypeB = (ComplexType)typeB;
+					final ContentType contentTypeB = complexTypeB.getContentType();
 					if (null == effectiveContent)
 					{
 						return contentTypeB;
 					}
 					else if (contentTypeB.isEmpty())
 					{
-						return new ContentTypeImpl<A>(mixed, effectiveContent);
+						return new ContentTypeImpl(mixed, effectiveContent);
 					}
 					else if (contentTypeB.isSimple())
 					{
@@ -981,12 +979,12 @@ final class XMLSchemaConverter<A>
 					}
 					else if (contentTypeB.isComplex())
 					{
-						final LinkedList<ModelGroupUse<A>> particles = new LinkedList<ModelGroupUse<A>>();
+						final LinkedList<ModelGroupUse> particles = new LinkedList<ModelGroupUse>();
 						particles.add(contentTypeB.getContentModel());
 						particles.add(effectiveContent);
-						final ModelGroup<A> modelGroup = new ModelGroupImpl<A>(ModelGroup.SmCompositor.Sequence, particles, null, true, ScopeExtent.Local);
-						final ModelGroupUse<A> particle = new ParticleWithModelGroupTerm<A>(1, 1, modelGroup);
-						return new ContentTypeImpl<A>(mixed, particle);
+						final ModelGroup modelGroup = new ModelGroupImpl(ModelGroup.SmCompositor.Sequence, particles, null, true, ScopeExtent.Local);
+						final ModelGroupUse particle = new ParticleWithModelGroupTerm(1, 1, modelGroup);
+						return new ContentTypeImpl(mixed, particle);
 					}
 					else
 					{
@@ -1005,11 +1003,11 @@ final class XMLSchemaConverter<A>
 		}
 		else if (xmlComplexType.m_contentKind.isSimple())
 		{
-			final Type<A> typeB = convertType(xmlComplexType.getBaseRef());
-			if (typeB instanceof ComplexType<?>)
+			final Type typeB = convertType(xmlComplexType.getBaseRef());
+			if (typeB instanceof ComplexType)
 			{
-				final ComplexType<A> complexTypeB = (ComplexType<A>)typeB;
-				final ContentType<A> contentTypeB = complexTypeB.getContentType();
+				final ComplexType complexTypeB = (ComplexType)typeB;
+				final ContentType contentTypeB = complexTypeB.getContentType();
 				if (contentTypeB.isSimple())
 				{
 					if (derivation.isRestriction())
@@ -1031,13 +1029,13 @@ final class XMLSchemaConverter<A>
 					{
 						if (contentTypeB.isMixed())
 						{
-							final ModelGroupUse<A> contentModelB = contentTypeB.getContentModel();
+							final ModelGroupUse contentModelB = contentTypeB.getContentModel();
 							if (contentModelB.isEmptiable())
 							{
-								final XMLTypeRef<A> simpleType = xmlComplexType.simpleType.getBaseRef();
+								final XMLTypeRef simpleType = xmlComplexType.simpleType.getBaseRef();
 								if (null != simpleType)
 								{
-									final SimpleType<A> simpleBaseType = extractSimpleType(simpleType);
+									final SimpleType simpleBaseType = extractSimpleType(simpleType);
 									return simpleContent(xmlComplexType.simpleType, simpleBaseType);
 								}
 								else
@@ -1065,16 +1063,16 @@ final class XMLSchemaConverter<A>
 					}
 				}
 			}
-			else if (typeB instanceof SimpleType<?>)
+			else if (typeB instanceof SimpleType)
 			{
-				final SimpleType<A> simpleTypeB = (SimpleType<A>)typeB;
+				final SimpleType simpleTypeB = (SimpleType)typeB;
 				if (derivation.isExtension())
 				{
-					return new ContentTypeImpl<A>(simpleTypeB);
+					return new ContentTypeImpl(simpleTypeB);
 				}
 				else if (derivation.isRestriction())
 				{
-					return new ContentTypeImpl<A>(simpleTypeB);
+					return new ContentTypeImpl(simpleTypeB);
 				}
 				else
 				{
@@ -1092,7 +1090,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private ElementDefinition<A> convertElement(final XMLElement<A> xmlElement) throws SchemaException, AbortException
+	private ElementDefinition convertElement(final XMLElement xmlElement) throws SchemaException, AbortException
 	{
 		final QName name = PreCondition.assertArgumentNotNull(xmlElement.getName(), "name");
 		final ScopeExtent scope = convertScope(xmlElement.getScope());
@@ -1115,7 +1113,7 @@ final class XMLSchemaConverter<A>
 				m_cycles.elements.push(xmlElement);
 			}
 		}
-		final ElementDeclTypeImpl<A> element;
+		final ElementDeclTypeImpl element;
 		try
 		{
 			PreCondition.assertArgumentNotNull(xmlElement.typeRef, "{type definition} of " + name);
@@ -1125,20 +1123,20 @@ final class XMLSchemaConverter<A>
 			// {name}, {target namespace} and {scope} are set here. We set the
 			// {type definition} and other
 			// properties outside of the scope for checking cycles.
-			final ComplexUrType<A> anyType = m_existingCache.getComplexUrType();
-			element = new ElementDeclTypeImpl<A>(name, scope, anyType);
+			final ComplexUrType anyType = m_existingCache.getComplexUrType();
+			element = new ElementDeclTypeImpl(name, scope, anyType);
 
 			// {substitution group affiliation}
 			if (null != xmlElement.substitutionGroup)
 			{
 				// TODO: Would be nice to avoid this downcast. Maybe by using name for group head?
-				final ElementDeclTypeImpl<A> substitutionGroupHead = (ElementDeclTypeImpl<A>)convertElement(xmlElement.substitutionGroup);
+				final ElementDeclTypeImpl substitutionGroupHead = (ElementDeclTypeImpl)convertElement(xmlElement.substitutionGroup);
 				element.setSubstitutionGroup(substitutionGroupHead);
 				substitutionGroupHead.addSubstitutionGroupMember(element);
 			}
 
 			// {identity-constraint definitions}
-			for (final XMLIdentityConstraint<A> constraint : xmlElement.getIdentityConstraints())
+			for (final XMLIdentityConstraint constraint : xmlElement.getIdentityConstraints())
 			{
 				element.addIdentityConstraint(convertIdentityConstraint(constraint));
 			}
@@ -1166,9 +1164,9 @@ final class XMLSchemaConverter<A>
 		// {value constraint}
 		if (null != xmlElement.m_valueConstraint)
 		{
-			if (element.getType() instanceof SimpleType<?>)
+			if (element.getType() instanceof SimpleType)
 			{
-				final SimpleType<A> elementType = (SimpleType<A>)element.getType();
+				final SimpleType elementType = (SimpleType)element.getType();
 				try
 				{
 					element.setValueConstraint(convertValueConstraint(XMLRepresentation.LN_ELEMENT, xmlElement.m_valueConstraint, elementType));
@@ -1178,13 +1176,13 @@ final class XMLSchemaConverter<A>
 					m_errors.error(e);
 				}
 			}
-			else if (element.getType() instanceof ComplexType<?>)
+			else if (element.getType() instanceof ComplexType)
 			{
-				final ComplexType<A> elementType = (ComplexType<A>)element.getType();
-				final ContentType<A> contentType = elementType.getContentType();
+				final ComplexType elementType = (ComplexType)element.getType();
+				final ContentType contentType = elementType.getContentType();
 				if (contentType.isSimple())
 				{
-					final SimpleType<A> simpleType = contentType.getSimpleType();
+					final SimpleType simpleType = contentType.getSimpleType();
 					try
 					{
 						element.setValueConstraint(convertValueConstraint(XMLRepresentation.LN_ELEMENT, xmlElement.m_valueConstraint, simpleType));
@@ -1197,8 +1195,8 @@ final class XMLSchemaConverter<A>
 				else
 				{
 					final String initialValue = xmlElement.m_valueConstraint.getValue();
-					final List<A> actualValue = atomBridge.wrapAtom(atomBridge.createUntypedAtomic(initialValue));
-					element.setValueConstraint(new ValueConstraint<A>(xmlElement.m_valueConstraint.kind, actualValue, initialValue));
+					final List actualValue = atomBridge.wrapAtom(atomBridge.createUntypedAtomic(initialValue));
+					element.setValueConstraint(new ValueConstraint(xmlElement.m_valueConstraint.kind, actualValue, initialValue));
 				}
 			}
 			else
@@ -1230,7 +1228,7 @@ final class XMLSchemaConverter<A>
 
 	private void convertElements() throws AbortException
 	{
-		for (final XMLElement<A> source : m_inCache.m_elements.values())
+		for (final XMLElement source : m_inCache.m_elements.values())
 		{
 			try
 			{
@@ -1243,55 +1241,55 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SchemaParticle<A> convertElementUse(final XMLParticleWithElementTerm<A> particle) throws SchemaException, AbortException
+	private SchemaParticle convertElementUse(final XMLParticleWithElementTerm particle) throws SchemaException, AbortException
 	{
-		final XMLElement<A> xmlElement = particle.getTerm();
-		final ElementDefinition<A> element = convertElement(xmlElement);
+		final XMLElement xmlElement = particle.getTerm();
+		final ElementDefinition element = convertElement(xmlElement);
 
-		final ParticleWithElementTerm<A> elementUse;
+		final ParticleWithElementTerm elementUse;
 		if (isMaxOccursUnbounded(particle.getMaxOccurs()))
 		{
 			final int minOccurs = minOccurs(particle.getMinOccurs());
-			elementUse = new ParticleWithElementTerm<A>(minOccurs, element);
+			elementUse = new ParticleWithElementTerm(minOccurs, element);
 		}
 		else
 		{
 			final int minOccurs = minOccurs(particle.getMinOccurs());
 			final int maxOccurs = maxOccurs(particle.getMaxOccurs());
-			elementUse = new ParticleWithElementTerm<A>(minOccurs, maxOccurs, element);
+			elementUse = new ParticleWithElementTerm(minOccurs, maxOccurs, element);
 		}
 		m_locations.m_particleLocations.put(elementUse, particle.getLocation());
 		if (null != particle.valueConstraint)
 		{
-			final ValueConstraint<A> valueConstraint = convertElementValueConstraint(particle.valueConstraint, element.getType());
+			final ValueConstraint valueConstraint = convertElementValueConstraint(particle.valueConstraint, element.getType());
 			elementUse.setValueConstraint(valueConstraint);
 		}
 		return elementUse;
 	}
 
-	private ValueConstraint<A> convertElementValueConstraint(final XMLValueConstraint xmlValueConstraint, final Type<A> type) throws SchemaException
+	private ValueConstraint convertElementValueConstraint(final XMLValueConstraint xmlValueConstraint, final Type type) throws SchemaException
 	{
 		if (null != xmlValueConstraint)
 		{
-			if (type instanceof SimpleType<?>)
+			if (type instanceof SimpleType)
 			{
-				final SimpleType<A> simpleType = (SimpleType<A>)type;
+				final SimpleType simpleType = (SimpleType)type;
 				return convertValueConstraint(XMLRepresentation.LN_ELEMENT, xmlValueConstraint, simpleType);
 			}
-			else if (type instanceof ComplexType<?>)
+			else if (type instanceof ComplexType)
 			{
-				final ComplexType<A> elementType = (ComplexType<A>)type;
-				final ContentType<A> contentType = elementType.getContentType();
+				final ComplexType elementType = (ComplexType)type;
+				final ContentType contentType = elementType.getContentType();
 				if (contentType.isSimple())
 				{
-					final SimpleType<A> simpleType = contentType.getSimpleType();
+					final SimpleType simpleType = contentType.getSimpleType();
 					return convertValueConstraint(XMLRepresentation.LN_ELEMENT, xmlValueConstraint, simpleType);
 				}
 				else
 				{
 					final String initialValue = xmlValueConstraint.getValue();
-					final List<A> actualValue = atomBridge.wrapAtom(atomBridge.createUntypedAtomic(initialValue));
-					return new ValueConstraint<A>(xmlValueConstraint.kind, actualValue, initialValue);
+					final List actualValue = atomBridge.wrapAtom(atomBridge.createUntypedAtomic(initialValue));
+					return new ValueConstraint(xmlValueConstraint.kind, actualValue, initialValue);
 				}
 			}
 			else
@@ -1305,7 +1303,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private IdentityConstraint<A> convertIdentityConstraint(final XMLIdentityConstraint<A> xmlConstraint) throws SchemaException
+	private IdentityConstraint convertIdentityConstraint(final XMLIdentityConstraint xmlConstraint) throws SchemaException
 	{
 		final QName name = xmlConstraint.getName();
 		if (m_outBag.hasIdentityConstraint(name))
@@ -1325,15 +1323,15 @@ final class XMLSchemaConverter<A>
 		{
 			if (null == xmlConstraint.keyConstraint)
 			{
-				final IdentityConstraint<A> constraint = new IdentityConstraintImpl<A>(name, xmlConstraint.category, xmlConstraint.selector, xmlConstraint.fields, null);
+				final IdentityConstraint constraint = new IdentityConstraintImpl(name, xmlConstraint.category, xmlConstraint.selector, xmlConstraint.fields, null);
 				m_outBag.add(constraint);
 				m_locations.m_constraintLocations.put(constraint, xmlConstraint.getLocation());
 				return constraint;
 			}
 			else
 			{
-				final IdentityConstraint<A> keyConstraint = convertIdentityConstraint(xmlConstraint.keyConstraint);
-				final IdentityConstraint<A> constraint = new IdentityConstraintImpl<A>(name, xmlConstraint.category, xmlConstraint.selector, xmlConstraint.fields, keyConstraint);
+				final IdentityConstraint keyConstraint = convertIdentityConstraint(xmlConstraint.keyConstraint);
+				final IdentityConstraint constraint = new IdentityConstraintImpl(name, xmlConstraint.category, xmlConstraint.selector, xmlConstraint.fields, keyConstraint);
 				m_outBag.add(constraint);
 				m_locations.m_constraintLocations.put(constraint, xmlConstraint.getLocation());
 				return constraint;
@@ -1347,7 +1345,7 @@ final class XMLSchemaConverter<A>
 
 	private void convertIdentityConstraints() throws AbortException
 	{
-		for (final XMLIdentityConstraint<A> source : m_inCache.m_constraints.values())
+		for (final XMLIdentityConstraint source : m_inCache.m_constraints.values())
 		{
 			try
 			{
@@ -1360,16 +1358,16 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SimpleType<A> convertItemType(final QName simpleType, final XMLTypeRef<A> typeRef) throws AbortException, SchemaException
+	private SimpleType convertItemType(final QName simpleType, final XMLTypeRef typeRef) throws AbortException, SchemaException
 	{
-		final Type<A> itemType = convertType(typeRef);
+		final Type itemType = convertType(typeRef);
 		if (itemType.isAtomicType())
 		{
-			return (SimpleType<A>)itemType;
+			return (SimpleType)itemType;
 		}
-		else if (itemType instanceof UnionSimpleType<?>)
+		else if (itemType instanceof UnionSimpleType)
 		{
-			return (UnionSimpleType<A>)itemType;
+			return (UnionSimpleType)itemType;
 		}
 		else
 		{
@@ -1377,28 +1375,28 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SimpleType<A> convertMemberType(final QName simpleType, final XMLTypeRef<A> typeRef) throws AbortException, SchemaException
+	private SimpleType convertMemberType(final QName simpleType, final XMLTypeRef typeRef) throws AbortException, SchemaException
 	{
-		final Type<A> memberType = convertType(typeRef);
+		final Type memberType = convertType(typeRef);
 		if (memberType.isAtomicType())
 		{
-			return (SimpleType<A>)memberType;
+			return (SimpleType)memberType;
 		}
-		else if (memberType instanceof ListSimpleType<?>)
+		else if (memberType instanceof ListSimpleType)
 		{
-			return (ListSimpleType<A>)memberType;
+			return (ListSimpleType)memberType;
 		}
-		else if (memberType instanceof SimpleType<?>)
+		else if (memberType instanceof SimpleType)
 		{
 			if (memberType.isSimpleUrType())
 			{
-				return (SimpleType<A>)memberType;
+				return (SimpleType)memberType;
 			}
 		}
 		throw new SccMemberTypeMustBeAtomicOrListException(simpleType);
 	}
 
-	private ModelGroup<A> convertModelGroup(final XMLModelGroup<A> xmlModelGroup) throws AbortException, SchemaException
+	private ModelGroup convertModelGroup(final XMLModelGroup xmlModelGroup) throws AbortException, SchemaException
 	{
 		final ScopeExtent scope = convertScope(xmlModelGroup.getScope());
 		final QName name;
@@ -1433,22 +1431,22 @@ final class XMLSchemaConverter<A>
 		try
 		{
 			final ModelGroup.SmCompositor compositor = xmlModelGroup.getCompositor();
-			final LinkedList<SchemaParticle<A>> particles = new LinkedList<SchemaParticle<A>>();
-			for (final XMLParticle<A> xmlParticle : xmlModelGroup.getParticles())
+			final LinkedList<SchemaParticle> particles = new LinkedList<SchemaParticle>();
+			for (final XMLParticle xmlParticle : xmlModelGroup.getParticles())
 			{
 				try
 				{
-					if (xmlParticle instanceof XMLParticleWithModelGroupTerm<?>)
+					if (xmlParticle instanceof XMLParticleWithModelGroupTerm)
 					{
-						particles.add(convertModelGroupUse((XMLParticleWithModelGroupTerm<A>)xmlParticle));
+						particles.add(convertModelGroupUse((XMLParticleWithModelGroupTerm)xmlParticle));
 					}
-					else if (xmlParticle instanceof XMLParticleWithElementTerm<?>)
+					else if (xmlParticle instanceof XMLParticleWithElementTerm)
 					{
-						particles.add(convertElementUse((XMLParticleWithElementTerm<A>)xmlParticle));
+						particles.add(convertElementUse((XMLParticleWithElementTerm)xmlParticle));
 					}
-					else if (xmlParticle instanceof XMLParticleWithWildcardTerm<?>)
+					else if (xmlParticle instanceof XMLParticleWithWildcardTerm)
 					{
-						particles.add(convertWildcardUse((XMLParticleWithWildcardTerm<A>)xmlParticle));
+						particles.add(convertWildcardUse((XMLParticleWithWildcardTerm)xmlParticle));
 					}
 					else
 					{
@@ -1461,7 +1459,7 @@ final class XMLSchemaConverter<A>
 					m_errors.error(e);
 				}
 			}
-			final ModelGroup<A> modelGroup = new ModelGroupImpl<A>(compositor, particles, name, isAnonymous, scope);
+			final ModelGroup modelGroup = new ModelGroupImpl(compositor, particles, name, isAnonymous, scope);
 			if (modelGroup.getScopeExtent() == ScopeExtent.Global)
 			{
 				m_outBag.add(modelGroup);
@@ -1480,7 +1478,7 @@ final class XMLSchemaConverter<A>
 
 	private void convertModelGroups() throws AbortException
 	{
-		for (final XMLModelGroup<A> source : m_inCache.m_modelGroups.values())
+		for (final XMLModelGroup source : m_inCache.m_modelGroups.values())
 		{
 			try
 			{
@@ -1493,29 +1491,29 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private ModelGroupUse<A> convertModelGroupUse(final XMLParticleWithModelGroupTerm<A> particle) throws AbortException, SchemaException
+	private ModelGroupUse convertModelGroupUse(final XMLParticleWithModelGroupTerm particle) throws AbortException, SchemaException
 	{
-		final ModelGroup<A> modelGroup = convertModelGroup(particle.getTerm());
+		final ModelGroup modelGroup = convertModelGroup(particle.getTerm());
 
-		final ModelGroupUse<A> modelGroupUse;
+		final ModelGroupUse modelGroupUse;
 		if (isMaxOccursUnbounded(particle.getMaxOccurs()))
 		{
 			final int minOccurs = minOccurs(particle.getMinOccurs());
-			modelGroupUse = new ParticleWithModelGroupTerm<A>(minOccurs, modelGroup);
+			modelGroupUse = new ParticleWithModelGroupTerm(minOccurs, modelGroup);
 		}
 		else
 		{
 			final int minOccurs = minOccurs(particle.getMinOccurs());
 			final int maxOccurs = maxOccurs(particle.getMaxOccurs());
-			modelGroupUse = new ParticleWithModelGroupTerm<A>(minOccurs, maxOccurs, modelGroup);
+			modelGroupUse = new ParticleWithModelGroupTerm(minOccurs, maxOccurs, modelGroup);
 		}
 		m_locations.m_particleLocations.put(modelGroupUse, particle.getLocation());
 		return modelGroupUse;
 	}
 
-	private NotationDefinition<A> convertNotation(final XMLNotation<A> xmlNotation)
+	private NotationDefinition convertNotation(final XMLNotation xmlNotation)
 	{
-		final NotationDefinition<A> notation = new NotationImpl<A>(xmlNotation.getName(), xmlNotation.publicId, xmlNotation.systemId);
+		final NotationDefinition notation = new NotationImpl(xmlNotation.getName(), xmlNotation.publicId, xmlNotation.systemId);
 		m_outBag.add(notation);
 		m_locations.m_notationLocations.put(notation, xmlNotation.getLocation());
 		return notation;
@@ -1523,13 +1521,13 @@ final class XMLSchemaConverter<A>
 
 	private void convertNotations()
 	{
-		for (final XMLNotation<A> source : m_inCache.m_notations.values())
+		for (final XMLNotation source : m_inCache.m_notations.values())
 		{
 			convertNotation(source);
 		}
 	}
 
-	private ScopeExtent convertScope(final XMLScope<A> scope)
+	private ScopeExtent convertScope(final XMLScope scope)
 	{
 		PreCondition.assertArgumentNotNull(scope, "scope");
 
@@ -1539,7 +1537,7 @@ final class XMLSchemaConverter<A>
 	/**
 	 * Applies the Schema Component Constraints to this Simple Type.
 	 */
-	private SimpleType<A> convertSimpleType(final QName name, final boolean isAnonymous, final XMLType<A> xmlSimpleType) throws AbortException, SchemaException
+	private SimpleType convertSimpleType(final QName name, final boolean isAnonymous, final XMLType xmlSimpleType) throws AbortException, SchemaException
 	{
 		PreCondition.assertTrue(xmlSimpleType.isSimple(), "expecting a simple type for " + name);
 
@@ -1563,7 +1561,7 @@ final class XMLSchemaConverter<A>
 		}
 		try
 		{
-			final SimpleType<A> simpleBaseType;
+			final SimpleType simpleBaseType;
 			if (null != xmlSimpleType.getBaseRef())
 			{
 				simpleBaseType = convertSimpleTypeBase(name, xmlSimpleType.getBaseRef());
@@ -1573,25 +1571,25 @@ final class XMLSchemaConverter<A>
 				simpleBaseType = convertSimpleTypeBase(name, xmlSimpleType.getScope().getType().getBaseRef());
 			}
 
-			final SimpleTypeImpl<A> simpleType;
+			final SimpleTypeImpl simpleType;
 			final DerivationMethod derivation = PreCondition.assertNotNull(xmlSimpleType.getDerivationMethod(), "{type definition} with base " + simpleBaseType.getName());
 			final WhiteSpacePolicy whiteSpace = xmlSimpleType.getWhiteSpacePolicy();
 			if (derivation.isUnion())
 			{
-				final LinkedList<SimpleType<A>> memberTypes = new LinkedList<SimpleType<A>>();
-				for (final XMLTypeRef<A> memberRef : xmlSimpleType.memberRefs)
+				final LinkedList<SimpleType> memberTypes = new LinkedList<SimpleType>();
+				for (final XMLTypeRef memberRef : xmlSimpleType.memberRefs)
 				{
-					final SimpleType<A> memberType = convertMemberType(name, memberRef);
+					final SimpleType memberType = convertMemberType(name, memberRef);
 					memberTypes.add(memberType);
 				}
-				simpleType = new UnionTypeImpl<A>(name, isAnonymous, scope, simpleBaseType, memberTypes, whiteSpace, atomBridge);
+				simpleType = new UnionTypeImpl(name, isAnonymous, scope, simpleBaseType, memberTypes, whiteSpace);
 				m_outBag.add(simpleType);
 				m_locations.m_simpleTypeLocations.put(simpleType, xmlSimpleType.getLocation());
 			}
 			else if (derivation.isList())
 			{
-				final SimpleType<A> itemType = convertItemType(name, xmlSimpleType.itemRef);
-				simpleType = new ListTypeImpl<A>(name, isAnonymous, scope, itemType, simpleBaseType, whiteSpace, atomBridge);
+				final SimpleType itemType = convertItemType(name, xmlSimpleType.itemRef);
+				simpleType = new ListTypeImpl(name, isAnonymous, scope, itemType, simpleBaseType, whiteSpace);
 				m_outBag.add(simpleType);
 				m_locations.m_simpleTypeLocations.put(simpleType, xmlSimpleType.getLocation());
 			}
@@ -1617,12 +1615,12 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SimpleType<A> convertSimpleTypeBase(final QName simpleType, final XMLTypeRef<A> baseRef) throws AbortException, SchemaException
+	private SimpleType convertSimpleTypeBase(final QName simpleType, final XMLTypeRef baseRef) throws AbortException, SchemaException
 	{
-		final Type<A> baseType = convertType(baseRef);
-		if (baseType instanceof SimpleType<?>)
+		final Type baseType = convertType(baseRef);
+		if (baseType instanceof SimpleType)
 		{
-			return (SimpleType<A>)baseType;
+			return (SimpleType)baseType;
 		}
 		else
 		{
@@ -1630,7 +1628,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private Type<A> convertType(final QName name, final boolean isAnonymous) throws SchemaException, AbortException
+	private Type convertType(final QName name, final boolean isAnonymous) throws SchemaException, AbortException
 	{
 		if (m_outBag.hasSimpleType(name))
 		{
@@ -1644,7 +1642,7 @@ final class XMLSchemaConverter<A>
 		{
 			if (m_inCache.m_globalTypes.containsKey(name))
 			{
-				final XMLType<A> type = m_inCache.m_globalTypes.get(name);
+				final XMLType type = m_inCache.m_globalTypes.get(name);
 				if (type.isSimple())
 				{
 					return convertSimpleType(name, isAnonymous, type);
@@ -1673,7 +1671,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private Type<A> convertType(final QName name, final boolean isAnonymous, final XMLType<A> type) throws AbortException, SchemaException
+	private Type convertType(final QName name, final boolean isAnonymous, final XMLType type) throws AbortException, SchemaException
 	{
 		if (type.isSimple())
 		{
@@ -1689,7 +1687,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private Type<A> convertType(final XMLTypeRef<A> typeRef) throws AbortException, SchemaException
+	private Type convertType(final XMLTypeRef typeRef) throws AbortException, SchemaException
 	{
 		if (typeRef.isGlobal())
 		{
@@ -1703,7 +1701,7 @@ final class XMLSchemaConverter<A>
 
 	private void convertTypes() throws AbortException
 	{
-		for (final XMLType<A> sourceType : m_inCache.m_globalTypes.values())
+		for (final XMLType sourceType : m_inCache.m_globalTypes.values())
 		{
 			// {name} is known because the type is global.
 			final QName name = sourceType.getName();
@@ -1730,15 +1728,15 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private ValueConstraint<A> convertValueConstraint(final String elementName, final XMLValueConstraint xmlValueConstraint, final SimpleType<A> simpleType) throws SchemaException
+	private ValueConstraint convertValueConstraint(final String elementName, final XMLValueConstraint xmlValueConstraint, final SimpleType simpleType) throws SchemaException
 	{
 		if (null != xmlValueConstraint)
 		{
 			final String initialValue = xmlValueConstraint.getValue();
 			try
 			{
-				final List<A> value = simpleType.validate(initialValue);
-				return new ValueConstraint<A>(xmlValueConstraint.kind, value, initialValue);
+				final List value = simpleType.validate(initialValue);
+				return new ValueConstraint(xmlValueConstraint.kind, value, initialValue);
 			}
 			catch (final DatatypeException dte)
 			{
@@ -1752,11 +1750,11 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SchemaWildcard<A> convertWildcard(final XMLWildcard<A> wildcard)
+	private SchemaWildcard convertWildcard(final XMLWildcard wildcard)
 	{
 		if (null != wildcard)
 		{
-			return new WildcardImpl<A>(wildcard.getProcessContents(), convert(wildcard.getNamespaceConstraint()));
+			return new WildcardImpl(wildcard.getProcessContents(), convert(wildcard.getNamespaceConstraint()));
 		}
 		else
 		{
@@ -1764,47 +1762,47 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SchemaParticle<A> convertWildcardUse(final XMLParticleWithWildcardTerm<A> particle) throws SicOversizedIntegerException
+	private SchemaParticle convertWildcardUse(final XMLParticleWithWildcardTerm particle) throws SicOversizedIntegerException
 	{
-		final SchemaWildcard<A> wildcard = convertWildcard(particle.getTerm());
+		final SchemaWildcard wildcard = convertWildcard(particle.getTerm());
 
-		final WildcardUse<A> wildcardUse;
+		final WildcardUse wildcardUse;
 		if (isMaxOccursUnbounded(particle.getMaxOccurs()))
 		{
 			final int minOccurs = minOccurs(particle.getMinOccurs());
-			wildcardUse = new ParticleWithWildcardTerm<A>(minOccurs, wildcard);
+			wildcardUse = new ParticleWithWildcardTerm(minOccurs, wildcard);
 		}
 		else
 		{
 			final int minOccurs = minOccurs(particle.getMinOccurs());
 			final int maxOccurs = maxOccurs(particle.getMaxOccurs());
-			wildcardUse = new ParticleWithWildcardTerm<A>(minOccurs, maxOccurs, wildcard);
+			wildcardUse = new ParticleWithWildcardTerm(minOccurs, maxOccurs, wildcard);
 		}
 		m_locations.m_particleLocations.put(wildcardUse, particle.getLocation());
 		return wildcardUse;
 	}
 
-	private SimpleTypeImpl<A> deriveSimpleType(final QName name, final boolean isAnonymous, final ScopeExtent scope, final SimpleType<A> simpleBaseType, final WhiteSpacePolicy whiteSpace, final SrcFrozenLocation location) throws SchemaException
+	private SimpleTypeImpl deriveSimpleType(final QName name, final boolean isAnonymous, final ScopeExtent scope, final SimpleType simpleBaseType, final WhiteSpacePolicy whiteSpace, final SrcFrozenLocation location) throws SchemaException
 	{
-		final SimpleTypeImpl<A> simpleType;
+		final SimpleTypeImpl simpleType;
 		if (simpleBaseType.isAtomicType())
 		{
-			final AtomicType<A> atomicBaseType = (AtomicType<A>)simpleBaseType;
-			simpleType = new AtomicTypeImpl<A>(name, isAnonymous, scope, atomicBaseType, whiteSpace, atomBridge);
+			final AtomicType atomicBaseType = (AtomicType)simpleBaseType;
+			simpleType = new AtomicTypeImpl(name, isAnonymous, scope, atomicBaseType, whiteSpace);
 			m_outBag.add(simpleType);
 			m_locations.m_simpleTypeLocations.put(simpleType, location);
 		}
-		else if (simpleBaseType instanceof ListSimpleType<?>)
+		else if (simpleBaseType instanceof ListSimpleType)
 		{
-			final ListSimpleType<A> listBaseListType = (ListSimpleType<A>)simpleBaseType;
-			simpleType = new ListTypeImpl<A>(name, isAnonymous, scope, listBaseListType.getItemType(), simpleBaseType, whiteSpace, atomBridge);
+			final ListSimpleType listBaseListType = (ListSimpleType)simpleBaseType;
+			simpleType = new ListTypeImpl(name, isAnonymous, scope, listBaseListType.getItemType(), simpleBaseType, whiteSpace);
 			m_outBag.add(simpleType);
 			m_locations.m_simpleTypeLocations.put(simpleType, location);
 		}
-		else if (simpleBaseType instanceof UnionSimpleType<?>)
+		else if (simpleBaseType instanceof UnionSimpleType)
 		{
-			final UnionSimpleType<A> unionBaseType = (UnionSimpleType<A>)simpleBaseType;
-			simpleType = new UnionTypeImpl<A>(name, isAnonymous, scope, simpleBaseType, unionBaseType.getMemberTypes(), whiteSpace, atomBridge);
+			final UnionSimpleType unionBaseType = (UnionSimpleType)simpleBaseType;
+			simpleType = new UnionTypeImpl(name, isAnonymous, scope, simpleBaseType, unionBaseType.getMemberTypes(), whiteSpace);
 			m_outBag.add(simpleType);
 			m_locations.m_simpleTypeLocations.put(simpleType, location);
 		}
@@ -1819,15 +1817,15 @@ final class XMLSchemaConverter<A>
 		return simpleType;
 	}
 
-	private ModelGroupUse<A> effectiveContent(final boolean mixed, final XMLParticleWithModelGroupTerm<A> contentModel) throws AbortException, SchemaException
+	private ModelGroupUse effectiveContent(final boolean mixed, final XMLParticleWithModelGroupTerm contentModel) throws AbortException, SchemaException
 	{
 		if (null == contentModel)
 		{
 			if (mixed)
 			{
-				final List<SchemaParticle<A>> particles = Collections.emptyList();
-				final ModelGroup<A> modelGroup = new ModelGroupImpl<A>(ModelGroup.SmCompositor.Sequence, particles, null, true, ScopeExtent.Local);
-				return new ParticleWithModelGroupTerm<A>(1, 1, modelGroup);
+				final List<SchemaParticle> particles = Collections.emptyList();
+				final ModelGroup modelGroup = new ModelGroupImpl(ModelGroup.SmCompositor.Sequence, particles, null, true, ScopeExtent.Local);
+				return new ParticleWithModelGroupTerm(1, 1, modelGroup);
 			}
 			else
 			{
@@ -1840,21 +1838,21 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private EnumerationDefinition<A> enumeration(final SimpleType<A> type, final SimpleType<A> baseType, final XMLEnumeration<A> sourceEnum) throws SmAttributeUseException
+	private EnumerationDefinition enumeration(final SimpleType type, final SimpleType baseType, final XMLEnumeration sourceEnum) throws SmAttributeUseException
 	{
 		try
 		{
-			final SimpleType<A> notationType = m_existingCache.getAtomicType(NativeType.NOTATION);
+			final SimpleType notationType = m_existingCache.getAtomicType(NativeType.NOTATION);
 			if (baseType.getName().equals(notationType.getName()) || baseType.derivedFromType(notationType, EnumSet.of(DerivationMethod.Restriction)))
 			{
 				final PrefixResolver resolver = sourceEnum.getPrefixResolver();
-				final List<A> value = baseType.validate(sourceEnum.getValue(), resolver);
-				return new FacetEnumerationImpl<A>(value, atomBridge);
+				final List value = baseType.validate(sourceEnum.getValue(), resolver);
+				return new FacetEnumerationImpl(value);
 			}
 			else
 			{
-				final List<A> value = baseType.validate(sourceEnum.getValue());
-				return new FacetEnumerationImpl<A>(value, atomBridge);
+				final List value = baseType.validate(sourceEnum.getValue());
+				return new FacetEnumerationImpl(value);
 			}
 		}
 		catch (final DatatypeException dte)
@@ -1866,17 +1864,17 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private SimpleType<A> extractSimpleType(final XMLTypeRef<A> typeRef) throws AbortException, SchemaException
+	private SimpleType extractSimpleType(final XMLTypeRef typeRef) throws AbortException, SchemaException
 	{
-		final Type<A> type = convertType(typeRef);
-		if (type instanceof SimpleType<?>)
+		final Type type = convertType(typeRef);
+		if (type instanceof SimpleType)
 		{
-			return (SimpleType<A>)type;
+			return (SimpleType)type;
 		}
-		else if (type instanceof ComplexType<?>)
+		else if (type instanceof ComplexType)
 		{
-			final ComplexType<A> complexType = (ComplexType<A>)type;
-			final ContentType<A> contentType = complexType.getContentType();
+			final ComplexType complexType = (ComplexType)type;
+			final ContentType contentType = complexType.getContentType();
 			if (contentType.isSimple())
 			{
 				return contentType.getSimpleType();
@@ -1896,9 +1894,9 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private Facet<A> fractionDigits(final XMLFractionDigitsFacet<A> xmlFacet) throws SicOversizedIntegerException
+	private Facet fractionDigits(final XMLFractionDigitsFacet xmlFacet) throws SicOversizedIntegerException
 	{
-		return new FacetFractionDigitsImpl<A>(getIntValue(xmlFacet.value), xmlFacet.fixed, atomBridge);
+		return new FacetFractionDigitsImpl(getIntValue(xmlFacet.value), xmlFacet.fixed);
 	}
 
 	/**
@@ -1923,7 +1921,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private Facet<A> length(final XMLLength<A> xmlFacet) throws SicOversizedIntegerException
+	private Facet length(final XMLLength xmlFacet) throws SicOversizedIntegerException
 	{
 		if (xmlFacet.minLength != null)
 		{
@@ -1931,7 +1929,7 @@ final class XMLSchemaConverter<A>
 			{
 				if (xmlFacet.minLength.equals(xmlFacet.maxLength))
 				{
-					return new FacetLengthImpl<A>(getIntValue(xmlFacet.minLength), xmlFacet.fixed, atomBridge);
+					return new FacetLengthImpl(getIntValue(xmlFacet.minLength), xmlFacet.fixed);
 				}
 				else
 				{
@@ -1940,14 +1938,14 @@ final class XMLSchemaConverter<A>
 			}
 			else
 			{
-				return new FacetMinLengthImpl<A>(getIntValue(xmlFacet.minLength), xmlFacet.fixed, atomBridge);
+				return new FacetMinLengthImpl(getIntValue(xmlFacet.minLength), xmlFacet.fixed);
 			}
 		}
 		else
 		{
 			if (xmlFacet.maxLength != null)
 			{
-				return new FacetMaxLengthImpl<A>(getIntValue(xmlFacet.maxLength), xmlFacet.fixed, atomBridge);
+				return new FacetMaxLengthImpl(getIntValue(xmlFacet.maxLength), xmlFacet.fixed);
 			}
 			else
 			{
@@ -1956,7 +1954,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private Limit<A> limit(final A value, final SimpleType<A> simpleType, final FacetKind kind, final boolean isFixed)
+	private Limit limit(final String value, final SimpleType simpleType, final FacetKind kind, final boolean isFixed)
 	{
 		PreCondition.assertArgumentNotNull(value, "value");
 		PreCondition.assertArgumentNotNull(simpleType, "simpleType");
@@ -1964,18 +1962,18 @@ final class XMLSchemaConverter<A>
 
 		if (simpleType.isAtomicType())
 		{
-			return new FacetValueCompImpl<A>(value, kind, simpleType, isFixed, atomBridge);
+			return new FacetValueCompImpl(value, kind, simpleType, isFixed);
 		}
-		else if (simpleType instanceof ListSimpleType<?>)
+		else if (simpleType instanceof ListSimpleType)
 		{
-			final ListSimpleType<A> listType = (ListSimpleType<A>)simpleType;
-			final SimpleType<A> itemType = listType.getItemType();
+			final ListSimpleType listType = (ListSimpleType)simpleType;
+			final SimpleType itemType = listType.getItemType();
 			if (itemType.isAtomicType())
 			{
-				final SimpleType<A> atomicType = (SimpleType<A>)itemType;
-				return new FacetValueCompImpl<A>(value, kind, atomicType, isFixed, atomBridge);
+				final SimpleType atomicType = (SimpleType)itemType;
+				return new FacetValueCompImpl(value, kind, atomicType, isFixed);
 			}
-			else if (itemType instanceof UnionSimpleType<?>)
+			else if (itemType instanceof UnionSimpleType)
 			{
 				throw new UnsupportedOperationException();
 			}
@@ -1985,7 +1983,7 @@ final class XMLSchemaConverter<A>
 				throw new UnsupportedOperationException();
 			}
 		}
-		else if (simpleType instanceof UnionSimpleType<?>)
+		else if (simpleType instanceof UnionSimpleType)
 		{
 			throw new UnsupportedOperationException();
 		}
@@ -1996,35 +1994,34 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private Facet<A> minmax(final XMLMinMaxFacet<A> xmlFacet, final SimpleType<A> baseType) throws SchemaException
+	private Facet minmax(final XMLMinMaxFacet xmlFacet, final SimpleType baseType) throws SchemaException
 	{
-		final List<A> value;
-		{
-			final String initialValue = xmlFacet.value;
-			try
-			{
-				value = baseType.validate(initialValue);
-			}
-			catch (final DatatypeException dte)
-			{
-				final SimpleTypeException ste = new SimpleTypeException(initialValue, baseType, dte);
-				final QName elementName = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, xmlFacet.elementName);
-				final QName attributeName = new QName(XMLRepresentation.LN_VALUE);
-				final SrcFrozenLocation location = xmlFacet.getLocation();
-				throw new SmAttributeUseException(elementName, attributeName, location, ste);
-			}
-		}
-		if (value.size() > 0)
-		{
-			return limit(value.get(0), baseType, xmlFacet.getOperator(), xmlFacet.fixed);
-		}
-		else
-		{
-			return null;
-		}
+//		final List<A> value;
+//		{
+//			final String initialValue = xmlFacet.value;
+//			try
+//			{
+//				value = baseType.validate(initialValue);
+//			}
+//			catch (final DatatypeException dte)
+//			{
+//				final SimpleTypeException ste = new SimpleTypeException(initialValue, baseType, dte);
+//				final QName elementName = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, xmlFacet.elementName);
+//				final QName attributeName = new QName(XMLRepresentation.LN_VALUE);
+//				final SrcFrozenLocation location = xmlFacet.getLocation();
+//				throw new SmAttributeUseException(elementName, attributeName, location, ste);
+//			}
+//		}
+//		if (value.size() > 0)
+//		{
+//			return limit(value.get(0), baseType, xmlFacet.getOperator(), xmlFacet.fixed);
+//		}
+	    if ( (xmlFacet.value != null) && (xmlFacet.value.length() > 0) )
+	        return limit(xmlFacet.value, baseType, xmlFacet.getOperator(), xmlFacet.fixed);
+	    return null;
 	}
 
-	private Pattern pattern(final XMLPatternFacet<A> pattern) throws SmAttributeUseException
+	private Pattern pattern(final XMLPatternFacet pattern) throws SmAttributeUseException
 	{
 		try
 		{
@@ -2048,7 +2045,7 @@ final class XMLSchemaConverter<A>
 		}
 	}
 
-	private ContentType<A> simpleContent(final XMLType<A> simpleType, final SimpleType<A> simpleBaseType) throws AbortException, SchemaException
+	private ContentType simpleContent(final XMLType simpleType, final SimpleType simpleBaseType) throws AbortException, SchemaException
 	{
 		final QName name;
 		final boolean isAnonymous;
@@ -2064,15 +2061,15 @@ final class XMLSchemaConverter<A>
 			isAnonymous = true;
 		}
 		final WhiteSpacePolicy whiteSpace = simpleType.getWhiteSpacePolicy();
-		final SimpleTypeImpl<A> simpleTypeD = deriveSimpleType(name, isAnonymous, scope, simpleBaseType, whiteSpace, simpleType.getLocation());
+		final SimpleTypeImpl simpleTypeD = deriveSimpleType(name, isAnonymous, scope, simpleBaseType, whiteSpace, simpleType.getLocation());
 		computePatterns(simpleType.getPatternFacets(), simpleTypeD);
 		computeFacets(simpleBaseType, simpleType, simpleTypeD);
 		computeEnumerations(simpleBaseType, simpleType, simpleTypeD);
-		return new ContentTypeImpl<A>(simpleTypeD);
+		return new ContentTypeImpl(simpleTypeD);
 	}
 
-	private Facet<A> totalDigits(final XMLTotalDigitsFacet<A> xmlFacet) throws SicOversizedIntegerException
+	private Facet totalDigits(final XMLTotalDigitsFacet xmlFacet) throws SicOversizedIntegerException
 	{
-		return new FacetTotalDigitsImpl<A>(getIntValue(xmlFacet.value), xmlFacet.fixed, atomBridge);
+		return new FacetTotalDigitsImpl(getIntValue(xmlFacet.value), xmlFacet.fixed);
 	}
 }

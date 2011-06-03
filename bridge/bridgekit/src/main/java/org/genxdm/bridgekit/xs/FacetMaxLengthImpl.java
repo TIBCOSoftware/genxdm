@@ -16,20 +16,19 @@
 package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.exceptions.FacetException;
 import org.genxdm.xs.exceptions.FacetMaxLengthException;
 import org.genxdm.xs.facets.FacetKind;
 import org.genxdm.xs.facets.LengthFacetUOM;
 import org.genxdm.xs.facets.MaxLength;
 
-public final class FacetMaxLengthImpl<A> extends FacetLengthCommonImpl<A> implements MaxLength<A>
+public final class FacetMaxLengthImpl extends FacetLengthCommonImpl implements MaxLength
 {
 	private final int maxLength;
 
-	public FacetMaxLengthImpl(final int maxLength, final boolean isFixed, final AtomBridge<A> atomBridge)
+	public FacetMaxLengthImpl(final int maxLength, final boolean isFixed)
 	{
-		super(isFixed, atomBridge, FacetKind.MaxLength);
+		super(isFixed, FacetKind.MaxLength);
 		PreCondition.assertTrue(maxLength >= 0, "maxLength >= 0");
 		this.maxLength = maxLength;
 	}

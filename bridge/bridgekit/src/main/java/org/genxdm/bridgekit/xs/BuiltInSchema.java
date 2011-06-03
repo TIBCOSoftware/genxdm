@@ -23,7 +23,6 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.genxdm.names.NameSource;
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
 import org.genxdm.xs.components.ComponentBag;

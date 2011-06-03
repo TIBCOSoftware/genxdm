@@ -27,7 +27,7 @@ import org.genxdm.xs.facets.TotalDigits;
 import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
 
-public final class FacetTotalDigitsImpl<A> extends FacetImpl<A> implements TotalDigits<A>
+public final class FacetTotalDigitsImpl extends FacetImpl implements TotalDigits
 {
 	private static <A> int totalDigits(final A atom, final AtomBridge<A> atomBridge)
 	{
@@ -191,15 +191,12 @@ public final class FacetTotalDigitsImpl<A> extends FacetImpl<A> implements Total
 		return 1;
 	}
 
-	private final AtomBridge<A> atomBridge;
-
 	private final int totalDigits;
 
-	public FacetTotalDigitsImpl(final int totalDigits, final boolean isFixed, final AtomBridge<A> atomBridge)
+	public FacetTotalDigitsImpl(final int totalDigits, final boolean isFixed)
 	{
 		super(isFixed);
 		this.totalDigits = totalDigits;
-		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
 	}
 
 	public FacetKind getKind()
@@ -212,7 +209,7 @@ public final class FacetTotalDigitsImpl<A> extends FacetImpl<A> implements Total
 		return totalDigits;
 	}
 
-	public void validate(final List<? extends A> actualValue, final SimpleType<A> simpleType) throws FacetException
+	public <A> void validate(final List<? extends A> actualValue, final SimpleType simpleType, AtomBridge<A> atomBridge) throws FacetException
 	{
 		for (final A atom : actualValue)
 		{

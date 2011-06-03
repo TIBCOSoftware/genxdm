@@ -22,7 +22,6 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.SchemaTypeBridge;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
@@ -102,7 +101,7 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 
 	public SequenceType atomSet(final SequenceType type)
 	{
-		if (type instanceof SimpleType<?>)
+		if (type instanceof SimpleType)
 		{
 			return (SimpleType) type;
 		}
@@ -113,7 +112,6 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public SequenceType attributeAxis(final SequenceType type)
 	{
 		final PrimeType prime = type.prime();
@@ -212,7 +210,6 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 		return new AttributeNodeTypeImpl(WILDNAME, type, m_cache);
 	}
 
-	@SuppressWarnings("unchecked")
 	public SequenceType childAxis(final SequenceType focus)
 	{
 		final PrimeType prime = focus.prime();
@@ -440,11 +437,6 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 		return m_cache.generateUniqueName();
 	}
 
-	public AtomBridge getAtomBridge()
-	{
-		return m_cache.getAtomBridge();
-	}
-
 	public AtomicType getAtomicType(final QName name)
 	{
 		return m_cache.getAtomicType(name);
@@ -527,22 +519,22 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 
 	public QName getName(final SequenceType type)
 	{
-		if (type instanceof Type<?>)
+		if (type instanceof Type)
 		{
 			final Type itemType = (Type) type;
 			return itemType.getName();
 		}
-		else if (type instanceof AttributeDefinition<?>)
+		else if (type instanceof AttributeDefinition)
 		{
 			final AttributeDefinition attType = (AttributeDefinition) type;
 			return attType.getName();
 		}
-		else if (type instanceof AttributeNodeType<?>)
+		else if (type instanceof AttributeNodeType)
 		{
 			final AttributeNodeType attributeNodeType = (AttributeNodeType) type;
 			return attributeNodeType.getName();
 		}
-		else if (type instanceof ElementNodeType<?>)
+		else if (type instanceof ElementNodeType)
 		{
 			final ElementNodeType elementNodeType = (ElementNodeType) type;
 			return elementNodeType.getName();
@@ -565,7 +557,7 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 
 	public NativeType getNearestBuiltInType(final SequenceType arg)
 	{
-		if (arg instanceof SimpleType<?>)
+		if (arg instanceof SimpleType)
 		{
 			final SimpleType atomicType = (SimpleType) arg;
 			final QName name = atomicType.getName();
@@ -709,7 +701,7 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 
 	public boolean isNative(final SequenceType arg)
 	{
-		if (arg instanceof PrimeType<?>)
+		if (arg instanceof PrimeType)
 		{
 			return arg.prime().isNative();
 		}
@@ -721,7 +713,7 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 
 	public boolean isNone(final SequenceType type)
 	{
-		return (type instanceof NoneType<?>);
+		return (type instanceof NoneType);
 	}
 
 	public PrimeType itemType()
@@ -854,15 +846,15 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 
 	private SequenceType particle(final SchemaParticle particle, final ElementDefinition parentDecl)
 	{
-		if (particle instanceof ElementUse<?>)
+		if (particle instanceof ElementUse)
 		{
 			return elementUseType((ElementUse) particle, parentDecl);
 		}
-		else if (particle instanceof ModelGroupUse<?>)
+		else if (particle instanceof ModelGroupUse)
 		{
 			return modelGroupUseType((ModelGroupUse) particle, parentDecl);
 		}
-		else if (particle instanceof WildcardUse<?>)
+		else if (particle instanceof WildcardUse)
 		{
 			return wildcardUseType((WildcardUse) particle, parentDecl);
 		}
@@ -925,7 +917,6 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 		return TEXT;
 	}
 
-	@SuppressWarnings("unchecked")
 	public SequenceType[] typeArray(final int size)
 	{
 		return new SequenceType[size];

@@ -29,7 +29,7 @@ import org.genxdm.xs.types.SimpleType;
 /**
  * Abstract base class for implementations of {@link org.genxdm.xs.facets.Facet}
  */
-abstract class FacetLengthCommonImpl<A> extends FacetImpl<A>
+abstract class FacetLengthCommonImpl extends FacetImpl
 {
 	private static <A> int length(final A atom, final AtomBridge<A> atomBridge)
 	{
@@ -81,14 +81,11 @@ abstract class FacetLengthCommonImpl<A> extends FacetImpl<A>
 		}
 	}
 
-	private final AtomBridge<A> atomBridge;
-
 	private final FacetKind facetKind;
 
-	public FacetLengthCommonImpl(final boolean isFixed, final AtomBridge<A> atomBridge, FacetKind facetKind)
+	public FacetLengthCommonImpl(final boolean isFixed, FacetKind facetKind)
 	{
 		super(isFixed);
-		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
 		this.facetKind = PreCondition.assertArgumentNotNull(facetKind, "facetKind");
 	}
 
@@ -99,9 +96,9 @@ abstract class FacetLengthCommonImpl<A> extends FacetImpl<A>
 		return facetKind;
 	}
 
-	public final void validate(final List<? extends A> actualValue, final SimpleType<A> simpleType) throws FacetException
+	public final <A> void validate(final List<? extends A> actualValue, final SimpleType simpleType, final AtomBridge<A> atomBridge) throws FacetException
 	{
-		if (simpleType instanceof ListSimpleType<?>)
+		if (simpleType instanceof ListSimpleType)
 		{
 			checkLength(actualValue.size(), LengthFacetUOM.ListItems);
 		}

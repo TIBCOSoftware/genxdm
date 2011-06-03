@@ -25,15 +25,15 @@ import org.genxdm.xs.constraints.IdentityConstraintKind;
 import org.genxdm.xs.constraints.RestrictedXPath;
 import org.genxdm.xs.enums.ScopeExtent;
 
-public final class IdentityConstraintImpl<A> extends NamedComponentImpl<A> implements IdentityConstraint<A>
+public final class IdentityConstraintImpl extends NamedComponentImpl implements IdentityConstraint
 {
 	private final IdentityConstraintKind m_category;
 	private final List<RestrictedXPath> m_fields;
-	private final IdentityConstraint<A> m_keyConstraint;
+	private final IdentityConstraint m_keyConstraint;
 	private final QName m_name;
 	private final RestrictedXPath m_selector;
 
-	public IdentityConstraintImpl(final QName name, final IdentityConstraintKind category, final RestrictedXPath selector, final List<RestrictedXPath> fields, final IdentityConstraint<A> keyConstraint)
+	public IdentityConstraintImpl(final QName name, final IdentityConstraintKind category, final RestrictedXPath selector, final List<RestrictedXPath> fields, final IdentityConstraint keyConstraint)
 	{
 		super(name, false, ScopeExtent.Global);
 		m_name = PreCondition.assertArgumentNotNull(name, "name");
@@ -53,7 +53,7 @@ public final class IdentityConstraintImpl<A> extends NamedComponentImpl<A> imple
 		return m_fields;
 	}
 
-	public IdentityConstraint<A> getKeyConstraint()
+	public IdentityConstraint getKeyConstraint()
 	{
 		return m_keyConstraint;
 	}
@@ -63,7 +63,7 @@ public final class IdentityConstraintImpl<A> extends NamedComponentImpl<A> imple
 		return m_selector;
 	}
 
-	public boolean sameAs(final IdentityConstraint<A> constraint)
+	public boolean sameAs(final IdentityConstraint constraint)
 	{
 		PreCondition.assertArgumentNotNull(constraint, "constraint");
 		if (this == constraint)

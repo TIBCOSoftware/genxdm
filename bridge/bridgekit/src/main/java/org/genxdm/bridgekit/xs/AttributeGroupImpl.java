@@ -23,13 +23,13 @@ import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.AttributeUse;
 import org.genxdm.xs.enums.ScopeExtent;
 
-public final class AttributeGroupImpl<A> extends NamedComponentImpl<A> implements AttributeGroupDefinition<A>
+public final class AttributeGroupImpl extends NamedComponentImpl implements AttributeGroupDefinition
 {
-	private final Iterable<AttributeUse<A>> m_attributeUses;
+	private final Iterable<AttributeUse> m_attributeUses;
 	private final boolean m_hasAttributeUses;
-	private final SchemaWildcard<A> m_wildcard;
+	private final SchemaWildcard m_wildcard;
 
-	public AttributeGroupImpl(final QName name, final ScopeExtent scope, final Iterable<AttributeUse<A>> attributeUses, final SchemaWildcard<A> wildcard)
+	public AttributeGroupImpl(final QName name, final ScopeExtent scope, final Iterable<AttributeUse> attributeUses, final SchemaWildcard wildcard)
 	{
 		super(name, false, scope);
 		if (null != attributeUses)
@@ -53,13 +53,13 @@ public final class AttributeGroupImpl<A> extends NamedComponentImpl<A> implement
 		m_wildcard = wildcard;
 	}
 
-	public Iterable<AttributeUse<A>> getAttributeUses()
+	public Iterable<AttributeUse> getAttributeUses()
 	{
 		PreCondition.assertTrue(m_hasAttributeUses, "hasAttributeUses() -> false");
 		return m_attributeUses;
 	}
 
-	public SchemaWildcard<A> getWildcard()
+	public SchemaWildcard getWildcard()
 	{
 		return m_wildcard;
 	}

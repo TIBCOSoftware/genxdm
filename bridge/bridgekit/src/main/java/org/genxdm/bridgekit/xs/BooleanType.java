@@ -36,19 +36,15 @@ import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.SimpleType;
 
-final class BooleanType<A> extends AbstractAtomType<A>
+final class BooleanType extends AbstractAtomType
 {
-	private final List<A> TRUE;
-	private final List<A> FALSE;
 
-	public BooleanType(final QName name, final SimpleType<A> baseType, final AtomBridge<A> atomBridge)
+	public BooleanType(final QName name, final SimpleType baseType)
 	{
-		super(name, baseType, atomBridge);
-		TRUE = atomBridge.wrapAtom(atomBridge.getBooleanTrue());
-		FALSE = atomBridge.wrapAtom(atomBridge.getBooleanFalse());
+		super(name, baseType);
 	}
 
-	public void accept(SequenceTypeVisitor<A> visitor)
+	public void accept(SequenceTypeVisitor visitor)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -60,19 +56,19 @@ final class BooleanType<A> extends AbstractAtomType<A>
 		throw new AssertionError("TODO");
 	}
 
-	public Iterable<EnumerationDefinition<A>> getEnumerations()
+	public Iterable<EnumerationDefinition> getEnumerations()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public Facet<A> getFacetOfKind(FacetKind facetKind)
+	public Facet getFacetOfKind(FacetKind facetKind)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public Iterable<Facet<A>> getFacets()
+	public Iterable<Facet> getFacets()
 	{
 		return Collections.emptyList();
 	}
@@ -139,9 +135,12 @@ final class BooleanType<A> extends AbstractAtomType<A>
 		return false;
 	}
 
-	public List<A> validate(final String initialValue) throws DatatypeException
+	public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
 	{
-		final String collapsed = PreCondition.assertArgumentNotNull(initialValue, "sourceValue").trim();
+	    List<A> TRUE = atomBridge.wrapAtom(atomBridge.getBooleanTrue());
+	    List<A> FALSE = atomBridge.wrapAtom(atomBridge.getBooleanFalse());
+
+	    final String collapsed = PreCondition.assertArgumentNotNull(initialValue, "sourceValue").trim();
 
 		if ("true".equals(collapsed))
 		{
@@ -165,7 +164,7 @@ final class BooleanType<A> extends AbstractAtomType<A>
 		}
 	}
 
-	public List<A> validate(final String initialValue, final PrefixResolver resolver) throws DatatypeException
+	public <A> List<A> validate(final String initialValue, final PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
