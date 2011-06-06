@@ -235,10 +235,12 @@ public final class DomModelMutable
             insertAttribute(element, attr);
     }
 
-    public Node insertNamespace(final Node element, final String prefix, final String uri)
+    public Node insertNamespace(final Node element, String prefix, final String uri)
     {
         PreCondition.assertArgumentNotNull(element, "element");
-        PreCondition.assertArgumentNotNull(prefix, "prefix");
+        //PreCondition.assertArgumentNotNull(prefix, "prefix");
+        if (prefix == null)
+        	prefix = "";
         PreCondition.assertArgumentNotNull(uri, "uri");
         return DomSupport.setNamespace(element, prefix, uri);
     }

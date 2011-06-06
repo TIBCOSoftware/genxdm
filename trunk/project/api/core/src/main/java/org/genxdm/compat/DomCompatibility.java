@@ -120,4 +120,15 @@ public class DomCompatibility {
             model.insertAttribute(element, newAttr);
         }
     }
+    
+    public static <N> N insertBefore(MutableModel<N> model, N parent, N newChild, N refChild) {
+    	if (refChild == null) {
+    		model.appendChild(parent, newChild);
+    	}
+    	else {
+    		model.insertBefore(refChild, newChild);
+    	}
+    	
+    	return newChild;
+    }
 }
