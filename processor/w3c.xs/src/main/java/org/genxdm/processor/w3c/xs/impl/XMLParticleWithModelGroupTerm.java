@@ -17,15 +17,15 @@ package org.genxdm.processor.w3c.xs.impl;
 
 import java.math.BigInteger;
 
-final class XMLParticleWithModelGroupTerm<A> extends XMLParticle<A>
+final class XMLParticleWithModelGroupTerm extends XMLParticle
 {
-	public XMLParticleWithModelGroupTerm(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLModelGroup<A> modelGroup, final SrcFrozenLocation location)
+	public XMLParticleWithModelGroupTerm(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLModelGroup modelGroup, final SrcFrozenLocation location)
 	{
 		super(minOccurs, maxOccurs, modelGroup, location);
 	}
 
-	public XMLModelGroup<A> getTerm()
+	public XMLModelGroup getTerm()
 	{
-		return (XMLModelGroup<A>)super.getTerm();
+		return (XMLModelGroup)super.getTerm();
 	}
 }

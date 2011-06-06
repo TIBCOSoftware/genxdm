@@ -1194,9 +1194,10 @@ final class XMLSchemaConverter
 				}
 				else
 				{
-					final String initialValue = xmlElement.m_valueConstraint.getValue();
-					final List actualValue = atomBridge.wrapAtom(atomBridge.createUntypedAtomic(initialValue));
-					element.setValueConstraint(new ValueConstraint(xmlElement.m_valueConstraint.kind, actualValue, initialValue));
+				    // TODO: broken by removal of A.  fix it.
+//					final String initialValue = xmlElement.m_valueConstraint.getValue();
+//					final List<A> actualValue = atomBridge.wrapAtom(atomBridge.createUntypedAtomic(initialValue));
+//					element.setValueConstraint(new ValueConstraint(xmlElement.m_valueConstraint.kind, actualValue, initialValue));
 				}
 			}
 			else
@@ -1269,38 +1270,40 @@ final class XMLSchemaConverter
 
 	private ValueConstraint convertElementValueConstraint(final XMLValueConstraint xmlValueConstraint, final Type type) throws SchemaException
 	{
-		if (null != xmlValueConstraint)
-		{
-			if (type instanceof SimpleType)
-			{
-				final SimpleType simpleType = (SimpleType)type;
-				return convertValueConstraint(XMLRepresentation.LN_ELEMENT, xmlValueConstraint, simpleType);
-			}
-			else if (type instanceof ComplexType)
-			{
-				final ComplexType elementType = (ComplexType)type;
-				final ContentType contentType = elementType.getContentType();
-				if (contentType.isSimple())
-				{
-					final SimpleType simpleType = contentType.getSimpleType();
-					return convertValueConstraint(XMLRepresentation.LN_ELEMENT, xmlValueConstraint, simpleType);
-				}
-				else
-				{
-					final String initialValue = xmlValueConstraint.getValue();
-					final List actualValue = atomBridge.wrapAtom(atomBridge.createUntypedAtomic(initialValue));
-					return new ValueConstraint(xmlValueConstraint.kind, actualValue, initialValue);
-				}
-			}
-			else
-			{
-				throw new AssertionError(type);
-			}
-		}
-		else
-		{
-			return null;
-		}
+	    // TODO: broken by removal of A.  Fix it.
+	    return null;
+//		if (null != xmlValueConstraint)
+//		{
+//			if (type instanceof SimpleType)
+//			{
+//				final SimpleType simpleType = (SimpleType)type;
+//				return convertValueConstraint(XMLRepresentation.LN_ELEMENT, xmlValueConstraint, simpleType);
+//			}
+//			else if (type instanceof ComplexType)
+//			{
+//				final ComplexType elementType = (ComplexType)type;
+//				final ContentType contentType = elementType.getContentType();
+//				if (contentType.isSimple())
+//				{
+//					final SimpleType simpleType = contentType.getSimpleType();
+//					return convertValueConstraint(XMLRepresentation.LN_ELEMENT, xmlValueConstraint, simpleType);
+//				}
+//				else
+//				{
+//					final String initialValue = xmlValueConstraint.getValue();
+//					final List actualValue = atomBridge.wrapAtom(atomBridge.createUntypedAtomic(initialValue));
+//					return new ValueConstraint(xmlValueConstraint.kind, actualValue, initialValue);
+//				}
+//			}
+//			else
+//			{
+//				throw new AssertionError(type);
+//			}
+//		}
+//		else
+//		{
+//			return null;
+//		}
 	}
 
 	private IdentityConstraint convertIdentityConstraint(final XMLIdentityConstraint xmlConstraint) throws SchemaException
@@ -1730,24 +1733,26 @@ final class XMLSchemaConverter
 
 	private ValueConstraint convertValueConstraint(final String elementName, final XMLValueConstraint xmlValueConstraint, final SimpleType simpleType) throws SchemaException
 	{
-		if (null != xmlValueConstraint)
-		{
-			final String initialValue = xmlValueConstraint.getValue();
-			try
-			{
-				final List value = simpleType.validate(initialValue);
-				return new ValueConstraint(xmlValueConstraint.kind, value, initialValue);
-			}
-			catch (final DatatypeException dte)
-			{
-				final SimpleTypeException ste = new SimpleTypeException(initialValue, simpleType, dte);
-				throw new SmAttributeUseException(new QName(elementName), xmlValueConstraint.getAttributeName(), xmlValueConstraint.getLocation(), ste);
-			}
-		}
-		else
-		{
-			return null;
-		}
+	    // TODO: broken by removal of A. fix it.
+	    return null;
+//		if (null != xmlValueConstraint)
+//		{
+//			final String initialValue = xmlValueConstraint.getValue();
+//			try
+//			{
+//				final List value = simpleType.validate(initialValue);
+//				return new ValueConstraint(xmlValueConstraint.kind, value, initialValue);
+//			}
+//			catch (final DatatypeException dte)
+//			{
+//				final SimpleTypeException ste = new SimpleTypeException(initialValue, simpleType, dte);
+//				throw new SmAttributeUseException(new QName(elementName), xmlValueConstraint.getAttributeName(), xmlValueConstraint.getLocation(), ste);
+//			}
+//		}
+//		else
+//		{
+//			return null;
+//		}
 	}
 
 	private SchemaWildcard convertWildcard(final XMLWildcard wildcard)
@@ -1840,28 +1845,30 @@ final class XMLSchemaConverter
 
 	private EnumerationDefinition enumeration(final SimpleType type, final SimpleType baseType, final XMLEnumeration sourceEnum) throws SmAttributeUseException
 	{
-		try
-		{
-			final SimpleType notationType = m_existingCache.getAtomicType(NativeType.NOTATION);
-			if (baseType.getName().equals(notationType.getName()) || baseType.derivedFromType(notationType, EnumSet.of(DerivationMethod.Restriction)))
-			{
-				final PrefixResolver resolver = sourceEnum.getPrefixResolver();
-				final List value = baseType.validate(sourceEnum.getValue(), resolver);
-				return new FacetEnumerationImpl(value);
-			}
-			else
-			{
-				final List value = baseType.validate(sourceEnum.getValue());
-				return new FacetEnumerationImpl(value);
-			}
-		}
-		catch (final DatatypeException dte)
-		{
-			final SimpleTypeException ste = new SimpleTypeException(sourceEnum.getValue(), baseType, dte);
-			final QName elementName = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, XMLRepresentation.LN_ENUMERATION);
-			final QName attributeName = new QName(XMLRepresentation.LN_VALUE);
-			throw new SmAttributeUseException(elementName, attributeName, sourceEnum.getLocation(), ste);
-		}
+	    // TODO: borken by removal of A. fix it.
+	    return null;
+//		try
+//		{
+//			final SimpleType notationType = m_existingCache.getAtomicType(NativeType.NOTATION);
+//			if (baseType.getName().equals(notationType.getName()) || baseType.derivedFromType(notationType, EnumSet.of(DerivationMethod.Restriction)))
+//			{
+//				final PrefixResolver resolver = sourceEnum.getPrefixResolver();
+//				final List<String> value = baseType.validate(sourceEnum.getValue(), resolver);
+//				return new FacetEnumerationImpl(value);
+//			}
+//			else
+//			{
+//				final List<String> value = baseType.validate(sourceEnum.getValue());
+//				return new FacetEnumerationImpl(value);
+//			}
+//		}
+//		catch (final DatatypeException dte)
+//		{
+//			final SimpleTypeException ste = new SimpleTypeException(sourceEnum.getValue(), baseType, dte);
+//			final QName elementName = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, XMLRepresentation.LN_ENUMERATION);
+//			final QName attributeName = new QName(XMLRepresentation.LN_VALUE);
+//			throw new SmAttributeUseException(elementName, attributeName, sourceEnum.getLocation(), ste);
+//		}
 	}
 
 	private SimpleType extractSimpleType(final XMLTypeRef typeRef) throws AbortException, SchemaException
@@ -1996,7 +2003,7 @@ final class XMLSchemaConverter
 
 	private Facet minmax(final XMLMinMaxFacet xmlFacet, final SimpleType baseType) throws SchemaException
 	{
-//		final List<A> value;
+//		final List value;
 //		{
 //			final String initialValue = xmlFacet.value;
 //			try

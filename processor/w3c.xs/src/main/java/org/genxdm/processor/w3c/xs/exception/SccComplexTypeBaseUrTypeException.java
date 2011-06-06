@@ -24,7 +24,7 @@ import org.genxdm.xs.types.Type;
 @SuppressWarnings("serial")
 public final class SccComplexTypeBaseUrTypeException extends SccTypeDerivationOKComplexException
 {
-	public SccComplexTypeBaseUrTypeException(final Type<?> typeName, final Type<?> baseName, final Set<DerivationMethod> subset)
+	public SccComplexTypeBaseUrTypeException(final Type typeName, final Type baseName, final Set<DerivationMethod> subset)
 	{
 		super(PART_COMPLEX_UR_TYPE, typeName, baseName, subset);
 	}

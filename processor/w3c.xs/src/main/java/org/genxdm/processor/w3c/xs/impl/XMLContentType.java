@@ -18,11 +18,11 @@ package org.genxdm.processor.w3c.xs.impl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.types.ContentTypeKind;
 
-final class XMLContentType<A>
+final class XMLContentType
 {
 	private ContentTypeKind m_kind;
-	private XMLType<A> m_simpleType;
-	private XMLParticleWithModelGroupTerm<A> m_contentModel;
+	private XMLType m_simpleType;
+	private XMLParticleWithModelGroupTerm m_contentModel;
 
 	public XMLContentType()
 	{
@@ -31,14 +31,14 @@ final class XMLContentType<A>
 		m_contentModel = null;
 	}
 
-	public XMLContentType(final XMLType<A> simpleType)
+	public XMLContentType(final XMLType simpleType)
 	{
 		m_kind = ContentTypeKind.Simple;
 		m_simpleType = PreCondition.assertArgumentNotNull(simpleType, "simpleType");
 		m_contentModel = null;
 	}
 
-	public XMLContentType(final boolean mixed, final XMLParticleWithModelGroupTerm<A> contentModel)
+	public XMLContentType(final boolean mixed, final XMLParticleWithModelGroupTerm contentModel)
 	{
 		m_kind = mixed ? ContentTypeKind.Mixed : ContentTypeKind.ElementOnly;
 		m_simpleType = null;
@@ -75,19 +75,19 @@ final class XMLContentType<A>
 		return m_kind.isElementOnly();
 	}
 
-	public XMLType<A> getSimpleType()
+	public XMLType getSimpleType()
 	{
 		PreCondition.assertTrue(isSimple(), "must be simple");
 		return m_simpleType;
 	}
 
-	public XMLParticleWithModelGroupTerm<A> getContentModel()
+	public XMLParticleWithModelGroupTerm getContentModel()
 	{
 		PreCondition.assertTrue(isMixed() || isElementOnly(), "must be mixed or element only");
 		return m_contentModel;
 	}
 
-	public void copyTo(final XMLContentType<A> destination)
+	public void copyTo(final XMLContentType destination)
 	{
 		destination.m_kind = m_kind;
 		destination.m_simpleType = m_simpleType;

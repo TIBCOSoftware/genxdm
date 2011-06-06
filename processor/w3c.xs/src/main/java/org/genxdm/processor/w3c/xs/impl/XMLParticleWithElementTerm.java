@@ -17,18 +17,18 @@ package org.genxdm.processor.w3c.xs.impl;
 
 import java.math.BigInteger;
 
-final class XMLParticleWithElementTerm<A> extends XMLParticle<A>
+final class XMLParticleWithElementTerm extends XMLParticle
 {
 	public final XMLValueConstraint valueConstraint;
 
-	public XMLParticleWithElementTerm(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLElement<A> element, final XMLValueConstraint valueConstraint, final SrcFrozenLocation location)
+	public XMLParticleWithElementTerm(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLElement element, final XMLValueConstraint valueConstraint, final SrcFrozenLocation location)
 	{
 		super(minOccurs, maxOccurs, element, location);
 		this.valueConstraint = valueConstraint;
 	}
 
-	public XMLElement<A> getTerm()
+	public XMLElement getTerm()
 	{
-		return (XMLElement<A>)super.getTerm();
+		return (XMLElement)super.getTerm();
 	}
 }

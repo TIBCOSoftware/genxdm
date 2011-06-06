@@ -17,15 +17,15 @@ package org.genxdm.processor.w3c.xs.impl;
 
 import java.math.BigInteger;
 
-final class XMLParticleWithWildcardTerm<A> extends XMLParticle<A>
+final class XMLParticleWithWildcardTerm extends XMLParticle
 {
-	public XMLParticleWithWildcardTerm(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLWildcard<A> wildcard, final SrcFrozenLocation location)
+	public XMLParticleWithWildcardTerm(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLWildcard wildcard, final SrcFrozenLocation location)
 	{
 		super(minOccurs, maxOccurs, wildcard, location);
 	}
 
-	public XMLWildcard<A> getTerm()
+	public XMLWildcard getTerm()
 	{
-		return (XMLWildcard<A>)super.getTerm();
+		return (XMLWildcard)super.getTerm();
 	}
 }
