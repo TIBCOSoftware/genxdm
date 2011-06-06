@@ -665,8 +665,8 @@ public final class DomSupport implements DomConstants
         // Try to make this as efficient as possible because StAX does not retain the
         // qualified name, and DOM needs it. This could make StAX -> DOM slower than
         // SAX -> DOM.
-        final int prefixLength = prefix.length();
-        if (prefixLength > 0)
+    	int prefixLength;
+        if (prefix != null && (prefixLength = prefix.length()) > 0)
         {
             final int capacity = prefixLength + 1 + localName.length();
             final StringBuilder sb = new StringBuilder(capacity);
@@ -719,6 +719,8 @@ public final class DomSupport implements DomConstants
         }
     }
 
+    // TODO - Argh! - The documentation on this method should at least document why it isn't good
+    // enough to call the standard DOM method getNodeValue()?
     private static String getStringValueOfBranchNode(final Node node, final String separator, final Emulation emulation)
     {
         final Node firstChild = node.getFirstChild();
