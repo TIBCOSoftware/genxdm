@@ -31,7 +31,7 @@ import org.genxdm.xs.enums.DerivationMethod;
 /**
  * The physical schema module.
  */
-final class XMLSchemaModule<A>
+final class XMLSchemaModule
 {
 	private enum ModuleKind
 	{
@@ -46,7 +46,7 @@ final class XMLSchemaModule<A>
 	final EnumSet<DerivationMethod> finalDefault = EnumSet.noneOf(DerivationMethod.class);
 
 	private final EnumSet<ModuleKind> m_flags = EnumSet.noneOf(ModuleKind.class);
-	A m_id;
+	String m_id;
 	/**
 	 * The following is used to check for uniqueness of identity constraint names.
 	 */
@@ -55,10 +55,10 @@ final class XMLSchemaModule<A>
 	/**
 	 * The following is used to check for uniqueness of id attributes.
 	 */
-	final HashSet<A> m_ids = new HashSet<A>();
+	final HashSet<String> m_ids = new HashSet<String>();
 
 	String m_lang;
-	private final XMLSchemaModule<A> m_parentModule;
+	private final XMLSchemaModule m_parentModule;
 	private final URI m_schemaLocation;
 	private final URI m_systemId;
 
@@ -66,7 +66,7 @@ final class XMLSchemaModule<A>
 
 	String m_version;
 
-	public XMLSchemaModule(final XMLSchemaModule<A> parentModule, final URI schemaLocation, final URI systemId)
+	public XMLSchemaModule(final XMLSchemaModule parentModule, final URI schemaLocation, final URI systemId)
 	{
 		this.m_parentModule = parentModule;
 		this.m_schemaLocation = schemaLocation;
@@ -92,7 +92,7 @@ final class XMLSchemaModule<A>
 		}
 	}
 
-	public XMLSchemaModule<A> getContainingModule()
+	public XMLSchemaModule getContainingModule()
 	{
 		return m_parentModule;
 	}

@@ -22,26 +22,27 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.EnumerationDefinition;
 
-final class FacetEnumerationImpl<A> implements EnumerationDefinition<A>
+final class FacetEnumerationImpl implements EnumerationDefinition
 {
-	private final List<A> m_value;
-	private final AtomBridge<A> atomBridge;
+	private final List<String> m_value;
 
-	public FacetEnumerationImpl(final List<? extends A> value, final AtomBridge<A> atomBridge)
+	public FacetEnumerationImpl(final List<String> value)
 	{
-		this.m_value = new ArrayList<A>();
+		this.m_value = new ArrayList<String>();
 		this.m_value.addAll(PreCondition.assertArgumentNotNull(value, "value"));
-		this.atomBridge = atomBridge;
 	}
 
-	public List<A> getValue()
+	public <A> List<A> getValue(AtomBridge<A> bridge)
 	{
-		return m_value;
+	    // TODO: this is no longer the way it works; fix it so it converts on the fly.
+//		return m_value;
+	    return null;
 	}
 
-	@Override
-	public String toString()
-	{
-		return atomBridge.getC14NString(m_value);
-	}
+	// TODO: still need the override, but not like this.
+//	@Override
+//	public String toString()
+//	{
+//		return atomBridge.getC14NString(m_value);
+//	}
 }

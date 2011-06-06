@@ -21,13 +21,13 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 
-final class XMLNotation<A> extends XMLComponent<A>
+final class XMLNotation extends XMLComponent
 {
 	private final QName name;
 	String publicId;
 	URI systemId;
 
-	public XMLNotation(final QName name, final XMLScope<A> global, final SrcFrozenLocation location)
+	public XMLNotation(final QName name, final XMLScope global, final SrcFrozenLocation location)
 	{
 		super(global, location);
 		this.name = PreCondition.assertArgumentNotNull(name);

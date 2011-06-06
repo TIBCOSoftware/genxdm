@@ -25,7 +25,7 @@ import org.genxdm.xs.types.Type;
 @SuppressWarnings("serial")
 public final class SccComplexTypeBaseComplexDerivationException extends SccTypeDerivationOKComplexException
 {
-	public SccComplexTypeBaseComplexDerivationException(final Type<?> derivedType, final Type<?> baseType, final Set<DerivationMethod> subset, final ComponentConstraintException cause)
+	public SccComplexTypeBaseComplexDerivationException(final Type derivedType, final Type baseType, final Set<DerivationMethod> subset, final ComponentConstraintException cause)
 	{
 		super(PART_BASE_COMPLEX, derivedType, baseType, subset, cause);
 	}

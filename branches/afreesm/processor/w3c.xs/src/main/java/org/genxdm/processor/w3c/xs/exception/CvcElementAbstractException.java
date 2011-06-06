@@ -21,7 +21,7 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcElementAbstractException extends CvcElementException
 {
-	public CvcElementAbstractException(final ElementDefinition<?> elementDeclaration, final LocationInSchema location)
+	public CvcElementAbstractException(final ElementDefinition elementDeclaration, final LocationInSchema location)
 	{
 		super(PART_ABSTRACT, elementDeclaration, location);
 	}

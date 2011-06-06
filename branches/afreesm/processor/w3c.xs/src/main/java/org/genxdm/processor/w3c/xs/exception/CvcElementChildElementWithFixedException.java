@@ -26,7 +26,7 @@ public final class CvcElementChildElementWithFixedException extends CvcElementEx
 	@SuppressWarnings("unused")
 	private final QName childName;
 
-	public CvcElementChildElementWithFixedException(final ElementDefinition<?> elementDeclaration, final QName childName, final LocationInSchema location)
+	public CvcElementChildElementWithFixedException(final ElementDefinition elementDeclaration, final QName childName, final LocationInSchema location)
 	{
 		super(PART_VALUE_CONSTRAINT_WITH_CHILD_ELEMENT, elementDeclaration, location);
 		this.childName = childName;

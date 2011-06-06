@@ -21,16 +21,16 @@ import java.io.InputStream;
 import java.net.URI;
 
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.SmRegExCompiler;
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.ComponentBag;
 import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.exceptions.SchemaExceptionCatcher;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
-import org.genxdm.xs.resolve.SchemaCatalog;
 import org.genxdm.xs.resolve.CatalogResolver;
+import org.genxdm.xs.resolve.SchemaCatalog;
 
 final public class XMLParserImpl
 {
@@ -80,16 +80,16 @@ final public class XMLParserImpl
 		// PreCondition.assertArgumentNotNull(errors, "errors");
 
 		// The cache holds an in-memory model of the XML representation.
-		final XMLSchemaCache<A> cache = new XMLSchemaCache<A>(atomBridge.getNameBridge());
+		final XMLSchemaCache cache = new XMLSchemaCache(new NameSource());
 
 		// The top-level module acts as a parent for includes, imports and redefines.
-		final XMLSchemaModule<A> module = new XMLSchemaModule<A>(null, schemaLocation, systemId);
+		final XMLSchemaModule module = new XMLSchemaModule(null, schemaLocation, systemId);
 
 		// Catch the reported exceptions in order to maximize the amount of feedback.
 		final SchemaExceptionCatcher caught = new SchemaExceptionCatcher();
 
 		// Delegate the parsing into an XML representation (that has no coupling to the parameters A and S)
-		final XMLSchemaParser<A> parser = new XMLSchemaParser<A>(this.atomBridge, this.cache, caught, getCatalog(), m_resolver, processRepeatedNamespaces());
+		final XMLSchemaParser parser = new XMLSchemaParser(this.cache, caught, getCatalog(), m_resolver, processRepeatedNamespaces());
 
 		parser.parse(systemId, istream, cache, module);
 
@@ -100,13 +100,13 @@ final public class XMLParserImpl
 		}
 
 		// Convert the XML representation into the compiled schema.
-		final Pair<SmComponentBagImpl<A>, XMLComponentLocator<A>> converted = convert(cache, caught);
+		final Pair<SmComponentBagImpl, XMLComponentLocator> converted = convert(cache, caught);
 
 		if (caught.size() == 0)
 		{
-			final XMLSccExceptionAdapter<A> scc = new XMLSccExceptionAdapter<A>(caught, converted.getSecond());
+			final XMLSccExceptionAdapter scc = new XMLSccExceptionAdapter(caught, converted.getSecond());
 
-			checkSchemaComponentConstraints(converted.getFirst(), this.cache, this.atomBridge, scc);
+			checkSchemaComponentConstraints(converted.getFirst(), this.cache, scc);
 
 			if (caught.size() == 0)
 			{
@@ -143,7 +143,7 @@ final public class XMLParserImpl
 	/**
 	 * Converts the XML cache into a compiled schema.
 	 */
-	private Pair<SmComponentBagImpl<A>, XMLComponentLocator<A>> convert(final XMLSchemaCache<A> cache, final SchemaExceptionHandler errors) throws AbortException
+	private Pair<SmComponentBagImpl, XMLComponentLocator> convert(final XMLSchemaCache cache, final SchemaExceptionHandler errors) throws AbortException
 	{
 		try
 		{
@@ -155,7 +155,7 @@ final public class XMLParserImpl
 			return null;
 		}
 
-		return XMLSchemaConverter.convert(m_regexc, this.cache, atomBridge, cache, errors);
+		return XMLSchemaConverter.convert(m_regexc, this.cache, cache, errors);
 	}
 
 	public void setResolver(final CatalogResolver resolver)

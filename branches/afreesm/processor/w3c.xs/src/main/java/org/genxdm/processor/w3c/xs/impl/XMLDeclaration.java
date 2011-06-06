@@ -19,20 +19,20 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 
-abstract class XMLDeclaration<A> extends XMLComponent<A>
+abstract class XMLDeclaration extends XMLComponent
 {
 	private final QName m_name;
-	public XMLTypeRef<A> typeRef;
+	public XMLTypeRef typeRef;
 	public XMLValueConstraint m_valueConstraint = null;
 
-	public XMLDeclaration(final QName name, final XMLScope<A> scope, final XMLTypeRef<A> typeRef, final SrcFrozenLocation location)
+	public XMLDeclaration(final QName name, final XMLScope scope, final XMLTypeRef typeRef, final SrcFrozenLocation location)
 	{
 		super(scope, location);
 		this.m_name = PreCondition.assertArgumentNotNull(name, "name");
 		this.typeRef = PreCondition.assertArgumentNotNull(typeRef, "typeRef");
 	}
 
-	public XMLDeclaration(final QName name, final XMLScope<A> scope, final XMLTypeRef<A> typeRef)
+	public XMLDeclaration(final QName name, final XMLScope scope, final XMLTypeRef typeRef)
 	{
 		super(scope);
 		this.m_name = PreCondition.assertArgumentNotNull(name, "name");

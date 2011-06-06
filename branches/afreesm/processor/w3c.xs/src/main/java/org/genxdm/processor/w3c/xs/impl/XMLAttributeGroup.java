@@ -22,15 +22,15 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 
-final class XMLAttributeGroup<A> extends XMLComponent<A>
+final class XMLAttributeGroup extends XMLComponent
 {
 	private final QName name;
-	private final LinkedList<XMLAttributeUse<A>> attributeUses = new LinkedList<XMLAttributeUse<A>>();
-	private final LinkedList<XMLAttributeGroup<A>> groups = new LinkedList<XMLAttributeGroup<A>>();
+	private final LinkedList<XMLAttributeUse> attributeUses = new LinkedList<XMLAttributeUse>();
+	private final LinkedList<XMLAttributeGroup> groups = new LinkedList<XMLAttributeGroup>();
 	public final HashSet<QName> prohibited = new HashSet<QName>();
-	public XMLWildcard<A> wildcard;
+	public XMLWildcard wildcard;
 
-	public XMLAttributeGroup(final QName name, final XMLScope<A> scope, final SrcFrozenLocation location)
+	public XMLAttributeGroup(final QName name, final XMLScope scope, final SrcFrozenLocation location)
 	{
 		super(scope, location);
 		if (scope.isGlobal())
@@ -44,7 +44,7 @@ final class XMLAttributeGroup<A> extends XMLComponent<A>
 		}
 	}
 
-	public XMLAttributeGroup(final QName name, final XMLScope<A> scope)
+	public XMLAttributeGroup(final QName name, final XMLScope scope)
 	{
 		super(scope);
 		if (scope.isGlobal())
@@ -70,12 +70,12 @@ final class XMLAttributeGroup<A> extends XMLComponent<A>
 		}
 	}
 
-	public LinkedList<XMLAttributeUse<A>> getAttributeUses()
+	public LinkedList<XMLAttributeUse> getAttributeUses()
 	{
 		return attributeUses;
 	}
 
-	public LinkedList<XMLAttributeGroup<A>> getGroups()
+	public LinkedList<XMLAttributeGroup> getGroups()
 	{
 		return groups;
 	}

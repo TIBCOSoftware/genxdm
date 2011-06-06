@@ -22,13 +22,13 @@ import javax.xml.namespace.QName;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.components.ModelGroup;
 
-final class XMLModelGroup<A> extends XMLComponent<A> implements XMLParticleTerm<A>
+final class XMLModelGroup extends XMLComponent implements XMLParticleTerm
 {
 	private final QName m_name;
 	private ModelGroup.SmCompositor m_compositor;
-	private final LinkedList<XMLParticle<A>> m_particles = new LinkedList<XMLParticle<A>>();
+	private final LinkedList<XMLParticle> m_particles = new LinkedList<XMLParticle>();
 
-	public XMLModelGroup(final QName name, final XMLScope<A> scope, final SrcFrozenLocation location)
+	public XMLModelGroup(final QName name, final XMLScope scope, final SrcFrozenLocation location)
 	{
 		super(scope, location);
 		if (scope.isGlobal())
@@ -42,7 +42,7 @@ final class XMLModelGroup<A> extends XMLComponent<A> implements XMLParticleTerm<
 		}
 	}
 
-	public XMLModelGroup(final QName name, final XMLScope<A> scope)
+	public XMLModelGroup(final QName name, final XMLScope scope)
 	{
 		super(scope);
 		if (scope.isGlobal())
@@ -56,7 +56,7 @@ final class XMLModelGroup<A> extends XMLComponent<A> implements XMLParticleTerm<
 		}
 	}
 
-	public XMLModelGroup(final ModelGroup.SmCompositor compositor, final XMLScope<A> scope, final SrcFrozenLocation location)
+	public XMLModelGroup(final ModelGroup.SmCompositor compositor, final XMLScope scope, final SrcFrozenLocation location)
 	{
 		super(scope, location);
 		m_compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
@@ -64,7 +64,7 @@ final class XMLModelGroup<A> extends XMLComponent<A> implements XMLParticleTerm<
 		m_name = null;
 	}
 
-	public XMLModelGroup(final ModelGroup.SmCompositor compositor, final XMLScope<A> scope)
+	public XMLModelGroup(final ModelGroup.SmCompositor compositor, final XMLScope scope)
 	{
 		super(scope);
 		m_compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
@@ -94,7 +94,7 @@ final class XMLModelGroup<A> extends XMLComponent<A> implements XMLParticleTerm<
 		m_compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
 	}
 
-	public LinkedList<XMLParticle<A>> getParticles()
+	public LinkedList<XMLParticle> getParticles()
 	{
 		return m_particles;
 	}
