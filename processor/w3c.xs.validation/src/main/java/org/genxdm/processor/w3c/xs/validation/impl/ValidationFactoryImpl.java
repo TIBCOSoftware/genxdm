@@ -18,35 +18,32 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 import org.genxdm.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrategy;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCache;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCacheFactory;
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
 
 
-public final class ValidationFactoryImpl<A> implements VxValidatorCacheFactory<A>
+public final class ValidationFactoryImpl implements VxValidatorCacheFactory
 {
-    private final ComponentProvider<A> components;
-    private final AtomBridge<A> atoms;
+    private final ComponentProvider components;
     private VxSchemaDocumentLocationStrategy sdl;
 
-	public ValidationFactoryImpl(final ComponentProvider<A> cp, final AtomBridge<A> ab)
+	public ValidationFactoryImpl(final ComponentProvider cp)
 	{
 		this.components = PreCondition.assertArgumentNotNull(cp, "ComponentProvider");
-		this.atoms = PreCondition.assertNotNull(ab, "AtomBridge");
 	}
 
-	public VxValidatorCache<A> newValidatorCache()
+	public VxValidatorCache newValidatorCache()
 	{
-		return new ValidationCache<A>(null, components, atoms, sdl);
+		return new ValidationCache(null, components, sdl);
 	}
 
-	public VxValidatorCache<A> newValidatorCache(final ElementDefinition<A> elementDeclaration)
+	public VxValidatorCache newValidatorCache(final ElementDefinition elementDeclaration)
 	{
 		PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration");
-		return new ValidationCache<A>(elementDeclaration, components, atoms, sdl);
+		return new ValidationCache(elementDeclaration, components, sdl);
 	}
 
-	public VxValidatorCacheFactory<A> setSchemaDocumentLocationStrategy(final VxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy)
+	public VxValidatorCacheFactory setSchemaDocumentLocationStrategy(final VxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy)
 	{
 		this.sdl = schemaDocumentLocationStrategy;
 		return this;

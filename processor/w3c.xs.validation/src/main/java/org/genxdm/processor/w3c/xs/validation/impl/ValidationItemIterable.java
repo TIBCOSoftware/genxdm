@@ -20,17 +20,17 @@ import java.util.Iterator;
 /**
  * An {@link Iterable} for walking up the stack of {@link ValidationItem}s.
  */
-final class ValidationItemIterable<A> implements Iterable<ValidationItem<A>>
+final class ValidationItemIterable implements Iterable<ValidationItem>
 {
-	private ValidationItem<A> m_pendingItem;
+	private ValidationItem m_pendingItem;
 
-	public ValidationItemIterable(final ValidationItem<A> pendingItem)
+	public ValidationItemIterable(final ValidationItem pendingItem)
 	{
 		m_pendingItem = PreCondition.assertArgumentNotNull(pendingItem);
 	}
 
-	public Iterator<ValidationItem<A>> iterator()
+	public Iterator<ValidationItem> iterator()
 	{
-		return new ValidationItemIterator<A>(m_pendingItem);
+		return new ValidationItemIterator(m_pendingItem);
 	}
 }

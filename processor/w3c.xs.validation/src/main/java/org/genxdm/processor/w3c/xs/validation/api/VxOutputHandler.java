@@ -28,7 +28,7 @@ public interface VxOutputHandler<A>
 {
 	void attribute(QName name, String value) throws IOException;
 
-	void attribute(QName name, List<? extends A> value, SimpleType<A> type) throws IOException;
+	void attribute(QName name, List<? extends A> value, SimpleType type) throws IOException;
 
 	void endDocument() throws IOException;
 
@@ -38,7 +38,7 @@ public interface VxOutputHandler<A>
 
 	void startDocument() throws IOException;
 
-	void startElement(QName name, Type<A> type) throws IOException;
+	void startElement(QName name, Type type) throws IOException;
 
 	void text(List<? extends A> value) throws IOException;
 

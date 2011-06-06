@@ -30,16 +30,16 @@ import org.genxdm.xs.resolve.LocationInSchema;
  * child pointers and supply push and pop methods. Also note that the objects are recycled by the push method using the
  * child pointer.
  */
-final class ValidationItem<A> implements Locatable
+final class ValidationItem implements Locatable
 {
-	private ValidationItem<A> m_parentItem;
+	private ValidationItem m_parentItem;
 
-	public ValidationItem<A> getParentItem()
+	public ValidationItem getParentItem()
 	{
 		return m_parentItem;
 	}
 
-	private ValidationItem<A> m_childItem; // for recycling
+	private ValidationItem m_childItem; // for recycling
 
 	// The index or the element information item in document order.
 	private int m_elementIndex;
@@ -75,18 +75,18 @@ final class ValidationItem<A> implements Locatable
 	/**
 	 * Identity scopes may exist for an element information item.
 	 */
-	public final ArrayList<IdentityScope<A>> m_identityScopes = new ArrayList<IdentityScope<A>>();
+	public final ArrayList<IdentityScope> m_identityScopes = new ArrayList<IdentityScope>();
 
 	/**
 	 * Track the xs:key scopes by name so that we can associate them with xs:keyref scopes.
 	 */
-	public final HashMap<QName, IdentityScopeKey<A>> m_keyScopes = new HashMap<QName, IdentityScopeKey<A>>();
+	public final HashMap<QName, IdentityScopeKey> m_keyScopes = new HashMap<QName, IdentityScopeKey>();
 	/**
 	 * The keyref scopes where the name is the key name.
 	 */
-	public final HashMap<QName, ArrayList<IdentityScopeRef<A>>> m_refScopes = new HashMap<QName, ArrayList<IdentityScopeRef<A>>>();
+	public final HashMap<QName, ArrayList<IdentityScopeRef>> m_refScopes = new HashMap<QName, ArrayList<IdentityScopeRef>>();
 
-	private ValidationItem(final ValidationItem<A> parent)
+	private ValidationItem(final ValidationItem parent)
 	{
 		m_parentItem = parent;
 	}
@@ -96,11 +96,11 @@ final class ValidationItem<A> implements Locatable
 		this(null);
 	}
 
-	public ValidationItem<A> push(final int elementIndex)
+	public ValidationItem push(final int elementIndex)
 	{
 		if (m_childItem == null)
 		{
-			m_childItem = new ValidationItem<A>(this);
+			m_childItem = new ValidationItem(this);
 		}
 		else
 		{
@@ -120,7 +120,7 @@ final class ValidationItem<A> implements Locatable
 		return m_childItem;
 	}
 
-	public ValidationItem<A> pop()
+	public ValidationItem pop()
 	{
 		return m_parentItem;
 	}
@@ -144,12 +144,12 @@ final class ValidationItem<A> implements Locatable
 	 *            The name of the key scope.
 	 * @return The key scope or <code>null</code>.
 	 */
-	public static <A> IdentityScopeKey<A> getKeyIdentityScope(final ValidationItem<A> origin, final QName name)
+	public static  IdentityScopeKey getKeyIdentityScope(final ValidationItem origin, final QName name)
 	{
-		final ValidationItem<A> item = findItemWithKeyConstraint(origin, name);
+		final ValidationItem item = findItemWithKeyConstraint(origin, name);
 		if (null != item)
 		{
-			final IdentityScopeKey<A> keyScope = item.m_keyScopes.get(name);
+			final IdentityScopeKey keyScope = item.m_keyScopes.get(name);
 			if (null != keyScope)
 			{
 				return keyScope;
@@ -165,12 +165,12 @@ final class ValidationItem<A> implements Locatable
 		}
 	}
 
-	public static <A> ValidationItem<A> findItemWithKeyConstraint(final ValidationItem<A> origin, final QName name)
+	public static  ValidationItem findItemWithKeyConstraint(final ValidationItem origin, final QName name)
 	{
 		// Try locally first.
 		if (null != origin.m_keyScopes)
 		{
-			final IdentityScopeKey<A> keyScope = origin.m_keyScopes.get(name);
+			final IdentityScopeKey keyScope = origin.m_keyScopes.get(name);
 			if (null != keyScope)
 			{
 				return origin;

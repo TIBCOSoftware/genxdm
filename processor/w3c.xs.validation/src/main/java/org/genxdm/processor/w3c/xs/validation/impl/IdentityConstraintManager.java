@@ -32,7 +32,7 @@ import org.genxdm.xs.types.SimpleType;
  * It is tightly coupled to the stack of validation items maintained by the core validator, but plays a key role by
  * keeping track of the number of active scopes in order to optimize performance.
  */
-final class IdentityConstraintManager<A>
+final class IdentityConstraintManager
 {
 	/**
 	 * Identity Constraint Validation is very CPU and memory intensive so we want to avoid paying the cost if it is not
@@ -45,14 +45,14 @@ final class IdentityConstraintManager<A>
 		m_totalScopes = 0;
 	}
 
-	public void startElement(final ModelPSVI<A> elementPSVI, final ValidationItem<A> elementItem, final SchemaExceptionHandler errors) throws AbortException
+	public void startElement(final ModelPSVI elementPSVI, final ValidationItem elementItem, final SchemaExceptionHandler errors) throws AbortException
 	{
 		// Notify existing scopes of the current event (start of element)
 		if (m_totalScopes > 0)
 		{
-			for (final ValidationItem<A> currentItem : getAncestorOrSelf(elementItem))
+			for (final ValidationItem currentItem : getAncestorOrSelf(elementItem))
 			{
-				for (final IdentityScope<A> scope : currentItem.m_identityScopes)
+				for (final IdentityScope scope : currentItem.m_identityScopes)
 				{
 					scope.startElement(elementPSVI.getName(), elementItem.getElementIndex(), elementPSVI.getType(), elementItem);
 				}
@@ -63,22 +63,22 @@ final class IdentityConstraintManager<A>
 		// identity constraints, and if so creates an IdentityScope object for
 		// it...
 		PreCondition.assertArgumentNotNull(elementPSVI, "elementPSVI");
-		final ElementDefinition<A> declaration = elementPSVI.getDeclaration();
+		final ElementDefinition declaration = elementPSVI.getDeclaration();
 		if (null != declaration && declaration.hasIdentityConstraints())
 		{
 			// Handle xs:unique, xs:key and xs:keyref in order so that
 			// xs:keyref scopes can be fixed up to xs:key scopes.
-			for (final IdentityConstraint<A> constraint : declaration.getIdentityConstraints())
+			for (final IdentityConstraint constraint : declaration.getIdentityConstraints())
 			{
 				switch (constraint.getCategory())
 				{
 					case Key:
 					case Unique:
 					{
-						final IdentityScopeKey<A> scope = new IdentityScopeKey<A>(elementItem.getElementIndex(), constraint, errors, elementItem.getLocation());
+						final IdentityScopeKey scope = new IdentityScopeKey(elementItem.getElementIndex(), constraint, errors, elementItem.getLocation());
 
 						elementItem.m_keyScopes.put(constraint.getName(), scope);
-						elementItem.m_refScopes.put(constraint.getName(), new ArrayList<IdentityScopeRef<A>>());
+						elementItem.m_refScopes.put(constraint.getName(), new ArrayList<IdentityScopeRef>());
 						elementItem.m_identityScopes.add(scope);
 						m_totalScopes++;
 					}
@@ -94,7 +94,7 @@ final class IdentityConstraintManager<A>
 					}
 				}
 			}
-			for (final IdentityConstraint<A> constraint : declaration.getIdentityConstraints())
+			for (final IdentityConstraint constraint : declaration.getIdentityConstraints())
 			{
 				switch (constraint.getCategory())
 				{
@@ -111,9 +111,9 @@ final class IdentityConstraintManager<A>
 					case KeyRef:
 					{
 						final QName keyName = constraint.getKeyConstraint().getName();
-						final ValidationItem<A> referencedItem = ValidationItem.findItemWithKeyConstraint(elementItem, keyName);
-						final IdentityScopeKey<A> keyScope = ValidationItem.getKeyIdentityScope(referencedItem, keyName);
-						final IdentityScopeRef<A> scope = new IdentityScopeRef<A>(elementItem.getElementIndex(), keyScope, constraint, errors, elementItem.getLocation());
+						final ValidationItem referencedItem = ValidationItem.findItemWithKeyConstraint(elementItem, keyName);
+						final IdentityScopeKey keyScope = ValidationItem.getKeyIdentityScope(referencedItem, keyName);
+						final IdentityScopeRef scope = new IdentityScopeRef(elementItem.getElementIndex(), keyScope, constraint, errors, elementItem.getLocation());
 						referencedItem.m_refScopes.get(keyName).add(scope);
 						elementItem.m_identityScopes.add(scope);
 						m_totalScopes++;
@@ -128,13 +128,13 @@ final class IdentityConstraintManager<A>
 		}
 	}
 
-	public void attribute(final List<? extends A> actualValue, final SimpleType<A> attributeType, final ValidationItem<A> elementItem, final QName attributeName, final int attributeIndex, final AtomBridge<A> atomBridge) throws AbortException
+	public <A> void attribute(final List<? extends A> actualValue, final SimpleType attributeType, final ValidationItem elementItem, final QName attributeName, final int attributeIndex, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		if (m_totalScopes > 0)
 		{
-			for (final ValidationItem<A> currentItem : getAncestorOrSelf(elementItem))
+			for (final ValidationItem currentItem : getAncestorOrSelf(elementItem))
 			{
-				for (final IdentityScope<A> scope : currentItem.m_identityScopes)
+				for (final IdentityScope scope : currentItem.m_identityScopes)
 				{
 					scope.attribute(attributeName, actualValue, attributeIndex, attributeType, elementItem, atomBridge);
 				}
@@ -142,13 +142,13 @@ final class IdentityConstraintManager<A>
 		}
 	}
 
-	public void text(final List<? extends A> actualValue, final SimpleType<A> actualType, final ValidationItem<A> elementItem, final int textIndex, final AtomBridge<A> atomBridge) throws AbortException
+	public <A> void text(final List<? extends A> actualValue, final SimpleType actualType, final ValidationItem elementItem, final int textIndex, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		if (m_totalScopes > 0)
 		{
-			for (final ValidationItem<A> currentItem : getAncestorOrSelf(elementItem))
+			for (final ValidationItem currentItem : getAncestorOrSelf(elementItem))
 			{
-				for (final IdentityScope<A> scope : currentItem.m_identityScopes)
+				for (final IdentityScope scope : currentItem.m_identityScopes)
 				{
 					scope.text(actualValue, actualType, textIndex, elementItem, atomBridge);
 				}
@@ -156,13 +156,13 @@ final class IdentityConstraintManager<A>
 		}
 	}
 
-	public void endElement(final ModelPSVI<A> elementPSVI, final ValidationItem<A> elementItem) throws AbortException
+	public void endElement(final ModelPSVI elementPSVI, final ValidationItem elementItem) throws AbortException
 	{
 		if (m_totalScopes > 0)
 		{
 			for (final QName key : elementItem.m_keyScopes.keySet())
 			{
-				for (final IdentityScopeRef<A> scope : elementItem.m_refScopes.get(key))
+				for (final IdentityScopeRef scope : elementItem.m_refScopes.get(key))
 				{
 					scope.reportUnmatchedRefs();
 				}
@@ -174,9 +174,9 @@ final class IdentityConstraintManager<A>
 
 			final QName elementName = elementPSVI.getName();
 			final int elementIndex = elementItem.getElementIndex();
-			for (final ValidationItem<A> currentItem : getAncestorOrSelf(elementItem))
+			for (final ValidationItem currentItem : getAncestorOrSelf(elementItem))
 			{
-				for (final IdentityScope<A> scope : currentItem.m_identityScopes)
+				for (final IdentityScope scope : currentItem.m_identityScopes)
 				{
 					scope.endElement(elementName, elementIndex, elementItem);
 				}
@@ -187,8 +187,8 @@ final class IdentityConstraintManager<A>
 	/**
 	 * Get an iterable of the links from the origin link to the document link.
 	 */
-	private Iterable<ValidationItem<A>> getAncestorOrSelf(final ValidationItem<A> origin)
+	private Iterable<ValidationItem> getAncestorOrSelf(final ValidationItem origin)
 	{
-		return new ValidationItemIterable<A>(origin);
+		return new ValidationItemIterable(origin);
 	}
 }

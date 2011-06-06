@@ -15,7 +15,7 @@
  */
 package org.genxdm.processor.w3c.xs.validation.impl;
 
-import java.util.List;
+import org.genxdm.typed.types.AtomBridge;
 
 
 /**
@@ -27,19 +27,21 @@ import java.util.List;
  * We'll assume that identity-constraints are being used for non-database purposes as well so that simple type values
  * are a possibility.
  */
-final class IdentityKey<A>
+final class IdentityKey
 {
-	private final List<? extends A> m_value;
+	private final String m_value;
 
-	public IdentityKey(final List<? extends A> value)
+	public IdentityKey(final String value)
 	{
 		// This invariant may not hold up to the test of time.
 		this.m_value = PreCondition.assertArgumentNotNull(value, "value");
 	}
 
-	public Iterable<? extends A> getTypedValue()
+	public <A> Iterable<? extends A> getTypedValue(AtomBridge<A> bridge)
 	{
-		return m_value;
+	    // TODO: fix this.  what the hell is going *on* with id?
+	    return null;
+//		return m_value;
 	}
 
 	@Override
@@ -52,14 +54,16 @@ final class IdentityKey<A>
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (obj instanceof IdentityKey)
-		{
-			final IdentityKey<A> other = (IdentityKey<A>)obj;
-			return ValidationSupport.equalValues(m_value, other.m_value);
-		}
-		else
-		{
-			return false;
-		}
+	    // TODO: fix it, dammit.
+	    return false;
+//		if (obj instanceof IdentityKey)
+//		{
+//			final IdentityKey other = (IdentityKey)obj;
+//			return ValidationSupport.equalValues(getTypedValue(), other.getTypedValue());
+//		}
+//		else
+//		{
+//			return false;
+//		}
 	}
 }

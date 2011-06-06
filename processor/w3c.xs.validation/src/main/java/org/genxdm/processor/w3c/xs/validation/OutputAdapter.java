@@ -36,7 +36,7 @@ public class OutputAdapter<A> implements VxOutputHandler<A>
 		this.handler = PreCondition.assertArgumentNotNull(handler, "handler");
 	}
 
-	public void attribute(final QName name, final List<? extends A> value, final SimpleType<A> type)
+	public void attribute(final QName name, final List<? extends A> value, final SimpleType type)
 	{
 		handler.attribute(name.getNamespaceURI(), name.getLocalPart(), name.getPrefix(), value, type.getName());
 	}
@@ -66,7 +66,7 @@ public class OutputAdapter<A> implements VxOutputHandler<A>
 		handler.startDocument(null, null);
 	}
 
-	public void startElement(final QName name, final Type<A> type) throws IOException
+	public void startElement(final QName name, final Type type) throws IOException
 	{
 		handler.startElement(name.getNamespaceURI(), name.getLocalPart(), name.getPrefix(), type.getName());
 	}

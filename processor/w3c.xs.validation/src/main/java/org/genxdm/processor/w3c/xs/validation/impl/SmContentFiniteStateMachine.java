@@ -23,7 +23,7 @@ import org.genxdm.xs.components.SchemaWildcard;
 /**
  * State-machine abstraction used for XML content model validation of a child axis.
  */
-interface SmContentFiniteStateMachine<A>
+interface SmContentFiniteStateMachine
 {
 	/**
 	 * Steps the state machine upon completion of all elements.
@@ -35,12 +35,12 @@ interface SmContentFiniteStateMachine<A>
 	/**
 	 * Returns an element declaration if an element is matched.
 	 */
-	ElementDefinition<A> getElement();
+	ElementDefinition getElement();
 
 	/**
 	 * Returns a wildcard if a wildcard is matched.
 	 */
-	SchemaWildcard<A> getWildcard();
+	SchemaWildcard getWildcard();
 
 	/**
 	 * Determines whether the last step matched an element declaration.

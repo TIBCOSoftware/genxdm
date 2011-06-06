@@ -20,21 +20,18 @@ import javax.xml.namespace.QName;
 import org.genxdm.processor.w3c.xs.validation.api.VxPSVI;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
-import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.Type;
 
 
-interface ModelAnalyzer<A>
+interface ModelAnalyzer
 {
 	void startDocument();
 
 	void endDocument() throws AbortException;
 
-	VxPSVI<A> startElement(QName name, Type<A> localType, Boolean explicitNil) throws AbortException;
+	VxPSVI startElement(QName name, Type localType, Boolean explicitNil) throws AbortException;
 
-	VxPSVI<A> endElement() throws AbortException;
-
-	void attribute(QName name, SimpleType<A> type, A value);
+	VxPSVI endElement() throws AbortException;
 
 	void setExceptionHandler(SchemaExceptionHandler handler);
 }
