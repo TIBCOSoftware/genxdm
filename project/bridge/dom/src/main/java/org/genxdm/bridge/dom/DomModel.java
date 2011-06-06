@@ -100,10 +100,11 @@ public class DomModel
         // Checking to see if there are any attributes saves the creation of {@link NamedNodeMap}.
         if (node.hasAttributes())
         {
+            // TODO - why does this not simply use "getAttribute/getAttributeNS"?
             final NamedNodeMap attributes = node.getAttributes();
             if (null != attributes)
             {
-                if (0 == namespaceURI.length())
+                if (namespaceURI == null || 0 == namespaceURI.length())
                 {
                     return attributes.getNamedItemNS(null, localName);
                 }
