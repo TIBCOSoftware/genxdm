@@ -39,16 +39,18 @@ import org.genxdm.xs.types.Type;
  * Provides a streaming evaluation of a restricted XPath expression. <br/>
  * When certain conditions are met, a match handler is called. The matched fields gets reported back to its scope.
  */
-final class IdentityField<A>
+final class IdentityField
 {
 	/**
 	 * The index of the element that is the context for the xs:field evaluation.
 	 */
 	private final int m_contextIndex;
-	private final IdentityScope<A> m_scope;
+	private final IdentityScope m_scope;
 	private final SchemaExceptionHandler m_errorHandler;
 
-	private List<? extends A> m_value = null;
+	// TODO: temporary
+//	private List<? extends A> m_value = null;
+	String m_value;
 	private int m_nodeIndex = -1;
 	private LocationInSchema m_location = null;
 
@@ -67,7 +69,7 @@ final class IdentityField<A>
 	 * @param xpath
 	 *            representing the parsed attribute xpath
 	 */
-	public IdentityField(final RestrictedXPath xpath, final int contextIndex, final IdentityScope<A> scope, final SchemaExceptionHandler errorHandler)
+	public IdentityField(final RestrictedXPath xpath, final int contextIndex, final IdentityScope scope, final SchemaExceptionHandler errorHandler)
 	{
 		m_contextIndex = contextIndex;
 		m_scope = PreCondition.assertArgumentNotNull(scope, "scope");
@@ -109,9 +111,11 @@ final class IdentityField<A>
 		}
 	}
 
-	public List<? extends A> getTypedValue()
+	public <A> List<? extends A> getTypedValue(AtomBridge<A> bridge)
 	{
-		return m_value;
+	    // TODO: so, now fix it.
+	    return null;
+//		return m_value;
 	}
 
 	public LocationInSchema getLocation()
@@ -124,7 +128,7 @@ final class IdentityField<A>
 		return m_branches[branchIdx].getStepLength() - 1;
 	}
 
-	public void startElement(final QName elementName, final int elementIndex, final Type<A> elementType, final Locatable locatable) throws AbortException
+	public void startElement(final QName elementName, final int elementIndex, final Type elementType, final Locatable locatable) throws AbortException
 	{
 		m_depth++;
 
@@ -223,7 +227,7 @@ final class IdentityField<A>
 		}
 	}
 
-	public void attribute(final QName name, final List<? extends A> actualValue, final int attributeIndex, final SimpleType<A> attributeType, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
+	public <A> void attribute(final QName name, final List<? extends A> actualValue, final int attributeIndex, final SimpleType attributeType, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		// System.out.println(StripQualifiers.strip(getClass().getName()) + "["
 		// + hashCode() + "].attribute(name=" + name + ", value=" +
@@ -262,7 +266,7 @@ final class IdentityField<A>
 		}
 	}
 
-	public void text(final List<? extends A> actualValue, final SimpleType<A> actualType, final int textIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
+	public <A> void text(final List<? extends A> actualValue, final SimpleType actualType, final int textIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		for (int branchIdx = m_branches.length - 1; branchIdx >= 0; branchIdx--)
 		{
@@ -375,11 +379,11 @@ final class IdentityField<A>
 		}
 	}
 
-	private void attributeMatched(final QName name, final List<? extends A> actualValue, final int attributeIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
+	private <A> void attributeMatched(final QName name, final List<? extends A> actualValue, final int attributeIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		if (m_value == null)
 		{
-			m_value = actualValue;
+			m_value = atomBridge.getC14NString(actualValue);
 			m_nodeIndex = attributeIndex;
 			m_location = locatable.getLocation();
 			m_scope.onFieldValueSet(this, m_contextIndex, atomBridge);
@@ -393,11 +397,11 @@ final class IdentityField<A>
 		}
 	}
 
-	private void textMatched(final List<? extends A> actualValue, final int textIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
+	private <A> void textMatched(final List<? extends A> actualValue, final int textIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		if (m_value == null)
 		{
-			m_value = actualValue;
+			m_value = atomBridge.getC14NString(actualValue);
 			m_nodeIndex = textIndex;
 			m_location = locatable.getLocation();
 			m_scope.onFieldValueSet(this, m_contextIndex, atomBridge);
@@ -414,17 +418,17 @@ final class IdentityField<A>
 	/**
 	 * A safe test of whether a type is simple or complex with simple content that is resilient to null.
 	 */
-	private static <A> boolean isSimpleTypeOrSimpleContent(final Type<A> type)
+	private static <A> boolean isSimpleTypeOrSimpleContent(final Type type)
 	{
 		if (null != type)
 		{
-			if (type instanceof SimpleType<?>)
+			if (type instanceof SimpleType)
 			{
 				return true;
 			}
-			else if (type instanceof ComplexType<?>)
+			else if (type instanceof ComplexType)
 			{
-				final ComplexType<A> complexType = (ComplexType<A>)type;
+				final ComplexType complexType = (ComplexType)type;
 				return complexType.getContentType().isSimple();
 			}
 			else

@@ -20,13 +20,13 @@ import java.util.ArrayList;
 import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.resolve.LocationInSchema;
 
-final class IdentityDanglingReference<A>
+final class IdentityDanglingReference
 {
-	private final IdentityConstraint<A> m_constraint;
-	private final ArrayList<IdentityKey<A>> m_keys;
+	private final IdentityConstraint m_constraint;
+	private final ArrayList<IdentityKey> m_keys;
 	private final LocationInSchema m_location;
 
-	public IdentityDanglingReference(final IdentityConstraint<A> constraint, final ArrayList<IdentityKey<A>> keys, final LocationInSchema location)
+	public IdentityDanglingReference(final IdentityConstraint constraint, final ArrayList<IdentityKey> keys, final LocationInSchema location)
 	{
 		m_constraint = PreCondition.assertArgumentNotNull(constraint, "constraint");
 		m_keys = PreCondition.assertArgumentNotNull(keys, "keys");
@@ -38,12 +38,12 @@ final class IdentityDanglingReference<A>
 		return m_location;
 	}
 
-	public IdentityConstraint<A> getConstraint()
+	public IdentityConstraint getConstraint()
 	{
 		return m_constraint;
 	}
 
-	public ArrayList<IdentityKey<A>> getKeys()
+	public ArrayList<IdentityKey> getKeys()
 	{
 		return m_keys;
 	}

@@ -22,47 +22,43 @@ import org.genxdm.processor.w3c.xs.validation.regex.api.RegExBridge;
 import org.genxdm.xs.components.ParticleTerm;
 
 
-final class ValidationRegExBridge<A> implements RegExBridge<ValidationExpr<A, ParticleTerm<A>>, QName>
+final class ValidationRegExBridge implements RegExBridge<ValidationExpr, QName>
 {
-	@SuppressWarnings("unused")
-	private final NameSource nameBridge;
-
-	public ValidationRegExBridge(final NameSource nameBridge)
+	public ValidationRegExBridge()
 	{
-		this.nameBridge = nameBridge;
 	}
 
-	public Iterable<ValidationExpr<A, ParticleTerm<A>>> getSubTerms(final ValidationExpr<A, ParticleTerm<A>> expression)
+	public Iterable<ValidationExpr> getSubTerms(final ValidationExpr expression)
 	{
 		return expression.getSubTerms();
 	}
 
-	public boolean intersects(final ValidationExpr<A, ParticleTerm<A>> e1, final ValidationExpr<A, ParticleTerm<A>> e2)
+	public boolean intersects(final ValidationExpr e1, final ValidationExpr e2)
 	{
 		return e1.intersects(e2);
 	}
 
-	public boolean isChoice(final ValidationExpr<A, ParticleTerm<A>> expression)
+	public boolean isChoice(final ValidationExpr expression)
 	{
 		return expression.isChoice();
 	}
 
-	public boolean isInterleave(final ValidationExpr<A, ParticleTerm<A>> expression)
+	public boolean isInterleave(final ValidationExpr expression)
 	{
 		return expression.isInterleave();
 	}
 
-	public boolean isSequence(final ValidationExpr<A, ParticleTerm<A>> expression)
+	public boolean isSequence(final ValidationExpr expression)
 	{
 		return expression.isSequence();
 	}
 
-	public boolean matches(final ValidationExpr<A, ParticleTerm<A>> expression, final QName token)
+	public boolean matches(final ValidationExpr expression, final QName token)
 	{
 		return expression.matches(token);
 	}
 
-	public int maxOccurs(final ValidationExpr<A, ParticleTerm<A>> expression)
+	public int maxOccurs(final ValidationExpr expression)
 	{
 		if (expression.isMaxOccursUnbounded())
 		{
@@ -74,12 +70,12 @@ final class ValidationRegExBridge<A> implements RegExBridge<ValidationExpr<A, Pa
 		}
 	}
 
-	public int minOccurs(final ValidationExpr<A, ParticleTerm<A>> expression)
+	public int minOccurs(final ValidationExpr expression)
 	{
 		return expression.minOccurs();
 	}
 
-	public ValidationExpr<A, ParticleTerm<A>> prime(final ValidationExpr<A, ParticleTerm<A>> expression)
+	public ValidationExpr prime(final ValidationExpr expression)
 	{
 		return expression;
 	}

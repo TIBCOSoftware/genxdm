@@ -204,7 +204,7 @@ public final class SAXContentValidatorImpl<A> implements SAXContentValidator<A>
     }
 
     @Override
-    public void setSchema(Schema<A> cache)
+    public void setSchema(Schema cache)
     {
         // TODO Auto-generated method stub
         

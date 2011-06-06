@@ -35,26 +35,26 @@ import org.genxdm.xs.resolve.LocationInSchema;
  * and unique assert uniqueness, with respect to the content identified by the selector, of the tuples resulting from
  * the fields. Only key further requires that all selected content has such tuples.
  */
-final class IdentityScopeKey<A> extends IdentityScope<A>
+final class IdentityScopeKey extends IdentityScope
 {
-	public final HashMap<IdentityTuple<A>, IdentityVariant<A>> m_qualifiedTargets = new HashMap<IdentityTuple<A>, IdentityVariant<A>>();
+	public final HashMap<IdentityTuple, IdentityVariant> m_qualifiedTargets = new HashMap<IdentityTuple, IdentityVariant>();
 
-	public IdentityScopeKey(final int elementIndex, final IdentityConstraint<A> constraint, final SchemaExceptionHandler errorHandler, final LocationInSchema location)
+	public IdentityScopeKey(final int elementIndex, final IdentityConstraint constraint, final SchemaExceptionHandler errorHandler, final LocationInSchema location)
 	{
 		super(elementIndex, constraint, errorHandler, location);
 	}
 
 	@Override
-	protected void onKeysComplete(final ArrayList<IdentityKey<A>> keyValues, final int elementIndex) throws AbortException
+	protected void onKeysComplete(final ArrayList<IdentityKey> keyValues, final int elementIndex) throws AbortException
 	{
-		final IdentityTuple<A> key = new IdentityTuple<A>(keyValues);
+		final IdentityTuple key = new IdentityTuple(keyValues);
 
-		final IdentityVariant<A> mapped = m_qualifiedTargets.get(key);
+		final IdentityVariant mapped = m_qualifiedTargets.get(key);
 
 		if (mapped == null || mapped.isDanglingRefs())
 		{
 			// List was the undeclared refs
-			m_qualifiedTargets.put(key, new IdentityVariant<A>(Boolean.TRUE));
+			m_qualifiedTargets.put(key, new IdentityVariant(Boolean.TRUE));
 		}
 		else if (mapped.isValue())
 		{
@@ -70,12 +70,12 @@ final class IdentityScopeKey<A> extends IdentityScope<A>
 	@Override
 	protected void onScopeEnd(final int elementIndex, final Locatable locatable) throws AbortException
 	{
-		final IdentityConstraint<A> constraint = getConstraint();
+		final IdentityConstraint constraint = getConstraint();
 		final IdentityConstraintKind category = constraint.getCategory();
 		// xs:key must have bound values while xs:unique need not exist.
 		if (category.isKey())
 		{
-			final ArrayList<IdentityField<A>> elementHandlers = m_fieldEvals.get(elementIndex);
+			final ArrayList<IdentityField> elementHandlers = m_fieldEvals.get(elementIndex);
 			PreCondition.assertArgumentNotNull(elementHandlers, "elementHandlers");
 			if (m_boundFields.get(elementIndex) < elementHandlers.size())
 			{

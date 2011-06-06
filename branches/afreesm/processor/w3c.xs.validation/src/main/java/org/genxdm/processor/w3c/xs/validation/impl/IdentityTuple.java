@@ -21,17 +21,17 @@ import java.util.Iterator;
 /**
  * A tuple is an ordered list of keys values.
  */
-final class IdentityTuple<A>
+final class IdentityTuple
 {
-	private final ArrayList<IdentityKey<A>> m_keys;
+	private final ArrayList<IdentityKey> m_keys;
 
-	public IdentityTuple(final ArrayList<IdentityKey<A>> keys)
+	public IdentityTuple(final ArrayList<IdentityKey> keys)
 	{
 		// This invariant may not hold up to the test of time.
 		this.m_keys = PreCondition.assertArgumentNotNull(keys, "keys");
 	}
 
-	public ArrayList<IdentityKey<A>> getKeys()
+	public ArrayList<IdentityKey> getKeys()
 	{
 		return m_keys;
 	}
@@ -48,7 +48,7 @@ final class IdentityTuple<A>
 	{
 		if (obj instanceof IdentityTuple)
 		{
-			final IdentityTuple<A> other = (IdentityTuple<A>)obj;
+			final IdentityTuple other = (IdentityTuple)obj;
 			return equalKeys(m_keys, other.m_keys);
 		}
 		else
@@ -57,16 +57,16 @@ final class IdentityTuple<A>
 		}
 	}
 
-	private static <A> boolean equalKeys(final ArrayList<IdentityKey<A>> expect, final ArrayList<IdentityKey<A>> actual)
+	private static <A> boolean equalKeys(final ArrayList<IdentityKey> expect, final ArrayList<IdentityKey> actual)
 	{
-		final Iterator<IdentityKey<A>> lhs = expect.iterator();
-		final Iterator<IdentityKey<A>> rhs = actual.iterator();
+		final Iterator<IdentityKey> lhs = expect.iterator();
+		final Iterator<IdentityKey> rhs = actual.iterator();
 		while (lhs.hasNext())
 		{
-			final IdentityKey<A> lhsAtom = lhs.next();
+			final IdentityKey lhsAtom = lhs.next();
 			if (rhs.hasNext())
 			{
-				final IdentityKey<A> rhsAtom = rhs.next();
+				final IdentityKey rhsAtom = rhs.next();
 				if (!lhsAtom.equals(rhsAtom))
 				{
 					return false;
