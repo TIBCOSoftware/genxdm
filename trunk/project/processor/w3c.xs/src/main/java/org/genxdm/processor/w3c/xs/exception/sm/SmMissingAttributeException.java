@@ -23,36 +23,36 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmMissingAttributeException extends SmComplexTypeException
 {
-	private final QName m_attributeName;
+    private final QName m_attributeName;
 
-	public SmMissingAttributeException(final QName elementName, final QName attributeName, final LocationInSchema location)
-	{
-		super(PART_ATTRIBUTE_REQUIRED_MISSING, elementName, location);
-		m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "name");
-	}
+    public SmMissingAttributeException(final QName elementName, final QName attributeName, final LocationInSchema location)
+    {
+        super(PART_ATTRIBUTE_REQUIRED_MISSING, elementName, location);
+        m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "name");
+    }
 
-	public QName getAttributeName()
-	{
-		return m_attributeName;
-	}
+    public QName getAttributeName()
+    {
+        return m_attributeName;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Missing required attribute '" + m_attributeName + "' on the element '" + getElementName() + "'.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Missing required attribute '" + m_attributeName + "' on the element '" + getElementName() + "'.";
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof SmMissingAttributeException)
-		{
-			final SmMissingAttributeException other = (SmMissingAttributeException)obj;
-			return other.m_attributeName.equals(m_attributeName);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof SmMissingAttributeException)
+        {
+            final SmMissingAttributeException other = (SmMissingAttributeException)obj;
+            return other.m_attributeName.equals(m_attributeName);
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

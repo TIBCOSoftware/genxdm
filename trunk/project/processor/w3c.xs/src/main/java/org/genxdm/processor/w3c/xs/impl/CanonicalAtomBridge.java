@@ -3,20 +3,54 @@ package org.genxdm.processor.w3c.xs.impl;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.atoms.XmlAnyURI;
 import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.bridgekit.atoms.XmlBase64Binary;
+import org.genxdm.bridgekit.atoms.XmlBoolean;
+import org.genxdm.bridgekit.atoms.XmlByte;
+import org.genxdm.bridgekit.atoms.XmlDayTimeDuration;
+import org.genxdm.bridgekit.atoms.XmlDecimal;
+import org.genxdm.bridgekit.atoms.XmlDouble;
+import org.genxdm.bridgekit.atoms.XmlDuration;
+import org.genxdm.bridgekit.atoms.XmlENTITY;
+import org.genxdm.bridgekit.atoms.XmlFloat;
 import org.genxdm.bridgekit.atoms.XmlForeignAtom;
+import org.genxdm.bridgekit.atoms.XmlGregorian;
+import org.genxdm.bridgekit.atoms.XmlHexBinary;
+import org.genxdm.bridgekit.atoms.XmlID;
+import org.genxdm.bridgekit.atoms.XmlIDREF;
+import org.genxdm.bridgekit.atoms.XmlInt;
+import org.genxdm.bridgekit.atoms.XmlInteger;
+import org.genxdm.bridgekit.atoms.XmlIntegerDerived;
+import org.genxdm.bridgekit.atoms.XmlLanguage;
+import org.genxdm.bridgekit.atoms.XmlLong;
+import org.genxdm.bridgekit.atoms.XmlNCName;
+import org.genxdm.bridgekit.atoms.XmlNMTOKEN;
+import org.genxdm.bridgekit.atoms.XmlNOTATION;
+import org.genxdm.bridgekit.atoms.XmlName;
+import org.genxdm.bridgekit.atoms.XmlNormalizedString;
+import org.genxdm.bridgekit.atoms.XmlQName;
+import org.genxdm.bridgekit.atoms.XmlShort;
+import org.genxdm.bridgekit.atoms.XmlString;
+import org.genxdm.bridgekit.atoms.XmlToken;
+import org.genxdm.bridgekit.atoms.XmlUntypedAtomic;
+import org.genxdm.bridgekit.atoms.XmlYearMonthDuration;
 import org.genxdm.exceptions.GxmlAtomCastException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
 import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.SimpleType;
+import org.genxdm.xs.types.Type;
 
 public class CanonicalAtomBridge
     implements AtomBridge<XmlAtom>
@@ -70,8 +104,32 @@ public class CanonicalAtomBridge
     public XmlAtom compile(String srcval, NativeType dataType)
         throws GxmlAtomCastException
     {
-        // TODO Auto-generated method stub
-        return null;
+        PreCondition.assertNotNull(srcval, "srcval");
+        PreCondition.assertNotNull(dataType, "dataType");
+        final Type type = components.getTypeDefinition(dataType);
+        if (type != null)
+        {
+            if (type.isAtomicType())
+            {
+                final SimpleType atomicType = (SimpleType)type;
+                try
+                {
+                    final List<XmlAtom> atoms = atomicType.validate(srcval, this);
+                    if (atoms.size() == 0)
+                        return null;
+                    else if (atoms.size() == 1)
+                        return atoms.get(0);
+                    // TODO: better exception?
+                    throw new AssertionError(); // because a native type should return a single value
+                }
+                catch (DatatypeException dte)
+                {
+                    throw new GxmlAtomCastException(srcval, dte.getType().getName(), FORG0001, dte);
+                }
+            }
+            throw new IllegalArgumentException("Datatype '" + dataType + "' is not an atomic type");
+        }
+        throw new IllegalArgumentException("Datatype '" + dataType + "' could not be found in the schema context.");
     }
 
     @Override
@@ -79,35 +137,32 @@ public class CanonicalAtomBridge
         throws GxmlAtomCastException
     {
         // TODO Auto-generated method stub
+        // note: when this is fixed here, go fix it in bridgekit.atoms.XmlAtomBridge too, 'kay?
         return null;
     }
 
     @Override
     public XmlAtom createBase64Binary(byte[] base64BinaryValue)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new XmlBase64Binary(base64BinaryValue);
     }
 
     @Override
     public XmlAtom createBoolean(boolean booleanValue)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return XmlBoolean.valueOf(booleanValue);
     }
 
     @Override
     public XmlAtom createByte(byte byteValue)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new XmlByte(byteValue);
     }
 
     @Override
     public XmlAtom createDate(int year, int month, int dayOfMonth, int timezone)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new XmlGregorian(year, month, dayOfMonth, 0, 0, 0, BigDecimal.ZERO, timezone, NativeType.DATE);
     }
 
     @Override
@@ -115,154 +170,246 @@ public class CanonicalAtomBridge
                                   int hour, int minute, int second, int millis,
                                   BigDecimal remainderSecond, int offsetInMinutes)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new XmlGregorian(year, month, dayOfMonth, hour, minute, second, remainderSecond, offsetInMinutes, NativeType.DATETIME);
     }
 
     @Override
     public XmlAtom createDay(int dayOfMonth, int timezone)
     {
-        // TODO Auto-generated method stub
-        return null;
+        // 1 Jan 1970 is the epoch
+        return new XmlGregorian(1970, 1, dayOfMonth, 0, 0, 0, BigDecimal.ZERO, timezone, NativeType.GDAY);
     }
 
     @Override
     public XmlAtom createDayTimeDuration(BigDecimal seconds)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new XmlDayTimeDuration(seconds);
     }
 
     @Override
     public XmlAtom createDecimal(BigDecimal decimalValue)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return XmlDecimal.valueOf(decimalValue);
     }
 
     @Override
     public XmlAtom createDecimal(long decimalValue)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return XmlDecimal.valueOf(decimalValue);
     }
 
     @Override
     public XmlAtom createDouble(double value)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new XmlDouble(value);
     }
 
     @Override
     public XmlAtom createDuration(int yearMonthDuration, BigDecimal dayTimeDuration)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new XmlDuration(yearMonthDuration, dayTimeDuration);
     }
 
     @Override
     public XmlAtom createFloat(float floatValue)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new XmlFloat(floatValue);
     }
 
     @Override
     public XmlAtom createHexBinary(byte[] hexBinaryValue)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new XmlHexBinary(hexBinaryValue);
     }
 
     @Override
     public XmlAtom createInt(int intValue)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new XmlInt(intValue);
     }
 
     @Override
     public XmlAtom createInteger(BigInteger value)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return XmlInteger.valueOf(value);
     }
 
     @Override
     public XmlAtom createInteger(long value)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return XmlInteger.valueOf(value);
     }
 
     @Override
     public XmlAtom createIntegerDerived(BigInteger value, NativeType nativeType)
     {
-        // TODO Auto-generated method stub
-        return null;
+        switch (nativeType)
+        {
+            case NON_POSITIVE_INTEGER:
+            case NEGATIVE_INTEGER:
+            case NON_NEGATIVE_INTEGER:
+            case POSITIVE_INTEGER:
+            case UNSIGNED_LONG:
+            case UNSIGNED_INT:
+            case UNSIGNED_SHORT:
+            case UNSIGNED_BYTE:
+            {
+                return XmlIntegerDerived.valueOf(value, nativeType);
+            }
+            default:
+            {
+                throw new AssertionError(nativeType);
+            }
+        }
     }
 
     @Override
     public XmlAtom createIntegerDerived(long value, NativeType nativeType)
     {
-        // TODO Auto-generated method stub
-        return null;
+        switch (nativeType)
+        {
+            case INTEGER:
+            {
+                return XmlInteger.valueOf(value);
+            }
+            case NON_POSITIVE_INTEGER:
+            {
+                return XmlIntegerDerived.valueOf(value, nativeType);
+            }
+            case NEGATIVE_INTEGER:
+            {
+                return XmlIntegerDerived.valueOf(value, nativeType);
+            }
+            case NON_NEGATIVE_INTEGER:
+            {
+                return XmlIntegerDerived.valueOf(value, nativeType);
+            }
+            case UNSIGNED_LONG:
+            {
+                return XmlIntegerDerived.valueOf(value, nativeType);
+            }
+            case UNSIGNED_INT:
+            {
+                return XmlIntegerDerived.valueOf(value, nativeType);
+            }
+            case UNSIGNED_SHORT:
+            {
+                return XmlIntegerDerived.valueOf(value, nativeType);
+            }
+            case UNSIGNED_BYTE:
+            {
+                return XmlIntegerDerived.valueOf(value, nativeType);
+            }
+            case POSITIVE_INTEGER:
+            {
+                return XmlIntegerDerived.valueOf(value, nativeType);
+            }
+            default:
+            {
+                throw new AssertionError(nativeType);
+            }
+        }
     }
 
     @Override
     public XmlAtom createLong(long longValue)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new XmlLong(longValue);
     }
 
     @Override
     public XmlAtom createMonth(int month, int timezone)
     {
-        // TODO Auto-generated method stub
-        return null;
+        // 1 jan 1970 is the epoch
+        return new XmlGregorian(1970, month, 1, 0, 0, 0, BigDecimal.ZERO, timezone, NativeType.GMONTH);
     }
 
     @Override
     public XmlAtom createMonthDay(int month, int dayOfMonth, int timezone)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new XmlGregorian(1970, month, dayOfMonth, 0, 0, 0, BigDecimal.ZERO, timezone, NativeType.GMONTHDAY);
     }
 
     @Override
     public XmlAtom createNOTATION(String namespaceURI, String localName, String prefix)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new XmlNOTATION(namespaceURI, localName, prefix);
     }
 
     @Override
     public XmlAtom createQName(String namespaceURI, String localName, String prefix)
     {
-        // TODO Auto-generated method stub
-        return null;
+        PreCondition.assertNotNull(prefix, "prefix");
+        PreCondition.assertNotNull(localName, "localName");
+        return new XmlQName(namespaceURI, localName, prefix);
     }
 
     @Override
     public XmlAtom createShort(short shortValue)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new XmlShort(shortValue);
     }
 
     @Override
     public XmlAtom createString(String strval)
     {
-        // TODO Auto-generated method stub
+        if (strval != null)
+            return new XmlString(strval);
         return null;
     }
 
     @Override
     public XmlAtom createStringDerived(String strval, NativeType nativeType)
     {
-        // TODO Auto-generated method stub
+        if (strval != null)
+        {
+            PreCondition.assertNotNull(nativeType, "nativeType");
+            final SimpleType simpleType = (SimpleType)components.getTypeDefinition(nativeType);
+            final String normalized =  simpleType.normalize(strval);
+            switch (nativeType)
+            {
+                case NORMALIZED_STRING:
+                {
+                    return new XmlNormalizedString(normalized);
+                }
+                case TOKEN:
+                {
+                    return new XmlToken(normalized);
+                }
+                case LANGUAGE:
+                {
+                    return new XmlLanguage(normalized);
+                }
+                case NAME:
+                {
+                    return new XmlName(normalized);
+                }
+                case NMTOKEN:
+                {
+                    return new XmlNMTOKEN(normalized);
+                }
+                case NCNAME:
+                {
+                    return new XmlNCName(normalized);
+                }
+                case ID:
+                {
+                    return new XmlID(normalized);
+                }
+                case IDREF:
+                {
+                    return new XmlIDREF(normalized);
+                }
+                case ENTITY:
+                {
+                    return new XmlENTITY(normalized);
+                }
+                default:
+                {
+                    throw new AssertionError("createStringDerived('" + normalized + "', " + nativeType + ")");
+                }
+            }
+        }
         return null;
     }
 
@@ -270,316 +417,817 @@ public class CanonicalAtomBridge
     public XmlAtom createTime(int hourOfDay, int minute, int second,
                               int millis, BigDecimal fractionalSecond, int timezone)
     {
-        // TODO Auto-generated method stub
-        return null;
+        // 1 january 1970 is the epoch
+        return new XmlGregorian(1970, 1, 1, hourOfDay, minute, second, fractionalSecond, timezone, NativeType.TIME);
     }
 
     @Override
     public XmlAtom createUntypedAtomic(String strval)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new XmlUntypedAtomic(strval);
     }
 
     @Override
     public XmlAtom createURI(URI uri)
     {
-        // TODO Auto-generated method stub
+        if (uri != null)
+            return new XmlAnyURI(uri);
         return null;
     }
 
     @Override
     public XmlAtom createYear(int year, int timezone)
     {
-        // TODO Auto-generated method stub
-        return null;
+        // 1 january 1970 is the epoch
+        return new XmlGregorian(year, 1, 1, 0, 0, 0, BigDecimal.ZERO, timezone, NativeType.GYEAR);
     }
 
     @Override
     public XmlAtom createYearMonth(int year, int month, int timezone)
     {
-        // TODO Auto-generated method stub
-        return null;
+        // 1 jan 1970 is the epoch
+        return new XmlGregorian(year, month, 1, 0, 0, 0, BigDecimal.ZERO, timezone, NativeType.GYEARMONTH);
     }
 
     @Override
     public XmlAtom createYearMonthDuration(int months)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return XmlYearMonthDuration.valueOf(months);
     }
 
     @Override
     public byte[] getBase64Binary(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (atom instanceof XmlBase64Binary)
+        {
+            return ((XmlBase64Binary)atom).getByteArrayValue();
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getBase64Binary(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertNotNull(atom, "atom");
+            PreCondition.assertTrue(atom instanceof XmlBase64Binary, "atom instance of xs:base64Binary");
+            throw new AssertionError(atom.getClass());
+        }
     }
 
     @Override
     public boolean getBoolean(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return false;
+        if (atom instanceof XmlBoolean)
+        {
+            return ((XmlBoolean)atom).getBooleanValue();
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getBoolean(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertNotNull(atom, "atom");
+            PreCondition.assertTrue(atom instanceof XmlBoolean, "atom instance of xs:boolean");
+            throw new AssertionError(atom.getClass());
+        }
     }
 
     @Override
     public XmlAtom getBooleanFalse()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return XmlBoolean.FALSE;
     }
 
     @Override
     public XmlAtom getBooleanTrue()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return XmlBoolean.TRUE;
     }
 
     @Override
     public byte getByte(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (atom instanceof XmlByte)
+        {
+            return ((XmlByte)atom).getByteValue();
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getByte(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(atom, "atom");
+            throw new AssertionError("getByte(" + atom.getClass() + ")");
+        }
     }
 
     @Override
     public String getC14NForm(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return atom.getC14NForm();
     }
 
     @Override
     public String getC14NString(List<? extends XmlAtom> atoms)
     {
-        // TODO Auto-generated method stub
-        return null;
+        final int size = atoms.size();
+        if (size > 0)
+        {
+            if (size == 1)
+            {
+                return getC14NForm(atoms.get(0));
+            }
+            else
+            {
+                final StringBuilder sb = new StringBuilder();
+                sb.append(getC14NForm(atoms.get(0)));
+                for (int i = 1; i < size; i++)
+                {
+                    sb.append(" ");
+                    sb.append(getC14NForm(atoms.get(i)));
+                }
+                return sb.toString();
+            }
+        }
+        else if (size < 0)
+        {
+            throw new IllegalArgumentException("atoms.size() must be greater than or equal to zero.");
+        }
+        return "";
     }
 
     @Override
     public QName getDataType(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return NameSource.SINGLETON.nativeType(atom.getNativeType());
     }
 
     @Override
     public int getDayOfMonth(XmlAtom gregorian)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (gregorian instanceof XmlGregorian)
+        {
+            return ((XmlGregorian)gregorian).getDayOfMonth();
+        }
+        else if (isForeignAtom(gregorian))
+        {
+            return getDayOfMonth(getNativeAtom(gregorian));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(gregorian, "gregorian");
+            throw new AssertionError("getDayOfMonth(" + gregorian.getClass().getName() + ")");
+        }
     }
 
     @Override
     public BigDecimal getDecimal(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (atom instanceof XmlDecimal)
+        {
+            return ((XmlDecimal)atom).getBigDecimalValue();
+        }
+        else if (atom instanceof XmlInteger)
+        {
+            return new BigDecimal(((XmlInteger)atom).getBigIntegerValue());
+        }
+        else if (atom instanceof XmlLong)
+        {
+            return BigDecimal.valueOf(((XmlLong)atom).getLongValue());
+        }
+        else if (atom instanceof XmlInt)
+        {
+            return BigDecimal.valueOf(((XmlInt)atom).getIntValue());
+        }
+        else if (atom instanceof XmlShort)
+        {
+            return BigDecimal.valueOf(((XmlShort)atom).getShortValue());
+        }
+        else if (atom instanceof XmlByte)
+        {
+            return BigDecimal.valueOf(((XmlByte)atom).getByteValue());
+        }
+        else if (atom instanceof XmlIntegerDerived)
+        {
+            return new BigDecimal(((XmlIntegerDerived)atom).integerValue());
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getDecimal(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(atom, "atom");
+            throw new AssertionError("getDecimal(" + atom.getClass() + ")");
+        }
     }
 
     @Override
     public double getDouble(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (atom instanceof XmlDouble)
+        {
+            return ((XmlDouble)atom).getDoubleValue();
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getDouble(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(atom, "atom");
+            throw new AssertionError("TODO: getDouble(" + atom.getClass() + ")");
+        }
     }
 
     @Override
     public int getDurationTotalMonths(XmlAtom duration)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (duration instanceof XmlYearMonthDuration)
+        {
+            return ((XmlYearMonthDuration)duration).getTotalMonthsValue();
+        }
+        else if (duration instanceof XmlDuration)
+        {
+            return ((XmlDuration)duration).getTotalMonthsValue();
+        }
+        else if (isForeignAtom(duration))
+        {
+            return getDurationTotalMonths(getNativeAtom(duration));
+        }
+        else
+        {
+            PreCondition.assertNotNull(duration, "duration");
+            PreCondition.assertTrue(duration instanceof XmlYearMonthDuration, "atom instance of xs:yearMonthDuration");
+            throw new AssertionError(duration.getClass());
+        }
     }
 
     @Override
     public BigDecimal getDurationTotalSeconds(XmlAtom duration)
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (duration instanceof XmlDayTimeDuration)
+        {
+            return ((XmlDayTimeDuration)duration).getTotalSecondsValue();
+        }
+        else if (duration instanceof XmlDuration)
+        {
+            return ((XmlDuration)duration).getTotalSecondsValue();
+        }
+        else if (isForeignAtom(duration))
+        {
+            return getDurationTotalSeconds(getNativeAtom(duration));
+        }
+        else
+        {
+            PreCondition.assertNotNull(duration, "duration");
+            PreCondition.assertTrue(false, "atom instance of xs:duration");
+            throw new AssertionError(duration.getClass());
+        }
     }
 
     @Override
     public float getFloat(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (atom instanceof XmlFloat)
+        {
+            return ((XmlFloat)atom).getFloatValue();
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getFloat(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertNotNull(atom, "atom");
+            PreCondition.assertTrue(atom instanceof XmlFloat, "atom instance of xs:float");
+            throw new AssertionError(atom.getClass());
+        }
     }
 
     @Override
     public BigDecimal getFractionalSecondPart(XmlAtom gregorian)
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (gregorian instanceof XmlGregorian)
+        {
+            return ((XmlGregorian)gregorian).getFractionalSecond();
+        }
+        else if (isForeignAtom(gregorian))
+        {
+            return getFractionalSecondPart(getNativeAtom(gregorian));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(gregorian, "gregorian");
+            throw new AssertionError("getFractionalSecond(" + gregorian.getClass().getName() + ")");
+        }
     }
 
     @Override
     public int getGmtOffset(XmlAtom gregorian)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (gregorian instanceof XmlGregorian)
+        {
+            return ((XmlGregorian)gregorian).getGmtOffset();
+        }
+        else if (isForeignAtom(gregorian))
+        {
+            return getGmtOffset(getNativeAtom(gregorian));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(gregorian, "gregorian");
+            throw new AssertionError("getGmtOffset(" + gregorian.getClass().getName() + ")");
+        }
     }
 
     @Override
     public byte[] getHexBinary(XmlAtom arg)
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (arg instanceof XmlHexBinary)
+        {
+            return ((XmlHexBinary)arg).getByteArrayValue();
+        }
+        else if (isForeignAtom(arg))
+        {
+            return getHexBinary(getNativeAtom(arg));
+        }
+        else
+        {
+            PreCondition.assertNotNull(arg, "atom");
+            PreCondition.assertTrue(arg instanceof XmlHexBinary, "atom instance of xs:hexBinary");
+            throw new AssertionError(arg.getClass());
+        }
     }
 
     @Override
     public int getHourOfDay(XmlAtom gregorian)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (gregorian instanceof XmlGregorian)
+        {
+            return ((XmlGregorian)gregorian).getHourOfDay();
+        }
+        else if (isForeignAtom(gregorian))
+        {
+            return getHourOfDay(getNativeAtom(gregorian));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(gregorian, "gregorian");
+            throw new AssertionError("getHourOfDay(" + gregorian.getClass().getName() + ")");
+        }
     }
 
     @Override
     public int getInt(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (atom instanceof XmlInt)
+        {
+            return ((XmlInt)atom).getIntValue();
+        }
+        else if (atom instanceof XmlShort)
+        {
+            return ((XmlShort)atom).getShortValue();
+        }
+        else if (atom instanceof XmlByte)
+        {
+            return ((XmlByte)atom).getByteValue();
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getInt(upCast(atom));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(atom, "atom");
+            throw new AssertionError("getInt(" + atom.getClass() + ")");
+        }
     }
 
     @Override
     public BigInteger getInteger(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (atom instanceof XmlInteger)
+        {
+            return ((XmlInteger)atom).getBigIntegerValue();
+        }
+        else if (atom instanceof XmlLong)
+        {
+            return BigInteger.valueOf(((XmlLong)atom).getLongValue());
+        }
+        else if (atom instanceof XmlInt)
+        {
+            return BigInteger.valueOf(((XmlInt)atom).getIntValue());
+        }
+        else if (atom instanceof XmlShort)
+        {
+            return BigInteger.valueOf(((XmlShort)atom).getShortValue());
+        }
+        else if (atom instanceof XmlByte)
+        {
+            return BigInteger.valueOf(((XmlByte)atom).getByteValue());
+        }
+        else if (atom instanceof XmlIntegerDerived)
+        {
+            return ((XmlIntegerDerived)atom).integerValue();
+        }
+        else if (atom instanceof XmlForeignAtom)
+        {
+            return getInteger(((XmlForeignAtom)atom).baseAtom);
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(atom, "atom");
+            throw new AssertionError("getInteger(" + atom.getClass() + ")");
+        }
     }
 
     @Override
     public int getIntegralSecondPart(XmlAtom gregorian)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (gregorian instanceof XmlGregorian)
+        {
+            return ((XmlGregorian)gregorian).getSecond();
+        }
+        else if (isForeignAtom(gregorian))
+        {
+            return getIntegralSecondPart(getNativeAtom(gregorian));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(gregorian, "gregorian");
+            throw new AssertionError("getSecond(" + gregorian.getClass().getName() + ")");
+        }
     }
 
     @Override
     public String getLocalNameFromQName(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (atom instanceof XmlQName)
+        {
+            return ((XmlQName)atom).getLocalName();
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getLocalNameFromQName(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(atom, "atom");
+            throw new AssertionError("getLocalNameFromQName(" + atom.getClass().getName() + ")");
+        }
     }
 
     @Override
     public long getLong(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (atom instanceof XmlLong)
+        {
+            return ((XmlLong)atom).getLongValue();
+        }
+        else if (atom instanceof XmlInt)
+        {
+            return ((XmlInt)atom).getIntValue();
+        }
+        else if (atom instanceof XmlShort)
+        {
+            return ((XmlShort)atom).getShortValue();
+        }
+        else if (atom instanceof XmlByte)
+        {
+            return ((XmlByte)atom).getByteValue();
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getLong(upCast(atom));
+        }
+        else
+        {
+            if (null != atom)
+            {
+                throw new AssertionError("getLong(" + atom.getClass().getName() + ")");
+            }
+            else
+            {
+                // Consistent with Unboxing.
+                throw new NullPointerException();
+            }
+        }
     }
 
     @Override
     public int getMinute(XmlAtom gregorian)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (gregorian instanceof XmlGregorian)
+        {
+            return ((XmlGregorian)gregorian).getMinute();
+        }
+        else if (isForeignAtom(gregorian))
+        {
+            return getMinute(getNativeAtom(gregorian));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(gregorian, "gregorian");
+            throw new AssertionError("getMinute(" + gregorian.getClass().getName() + ")");
+        }
     }
 
     @Override
     public int getMonth(XmlAtom gregorian)
     {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public NameSource getNameBridge()
-    {
-        // TODO Auto-generated method stub
-        return null;
+        if (gregorian instanceof XmlGregorian)
+        {
+            return ((XmlGregorian)gregorian).getMonth();
+        }
+        else if (isForeignAtom(gregorian))
+        {
+            return getMonth(getNativeAtom(gregorian));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(gregorian, "gregorian");
+            throw new AssertionError("getMonth(" + gregorian.getClass().getName() + ")");
+        }
     }
 
     @Override
     public String getNamespaceFromQName(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (atom instanceof XmlQName)
+        {
+            return ((XmlQName)atom).getNamespaceURI();
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getNamespaceFromQName(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(atom, "atom");
+            throw new AssertionError("getNamespaceFromQName(" + atom.getClass().getName() + ")");
+        }
     }
 
     @Override
     public XmlAtom getNativeAtom(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        while (isForeignAtom(atom))
+        {
+            return getNativeAtom(upCast(atom));
+        }
+        return atom;
     }
 
     @Override
     public NativeType getNativeType(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return atom.getNativeType();
     }
 
     @Override
-    public QName getNotation(XmlAtom notation)
+    public QName getNotation(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (atom instanceof XmlNOTATION)
+        {
+            final XmlNOTATION name = (XmlNOTATION)atom;
+            return new QName(name.getNamespaceURI().toString(), name.getLocalName().toString(), name.getPrefix());
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getNotation(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(atom, "atom");
+            throw new AssertionError("getNotation(" + atom.getClass().getName() + ")");
+        }
     }
 
     @Override
     public String getPrefixFromQName(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (atom instanceof XmlQName)
+        {
+            return ((XmlQName)atom).getPrefix();
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getPrefixFromQName(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(atom, "atom");
+            throw new AssertionError("getPrefixFromQName(" + atom.getClass().getName() + ")");
+        }
     }
 
     @Override
     public QName getQName(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (atom instanceof XmlQName)
+        {
+            final XmlQName qname = (XmlQName)atom;
+            return new QName(qname.getNamespaceURI().toString(), qname.getLocalName().toString(), qname.getPrefix());
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getQName(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(atom, "atom");
+            throw new AssertionError("getQName(" + atom.getClass().getName() + ")");
+        }
     }
 
     @Override
     public BigDecimal getSecondsAsBigDecimal(XmlAtom gregorian)
     {
-        // TODO Auto-generated method stub
-        return null;
+        final BigDecimal isp = BigDecimal.valueOf(getIntegralSecondPart(gregorian));
+        final BigDecimal fsp = getFractionalSecondPart(gregorian);
+        if (null != fsp)
+        {
+            return isp.add(fsp);
+        }
+        else
+        {
+            return isp;
+        }
     }
 
     @Override
     public short getShort(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (atom instanceof XmlShort)
+        {
+            return ((XmlShort)atom).getShortValue();
+        }
+        else if (atom instanceof XmlByte)
+        {
+            return ((XmlByte)atom).getByteValue();
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getShort(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(atom, "atom");
+            throw new AssertionError("getShort(" + atom.getClass().getName() + ")");
+        }
     }
 
     @Override
     public String getString(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (atom instanceof XmlString)
+        {
+            return atom.getC14NForm();
+        }
+        else if (atom instanceof XmlNormalizedString)
+        {
+            return atom.getC14NForm();
+        }
+        else if (atom instanceof XmlToken)
+        {
+            return atom.getC14NForm();
+        }
+        else if (atom instanceof XmlLanguage)
+        {
+            return atom.getC14NForm();
+        }
+        else if (atom instanceof XmlName)
+        {
+            return atom.getC14NForm();
+        }
+        else if (atom instanceof XmlNMTOKEN)
+        {
+            return atom.getC14NForm();
+        }
+        else if (atom instanceof XmlNCName)
+        {
+            return atom.getC14NForm();
+        }
+        else if (atom instanceof XmlID)
+        {
+            return atom.getC14NForm();
+        }
+        else if (atom instanceof XmlIDREF)
+        {
+            return atom.getC14NForm();
+        }
+        else if (atom instanceof XmlENTITY)
+        {
+            return atom.getC14NForm();
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getString(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(atom, "atom");
+            throw new AssertionError("getString(" + atom.getClass().getName() + ")");
+        }
     }
 
     @Override
     public short getUnsignedByte(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (atom instanceof XmlIntegerDerived)
+        {
+            final XmlIntegerDerived integer = (XmlIntegerDerived)atom;
+            if (integer.getNativeType() == NativeType.UNSIGNED_BYTE)
+            {
+                return integer.shortValue();
+            }
+            else
+            {
+                throw new AssertionError(atom.getClass());
+            }
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getUnsignedByte(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(atom, "atom");
+            throw new AssertionError("getUnsignedByte(" + atom.getClass() + ")");
+        }
     }
 
     @Override
     public long getUnsignedInt(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (atom instanceof XmlIntegerDerived)
+        {
+            final XmlIntegerDerived integer = (XmlIntegerDerived)atom;
+            if (integer.getNativeType().isA(NativeType.UNSIGNED_INT))
+            {
+                return integer.longValue();
+            }
+            else
+            {
+                throw new AssertionError(atom.getClass());
+            }
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getUnsignedInt(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(atom, "atom");
+            throw new AssertionError("getUnsignedInt(" + atom.getClass() + ")");
+        }
     }
 
     @Override
     public int getUnsignedShort(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (atom instanceof XmlIntegerDerived)
+        {
+            final XmlIntegerDerived integer = (XmlIntegerDerived)atom;
+            if (integer.getNativeType().isA(NativeType.UNSIGNED_SHORT))
+            {
+                return integer.intValue();
+            }
+            else
+            {
+                throw new AssertionError(atom.getClass());
+            }
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getUnsignedShort(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(atom, "atom");
+            throw new AssertionError("getUnsignedShort(" + atom.getClass() + ")");
+        }
     }
 
     @Override
     public URI getURI(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (atom instanceof XmlAnyURI)
+        {
+            return ((XmlAnyURI)atom).getURI();
+        }
+        else if (isForeignAtom(atom))
+        {
+            return getURI(getNativeAtom(atom));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(atom, "atom");
+            throw new AssertionError("getURI(" + atom.getClass().getName() + ")");
+        }
     }
 
     @Override
@@ -599,44 +1247,55 @@ public class CanonicalAtomBridge
     @Override
     public int getYear(XmlAtom gregorian)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        if (gregorian instanceof XmlGregorian)
+        {
+            return ((XmlGregorian)gregorian).getYear();
+        }
+        else if (isForeignAtom(gregorian))
+        {
+            return getYear(getNativeAtom(gregorian));
+        }
+        else
+        {
+            PreCondition.assertArgumentNotNull(gregorian, "gregorian");
+            throw new AssertionError("getYear(" + gregorian.getClass().getName() + ")");
+        }
     }
 
     @Override
     public boolean isAtom(Object object)
     {
-        // TODO Auto-generated method stub
-        return false;
+        return object instanceof XmlAtom;
     }
 
     @Override
     public boolean isForeignAtom(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return false;
+        return (atom instanceof XmlForeignAtom);
     }
 
     @Override
     public boolean isWhiteSpace(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return false;
+        return atom.isWhiteSpace();
     }
 
     @Override
     public XmlAtom makeForeignAtom(QName atomType, XmlAtom baseAtom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new XmlForeignAtom(atomType, baseAtom);
     }
 
     @Override
     public List<XmlAtom> wrapAtom(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        if (atom != null)
+            return atom;
+        return Collections.emptyList();
     }
 
     private final ComponentProvider components;
+
+    // the name is from the functions and operators spec
+    private static final QName FORG0001 = new QName("http://www.w3.org/2005/xqt-errors/", "FORG0001", "err");
 }

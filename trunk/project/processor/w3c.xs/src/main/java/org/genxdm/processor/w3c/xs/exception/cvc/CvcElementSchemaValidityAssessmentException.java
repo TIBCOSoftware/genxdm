@@ -28,19 +28,19 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public abstract class CvcElementSchemaValidityAssessmentException extends SmLocationException
 {
-	private final QName elementName;
+    private final QName elementName;
 
-	public static final String PART_ONE = "1";
-	public static final String PART_TWO = "1";
+    public static final String PART_ONE = "1";
+    public static final String PART_TWO = "1";
 
-	public CvcElementSchemaValidityAssessmentException(final String partNumber, final QName elementName, final LocationInSchema location)
-	{
-		super(ValidationOutcome.CVC_Schema_Validity_Assessment_Element, partNumber, location);
-		this.elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
-	}
+    public CvcElementSchemaValidityAssessmentException(final String partNumber, final QName elementName, final LocationInSchema location)
+    {
+        super(ValidationOutcome.CVC_Schema_Validity_Assessment_Element, partNumber, location);
+        this.elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
+    }
 
-	public final QName getElementName()
-	{
-		return elementName;
-	}
+    public final QName getElementName()
+    {
+        return elementName;
+    }
 }

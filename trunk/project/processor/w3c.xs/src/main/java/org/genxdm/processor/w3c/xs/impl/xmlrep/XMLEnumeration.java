@@ -21,27 +21,27 @@ import org.genxdm.xs.resolve.PrefixResolver;
 
 public final class XMLEnumeration extends XMLFacet
 {
-	private String value;
-	private PrefixResolver snapshot;
+    private String value;
+    private PrefixResolver snapshot;
 
-	public XMLEnumeration(final XMLType simpleType, final SrcFrozenLocation location)
-	{
-		super(simpleType, location);
-	}
+    public XMLEnumeration(final XMLType simpleType, final SrcFrozenLocation location)
+    {
+        super(simpleType, location);
+    }
 
-	public void setValue(final String value, final PrefixResolver snapshot)
-	{
-		this.value = PreCondition.assertArgumentNotNull(value, "value");
-		this.snapshot = PreCondition.assertArgumentNotNull(snapshot, "snapshot");
-	}
+    public void setValue(final String value, final PrefixResolver snapshot)
+    {
+        this.value = PreCondition.assertArgumentNotNull(value, "value");
+        this.snapshot = PreCondition.assertArgumentNotNull(snapshot, "snapshot");
+    }
 
-	public String getValue()
-	{
-		return value;
-	}
+    public String getValue()
+    {
+        return value;
+    }
 
-	public PrefixResolver getPrefixResolver()
-	{
-		return snapshot;
-	}
+    public PrefixResolver getPrefixResolver()
+    {
+        return snapshot;
+    }
 }

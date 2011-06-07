@@ -22,16 +22,16 @@ import org.genxdm.exceptions.PreCondition;
 @SuppressWarnings("serial")
 public final class SccMaxOccursGeOneException extends SccParticleCorrectException
 {
-	private final BigInteger m_maxOccurs;
+    private final BigInteger m_maxOccurs;
 
-	public SccMaxOccursGeOneException(final BigInteger maxOccurs)
-	{
-		super(PART_MIN_OCCURS_LE_MAX_OCCURS);
-		m_maxOccurs = PreCondition.assertArgumentNotNull(maxOccurs, "maxOccurs");
-	}
+    public SccMaxOccursGeOneException(final BigInteger maxOccurs)
+    {
+        super(PART_MIN_OCCURS_LE_MAX_OCCURS);
+        m_maxOccurs = PreCondition.assertArgumentNotNull(maxOccurs, "maxOccurs");
+    }
 
-	public String getMessage()
-	{
-		return "If not unbounded, {max occurs} (" + m_maxOccurs + ") must be greater than or equal to 1.";
-	}
+    public String getMessage()
+    {
+        return "If not unbounded, {max occurs} (" + m_maxOccurs + ") must be greater than or equal to 1.";
+    }
 }

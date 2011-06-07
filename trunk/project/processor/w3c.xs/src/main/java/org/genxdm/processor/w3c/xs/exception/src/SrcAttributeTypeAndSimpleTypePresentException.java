@@ -21,14 +21,14 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SrcAttributeTypeAndSimpleTypePresentException extends SmSourceAttributeException
 {
-	public SrcAttributeTypeAndSimpleTypePresentException(final LocationInSchema location)
-	{
-		super(PART_TYPE_XOR_SIMPLE_TYPE, location);
-	}
+    public SrcAttributeTypeAndSimpleTypePresentException(final LocationInSchema location)
+    {
+        super(PART_TYPE_XOR_SIMPLE_TYPE, location);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "type and <simpleType> must not both be present.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "type and <simpleType> must not both be present.";
+    }
 }

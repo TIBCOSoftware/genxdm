@@ -23,35 +23,35 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmUnexpectedElementException extends SmComplexTypeException
 {
-	private final QName m_childName;
+    private final QName m_childName;
 
-	public SmUnexpectedElementException(final QName elementName, final LocationInSchema location, final QName childName, final LocationInSchema childLocation)
-	{
-		super(PART_CONTENT_TYPE_AND_CHILD_SEQUENCE, elementName, location);
-		m_childName = PreCondition.assertArgumentNotNull(childName, "childName");
-	}
+    public SmUnexpectedElementException(final QName elementName, final LocationInSchema location, final QName childName, final LocationInSchema childLocation)
+    {
+        super(PART_CONTENT_TYPE_AND_CHILD_SEQUENCE, elementName, location);
+        m_childName = PreCondition.assertArgumentNotNull(childName, "childName");
+    }
 
-	public QName getChildName()
-	{
-		return m_childName;
-	}
+    public QName getChildName()
+    {
+        return m_childName;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Unexpected element sequence, got '" + m_childName + "' in " + getElementName() + ".";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Unexpected element sequence, got '" + m_childName + "' in " + getElementName() + ".";
+    }
 
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof SmUnexpectedElementException)
-		{
-			final SmUnexpectedElementException other = (SmUnexpectedElementException)obj;
-			return getElementName().equals(other.getElementName());
-		}
-		else
-		{
-			return false;
-		}
-	}
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof SmUnexpectedElementException)
+        {
+            final SmUnexpectedElementException other = (SmUnexpectedElementException)obj;
+            return getElementName().equals(other.getElementName());
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

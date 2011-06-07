@@ -15,19 +15,22 @@
  */
 package org.genxdm.processor.w3c.xs.impl;
 
-@SuppressWarnings("serial")
-public final class SmRegExCompileException extends Exception
+import java.util.HashMap;
+
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.resolve.PrefixResolver;
+
+final class PrefixResolverOnHashMap implements PrefixResolver
 {
-	private final String pattern;
+    private final HashMap<String, String> m_map;
 
-	public SmRegExCompileException(final Throwable cause, final String pattern)
-	{
-		super(cause);
-		this.pattern = pattern;
-	}
+    public PrefixResolverOnHashMap(final HashMap<String, String> map)
+    {
+        this.m_map = PreCondition.assertArgumentNotNull(map, "map");
+    }
 
-	public String getPattern()
-	{
-		return pattern;
-	}
+    public String getNamespaceURI(final String prefix)
+    {
+        return m_map.get(PreCondition.assertArgumentNotNull(prefix, "prefix"));
+    }
 }

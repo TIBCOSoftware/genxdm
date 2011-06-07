@@ -26,22 +26,22 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SccLocationException extends ComponentConstraintException
 {
-	private final LocationInSchema m_location;
+    private final LocationInSchema m_location;
 
-	public SccLocationException(final LocationInSchema location, final SchemaException cause)
-	{
-		super(PreCondition.assertArgumentNotNull(cause, "cause").getOutcome(), cause.getPartNumber(), cause);
-		m_location = PreCondition.assertArgumentNotNull(location, "location");
-	}
+    public SccLocationException(final LocationInSchema location, final SchemaException cause)
+    {
+        super(PreCondition.assertArgumentNotNull(cause, "cause").getOutcome(), cause.getPartNumber(), cause);
+        m_location = PreCondition.assertArgumentNotNull(location, "location");
+    }
 
-	public final LocationInSchema getLocation()
-	{
-		return m_location;
-	}
+    public final LocationInSchema getLocation()
+    {
+        return m_location;
+    }
 
-	@Override
-	public SchemaException getCause()
-	{
-		return (SchemaException)super.getCause();
-	}
+    @Override
+    public SchemaException getCause()
+    {
+        return (SchemaException)super.getCause();
+    }
 }

@@ -21,19 +21,19 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmTopLevelSchemaNotWellFormedException extends SmTopLevelException
 {
-	public SmTopLevelSchemaNotWellFormedException(final LocationInSchema location)
-	{
-		super(PART_NOT_WELL_FORMED, location);
-	}
+    public SmTopLevelSchemaNotWellFormedException(final LocationInSchema location)
+    {
+        super(PART_NOT_WELL_FORMED, location);
+    }
 
-	public SmTopLevelSchemaNotWellFormedException(final LocationInSchema location, final SchemaException cause)
-	{
-		super(PART_NOT_WELL_FORMED, location, cause);
-	}
+    public SmTopLevelSchemaNotWellFormedException(final LocationInSchema location, final SchemaException cause)
+    {
+        super(PART_NOT_WELL_FORMED, location, cause);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The schema is not well-formed.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The schema is not well-formed.";
+    }
 }

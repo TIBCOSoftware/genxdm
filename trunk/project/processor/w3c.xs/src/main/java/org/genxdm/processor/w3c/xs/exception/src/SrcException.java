@@ -22,17 +22,17 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public class SrcException extends SmLocationException
 {
-	/**
-	 * @param outcome
-	 *            The section reference in the specification.
-	 */
-	public SrcException(final ValidationOutcome outcome, final LocationInSchema location)
-	{
-		super(outcome, "?", location);
-	}
+    /**
+     * @param outcome
+     *            The section reference in the specification.
+     */
+    public SrcException(final ValidationOutcome outcome, final LocationInSchema location)
+    {
+        super(outcome, "?", location);
+    }
 
-	public String getMessage()
-	{
-		return getOutcome().getSection();
-	}
+    public String getMessage()
+    {
+        return getOutcome().getSection();
+    }
 }

@@ -23,14 +23,14 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmDuplicateKeyFieldException extends CvcIdentityConstraintException
 {
-	public SmDuplicateKeyFieldException(final QName constraintName, final LocationInSchema location)
-	{
-		super(constraintName, PART_TODO, location);
-	}
+    public SmDuplicateKeyFieldException(final QName constraintName, final LocationInSchema location)
+    {
+        super(constraintName, PART_TODO, location);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return getClass().getName();
-	}
+    @Override
+    public String getMessage()
+    {
+        return getClass().getName();
+    }
 }

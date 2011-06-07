@@ -24,25 +24,25 @@ import org.genxdm.xs.components.EnumerationDefinition;
 
 final class FacetEnumerationImpl implements EnumerationDefinition
 {
-	private final List<String> m_value;
+    private final List<String> m_value;
 
-	public FacetEnumerationImpl(final List<String> value)
-	{
-		this.m_value = new ArrayList<String>();
-		this.m_value.addAll(PreCondition.assertArgumentNotNull(value, "value"));
-	}
+    public FacetEnumerationImpl(final List<String> value)
+    {
+        this.m_value = new ArrayList<String>();
+        this.m_value.addAll(PreCondition.assertArgumentNotNull(value, "value"));
+    }
 
-	public <A> List<A> getValue(AtomBridge<A> bridge)
-	{
-	    // TODO: this is no longer the way it works; fix it so it converts on the fly.
-//		return m_value;
-	    return null;
-	}
+    public <A> List<A> getValue(AtomBridge<A> bridge)
+    {
+        // TODO: this is no longer the way it works; fix it so it converts on the fly.
+//      return m_value;
+        return null;
+    }
 
-	// TODO: still need the override, but not like this.
-//	@Override
-//	public String toString()
-//	{
-//		return atomBridge.getC14NString(m_value);
-//	}
+    // TODO: still need the override, but not like this.
+//  @Override
+//  public String toString()
+//  {
+//      return atomBridge.getC14NString(m_value);
+//  }
 }

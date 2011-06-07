@@ -27,21 +27,21 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 @SuppressWarnings("serial")
 public final class SccCyclicSubstitutionGroupException extends ComponentConstraintException
 {
-	private final List<QName> m_names;
+    private final List<QName> m_names;
 
-	public SccCyclicSubstitutionGroupException(final List<QName> names)
-	{
-		super(ValidationOutcome.TODO, "?");
-		m_names = PreCondition.assertArgumentNotNull(names, "names");
-	}
+    public SccCyclicSubstitutionGroupException(final List<QName> names)
+    {
+        super(ValidationOutcome.TODO, "?");
+        m_names = PreCondition.assertArgumentNotNull(names, "names");
+    }
 
-	public List<QName> getNames()
-	{
-		return m_names;
-	}
+    public List<QName> getNames()
+    {
+        return m_names;
+    }
 
-	public String getMessage()
-	{
-		return getClass().getName();
-	}
+    public String getMessage()
+    {
+        return getClass().getName();
+    }
 }

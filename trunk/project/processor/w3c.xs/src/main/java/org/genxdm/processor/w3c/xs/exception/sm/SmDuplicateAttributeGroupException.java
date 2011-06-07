@@ -24,8 +24,8 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmDuplicateAttributeGroupException extends SmLocationException
 {
-	public SmDuplicateAttributeGroupException(final QName name, final LocationInSchema location)
-	{
-		super(ValidationOutcome.TODO, "?", location);
-	}
+    public SmDuplicateAttributeGroupException(final QName name, final LocationInSchema location)
+    {
+        super(ValidationOutcome.TODO, "?", location);
+    }
 }

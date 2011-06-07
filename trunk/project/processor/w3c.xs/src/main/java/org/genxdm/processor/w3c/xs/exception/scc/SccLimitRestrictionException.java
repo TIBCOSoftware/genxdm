@@ -23,23 +23,23 @@ import org.genxdm.xs.facets.Limit;
 @SuppressWarnings("serial")
 public class SccLimitRestrictionException extends ComponentConstraintException
 {
-	private final Limit restrictingLimit;
-	private final Limit parentLimit;
-	private final FacetKind childFacetKind;
-	private final FacetKind parentFacetKind;
+    private final Limit restrictingLimit;
+    private final Limit parentLimit;
+    private final FacetKind childFacetKind;
+    private final FacetKind parentFacetKind;
 
-	public SccLimitRestrictionException(final ValidationOutcome outcome, final String partNumber, final FacetKind childFacetKind, final FacetKind parentFacetKind, final Limit restrictingLimit, final Limit parentLimit)
-	{
-		super(outcome, partNumber);
-		this.restrictingLimit = restrictingLimit;
-		this.parentLimit = parentLimit;
-		this.childFacetKind = childFacetKind;
-		this.parentFacetKind = parentFacetKind;
-	}
+    public SccLimitRestrictionException(final ValidationOutcome outcome, final String partNumber, final FacetKind childFacetKind, final FacetKind parentFacetKind, final Limit restrictingLimit, final Limit parentLimit)
+    {
+        super(outcome, partNumber);
+        this.restrictingLimit = restrictingLimit;
+        this.parentLimit = parentLimit;
+        this.childFacetKind = childFacetKind;
+        this.parentFacetKind = parentFacetKind;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The {value}, " + restrictingLimit + ", of " + childFacetKind + " is invalid in respect to the {value}, " + parentLimit + ", of its inherited " + parentFacetKind + ".";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The {value}, " + restrictingLimit + ", of " + childFacetKind + " is invalid in respect to the {value}, " + parentLimit + ", of its inherited " + parentFacetKind + ".";
+    }
 }

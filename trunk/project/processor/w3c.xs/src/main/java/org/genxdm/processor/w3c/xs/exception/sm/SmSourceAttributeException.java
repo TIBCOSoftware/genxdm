@@ -23,20 +23,20 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public abstract class SmSourceAttributeException extends SmLocationException
 {
-	public static final String PART_DEFAULT_AND_FIXED_PRESENT = "1";
-	public static final String PART_DEFAULT_AND_USE_IMPLIES_OPTIONAL = "2";
-	public static final String PART_REF_XOR_NAME = "3.1";
-	public static final String PART_REF_PRESENT = "3.2";
-	public static final String PART_TYPE_XOR_SIMPLE_TYPE = "4";
-	public static final String PART_DECLARATIONS = "5";
+    public static final String PART_DEFAULT_AND_FIXED_PRESENT = "1";
+    public static final String PART_DEFAULT_AND_USE_IMPLIES_OPTIONAL = "2";
+    public static final String PART_REF_XOR_NAME = "3.1";
+    public static final String PART_REF_PRESENT = "3.2";
+    public static final String PART_TYPE_XOR_SIMPLE_TYPE = "4";
+    public static final String PART_DECLARATIONS = "5";
 
-	public SmSourceAttributeException(final String partNumber, final LocationInSchema location)
-	{
-		super(ValidationOutcome.SRC_Attribute, partNumber, location);
-	}
+    public SmSourceAttributeException(final String partNumber, final LocationInSchema location)
+    {
+        super(ValidationOutcome.SRC_Attribute, partNumber, location);
+    }
 
-	public SmSourceAttributeException(final String partNumber, final LocationInSchema location, final SchemaException cause)
-	{
-		super(ValidationOutcome.SRC_Attribute, partNumber, location, PreCondition.assertArgumentNotNull(cause, "cause"));
-	}
+    public SmSourceAttributeException(final String partNumber, final LocationInSchema location, final SchemaException cause)
+    {
+        super(ValidationOutcome.SRC_Attribute, partNumber, location, PreCondition.assertArgumentNotNull(cause, "cause"));
+    }
 }

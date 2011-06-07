@@ -21,8 +21,8 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmElementSimpleTypeXorComplexTypeException extends SrcElementException
 {
-	public SmElementSimpleTypeXorComplexTypeException(final LocationInSchema location)
-	{
-		super(PART_SIMPLE_XOR_COMPLEX, location);
-	}
+    public SmElementSimpleTypeXorComplexTypeException(final LocationInSchema location)
+    {
+        super(PART_SIMPLE_XOR_COMPLEX, location);
+    }
 }

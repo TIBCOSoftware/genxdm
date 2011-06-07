@@ -25,78 +25,78 @@ import org.genxdm.xs.components.ModelGroup;
 
 public final class XMLModelGroup extends XMLComponent implements XMLParticleTerm
 {
-	private final QName m_name;
-	private ModelGroup.SmCompositor m_compositor;
-	private final LinkedList<XMLParticle> m_particles = new LinkedList<XMLParticle>();
+    private final QName m_name;
+    private ModelGroup.SmCompositor m_compositor;
+    private final LinkedList<XMLParticle> m_particles = new LinkedList<XMLParticle>();
 
-	public XMLModelGroup(final QName name, final XMLScope scope, final SrcFrozenLocation location)
-	{
-		super(scope, location);
-		if (scope.isGlobal())
-		{
-			this.m_name = PreCondition.assertArgumentNotNull(name, "name");
-		}
-		else
-		{
-			PreCondition.assertNull(name, "name");
-			this.m_name = null;
-		}
-	}
+    public XMLModelGroup(final QName name, final XMLScope scope, final SrcFrozenLocation location)
+    {
+        super(scope, location);
+        if (scope.isGlobal())
+        {
+            this.m_name = PreCondition.assertArgumentNotNull(name, "name");
+        }
+        else
+        {
+            PreCondition.assertNull(name, "name");
+            this.m_name = null;
+        }
+    }
 
-	public XMLModelGroup(final QName name, final XMLScope scope)
-	{
-		super(scope);
-		if (scope.isGlobal())
-		{
-			this.m_name = PreCondition.assertArgumentNotNull(name, "name");
-		}
-		else
-		{
-			PreCondition.assertNull(name, "name");
-			this.m_name = null;
-		}
-	}
+    public XMLModelGroup(final QName name, final XMLScope scope)
+    {
+        super(scope);
+        if (scope.isGlobal())
+        {
+            this.m_name = PreCondition.assertArgumentNotNull(name, "name");
+        }
+        else
+        {
+            PreCondition.assertNull(name, "name");
+            this.m_name = null;
+        }
+    }
 
-	public XMLModelGroup(final ModelGroup.SmCompositor compositor, final XMLScope scope, final SrcFrozenLocation location)
-	{
-		super(scope, location);
-		m_compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
-		PreCondition.assertTrue(scope.isLocal());
-		m_name = null;
-	}
+    public XMLModelGroup(final ModelGroup.SmCompositor compositor, final XMLScope scope, final SrcFrozenLocation location)
+    {
+        super(scope, location);
+        m_compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
+        PreCondition.assertTrue(scope.isLocal());
+        m_name = null;
+    }
 
-	public XMLModelGroup(final ModelGroup.SmCompositor compositor, final XMLScope scope)
-	{
-		super(scope);
-		m_compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
-		PreCondition.assertTrue(scope.isLocal());
-		m_name = null;
-	}
+    public XMLModelGroup(final ModelGroup.SmCompositor compositor, final XMLScope scope)
+    {
+        super(scope);
+        m_compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
+        PreCondition.assertTrue(scope.isLocal());
+        m_name = null;
+    }
 
-	public QName getName()
-	{
-		if (getScope().isGlobal())
-		{
-			return m_name;
-		}
-		else
-		{
-			throw new AssertionError();
-		}
-	}
+    public QName getName()
+    {
+        if (getScope().isGlobal())
+        {
+            return m_name;
+        }
+        else
+        {
+            throw new AssertionError();
+        }
+    }
 
-	public ModelGroup.SmCompositor getCompositor()
-	{
-		return m_compositor;
-	}
+    public ModelGroup.SmCompositor getCompositor()
+    {
+        return m_compositor;
+    }
 
-	public void setCompositor(final ModelGroup.SmCompositor compositor)
-	{
-		m_compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
-	}
+    public void setCompositor(final ModelGroup.SmCompositor compositor)
+    {
+        m_compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
+    }
 
-	public LinkedList<XMLParticle> getParticles()
-	{
-		return m_particles;
-	}
+    public LinkedList<XMLParticle> getParticles()
+    {
+        return m_particles;
+    }
 }

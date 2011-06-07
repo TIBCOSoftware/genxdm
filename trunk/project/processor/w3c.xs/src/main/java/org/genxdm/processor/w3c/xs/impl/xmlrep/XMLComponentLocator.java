@@ -35,13 +35,13 @@ import org.genxdm.xs.types.SimpleType;
  */
 public final class XMLComponentLocator
 {
-	public final HashMap<SimpleType, LocationInSchema> m_simpleTypeLocations = new HashMap<SimpleType, LocationInSchema>();
-	public final HashMap<ComplexType, LocationInSchema> m_complexTypeLocations = new HashMap<ComplexType, LocationInSchema>();
-	public final HashMap<ElementDefinition, LocationInSchema> m_elementLocations = new HashMap<ElementDefinition, LocationInSchema>();
-	public final HashMap<AttributeDefinition, LocationInSchema> m_attributeLocations = new HashMap<AttributeDefinition, LocationInSchema>();
-	public final HashMap<ModelGroup, LocationInSchema> m_modelGroupLocations = new HashMap<ModelGroup, LocationInSchema>();
-	public final HashMap<AttributeGroupDefinition, LocationInSchema> m_attributeGroupLocations = new HashMap<AttributeGroupDefinition, LocationInSchema>();
-	public final HashMap<IdentityConstraint, LocationInSchema> m_constraintLocations = new HashMap<IdentityConstraint, LocationInSchema>();
-	public final HashMap<NotationDefinition, LocationInSchema> m_notationLocations = new HashMap<NotationDefinition, LocationInSchema>();
-	public final HashMap<SchemaParticle, LocationInSchema> m_particleLocations = new HashMap<SchemaParticle, LocationInSchema>();
+    public final HashMap<SimpleType, LocationInSchema> m_simpleTypeLocations = new HashMap<SimpleType, LocationInSchema>();
+    public final HashMap<ComplexType, LocationInSchema> m_complexTypeLocations = new HashMap<ComplexType, LocationInSchema>();
+    public final HashMap<ElementDefinition, LocationInSchema> m_elementLocations = new HashMap<ElementDefinition, LocationInSchema>();
+    public final HashMap<AttributeDefinition, LocationInSchema> m_attributeLocations = new HashMap<AttributeDefinition, LocationInSchema>();
+    public final HashMap<ModelGroup, LocationInSchema> m_modelGroupLocations = new HashMap<ModelGroup, LocationInSchema>();
+    public final HashMap<AttributeGroupDefinition, LocationInSchema> m_attributeGroupLocations = new HashMap<AttributeGroupDefinition, LocationInSchema>();
+    public final HashMap<IdentityConstraint, LocationInSchema> m_constraintLocations = new HashMap<IdentityConstraint, LocationInSchema>();
+    public final HashMap<NotationDefinition, LocationInSchema> m_notationLocations = new HashMap<NotationDefinition, LocationInSchema>();
+    public final HashMap<SchemaParticle, LocationInSchema> m_particleLocations = new HashMap<SchemaParticle, LocationInSchema>();
 }

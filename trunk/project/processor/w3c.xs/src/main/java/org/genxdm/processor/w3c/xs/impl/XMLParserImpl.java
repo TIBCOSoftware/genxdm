@@ -15,13 +15,13 @@
  */
 package org.genxdm.processor.w3c.xs.impl;
 
-import static org.genxdm.processor.w3c.xs.impl.SmConstraintChecker.checkSchemaComponentConstraints;
+import static org.genxdm.processor.w3c.xs.impl.SchemaConstraintChecker.checkSchemaComponentConstraints;
 
 import java.io.InputStream;
 import java.net.URI;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.processor.w3c.xs.SmRegExCompiler;
+import org.genxdm.processor.w3c.xs.SchemaRegExCompiler;
 import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLComponentLocator;
 import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLSccExceptionAdapter;
 import org.genxdm.xs.components.ComponentBag;
@@ -93,7 +93,7 @@ final public class XMLParserImpl
         }
 
         // Convert the XML representation into the compiled schema.
-        final Pair<SmComponentBagImpl, XMLComponentLocator> converted = convert(cache, caught);
+        final Pair<ComponentBagImpl, XMLComponentLocator> converted = convert(cache, caught);
 
         if (caught.size() == 0)
         {
@@ -136,7 +136,7 @@ final public class XMLParserImpl
     /**
      * Converts the XML cache into a compiled schema.
      */
-    private Pair<SmComponentBagImpl, XMLComponentLocator> convert(final XMLSchemaCache cache, final SchemaExceptionHandler errors) throws AbortException
+    private Pair<ComponentBagImpl, XMLComponentLocator> convert(final XMLSchemaCache cache, final SchemaExceptionHandler errors) throws AbortException
     {
         try
         {
@@ -171,12 +171,12 @@ final public class XMLParserImpl
         return m_catalog;
     }
 
-    public void setRegExCompiler(final SmRegExCompiler regexc)
+    public void setRegExCompiler(final SchemaRegExCompiler regexc)
     {
         m_regexc = regexc;
     }
 
-    public SmRegExCompiler getRegExCompiler()
+    public SchemaRegExCompiler getRegExCompiler()
     {
         return m_regexc;
     }
@@ -198,7 +198,7 @@ final public class XMLParserImpl
 
     private SchemaCatalog m_catalog;
     private CatalogResolver m_resolver;
-    private SmRegExCompiler m_regexc;
+    private SchemaRegExCompiler m_regexc;
     private boolean m_processRepeatedNamespaces = true;
 
 }

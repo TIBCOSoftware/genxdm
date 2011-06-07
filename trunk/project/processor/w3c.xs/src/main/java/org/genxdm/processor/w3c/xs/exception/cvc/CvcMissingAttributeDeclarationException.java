@@ -24,32 +24,32 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcMissingAttributeDeclarationException extends SmComplexTypeException
 {
-	private final QName m_attributeName;
+    private final QName m_attributeName;
 
-	public CvcMissingAttributeDeclarationException(final QName elementName, final QName attributeName, final LocationInSchema location)
-	{
-		super(PART_ATTRIBUTE_REQUIRED_MISSING, elementName, location);
-		m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
-	}
+    public CvcMissingAttributeDeclarationException(final QName elementName, final QName attributeName, final LocationInSchema location)
+    {
+        super(PART_ATTRIBUTE_REQUIRED_MISSING, elementName, location);
+        m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
+    }
 
-	public QName getAttributeName()
-	{
-		return m_attributeName;
-	}
+    public QName getAttributeName()
+    {
+        return m_attributeName;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Missing declaration for attribute " + m_attributeName.toString();
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Missing declaration for attribute " + m_attributeName.toString();
+    }
 
-	public String getPatternKey()
-	{
-		return "MissingAttributeDeclarationException";
-	}
+    public String getPatternKey()
+    {
+        return "MissingAttributeDeclarationException";
+    }
 
-	public Object[] getArguments()
-	{
-		return new Object[] { m_attributeName };
-	}
+    public Object[] getArguments()
+    {
+        return new Object[] { m_attributeName };
+    }
 }

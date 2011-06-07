@@ -21,13 +21,13 @@ import java.util.HashMap;
  * 
  * @param <T> the "token" parameter
  */
-final class CmMachine<T>
+final class ContentModelMachine<T>
 {
     private Integer m_state;
-    private final CmTable<T> m_table;
+    private final ContentModelTable<T> m_table;
     private final T m_epsilon;
 
-    public CmMachine(final CmTable<T> table, final T epsilon)
+    public ContentModelMachine(final ContentModelTable<T> table, final T epsilon)
     {
         m_state = 0;
         m_table = table;
@@ -36,7 +36,7 @@ final class CmMachine<T>
 
     public boolean step(final T token)
     {
-        if (m_state != CmTable.END)
+        if (m_state != ContentModelTable.END)
         {
             if (m_table.containsKey(m_state))
             {
@@ -64,7 +64,7 @@ final class CmMachine<T>
 
     public boolean end()
     {
-        if (m_state == CmTable.END)
+        if (m_state == ContentModelTable.END)
         {
             return true;
         }

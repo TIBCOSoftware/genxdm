@@ -19,10 +19,10 @@ import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 
 public final class XMLPatternFacet extends XMLFacet
 {
-	public String value;
+    public String value;
 
-	public XMLPatternFacet(final XMLType simpleType, final SrcFrozenLocation location)
-	{
-		super(simpleType, location);
-	}
+    public XMLPatternFacet(final XMLType simpleType, final SrcFrozenLocation location)
+    {
+        super(simpleType, location);
+    }
 }

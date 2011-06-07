@@ -22,31 +22,31 @@ import org.genxdm.exceptions.PreCondition;
 @SuppressWarnings("serial")
 public final class SccAttributeDeclarationValueConstraintException extends SccAttributeDeclarationException
 {
-	private final String m_expectValue;
+    private final String m_expectValue;
 
-	public SccAttributeDeclarationValueConstraintException(final QName attributeName, final String normalizedValue)
-	{
-		super(PART_VALUE_CONSTRAINT, attributeName);
-		m_expectValue = PreCondition.assertArgumentNotNull(normalizedValue, "expectValue");
-	}
+    public SccAttributeDeclarationValueConstraintException(final QName attributeName, final String normalizedValue)
+    {
+        super(PART_VALUE_CONSTRAINT, attributeName);
+        m_expectValue = PreCondition.assertArgumentNotNull(normalizedValue, "expectValue");
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The {value constraint} value, '" + m_expectValue + "', must be valid with respect to the {type definition}.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The {value constraint} value, '" + m_expectValue + "', must be valid with respect to the {type definition}.";
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof SccAttributeDeclarationValueConstraintException)
-		{
-			final SccAttributeDeclarationValueConstraintException e = (SccAttributeDeclarationValueConstraintException)obj;
-			return e.getAttributeName().equals(getAttributeName()) && e.m_expectValue.equals(m_expectValue);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof SccAttributeDeclarationValueConstraintException)
+        {
+            final SccAttributeDeclarationValueConstraintException e = (SccAttributeDeclarationValueConstraintException)obj;
+            return e.getAttributeName().equals(getAttributeName()) && e.m_expectValue.equals(m_expectValue);
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

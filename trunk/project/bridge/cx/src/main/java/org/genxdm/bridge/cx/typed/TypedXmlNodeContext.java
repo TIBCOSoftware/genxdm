@@ -64,7 +64,7 @@ public class TypedXmlNodeContext
     public TypedXmlNodeContext(XmlNodeContext context)
     {
         this.context = PreCondition.assertNotNull(context, "context");
-        this.atoms = new XmlAtomBridge(this, new NameSource());
+        this.atoms = new XmlAtomBridge(this);
         this.cache = new SchemaTypeBridgeFactory().newMetaBridge();
         this.types = new MetaBridgeOnSchemaTypeBridgeAdapter(cache);
         this.model = new TypedXmlNodeModel(atoms);

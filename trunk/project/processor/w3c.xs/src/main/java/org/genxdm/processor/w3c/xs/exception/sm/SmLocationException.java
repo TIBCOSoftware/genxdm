@@ -23,28 +23,28 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public class SmLocationException extends SchemaException
 {
-	private final LocationInSchema m_location;
+    private final LocationInSchema m_location;
 
-	public SmLocationException(final ValidationOutcome outcome, final String partNumber, final LocationInSchema location)
-	{
-		super(outcome, partNumber);
-		m_location = location;
-	}
+    public SmLocationException(final ValidationOutcome outcome, final String partNumber, final LocationInSchema location)
+    {
+        super(outcome, partNumber);
+        m_location = location;
+    }
 
-	public SmLocationException(final ValidationOutcome outcome, final String partNumber, final LocationInSchema location, final SchemaException cause)
-	{
-		super(outcome, partNumber, cause);
-		m_location = location;
-	}
+    public SmLocationException(final ValidationOutcome outcome, final String partNumber, final LocationInSchema location, final SchemaException cause)
+    {
+        super(outcome, partNumber, cause);
+        m_location = location;
+    }
 
-	public final LocationInSchema getLocation()
-	{
-		return m_location;
-	}
+    public final LocationInSchema getLocation()
+    {
+        return m_location;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return getOutcome().getSection();
-	}
+    @Override
+    public String getMessage()
+    {
+        return getOutcome().getSection();
+    }
 }

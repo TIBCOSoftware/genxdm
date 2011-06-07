@@ -22,22 +22,22 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmUnexpectedEndException extends SmComplexTypeException
 {
-	public SmUnexpectedEndException(final QName elementName, final LocationInSchema location)
-	{
-		super(PART_CONTENT_TYPE_AND_CHILD_SEQUENCE, elementName, location);
-	}
+    public SmUnexpectedEndException(final QName elementName, final LocationInSchema location)
+    {
+        super(PART_CONTENT_TYPE_AND_CHILD_SEQUENCE, elementName, location);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		final String localMessage = "Unexpected end of content in element '" + getElementName() + "'.";
+    @Override
+    public String getMessage()
+    {
+        final String localMessage = "Unexpected end of content in element '" + getElementName() + "'.";
 
-		final StringBuilder message = new StringBuilder();
-		message.append(getOutcome().getSection());
-		message.append(".");
-		message.append(getPartNumber());
-		message.append(": ");
-		message.append(localMessage);
-		return message.toString();
-	}
+        final StringBuilder message = new StringBuilder();
+        message.append(getOutcome().getSection());
+        message.append(".");
+        message.append(getPartNumber());
+        message.append(": ");
+        message.append(localMessage);
+        return message.toString();
+    }
 }

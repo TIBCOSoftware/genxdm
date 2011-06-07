@@ -25,16 +25,16 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 @SuppressWarnings("serial")
 public final class SccCyclicElementException extends ComponentConstraintException
 {
-	private final QName m_name;
+    private final QName m_name;
 
-	public SccCyclicElementException(final QName name)
-	{
-		super(ValidationOutcome.TODO, "?");
-		m_name = PreCondition.assertArgumentNotNull(name, "name");
-	}
+    public SccCyclicElementException(final QName name)
+    {
+        super(ValidationOutcome.TODO, "?");
+        m_name = PreCondition.assertArgumentNotNull(name, "name");
+    }
 
-	public String getMessage()
-	{
-		return "Cycle detected involving element " + m_name;
-	}
+    public String getMessage()
+    {
+        return "Cycle detected involving element " + m_name;
+    }
 }

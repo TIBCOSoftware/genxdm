@@ -138,12 +138,12 @@ final class XMLSchemaParser extends XMLRepresentation
     {
         this.bootstrap = PreCondition.assertArgumentNotNull(bootstrap, "bootstrap");
         this.atoms = new CanonicalAtomBridge(bootstrap);
-        this.m_pms = new SmPrefixMappingSupport();
+        this.m_pms = new PrefixMappingSupport();
         this.m_errors = PreCondition.assertArgumentNotNull(errors, "errors");
         this.m_catalog = catalog;
         this.m_resolver = resolver;
         this.m_processRepeatedNamespaces = processRepeatedNamespaces;
-        this.m_xp = new RestrictedXPathParser(bootstrap);
+        this.m_xp = new DefaultRestrictedXPathParser(bootstrap);
         ANY_SIMPLE_TYPE = new XMLTypeRef(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anySimpleType"));
         ANY_TYPE = new XMLTypeRef(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anyType"));
     }
@@ -1109,7 +1109,7 @@ final class XMLSchemaParser extends XMLRepresentation
             attribute.typeRef = type;
         }
 
-        final CmMachine<String> machine = new CmMachine<String>(attributeTable, EPSILON);
+        final ContentModelMachine<String> machine = new ContentModelMachine<String>(attributeTable, EPSILON);
         boolean done = false;
         while (!done)
         {
@@ -1515,7 +1515,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
         }
 
-        final CmMachine<String> machine = new CmMachine<String>(complexContentTable, EPSILON);
+        final ContentModelMachine<String> machine = new ContentModelMachine<String>(complexContentTable, EPSILON);
         boolean done = false;
         while (!done)
         {
@@ -1597,7 +1597,7 @@ final class XMLSchemaParser extends XMLRepresentation
      */
     private void complexTypeContent(final XMLType complexType, final XMLSchemaCache cache, final XMLSchemaModule module, final XMLStreamReader reader, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
     {
-        final CmMachine<String> machine = new CmMachine<String>(complexTypeTable, EPSILON);
+        final ContentModelMachine<String> machine = new ContentModelMachine<String>(complexTypeTable, EPSILON);
         boolean done = false;
         while (!done)
         {
@@ -2478,7 +2478,7 @@ final class XMLSchemaParser extends XMLRepresentation
      * This should be called for all elements immediately after the stack has been pushed. The stack should be popped in
      * the
      */
-    private void copyNamespaces(final XMLStreamReader parser, final SmPrefixMappingSupport pms)
+    private void copyNamespaces(final XMLStreamReader parser, final PrefixMappingSupport pms)
     {
         final int namespaceCount = parser.getNamespaceCount();
         for (int i = 0; i < namespaceCount; i++)
@@ -3525,7 +3525,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 }
             }
 
-            final CmMachine<String> machine = new CmMachine<String>(extensionInComplexContentTable, EPSILON);
+            final ContentModelMachine<String> machine = new ContentModelMachine<String>(extensionInComplexContentTable, EPSILON);
             boolean done = false;
             while (!done)
             {
@@ -3732,7 +3732,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
         }
 
-        final CmMachine<String> machine = new CmMachine<String>(extensionInSimpleContentTable, EPSILON);
+        final ContentModelMachine<String> machine = new ContentModelMachine<String>(extensionInSimpleContentTable, EPSILON);
         boolean done = false;
         while (!done)
         {
@@ -6134,7 +6134,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
         }
 
-        final CmMachine<String> machine = new CmMachine<String>(restrictionInComplexContentTable, EPSILON);
+        final ContentModelMachine<String> machine = new ContentModelMachine<String>(restrictionInComplexContentTable, EPSILON);
         boolean done = false;
         while (!done)
         {
@@ -6323,7 +6323,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
         }
 
-        final CmMachine<String> machine = new CmMachine<String>(restrictionInSimpleContentTable, EPSILON);
+        final ContentModelMachine<String> machine = new ContentModelMachine<String>(restrictionInSimpleContentTable, EPSILON);
         boolean missingMaxInclusive = true;
         boolean missingMinExclusive = true;
         boolean missingMinInclusive = true;
@@ -7245,7 +7245,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
         }
 
-        final CmMachine<String> machine = new CmMachine<String>(simpleContentTable, EPSILON);
+        final ContentModelMachine<String> machine = new ContentModelMachine<String>(simpleContentTable, EPSILON);
         boolean done = false;
         while (!done)
         {
@@ -8235,18 +8235,18 @@ final class XMLSchemaParser extends XMLRepresentation
     /**
      * (xs:annotation?, xs:simpleType)
      */
-    private static CmTable<String> makeAttributeTable()
+    private static ContentModelTable<String> makeAttributeTable()
     {
-        final CmTable<String> table = new CmTable<String>();
+        final ContentModelTable<String> table = new ContentModelTable<String>();
 
         final HashMap<String, Integer> ZERO = new HashMap<String, Integer>();
         ZERO.put(LN_ANNOTATION, 1);
-        ZERO.put(LN_SIMPLE_TYPE, CmTable.END);
-        ZERO.put(EPSILON, CmTable.END);
+        ZERO.put(LN_SIMPLE_TYPE, ContentModelTable.END);
+        ZERO.put(EPSILON, ContentModelTable.END);
 
         final HashMap<String, Integer> ONE = new HashMap<String, Integer>();
-        ONE.put(LN_SIMPLE_TYPE, CmTable.END);
-        ONE.put(EPSILON, CmTable.END);
+        ONE.put(LN_SIMPLE_TYPE, ContentModelTable.END);
+        ONE.put(EPSILON, ContentModelTable.END);
 
         table.put(0, ZERO);
         table.put(1, ONE);
@@ -8254,18 +8254,18 @@ final class XMLSchemaParser extends XMLRepresentation
         return table;
     }
 
-    private static CmTable<String> makeComplexContentTable()
+    private static ContentModelTable<String> makeComplexContentTable()
     {
-        final CmTable<String> table = new CmTable<String>();
+        final ContentModelTable<String> table = new ContentModelTable<String>();
 
         final HashMap<String, Integer> ZERO = new HashMap<String, Integer>();
         ZERO.put(LN_ANNOTATION, 1);
-        ZERO.put(LN_RESTRICTION, CmTable.END);
-        ZERO.put(LN_EXTENSION, CmTable.END);
+        ZERO.put(LN_RESTRICTION, ContentModelTable.END);
+        ZERO.put(LN_EXTENSION, ContentModelTable.END);
 
         final HashMap<String, Integer> ONE = new HashMap<String, Integer>();
-        ONE.put(LN_RESTRICTION, CmTable.END);
-        ONE.put(LN_EXTENSION, CmTable.END);
+        ONE.put(LN_RESTRICTION, ContentModelTable.END);
+        ONE.put(LN_EXTENSION, ContentModelTable.END);
 
         table.put(0, ZERO);
         table.put(1, ONE);
@@ -8273,26 +8273,26 @@ final class XMLSchemaParser extends XMLRepresentation
         return table;
     }
 
-    private static CmTable<String> makeComplexTypeTable()
+    private static ContentModelTable<String> makeComplexTypeTable()
     {
-        final CmTable<String> table = new CmTable<String>();
+        final ContentModelTable<String> table = new ContentModelTable<String>();
 
         final HashMap<String, Integer> ZERO = new HashMap<String, Integer>();
         ZERO.put(LN_ANNOTATION, 1);
-        ZERO.put(LN_SIMPLE_CONTENT, CmTable.END);
-        ZERO.put(LN_COMPLEX_CONTENT, CmTable.END);
+        ZERO.put(LN_SIMPLE_CONTENT, ContentModelTable.END);
+        ZERO.put(LN_COMPLEX_CONTENT, ContentModelTable.END);
         ZERO.put(LN_GROUP, 2);
         ZERO.put(LN_ALL, 2);
         ZERO.put(LN_CHOICE, 2);
         ZERO.put(LN_SEQUENCE, 2);
         ZERO.put(LN_ATTRIBUTE, 2);
         ZERO.put(LN_ATTRIBUTE_GROUP, 2);
-        ZERO.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        ZERO.put(EPSILON, CmTable.END);
+        ZERO.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        ZERO.put(EPSILON, ContentModelTable.END);
 
         final HashMap<String, Integer> ONE = new HashMap<String, Integer>();
-        ONE.put(LN_SIMPLE_CONTENT, CmTable.END);
-        ONE.put(LN_COMPLEX_CONTENT, CmTable.END);
+        ONE.put(LN_SIMPLE_CONTENT, ContentModelTable.END);
+        ONE.put(LN_COMPLEX_CONTENT, ContentModelTable.END);
         ONE.put(LN_GROUP, 2);
         ONE.put(LN_ALL, 2);
         ONE.put(LN_CHOICE, 2);
@@ -8300,14 +8300,14 @@ final class XMLSchemaParser extends XMLRepresentation
         ONE.put(LN_ATTRIBUTE, 2);
         ONE.put(LN_ATTRIBUTE, 2);
         ONE.put(LN_ATTRIBUTE_GROUP, 2);
-        ONE.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        ONE.put(EPSILON, CmTable.END);
+        ONE.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        ONE.put(EPSILON, ContentModelTable.END);
 
         final HashMap<String, Integer> TWO = new HashMap<String, Integer>();
         TWO.put(LN_ATTRIBUTE, 2);
         TWO.put(LN_ATTRIBUTE_GROUP, 2);
-        TWO.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        TWO.put(EPSILON, CmTable.END);
+        TWO.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        TWO.put(EPSILON, ContentModelTable.END);
 
         table.put(0, ZERO);
         table.put(1, ONE);
@@ -8316,9 +8316,9 @@ final class XMLSchemaParser extends XMLRepresentation
         return table;
     }
 
-    private static CmTable<String> makeExtensionInComplexContentTable()
+    private static ContentModelTable<String> makeExtensionInComplexContentTable()
     {
-        final CmTable<String> table = new CmTable<String>();
+        final ContentModelTable<String> table = new ContentModelTable<String>();
 
         final HashMap<String, Integer> ZERO = new HashMap<String, Integer>();
         ZERO.put(LN_ANNOTATION, 1);
@@ -8328,8 +8328,8 @@ final class XMLSchemaParser extends XMLRepresentation
         ZERO.put(LN_SEQUENCE, 2);
         ZERO.put(LN_ATTRIBUTE, 3);
         ZERO.put(LN_ATTRIBUTE_GROUP, 3);
-        ZERO.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        ZERO.put(EPSILON, CmTable.END);
+        ZERO.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        ZERO.put(EPSILON, ContentModelTable.END);
 
         final HashMap<String, Integer> ONE = new HashMap<String, Integer>();
         ONE.put(LN_GROUP, 2);
@@ -8338,20 +8338,20 @@ final class XMLSchemaParser extends XMLRepresentation
         ONE.put(LN_SEQUENCE, 2);
         ONE.put(LN_ATTRIBUTE, 3);
         ONE.put(LN_ATTRIBUTE_GROUP, 3);
-        ONE.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        ONE.put(EPSILON, CmTable.END);
+        ONE.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        ONE.put(EPSILON, ContentModelTable.END);
 
         final HashMap<String, Integer> TWO = new HashMap<String, Integer>();
         TWO.put(LN_ATTRIBUTE, 3);
         TWO.put(LN_ATTRIBUTE_GROUP, 3);
-        TWO.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        TWO.put(EPSILON, CmTable.END);
+        TWO.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        TWO.put(EPSILON, ContentModelTable.END);
 
         final HashMap<String, Integer> THREE = new HashMap<String, Integer>();
         THREE.put(LN_ATTRIBUTE, 3);
         THREE.put(LN_ATTRIBUTE_GROUP, 3);
-        THREE.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        THREE.put(EPSILON, CmTable.END);
+        THREE.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        THREE.put(EPSILON, ContentModelTable.END);
 
         table.put(0, ZERO);
         table.put(1, ONE);
@@ -8361,22 +8361,22 @@ final class XMLSchemaParser extends XMLRepresentation
         return table;
     }
 
-    private static CmTable<String> makeExtensionInSimpleContentTable()
+    private static ContentModelTable<String> makeExtensionInSimpleContentTable()
     {
-        final CmTable<String> table = new CmTable<String>();
+        final ContentModelTable<String> table = new ContentModelTable<String>();
 
         final HashMap<String, Integer> ZERO = new HashMap<String, Integer>();
         ZERO.put(LN_ANNOTATION, 1);
         ZERO.put(LN_ATTRIBUTE, 1);
         ZERO.put(LN_ATTRIBUTE_GROUP, 1);
-        ZERO.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        ZERO.put(EPSILON, CmTable.END);
+        ZERO.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        ZERO.put(EPSILON, ContentModelTable.END);
 
         final HashMap<String, Integer> ONE = new HashMap<String, Integer>();
         ONE.put(LN_ATTRIBUTE, 1);
         ONE.put(LN_ATTRIBUTE_GROUP, 1);
-        ONE.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        ONE.put(EPSILON, CmTable.END);
+        ONE.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        ONE.put(EPSILON, ContentModelTable.END);
 
         table.put(0, ZERO);
         table.put(1, ONE);
@@ -8384,9 +8384,9 @@ final class XMLSchemaParser extends XMLRepresentation
         return table;
     }
 
-    private static CmTable<String> makeRestrictionInComplexContentTable()
+    private static ContentModelTable<String> makeRestrictionInComplexContentTable()
     {
-        final CmTable<String> table = new CmTable<String>();
+        final ContentModelTable<String> table = new ContentModelTable<String>();
 
         final HashMap<String, Integer> ZERO = new HashMap<String, Integer>();
         ZERO.put(LN_ANNOTATION, 1);
@@ -8396,8 +8396,8 @@ final class XMLSchemaParser extends XMLRepresentation
         ZERO.put(LN_SEQUENCE, 2);
         ZERO.put(LN_ATTRIBUTE, 3);
         ZERO.put(LN_ATTRIBUTE_GROUP, 3);
-        ZERO.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        ZERO.put(EPSILON, CmTable.END);
+        ZERO.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        ZERO.put(EPSILON, ContentModelTable.END);
 
         final HashMap<String, Integer> ONE = new HashMap<String, Integer>();
         ONE.put(LN_GROUP, 2);
@@ -8406,20 +8406,20 @@ final class XMLSchemaParser extends XMLRepresentation
         ONE.put(LN_SEQUENCE, 2);
         ONE.put(LN_ATTRIBUTE, 3);
         ONE.put(LN_ATTRIBUTE_GROUP, 3);
-        ONE.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        ONE.put(EPSILON, CmTable.END);
+        ONE.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        ONE.put(EPSILON, ContentModelTable.END);
 
         final HashMap<String, Integer> TWO = new HashMap<String, Integer>();
         TWO.put(LN_ATTRIBUTE, 3);
         TWO.put(LN_ATTRIBUTE_GROUP, 3);
-        TWO.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        TWO.put(EPSILON, CmTable.END);
+        TWO.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        TWO.put(EPSILON, ContentModelTable.END);
 
         final HashMap<String, Integer> THREE = new HashMap<String, Integer>();
         THREE.put(LN_ATTRIBUTE, 3);
         THREE.put(LN_ATTRIBUTE_GROUP, 3);
-        THREE.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        THREE.put(EPSILON, CmTable.END);
+        THREE.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        THREE.put(EPSILON, ContentModelTable.END);
 
         table.put(0, ZERO);
         table.put(1, ONE);
@@ -8429,9 +8429,9 @@ final class XMLSchemaParser extends XMLRepresentation
         return table;
     }
 
-    private static CmTable<String> makeRestrictionInSimpleContentTable()
+    private static ContentModelTable<String> makeRestrictionInSimpleContentTable()
     {
-        final CmTable<String> table = new CmTable<String>();
+        final ContentModelTable<String> table = new ContentModelTable<String>();
 
         final HashMap<String, Integer> ZERO = new HashMap<String, Integer>();
         ZERO.put(LN_ANNOTATION, 1);
@@ -8450,8 +8450,8 @@ final class XMLSchemaParser extends XMLRepresentation
         ZERO.put(LN_PATTERN, 2);
         ZERO.put(LN_ATTRIBUTE, 3);
         ZERO.put(LN_ATTRIBUTE_GROUP, 3);
-        ZERO.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        ZERO.put(EPSILON, CmTable.END);
+        ZERO.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        ZERO.put(EPSILON, ContentModelTable.END);
 
         final HashMap<String, Integer> ONE = new HashMap<String, Integer>();
         ONE.put(LN_SIMPLE_TYPE, 2);
@@ -8469,8 +8469,8 @@ final class XMLSchemaParser extends XMLRepresentation
         ONE.put(LN_PATTERN, 2);
         ONE.put(LN_ATTRIBUTE, 3);
         ONE.put(LN_ATTRIBUTE_GROUP, 3);
-        ONE.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        ONE.put(EPSILON, CmTable.END);
+        ONE.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        ONE.put(EPSILON, ContentModelTable.END);
 
         final HashMap<String, Integer> TWO = new HashMap<String, Integer>();
         TWO.put(LN_MIN_EXCLUSIVE, 2);
@@ -8487,14 +8487,14 @@ final class XMLSchemaParser extends XMLRepresentation
         TWO.put(LN_PATTERN, 2);
         TWO.put(LN_ATTRIBUTE, 3);
         TWO.put(LN_ATTRIBUTE_GROUP, 3);
-        TWO.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        TWO.put(EPSILON, CmTable.END);
+        TWO.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        TWO.put(EPSILON, ContentModelTable.END);
 
         final HashMap<String, Integer> THREE = new HashMap<String, Integer>();
         THREE.put(LN_ATTRIBUTE, 3);
         THREE.put(LN_ATTRIBUTE_GROUP, 3);
-        THREE.put(LN_ANY_ATTRIBUTE, CmTable.END);
-        THREE.put(EPSILON, CmTable.END);
+        THREE.put(LN_ANY_ATTRIBUTE, ContentModelTable.END);
+        THREE.put(EPSILON, ContentModelTable.END);
 
         table.put(0, ZERO);
         table.put(1, ONE);
@@ -8504,18 +8504,18 @@ final class XMLSchemaParser extends XMLRepresentation
         return table;
     }
 
-    private static CmTable<String> makeSimpleContentTable()
+    private static ContentModelTable<String> makeSimpleContentTable()
     {
-        final CmTable<String> table = new CmTable<String>();
+        final ContentModelTable<String> table = new ContentModelTable<String>();
 
         final HashMap<String, Integer> ZERO = new HashMap<String, Integer>();
         ZERO.put(LN_ANNOTATION, 1);
-        ZERO.put(LN_RESTRICTION, CmTable.END);
-        ZERO.put(LN_EXTENSION, CmTable.END);
+        ZERO.put(LN_RESTRICTION, ContentModelTable.END);
+        ZERO.put(LN_EXTENSION, ContentModelTable.END);
 
         final HashMap<String, Integer> ONE = new HashMap<String, Integer>();
-        ONE.put(LN_RESTRICTION, CmTable.END);
-        ONE.put(LN_EXTENSION, CmTable.END);
+        ONE.put(LN_RESTRICTION, ContentModelTable.END);
+        ONE.put(LN_EXTENSION, ContentModelTable.END);
 
         table.put(0, ZERO);
         table.put(1, ONE);
@@ -8557,16 +8557,16 @@ final class XMLSchemaParser extends XMLRepresentation
 
     // TODO: what's this for?
     // private static final CmTable<String> annotationOptionalTable = makeAnnotationOptionalTable();
-    private static final CmTable<String> attributeTable = makeAttributeTable();
-    private static final CmTable<String> complexContentTable = makeComplexContentTable();
-    private static final CmTable<String> complexTypeTable = makeComplexTypeTable();
+    private static final ContentModelTable<String> attributeTable = makeAttributeTable();
+    private static final ContentModelTable<String> complexContentTable = makeComplexContentTable();
+    private static final ContentModelTable<String> complexTypeTable = makeComplexTypeTable();
 
     private static final String EPSILON = "";
-    private static final CmTable<String> extensionInComplexContentTable = makeExtensionInComplexContentTable();
-    private static final CmTable<String> extensionInSimpleContentTable = makeExtensionInSimpleContentTable();
-    private static final CmTable<String> restrictionInComplexContentTable = makeRestrictionInComplexContentTable();
-    private static final CmTable<String> restrictionInSimpleContentTable = makeRestrictionInSimpleContentTable();
-    private static final CmTable<String> simpleContentTable = makeSimpleContentTable();
+    private static final ContentModelTable<String> extensionInComplexContentTable = makeExtensionInComplexContentTable();
+    private static final ContentModelTable<String> extensionInSimpleContentTable = makeExtensionInSimpleContentTable();
+    private static final ContentModelTable<String> restrictionInComplexContentTable = makeRestrictionInComplexContentTable();
+    private static final ContentModelTable<String> restrictionInSimpleContentTable = makeRestrictionInSimpleContentTable();
+    private static final ContentModelTable<String> simpleContentTable = makeSimpleContentTable();
 
 
     private final XMLTypeRef ANY_SIMPLE_TYPE;
@@ -8580,7 +8580,7 @@ final class XMLSchemaParser extends XMLRepresentation
 
     private final SchemaExceptionHandler m_errors;
 
-    private final SmPrefixMappingSupport m_pms;
+    private final PrefixMappingSupport m_pms;
 
     private final boolean m_processRepeatedNamespaces;
 
@@ -8589,6 +8589,6 @@ final class XMLSchemaParser extends XMLRepresentation
     /**
      * Factory is required for
      */
-    private final SmRestrictedXPathParser m_xp;
+    private final RestrictedXPathParser m_xp;
 
 }

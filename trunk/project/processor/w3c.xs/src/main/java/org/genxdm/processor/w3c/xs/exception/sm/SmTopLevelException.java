@@ -25,15 +25,15 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public abstract class SmTopLevelException extends SmLocationException
 {
-	public static final String PART_NOT_WELL_FORMED = "TODO";
+    public static final String PART_NOT_WELL_FORMED = "TODO";
 
-	public SmTopLevelException(final String partNumber, final LocationInSchema location)
-	{
-		super(ValidationOutcome.SRC_TopLevel, partNumber, location);
-	}
+    public SmTopLevelException(final String partNumber, final LocationInSchema location)
+    {
+        super(ValidationOutcome.SRC_TopLevel, partNumber, location);
+    }
 
-	public SmTopLevelException(final String partNumber, final LocationInSchema location, final SchemaException cause)
-	{
-		super(ValidationOutcome.SRC_TopLevel, partNumber, location, cause);
-	}
+    public SmTopLevelException(final String partNumber, final LocationInSchema location, final SchemaException cause)
+    {
+        super(ValidationOutcome.SRC_TopLevel, partNumber, location, cause);
+    }
 }

@@ -26,16 +26,16 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public abstract class SrcImportException extends SmLocationException
 {
-	public static final String PART_NOT_WELL_FORMED = "2";
+    public static final String PART_NOT_WELL_FORMED = "2";
 
-	public SrcImportException(final String partNumber, final LocationInSchema location)
-	{
-		super(ValidationOutcome.SRC_Import, partNumber, location);
-	}
+    public SrcImportException(final String partNumber, final LocationInSchema location)
+    {
+        super(ValidationOutcome.SRC_Import, partNumber, location);
+    }
 
-	public SrcImportException(final String partNumber, final LocationInSchema location, final SchemaException cause)
-	{
-		super(ValidationOutcome.SRC_Import, partNumber, location, cause);
-	}
+    public SrcImportException(final String partNumber, final LocationInSchema location, final SchemaException cause)
+    {
+        super(ValidationOutcome.SRC_Import, partNumber, location, cause);
+    }
 
 }

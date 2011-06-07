@@ -23,32 +23,32 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcElementChildElementWithFixedException extends CvcElementException
 {
-	@SuppressWarnings("unused")
-	private final QName childName;
+    @SuppressWarnings("unused")
+    private final QName childName;
 
-	public CvcElementChildElementWithFixedException(final ElementDefinition elementDeclaration, final QName childName, final LocationInSchema location)
-	{
-		super(PART_VALUE_CONSTRAINT_WITH_CHILD_ELEMENT, elementDeclaration, location);
-		this.childName = childName;
-	}
+    public CvcElementChildElementWithFixedException(final ElementDefinition elementDeclaration, final QName childName, final LocationInSchema location)
+    {
+        super(PART_VALUE_CONSTRAINT_WITH_CHILD_ELEMENT, elementDeclaration, location);
+        this.childName = childName;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The element information item, '" + getElementDeclaration().getName() + "', must have no element information item [children] because there is a fixed {value constraint}.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The element information item, '" + getElementDeclaration().getName() + "', must have no element information item [children] because there is a fixed {value constraint}.";
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof CvcElementChildElementWithFixedException)
-		{
-			final CvcElementChildElementWithFixedException e = (CvcElementChildElementWithFixedException)obj;
-			return e.getElementDeclaration().equals(getElementDeclaration());
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof CvcElementChildElementWithFixedException)
+        {
+            final CvcElementChildElementWithFixedException e = (CvcElementChildElementWithFixedException)obj;
+            return e.getElementDeclaration().equals(getElementDeclaration());
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

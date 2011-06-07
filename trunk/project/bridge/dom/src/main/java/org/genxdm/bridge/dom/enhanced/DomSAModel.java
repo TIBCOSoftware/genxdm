@@ -53,7 +53,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 		this.baseModel = new org.genxdm.bridge.dom.DomModel();
 		this.m_metaBridge = PreCondition.assertArgumentNotNull(pcx.getMetaBridge(), "metaBridge");
 		this.m_atomBridge = pcx.getAtomBridge();
-		this.nameBridge = m_atomBridge.getNameBridge();
+		this.nameBridge = NameSource.SINGLETON;
 	}
 
 	public int compare(final Node one, final Node two)

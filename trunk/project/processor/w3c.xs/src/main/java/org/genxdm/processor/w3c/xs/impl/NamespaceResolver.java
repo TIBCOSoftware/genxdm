@@ -15,22 +15,21 @@
  */
 package org.genxdm.processor.w3c.xs.impl;
 
-import java.util.HashMap;
-
-import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.resolve.PrefixResolver;
-
-final class SmPrefixResolverOnHashMap implements PrefixResolver
+/**
+ * A resolver for serialization.
+ * 
+ */
+interface NamespaceResolver
 {
-	private final HashMap<String, String> m_map;
-
-	public SmPrefixResolverOnHashMap(final HashMap<String, String> map)
-	{
-		this.m_map = PreCondition.assertArgumentNotNull(map, "map");
-	}
-
-	public String getNamespaceURI(final String prefix)
-	{
-		return m_map.get(PreCondition.assertArgumentNotNull(prefix, "prefix"));
-	}
+    /**
+     * Given a namespace-uri, get a corresponding prefix.
+     * 
+     * @param namespaceURI
+     *            The namespace-uri, cannot be <code>null</code>.
+     * @param prefixHint
+     *            The prefix hint, cannot be <code>null</code>.
+     * @param mayUseDefaultMapping
+     *            Determines whether the default namespace mapping, if it exists, may be used.
+     */
+    String getPrefix(String namespaceURI, String prefixHint, boolean mayUseDefaultMapping);
 }

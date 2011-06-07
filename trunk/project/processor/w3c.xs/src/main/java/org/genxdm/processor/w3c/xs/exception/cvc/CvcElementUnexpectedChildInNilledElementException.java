@@ -25,32 +25,32 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcElementUnexpectedChildInNilledElementException extends CvcElementException
 {
-	/**
-	 * The child node could be an element indormation item or a chacater information item, so we report the parent name
-	 * and location.
-	 */
-	public CvcElementUnexpectedChildInNilledElementException(final ElementDefinition elementName, final LocationInSchema location)
-	{
-		super(CvcElementException.PART_NO_CHILDREN, elementName, location);
-	}
+    /**
+     * The child node could be an element indormation item or a chacater information item, so we report the parent name
+     * and location.
+     */
+    public CvcElementUnexpectedChildInNilledElementException(final ElementDefinition elementName, final LocationInSchema location)
+    {
+        super(CvcElementException.PART_NO_CHILDREN, elementName, location);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Element \"" + getElementDeclaration() + "\" cannot have element node child because \"" + new QName(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "nil") + "\" is specified.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Element \"" + getElementDeclaration() + "\" cannot have element node child because \"" + new QName(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "nil") + "\" is specified.";
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof CvcElementUnexpectedChildInNilledElementException)
-		{
-			final CvcElementUnexpectedChildInNilledElementException e = (CvcElementUnexpectedChildInNilledElementException)obj;
-			return e.getElementDeclaration().equals(getElementDeclaration());
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof CvcElementUnexpectedChildInNilledElementException)
+        {
+            final CvcElementUnexpectedChildInNilledElementException e = (CvcElementUnexpectedChildInNilledElementException)obj;
+            return e.getElementDeclaration().equals(getElementDeclaration());
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

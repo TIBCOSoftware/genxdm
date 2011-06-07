@@ -22,16 +22,16 @@ import org.genxdm.xs.facets.RegExPattern;
 
 final class RegExPatternJDK implements RegExPattern
 {
-	private final Pattern m_pattern;
+    private final Pattern m_pattern;
 
-	public RegExPatternJDK(final Pattern pattern)
-	{
-		m_pattern = PreCondition.assertArgumentNotNull(pattern, "pattern");
-	}
+    public RegExPatternJDK(final Pattern pattern)
+    {
+        m_pattern = PreCondition.assertArgumentNotNull(pattern, "pattern");
+    }
 
-	public boolean matches(final String input)
-	{
-		PreCondition.assertArgumentNotNull(input, "input");
-		return m_pattern.matcher(input).matches();
-	}
+    public boolean matches(final String input)
+    {
+        PreCondition.assertArgumentNotNull(input, "input");
+        return m_pattern.matcher(input).matches();
+    }
 }

@@ -27,46 +27,46 @@ import org.genxdm.xs.constraints.ValueConstraint;
  */
 public final class XMLValueConstraint
 {
-	public final ValueConstraint.Kind kind;
-	private final QName m_attributeName;
-	private final String m_value;
-	private final SrcFrozenLocation m_location;
+    public final ValueConstraint.Kind kind;
+    private final QName m_attributeName;
+    private final String m_value;
+    private final SrcFrozenLocation m_location;
 
-	public XMLValueConstraint(final ValueConstraint.Kind kind, final QName attributeName, final String value, final SrcFrozenLocation location)
-	{
-		this.kind = PreCondition.assertArgumentNotNull(kind, "kind");
-		this.m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
-		this.m_value = PreCondition.assertArgumentNotNull(value, "value");
-		this.m_location = PreCondition.assertArgumentNotNull(location, "location");
-	}
+    public XMLValueConstraint(final ValueConstraint.Kind kind, final QName attributeName, final String value, final SrcFrozenLocation location)
+    {
+        this.kind = PreCondition.assertArgumentNotNull(kind, "kind");
+        this.m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
+        this.m_value = PreCondition.assertArgumentNotNull(value, "value");
+        this.m_location = PreCondition.assertArgumentNotNull(location, "location");
+    }
 
-	/**
-	 * Returns the kind of {value constraint} property.
-	 */
-	public QName getAttributeName()
-	{
-		return m_attributeName;
-	}
+    /**
+     * Returns the kind of {value constraint} property.
+     */
+    public QName getAttributeName()
+    {
+        return m_attributeName;
+    }
 
-	/**
-	 * Returns the value of {value constraint} property.
-	 */
-	public String getValue()
-	{
-		return m_value;
-	}
+    /**
+     * Returns the value of {value constraint} property.
+     */
+    public String getValue()
+    {
+        return m_value;
+    }
 
-	/**
-	 * Returns the location of the attribute defining the value.
-	 */
-	public SrcFrozenLocation getLocation()
-	{
-		return m_location;
-	}
+    /**
+     * Returns the location of the attribute defining the value.
+     */
+    public SrcFrozenLocation getLocation()
+    {
+        return m_location;
+    }
 
-	@Override
-	public String toString()
-	{
-		return m_attributeName + "=" + m_value;
-	}
+    @Override
+    public String toString()
+    {
+        return m_attributeName + "=" + m_value;
+    }
 }

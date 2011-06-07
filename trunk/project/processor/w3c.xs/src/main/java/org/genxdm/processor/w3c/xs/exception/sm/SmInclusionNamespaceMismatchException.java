@@ -21,20 +21,20 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public class SmInclusionNamespaceMismatchException extends SmInclusionException
 {
-	public SmInclusionNamespaceMismatchException(final LocationInSchema location)
-	{
-		super(PART_INCLUSION_NAMESPACE_MISMATCH, location);
-	}
+    public SmInclusionNamespaceMismatchException(final LocationInSchema location)
+    {
+        super(PART_INCLUSION_NAMESPACE_MISMATCH, location);
+    }
 
-	public SmInclusionNamespaceMismatchException(final LocationInSchema location, final SchemaException cause)
-	{
-		super(PART_INCLUSION_NAMESPACE_MISMATCH, location, cause);
-	}
+    public SmInclusionNamespaceMismatchException(final LocationInSchema location, final SchemaException cause)
+    {
+        super(PART_INCLUSION_NAMESPACE_MISMATCH, location, cause);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "If the included schema has a targetnamespace, the including schema must have the identical targetnamespace.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "If the included schema has a targetnamespace, the including schema must have the identical targetnamespace.";
+    }
 
 }

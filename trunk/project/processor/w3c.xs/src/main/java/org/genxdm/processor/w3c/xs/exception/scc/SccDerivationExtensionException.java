@@ -26,27 +26,27 @@ import org.genxdm.xs.exceptions.SchemaException;
 @SuppressWarnings("serial")
 public abstract class SccDerivationExtensionException extends ComponentConstraintException
 {
-	private final QName m_complexTypeName;
+    private final QName m_complexTypeName;
 
-	public static final String PART_WHEN_BASE_COMPLEX_TYPE_FINAL_OF_BASE_MUST_NOT_CONTAINT_EXTENSION = "1.1";
-	public static final String PART_WHEN_BASE_COMPLEX_TYPE_CONTENT_TYPE = "1.4";
-	public static final String PART_WHEN_BASE_SIMPLE_TYPE_CONTENT_TYPE_MUST_BE_SAME_SIMPLE_TYPE_DEFINITION = "2.1";
-	public static final String PART_WHEN_BASE_SIMPLE_TYPE_FINAL_OF_BASE_MUST_NOT_CONTAINT_EXTENSION = "2.2";
+    public static final String PART_WHEN_BASE_COMPLEX_TYPE_FINAL_OF_BASE_MUST_NOT_CONTAINT_EXTENSION = "1.1";
+    public static final String PART_WHEN_BASE_COMPLEX_TYPE_CONTENT_TYPE = "1.4";
+    public static final String PART_WHEN_BASE_SIMPLE_TYPE_CONTENT_TYPE_MUST_BE_SAME_SIMPLE_TYPE_DEFINITION = "2.1";
+    public static final String PART_WHEN_BASE_SIMPLE_TYPE_FINAL_OF_BASE_MUST_NOT_CONTAINT_EXTENSION = "2.2";
 
-	public SccDerivationExtensionException(final String partNumber, final QName complexTypeName)
-	{
-		super(ValidationOutcome.SCC_Derivation_Valid_Extension, partNumber);
-		m_complexTypeName = PreCondition.assertArgumentNotNull(complexTypeName, "complexTypeName");
-	}
+    public SccDerivationExtensionException(final String partNumber, final QName complexTypeName)
+    {
+        super(ValidationOutcome.SCC_Derivation_Valid_Extension, partNumber);
+        m_complexTypeName = PreCondition.assertArgumentNotNull(complexTypeName, "complexTypeName");
+    }
 
-	public SccDerivationExtensionException(final String partNumber, final QName complexTypeName, final SchemaException cause)
-	{
-		super(ValidationOutcome.SCC_Derivation_Valid_Extension, partNumber, PreCondition.assertArgumentNotNull(cause, "cause"));
-		m_complexTypeName = PreCondition.assertArgumentNotNull(complexTypeName, "complexTypeName");
-	}
+    public SccDerivationExtensionException(final String partNumber, final QName complexTypeName, final SchemaException cause)
+    {
+        super(ValidationOutcome.SCC_Derivation_Valid_Extension, partNumber, PreCondition.assertArgumentNotNull(cause, "cause"));
+        m_complexTypeName = PreCondition.assertArgumentNotNull(complexTypeName, "complexTypeName");
+    }
 
-	public QName getComplexTypeName()
-	{
-		return m_complexTypeName;
-	}
+    public QName getComplexTypeName()
+    {
+        return m_complexTypeName;
+    }
 }

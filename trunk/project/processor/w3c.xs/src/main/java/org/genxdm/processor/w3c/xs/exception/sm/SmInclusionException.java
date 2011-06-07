@@ -25,16 +25,16 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public abstract class SmInclusionException extends SmLocationException
 {
-	public static final String PART_NOT_WELL_FORMED = "1";
-	public static final String PART_INCLUSION_NAMESPACE_MISMATCH = "2.1";
+    public static final String PART_NOT_WELL_FORMED = "1";
+    public static final String PART_INCLUSION_NAMESPACE_MISMATCH = "2.1";
 
-	public SmInclusionException(final String partNumber, final LocationInSchema location)
-	{
-		super(ValidationOutcome.SRC_Include, partNumber, location);
-	}
+    public SmInclusionException(final String partNumber, final LocationInSchema location)
+    {
+        super(ValidationOutcome.SRC_Include, partNumber, location);
+    }
 
-	public SmInclusionException(final String partNumber, final LocationInSchema location, final SchemaException cause)
-	{
-		super(ValidationOutcome.SRC_Include, partNumber, location, cause);
-	}
+    public SmInclusionException(final String partNumber, final LocationInSchema location, final SchemaException cause)
+    {
+        super(ValidationOutcome.SRC_Include, partNumber, location, cause);
+    }
 }

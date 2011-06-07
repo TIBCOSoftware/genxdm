@@ -13,23 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.impl;
+package org.genxdm.processor.w3c.xs;
 
-/**
- * A resolver for serialization.
- * 
- */
-interface SmNamespaceResolver
+import org.genxdm.processor.w3c.xs.impl.SchemaRegExCompileException;
+import org.genxdm.xs.facets.RegExPattern;
+
+public interface SchemaRegExCompiler
 {
-	/**
-	 * Given a namespace-uri, get a corresponding prefix.
-	 * 
-	 * @param namespaceURI
-	 *            The namespace-uri, cannot be <code>null</code>.
-	 * @param prefixHint
-	 *            The prefix hint, cannot be <code>null</code>.
-	 * @param mayUseDefaultMapping
-	 *            Determines whether the default namespace mapping, if it exists, may be used.
-	 */
-	String getPrefix(String namespaceURI, String prefixHint, boolean mayUseDefaultMapping);
+    RegExPattern compile(String regex) throws SchemaRegExCompileException;
+
+    RegExPattern compile(String regex, String flags) throws SchemaRegExCompileException;
 }

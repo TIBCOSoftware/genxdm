@@ -20,8 +20,8 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmSourceAttributeDefaultAndFixedPresentException extends SmSourceAttributeException
 {
-	public SmSourceAttributeDefaultAndFixedPresentException(final LocationInSchema location)
-	{
-		super(PART_DEFAULT_AND_FIXED_PRESENT, location);
-	}
+    public SmSourceAttributeDefaultAndFixedPresentException(final LocationInSchema location)
+    {
+        super(PART_DEFAULT_AND_FIXED_PRESENT, location);
+    }
 }

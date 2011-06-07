@@ -22,21 +22,21 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmIllegalNamespaceException extends SmLocationException
 {
-	public SmIllegalNamespaceException(final String type, final String containerNamespace, final String containedNamespace, final LocationInSchema location)
-	{
-		super(ValidationOutcome.TODO, "?", location);
-		m_type = PreCondition.assertArgumentNotNull(type, "type");
-		m_containerNamespace = PreCondition.assertArgumentNotNull(containerNamespace, "containerNamespace");
-		m_containedNamespace = PreCondition.assertArgumentNotNull(containedNamespace, "containedNamespace");
-	}
+    public SmIllegalNamespaceException(final String type, final String containerNamespace, final String containedNamespace, final LocationInSchema location)
+    {
+        super(ValidationOutcome.TODO, "?", location);
+        m_type = PreCondition.assertArgumentNotNull(type, "type");
+        m_containerNamespace = PreCondition.assertArgumentNotNull(containerNamespace, "containerNamespace");
+        m_containedNamespace = PreCondition.assertArgumentNotNull(containedNamespace, "containedNamespace");
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Illegal namespace: " + m_containerNamespace + " " + m_type + "s " + m_containedNamespace;
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Illegal namespace: " + m_containerNamespace + " " + m_type + "s " + m_containedNamespace;
+    }
 
-	private final String m_type; // one of import include redefine
-	private final String m_containerNamespace;
-	private final String m_containedNamespace;
+    private final String m_type; // one of import include redefine
+    private final String m_containerNamespace;
+    private final String m_containedNamespace;
 }
