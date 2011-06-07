@@ -13,21 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.bridgekit.xs.simple;
+package org.genxdm.bridgekit.xs.complex;
 
-import org.genxdm.bridgekit.xs.complex.AbstractType;
-import org.genxdm.xs.enums.KeeneQuantifier;
-import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.components.SchemaWildcard;
+import org.genxdm.xs.constraints.WildcardUse;
 
-public abstract class AbstractPrimeExcludingNoneType extends AbstractType implements PrimeType
+public final class ParticleWithWildcardTerm extends ParticleImpl implements WildcardUse
 {
-	public final boolean isNone()
+	public ParticleWithWildcardTerm(final int minOccurs, final int maxOccurs, final SchemaWildcard wildcard)
 	{
-		return false;
+		super(minOccurs, maxOccurs, false, wildcard);
 	}
 
-	public final KeeneQuantifier quantifier()
+	public ParticleWithWildcardTerm(final int minOccurs, final SchemaWildcard wildcard)
 	{
-		return KeeneQuantifier.EXACTLY_ONE;
+		super(minOccurs, -1, true, wildcard);
+	}
+
+	public SchemaWildcard getTerm()
+	{
+		// We know this is safe by construction.
+		return (SchemaWildcard)m_term;
 	}
 }

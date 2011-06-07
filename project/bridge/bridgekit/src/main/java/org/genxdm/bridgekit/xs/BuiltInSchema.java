@@ -22,6 +22,8 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.xs.complex.ComplexTypeImpl;
+import org.genxdm.bridgekit.xs.complex.ListTypeImpl;
 import org.genxdm.bridgekit.xs.simple.AnyURIType;
 import org.genxdm.bridgekit.xs.simple.Base64BinaryType;
 import org.genxdm.bridgekit.xs.simple.BooleanType;

@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.xs.constraint;
 
-import org.genxdm.bridgekit.xs.LockableImpl;
+import org.genxdm.bridgekit.xs.complex.LockableImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.constraints.AttributeUse;

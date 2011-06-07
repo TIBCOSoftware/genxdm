@@ -13,21 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.bridgekit.xs.simple;
+package org.genxdm.bridgekit.xs.complex;
 
-import org.genxdm.bridgekit.xs.complex.AbstractType;
-import org.genxdm.xs.enums.KeeneQuantifier;
-import org.genxdm.xs.types.PrimeType;
+import org.genxdm.exceptions.PreCondition;
 
-public abstract class AbstractPrimeExcludingNoneType extends AbstractType implements PrimeType
+public abstract class LockableImpl
 {
-	public final boolean isNone()
+	private boolean m_isLocked = false;
+
+	public final void lock()
 	{
-		return false;
+		m_isLocked = true;
 	}
 
-	public final KeeneQuantifier quantifier()
+	public final boolean isLocked()
 	{
-		return KeeneQuantifier.EXACTLY_ONE;
+		return m_isLocked;
+	}
+
+	protected final void assertNotLocked()
+	{
+		PreCondition.assertFalse(m_isLocked, "isLocked -> true");
 	}
 }

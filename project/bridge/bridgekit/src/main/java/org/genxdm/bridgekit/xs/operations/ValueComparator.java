@@ -13,21 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.bridgekit.xs.simple;
+package org.genxdm.bridgekit.xs.operations;
 
-import org.genxdm.bridgekit.xs.complex.AbstractType;
-import org.genxdm.xs.enums.KeeneQuantifier;
-import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.exceptions.AtomCastException;
 
-public abstract class AbstractPrimeExcludingNoneType extends AbstractType implements PrimeType
+/**
+ * Internal implementation interface for organizing value comparisons.
+ */
+public interface ValueComparator<A>
 {
-	public final boolean isNone()
-	{
-		return false;
-	}
-
-	public final KeeneQuantifier quantifier()
-	{
-		return KeeneQuantifier.EXACTLY_ONE;
-	}
+	boolean compare(A lhsAtom) throws AtomCastException;
 }
