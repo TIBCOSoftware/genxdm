@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.types.NativeType;
 
-final class OpXMLSchemaCompareDuration<A> implements ValueComparator<A>
+public final class OpXMLSchemaCompareDuration<A> implements ValueComparator<A>
 {
 	private static final int[] MAX_DAYS_P_MONTH = { 31, 62, 92, 123, 153, 184, 215, 245, 276, 306, 337, 366 };
 	private static final int[] MIN_DAYS_P_MONTH = { 28, 59, 89, 120, 150, 181, 212, 242, 273, 303, 334, 365 };

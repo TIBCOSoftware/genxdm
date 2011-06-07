@@ -15,6 +15,7 @@
  */
 package org.genxdm.bridgekit.xs;
 
+import org.genxdm.bridgekit.xs.simple.AbstractPrimeExcludingNoneType;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.NodeKind;
 import org.genxdm.xs.types.NodeType;

@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.processor.w3c.xs.exception.SmDuplicateIdentityConstraintException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateIdentityConstraintException;
 import org.genxdm.xs.enums.DerivationMethod;
 
 

@@ -17,7 +17,7 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 
 import java.util.ArrayList;
 
-import org.genxdm.processor.w3c.xs.exception.CvcDanglingKeyReferenceException;
+import org.genxdm.processor.w3c.xs.exception.cvc.CvcDanglingKeyReferenceException;
 import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;

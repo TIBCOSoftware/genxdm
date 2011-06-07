@@ -17,8 +17,8 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.processor.w3c.xs.exception.CvcNoRootElementException;
-import org.genxdm.processor.w3c.xs.exception.SrcFrozenLocation;
+import org.genxdm.processor.w3c.xs.exception.cvc.CvcNoRootElementException;
+import org.genxdm.processor.w3c.xs.exception.src.SrcFrozenLocation;
 import org.genxdm.processor.w3c.xs.validation.api.VxPSVI;
 import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
