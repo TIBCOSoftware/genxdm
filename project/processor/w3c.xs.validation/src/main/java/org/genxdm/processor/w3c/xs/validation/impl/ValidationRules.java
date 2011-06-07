@@ -17,10 +17,10 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.processor.w3c.xs.exception.CvcAbstractComplexTypeException;
-import org.genxdm.processor.w3c.xs.exception.CvcElementChildElementWithFixedException;
-import org.genxdm.processor.w3c.xs.exception.CvcElementFixedValueOverriddenMixedException;
-import org.genxdm.processor.w3c.xs.exception.SrcFrozenLocation;
+import org.genxdm.processor.w3c.xs.exception.cvc.CvcAbstractComplexTypeException;
+import org.genxdm.processor.w3c.xs.exception.cvc.CvcElementChildElementWithFixedException;
+import org.genxdm.processor.w3c.xs.exception.cvc.CvcElementFixedValueOverriddenMixedException;
+import org.genxdm.processor.w3c.xs.exception.src.SrcFrozenLocation;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.ValueConstraint;

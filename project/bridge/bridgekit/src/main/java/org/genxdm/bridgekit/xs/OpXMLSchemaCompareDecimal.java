@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 
 import org.genxdm.typed.types.AtomBridge;
 
-final class OpXMLSchemaCompareDecimal<A> implements ValueComparator<A>
+public final class OpXMLSchemaCompareDecimal<A> implements ValueComparator<A>
 {
 	private final OpXMLSchemaCompare m_opcode;
 	private final BigDecimal decimalR;

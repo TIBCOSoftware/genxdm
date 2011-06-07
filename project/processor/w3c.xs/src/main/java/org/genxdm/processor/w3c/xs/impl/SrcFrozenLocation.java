@@ -21,7 +21,7 @@ import javax.xml.stream.Location;
 
 import org.genxdm.processor.w3c.xs.SmFileLocation;
 
-final class SrcFrozenLocation implements SmFileLocation
+public final class SrcFrozenLocation implements SmFileLocation
 {
 	private final int m_lineNumber;
 	private final int m_columnNumber;

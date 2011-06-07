@@ -27,14 +27,23 @@ import javax.xml.stream.Location;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
-import org.genxdm.processor.w3c.xs.exception.SmDuplicateAttributeException;
-import org.genxdm.processor.w3c.xs.exception.SmDuplicateAttributeGroupException;
-import org.genxdm.processor.w3c.xs.exception.SmDuplicateElementException;
-import org.genxdm.processor.w3c.xs.exception.SmDuplicateIdentityConstraintException;
-import org.genxdm.processor.w3c.xs.exception.SmDuplicateModelGroupException;
-import org.genxdm.processor.w3c.xs.exception.SmDuplicateNotationException;
-import org.genxdm.processor.w3c.xs.exception.SmDuplicateTypeException;
-import org.genxdm.processor.w3c.xs.exception.SmUndeclaredReferenceException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateAttributeException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateAttributeGroupException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateElementException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateIdentityConstraintException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateModelGroupException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateNotationException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateTypeException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmUndeclaredReferenceException;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLAttribute;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLAttributeGroup;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLElement;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLIdentityConstraint;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLModelGroup;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLNotation;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLScope;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLType;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLTypeRef;
 import org.genxdm.xs.constraints.IdentityConstraintKind;
 import org.genxdm.xs.exceptions.SchemaException;
 
@@ -44,7 +53,7 @@ import org.genxdm.xs.exceptions.SchemaException;
  * This class is used to do the "bookkeeping" associated with parsing in a streaming fashion and with managing forward
  * references.
  */
-final class XMLSchemaCache
+public final class XMLSchemaCache
 {
 	final Map<QName, XMLElement> m_elements = new HashMap<QName, XMLElement>();
 	final Map<QName, SrcFrozenLocation> m_elementsUnresolved = new HashMap<QName, SrcFrozenLocation>();
@@ -52,7 +61,7 @@ final class XMLSchemaCache
 	final Map<QName, XMLAttribute> m_attributes = new HashMap<QName, XMLAttribute>();
 	final Map<QName, SrcFrozenLocation> m_attributesUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
-	final Map<QName, XMLType> m_globalTypes = new HashMap<QName, XMLType>();
+	public final Map<QName, XMLType> m_globalTypes = new HashMap<QName, XMLType>();
 	final Map<QName, SrcFrozenLocation> m_typesUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
 	final Map<QName, XMLModelGroup> m_modelGroups = new HashMap<QName, XMLModelGroup>();
@@ -79,7 +88,7 @@ final class XMLSchemaCache
 		ANY_SIMPLE_TYPE = new XMLTypeRef(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anySimpleType"));
 		ANY_TYPE = new XMLTypeRef(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anyType"));
 	}
-
+	
 	public Iterable<XMLType> getGlobalTypes()
 	{
 		return m_globalTypes.values();

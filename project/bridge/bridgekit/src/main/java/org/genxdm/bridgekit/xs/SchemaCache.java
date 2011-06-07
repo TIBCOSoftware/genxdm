@@ -34,10 +34,7 @@ import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.SimpleUrType;
 
-/**
- * Keep private. This can go away.
- */
-interface SchemaCache extends SequenceTypeFactory
+public interface SchemaCache extends SequenceTypeFactory
 {
 	DocumentNodeType documentType(SequenceType contentType);
 

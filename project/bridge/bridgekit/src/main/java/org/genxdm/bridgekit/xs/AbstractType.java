@@ -17,6 +17,6 @@ package org.genxdm.bridgekit.xs;
 
 import org.genxdm.xs.types.SequenceType;
 
-abstract class AbstractType implements SequenceType
+public abstract class AbstractType implements SequenceType
 {
 }
