@@ -25,20 +25,20 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 @SuppressWarnings("serial")
 public abstract class SccSimpleTypeDefinitionException extends ComponentConstraintException
 {
-	private final QName m_typeName;
+    private final QName m_typeName;
 
-	public static final String PART_PROPERTIES = "1";
-	public static final String PART_BASE_SIMPLE_TYPE = "2";
-	public static final String PART_FINAL_DOES_NOT_CONTAIN_RESTRICTION = "3";
+    public static final String PART_PROPERTIES = "1";
+    public static final String PART_BASE_SIMPLE_TYPE = "2";
+    public static final String PART_FINAL_DOES_NOT_CONTAIN_RESTRICTION = "3";
 
-	public SccSimpleTypeDefinitionException(final String partNumber, final QName typeName)
-	{
-		super(ValidationOutcome.SCC_Complex_Type_Definition_Properties, partNumber);
-		m_typeName = PreCondition.assertArgumentNotNull(typeName, "typeName");
-	}
+    public SccSimpleTypeDefinitionException(final String partNumber, final QName typeName)
+    {
+        super(ValidationOutcome.SCC_Complex_Type_Definition_Properties, partNumber);
+        m_typeName = PreCondition.assertArgumentNotNull(typeName, "typeName");
+    }
 
-	public final QName getTypeName()
-	{
-		return m_typeName;
-	}
+    public final QName getTypeName()
+    {
+        return m_typeName;
+    }
 }

@@ -138,7 +138,7 @@ public final class QNameType extends AbstractAtomType
 	{
 		final String qualifiedName = normalize(initialValue);
 		final int index = qualifiedName.indexOf(':');
-		final NameSource nameBridge = atomBridge.getNameBridge();
+		final NameSource nameBridge = NameSource.SINGLETON;
 		if (index == -1)
 		{
 			final String localName = NCNameType.castAsNCName(qualifiedName, this);

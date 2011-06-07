@@ -113,7 +113,7 @@ final class CastingSupport
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
 		PreCondition.assertArgumentNotNull(castingContext, "castingContext");
 		PreCondition.assertArgumentNotNull(pcx, "pcx");
-		final NameSource nameBridge = atomBridge.getNameBridge();
+		final NameSource nameBridge = NameSource.SINGLETON;
 		final NativeType nativeType = nameBridge.nativeType(targetType);
 		if (null != nativeType)
 		{
@@ -184,7 +184,7 @@ final class CastingSupport
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
 		PreCondition.assertArgumentNotNull(castingContext, "castingContext");
 		PreCondition.assertArgumentNotNull(pcx, "pcx");
-		final NameSource nameBridge = atomBridge.getNameBridge();
+		final NameSource nameBridge = NameSource.SINGLETON;
 		final NativeType sourceType = atomBridge.getNativeType(sourceAtom);
 
 		final SpillagePolicy spillagePolicy = castingContext.getSpillagePolicy();

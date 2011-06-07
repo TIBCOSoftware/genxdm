@@ -26,25 +26,25 @@ import org.genxdm.xs.exceptions.SimpleTypeException;
 @SuppressWarnings("serial")
 public abstract class SccComplexTypeDerivationRestrictionException extends ComponentConstraintException
 {
-	private final QName m_typeName;
+    private final QName m_typeName;
 
-	public static final String PART_TODO = "1";
-	public static final String PART_ATTRIBUTE_REQUIRED_CONFLICT = "2.1.1";
+    public static final String PART_TODO = "1";
+    public static final String PART_ATTRIBUTE_REQUIRED_CONFLICT = "2.1.1";
 
-	public SccComplexTypeDerivationRestrictionException(final String partNumber, final QName typeName)
-	{
-		super(ValidationOutcome.SCC_Derivation_Valid_Restriction_Complex, partNumber);
-		m_typeName = PreCondition.assertArgumentNotNull(typeName, "typeName");
-	}
+    public SccComplexTypeDerivationRestrictionException(final String partNumber, final QName typeName)
+    {
+        super(ValidationOutcome.SCC_Derivation_Valid_Restriction_Complex, partNumber);
+        m_typeName = PreCondition.assertArgumentNotNull(typeName, "typeName");
+    }
 
-	public SccComplexTypeDerivationRestrictionException(final String partNumber, final QName attributeName, final SimpleTypeException cause)
-	{
-		super(ValidationOutcome.SCC_Derivation_Valid_Restriction_Complex, partNumber, cause);
-		m_typeName = PreCondition.assertArgumentNotNull(attributeName, "typeName");
-	}
+    public SccComplexTypeDerivationRestrictionException(final String partNumber, final QName attributeName, final SimpleTypeException cause)
+    {
+        super(ValidationOutcome.SCC_Derivation_Valid_Restriction_Complex, partNumber, cause);
+        m_typeName = PreCondition.assertArgumentNotNull(attributeName, "typeName");
+    }
 
-	public final QName getTypeName()
-	{
-		return m_typeName;
-	}
+    public final QName getTypeName()
+    {
+        return m_typeName;
+    }
 }

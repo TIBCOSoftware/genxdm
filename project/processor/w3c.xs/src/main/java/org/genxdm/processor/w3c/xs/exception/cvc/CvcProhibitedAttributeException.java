@@ -24,44 +24,44 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcProhibitedAttributeException extends SmComplexTypeException
 {
-	private final QName m_attributeName;
+    private final QName m_attributeName;
 
-	public CvcProhibitedAttributeException(final QName elementName, final QName attributeName, final LocationInSchema location)
-	{
-		super(SmComplexTypeException.PART_ATTRIBUTE_VALID, elementName, location);
-		this.m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
-	}
+    public CvcProhibitedAttributeException(final QName elementName, final QName attributeName, final LocationInSchema location)
+    {
+        super(SmComplexTypeException.PART_ATTRIBUTE_VALID, elementName, location);
+        this.m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
+    }
 
-	public QName getAttributeName()
-	{
-		return m_attributeName;
-	}
+    public QName getAttributeName()
+    {
+        return m_attributeName;
+    }
 
-	public String getMessage()
-	{
-		return "Prohibited attribute: " + m_attributeName;
-	}
+    public String getMessage()
+    {
+        return "Prohibited attribute: " + m_attributeName;
+    }
 
-	public String getPatternKey()
-	{
-		return "ProhibitedAttributeException";
-	}
+    public String getPatternKey()
+    {
+        return "ProhibitedAttributeException";
+    }
 
-	public Object[] getArguments()
-	{
-		return new Object[] { m_attributeName };
-	}
+    public Object[] getArguments()
+    {
+        return new Object[] { m_attributeName };
+    }
 
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof CvcProhibitedAttributeException)
-		{
-			final CvcProhibitedAttributeException other = (CvcProhibitedAttributeException)obj;
-			return other.m_attributeName.equals(m_attributeName);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof CvcProhibitedAttributeException)
+        {
+            final CvcProhibitedAttributeException other = (CvcProhibitedAttributeException)obj;
+            return other.m_attributeName.equals(m_attributeName);
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

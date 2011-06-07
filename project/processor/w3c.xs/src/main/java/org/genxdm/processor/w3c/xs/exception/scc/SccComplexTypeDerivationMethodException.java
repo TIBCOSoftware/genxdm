@@ -24,14 +24,14 @@ import org.genxdm.xs.types.Type;
 @SuppressWarnings("serial")
 public final class SccComplexTypeDerivationMethodException extends SccTypeDerivationOKComplexException
 {
-	public SccComplexTypeDerivationMethodException(final Type typeName, final Type baseName, final Set<DerivationMethod> subset)
-	{
-		super(PART_METHOD, typeName, baseName, subset);
-	}
+    public SccComplexTypeDerivationMethodException(final Type typeName, final Type baseName, final Set<DerivationMethod> subset)
+    {
+        super(PART_METHOD, typeName, baseName, subset);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The complex type definition " + getDerivedType().getName() + " is not validly derived from " + getBaseName() + " given the subset {" + derivations(getSubset()) + "}.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The complex type definition " + getDerivedType().getName() + " is not validly derived from " + getBaseName() + " given the subset {" + derivations(getSubset()) + "}.";
+    }
 }

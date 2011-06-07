@@ -25,39 +25,39 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcElementUnresolvedLocalTypeException extends SmLocationException
 {
-	private final QName m_localType;
+    private final QName m_localType;
 
-	public CvcElementUnresolvedLocalTypeException(final QName localType, final QName elementName, final LocationInSchema location)
-	{
-		super(ValidationOutcome.CVC_Element_Locally_Valid, "", location);
-		m_localType = PreCondition.assertArgumentNotNull(localType, "localType");
-	}
+    public CvcElementUnresolvedLocalTypeException(final QName localType, final QName elementName, final LocationInSchema location)
+    {
+        super(ValidationOutcome.CVC_Element_Locally_Valid, "", location);
+        m_localType = PreCondition.assertArgumentNotNull(localType, "localType");
+    }
 
-	@Override
-	public String getMessage()
-	{
-		final String localMessage = "The local type '" + m_localType + "' could not be resolved.";
+    @Override
+    public String getMessage()
+    {
+        final String localMessage = "The local type '" + m_localType + "' could not be resolved.";
 
-		final StringBuilder message = new StringBuilder();
-		message.append(getOutcome().getSection());
-		message.append(".");
-		message.append(getPartNumber());
-		message.append(": ");
-		message.append(localMessage);
-		return message.toString();
-	}
+        final StringBuilder message = new StringBuilder();
+        message.append(getOutcome().getSection());
+        message.append(".");
+        message.append(getPartNumber());
+        message.append(": ");
+        message.append(localMessage);
+        return message.toString();
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof CvcElementUnresolvedLocalTypeException)
-		{
-			final CvcElementUnresolvedLocalTypeException e = (CvcElementUnresolvedLocalTypeException)obj;
-			return m_localType.equals(e.m_localType);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof CvcElementUnresolvedLocalTypeException)
+        {
+            final CvcElementUnresolvedLocalTypeException e = (CvcElementUnresolvedLocalTypeException)obj;
+            return m_localType.equals(e.m_localType);
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

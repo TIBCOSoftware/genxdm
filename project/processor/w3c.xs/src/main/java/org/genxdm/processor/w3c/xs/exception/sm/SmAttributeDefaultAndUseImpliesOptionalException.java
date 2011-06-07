@@ -20,14 +20,14 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmAttributeDefaultAndUseImpliesOptionalException extends SmSourceAttributeException
 {
-	public SmAttributeDefaultAndUseImpliesOptionalException(final LocationInSchema location)
-	{
-		super(PART_DEFAULT_AND_USE_IMPLIES_OPTIONAL, location);
-	}
+    public SmAttributeDefaultAndUseImpliesOptionalException(final LocationInSchema location)
+    {
+        super(PART_DEFAULT_AND_USE_IMPLIES_OPTIONAL, location);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "If default and use are both present, use must have the actual value optional.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "If default and use are both present, use must have the actual value optional.";
+    }
 }

@@ -24,28 +24,28 @@ import org.genxdm.processor.w3c.xs.exception.src.SrcFrozenLocation;
  */
 final class XMLValue
 {
-	private final String m_value;
-	private final SrcFrozenLocation m_location;
+    private final String m_value;
+    private final SrcFrozenLocation m_location;
 
-	public XMLValue(final String value, final SrcFrozenLocation location)
-	{
-		m_value = PreCondition.assertArgumentNotNull(value, "value");
-		m_location = PreCondition.assertArgumentNotNull(location, "location");
-	}
+    public XMLValue(final String value, final SrcFrozenLocation location)
+    {
+        m_value = PreCondition.assertArgumentNotNull(value, "value");
+        m_location = PreCondition.assertArgumentNotNull(location, "location");
+    }
 
-	/**
-	 * Returns the value of {value constraint} property.
-	 */
-	public String getValue()
-	{
-		return m_value;
-	}
+    /**
+     * Returns the value of {value constraint} property.
+     */
+    public String getValue()
+    {
+        return m_value;
+    }
 
-	/**
-	 * Returns the location of the attribute defining the value.
-	 */
-	public SrcFrozenLocation getLocation()
-	{
-		return m_location;
-	}
+    /**
+     * Returns the location of the attribute defining the value.
+     */
+    public SrcFrozenLocation getLocation()
+    {
+        return m_location;
+    }
 }

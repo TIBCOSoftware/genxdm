@@ -22,18 +22,18 @@ import org.genxdm.exceptions.PreCondition;
 @SuppressWarnings("serial")
 public final class SccMinOccursLeMaxOccursException extends SccParticleCorrectException
 {
-	private final BigInteger m_minOccurs;
-	private final BigInteger m_maxOccurs;
+    private final BigInteger m_minOccurs;
+    private final BigInteger m_maxOccurs;
 
-	public SccMinOccursLeMaxOccursException(final BigInteger minOccurs, final BigInteger maxOccurs)
-	{
-		super(PART_MIN_OCCURS_LE_MAX_OCCURS);
-		m_minOccurs = PreCondition.assertArgumentNotNull(minOccurs, "minOccurs");
-		m_maxOccurs = PreCondition.assertArgumentNotNull(maxOccurs, "maxOccurs");
-	}
+    public SccMinOccursLeMaxOccursException(final BigInteger minOccurs, final BigInteger maxOccurs)
+    {
+        super(PART_MIN_OCCURS_LE_MAX_OCCURS);
+        m_minOccurs = PreCondition.assertArgumentNotNull(minOccurs, "minOccurs");
+        m_maxOccurs = PreCondition.assertArgumentNotNull(maxOccurs, "maxOccurs");
+    }
 
-	public String getMessage()
-	{
-		return "{min occurs} (" + m_minOccurs + ") must not be greater than {max occurs} (" + m_maxOccurs + ").";
-	}
+    public String getMessage()
+    {
+        return "{min occurs} (" + m_minOccurs + ") must not be greater than {max occurs} (" + m_maxOccurs + ").";
+    }
 }

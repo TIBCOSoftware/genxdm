@@ -25,9 +25,9 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcDanglingKeyReferenceException extends CvcIdentityConstraintException
 {
-	@SuppressWarnings("rawtypes")
-	public CvcDanglingKeyReferenceException(final QName constraintName, List fields, final LocationInSchema location)
-	{
-		super(constraintName, PART_TODO, location);
-	}
+    @SuppressWarnings("rawtypes")
+    public CvcDanglingKeyReferenceException(final QName constraintName, List fields, final LocationInSchema location)
+    {
+        super(constraintName, PART_TODO, location);
+    }
 }

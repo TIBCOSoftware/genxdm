@@ -25,19 +25,19 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 @SuppressWarnings("serial")
 public abstract class SccDerivationRestrictionSimpleException extends ComponentConstraintException
 {
-	private final QName m_simpleType;
+    private final QName m_simpleType;
 
-	public static final String PART_ITEM_TYPE_MUST_BE_ATOMIC_OR_UNION = "2.1";
-	public static final String PART_MEMBER_TYPE_MUST_BE_ATOMIC_OR_LIST = "3.1";
+    public static final String PART_ITEM_TYPE_MUST_BE_ATOMIC_OR_UNION = "2.1";
+    public static final String PART_MEMBER_TYPE_MUST_BE_ATOMIC_OR_LIST = "3.1";
 
-	public SccDerivationRestrictionSimpleException(final String partNumber, final QName simpleType)
-	{
-		super(ValidationOutcome.SCC_Derivation_Valid_Restriction_Simple, partNumber);
-		m_simpleType = PreCondition.assertArgumentNotNull(simpleType, "simpleType");
-	}
+    public SccDerivationRestrictionSimpleException(final String partNumber, final QName simpleType)
+    {
+        super(ValidationOutcome.SCC_Derivation_Valid_Restriction_Simple, partNumber);
+        m_simpleType = PreCondition.assertArgumentNotNull(simpleType, "simpleType");
+    }
 
-	public QName getSimpleType()
-	{
-		return m_simpleType;
-	}
+    public QName getSimpleType()
+    {
+        return m_simpleType;
+    }
 }

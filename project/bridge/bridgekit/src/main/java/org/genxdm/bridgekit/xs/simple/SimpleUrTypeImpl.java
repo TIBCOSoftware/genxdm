@@ -23,7 +23,6 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.xs.SchemaCache;
 import org.genxdm.bridgekit.xs.SchemaSupport;
-import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.EnumerationDefinition;
 import org.genxdm.xs.enums.DerivationMethod;
@@ -43,15 +42,15 @@ import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.SimpleUrType;
 import org.genxdm.xs.types.Type;
 
-public final class SimpleUrTypeImpl extends AbstractPrimeExcludingNoneType implements SimpleUrType
+public final class SimpleUrTypeImpl 
+    extends AbstractPrimeExcludingNoneType 
+    implements SimpleUrType
 {
-	private final NameSource nameBridge;
 	private final QName m_name;
 	private final SchemaCache cache;
 
 	public SimpleUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final SchemaCache cache)
 	{
-		this.nameBridge = new NameSource();
 		this.m_name = new QName(W3C_XML_SCHEMA_NS_URI, "anySimpleType");
 		this.cache = cache;
 	}
@@ -78,12 +77,12 @@ public final class SimpleUrTypeImpl extends AbstractPrimeExcludingNoneType imple
 
 	public boolean derivedFrom(final String namespace, final String name, final Set<DerivationMethod> derivationMethods)
 	{
-		return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods, nameBridge);
+		return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods);
 	}
 
 	public boolean derivedFromType(final Type ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
-		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods, nameBridge);
+		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods);
 	}
 
 	public ComplexUrType getBaseType()

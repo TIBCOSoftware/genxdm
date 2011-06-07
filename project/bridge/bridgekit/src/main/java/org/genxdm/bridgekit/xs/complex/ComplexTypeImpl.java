@@ -99,9 +99,9 @@ public final class ComplexTypeImpl extends TypeImpl implements ComplexType, Prim
 	private boolean m_isAbstract = false;
 
 	public ComplexTypeImpl(final QName name, final boolean isNative, final boolean isAnonymous, final ScopeExtent scope, final Type baseType, final DerivationMethod derivation, final Map<QName, AttributeUse> attributeUses,
-			final ContentType contentType, final Set<DerivationMethod> block, final NameSource nameBridge, final ComponentProvider cache)
+			final ContentType contentType, final Set<DerivationMethod> block, final ComponentProvider cache)
 	{
-		super(PreCondition.assertArgumentNotNull(name, "name"), isAnonymous, scope, derivation, nameBridge);
+		super(PreCondition.assertArgumentNotNull(name, "name"), isAnonymous, scope, derivation);
 		this.isNative = isNative;
 		this.m_cache = PreCondition.assertArgumentNotNull(cache, "cache");
 		m_baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");

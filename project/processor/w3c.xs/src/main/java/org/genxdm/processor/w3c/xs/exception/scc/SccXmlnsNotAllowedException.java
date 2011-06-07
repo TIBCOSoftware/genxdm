@@ -26,22 +26,22 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 @SuppressWarnings("serial")
 public final class SccXmlnsNotAllowedException extends ComponentConstraintException
 {
-	private final QName m_attributeName;
+    private final QName m_attributeName;
 
-	public SccXmlnsNotAllowedException(final QName attributeName)
-	{
-		super(ValidationOutcome.SCC_xmlns_Not_Allowed, ""/* no part number */);
-		m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
-	}
+    public SccXmlnsNotAllowedException(final QName attributeName)
+    {
+        super(ValidationOutcome.SCC_xmlns_Not_Allowed, ""/* no part number */);
+        m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
+    }
 
-	public final QName getAttributeName()
-	{
-		return m_attributeName;
-	}
+    public final QName getAttributeName()
+    {
+        return m_attributeName;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The {name} or {target namespace} of the attribute declaration " + getAttributeName() + " must not match " + XMLConstants.XMLNS_ATTRIBUTE + " or " + XMLConstants.XMLNS_ATTRIBUTE_NS_URI + " respectively.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The {name} or {target namespace} of the attribute declaration " + getAttributeName() + " must not match " + XMLConstants.XMLNS_ATTRIBUTE + " or " + XMLConstants.XMLNS_ATTRIBUTE_NS_URI + " respectively.";
+    }
 }

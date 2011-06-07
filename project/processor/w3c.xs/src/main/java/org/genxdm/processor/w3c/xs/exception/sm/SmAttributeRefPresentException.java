@@ -20,14 +20,14 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmAttributeRefPresentException extends SmSourceAttributeException
 {
-	public SmAttributeRefPresentException(final LocationInSchema location)
-	{
-		super(PART_REF_PRESENT, location);
-	}
+    public SmAttributeRefPresentException(final LocationInSchema location)
+    {
+        super(PART_REF_PRESENT, location);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "If ref is present, then all of <simpleType>, form and type must be absent.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "If ref is present, then all of <simpleType>, form and type must be absent.";
+    }
 }

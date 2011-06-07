@@ -21,8 +21,8 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmElementRefPresentException extends SrcElementException
 {
-	public SmElementRefPresentException(final LocationInSchema location)
-	{
-		super(PART_REF_PRESENT, location);
-	}
+    public SmElementRefPresentException(final LocationInSchema location)
+    {
+        super(PART_REF_PRESENT, location);
+    }
 }

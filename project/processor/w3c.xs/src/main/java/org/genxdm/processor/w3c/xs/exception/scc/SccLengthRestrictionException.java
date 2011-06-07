@@ -21,19 +21,19 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 @SuppressWarnings("serial")
 final public class SccLengthRestrictionException extends ComponentConstraintException
 {
-	private final int m_length;
-	private final int m_restrictedLength;
+    private final int m_length;
+    private final int m_restrictedLength;
 
-	public SccLengthRestrictionException(final int length, final int restrictedLength)
-	{
-		super(ValidationOutcome.SCC_LengthValidRestriction, "0");
-		m_length = length;
-		m_restrictedLength = restrictedLength;
-	}
+    public SccLengthRestrictionException(final int length, final int restrictedLength)
+    {
+        super(ValidationOutcome.SCC_LengthValidRestriction, "0");
+        m_length = length;
+        m_restrictedLength = restrictedLength;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The {value}, " + m_length + ", of length must be equal to the {value}, " + m_restrictedLength + ", of its inherited length.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The {value}, " + m_length + ", of length must be equal to the {value}, " + m_restrictedLength + ", of its inherited length.";
+    }
 }

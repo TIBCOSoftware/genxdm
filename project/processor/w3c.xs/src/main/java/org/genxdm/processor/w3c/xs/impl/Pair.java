@@ -20,42 +20,42 @@ package org.genxdm.processor.w3c.xs.impl;
  */
 final class Pair<X, Y>
 {
-	private final X m_x;
-	private final Y m_y;
+    private final X m_x;
+    private final Y m_y;
 
-	public Pair(final X x, final Y y)
-	{
-		m_x = x;
-		m_y = y;
-	}
+    public Pair(final X x, final Y y)
+    {
+        m_x = x;
+        m_y = y;
+    }
 
-	public X getX()
-	{
-		return m_x;
-	}
+    public X getX()
+    {
+        return m_x;
+    }
 
-	public X getFirst()
-	{
-		return m_x;
-	}
+    public X getFirst()
+    {
+        return m_x;
+    }
 
-	public X getLeft()
-	{
-		return m_x;
-	}
+    public X getLeft()
+    {
+        return m_x;
+    }
 
-	public Y getY()
-	{
-		return m_y;
-	}
+    public Y getY()
+    {
+        return m_y;
+    }
 
-	public Y getSecond()
-	{
-		return m_y;
-	}
+    public Y getSecond()
+    {
+        return m_y;
+    }
 
-	public Y getRight()
-	{
-		return m_y;
-	}
+    public Y getRight()
+    {
+        return m_y;
+    }
 }

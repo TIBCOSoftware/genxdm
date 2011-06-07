@@ -21,28 +21,28 @@ import org.genxdm.xs.enums.ProcessContentsMode;
 
 public final class XMLWildcard implements XMLParticleTerm
 {
-	public String id;
-	private ProcessContentsMode m_processContents;
-	private NamespaceConstraint m_namespaceConstraint;
+    public String id;
+    private ProcessContentsMode m_processContents;
+    private NamespaceConstraint m_namespaceConstraint;
 
-	public XMLWildcard(final ProcessContentsMode processContents, final NamespaceConstraint namespaceConstraint)
-	{
-		m_processContents = PreCondition.assertArgumentNotNull(processContents);
-		m_namespaceConstraint = PreCondition.assertArgumentNotNull(namespaceConstraint);
-	}
+    public XMLWildcard(final ProcessContentsMode processContents, final NamespaceConstraint namespaceConstraint)
+    {
+        m_processContents = PreCondition.assertArgumentNotNull(processContents);
+        m_namespaceConstraint = PreCondition.assertArgumentNotNull(namespaceConstraint);
+    }
 
-	public ProcessContentsMode getProcessContents()
-	{
-		return m_processContents;
-	}
+    public ProcessContentsMode getProcessContents()
+    {
+        return m_processContents;
+    }
 
-	public void setProcessContents(final ProcessContentsMode processContents)
-	{
-		m_processContents = PreCondition.assertArgumentNotNull(processContents);
-	}
+    public void setProcessContents(final ProcessContentsMode processContents)
+    {
+        m_processContents = PreCondition.assertArgumentNotNull(processContents);
+    }
 
-	public NamespaceConstraint getNamespaceConstraint()
-	{
-		return m_namespaceConstraint;
-	}
+    public NamespaceConstraint getNamespaceConstraint()
+    {
+        return m_namespaceConstraint;
+    }
 }

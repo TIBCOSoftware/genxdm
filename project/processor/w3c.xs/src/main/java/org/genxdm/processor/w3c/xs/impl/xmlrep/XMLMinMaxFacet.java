@@ -21,20 +21,20 @@ import org.genxdm.xs.facets.FacetKind;
 
 public final class XMLMinMaxFacet extends XMLFacet
 {
-	private final FacetKind m_kind;
-	public final String elementName;
-	public boolean fixed = false;
-	public String value;
+    private final FacetKind m_kind;
+    public final String elementName;
+    public boolean fixed = false;
+    public String value;
 
-	public XMLMinMaxFacet(final FacetKind kind, final String elementName, final XMLType simpleType, final SrcFrozenLocation location)
-	{
-		super(simpleType, location);
-		this.m_kind = PreCondition.assertArgumentNotNull(kind);
-		this.elementName = PreCondition.assertArgumentNotNull(elementName);
-	}
+    public XMLMinMaxFacet(final FacetKind kind, final String elementName, final XMLType simpleType, final SrcFrozenLocation location)
+    {
+        super(simpleType, location);
+        this.m_kind = PreCondition.assertArgumentNotNull(kind);
+        this.elementName = PreCondition.assertArgumentNotNull(elementName);
+    }
 
-	public FacetKind getOperator()
-	{
-		return m_kind;
-	}
+    public FacetKind getOperator()
+    {
+        return m_kind;
+    }
 }

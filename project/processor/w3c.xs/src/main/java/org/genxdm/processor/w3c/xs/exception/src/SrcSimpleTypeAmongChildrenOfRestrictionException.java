@@ -21,14 +21,14 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SrcSimpleTypeAmongChildrenOfRestrictionException extends SmSourceComplexTypeException
 {
-	public SrcSimpleTypeAmongChildrenOfRestrictionException(final LocationInSchema location)
-	{
-		super(PART_SIMPLE_TYPE_AMONG_CHILDREN_OF_RESTRICTION, location);
-	}
+    public SrcSimpleTypeAmongChildrenOfRestrictionException(final LocationInSchema location)
+    {
+        super(PART_SIMPLE_TYPE_AMONG_CHILDREN_OF_RESTRICTION, location);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Missing a <simpleType> among the [children] of <restriction>.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Missing a <simpleType> among the [children] of <restriction>.";
+    }
 }

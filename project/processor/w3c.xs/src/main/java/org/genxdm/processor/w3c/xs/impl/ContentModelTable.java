@@ -15,37 +15,10 @@
  */
 package org.genxdm.processor.w3c.xs.impl;
 
-import javax.xml.namespace.QName;
+import java.util.HashMap;
 
-import org.genxdm.xs.types.EmptyType;
-import org.genxdm.xs.types.NamespaceNodeType;
-import org.genxdm.xs.types.NativeType;
-import org.genxdm.xs.types.PrimeType;
-import org.genxdm.xs.types.SequenceType;
-import org.genxdm.xs.types.Type;
-
-/**
- * Keep private. This will go away.
- */
-interface SmSequenceTypeFactory
+@SuppressWarnings("serial")
+final class ContentModelTable<T> extends HashMap<Integer, HashMap<T, Integer>>
 {
-	PrimeType comment();
-
-	EmptyType empty();
-
-	Type getTypeDefinition(QName dataType);
-
-	Type getTypeDefinition(NativeType nativeType);
-
-	PrimeType item();
-
-	SequenceType itemSet();
-
-	NamespaceNodeType namespace();
-
-	PrimeType node();
-
-	PrimeType processingInstruction(String name);
-
-	PrimeType text();
+    public static final Integer END = Integer.MAX_VALUE;
 }

@@ -31,7 +31,7 @@ public class NameSourceTestCase
     @Test
     public void constantNames()
     {
-        NameSource source = new NameSource();
+        NameSource source = NameSource.SINGLETON;
         // contract: each of these silly methods introduce method call overhead
         // to what should be a simple constant comparison.  *sigh*
         // empty() should be equal to XMLConstants.NULL_NS_URI.
@@ -43,7 +43,7 @@ public class NameSourceTestCase
     @Test
     public void nativesAndNames()
     {
-        NameSource source = new NameSource();
+        NameSource source = NameSource.SINGLETON;
 
         for (final NativeType type : NativeType.values())
         {

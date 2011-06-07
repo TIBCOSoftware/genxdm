@@ -25,19 +25,19 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 @SuppressWarnings("serial")
 public abstract class SccIdentityConstraintDefinitionException extends ComponentConstraintException
 {
-	public static final String PART_REFER_IS_KEY_OR_UNIQUE = "?";
-	public static final String PART_KEYREF_FIELDS_CARDINALITY = "2";
+    public static final String PART_REFER_IS_KEY_OR_UNIQUE = "?";
+    public static final String PART_KEYREF_FIELDS_CARDINALITY = "2";
 
-	private final QName m_constraintName;
+    private final QName m_constraintName;
 
-	public SccIdentityConstraintDefinitionException(final QName constraintName, final String partNumber)
-	{
-		super(ValidationOutcome.SCC_Identity_Constraint_Definition_Properties_Correct, partNumber);
-		m_constraintName = PreCondition.assertArgumentNotNull(constraintName, "constraintName");
-	}
+    public SccIdentityConstraintDefinitionException(final QName constraintName, final String partNumber)
+    {
+        super(ValidationOutcome.SCC_Identity_Constraint_Definition_Properties_Correct, partNumber);
+        m_constraintName = PreCondition.assertArgumentNotNull(constraintName, "constraintName");
+    }
 
-	public QName getConstraintName()
-	{
-		return m_constraintName;
-	}
+    public QName getConstraintName()
+    {
+        return m_constraintName;
+    }
 }

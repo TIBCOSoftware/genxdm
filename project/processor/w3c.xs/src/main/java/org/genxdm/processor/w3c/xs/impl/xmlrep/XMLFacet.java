@@ -20,16 +20,16 @@ import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 
 abstract class XMLFacet extends XMLTag
 {
-	private final XMLType simpleType;
+    private final XMLType simpleType;
 
-	public XMLFacet(final XMLType simpleType, final SrcFrozenLocation location)
-	{
-		super(location);
-		this.simpleType = PreCondition.assertArgumentNotNull(simpleType, "simpleType");
-	}
+    public XMLFacet(final XMLType simpleType, final SrcFrozenLocation location)
+    {
+        super(location);
+        this.simpleType = PreCondition.assertArgumentNotNull(simpleType, "simpleType");
+    }
 
-	public final XMLType getSimpleType()
-	{
-		return simpleType;
-	}
+    public final XMLType getSimpleType()
+    {
+        return simpleType;
+    }
 }

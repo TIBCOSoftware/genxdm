@@ -22,21 +22,21 @@ import org.genxdm.exceptions.PreCondition;
 @SuppressWarnings("serial")
 public final class SccIdentityConstraintKeyrefFieldsCardinalityException extends SccIdentityConstraintDefinitionException
 {
-	private final int m_constraintSize;
-	private QName m_referencedName;
-	private final int m_referencedFieldSize;
+    private final int m_constraintSize;
+    private QName m_referencedName;
+    private final int m_referencedFieldSize;
 
-	public SccIdentityConstraintKeyrefFieldsCardinalityException(final QName constraintName, final int constraintSize, final QName referencedName, final int referencedFieldSize)
-	{
-		super(constraintName, PART_KEYREF_FIELDS_CARDINALITY);
-		m_constraintSize = constraintSize;
-		m_referencedName = PreCondition.assertArgumentNotNull(referencedName, "referencedName");
-		m_referencedFieldSize = referencedFieldSize;
-	}
+    public SccIdentityConstraintKeyrefFieldsCardinalityException(final QName constraintName, final int constraintSize, final QName referencedName, final int referencedFieldSize)
+    {
+        super(constraintName, PART_KEYREF_FIELDS_CARDINALITY);
+        m_constraintSize = constraintSize;
+        m_referencedName = PreCondition.assertArgumentNotNull(referencedName, "referencedName");
+        m_referencedFieldSize = referencedFieldSize;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Mismatch between size of constraint fields (" + m_constraintSize + ") of the constraint, '" + getConstraintName() + "', and size of fields (" + m_referencedFieldSize + ") for the referenced constraint, '" + m_referencedName + "'.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Mismatch between size of constraint fields (" + m_constraintSize + ") of the constraint, '" + getConstraintName() + "', and size of fields (" + m_referencedFieldSize + ") for the referenced constraint, '" + m_referencedName + "'.";
+    }
 }

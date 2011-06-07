@@ -21,12 +21,12 @@ import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 
 public final class XMLLength extends XMLFacet
 {
-	public BigInteger minLength = null;
-	public BigInteger maxLength = null;
-	public boolean fixed = false;
+    public BigInteger minLength = null;
+    public BigInteger maxLength = null;
+    public boolean fixed = false;
 
-	public XMLLength(final XMLType type, final SrcFrozenLocation location)
-	{
-		super(type, location);
-	}
+    public XMLLength(final XMLType type, final SrcFrozenLocation location)
+    {
+        super(type, location);
+    }
 }

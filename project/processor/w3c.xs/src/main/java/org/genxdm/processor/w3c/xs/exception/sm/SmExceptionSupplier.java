@@ -19,5 +19,5 @@ import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
 public interface SmExceptionSupplier
 {
-	void setExceptionHandler(SchemaExceptionHandler handler);
+    void setExceptionHandler(SchemaExceptionHandler handler);
 }

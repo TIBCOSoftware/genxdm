@@ -20,21 +20,21 @@ import org.genxdm.exceptions.PreCondition;
 @SuppressWarnings("serial")
 public final class SrcPrefixNotFoundException extends SrcQNameInterpretationException
 {
-	private final String m_prefix;
+    private final String m_prefix;
 
-	public SrcPrefixNotFoundException(final String prefix)
-	{
-		super(PART_NAMESPACE_IN_SCOPE);
-		m_prefix = PreCondition.assertArgumentNotNull(prefix, "prefix");
-	}
+    public SrcPrefixNotFoundException(final String prefix)
+    {
+        super(PART_NAMESPACE_IN_SCOPE);
+        m_prefix = PreCondition.assertArgumentNotNull(prefix, "prefix");
+    }
 
-	public String getPrefix()
-	{
-		return m_prefix;
-	}
+    public String getPrefix()
+    {
+        return m_prefix;
+    }
 
-	public String getMessage()
-	{
-		return "The prefix, " + m_prefix + ", is not bound to a namespace";
-	}
+    public String getMessage()
+    {
+        return "The prefix, " + m_prefix + ", is not bound to a namespace";
+    }
 }

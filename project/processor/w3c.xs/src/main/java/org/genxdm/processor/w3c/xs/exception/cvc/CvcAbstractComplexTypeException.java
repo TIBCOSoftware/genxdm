@@ -25,29 +25,29 @@ import org.genxdm.xs.types.ComplexType;
 @SuppressWarnings("serial")
 public final class CvcAbstractComplexTypeException extends SmComplexTypeException
 {
-	private final ComplexType complexType;
+    private final ComplexType complexType;
 
-	public ComplexType getComplexType()
-	{
-		return complexType;
-	}
+    public ComplexType getComplexType()
+    {
+        return complexType;
+    }
 
-	public CvcAbstractComplexTypeException(final QName elementName, final ComplexType complexType, final LocationInSchema location)
-	{
-		super(PART_ABSTRACT_FALSE, elementName, location);
-		this.complexType = PreCondition.assertArgumentNotNull(complexType, "complexType");
-	}
+    public CvcAbstractComplexTypeException(final QName elementName, final ComplexType complexType, final LocationInSchema location)
+    {
+        super(PART_ABSTRACT_FALSE, elementName, location);
+        this.complexType = PreCondition.assertArgumentNotNull(complexType, "complexType");
+    }
 
-	public String getMessage()
-	{
-		final String localMessage = "Attempting to use an abstract complex type, '" + getComplexType() + "', with element '" + getElementName() + "'.";
+    public String getMessage()
+    {
+        final String localMessage = "Attempting to use an abstract complex type, '" + getComplexType() + "', with element '" + getElementName() + "'.";
 
-		final StringBuilder message = new StringBuilder();
-		message.append(getOutcome().getSection());
-		message.append(".");
-		message.append(getPartNumber());
-		message.append(": ");
-		message.append(localMessage);
-		return message.toString();
-	}
+        final StringBuilder message = new StringBuilder();
+        message.append(getOutcome().getSection());
+        message.append(".");
+        message.append(getPartNumber());
+        message.append(": ");
+        message.append(localMessage);
+        return message.toString();
+    }
 }

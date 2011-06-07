@@ -24,36 +24,36 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException extends SmComplexTypeException
 {
-	private final String m_text;
+    private final String m_text;
 
-	public CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException(final QName elementName, final String text, final LocationInSchema location)
-	{
-		super(PART_CONTENT_TYPE_ELEMENTONLY_AND_NON_WHITE_SPACE, elementName, location);
-		m_text = PreCondition.assertArgumentNotNull(text, "text");
-	}
+    public CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException(final QName elementName, final String text, final LocationInSchema location)
+    {
+        super(PART_CONTENT_TYPE_ELEMENTONLY_AND_NON_WHITE_SPACE, elementName, location);
+        m_text = PreCondition.assertArgumentNotNull(text, "text");
+    }
 
-	public String getText()
-	{
-		return m_text;
-	}
+    public String getText()
+    {
+        return m_text;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Unexpected non-whitespace text '" + m_text + "' in element-only content.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Unexpected non-whitespace text '" + m_text + "' in element-only content.";
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException)
-		{
-			final CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException other = (CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException)obj;
-			return m_text.equals(other.m_text);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException)
+        {
+            final CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException other = (CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException)obj;
+            return m_text.equals(other.m_text);
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

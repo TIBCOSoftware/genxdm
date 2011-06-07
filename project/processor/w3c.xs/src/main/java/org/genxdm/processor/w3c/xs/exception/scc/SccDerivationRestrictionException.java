@@ -26,25 +26,25 @@ import org.genxdm.xs.exceptions.SchemaException;
 @SuppressWarnings("serial")
 public abstract class SccDerivationRestrictionException extends ComponentConstraintException
 {
-	private final QName m_complexTypeName;
+    private final QName m_complexTypeName;
 
-	public static final String PART_BASE_TYPE_MUST_BE_COMPLEX_TYPE_AND_ALLOWED_BY_FINAL = "1";
-	public static final String PART_CONTENT_TYPE = "5";
+    public static final String PART_BASE_TYPE_MUST_BE_COMPLEX_TYPE_AND_ALLOWED_BY_FINAL = "1";
+    public static final String PART_CONTENT_TYPE = "5";
 
-	public SccDerivationRestrictionException(final String partNumber, final QName complexTypeName)
-	{
-		super(ValidationOutcome.SCC_Derivation_Valid_Extension, partNumber);
-		m_complexTypeName = PreCondition.assertArgumentNotNull(complexTypeName, "complexTypeName");
-	}
+    public SccDerivationRestrictionException(final String partNumber, final QName complexTypeName)
+    {
+        super(ValidationOutcome.SCC_Derivation_Valid_Extension, partNumber);
+        m_complexTypeName = PreCondition.assertArgumentNotNull(complexTypeName, "complexTypeName");
+    }
 
-	public SccDerivationRestrictionException(final String partNumber, final QName complexTypeName, final SchemaException cause)
-	{
-		super(ValidationOutcome.SCC_Derivation_Valid_Extension, partNumber, PreCondition.assertArgumentNotNull(cause, "cause"));
-		m_complexTypeName = PreCondition.assertArgumentNotNull(complexTypeName, "complexTypeName");
-	}
+    public SccDerivationRestrictionException(final String partNumber, final QName complexTypeName, final SchemaException cause)
+    {
+        super(ValidationOutcome.SCC_Derivation_Valid_Extension, partNumber, PreCondition.assertArgumentNotNull(cause, "cause"));
+        m_complexTypeName = PreCondition.assertArgumentNotNull(complexTypeName, "complexTypeName");
+    }
 
-	public QName getComplexTypeName()
-	{
-		return m_complexTypeName;
-	}
+    public QName getComplexTypeName()
+    {
+        return m_complexTypeName;
+    }
 }

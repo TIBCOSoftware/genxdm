@@ -26,55 +26,55 @@ import org.genxdm.xs.enums.DerivationMethod;
 
 public final class XMLElement extends XMLDeclaration implements XMLParticleTerm
 {
-	private final EnumSet<DerivationMethod> m_block = EnumSet.noneOf(DerivationMethod.class);
-	private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
-	private boolean m_isAbstract = false;
-	private boolean m_isNillable = false;
-	public XMLElement substitutionGroup;
-	private final LinkedList<XMLIdentityConstraint> m_identityConstraints = new LinkedList<XMLIdentityConstraint>();
+    private final EnumSet<DerivationMethod> m_block = EnumSet.noneOf(DerivationMethod.class);
+    private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
+    private boolean m_isAbstract = false;
+    private boolean m_isNillable = false;
+    public XMLElement substitutionGroup;
+    private final LinkedList<XMLIdentityConstraint> m_identityConstraints = new LinkedList<XMLIdentityConstraint>();
 
-	public XMLElement(final QName name, final XMLScope scope, final XMLTypeRef anyType, final SrcFrozenLocation location)
-	{
-		super(PreCondition.assertArgumentNotNull(name, "name"), scope, anyType, location);
-	}
+    public XMLElement(final QName name, final XMLScope scope, final XMLTypeRef anyType, final SrcFrozenLocation location)
+    {
+        super(PreCondition.assertArgumentNotNull(name, "name"), scope, anyType, location);
+    }
 
-	public XMLElement(final QName name, final XMLScope scope, final XMLTypeRef anyType)
-	{
-		super(PreCondition.assertArgumentNotNull(name, "name"), scope, anyType);
-	}
+    public XMLElement(final QName name, final XMLScope scope, final XMLTypeRef anyType)
+    {
+        super(PreCondition.assertArgumentNotNull(name, "name"), scope, anyType);
+    }
 
-	public EnumSet<DerivationMethod> getBlock()
-	{
-		return m_block;
-	}
+    public EnumSet<DerivationMethod> getBlock()
+    {
+        return m_block;
+    }
 
-	public EnumSet<DerivationMethod> getFinal()
-	{
-		return m_final;
-	}
+    public EnumSet<DerivationMethod> getFinal()
+    {
+        return m_final;
+    }
 
-	public boolean isAbstract()
-	{
-		return m_isAbstract;
-	}
+    public boolean isAbstract()
+    {
+        return m_isAbstract;
+    }
 
-	public void setAbstractFlag(final boolean isAbstract)
-	{
-		m_isAbstract = isAbstract;
-	}
+    public void setAbstractFlag(final boolean isAbstract)
+    {
+        m_isAbstract = isAbstract;
+    }
 
-	public boolean isNillable()
-	{
-		return m_isNillable;
-	}
+    public boolean isNillable()
+    {
+        return m_isNillable;
+    }
 
-	public void setNillableFlag(final boolean isNillable)
-	{
-		m_isNillable = isNillable;
-	}
+    public void setNillableFlag(final boolean isNillable)
+    {
+        m_isNillable = isNillable;
+    }
 
-	public LinkedList<XMLIdentityConstraint> getIdentityConstraints()
-	{
-		return m_identityConstraints;
-	}
+    public LinkedList<XMLIdentityConstraint> getIdentityConstraints()
+    {
+        return m_identityConstraints;
+    }
 }

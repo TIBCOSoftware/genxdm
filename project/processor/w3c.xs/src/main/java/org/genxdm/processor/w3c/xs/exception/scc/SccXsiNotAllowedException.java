@@ -41,22 +41,22 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 @SuppressWarnings("serial")
 public final class SccXsiNotAllowedException extends ComponentConstraintException
 {
-	private final QName m_attributeName;
+    private final QName m_attributeName;
 
-	public SccXsiNotAllowedException(final QName attributeName)
-	{
-		super(ValidationOutcome.SCC_xsi_Not_Allowed, ""/* no part number */);
-		m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
-	}
+    public SccXsiNotAllowedException(final QName attributeName)
+    {
+        super(ValidationOutcome.SCC_xsi_Not_Allowed, ""/* no part number */);
+        m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
+    }
 
-	public final QName getAttributeName()
-	{
-		return m_attributeName;
-	}
+    public final QName getAttributeName()
+    {
+        return m_attributeName;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The {target namespace} of the attribute declaration " + getAttributeName() + " must not match " + XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI + " (unless it is one of the four built-in declarations).";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The {target namespace} of the attribute declaration " + getAttributeName() + " must not match " + XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI + " (unless it is one of the four built-in declarations).";
+    }
 }

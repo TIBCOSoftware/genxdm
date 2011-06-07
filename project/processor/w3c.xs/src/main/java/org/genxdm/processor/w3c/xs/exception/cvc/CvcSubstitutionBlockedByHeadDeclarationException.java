@@ -24,18 +24,18 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcSubstitutionBlockedByHeadDeclarationException extends SmLocationException
 {
-	private final ElementDefinition m_name;
-	private final ElementDefinition m_substitutionGroup;
+    private final ElementDefinition m_name;
+    private final ElementDefinition m_substitutionGroup;
 
-	public CvcSubstitutionBlockedByHeadDeclarationException(final ElementDefinition elementDeclaration, final ElementDefinition substitutionGroup, final LocationInSchema location)
-	{
-		super(ValidationOutcome.SCC_Substitution_Group_OK_Transitive, "2.1", location);
-		m_name = PreCondition.assertArgumentNotNull(elementDeclaration, "name");
-		m_substitutionGroup = PreCondition.assertArgumentNotNull(substitutionGroup, "substitutionGroup");
-	}
+    public CvcSubstitutionBlockedByHeadDeclarationException(final ElementDefinition elementDeclaration, final ElementDefinition substitutionGroup, final LocationInSchema location)
+    {
+        super(ValidationOutcome.SCC_Substitution_Group_OK_Transitive, "2.1", location);
+        m_name = PreCondition.assertArgumentNotNull(elementDeclaration, "name");
+        m_substitutionGroup = PreCondition.assertArgumentNotNull(substitutionGroup, "substitutionGroup");
+    }
 
-	public String getMessage()
-	{
-		return "Substitution using element " + m_name + " is blocked by the declaration of the substitution group, " + m_substitutionGroup + ".";
-	}
+    public String getMessage()
+    {
+        return "Substitution using element " + m_name + " is blocked by the declaration of the substitution group, " + m_substitutionGroup + ".";
+    }
 }

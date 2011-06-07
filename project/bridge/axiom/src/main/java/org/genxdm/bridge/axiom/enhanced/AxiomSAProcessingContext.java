@@ -67,7 +67,7 @@ public final class AxiomSAProcessingContext
 	public AxiomSAProcessingContext(final AxiomProcessingContext context)
 	{
 	    this.context = PreCondition.assertNotNull(context, "context");
-		this.atomBridge = new XmlAtomBridge(this, new NameSource());
+		this.atomBridge = new XmlAtomBridge(this);
 		final SchemaTypeBridgeFactory cacheFactory = new SchemaTypeBridgeFactory();
 		cache = cacheFactory.newMetaBridge();
 		this.metaBridge = new MetaBridgeOnSchemaTypeBridgeAdapter(cache);

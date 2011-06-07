@@ -24,46 +24,46 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcUnexpectedAttributeException extends SmComplexTypeException
 {
-	private final QName attributeName;
+    private final QName attributeName;
 
-	public CvcUnexpectedAttributeException(final QName elementName, final QName attributeName, final LocationInSchema location)
-	{
-		super("?", elementName, location);
-		this.attributeName = PreCondition.assertArgumentNotNull(attributeName, "name");
-	}
+    public CvcUnexpectedAttributeException(final QName elementName, final QName attributeName, final LocationInSchema location)
+    {
+        super("?", elementName, location);
+        this.attributeName = PreCondition.assertArgumentNotNull(attributeName, "name");
+    }
 
-	public QName getAttributeName()
-	{
-		return attributeName;
-	}
+    public QName getAttributeName()
+    {
+        return attributeName;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Unexpected attribute '" + attributeName + "' on element '" + getElementName() + "'.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Unexpected attribute '" + attributeName + "' on element '" + getElementName() + "'.";
+    }
 
-	public String getPatternKey()
-	{
-		return "UnexpectedAttributeException";
-	}
+    public String getPatternKey()
+    {
+        return "UnexpectedAttributeException";
+    }
 
-	public Object[] getArguments()
-	{
-		return new Object[] { attributeName };
-	}
+    public Object[] getArguments()
+    {
+        return new Object[] { attributeName };
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof CvcUnexpectedAttributeException)
-		{
-			final CvcUnexpectedAttributeException other = (CvcUnexpectedAttributeException)obj;
-			return other.attributeName.equals(attributeName) && other.getElementName().equals(getElementName());
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof CvcUnexpectedAttributeException)
+        {
+            final CvcUnexpectedAttributeException other = (CvcUnexpectedAttributeException)obj;
+            return other.attributeName.equals(attributeName) && other.getElementName().equals(getElementName());
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

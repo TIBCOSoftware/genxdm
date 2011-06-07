@@ -24,18 +24,18 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public abstract class SrcSimpleTypeException extends SmLocationException
 {
-	public static final String PART_CONSTRAINTS = "1";
-	public static final String PART_RESTRICTION = "2";
-	public static final String PART_LIST = "3";
-	public static final String PART_UNION = "4";
+    public static final String PART_CONSTRAINTS = "1";
+    public static final String PART_RESTRICTION = "2";
+    public static final String PART_LIST = "3";
+    public static final String PART_UNION = "4";
 
-	public SrcSimpleTypeException(final String partNumber, final LocationInSchema location)
-	{
-		super(ValidationOutcome.SRC_SimpleType, partNumber, location);
-	}
+    public SrcSimpleTypeException(final String partNumber, final LocationInSchema location)
+    {
+        super(ValidationOutcome.SRC_SimpleType, partNumber, location);
+    }
 
-	public SrcSimpleTypeException(final String partNumber, final LocationInSchema location, final SchemaException cause)
-	{
-		super(ValidationOutcome.SRC_SimpleType, partNumber, location, PreCondition.assertArgumentNotNull(cause, "cause"));
-	}
+    public SrcSimpleTypeException(final String partNumber, final LocationInSchema location, final SchemaException cause)
+    {
+        super(ValidationOutcome.SRC_SimpleType, partNumber, location, PreCondition.assertArgumentNotNull(cause, "cause"));
+    }
 }

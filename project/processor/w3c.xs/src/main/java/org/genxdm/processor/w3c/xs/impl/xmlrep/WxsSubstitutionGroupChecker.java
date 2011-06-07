@@ -24,48 +24,48 @@ import javax.xml.namespace.QName;
 
 final class WxsSubstitutionGroupChecker
 {
-	public static  boolean detectCycles(final XMLElement element)
-	{
-		XMLElement current = element.substitutionGroup;
-		while (null != current)
-		{
-			if (equal(current.getName(), element.getName()))
-			{
-				return true;
-			}
-			current = current.substitutionGroup;
-		}
-		return false;
-	}
+    public static  boolean detectCycles(final XMLElement element)
+    {
+        XMLElement current = element.substitutionGroup;
+        while (null != current)
+        {
+            if (equal(current.getName(), element.getName()))
+            {
+                return true;
+            }
+            current = current.substitutionGroup;
+        }
+        return false;
+    }
 
-	public static  List<QName> computeCycles(final XMLElement element)
-	{
-		final List<QName> names = new LinkedList<QName>();
-		boolean detected = false;
+    public static  List<QName> computeCycles(final XMLElement element)
+    {
+        final List<QName> names = new LinkedList<QName>();
+        boolean detected = false;
 
-		XMLElement current = element.substitutionGroup;
-		while (null != current)
-		{
-			names.add(current.getName());
+        XMLElement current = element.substitutionGroup;
+        while (null != current)
+        {
+            names.add(current.getName());
 
-			if (equal(current.getName(), element.getName()))
-			{
-				detected = true;
-				break;
-			}
-			current = current.substitutionGroup;
-		}
+            if (equal(current.getName(), element.getName()))
+            {
+                detected = true;
+                break;
+            }
+            current = current.substitutionGroup;
+        }
 
-		if (!detected)
-		{
-			names.clear();
-		}
+        if (!detected)
+        {
+            names.clear();
+        }
 
-		return names;
-	}
+        return names;
+    }
 
-	private static boolean equal(final QName x, final QName y)
-	{
-		return (null == x) ? (null == y) : x.equals(y);
-	}
+    private static boolean equal(final QName x, final QName y)
+    {
+        return (null == x) ? (null == y) : x.equals(y);
+    }
 }
