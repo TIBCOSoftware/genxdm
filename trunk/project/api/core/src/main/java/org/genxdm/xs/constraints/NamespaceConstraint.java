@@ -22,7 +22,6 @@ import java.util.Set;
 import javax.xml.XMLConstants;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.names.NameSource;
 import org.genxdm.xs.exceptions.WildcardIntersectionException;
 import org.genxdm.xs.exceptions.WildcardIntersectionNotExpressibleException;
 import org.genxdm.xs.exceptions.WildcardUnionException;
@@ -75,9 +74,9 @@ public final class NamespaceConstraint
      * 
      * @param nameBridge
      */
-    public static NamespaceConstraint Any(final NameSource nameBridge)
+    public static NamespaceConstraint Any()
     {
-        return new NamespaceConstraint(nameBridge);
+        return new NamespaceConstraint();
     }
 
     private static boolean equals(final NamespaceConstraint one, final NamespaceConstraint two)
@@ -101,31 +100,31 @@ public final class NamespaceConstraint
     /**
      * Constructs a namespace constraint equivalent to not and a namespace.
      */
-    public static NamespaceConstraint exclude(final String namespace, final NameSource nameBridge)
+    public static NamespaceConstraint exclude(final String namespace)
     {
         PreCondition.assertArgumentNotNull(namespace, "namespace");
         if (namespace.equals(XMLConstants.NULL_NS_URI))
         {
-            return NotAbsent(nameBridge);
+            return NotAbsent();
         }
         else
         {
-            return new NamespaceConstraint(Mode.Exclude, namespace, nameBridge);
+            return new NamespaceConstraint(Mode.Exclude, namespace);
         }
     }
 
     /**
      * Constructs a namespace constraint equivalent to allowing a set of namespaces.
      */
-    public static NamespaceConstraint include(final Set<String> namespaces, final NameSource nameBridge)
+    public static NamespaceConstraint include(final Set<String> namespaces)
     {
         PreCondition.assertArgumentNotNull(namespaces, "namespaces");
         final HashSet<String> strings = new HashSet<String>();
         strings.addAll(namespaces);
-        return new NamespaceConstraint(Mode.Include, strings, nameBridge);
+        return new NamespaceConstraint(Mode.Include, strings);
     }
 
-    private static NamespaceConstraint intersectIncludeAndExclude(final NamespaceConstraint include, final NamespaceConstraint exclude, NameSource nameBridge)
+    private static NamespaceConstraint intersectIncludeAndExclude(final NamespaceConstraint include, final NamespaceConstraint exclude)
     {
         PreCondition.assertTrue(include.m_mode == Mode.Include, "include.mode == Include");
         PreCondition.assertTrue(exclude.m_mode == Mode.Exclude, "exclude.mode == Exclude");
@@ -138,7 +137,7 @@ public final class NamespaceConstraint
                 namespaces.add(x);
             }
         }
-        return new NamespaceConstraint(Mode.Include, namespaces, nameBridge);
+        return new NamespaceConstraint(Mode.Include, namespaces);
     }
 
     /**
@@ -165,7 +164,8 @@ public final class NamespaceConstraint
      * @param nameBridge
      * @return the NamespaceConstraint representing the intersection of one & two
      */
-    private static NamespaceConstraint intersection(final NamespaceConstraint one, final NamespaceConstraint two, final NameSource nameBridge) throws WildcardIntersectionNotExpressibleException
+    private static NamespaceConstraint intersection(final NamespaceConstraint one, final NamespaceConstraint two) 
+        throws WildcardIntersectionNotExpressibleException
     {
         PreCondition.assertArgumentNotNull(one, "one");
         PreCondition.assertArgumentNotNull(two, "two");
@@ -192,11 +192,11 @@ public final class NamespaceConstraint
                         }
                         case Exclude:
                         {
-                            if (one.m_namespaces.contains(nameBridge.empty()))
+                            if (one.m_namespaces.contains(""))
                             {
                                 return two;
                             }
-                            else if (two.m_namespaces.contains(nameBridge.empty()))
+                            else if (two.m_namespaces.contains(""))
                             {
                                 return one;
                             }
@@ -207,7 +207,7 @@ public final class NamespaceConstraint
                         }
                         case Include:
                         {
-                            return intersectIncludeAndExclude(two, one, nameBridge);
+                            return intersectIncludeAndExclude(two, one);
                         }
                         default:
                         {
@@ -225,11 +225,11 @@ public final class NamespaceConstraint
                         }
                         case Exclude:
                         {
-                            return intersectIncludeAndExclude(one, two, nameBridge);
+                            return intersectIncludeAndExclude(one, two);
                         }
                         case Include:
                         {
-                            return new NamespaceConstraint(Mode.Include, intersection(one.m_namespaces, two.m_namespaces), nameBridge);
+                            return new NamespaceConstraint(Mode.Include, intersection(one.m_namespaces, two.m_namespaces));
                         }
                         default:
                         {
@@ -245,7 +245,7 @@ public final class NamespaceConstraint
         }
     }
 
-    private static boolean isSubset(final NamespaceConstraint sub, final NamespaceConstraint sup, final NameSource nameBridge)
+    private static boolean isSubset(final NamespaceConstraint sub, final NamespaceConstraint sup)
     {
         PreCondition.assertArgumentNotNull(sub, "sub");
         PreCondition.assertArgumentNotNull(sup, "sup");
@@ -276,7 +276,7 @@ public final class NamespaceConstraint
             {
                 if (!sub.m_namespaces.containsAll(sup.m_namespaces))
                 {
-                    if (!sub.m_namespaces.contains(nameBridge.empty()))
+                    if (!sub.m_namespaces.contains(""))
                     {
                         return true;
                     }
@@ -289,9 +289,9 @@ public final class NamespaceConstraint
     /**
      * Internal Singleton for Not and Absent
      */
-    public static NamespaceConstraint NotAbsent(final NameSource nameBridge)
+    public static NamespaceConstraint NotAbsent()
     {
-        return new NamespaceConstraint(Mode.Exclude, nameBridge.empty(), nameBridge);
+        return new NamespaceConstraint(Mode.Exclude, "");
     }
 
     /**
@@ -315,7 +315,8 @@ public final class NamespaceConstraint
      * @param nameBridge
      * @return an NamespaceConstraint representing the union of one & two
      */
-    private static NamespaceConstraint union(final NamespaceConstraint one, final NamespaceConstraint two, final NameSource nameBridge) throws WildcardUnionException
+    private static NamespaceConstraint union(final NamespaceConstraint one, final NamespaceConstraint two) 
+        throws WildcardUnionException
     {
         PreCondition.assertArgumentNotNull(one, "one");
         PreCondition.assertArgumentNotNull(two, "two");
@@ -330,7 +331,7 @@ public final class NamespaceConstraint
             {
                 case Any:
                 {
-                    return Any(nameBridge);
+                    return Any();
                 }
                 case Exclude:
                 {
@@ -338,15 +339,15 @@ public final class NamespaceConstraint
                     {
                         case Any:
                         {
-                            return Any(nameBridge);
+                            return Any();
                         }
                         case Exclude:
                         {
-                            return NotAbsent(nameBridge);
+                            return NotAbsent();
                         }
                         case Include:
                         {
-                            return unionIncludeAndExclude(two, one, nameBridge);
+                            return unionIncludeAndExclude(two, one);
                         }
                         default:
                         {
@@ -360,15 +361,15 @@ public final class NamespaceConstraint
                     {
                         case Any:
                         {
-                            return Any(nameBridge);
+                            return Any();
                         }
                         case Exclude:
                         {
-                            return unionIncludeAndExclude(one, two, nameBridge);
+                            return unionIncludeAndExclude(one, two);
                         }
                         case Include:
                         {
-                            return new NamespaceConstraint(Mode.Include, union(one.m_namespaces, two.m_namespaces), nameBridge);
+                            return new NamespaceConstraint(Mode.Include, union(one.m_namespaces, two.m_namespaces));
                         }
                         default:
                         {
@@ -384,33 +385,34 @@ public final class NamespaceConstraint
         }
     }
 
-    private static NamespaceConstraint unionIncludeAndExclude(final NamespaceConstraint include, final NamespaceConstraint exclude, final NameSource nameBridge) throws WildcardUnionNotExpressibleException
+    private static NamespaceConstraint unionIncludeAndExclude(final NamespaceConstraint include, final NamespaceConstraint exclude) 
+        throws WildcardUnionNotExpressibleException
     {
         PreCondition.assertTrue(include.m_mode == Mode.Include, "include.mode == Include");
         PreCondition.assertTrue(exclude.m_mode == Mode.Exclude, "exclude.mode == Exclude");
 
-        final String NULL_NS_URI = nameBridge.empty();
+        final String NULL_NS_URI = "";
 
         if (exclude.m_namespaces.contains(NULL_NS_URI))
         {
             if (include.m_namespaces.contains(NULL_NS_URI))
             {
-                return Any(nameBridge);
+                return Any();
             }
             else
             {
-                return NotAbsent(nameBridge);
+                return NotAbsent();
             }
         }
         else if (include.m_namespaces.containsAll(exclude.m_namespaces))
         {
             if (include.m_namespaces.contains(NULL_NS_URI))
             {
-                return Any(nameBridge);
+                return Any();
             }
             else
             {
-                return NotAbsent(nameBridge);
+                return NotAbsent();
             }
         }
         else
@@ -428,32 +430,28 @@ public final class NamespaceConstraint
 
     private final Mode m_mode;
 
-    private final NameSource m_nameBridge;
-
     private final HashSet<String> m_namespaces;
 
     /**
      * Internal initializer for include or exclude and a set of namespaces. <br/>
      * Note that the namespaces argument is not copied.
      */
-    private NamespaceConstraint(final Mode mode, final HashSet<String> namespaces, final NameSource nameBridge)
+    private NamespaceConstraint(final Mode mode, final HashSet<String> namespaces)
     {
         // Limitation imposed by current specification.
         PreCondition.assertTrue(mode.isInclude(), "mode.isInclude");
 
         m_mode = mode;
         m_namespaces = namespaces;
-        m_nameBridge = nameBridge;
     }
 
     /**
      * Internal initializer for include or exclude and one namespace.
      */
-    private NamespaceConstraint(final Mode mode, final String namespace, final NameSource nameBridge)
+    private NamespaceConstraint(final Mode mode, final String namespace)
     {
         // Limitation imposed by current specification.
         PreCondition.assertTrue(mode.isExclude(), "mode.isExclude");
-        m_nameBridge = PreCondition.assertArgumentNotNull(nameBridge, "nameBridge");
 
         m_mode = mode;
         m_namespaces = new HashSet<String>();
@@ -463,11 +461,10 @@ public final class NamespaceConstraint
     /**
      * Internal initializer for ##any.
      */
-    private NamespaceConstraint(final NameSource nameBridge)
+    private NamespaceConstraint()
     {
         m_mode = Mode.Any;
         m_namespaces = new HashSet<String>();
-        m_nameBridge = nameBridge;
     }
 
     /**
@@ -540,7 +537,7 @@ public final class NamespaceConstraint
     public NamespaceConstraint intersection(final NamespaceConstraint other) throws WildcardIntersectionException
     {
         PreCondition.assertArgumentNotNull(other, "other");
-        return intersection(this, other, m_nameBridge);
+        return intersection(this, other);
     }
 
     /**
@@ -552,7 +549,7 @@ public final class NamespaceConstraint
      */
     public boolean isSubset(final NamespaceConstraint superSet)
     {
-        return isSubset(this, superSet, m_nameBridge);
+        return isSubset(this, superSet);
     }
 
     /**
@@ -565,6 +562,6 @@ public final class NamespaceConstraint
     public NamespaceConstraint union(final NamespaceConstraint other) throws WildcardUnionException
     {
         PreCondition.assertArgumentNotNull(other, "other");
-        return union(this, other, m_nameBridge);
+        return union(this, other);
     }
 }

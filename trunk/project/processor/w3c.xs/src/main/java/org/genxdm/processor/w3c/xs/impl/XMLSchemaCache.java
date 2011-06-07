@@ -26,7 +26,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateAttributeException;
 import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateAttributeGroupException;
 import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateElementException;
@@ -46,7 +45,6 @@ import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLType;
 import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLTypeRef;
 import org.genxdm.xs.constraints.IdentityConstraintKind;
 import org.genxdm.xs.exceptions.SchemaException;
-
 
 /**
  * Information collected as we incrementally parse a schema document. <br/>
@@ -83,7 +81,7 @@ public final class XMLSchemaCache
 	private final XMLTypeRef ANY_SIMPLE_TYPE;
 	private final XMLTypeRef ANY_TYPE;
 
-	public XMLSchemaCache(final NameSource nameBridge)
+	public XMLSchemaCache()
 	{
 		ANY_SIMPLE_TYPE = new XMLTypeRef(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anySimpleType"));
 		ANY_TYPE = new XMLTypeRef(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anyType"));
