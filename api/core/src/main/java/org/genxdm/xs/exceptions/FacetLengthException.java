@@ -25,10 +25,10 @@ import org.genxdm.xs.facets.Length;
 @SuppressWarnings("serial")
 public final class FacetLengthException extends FacetException
 {
-    private final Length<?> expectLength;
+    private final Length expectLength;
     private final int actualLength;
 
-    public FacetLengthException(final Length<?> expectLength, final int actualLength)
+    public FacetLengthException(final Length expectLength, final int actualLength)
     {
         this.expectLength = PreCondition.assertArgumentNotNull(expectLength, "expectLength");
         this.actualLength = actualLength;

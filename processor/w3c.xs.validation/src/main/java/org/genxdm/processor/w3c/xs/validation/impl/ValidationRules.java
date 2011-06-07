@@ -35,9 +35,9 @@ final class ValidationRules
 	 * If there is a fixed {value constraint} the element information item must have no element information item
 	 * children.
 	 */
-	public static <A> void checkValueConstraintAllowsElementChild(final ElementDefinition<A> elementDeclaration, final QName childName, final Locatable childLocatable, final SchemaExceptionHandler errors) throws AbortException
+	public static  void checkValueConstraintAllowsElementChild(final ElementDefinition elementDeclaration, final QName childName, final Locatable childLocatable, final SchemaExceptionHandler errors) throws AbortException
 	{
-		final ValueConstraint<A> valueConstraint = elementDeclaration.getValueConstraint();
+		final ValueConstraint valueConstraint = elementDeclaration.getValueConstraint();
 		if (null != valueConstraint)
 		{
 			switch (valueConstraint.getVariety())
@@ -63,16 +63,16 @@ final class ValidationRules
 	/**
 	 * If the data component has a "fixed" attribute, reports an error if there is a conflict with the validated value.
 	 */
-	public static <A> void checkValueConstraintForMixedContent(final ElementDefinition<A> elementDeclaration, final String initialValue, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
+	public static <A> void checkValueConstraintForMixedContent(final ElementDefinition elementDeclaration, final String initialValue, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
-		final ValueConstraint<A> valueConstraint = elementDeclaration.getValueConstraint();
+		final ValueConstraint valueConstraint = elementDeclaration.getValueConstraint();
 		if (null != valueConstraint)
 		{
 			switch (valueConstraint.getVariety())
 			{
 				case Fixed:
 				{
-					final String expectValue = atomBridge.getC14NString(valueConstraint.getValue());
+					final String expectValue = atomBridge.getC14NString(valueConstraint.getValue(atomBridge));
 
 					if (!expectValue.equals(initialValue))
 					{
@@ -104,7 +104,7 @@ final class ValidationRules
 	 * @param errors
 	 *            The exception handler.
 	 */
-	public static <A, T> void checkComplexTypeNotAbstract(final ComplexType<A> elementType, final QName elementName, final SchemaExceptionHandler errors) throws AbortException
+	public static void checkComplexTypeNotAbstract(final ComplexType elementType, final QName elementName, final SchemaExceptionHandler errors) throws AbortException
 	{
 		if (null != elementType && elementType.isAbstract())
 		{

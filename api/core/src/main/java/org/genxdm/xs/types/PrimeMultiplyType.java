@@ -18,9 +18,8 @@ package org.genxdm.xs.types;
 /**
  * A multiplication type where the argument type is known to be a prime type.
  * 
- * @param <A> The atom handle.
  */
-public interface PrimeMultiplyType<A> extends PrimeType<A>, MultiplyType<A>
+public interface PrimeMultiplyType extends PrimeType, MultiplyType
 {
-    PrimeType<A> getArgument();
+    PrimeType getArgument();
 }

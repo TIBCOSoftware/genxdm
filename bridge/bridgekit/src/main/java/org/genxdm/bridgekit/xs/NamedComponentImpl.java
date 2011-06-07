@@ -21,7 +21,7 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.components.SchemaComponent;
 import org.genxdm.xs.enums.ScopeExtent;
 
-abstract class NamedComponentImpl<A> extends LockableImpl implements SchemaComponent<A>
+abstract class NamedComponentImpl extends LockableImpl implements SchemaComponent
 {
 	private final boolean isAnonymous;
 	private final QName name;

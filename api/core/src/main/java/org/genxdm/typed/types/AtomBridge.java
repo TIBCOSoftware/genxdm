@@ -83,7 +83,7 @@ public interface AtomBridge<A>
      * @throws GxmlAtomCastException
      *             if a cast does not exist between the two types or fails because of incompatible data.
      */
-    A castAs(A sourceAtom, QName targetType, CastingContext<A> castingContext) throws GxmlAtomCastException;
+    A castAs(A sourceAtom, QName targetType, CastingContext castingContext) throws GxmlAtomCastException;
 
     /**
      * Performs the casting of one atomic value to another.
@@ -98,7 +98,7 @@ public interface AtomBridge<A>
      * @throws GxmlAtomCastException
      *             if a cast does not exist between the two types or fails because of incompatible data.
      */
-    A castAs(A sourceAtom, NativeType targetType, CastingContext<A> castingContext) throws GxmlAtomCastException;
+    A castAs(A sourceAtom, NativeType targetType, CastingContext castingContext) throws GxmlAtomCastException;
 
     /**
      * Compile the atomic value from the lexical representation. This method is typically used for validation.

@@ -18,12 +18,12 @@ package org.genxdm.processor.w3c.xs.impl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.resolve.PrefixResolver;
 
-final class XMLEnumeration<A> extends XMLFacet<A>
+final class XMLEnumeration extends XMLFacet
 {
 	private String value;
 	private PrefixResolver snapshot;
 
-	public XMLEnumeration(final XMLType<A> simpleType, final SrcFrozenLocation location)
+	public XMLEnumeration(final XMLType simpleType, final SrcFrozenLocation location)
 	{
 		super(simpleType, location);
 	}

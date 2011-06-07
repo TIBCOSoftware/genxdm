@@ -28,69 +28,69 @@ import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.components.ParticleTerm;
 import org.genxdm.xs.components.SchemaWildcard;
 
-final class ContentModelExpression<A> implements ValidationExpr<A, ParticleTerm<A>>
+final class ContentModelExpression implements ValidationExpr
 {
-	private static <A> void compile(final SchemaParticle<A> particle, final ArrayList<ValidationExpr<A, ParticleTerm<A>>> subTerms)
+	private static  void compile(final SchemaParticle particle, final ArrayList<ValidationExpr> subTerms)
 	{
-		final ParticleTerm<A> term = particle.getTerm();
+		final ParticleTerm term = particle.getTerm();
 
-		if (term instanceof ElementDefinition<?>)
+		if (term instanceof ElementDefinition)
 		{
-			final ElementDefinition<A> element = (ElementDefinition<A>)term;
+			final ElementDefinition element = (ElementDefinition)term;
 			if (element.hasSubstitutionGroupMembers())
 			{
 				// Build a set of substitution element choices (which includes the original element).
-				final Stack<ElementDefinition<A>> stack = new Stack<ElementDefinition<A>>();
+				final Stack<ElementDefinition> stack = new Stack<ElementDefinition>();
 				stack.push(element);
-				final HashSet<ElementDefinition<A>> choices = new HashSet<ElementDefinition<A>>();
+				final HashSet<ElementDefinition> choices = new HashSet<ElementDefinition>();
 				while (!stack.isEmpty())
 				{
-					final ElementDefinition<A> popped = stack.pop();
+					final ElementDefinition popped = stack.pop();
 
 					if (!popped.isAbstract())
 					{
 						choices.add(popped);
 					}
 
-					for (final ElementDefinition<A> substitution : popped.getSubstitutionGroupMembers())
+					for (final ElementDefinition substitution : popped.getSubstitutionGroupMembers())
 					{
 						stack.push(substitution);
 					}
 				}
 				if (particle.isMaxOccursUnbounded())
 				{
-					subTerms.add(new SubstitutionGroupExpression<A>(particle.getMinOccurs(), choices));
+					subTerms.add(new SubstitutionGroupExpression(particle.getMinOccurs(), choices));
 				}
 				else
 				{
-					subTerms.add(new SubstitutionGroupExpression<A>(particle.getMinOccurs(), particle.getMaxOccurs(), choices));
+					subTerms.add(new SubstitutionGroupExpression(particle.getMinOccurs(), particle.getMaxOccurs(), choices));
 				}
 			}
 			else
 			{
 				if (particle.isMaxOccursUnbounded())
 				{
-					subTerms.add(new ParticleElementExpression<A>(particle.getMinOccurs(), element));
+					subTerms.add(new ParticleElementExpression(particle.getMinOccurs(), element));
 				}
 				else
 				{
-					subTerms.add(new ParticleElementExpression<A>(particle.getMinOccurs(), particle.getMaxOccurs(), element));
+					subTerms.add(new ParticleElementExpression(particle.getMinOccurs(), particle.getMaxOccurs(), element));
 				}
 			}
 		}
-		else if (term instanceof AttributeDefinition<?>)
+		else if (term instanceof AttributeDefinition)
 		{
 			throw new AssertionError(term);
 		}
-		else if (term instanceof ModelGroup<?>)
+		else if (term instanceof ModelGroup)
 		{
 			throw new RuntimeException();
-			// subTerms.add(new ModelGroupExpression<A>(particle, (ModelGroup<A>)term));
+			// subTerms.add(new ModelGroupExpression(particle, (ModelGroup)term));
 		}
-		else if (term instanceof SchemaWildcard<?>)
+		else if (term instanceof SchemaWildcard)
 		{
 			throw new RuntimeException();
-			// subTerms.add(new ParticleWildcardExpression<A>(particle, (SchemaWildcard<A>)term));
+			// subTerms.add(new ParticleWildcardExpression(particle, (SchemaWildcard)term));
 		}
 		else
 		{
@@ -98,34 +98,34 @@ final class ContentModelExpression<A> implements ValidationExpr<A, ParticleTerm<
 		}
 	}
 
-	private static <A> Iterable<ValidationExpr<A, ParticleTerm<A>>> compileSubTerms(final SchemaParticle<A> particle)
+	private static  Iterable<ValidationExpr> compileSubTerms(final SchemaParticle particle)
 	{
-		final ArrayList<ValidationExpr<A, ParticleTerm<A>>> subTerms = new ArrayList<ValidationExpr<A, ParticleTerm<A>>>();
+		final ArrayList<ValidationExpr> subTerms = new ArrayList<ValidationExpr>();
 		compile(particle, subTerms);
 		return subTerms;
 	}
 
-	private final SchemaParticle<A> m_particle;
+	private final SchemaParticle m_particle;
 
-	private final Iterable<ValidationExpr<A, ParticleTerm<A>>> m_subTerms;
+	private final Iterable<ValidationExpr> m_subTerms;
 
-	public ContentModelExpression(final SchemaParticle<A> particle)
+	public ContentModelExpression(final SchemaParticle particle)
 	{
 		m_particle = PreCondition.assertArgumentNotNull(particle, "particle");
 		m_subTerms = compileSubTerms(particle);
 	}
 
-	public ParticleTerm<A> getParticleTerm()
+	public ParticleTerm getParticleTerm()
 	{
 		return m_particle.getTerm();
 	}
 
-	public Iterable<ValidationExpr<A, ParticleTerm<A>>> getSubTerms()
+	public Iterable<ValidationExpr> getSubTerms()
 	{
 		return m_subTerms;
 	}
 
-	public boolean intersects(final ValidationExpr<A, ParticleTerm<A>> other)
+	public boolean intersects(final ValidationExpr other)
 	{
 		throw new RuntimeException();
 	}

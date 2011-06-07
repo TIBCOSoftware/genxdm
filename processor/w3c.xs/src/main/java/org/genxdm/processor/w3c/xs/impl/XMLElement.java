@@ -23,21 +23,21 @@ import javax.xml.namespace.QName;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.enums.DerivationMethod;
 
-final class XMLElement<A> extends XMLDeclaration<A> implements XMLParticleTerm<A>
+final class XMLElement extends XMLDeclaration implements XMLParticleTerm
 {
 	private final EnumSet<DerivationMethod> m_block = EnumSet.noneOf(DerivationMethod.class);
 	private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
 	private boolean m_isAbstract = false;
 	private boolean m_isNillable = false;
-	public XMLElement<A> substitutionGroup;
-	private final LinkedList<XMLIdentityConstraint<A>> m_identityConstraints = new LinkedList<XMLIdentityConstraint<A>>();
+	public XMLElement substitutionGroup;
+	private final LinkedList<XMLIdentityConstraint> m_identityConstraints = new LinkedList<XMLIdentityConstraint>();
 
-	public XMLElement(final QName name, final XMLScope<A> scope, final XMLTypeRef<A> anyType, final SrcFrozenLocation location)
+	public XMLElement(final QName name, final XMLScope scope, final XMLTypeRef anyType, final SrcFrozenLocation location)
 	{
 		super(PreCondition.assertArgumentNotNull(name, "name"), scope, anyType, location);
 	}
 
-	public XMLElement(final QName name, final XMLScope<A> scope, final XMLTypeRef<A> anyType)
+	public XMLElement(final QName name, final XMLScope scope, final XMLTypeRef anyType)
 	{
 		super(PreCondition.assertArgumentNotNull(name, "name"), scope, anyType);
 	}
@@ -72,7 +72,7 @@ final class XMLElement<A> extends XMLDeclaration<A> implements XMLParticleTerm<A
 		m_isNillable = isNillable;
 	}
 
-	public LinkedList<XMLIdentityConstraint<A>> getIdentityConstraints()
+	public LinkedList<XMLIdentityConstraint> getIdentityConstraints()
 	{
 		return m_identityConstraints;
 	}

@@ -27,7 +27,7 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public abstract class CvcElementException extends SmLocationException
 {
-	private final ElementDefinition<?> elementDeclaration;
+	private final ElementDefinition elementDeclaration;
 
 	public static final String PART_ABSTRACT = "2";
 	public static final String PART_NOT_NILLABLE = "3.1";
@@ -39,19 +39,19 @@ public abstract class CvcElementException extends SmLocationException
 	public static final String PART_VALUE_CONSTRAINT_MIXED = "5.2.2.2.1";
 	public static final String PART_VALUE_CONSTRAINT_SIMPLE = "5.2.2.2.2";
 
-	public CvcElementException(final String partNumber, final ElementDefinition<?> elementDeclaration, final LocationInSchema location)
+	public CvcElementException(final String partNumber, final ElementDefinition elementDeclaration, final LocationInSchema location)
 	{
 		super(ValidationOutcome.CVC_Element_Locally_Valid, partNumber, location);
 		this.elementDeclaration = PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration");
 	}
 
-	public CvcElementException(final String partNumber, final ElementDefinition<?> elementDeclaration, final LocationInSchema location, final ComponentConstraintException cause)
+	public CvcElementException(final String partNumber, final ElementDefinition elementDeclaration, final LocationInSchema location, final ComponentConstraintException cause)
 	{
 		super(ValidationOutcome.CVC_Element_Locally_Valid, partNumber, location, cause);
 		this.elementDeclaration = PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration");
 	}
 
-	public final ElementDefinition<?> getElementDeclaration()
+	public final ElementDefinition getElementDeclaration()
 	{
 		return elementDeclaration;
 	}

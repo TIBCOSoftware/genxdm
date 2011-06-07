@@ -24,19 +24,19 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 
-final class XMLTypeHierarchyComparator<A> implements Comparator<XMLType<A>>
+final class XMLTypeHierarchyComparator implements Comparator<XMLType>
 {
-	private final XMLSchemaCache<A> m_cache;
+	private final XMLSchemaCache m_cache;
 	private final HashMap<QName, HashSet<QName>> m_targets = new HashMap<QName, HashSet<QName>>();
 	private final boolean m_reverse;
 
-	public XMLTypeHierarchyComparator(final XMLSchemaCache<A> cache, boolean reverse)
+	public XMLTypeHierarchyComparator(final XMLSchemaCache cache, boolean reverse)
 	{
 		m_cache = PreCondition.assertArgumentNotNull(cache, "cache");
 		m_reverse = reverse;
 	}
 
-	public int compare(final XMLType<A> t1, final XMLType<A> t2)
+	public int compare(final XMLType t1, final XMLType t2)
 	{
 		if (t1 == t2 || t1.getName().equals(t2.getName()))
 		{
@@ -69,14 +69,14 @@ final class XMLTypeHierarchyComparator<A> implements Comparator<XMLType<A>>
 	/**
 	 * Does t1 reference t2?
 	 */
-	private boolean references(final XMLType<A> t1, final XMLType<A> t2)
+	private boolean references(final XMLType t1, final XMLType t2)
 	{
 		final HashSet<QName> targets = computeReferences(t1);
 
 		return targets.contains(t2.getName());
 	}
 
-	private HashSet<QName> computeReferences(final XMLType<A> type)
+	private HashSet<QName> computeReferences(final XMLType type)
 	{
 		if (m_targets.containsKey(type.getName()))
 		{
@@ -85,9 +85,9 @@ final class XMLTypeHierarchyComparator<A> implements Comparator<XMLType<A>>
 		else
 		{
 			final HashSet<QName> targets = new HashSet<QName>();
-			final Stack<XMLType<A>> stack = new Stack<XMLType<A>>();
+			final Stack<XMLType> stack = new Stack<XMLType>();
 			{
-				final XMLTypeRef<A> baseType = type.getBaseRef();
+				final XMLTypeRef baseType = type.getBaseRef();
 				if (baseType.isGlobal())
 				{
 					final QName baseName = baseType.getName();
@@ -104,11 +104,11 @@ final class XMLTypeHierarchyComparator<A> implements Comparator<XMLType<A>>
 
 			while (!stack.isEmpty())
 			{
-				final XMLType<A> popped = stack.pop();
+				final XMLType popped = stack.pop();
 
 				targets.add(popped.getName());
 
-				final XMLTypeRef<A> baseType = popped.getBaseRef();
+				final XMLTypeRef baseType = popped.getBaseRef();
 				if (baseType.isGlobal())
 				{
 					final QName baseName = baseType.getName();

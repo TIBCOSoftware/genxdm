@@ -52,7 +52,7 @@ public class TypedXmlNodeBuilder
     {
         flushCatch();
         depth++;
-        Type<XmlAtom> stype = context.getTypeDefinition(type);
+        Type stype = context.getTypeDefinition(type);
         if (current != null)
         {
             final XmlAttributeNode attribute = factory.createAttribute(namespaceURI, localName, prefix, data, stype);
@@ -84,7 +84,7 @@ public class TypedXmlNodeBuilder
     {
         flushCatch();
         depth++;
-        Type<XmlAtom> stype = context.getTypeDefinition(type);
+        Type stype = context.getTypeDefinition(type);
         if (current != null)
         {
             final XmlElementNode element = factory.createElement(namespaceURI, localName, prefix, stype);

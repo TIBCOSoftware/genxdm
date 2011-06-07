@@ -17,14 +17,14 @@ package org.genxdm.processor.w3c.xs.impl;
 
 import org.genxdm.exceptions.PreCondition;
 
-final class XMLScope<A>
+final class XMLScope
 {
 	private final boolean m_isGlobal;
-	private final XMLType<A> m_type;
-	private final XMLAttribute<A> m_attribute;
-	private final XMLElement<A> m_element;
-	private final XMLModelGroup<A> m_group;
-	private final XMLAttributeGroup<A> m_attributeGroup;
+	private final XMLType m_type;
+	private final XMLAttribute m_attribute;
+	private final XMLElement m_element;
+	private final XMLModelGroup m_group;
+	private final XMLAttributeGroup m_attributeGroup;
 
 	// public static final XMLScope<?, ?> Global = new XMLScope<Object, Object>();
 
@@ -38,7 +38,7 @@ final class XMLScope<A>
 		m_attributeGroup = null;
 	}
 
-	public XMLScope(final XMLType<A> type)
+	public XMLScope(final XMLType type)
 	{
 		m_isGlobal = false;
 		m_type = PreCondition.assertArgumentNotNull(type);
@@ -48,7 +48,7 @@ final class XMLScope<A>
 		m_attributeGroup = null;
 	}
 
-	public XMLScope(final XMLAttribute<A> attribute)
+	public XMLScope(final XMLAttribute attribute)
 	{
 		m_isGlobal = false;
 		m_type = null;
@@ -58,7 +58,7 @@ final class XMLScope<A>
 		m_attributeGroup = null;
 	}
 
-	public XMLScope(final XMLElement<A> element)
+	public XMLScope(final XMLElement element)
 	{
 		m_isGlobal = false;
 		m_type = null;
@@ -68,7 +68,7 @@ final class XMLScope<A>
 		m_attributeGroup = null;
 	}
 
-	public XMLScope(final XMLModelGroup<A> group)
+	public XMLScope(final XMLModelGroup group)
 	{
 		m_isGlobal = false;
 		m_type = null;
@@ -78,7 +78,7 @@ final class XMLScope<A>
 		m_attributeGroup = null;
 	}
 
-	public XMLScope(final XMLAttributeGroup<A> attributeGroup)
+	public XMLScope(final XMLAttributeGroup attributeGroup)
 	{
 		m_isGlobal = false;
 		m_type = null;
@@ -98,27 +98,27 @@ final class XMLScope<A>
 		return !m_isGlobal;
 	}
 
-	public XMLType<A> getType()
+	public XMLType getType()
 	{
 		return m_type;
 	}
 
-	public XMLAttribute<A> getAttribute()
+	public XMLAttribute getAttribute()
 	{
 		return m_attribute;
 	}
 
-	public XMLElement<A> getElement()
+	public XMLElement getElement()
 	{
 		return m_element;
 	}
 
-	public XMLModelGroup<A> getModelGroup()
+	public XMLModelGroup getModelGroup()
 	{
 		return m_group;
 	}
 
-	public XMLAttributeGroup<A> getAttributeGroup()
+	public XMLAttributeGroup getAttributeGroup()
 	{
 		return m_attributeGroup;
 	}

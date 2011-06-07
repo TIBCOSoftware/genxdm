@@ -18,10 +18,8 @@ package org.genxdm.xs.facets;
 /**
  * The xs:maxLength facet.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface MaxLength<A> extends Facet<A>
+public interface MaxLength extends Facet
 {
     /**
      * Returns the maximum length allowed for a datatype.

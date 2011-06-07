@@ -22,9 +22,9 @@ import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class ZInterleaveType<A> implements InterleaveType<A>
+final class ZInterleaveType implements InterleaveType
 {
-	public static <A> SequenceType<A> interleave(final SequenceType<A> lhs, final SequenceType<A> rhs)
+	public static  SequenceType interleave(final SequenceType lhs, final SequenceType rhs)
 	{
 		PreCondition.assertArgumentNotNull(lhs, "lhs");
 		PreCondition.assertArgumentNotNull(rhs, "rhs");
@@ -42,35 +42,35 @@ final class ZInterleaveType<A> implements InterleaveType<A>
 		}
 		else
 		{
-			return new ZInterleaveType<A>(lhs, rhs);
+			return new ZInterleaveType(lhs, rhs);
 		}
 	}
-	private final SequenceType<A> m_lhs;
+	private final SequenceType m_lhs;
 
-	private final SequenceType<A> m_rhs;
+	private final SequenceType m_rhs;
 
-	private ZInterleaveType(final SequenceType<A> lhs, final SequenceType<A> rhs)
+	private ZInterleaveType(final SequenceType lhs, final SequenceType rhs)
 	{
 		m_lhs = PreCondition.assertArgumentNotNull(lhs);
 		m_rhs = PreCondition.assertArgumentNotNull(rhs);
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public SequenceType<A> getLHS()
+	public SequenceType getLHS()
 	{
 		return m_lhs;
 	}
 
-	public SequenceType<A> getRHS()
+	public SequenceType getRHS()
 	{
 		return m_rhs;
 	}
 
-	public PrimeType<A> prime()
+	public PrimeType prime()
 	{
 		return ZPrimeChoiceType.choice(m_lhs.prime(), m_rhs.prime());
 	}

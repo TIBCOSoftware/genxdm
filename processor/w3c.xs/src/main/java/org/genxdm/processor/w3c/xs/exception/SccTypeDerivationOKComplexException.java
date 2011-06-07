@@ -28,8 +28,8 @@ import org.genxdm.xs.types.Type;
 @SuppressWarnings("serial")
 public abstract class SccTypeDerivationOKComplexException extends ComponentConstraintException
 {
-	private final Type<?> derivedType;
-	private final Type<?> m_baseName;
+	private final Type derivedType;
+	private final Type m_baseName;
 	private final Set<DerivationMethod> m_subset;
 
 	public static final String PART_METHOD = "1";
@@ -38,7 +38,7 @@ public abstract class SccTypeDerivationOKComplexException extends ComponentConst
 	public static final String PART_BASE_COMPLEX = "2.3.2.1";
 	public static final String PART_BASE_SIMPLE = "2.3.2.2";
 
-	public SccTypeDerivationOKComplexException(final String partNumber, final Type<?> derivedType, final Type<?> baseName, final Set<DerivationMethod> subset)
+	public SccTypeDerivationOKComplexException(final String partNumber, final Type derivedType, final Type baseName, final Set<DerivationMethod> subset)
 	{
 		super(ValidationOutcome.SCC_Type_Derivation_OK_Complex, partNumber);
 		this.derivedType = PreCondition.assertArgumentNotNull(derivedType, "derivedType");
@@ -46,7 +46,7 @@ public abstract class SccTypeDerivationOKComplexException extends ComponentConst
 		this.m_subset = PreCondition.assertArgumentNotNull(subset, "subset");
 	}
 
-	public SccTypeDerivationOKComplexException(final String partNumber, final Type<?> derivedType, final Type<?> baseName, final Set<DerivationMethod> subset, final ComponentConstraintException cause)
+	public SccTypeDerivationOKComplexException(final String partNumber, final Type derivedType, final Type baseName, final Set<DerivationMethod> subset, final ComponentConstraintException cause)
 	{
 		super(ValidationOutcome.SCC_Type_Derivation_OK_Complex, partNumber, cause);
 		this.derivedType = PreCondition.assertArgumentNotNull(derivedType, "derivedType");
@@ -54,12 +54,12 @@ public abstract class SccTypeDerivationOKComplexException extends ComponentConst
 		this.m_subset = PreCondition.assertArgumentNotNull(subset, "subset");
 	}
 
-	public final Type<?> getDerivedType()
+	public final Type getDerivedType()
 	{
 		return derivedType;
 	}
 
-	public final Type<?> getBaseName()
+	public final Type getBaseName()
 	{
 		return m_baseName;
 	}

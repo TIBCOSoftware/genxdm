@@ -26,16 +26,16 @@ import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.enums.ScopeExtent;
 
-public final class ModelGroupImpl<A> extends NamedComponentImpl<A> implements ModelGroup<A>
+public final class ModelGroupImpl extends NamedComponentImpl implements ModelGroup
 {
 	private final ModelGroup.SmCompositor compositor;
-	private final List<SchemaParticle<A>> particles;
+	private final List<SchemaParticle> particles;
 
-	public ModelGroupImpl(final ModelGroup.SmCompositor compositor, final List<? extends SchemaParticle<A>> particles, final QName name, final boolean isAnonymous, final ScopeExtent scope)
+	public ModelGroupImpl(final ModelGroup.SmCompositor compositor, final List<? extends SchemaParticle> particles, final QName name, final boolean isAnonymous, final ScopeExtent scope)
 	{
 		super(name, isAnonymous, scope);
 		this.compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
-		this.particles = Collections.unmodifiableList(new ArrayList<SchemaParticle<A>>(particles));
+		this.particles = Collections.unmodifiableList(new ArrayList<SchemaParticle>(particles));
 	}
 
 	public SmCompositor getCompositor()
@@ -43,7 +43,7 @@ public final class ModelGroupImpl<A> extends NamedComponentImpl<A> implements Mo
 		return compositor;
 	}
 
-	public List<SchemaParticle<A>> getParticles()
+	public List<SchemaParticle> getParticles()
 	{
 		return particles;
 	}

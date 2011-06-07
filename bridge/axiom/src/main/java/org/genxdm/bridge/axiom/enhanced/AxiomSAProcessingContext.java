@@ -68,9 +68,9 @@ public final class AxiomSAProcessingContext
 	{
 	    this.context = PreCondition.assertNotNull(context, "context");
 		this.atomBridge = new XmlAtomBridge(this, new NameSource());
-		final SchemaTypeBridgeFactory<XmlAtom> cacheFactory = new SchemaTypeBridgeFactory<XmlAtom>(atomBridge);
+		final SchemaTypeBridgeFactory cacheFactory = new SchemaTypeBridgeFactory();
 		cache = cacheFactory.newMetaBridge();
-		this.metaBridge = new MetaBridgeOnSchemaTypeBridgeAdapter<XmlAtom>(cache, atomBridge);
+		this.metaBridge = new MetaBridgeOnSchemaTypeBridgeAdapter(cache);
 		EnumSet<CoreModelDecoration> delegations = EnumSet.noneOf(CoreModelDecoration.class);
 		delegations.add(CoreModelDecoration.CHILD_AXIS);
 		delegations.add(CoreModelDecoration.CHILD_ELEMENTS);
@@ -88,49 +88,49 @@ public final class AxiomSAProcessingContext
 	    return null;
 	}
 	
-	public void declareAttribute(final AttributeDefinition<XmlAtom> attribute)
+	public void declareAttribute(final AttributeDefinition attribute)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 	
-	public void declareElement(final ElementDefinition<XmlAtom> element)
+	public void declareElement(final ElementDefinition element)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 	
-	public void declareNotation(NotationDefinition<XmlAtom> notation)
+	public void declareNotation(NotationDefinition notation)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 	
-	public void defineAttributeGroup(AttributeGroupDefinition<XmlAtom> attributeGroup)
+	public void defineAttributeGroup(AttributeGroupDefinition attributeGroup)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 	
-	public void defineComplexType(final ComplexType<XmlAtom> complexType)
+	public void defineComplexType(final ComplexType complexType)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 	
-	public void defineIdentityConstraint(IdentityConstraint<XmlAtom> identityConstraint)
+	public void defineIdentityConstraint(IdentityConstraint identityConstraint)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public void defineModelGroup(ModelGroup<XmlAtom> modelGroup)
+	public void defineModelGroup(ModelGroup modelGroup)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public void defineSimpleType(final SimpleType<XmlAtom> simpleType)
+	public void defineSimpleType(final SimpleType simpleType)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -147,91 +147,91 @@ public final class AxiomSAProcessingContext
 		return atomBridge;
 	}
 
-	public AtomicType<XmlAtom> getAtomicType(QName name)
+	public AtomicType getAtomicType(QName name)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public AtomicType<XmlAtom> getAtomicType(NativeType name)
+	public AtomicType getAtomicType(NativeType name)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public AtomicUrType<XmlAtom> getAtomicUrType()
+	public AtomicUrType getAtomicUrType()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public AttributeDefinition<XmlAtom> getAttributeDeclaration(QName attributeName)
+	public AttributeDefinition getAttributeDeclaration(QName attributeName)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public AttributeGroupDefinition<XmlAtom> getAttributeGroup(QName name)
+	public AttributeGroupDefinition getAttributeGroup(QName name)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Iterable<AttributeGroupDefinition<XmlAtom>> getAttributeGroups()
+	public Iterable<AttributeGroupDefinition> getAttributeGroups()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 	
-	public Iterable<AttributeDefinition<XmlAtom>> getAttributes()
+	public Iterable<AttributeDefinition> getAttributes()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public ComplexType<XmlAtom> getComplexType(QName name)
+	public ComplexType getComplexType(QName name)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Iterable<ComplexType<XmlAtom>> getComplexTypes()
+	public Iterable<ComplexType> getComplexTypes()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public ComplexUrType<XmlAtom> getComplexUrType()
+	public ComplexUrType getComplexUrType()
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public ElementDefinition<XmlAtom> getElementDeclaration(QName elementName)
+	public ElementDefinition getElementDeclaration(QName elementName)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public Iterable<ElementDefinition<XmlAtom>> getElements()
+	public Iterable<ElementDefinition> getElements()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public IdentityConstraint<XmlAtom> getIdentityConstraint(QName name)
+	public IdentityConstraint getIdentityConstraint(QName name)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Iterable<IdentityConstraint<XmlAtom>> getIdentityConstraints()
+	public Iterable<IdentityConstraint> getIdentityConstraints()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public MetaBridge<XmlAtom> getMetaBridge()
+	public MetaBridge getMetaBridge()
 	{
 		return metaBridge;
 	}
@@ -241,13 +241,13 @@ public final class AxiomSAProcessingContext
 		return model;
 	}
 
-	public ModelGroup<XmlAtom> getModelGroup(QName name)
+	public ModelGroup getModelGroup(QName name)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Iterable<ModelGroup<XmlAtom>> getModelGroups()
+	public Iterable<ModelGroup> getModelGroups()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -259,13 +259,13 @@ public final class AxiomSAProcessingContext
 		throw new AssertionError("TODO");
 	}
 
-    public NotationDefinition<XmlAtom> getNotationDeclaration(QName name)
+    public NotationDefinition getNotationDeclaration(QName name)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	public Iterable<NotationDefinition<XmlAtom>> getNotations()
+	public Iterable<NotationDefinition> getNotations()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -276,37 +276,37 @@ public final class AxiomSAProcessingContext
 	    return context;
 	}
 
-	public SimpleType<XmlAtom> getSimpleType(QName name)
+	public SimpleType getSimpleType(QName name)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public SimpleType<XmlAtom> getSimpleType(NativeType name)
+	public SimpleType getSimpleType(NativeType name)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Iterable<SimpleType<XmlAtom>> getSimpleTypes()
+	public Iterable<SimpleType> getSimpleTypes()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public SimpleUrType<XmlAtom> getSimpleUrType()
+	public SimpleUrType getSimpleUrType()
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Type<XmlAtom> getTypeDefinition(QName typeName)
+	public Type getTypeDefinition(QName typeName)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public Type<XmlAtom> getTypeDefinition(final NativeType nativeType)
+	public Type getTypeDefinition(final NativeType nativeType)
 	{
 		return cache.getTypeDefinition(nativeType);
 	}
@@ -404,7 +404,7 @@ public final class AxiomSAProcessingContext
         return new ValidatingDocumentHandler<Object, XmlAtom>(this, validator, reporter, resolver);
     }
 
-    public void register(final ComponentBag<XmlAtom> components)
+    public void register(final ComponentBag components)
 	{
 		// TODO implement
 		throw new UnsupportedOperationException();
@@ -419,10 +419,10 @@ public final class AxiomSAProcessingContext
     
     private final AxiomProcessingContext context;
 	private final AtomBridge<XmlAtom> atomBridge;
-	private final SchemaTypeBridge<XmlAtom> cache;
+	private final SchemaTypeBridge cache;
 	
 	@SuppressWarnings("unused")
 	private boolean locked;
-	private final MetaBridge<XmlAtom> metaBridge;
+	private final MetaBridge metaBridge;
 	private final TypedModel<Object, XmlAtom> model;
 }

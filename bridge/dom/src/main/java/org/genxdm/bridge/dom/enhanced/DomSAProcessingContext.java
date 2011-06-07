@@ -64,8 +64,8 @@ public final class DomSAProcessingContext
     public DomSAProcessingContext(DomProcessingContext parent)
 	{
 		this.atomBridge = new XmlAtomBridge(this, new NameSource());
-		this.m_cache = new SchemaTypeBridgeFactory<XmlAtom>(atomBridge).newMetaBridge();
-		this.m_metaBridge = new MetaBridgeOnSchemaTypeBridgeAdapter<XmlAtom>(m_cache, atomBridge);
+		this.m_cache = new SchemaTypeBridgeFactory().newMetaBridge();
+		this.m_metaBridge = new MetaBridgeOnSchemaTypeBridgeAdapter(m_cache);
 		this.m_model = new DomSAModel(this);
 		this.parent = PreCondition.assertNotNull(parent);
 	}
@@ -76,56 +76,56 @@ public final class DomSAProcessingContext
 		return atomBridge.atom(item);
 	}
 	
-	public void declareAttribute(final AttributeDefinition<XmlAtom> attribute)
+	public void declareAttribute(final AttributeDefinition attribute)
 	{
 		PreCondition.assertArgumentNotNull(attribute, "attribute");
 		PreCondition.assertFalse(isLocked(), "isLocked()");
 		m_cache.declareAttribute(attribute);
 	}
 	
-	public void declareElement(final ElementDefinition<XmlAtom> element)
+	public void declareElement(final ElementDefinition element)
 	{
 		PreCondition.assertArgumentNotNull(element, "element");
 		PreCondition.assertFalse(isLocked(), "isLocked()");
 		m_cache.declareElement(element);
 	}
 	
-	public void declareNotation(final NotationDefinition<XmlAtom> notation)
+	public void declareNotation(final NotationDefinition notation)
 	{
 		PreCondition.assertArgumentNotNull(notation, "notation");
 		PreCondition.assertFalse(isLocked(), "isLocked()");
 		m_cache.declareNotation(notation);
 	}
 	
-	public void defineAttributeGroup(final AttributeGroupDefinition<XmlAtom> attributeGroup)
+	public void defineAttributeGroup(final AttributeGroupDefinition attributeGroup)
 	{
 		PreCondition.assertArgumentNotNull(attributeGroup, "attributeGroup");
 		PreCondition.assertFalse(isLocked(), "isLocked()");
 		m_cache.defineAttributeGroup(attributeGroup);
 	}
 	
-	public void defineComplexType(final ComplexType<XmlAtom> complexType)
+	public void defineComplexType(final ComplexType complexType)
 	{
 		PreCondition.assertArgumentNotNull(complexType, "complexType");
 		PreCondition.assertFalse(isLocked(), "isLocked()");
 		m_cache.defineComplexType(complexType);
 	}
 	
-	public void defineIdentityConstraint(final IdentityConstraint<XmlAtom> identityConstraint)
+	public void defineIdentityConstraint(final IdentityConstraint identityConstraint)
 	{
 		PreCondition.assertArgumentNotNull(identityConstraint, "identityConstraint");
 		PreCondition.assertFalse(isLocked(), "isLocked()");
 		m_cache.defineIdentityConstraint(identityConstraint);
 	}
 
-	public void defineModelGroup(final ModelGroup<XmlAtom> modelGroup)
+	public void defineModelGroup(final ModelGroup modelGroup)
 	{
 		PreCondition.assertArgumentNotNull(modelGroup, "modelGroup");
 		PreCondition.assertFalse(isLocked(), "isLocked()");
 		m_cache.defineModelGroup(modelGroup);
 	}
 
-	public void defineSimpleType(final SimpleType<XmlAtom> simpleType)
+	public void defineSimpleType(final SimpleType simpleType)
 	{
 		PreCondition.assertArgumentNotNull(simpleType, "simpleType");
 		PreCondition.assertFalse(isLocked(), "isLocked()");
@@ -142,77 +142,77 @@ public final class DomSAProcessingContext
 		return atomBridge;
 	}
 
-	public AtomicType<XmlAtom> getAtomicType(final QName name)
+	public AtomicType getAtomicType(final QName name)
 	{
 		return m_cache.getAtomicType(name);
 	}
 
-	public AtomicType<XmlAtom> getAtomicType(final NativeType name)
+	public AtomicType getAtomicType(final NativeType name)
 	{
 		return m_cache.getAtomicType(name);
 	}
 
-	public AtomicUrType<XmlAtom> getAtomicUrType()
+	public AtomicUrType getAtomicUrType()
 	{
 		return m_cache.getAtomicUrType();
 	}
 
-	public AttributeDefinition<XmlAtom> getAttributeDeclaration(final QName attributeName)
+	public AttributeDefinition getAttributeDeclaration(final QName attributeName)
 	{
 		return m_cache.getAttributeDeclaration(attributeName);
 	}
 
-	public AttributeGroupDefinition<XmlAtom> getAttributeGroup(final QName name)
+	public AttributeGroupDefinition getAttributeGroup(final QName name)
 	{
 		return m_cache.getAttributeGroup(name);
 	}
 
-	public Iterable<AttributeGroupDefinition<XmlAtom>> getAttributeGroups()
+	public Iterable<AttributeGroupDefinition> getAttributeGroups()
 	{
 		return m_cache.getAttributeGroups();
 	}
 
-	public Iterable<AttributeDefinition<XmlAtom>> getAttributes()
+	public Iterable<AttributeDefinition> getAttributes()
 	{
 		return m_cache.getAttributes();
 	}
 
-	public ComplexType<XmlAtom> getComplexType(final QName name)
+	public ComplexType getComplexType(final QName name)
 	{
 		return m_cache.getComplexType(name);
 	}
 
-	public Iterable<ComplexType<XmlAtom>> getComplexTypes()
+	public Iterable<ComplexType> getComplexTypes()
 	{
 		return m_cache.getComplexTypes();
 	}
 
-	public ComplexUrType<XmlAtom> getComplexUrType()
+	public ComplexUrType getComplexUrType()
 	{
 		return m_cache.getComplexUrType();
 	}
 	
-	public ElementDefinition<XmlAtom> getElementDeclaration(final QName elementName)
+	public ElementDefinition getElementDeclaration(final QName elementName)
 	{
 		return m_cache.getElementDeclaration(elementName);
 	}
 
-	public Iterable<ElementDefinition<XmlAtom>> getElements()
+	public Iterable<ElementDefinition> getElements()
 	{
 		return m_cache.getElements();
 	}
 
-	public IdentityConstraint<XmlAtom> getIdentityConstraint(final QName name)
+	public IdentityConstraint getIdentityConstraint(final QName name)
 	{
 		return m_cache.getIdentityConstraint(name);
 	}
 
-	public Iterable<IdentityConstraint<XmlAtom>> getIdentityConstraints()
+	public Iterable<IdentityConstraint> getIdentityConstraints()
 	{
 		return m_cache.getIdentityConstraints();
 	}
 
-	public MetaBridge<XmlAtom> getMetaBridge()
+	public MetaBridge getMetaBridge()
 	{
 		return m_metaBridge;
 	}
@@ -222,12 +222,12 @@ public final class DomSAProcessingContext
 		return m_model;
 	}
 
-	public ModelGroup<XmlAtom> getModelGroup(final QName name)
+	public ModelGroup getModelGroup(final QName name)
 	{
 		return m_cache.getModelGroup(name);
 	}
 
-	public Iterable<ModelGroup<XmlAtom>> getModelGroups()
+	public Iterable<ModelGroup> getModelGroups()
 	{
 		return m_cache.getModelGroups();
 	}
@@ -237,12 +237,12 @@ public final class DomSAProcessingContext
 		return m_cache.getNamespaces();
 	}
 
-	public NotationDefinition<XmlAtom> getNotationDeclaration(final QName name)
+	public NotationDefinition getNotationDeclaration(final QName name)
 	{
 		return m_cache.getNotationDeclaration(name);
 	}
 	
-	public Iterable<NotationDefinition<XmlAtom>> getNotations()
+	public Iterable<NotationDefinition> getNotations()
 	{
 		return m_cache.getNotations();
 	}
@@ -252,32 +252,32 @@ public final class DomSAProcessingContext
 	    return parent;
 	}
 
-	public SimpleType<XmlAtom> getSimpleType(final QName name)
+	public SimpleType getSimpleType(final QName name)
 	{
 		return m_cache.getSimpleType(name);
 	}
 
-	public SimpleType<XmlAtom> getSimpleType(final NativeType name)
+	public SimpleType getSimpleType(final NativeType name)
 	{
 		return m_cache.getSimpleType(name);
 	}
 
-	public Iterable<SimpleType<XmlAtom>> getSimpleTypes()
+	public Iterable<SimpleType> getSimpleTypes()
 	{
 		return m_cache.getSimpleTypes();
 	}
 
-	public SimpleUrType<XmlAtom> getSimpleUrType()
+	public SimpleUrType getSimpleUrType()
 	{
 		return m_cache.getSimpleUrType();
 	}
 	
-	public Type<XmlAtom> getTypeDefinition(final QName typeName)
+	public Type getTypeDefinition(final QName typeName)
 	{
 		return m_cache.getTypeDefinition(typeName);
 	}
 
-	public Type<XmlAtom> getTypeDefinition(final NativeType nativeType)
+	public Type getTypeDefinition(final NativeType nativeType)
 	{
 		return m_cache.getTypeDefinition(nativeType);
 	}
@@ -364,7 +364,7 @@ public final class DomSAProcessingContext
 	    return new ValidatingDocumentHandler<Node, XmlAtom>(this, validator, reporter, resolver);
 	}
 
-	public void register(final ComponentBag<XmlAtom> components)
+	public void register(final ComponentBag components)
 	{
 		PreCondition.assertFalse(isLocked(), "isLocked()");
 		m_cache.register(components);
@@ -385,8 +385,8 @@ public final class DomSAProcessingContext
 
 	private final DomProcessingContext parent;
     private final XmlAtomBridge atomBridge;
-	private final SchemaTypeBridge<XmlAtom> m_cache;
-	private final MetaBridge<XmlAtom> m_metaBridge;
+	private final SchemaTypeBridge m_cache;
+	private final MetaBridge m_metaBridge;
 
 	private final DomSAModel m_model;
 

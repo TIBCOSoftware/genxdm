@@ -25,7 +25,7 @@ public final class CvcElementFixedValueOverriddenMixedException extends CvcEleme
 	private final String m_expectValue;
 	private final String m_actualValue;
 
-	public CvcElementFixedValueOverriddenMixedException(final ElementDefinition<?> elementName, final String expectValue, final String actualValue, final LocationInSchema location)
+	public CvcElementFixedValueOverriddenMixedException(final ElementDefinition elementName, final String expectValue, final String actualValue, final LocationInSchema location)
 	{
 		super(PART_VALUE_CONSTRAINT_MIXED, elementName, location);
 		m_expectValue = PreCondition.assertArgumentNotNull(expectValue, "expectValue");

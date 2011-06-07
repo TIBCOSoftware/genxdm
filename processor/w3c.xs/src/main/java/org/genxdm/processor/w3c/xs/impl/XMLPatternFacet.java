@@ -15,11 +15,11 @@
  */
 package org.genxdm.processor.w3c.xs.impl;
 
-final class XMLPatternFacet<A> extends XMLFacet<A>
+final class XMLPatternFacet extends XMLFacet
 {
 	public String value;
 
-	public XMLPatternFacet(final XMLType<A> simpleType, final SrcFrozenLocation location)
+	public XMLPatternFacet(final XMLType simpleType, final SrcFrozenLocation location)
 	{
 		super(simpleType, location);
 	}

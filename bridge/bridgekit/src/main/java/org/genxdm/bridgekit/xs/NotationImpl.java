@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
 import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.enums.ScopeExtent;
 
-public final class NotationImpl<A> extends NamedComponentImpl<A> implements NotationDefinition<A>
+public final class NotationImpl extends NamedComponentImpl implements NotationDefinition
 {
 	private final String publicId;
 	private final URI systemId;

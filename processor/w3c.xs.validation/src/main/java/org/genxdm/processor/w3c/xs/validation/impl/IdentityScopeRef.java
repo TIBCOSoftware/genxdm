@@ -27,28 +27,28 @@ import org.genxdm.xs.resolve.LocationInSchema;
 /**
  * Specialization of a scope for xs:keyref.
  */
-final class IdentityScopeRef<A> extends IdentityScope<A>
+final class IdentityScopeRef extends IdentityScope
 {
-	private final IdentityScopeKey<A> keyScope;
+	private final IdentityScopeKey keyScope;
 
-	public IdentityScopeRef(final int elementIndex, final IdentityScopeKey<A> keyScope, final IdentityConstraint<A> constraint, final SchemaExceptionHandler errorHandler, final LocationInSchema location)
+	public IdentityScopeRef(final int elementIndex, final IdentityScopeKey keyScope, final IdentityConstraint constraint, final SchemaExceptionHandler errorHandler, final LocationInSchema location)
 	{
 		super(elementIndex, constraint, errorHandler, location);
 		this.keyScope = keyScope;
 	}
 
 	@Override
-	protected void onKeysComplete(final ArrayList<IdentityKey<A>> keyValues, final int elementIndex) throws AbortException
+	protected void onKeysComplete(final ArrayList<IdentityKey> keyValues, final int elementIndex) throws AbortException
 	{
-		final IdentityTuple<A> key = new IdentityTuple<A>(keyValues);
+		final IdentityTuple key = new IdentityTuple(keyValues);
 
-		final IdentityVariant<A> lookup = keyScope.m_qualifiedTargets.get(key);
+		final IdentityVariant lookup = keyScope.m_qualifiedTargets.get(key);
 
 		if (lookup == null)
 		{
-			final ArrayList<IdentityDanglingReference<A>> dangles = new ArrayList<IdentityDanglingReference<A>>();
-			dangles.add(new IdentityDanglingReference<A>(getConstraint(), keyValues, m_location));
-			keyScope.m_qualifiedTargets.put(key, new IdentityVariant<A>(dangles));
+			final ArrayList<IdentityDanglingReference> dangles = new ArrayList<IdentityDanglingReference>();
+			dangles.add(new IdentityDanglingReference(getConstraint(), keyValues, m_location));
+			keyScope.m_qualifiedTargets.put(key, new IdentityVariant(dangles));
 		}
 		else if (lookup.isValue())
 		{
@@ -56,7 +56,7 @@ final class IdentityScopeRef<A> extends IdentityScope<A>
 		}
 		else
 		{
-			lookup.getDanglingRefs().add(new IdentityDanglingReference<A>(getConstraint(), keyValues, m_location));
+			lookup.getDanglingRefs().add(new IdentityDanglingReference(getConstraint(), keyValues, m_location));
 		}
 	}
 
@@ -71,11 +71,11 @@ final class IdentityScopeRef<A> extends IdentityScope<A>
 	 */
 	public void reportUnmatchedRefs() throws AbortException
 	{
-		for (final IdentityVariant<A> next : keyScope.m_qualifiedTargets.values())
+		for (final IdentityVariant next : keyScope.m_qualifiedTargets.values())
 		{
 			if (next.isDanglingRefs())
 			{
-				for (final IdentityDanglingReference<A> dangling : next.getDanglingRefs())
+				for (final IdentityDanglingReference dangling : next.getDanglingRefs())
 				{
 					final CvcDanglingKeyReferenceException dkre = new CvcDanglingKeyReferenceException(dangling.getConstraint().getName(), dangling.getKeys(), m_location);
 					m_errorHandler.error(dkre);

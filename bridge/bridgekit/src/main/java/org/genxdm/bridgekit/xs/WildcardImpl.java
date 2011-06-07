@@ -20,7 +20,7 @@ import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.NamespaceConstraint;
 import org.genxdm.xs.enums.ProcessContentsMode;
 
-public final class WildcardImpl<A> implements SchemaWildcard<A>
+public final class WildcardImpl implements SchemaWildcard
 {
 	private final ProcessContentsMode m_processContents;
 	private final NamespaceConstraint m_namespaceConstraint;

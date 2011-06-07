@@ -23,10 +23,10 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcSubstitutionBlockedByHeadDeclarationException extends SmLocationException
 {
-	private final ElementDefinition<?> m_name;
-	private final ElementDefinition<?> m_substitutionGroup;
+	private final ElementDefinition m_name;
+	private final ElementDefinition m_substitutionGroup;
 
-	public CvcSubstitutionBlockedByHeadDeclarationException(final ElementDefinition<?> elementDeclaration, final ElementDefinition<?> substitutionGroup, final LocationInSchema location)
+	public CvcSubstitutionBlockedByHeadDeclarationException(final ElementDefinition elementDeclaration, final ElementDefinition substitutionGroup, final LocationInSchema location)
 	{
 		super(ValidationOutcome.SCC_Substitution_Group_OK_Transitive, "2.1", location);
 		m_name = PreCondition.assertArgumentNotNull(elementDeclaration, "name");

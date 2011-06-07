@@ -18,10 +18,10 @@ package org.genxdm.xs.types;
 /**
  * Marker interface for the Simple Ur-Type.
  */
-public interface SimpleUrType<A> extends SimpleType<A>, PrimeType<A>
+public interface SimpleUrType extends SimpleType, PrimeType
 {
     /**
      * Returns the {base type definition}.
      */
-    ComplexUrType<A> getBaseType();
+    ComplexUrType getBaseType();
 }

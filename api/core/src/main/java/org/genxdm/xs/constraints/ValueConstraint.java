@@ -20,11 +20,14 @@ import java.util.Collections;
 import java.util.List;
 
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.exceptions.DatatypeException;
+import org.genxdm.xs.types.SimpleType;
 
 /**
  * A triple consisting of the value constraint variety, value and lexical form.
  */
-public final class ValueConstraint<A>
+public final class ValueConstraint
 {
     public enum Kind
     {
@@ -41,14 +44,16 @@ public final class ValueConstraint<A>
         }
     }
 
+    // TODO: remove the list member, keeping the lexical value;
+    // maybe identify the type, and then change the getValue method?
     private final Kind variety;
-    private final List<A> value;
+    private final SimpleType constrainedType;
     private final String lexicalForm;
 
-    public ValueConstraint(final Kind variety, final List<A> value, final String lexicalForm)
+    public ValueConstraint(final Kind variety, final SimpleType constrainedType, final String lexicalForm)
     {
         this.variety = PreCondition.assertArgumentNotNull(variety, "variety");
-        this.value = Collections.unmodifiableList(new ArrayList<A>(PreCondition.assertArgumentNotNull(value, "value")));
+        this.constrainedType = PreCondition.assertArgumentNotNull(constrainedType, "constrainedType");
         this.lexicalForm = PreCondition.assertArgumentNotNull(lexicalForm, "lexicalForm");
     }
 
@@ -63,9 +68,19 @@ public final class ValueConstraint<A>
     /**
      * Returns the the {value} property of the value constraint.
      */
-    public List<A> getValue()
+    public <A> List<A> getValue(AtomBridge<A> bridge)
     {
-        return value;
+        List<A> value = null;
+        try
+        {
+            value = constrainedType.validate(lexicalForm, bridge);
+        }
+        catch (DatatypeException dte)
+        {
+            // TODO: do something more reasonable
+            throw new RuntimeException(dte);
+        }
+        return Collections.unmodifiableList(new ArrayList<A>(value));
     }
 
     /**

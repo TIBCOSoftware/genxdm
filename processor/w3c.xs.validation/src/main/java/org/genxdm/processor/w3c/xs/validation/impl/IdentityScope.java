@@ -37,9 +37,9 @@ import org.genxdm.xs.types.Type;
  * Not surprisingly, this evaluation class mimicks the identity-constraint by having a selector and a list of fields
  * that are of type {@link IdentitySelector}. The selector is established immediately (upon initialization)
  */
-abstract class IdentityScope<A>
+abstract class IdentityScope
 {
-	private final IdentityConstraint<A> m_constraint;
+	private final IdentityConstraint m_constraint;
 	protected final SchemaExceptionHandler m_errorHandler;
 
 	/**
@@ -54,9 +54,9 @@ abstract class IdentityScope<A>
 	 * evaluators. So from a scope perspective the {field} evaluators are part of a map keyed by the element information
 	 * item.
 	 */
-	private final IdentitySelector<A> m_selectorEval;
+	private final IdentitySelector m_selectorEval;
 	final HashMap<Integer, Integer> m_boundFields = new HashMap<Integer, Integer>();
-	final HashMap<Integer, ArrayList<IdentityField<A>>> m_fieldEvals = new HashMap<Integer, ArrayList<IdentityField<A>>>();
+	final HashMap<Integer, ArrayList<IdentityField>> m_fieldEvals = new HashMap<Integer, ArrayList<IdentityField>>();
 
 	/**
 	 * A map from a key (tuple of values) to Boolean.TRUE | list of {@link IdentityDanglingReference}.
@@ -65,7 +65,7 @@ abstract class IdentityScope<A>
 	// m_qualifiedTargets;
 	protected final LocationInSchema m_location;
 
-	protected IdentityScope(final int elementIndex, final IdentityConstraint<A> constraint, final SchemaExceptionHandler errorHandler, final LocationInSchema location)
+	protected IdentityScope(final int elementIndex, final IdentityConstraint constraint, final SchemaExceptionHandler errorHandler, final LocationInSchema location)
 	{
 		m_elementIndex = elementIndex;
 		m_constraint = PreCondition.assertArgumentNotNull(constraint);
@@ -73,7 +73,7 @@ abstract class IdentityScope<A>
 
 		m_location = location;
 
-		m_selectorEval = new IdentitySelector<A>(this, m_constraint.getSelector());
+		m_selectorEval = new IdentitySelector(this, m_constraint.getSelector());
 	}
 
 	/**
@@ -84,7 +84,7 @@ abstract class IdentityScope<A>
 	 * @param keyValues
 	 *            The key values.
 	 */
-	protected abstract void onKeysComplete(final ArrayList<IdentityKey<A>> keyValues, final int elementIndex) throws AbortException;
+	protected abstract void onKeysComplete(final ArrayList<IdentityKey> keyValues, final int elementIndex) throws AbortException;
 
 	/**
 	 * Called when the selector goes out of scope.
@@ -94,11 +94,11 @@ abstract class IdentityScope<A>
 	 */
 	protected abstract void onScopeEnd(final int elementIndex, final Locatable location) throws AbortException;
 
-	public void startElement(final QName elementName, final int elementIndex, final Type<A> elementType, final Locatable locatable) throws AbortException
+	public void startElement(final QName elementName, final int elementIndex, final Type elementType, final Locatable locatable) throws AbortException
 	{
-		for (final ArrayList<IdentityField<A>> contextFields : m_fieldEvals.values())
+		for (final ArrayList<IdentityField> contextFields : m_fieldEvals.values())
 		{
-			for (final IdentityField<A> field : contextFields)
+			for (final IdentityField field : contextFields)
 			{
 				field.startElement(elementName, elementIndex, elementType, locatable);
 			}
@@ -107,22 +107,22 @@ abstract class IdentityScope<A>
 		m_selectorEval.startElement(elementName, elementIndex);
 	}
 
-	public void attribute(final QName attributeName, final List<? extends A> actualValue, final int attributeIndex, final SimpleType<A> attributeType, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
+	public <A> void attribute(final QName attributeName, final List<? extends A> actualValue, final int attributeIndex, final SimpleType attributeType, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
 	{
-		for (final ArrayList<IdentityField<A>> contextFields : m_fieldEvals.values())
+		for (final ArrayList<IdentityField> contextFields : m_fieldEvals.values())
 		{
-			for (final IdentityField<A> field : contextFields)
+			for (final IdentityField field : contextFields)
 			{
 				field.attribute(attributeName, actualValue, attributeIndex, attributeType, locatable, atomBridge);
 			}
 		}
 	}
 
-	public void text(final List<? extends A> actualValue, final SimpleType<A> actualType, final int textIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
+	public <A> void text(final List<? extends A> actualValue, final SimpleType actualType, final int textIndex, final Locatable locatable, final AtomBridge<A> atomBridge) throws AbortException
 	{
-		for (final ArrayList<IdentityField<A>> contextFields : m_fieldEvals.values())
+		for (final ArrayList<IdentityField> contextFields : m_fieldEvals.values())
 		{
-			for (final IdentityField<A> field : contextFields)
+			for (final IdentityField field : contextFields)
 			{
 				field.text(actualValue, actualType, textIndex, locatable, atomBridge);
 			}
@@ -133,16 +133,16 @@ abstract class IdentityScope<A>
 	{
 		m_selectorEval.endElement(elementName, elementIndex, locatable);
 
-		for (final ArrayList<IdentityField<A>> contextFields : m_fieldEvals.values())
+		for (final ArrayList<IdentityField> contextFields : m_fieldEvals.values())
 		{
-			for (final IdentityField<A> field : contextFields)
+			for (final IdentityField field : contextFields)
 			{
 				field.endElement(elementName, elementIndex, locatable);
 			}
 		}
 	}
 
-	public IdentityConstraint<A> getConstraint()
+	public IdentityConstraint getConstraint()
 	{
 		return m_constraint;
 	}
@@ -165,10 +165,10 @@ abstract class IdentityScope<A>
 			// No fields have been bound yet for this element.
 			m_boundFields.put(elementIndex, 0);
 
-			final ArrayList<IdentityField<A>> fieldEvals = new ArrayList<IdentityField<A>>();
+			final ArrayList<IdentityField> fieldEvals = new ArrayList<IdentityField>();
 			for (final RestrictedXPath path : getConstraint().getFields())
 			{
-				fieldEvals.add(new IdentityField<A>(path, elementIndex, this, m_errorHandler));
+				fieldEvals.add(new IdentityField(path, elementIndex, this, m_errorHandler));
 			}
 			m_fieldEvals.put(elementIndex, fieldEvals);
 		}
@@ -206,10 +206,10 @@ abstract class IdentityScope<A>
 	 * @param changedField
 	 *            The {@link IdentityField} that had its value set.
 	 */
-	void onFieldValueSet(final IdentityField<A> changedField, final int elementIndex, final AtomBridge<A> atomBridge) throws AbortException
+	<A> void onFieldValueSet(final IdentityField changedField, final int elementIndex, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		// Note: We don't currently use the "changedField" parameter.
-		final ArrayList<IdentityField<A>> elementHandlers = m_fieldEvals.get(elementIndex);
+		final ArrayList<IdentityField> elementHandlers = m_fieldEvals.get(elementIndex);
 
 		// Increment the number of fields that have been bound.
 		final int boundFields = m_boundFields.get(elementIndex) + 1;
@@ -219,10 +219,11 @@ abstract class IdentityScope<A>
 		// notify the scope.
 		if (boundFields == elementHandlers.size())
 		{
-			final ArrayList<IdentityKey<A>> fieldValues = new ArrayList<IdentityKey<A>>(boundFields);
-			for (final IdentityField<A> field : elementHandlers)
+			final ArrayList<IdentityKey> fieldValues = new ArrayList<IdentityKey>(boundFields);
+			for (final IdentityField field : elementHandlers)
 			{
-				fieldValues.add(new IdentityKey<A>(field.getTypedValue()));
+//				fieldValues.add(new IdentityKey(field.getTypedValue(atomBridge)));
+                fieldValues.add(new IdentityKey(field.m_value));
 			}
 			onKeysComplete(fieldValues, elementIndex);
 		}

@@ -23,7 +23,7 @@ import org.genxdm.xs.components.AttributeDefinition;
  * @param <A>
  *            The atom handle.
  */
-public interface AttributeUse<A> extends HasValueConstraint<A>
+public interface AttributeUse extends HasValueConstraint
 {
     /**
      * Returns the {required} property. <br/>
@@ -37,12 +37,12 @@ public interface AttributeUse<A> extends HasValueConstraint<A>
      * In the XML representation, this is the (top-level) attribute declaration resolved by the actual value of the ref
      * [attribute].
      */
-    AttributeDefinition<A> getAttribute();
+    AttributeDefinition getAttribute();
 
     /**
      * Returns the effective value constraint, may be <code>null</code>. [Definition:] Let the effective value
      * constraint of an attribute use be its {value constraint}, if present, otherwise its {attribute declaration}'s
      * {value constraint}.
      */
-    ValueConstraint<A> getEffectiveValueConstraint();
+    ValueConstraint getEffectiveValueConstraint();
 }

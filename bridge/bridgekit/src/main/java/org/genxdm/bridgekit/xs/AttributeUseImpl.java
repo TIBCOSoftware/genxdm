@@ -20,28 +20,28 @@ import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.constraints.AttributeUse;
 import org.genxdm.xs.constraints.ValueConstraint;
 
-public final class AttributeUseImpl<A> extends LockableImpl implements AttributeUse<A>
+public final class AttributeUseImpl extends LockableImpl implements AttributeUse
 {
-	private final AttributeDefinition<A> m_attribute;
+	private final AttributeDefinition m_attribute;
 	private final boolean m_isRequired;
 
 	/**
 	 * {value constraint} is mutable and default to <code>null</code>/
 	 */
-	private ValueConstraint<A> m_valueConstraint = null;
+	private ValueConstraint m_valueConstraint = null;
 
-	public AttributeUseImpl(final boolean isRequired, final AttributeDefinition<A> attribute)
+	public AttributeUseImpl(final boolean isRequired, final AttributeDefinition attribute)
 	{
 		m_isRequired = isRequired;
 		m_attribute = PreCondition.assertArgumentNotNull(attribute, "attribute");
 	}
 
-	public AttributeDefinition<A> getAttribute()
+	public AttributeDefinition getAttribute()
 	{
 		return m_attribute;
 	}
 
-	public ValueConstraint<A> getEffectiveValueConstraint()
+	public ValueConstraint getEffectiveValueConstraint()
 	{
 		if (null != m_valueConstraint)
 		{
@@ -53,7 +53,7 @@ public final class AttributeUseImpl<A> extends LockableImpl implements Attribute
 		}
 	}
 
-	public ValueConstraint<A> getValueConstraint()
+	public ValueConstraint getValueConstraint()
 	{
 		return m_valueConstraint;
 	}
@@ -63,7 +63,7 @@ public final class AttributeUseImpl<A> extends LockableImpl implements Attribute
 		return m_isRequired;
 	}
 
-	public void setValueConstraint(final ValueConstraint<A> valueConstraint)
+	public void setValueConstraint(final ValueConstraint valueConstraint)
 	{
 		assertNotLocked();
 		m_valueConstraint = valueConstraint;

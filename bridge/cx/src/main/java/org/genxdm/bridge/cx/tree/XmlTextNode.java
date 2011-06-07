@@ -35,7 +35,7 @@ public final class XmlTextNode
         super(NodeKind.TEXT, value);
     }
     
-    public Type<XmlAtom> getType()
+    public Type getType()
     {
         if ( (parent != null) && parent.isElement() )
             return ((XmlElementNode)parent).getType();

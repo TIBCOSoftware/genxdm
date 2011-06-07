@@ -27,27 +27,21 @@ import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.types.ComplexType;
-import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.Type;
 
 
-final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
+final class ModelAnalyzerImpl implements ModelAnalyzer
 {
-	private ModelPSVI<A> m_currentPSVI;
-	private final ModelPSVI<A> m_documentPSVI;
+	private ModelPSVI m_currentPSVI;
+	private final ModelPSVI m_documentPSVI;
 	private SchemaExceptionHandler m_errors = SmExceptionThrower.SINGLETON;
 
 	// Document state flag. Have we received the document element?
 	private boolean m_rootStartDone;
 
-	public ModelAnalyzerImpl(final ComponentProvider<A> metaBridge, final ValidationCache<A> cache)
+	public ModelAnalyzerImpl(final ComponentProvider metaBridge, final ValidationCache cache)
 	{
-		this.m_currentPSVI = this.m_documentPSVI = new ModelPSVI<A>(ProcessContentsMode.Strict, metaBridge, cache);
-	}
-
-	public void attribute(final QName name, final SimpleType<A> type, final A value)
-	{
-		// TODO: shall we keep track of which attributes are passed to us between startElement calls?
+		this.m_currentPSVI = this.m_documentPSVI = new ModelPSVI(ProcessContentsMode.Strict, metaBridge, cache);
 	}
 
 	public void endDocument() throws AbortException
@@ -58,9 +52,9 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 		}
 	}
 
-	public VxPSVI<A> endElement() throws AbortException
+	public VxPSVI endElement() throws AbortException
 	{
-		final ModelPSVI<A> elementItem = m_currentPSVI;
+		final ModelPSVI elementItem = m_currentPSVI;
 		try
 		{
 			m_currentPSVI.checkForUnexpectedEndOfContent(m_errors);
@@ -85,9 +79,9 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 		m_rootStartDone = false;
 	}
 
-	public ModelPSVI<A> startElement(final QName elementName, final Type<A> localType, final Boolean explicitNil) throws AbortException
+	public ModelPSVI startElement(final QName elementName, final Type localType, final Boolean explicitNil) throws AbortException
 	{
-		final ModelPSVI<A> parentItem = m_currentPSVI;
+		final ModelPSVI parentItem = m_currentPSVI;
 		m_currentPSVI = parentItem.push(elementName);
 
 		// Figure out the appropriate decl and type for this element.
@@ -106,7 +100,7 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 		}
 		else
 		{
-			final ElementDefinition<A> declaration = parentItem.getDeclaration();
+			final ElementDefinition declaration = parentItem.getDeclaration();
 			if (null != declaration)
 			{
 				ValidationRules.checkValueConstraintAllowsElementChild(declaration, m_currentPSVI.getName(), m_currentPSVI, m_errors);
@@ -145,10 +139,10 @@ final class ModelAnalyzerImpl<A> implements ModelAnalyzer<A>
 		// More of the Validation Rule: Element Locally Valid (Element).
 		m_currentPSVI.setNilled(m_currentPSVI.computeNilled(explicitNil, m_errors));
 
-		final Type<A> elementType = m_currentPSVI.getType();
-		if (elementType instanceof ComplexType<?>)
+		final Type elementType = m_currentPSVI.getType();
+		if (elementType instanceof ComplexType)
 		{
-			ValidationRules.checkComplexTypeNotAbstract((ComplexType<A>)elementType, elementName, m_errors);
+			ValidationRules.checkComplexTypeNotAbstract((ComplexType)elementType, elementName, m_errors);
 		}
 
 		return m_currentPSVI;

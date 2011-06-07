@@ -18,10 +18,8 @@ package org.genxdm.xs.types;
 /**
  * A type that may be downcast to either {@link SimpleType} or {@link SimpleUrType}.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface SimpleMarkerType<A> extends Type<A>
+public interface SimpleMarkerType extends Type
 {
 
 }

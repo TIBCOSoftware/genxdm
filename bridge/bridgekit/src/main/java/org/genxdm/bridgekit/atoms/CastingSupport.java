@@ -107,7 +107,7 @@ final class CastingSupport
 		}
 	}
 
-	public static <A> A castAs(final A sourceAtom, final QName targetType, final CastingContext<A> castingContext, final Schema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+	public static <A> A castAs(final A sourceAtom, final QName targetType, final CastingContext castingContext, final Schema pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
@@ -124,15 +124,15 @@ final class CastingSupport
 			PreCondition.assertTrue(false, targetType.toString());
 		}
 
-		final Type<A> type = pcx.getTypeDefinition(targetType);
+		final Type type = pcx.getTypeDefinition(targetType);
 		if (null != type)
 		{
 			if (type.isAtomicType())
 			{
-				final SimpleType<A> atomicType = (SimpleType<A>)type;
+				final SimpleType atomicType = (SimpleType)type;
 				try
 				{
-					final List<A> atoms = atomicType.validate(atomBridge.wrapAtom(sourceAtom));
+					final List<A> atoms = atomicType.validate(atomBridge.wrapAtom(sourceAtom), atomBridge);
 					final int size = atoms.size();
 					if (1 == size)
 					{
@@ -164,12 +164,12 @@ final class CastingSupport
 		}
 	}
 
-	public static <A> A castAsOrErrors(final A sourceAtom, final NativeType sourceType, final NativeType targetType, final Schema<A> pcx, final AtomBridge<A> atomBridge, final NameSource nameBridge)
+	public static <A> A castAsOrErrors(final A sourceAtom, final NativeType sourceType, final NativeType targetType, final Schema pcx, final AtomBridge<A> atomBridge, final NameSource nameBridge)
 			throws GxmlAtomCastException
 	{
 		if (sourceType.isString() || sourceType == NativeType.UNTYPED_ATOMIC)
 		{
-			return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
+			return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx, atomBridge);
 		}
 		else
 		{
@@ -178,7 +178,7 @@ final class CastingSupport
 
 	}
 
-	public static <A> A castAs(final A sourceAtom, final NativeType targetType, final CastingContext<A> castingContext, final Schema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+	public static <A> A castAs(final A sourceAtom, final NativeType targetType, final CastingContext castingContext, final Schema pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
@@ -200,7 +200,7 @@ final class CastingSupport
 					case UNTYPED_ATOMIC:
 					case STRING:
 					{
-						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
+						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx, atomBridge);
 					}
 					case FLOAT:
 					{
@@ -656,7 +656,7 @@ final class CastingSupport
 					case UNTYPED_ATOMIC:
 					case STRING:
 					{
-						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
+						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx, atomBridge);
 					}
 					case DOUBLE:
 					{
@@ -782,7 +782,7 @@ final class CastingSupport
 				{
 					case UNTYPED_ATOMIC:
 					{
-						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
+						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx, atomBridge);
 					}
 					case STRING:
 					{
@@ -815,7 +815,7 @@ final class CastingSupport
 				{
 					case UNTYPED_ATOMIC:
 					{
-						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
+						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx, atomBridge);
 					}
 					case STRING:
 					{
@@ -848,7 +848,7 @@ final class CastingSupport
 				{
 					case UNTYPED_ATOMIC:
 					{
-						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
+						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx, atomBridge);
 					}
 					case STRING:
 					{
@@ -877,7 +877,7 @@ final class CastingSupport
 				{
 					case UNTYPED_ATOMIC:
 					{
-						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
+						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx, atomBridge);
 					}
 					case STRING:
 					{
@@ -906,7 +906,7 @@ final class CastingSupport
 				{
 					case UNTYPED_ATOMIC:
 					{
-						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
+						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx, atomBridge);
 					}
 					case STRING:
 					{
@@ -935,7 +935,7 @@ final class CastingSupport
 				{
 					case UNTYPED_ATOMIC:
 					{
-						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
+						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx, atomBridge);
 					}
 					case STRING:
 					{
@@ -964,7 +964,7 @@ final class CastingSupport
 				{
 					case UNTYPED_ATOMIC:
 					{
-						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
+						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx, atomBridge);
 					}
 					case STRING:
 					{
@@ -992,7 +992,7 @@ final class CastingSupport
 				{
 					case UNTYPED_ATOMIC:
 					{
-						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
+						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx, atomBridge);
 					}
 					case STRING:
 					{
@@ -1021,7 +1021,7 @@ final class CastingSupport
 				{
 					case UNTYPED_ATOMIC:
 					{
-						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
+						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx, atomBridge);
 					}
 					case STRING:
 					{
@@ -1481,11 +1481,11 @@ final class CastingSupport
 				{
 					case UNTYPED_ATOMIC:
 					{
-						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
+						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx, atomBridge);
 					}
 					case STRING:
 					{
-						return castFromStringOrUntypedAtomic(atomBridge.getString(sourceAtom), targetType, pcx);
+						return castFromStringOrUntypedAtomic(atomBridge.getString(sourceAtom), targetType, pcx, atomBridge);
 					}
 					case ANY_URI:
 					{
@@ -1504,7 +1504,7 @@ final class CastingSupport
 					case UNTYPED_ATOMIC:
 					case STRING:
 					{
-						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
+						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx, atomBridge);
 					}
 					case BASE64_BINARY:
 					{
@@ -1527,7 +1527,7 @@ final class CastingSupport
 					case UNTYPED_ATOMIC:
 					case STRING:
 					{
-						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
+						return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx, atomBridge);
 					}
 					case BASE64_BINARY:
 					{
@@ -1771,7 +1771,6 @@ final class CastingSupport
 						// Interestingly, casting from xs:untypedAtomic is not allowed but xs:string is allowed.
 						if (sourceType.isString())
 						{
-							return castFromStringOrUntypedAtomic(atomBridge.getC14NForm(sourceAtom), targetType, pcx);
 						}
 						else
 						{
@@ -2269,20 +2268,20 @@ final class CastingSupport
 		return castIntegerAsUnsignedShort(BigInteger.valueOf((long)fltval), checkCapacity, raiseError);
 	}
 
-	private static <A> A castFromStringOrUntypedAtomic(final String sourceAtom, final NativeType targetType, final Schema<A> pcx) throws GxmlAtomCastException
+	private static <A> A castFromStringOrUntypedAtomic(final String sourceAtom, final NativeType targetType, final Schema pcx, AtomBridge<A> bridge) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
 
-		final Type<A> type = pcx.getTypeDefinition(targetType);
+		final Type type = pcx.getTypeDefinition(targetType);
 		if (null != type)
 		{
 			if (type.isAtomicType())
 			{
-				final SimpleType<A> atomicType = (SimpleType<A>)type;
+				final SimpleType atomicType = (SimpleType)type;
 				try
 				{
-					final List<A> atoms = atomicType.validate(sourceAtom);
+					final List<A> atoms = atomicType.validate(sourceAtom, bridge);
 					final int size = atoms.size();
 					if (1 == size)
 					{
@@ -3021,7 +3020,7 @@ final class CastingSupport
 	/**
 	 * First cast to xs:string then cast to the target type.
 	 */
-	private static <A> A castThroughString(final A sourceAtom, final NativeType targetType, final CastingContext<A> castingContext, final Schema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+	private static <A> A castThroughString(final A sourceAtom, final NativeType targetType, final CastingContext castingContext, final Schema pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
 	{
 		try
 		{
@@ -3034,20 +3033,20 @@ final class CastingSupport
 		}
 	}
 
-	private static <A> A castWithinBranchAs(final A sourceAtom, final NativeType targetType, final Schema<A> pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+	private static <A> A castWithinBranchAs(final A sourceAtom, final NativeType targetType, final Schema pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
 
-		final Type<A> type = pcx.getTypeDefinition(targetType);
+		final Type type = pcx.getTypeDefinition(targetType);
 		if (null != type)
 		{
 			if (type.isAtomicType())
 			{
-				final SimpleType<A> atomicType = (SimpleType<A>)type;
+				final SimpleType atomicType = (SimpleType)type;
 				try
 				{
-					final List<A> atoms = atomicType.validate(atomBridge.wrapAtom(sourceAtom));
+					final List<A> atoms = atomicType.validate(atomBridge.wrapAtom(sourceAtom), atomBridge);
 					final int size = atoms.size();
 					if (1 == size)
 					{

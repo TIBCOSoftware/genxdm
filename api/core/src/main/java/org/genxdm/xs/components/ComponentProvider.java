@@ -30,7 +30,7 @@ import org.genxdm.xs.types.Type;
 /**
  * A collection of schema components accessible through their expanded-QName.
  */
-public interface ComponentProvider<A> extends ComponentDetector
+public interface ComponentProvider extends ComponentDetector
 {
     QName generateUniqueName();
 
@@ -42,11 +42,11 @@ public interface ComponentProvider<A> extends ComponentDetector
      *            The name of the Atomic type definition to be retrieved.
      * @return The atomic type identified by the name, or <code>null</code> if it does not exist.
      */
-    AtomicType<A> getAtomicType(QName name);
+    AtomicType getAtomicType(QName name);
 
-    AtomicType<A> getAtomicType(NativeType name);
+    AtomicType getAtomicType(NativeType name);
 
-    AtomicUrType<A> getAtomicUrType();
+    AtomicUrType getAtomicUrType();
 
     /**
      * Returns the {@link org.genxdm.xs.components.AttributeDefinition} if it exists by the given name, otherwise <code>null</code>. If an
@@ -56,7 +56,7 @@ public interface ComponentProvider<A> extends ComponentDetector
      *            The name of the attribute declaration to be retrieved.
      * @return The {@link org.genxdm.xs.components.AttributeDefinition} identified by the name, or <code>null</code> if it does not exist.
      */
-    AttributeDefinition<A> getAttributeDeclaration(QName name);
+    AttributeDefinition getAttributeDeclaration(QName name);
 
     /**
      * Returns the {@link AttributeGroupDefinition} if it exists by the given name, otherwise <code>null</code>. If an error
@@ -67,7 +67,7 @@ public interface ComponentProvider<A> extends ComponentDetector
      * @return The {@link org.genxdm.xs.components.AttributeGroupDefinition} identified by the name, or <code>null</code> if it does not
      *         exist.
      */
-    AttributeGroupDefinition<A> getAttributeGroup(QName name);
+    AttributeGroupDefinition getAttributeGroup(QName name);
 
     /**
      * Returns the {@link ComplexType} if it exists by the given name, otherwise <code>null</code>. If an error
@@ -77,9 +77,9 @@ public interface ComponentProvider<A> extends ComponentDetector
      *            The name of the Complex type definition to be retrieved.
      * @return The {@link org.genxdm.xs.types.ComplexType} identified by the name, or <code>null</code> if it does not exist.
      */
-    ComplexType<A> getComplexType(QName name);
+    ComplexType getComplexType(QName name);
 
-    ComplexUrType<A> getComplexUrType();
+    ComplexUrType getComplexUrType();
 
     /**
      * Returns the {@link org.genxdm.xs.components.ElementDefinition} if it exists by the given name, otherwise <code>null</code>. If an
@@ -89,7 +89,7 @@ public interface ComponentProvider<A> extends ComponentDetector
      *            The name of the element declaration to be retrieved.
      * @return The {@link org.genxdm.xs.components.ElementDefinition} identified by the name, or <code>null</code> if it does not exist.
      */
-    ElementDefinition<A> getElementDeclaration(QName name);
+    ElementDefinition getElementDeclaration(QName name);
 
     /**
      * Returns the {@link IdentityConstraint} if it exists by the given name, otherwise <code>null</code>. If an error
@@ -99,7 +99,7 @@ public interface ComponentProvider<A> extends ComponentDetector
      *            The name of the Identity-constraint definition to be retrieved.
      * @return The {@link IdentityConstraint} identified by the name, or <code>null</code> if it does not exist.
      */
-    IdentityConstraint<A> getIdentityConstraint(QName name);
+    IdentityConstraint getIdentityConstraint(QName name);
 
     /**
      * Returns the {@link org.genxdm.xs.components.ModelGroup} if it exists by the given name, otherwise <code>null</code>. If an
@@ -109,7 +109,7 @@ public interface ComponentProvider<A> extends ComponentDetector
      *            The name of the Model Group Definition to be retrieved.
      * @return The {@link org.genxdm.xs.components.ModelGroup} identified by the name, or <code>null</code> if it does not exist.
      */
-    ModelGroup<A> getModelGroup(QName name);
+    ModelGroup getModelGroup(QName name);
 
     /**
      * Returns the {@link org.genxdm.xs.components.NotationDefinition} if it exists by the given name, otherwise <code>null</code>. If an
@@ -119,7 +119,7 @@ public interface ComponentProvider<A> extends ComponentDetector
      *            The name of the Notation declaration to be retrieved.
      * @return The {@link org.genxdm.xs.components.NotationDefinition} identified by the name, or <code>null</code> if it does not exist.
      */
-    NotationDefinition<A> getNotationDeclaration(QName name);
+    NotationDefinition getNotationDeclaration(QName name);
 
     /**
      * Returns the {@link org.genxdm.xs.types.SimpleType} if it exists by the given name, otherwise <code>null</code>. If an
@@ -129,11 +129,11 @@ public interface ComponentProvider<A> extends ComponentDetector
      *            The name of the Simple type definition to be retrieved.
      * @return The {@link org.genxdm.xs.types.SimpleType} identified by the name, or <code>null</code> if it does not exist.
      */
-    SimpleType<A> getSimpleType(QName name);
+    SimpleType getSimpleType(QName name);
 
-    SimpleType<A> getSimpleType(NativeType name);
+    SimpleType getSimpleType(NativeType name);
 
-    SimpleUrType<A> getSimpleUrType();
+    SimpleUrType getSimpleUrType();
 
     /**
      * Returns the {@link org.genxdm.xs.types.Type} if it exists by the given name, otherwise <code>null</code>. If an error
@@ -143,7 +143,7 @@ public interface ComponentProvider<A> extends ComponentDetector
      *            The name of the type to be retrieved.
      * @return The {@link org.genxdm.xs.types.Type} identified by the name, or <code>null</code> if it does not exist.
      */
-    Type<A> getTypeDefinition(QName name);
+    Type getTypeDefinition(QName name);
 
     /**
      * Returns the specified type definition.
@@ -151,5 +151,5 @@ public interface ComponentProvider<A> extends ComponentDetector
      * @param nativeType
      *            The name of the native type definition.
      */
-    Type<A> getTypeDefinition(NativeType nativeType);
+    Type getTypeDefinition(NativeType nativeType);
 }
