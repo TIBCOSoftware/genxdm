@@ -22,19 +22,19 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmImportNotWellFormedException extends SrcImportException
 {
-	public SmImportNotWellFormedException(final LocationInSchema location)
-	{
-		super(PART_NOT_WELL_FORMED, location);
-	}
+    public SmImportNotWellFormedException(final LocationInSchema location)
+    {
+        super(PART_NOT_WELL_FORMED, location);
+    }
 
-	public SmImportNotWellFormedException(final LocationInSchema location, final SchemaException cause)
-	{
-		super(PART_NOT_WELL_FORMED, location, cause);
-	}
+    public SmImportNotWellFormedException(final LocationInSchema location, final SchemaException cause)
+    {
+        super(PART_NOT_WELL_FORMED, location, cause);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The imported schema is not well-formed";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The imported schema is not well-formed";
+    }
 }

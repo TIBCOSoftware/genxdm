@@ -26,19 +26,19 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SrcDuplicateKeyTargetException extends CvcIdentityConstraintException
 {
-	@SuppressWarnings("rawtypes")
-	private final List fields;
+    @SuppressWarnings("rawtypes")
+    private final List fields;
 
-	@SuppressWarnings("rawtypes")
-	public SrcDuplicateKeyTargetException(final QName constraintName, final List fields, final LocationInSchema location)
-	{
-		super(constraintName, PART_TODO, location);
-		this.fields = fields;
-	}
+    @SuppressWarnings("rawtypes")
+    public SrcDuplicateKeyTargetException(final QName constraintName, final List fields, final LocationInSchema location)
+    {
+        super(constraintName, PART_TODO, location);
+        this.fields = fields;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Duplicate key " + fields + " for identity constraint " + getConstraintName() + " at " + getLocation() + ".";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Duplicate key " + fields + " for identity constraint " + getConstraintName() + " at " + getLocation() + ".";
+    }
 }

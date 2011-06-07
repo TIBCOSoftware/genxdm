@@ -25,21 +25,21 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 @SuppressWarnings("serial")
 public final class SccCyclicAttributeGroupException extends ComponentConstraintException
 {
-	private final QName m_name;
+    private final QName m_name;
 
-	public SccCyclicAttributeGroupException(final QName name)
-	{
-		super(ValidationOutcome.TODO, "?");
-		m_name = PreCondition.assertArgumentNotNull(name, "name");
-	}
+    public SccCyclicAttributeGroupException(final QName name)
+    {
+        super(ValidationOutcome.TODO, "?");
+        m_name = PreCondition.assertArgumentNotNull(name, "name");
+    }
 
-	public QName getName()
-	{
-		return m_name;
-	}
+    public QName getName()
+    {
+        return m_name;
+    }
 
-	public String getMessage()
-	{
-		return getClass().getName();
-	}
+    public String getMessage()
+    {
+        return getClass().getName();
+    }
 }

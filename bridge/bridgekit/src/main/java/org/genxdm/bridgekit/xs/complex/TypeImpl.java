@@ -21,7 +21,6 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.xs.SchemaSupport;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.names.NameSource;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.Type;
@@ -33,24 +32,22 @@ public abstract class TypeImpl extends NamedComponentImpl implements Type
 {
 	private final DerivationMethod derivation;
 	private final QName name;
-	private final NameSource nameBridge;
 
-	public TypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final DerivationMethod derivation, final NameSource nameBridge)
+	public TypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final DerivationMethod derivation)
 	{
 		super(name, isAnonymous, scope);
 		this.name = PreCondition.assertArgumentNotNull(name, "name");
-		this.nameBridge = nameBridge;
 		this.derivation = PreCondition.assertArgumentNotNull(derivation, "derivation");
 	}
 
 	public boolean derivedFrom(final String namespace, final String name, final Set<DerivationMethod> derivationMethods)
 	{
-		return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods, nameBridge);
+		return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods);
 	}
 
 	public boolean derivedFromType(final Type ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
-		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods, nameBridge);
+		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods);
 	}
 
 	public final DerivationMethod getDerivationMethod()

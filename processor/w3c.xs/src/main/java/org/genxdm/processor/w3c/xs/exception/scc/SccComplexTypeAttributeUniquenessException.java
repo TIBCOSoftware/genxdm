@@ -22,31 +22,31 @@ import org.genxdm.exceptions.PreCondition;
 @SuppressWarnings("serial")
 public final class SccComplexTypeAttributeUniquenessException extends SccComplexTypeDefinitionException
 {
-	private final QName m_attributeName;
+    private final QName m_attributeName;
 
-	public SccComplexTypeAttributeUniquenessException(final QName typeName, final QName attributeName)
-	{
-		super(PART_ATTRIBUTE_UNIQUENESS, typeName);
-		m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
-	}
+    public SccComplexTypeAttributeUniquenessException(final QName typeName, final QName attributeName)
+    {
+        super(PART_ATTRIBUTE_UNIQUENESS, typeName);
+        m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Attribute declarations in the {attribute uses} of " + getTypeName() + " have identical {name}s and {target namespace}s, " + m_attributeName + ".";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Attribute declarations in the {attribute uses} of " + getTypeName() + " have identical {name}s and {target namespace}s, " + m_attributeName + ".";
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof SccComplexTypeAttributeUniquenessException)
-		{
-			final SccComplexTypeAttributeUniquenessException e = (SccComplexTypeAttributeUniquenessException)obj;
-			return e.getTypeName().equals(getTypeName()) && e.m_attributeName.equals(m_attributeName);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof SccComplexTypeAttributeUniquenessException)
+        {
+            final SccComplexTypeAttributeUniquenessException e = (SccComplexTypeAttributeUniquenessException)obj;
+            return e.getTypeName().equals(getTypeName()) && e.m_attributeName.equals(m_attributeName);
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

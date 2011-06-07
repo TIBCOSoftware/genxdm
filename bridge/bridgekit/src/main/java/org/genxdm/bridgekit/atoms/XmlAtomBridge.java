@@ -46,10 +46,10 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 	private final NameSource nameBridge;
 	private Schema schema;
 
-	public XmlAtomBridge(final Schema schema, final NameSource nameBridge)
+	public XmlAtomBridge(final Schema schema)
 	{
 		this.schema = schema;
-		this.nameBridge = IllegalNullArgumentException.check(nameBridge, "nameBridge");
+		this.nameBridge = NameSource.SINGLETON;
 	}
 
 	public void setProcessingContext(final Schema schema)
@@ -907,11 +907,6 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 			PreCondition.assertArgumentNotNull(gregorian, "gregorian");
 			throw new AssertionError("getMonth(" + gregorian.getClass().getName() + ")");
 		}
-	}
-
-	public NameSource getNameBridge()
-	{
-		return nameBridge;
 	}
 
 	public String getNamespaceFromQName(final XmlAtom atom)

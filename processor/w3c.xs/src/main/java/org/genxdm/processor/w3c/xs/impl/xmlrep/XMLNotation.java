@@ -24,38 +24,38 @@ import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 
 public final class XMLNotation extends XMLComponent
 {
-	private final QName name;
-	private String publicId;
-	private URI systemId;
+    private final QName name;
+    private String publicId;
+    private URI systemId;
 
-	public XMLNotation(final QName name, final XMLScope global, final SrcFrozenLocation location)
-	{
-		super(global, location);
-		this.name = PreCondition.assertArgumentNotNull(name);
-	}
+    public XMLNotation(final QName name, final XMLScope global, final SrcFrozenLocation location)
+    {
+        super(global, location);
+        this.name = PreCondition.assertArgumentNotNull(name);
+    }
 
-	public QName getName()
-	{
-		return name;
-	}
-	
-	public String getPublicId()
-	{
-	    return publicId;
-	}
-	
-	public void setPublicId(String id)
-	{
-	    publicId = id;
-	}
-	
-	public URI getSystemId()
-	{
-	    return systemId;
-	}
-	
-	public void setSystemId(URI id)
-	{
-	    systemId = id;
-	}
+    public QName getName()
+    {
+        return name;
+    }
+    
+    public String getPublicId()
+    {
+        return publicId;
+    }
+    
+    public void setPublicId(String id)
+    {
+        publicId = id;
+    }
+    
+    public URI getSystemId()
+    {
+        return systemId;
+    }
+    
+    public void setSystemId(URI id)
+    {
+        systemId = id;
+    }
 }

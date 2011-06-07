@@ -33,143 +33,143 @@ import org.genxdm.xs.enums.DerivationMethod;
  */
 final class XMLSchemaModule
 {
-	private enum ModuleKind
-	{
-		Import, Include, Redefine
-	}
+    private enum ModuleKind
+    {
+        Import, Include, Redefine
+    }
 
-	boolean attributeQualified = false;
-	final EnumSet<DerivationMethod> blockDefault = EnumSet.noneOf(DerivationMethod.class);
+    boolean attributeQualified = false;
+    final EnumSet<DerivationMethod> blockDefault = EnumSet.noneOf(DerivationMethod.class);
 
-	boolean elementQualified = false;
+    boolean elementQualified = false;
 
-	final EnumSet<DerivationMethod> finalDefault = EnumSet.noneOf(DerivationMethod.class);
+    final EnumSet<DerivationMethod> finalDefault = EnumSet.noneOf(DerivationMethod.class);
 
-	private final EnumSet<ModuleKind> m_flags = EnumSet.noneOf(ModuleKind.class);
-	String m_id;
-	/**
-	 * The following is used to check for uniqueness of identity constraint names.
-	 */
-	final HashSet<QName> m_identityConstraints = new HashSet<QName>();
+    private final EnumSet<ModuleKind> m_flags = EnumSet.noneOf(ModuleKind.class);
+    String m_id;
+    /**
+     * The following is used to check for uniqueness of identity constraint names.
+     */
+    final HashSet<QName> m_identityConstraints = new HashSet<QName>();
 
-	/**
-	 * The following is used to check for uniqueness of id attributes.
-	 */
-	final HashSet<String> m_ids = new HashSet<String>();
+    /**
+     * The following is used to check for uniqueness of id attributes.
+     */
+    final HashSet<String> m_ids = new HashSet<String>();
 
-	String m_lang;
-	private final XMLSchemaModule m_parentModule;
-	private final URI m_schemaLocation;
-	private final URI m_systemId;
+    String m_lang;
+    private final XMLSchemaModule m_parentModule;
+    private final URI m_schemaLocation;
+    private final URI m_systemId;
 
-	private URI m_targetNamespace;
+    private URI m_targetNamespace;
 
-	String m_version;
+    String m_version;
 
-	public XMLSchemaModule(final XMLSchemaModule parentModule, final URI schemaLocation, final URI systemId)
-	{
-		this.m_parentModule = parentModule;
-		this.m_schemaLocation = schemaLocation;
-		this.m_systemId = systemId;
-	}
+    public XMLSchemaModule(final XMLSchemaModule parentModule, final URI schemaLocation, final URI systemId)
+    {
+        this.m_parentModule = parentModule;
+        this.m_schemaLocation = schemaLocation;
+        this.m_systemId = systemId;
+    }
 
-	public String computeTargetNamespace()
-	{
-		if (isChameleon())
-		{
-			return getContainingModule().computeTargetNamespace();
-		}
-		else
-		{
-			if (null != m_targetNamespace)
-			{
-				return m_targetNamespace.toString();
-			}
-			else
-			{
-				return XMLConstants.NULL_NS_URI;
-			}
-		}
-	}
+    public String computeTargetNamespace()
+    {
+        if (isChameleon())
+        {
+            return getContainingModule().computeTargetNamespace();
+        }
+        else
+        {
+            if (null != m_targetNamespace)
+            {
+                return m_targetNamespace.toString();
+            }
+            else
+            {
+                return XMLConstants.NULL_NS_URI;
+            }
+        }
+    }
 
-	public XMLSchemaModule getContainingModule()
-	{
-		return m_parentModule;
-	}
+    public XMLSchemaModule getContainingModule()
+    {
+        return m_parentModule;
+    }
 
-	public URI getSchemaLocation()
-	{
-		return m_schemaLocation;
-	}
+    public URI getSchemaLocation()
+    {
+        return m_schemaLocation;
+    }
 
-	public URI getSystemId()
-	{
-		return m_systemId;
-	}
+    public URI getSystemId()
+    {
+        return m_systemId;
+    }
 
-	public URI getTargetNamespace()
-	{
-		return m_targetNamespace;
-	}
+    public URI getTargetNamespace()
+    {
+        return m_targetNamespace;
+    }
 
-	public boolean isChameleon()
-	{
-		if (null == m_targetNamespace)
-		{
-			return isInclude() || isRedefine();
-		}
-		else
-		{
-			// The targetNamespace attribute has been defined.
-			return false;
-		}
-	}
+    public boolean isChameleon()
+    {
+        if (null == m_targetNamespace)
+        {
+            return isInclude() || isRedefine();
+        }
+        else
+        {
+            // The targetNamespace attribute has been defined.
+            return false;
+        }
+    }
 
-	public boolean isImport()
-	{
-		return m_flags.contains(ModuleKind.Import);
-	}
+    public boolean isImport()
+    {
+        return m_flags.contains(ModuleKind.Import);
+    }
 
-	public boolean isInclude()
-	{
-		return m_flags.contains(ModuleKind.Include);
-	}
+    public boolean isInclude()
+    {
+        return m_flags.contains(ModuleKind.Include);
+    }
 
-	public boolean isRedefine()
-	{
-		return m_flags.contains(ModuleKind.Redefine);
-	}
+    public boolean isRedefine()
+    {
+        return m_flags.contains(ModuleKind.Redefine);
+    }
 
-	public void registerIdentityConstraintName(final QName name, final Location location) throws SmDuplicateIdentityConstraintException
-	{
-		if (m_identityConstraints.contains(name))
-		{
-			// The xs:QName value is taken from the Schema for Schemas.
-			throw new SmDuplicateIdentityConstraintException(new QName("identityConstraint"), new SrcFrozenLocation(location));
-		}
-		else
-		{
-			m_identityConstraints.add(name);
-		}
-	}
+    public void registerIdentityConstraintName(final QName name, final Location location) throws SmDuplicateIdentityConstraintException
+    {
+        if (m_identityConstraints.contains(name))
+        {
+            // The xs:QName value is taken from the Schema for Schemas.
+            throw new SmDuplicateIdentityConstraintException(new QName("identityConstraint"), new SrcFrozenLocation(location));
+        }
+        else
+        {
+            m_identityConstraints.add(name);
+        }
+    }
 
-	public void setImportFlag()
-	{
-		m_flags.add(ModuleKind.Import);
-	}
+    public void setImportFlag()
+    {
+        m_flags.add(ModuleKind.Import);
+    }
 
-	public void setIncludeFlag()
-	{
-		m_flags.add(ModuleKind.Include);
-	}
+    public void setIncludeFlag()
+    {
+        m_flags.add(ModuleKind.Include);
+    }
 
-	public void setRedefineFlag()
-	{
-		m_flags.add(ModuleKind.Redefine);
-	}
+    public void setRedefineFlag()
+    {
+        m_flags.add(ModuleKind.Redefine);
+    }
 
-	public void setTargetNamespace(final URI targetNamespace)
-	{
-		m_targetNamespace = PreCondition.assertArgumentNotNull(targetNamespace, "targetNamespace");
-	}
+    public void setTargetNamespace(final URI targetNamespace)
+    {
+        m_targetNamespace = PreCondition.assertArgumentNotNull(targetNamespace, "targetNamespace");
+    }
 }

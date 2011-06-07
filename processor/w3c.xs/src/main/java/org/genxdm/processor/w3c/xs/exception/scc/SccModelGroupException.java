@@ -25,19 +25,19 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 @SuppressWarnings("serial")
 public abstract class SccModelGroupException extends ComponentConstraintException
 {
-	private final QName m_groupName;
+    private final QName m_groupName;
 
-	public static final String PART_PROPERTIES = "1";
-	public static final String PART_CYCLES = "2";
+    public static final String PART_PROPERTIES = "1";
+    public static final String PART_CYCLES = "2";
 
-	public SccModelGroupException(final String partNumber, final QName groupName)
-	{
-		super(ValidationOutcome.SCC_ModelGroup, partNumber);
-		m_groupName = PreCondition.assertArgumentNotNull(groupName, "element");
-	}
+    public SccModelGroupException(final String partNumber, final QName groupName)
+    {
+        super(ValidationOutcome.SCC_ModelGroup, partNumber);
+        m_groupName = PreCondition.assertArgumentNotNull(groupName, "element");
+    }
 
-	public final QName getGroupName()
-	{
-		return m_groupName;
-	}
+    public final QName getGroupName()
+    {
+        return m_groupName;
+    }
 }

@@ -230,7 +230,7 @@ public class GregorianType extends AbstractAtomType
 			final DatatypeFactory factory = getFactory();
 			final XMLGregorianCalendar calendar = factory.newXMLGregorianCalendar(trimmed);
 
-			final NameSource nameBridge = atomBridge.getNameBridge();
+			final NameSource nameBridge = NameSource.SINGLETON;
 
 			final QName sourceName = calendar.getXMLSchemaType();
 			final NativeType sourceType = nameBridge.nativeType(sourceName);

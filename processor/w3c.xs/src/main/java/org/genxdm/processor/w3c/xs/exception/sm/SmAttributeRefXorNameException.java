@@ -20,14 +20,14 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmAttributeRefXorNameException extends SmSourceAttributeException
 {
-	public SmAttributeRefXorNameException(final LocationInSchema location)
-	{
-		super(PART_REF_XOR_NAME, location);
-	}
+    public SmAttributeRefXorNameException(final LocationInSchema location)
+    {
+        super(PART_REF_XOR_NAME, location);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "One of ref or name must be present, but not both.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "One of ref or name must be present, but not both.";
+    }
 }

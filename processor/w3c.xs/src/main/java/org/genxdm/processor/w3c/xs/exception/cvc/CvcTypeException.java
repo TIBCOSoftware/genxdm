@@ -25,20 +25,20 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public abstract class CvcTypeException extends SmLocationException
 {
-	private final QName m_elementName;
+    private final QName m_elementName;
 
-	public static final String PART_ABSENT = "1";
-	public static final String PART_ABSTRACT = "2";
-	public static final String PART_SIMPLE_TYPE_NO_CHILDREN = "3.1.2";
+    public static final String PART_ABSENT = "1";
+    public static final String PART_ABSTRACT = "2";
+    public static final String PART_SIMPLE_TYPE_NO_CHILDREN = "3.1.2";
 
-	public CvcTypeException(final String partNumber, final QName elementName, final LocationInSchema elementLocation)
-	{
-		super(ValidationOutcome.CVC_Type, partNumber, elementLocation);
-		this.m_elementName = PreCondition.assertArgumentNotNull(elementName, "element");
-	}
+    public CvcTypeException(final String partNumber, final QName elementName, final LocationInSchema elementLocation)
+    {
+        super(ValidationOutcome.CVC_Type, partNumber, elementLocation);
+        this.m_elementName = PreCondition.assertArgumentNotNull(elementName, "element");
+    }
 
-	public QName getElementName()
-	{
-		return m_elementName;
-	}
+    public QName getElementName()
+    {
+        return m_elementName;
+    }
 }

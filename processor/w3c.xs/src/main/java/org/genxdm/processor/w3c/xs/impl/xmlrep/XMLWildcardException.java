@@ -21,14 +21,14 @@ import org.genxdm.xs.exceptions.SchemaException;
 @SuppressWarnings("serial")
 final class XMLWildcardException extends Exception
 {
-	public XMLWildcardException(final SchemaException cause)
-	{
-		super(PreCondition.assertArgumentNotNull(cause, "cause"));
-	}
+    public XMLWildcardException(final SchemaException cause)
+    {
+        super(PreCondition.assertArgumentNotNull(cause, "cause"));
+    }
 
-	@Override
-	public SchemaException getCause()
-	{
-		return (SchemaException)super.getCause();
-	}
+    @Override
+    public SchemaException getCause()
+    {
+        return (SchemaException)super.getCause();
+    }
 }

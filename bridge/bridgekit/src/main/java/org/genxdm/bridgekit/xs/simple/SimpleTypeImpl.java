@@ -265,7 +265,7 @@ public abstract class SimpleTypeImpl extends TypeImpl implements SimpleType
 
 	public SimpleTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final DerivationMethod derivation, final WhiteSpacePolicy whiteSpace)
 	{
-		super(name, isAnonymous, scope, derivation, new NameSource());
+		super(name, isAnonymous, scope, derivation);
 		this.m_whiteSpace = whiteSpace;
 	}
 
@@ -428,7 +428,7 @@ public abstract class SimpleTypeImpl extends TypeImpl implements SimpleType
 		// normalize (handle whitespace pseudo-facet) first.
 		final String normalizedValue = normalize(initialValue);
 
-		checkPatternFacets(this, normalizedValue, atomBridge.getNameBridge());
+		checkPatternFacets(this, normalizedValue, NameSource.SINGLETON);
 
 		// compile - which will perform various forms of validation, for types w/o facets
 		final List<A> actualValue = compile(normalizedValue, atomBridge);
@@ -448,7 +448,7 @@ public abstract class SimpleTypeImpl extends TypeImpl implements SimpleType
 		// normalize (handle whitespace pseudo-facet) first.
 		final String normalizedValue = normalize(initialValue);
 
-		checkPatternFacets(this, normalizedValue, atomBridge.getNameBridge());
+		checkPatternFacets(this, normalizedValue, NameSource.SINGLETON);
 
 		// compile - which will perform various forms of validation, for types w/o facets
 		final List<A> actualValue = compile(normalizedValue, atomBridge);
@@ -465,7 +465,7 @@ public abstract class SimpleTypeImpl extends TypeImpl implements SimpleType
 		// normalize (handle whitespace pseudo-facet) first.
 		final String normalizedValue = normalize(initialValue);
 
-		checkPatternFacets(this, normalizedValue, atomBridge.getNameBridge());
+		checkPatternFacets(this, normalizedValue, NameSource.SINGLETON);
 
 		// compile - which will perform various forms of validation, for types w/o facets
 		final List<A> actualValue = compile(normalizedValue, resolver, atomBridge);

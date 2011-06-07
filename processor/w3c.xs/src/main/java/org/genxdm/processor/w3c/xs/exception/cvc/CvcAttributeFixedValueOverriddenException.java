@@ -23,33 +23,33 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcAttributeFixedValueOverriddenException extends CvcAttributeException
 {
-	private final String m_expectValue;
-	private final String m_actualValue;
+    private final String m_expectValue;
+    private final String m_actualValue;
 
-	public CvcAttributeFixedValueOverriddenException(final QName attributeName, final String expectValue, final String actualValue, final LocationInSchema location)
-	{
-		super(PART_VALUE_CONSTRAINT, attributeName, location);
-		m_expectValue = PreCondition.assertArgumentNotNull(expectValue, "expectValue");
-		m_actualValue = PreCondition.assertArgumentNotNull(actualValue, "actualValue");
-	}
+    public CvcAttributeFixedValueOverriddenException(final QName attributeName, final String expectValue, final String actualValue, final LocationInSchema location)
+    {
+        super(PART_VALUE_CONSTRAINT, attributeName, location);
+        m_expectValue = PreCondition.assertArgumentNotNull(expectValue, "expectValue");
+        m_actualValue = PreCondition.assertArgumentNotNull(actualValue, "actualValue");
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Fixed value, '" + m_expectValue + "', has been overridden with '" + m_actualValue + "' for attribute '" + getAttributeName() + "'.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Fixed value, '" + m_expectValue + "', has been overridden with '" + m_actualValue + "' for attribute '" + getAttributeName() + "'.";
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof CvcAttributeFixedValueOverriddenException)
-		{
-			final CvcAttributeFixedValueOverriddenException e = (CvcAttributeFixedValueOverriddenException)obj;
-			return e.getAttributeName().equals(getAttributeName()) && e.m_expectValue.equals(m_expectValue) && e.m_actualValue.equals(m_actualValue);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof CvcAttributeFixedValueOverriddenException)
+        {
+            final CvcAttributeFixedValueOverriddenException e = (CvcAttributeFixedValueOverriddenException)obj;
+            return e.getAttributeName().equals(getAttributeName()) && e.m_expectValue.equals(m_expectValue) && e.m_actualValue.equals(m_actualValue);
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

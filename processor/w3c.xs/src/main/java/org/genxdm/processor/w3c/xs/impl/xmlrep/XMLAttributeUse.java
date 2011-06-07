@@ -19,29 +19,29 @@ import org.genxdm.exceptions.PreCondition;
 
 public final class XMLAttributeUse
 {
-	private final boolean m_isRequired;
-	private final XMLAttribute m_attribute;
-	private final XMLValueConstraint m_valueConstraint;
+    private final boolean m_isRequired;
+    private final XMLAttribute m_attribute;
+    private final XMLValueConstraint m_valueConstraint;
 
-	public XMLAttributeUse(final boolean isRequired, final XMLAttribute attribute, final XMLValueConstraint valueConstraint)
-	{
-		m_isRequired = isRequired;
-		m_attribute = PreCondition.assertArgumentNotNull(attribute);
-		m_valueConstraint = valueConstraint;
-	}
+    public XMLAttributeUse(final boolean isRequired, final XMLAttribute attribute, final XMLValueConstraint valueConstraint)
+    {
+        m_isRequired = isRequired;
+        m_attribute = PreCondition.assertArgumentNotNull(attribute);
+        m_valueConstraint = valueConstraint;
+    }
 
-	public XMLAttribute getDeclaration()
-	{
-		return m_attribute;
-	}
+    public XMLAttribute getDeclaration()
+    {
+        return m_attribute;
+    }
 
-	public boolean isRequired()
-	{
-		return m_isRequired;
-	}
+    public boolean isRequired()
+    {
+        return m_isRequired;
+    }
 
-	public XMLValueConstraint getValueConstraint()
-	{
-		return m_valueConstraint;
-	}
+    public XMLValueConstraint getValueConstraint()
+    {
+        return m_valueConstraint;
+    }
 }

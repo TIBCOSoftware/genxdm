@@ -22,19 +22,19 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 final public class SmRedefinitionNotWellFormedException extends SrcRedefinitionException
 {
-	public SmRedefinitionNotWellFormedException(final LocationInSchema location)
-	{
-		super(PART_SCHEMA_NOT_WELL_FORMED, location);
-	}
+    public SmRedefinitionNotWellFormedException(final LocationInSchema location)
+    {
+        super(PART_SCHEMA_NOT_WELL_FORMED, location);
+    }
 
-	public SmRedefinitionNotWellFormedException(final LocationInSchema location, final SchemaException cause)
-	{
-		super(PART_SCHEMA_NOT_WELL_FORMED, location, cause);
-	}
+    public SmRedefinitionNotWellFormedException(final LocationInSchema location, final SchemaException cause)
+    {
+        super(PART_SCHEMA_NOT_WELL_FORMED, location, cause);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The redefined schema is not well-formed.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The redefined schema is not well-formed.";
+    }
 }

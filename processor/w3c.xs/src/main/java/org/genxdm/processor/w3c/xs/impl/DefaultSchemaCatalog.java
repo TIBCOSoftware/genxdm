@@ -15,15 +15,22 @@
  */
 package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.xs.constraints.RestrictedXPath;
-import org.genxdm.xs.exceptions.SimpleTypeException;
-import org.genxdm.xs.resolve.PrefixResolver;
+import java.net.URI;
 
-/**
- * A parser of restricted XPath expressions.
- * 
- */
-interface SmRestrictedXPathParser
+import org.genxdm.xs.resolve.SchemaCatalog;
+
+enum DefaultSchemaCatalog implements SchemaCatalog
 {
-	RestrictedXPath parseXPath(final String xpath, final PrefixResolver prefixes) throws SimpleTypeException;
+    SINGLETON;
+
+    public URI resolveLocation(URI baseURI, URI schemaLocation)
+    {
+        return schemaLocation;
+    }
+
+    public URI resolveNamespaceAndSchemaLocation(URI baseURI, URI namespace, URI schemaLocation)
+    {
+        return schemaLocation;
+    }
+
 }

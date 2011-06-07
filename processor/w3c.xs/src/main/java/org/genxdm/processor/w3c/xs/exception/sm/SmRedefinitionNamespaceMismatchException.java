@@ -22,19 +22,19 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public class SmRedefinitionNamespaceMismatchException extends SrcRedefinitionException
 {
-	public SmRedefinitionNamespaceMismatchException(final LocationInSchema location)
-	{
-		super(PART_REDEFINTION_NAMESPACE_MISMATCH, location);
-	}
+    public SmRedefinitionNamespaceMismatchException(final LocationInSchema location)
+    {
+        super(PART_REDEFINTION_NAMESPACE_MISMATCH, location);
+    }
 
-	public SmRedefinitionNamespaceMismatchException(final LocationInSchema location, final SchemaException cause)
-	{
-		super(PART_REDEFINTION_NAMESPACE_MISMATCH, location, cause);
-	}
+    public SmRedefinitionNamespaceMismatchException(final LocationInSchema location, final SchemaException cause)
+    {
+        super(PART_REDEFINTION_NAMESPACE_MISMATCH, location, cause);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "If the redefined schema has a targetnamespace, the redefining schema must have the identical targetnamespace.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "If the redefined schema has a targetnamespace, the redefining schema must have the identical targetnamespace.";
+    }
 }

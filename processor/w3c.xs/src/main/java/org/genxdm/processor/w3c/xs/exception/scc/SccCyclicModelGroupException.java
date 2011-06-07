@@ -23,13 +23,13 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SccCyclicModelGroupException extends SccModelGroupException
 {
-	public SccCyclicModelGroupException(final QName groupName, final LocationInSchema location)
-	{
-		super(PART_CYCLES, groupName);
-	}
+    public SccCyclicModelGroupException(final QName groupName, final LocationInSchema location)
+    {
+        super(PART_CYCLES, groupName);
+    }
 
-	public String getMessage()
-	{
-		return getClass().getName();
-	}
+    public String getMessage()
+    {
+        return getClass().getName();
+    }
 }

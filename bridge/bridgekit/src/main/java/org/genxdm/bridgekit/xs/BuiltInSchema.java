@@ -54,7 +54,6 @@ import org.genxdm.bridgekit.xs.simple.StringType;
 import org.genxdm.bridgekit.xs.simple.TokenType;
 import org.genxdm.bridgekit.xs.simple.UntypedAtomicType;
 import org.genxdm.bridgekit.xs.simple.YearMonthDurationType;
-import org.genxdm.names.NameSource;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
 import org.genxdm.xs.components.ComponentBag;
@@ -137,7 +136,6 @@ final class BuiltInSchema implements ComponentBag
 	 */
 	public BuiltInSchema(final String W3C_XML_SCHEMA_NS_URI, final SchemaCacheImpl cache)
 	{
-		final NameSource nameBridge = new NameSource();
 
 		ANY_COMPLEX_TYPE = cache.getComplexUrType();
 		ANY_SIMPLE_TYPE = cache.getSimpleUrType();
@@ -145,7 +143,7 @@ final class BuiltInSchema implements ComponentBag
 
 		final Map<QName, AttributeUse> EMPTY_ATTRIBUTE_USES = Collections.emptyMap();
 		UNTYPED = new ComplexTypeImpl(name(W3C_XML_SCHEMA_NS_URI, "untyped"), true, false, ScopeExtent.Global, ANY_COMPLEX_TYPE, DerivationMethod.Restriction, EMPTY_ATTRIBUTE_USES, ANY_COMPLEX_TYPE.getContentType(), EnumSet
-				.noneOf(DerivationMethod.class), nameBridge, cache);
+				.noneOf(DerivationMethod.class), cache);
 		UNTYPED.setAttributeWildcard(ANY_COMPLEX_TYPE.getAttributeWildcard());
 		UNTYPED_ATOMIC = new UntypedAtomicType(name(W3C_XML_SCHEMA_NS_URI, "untypedAtomic"), ANY_ATOMIC_TYPE);
 

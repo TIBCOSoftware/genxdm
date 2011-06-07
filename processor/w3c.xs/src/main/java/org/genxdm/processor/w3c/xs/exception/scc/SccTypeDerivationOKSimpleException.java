@@ -25,19 +25,19 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 @SuppressWarnings("serial")
 public abstract class SccTypeDerivationOKSimpleException extends ComponentConstraintException
 {
-	private final QName m_typeName;
+    private final QName m_typeName;
 
-	public static final String PART_RESTRICTION = "2.1";
-	public static final String PART_GENERAL = "2.2";
+    public static final String PART_RESTRICTION = "2.1";
+    public static final String PART_GENERAL = "2.2";
 
-	public SccTypeDerivationOKSimpleException(final String partNumber, final QName typeName)
-	{
-		super(ValidationOutcome.SCC_Type_Derivation_OK_Simple, partNumber);
-		m_typeName = PreCondition.assertArgumentNotNull(typeName, "elementName");
-	}
+    public SccTypeDerivationOKSimpleException(final String partNumber, final QName typeName)
+    {
+        super(ValidationOutcome.SCC_Type_Derivation_OK_Simple, partNumber);
+        m_typeName = PreCondition.assertArgumentNotNull(typeName, "elementName");
+    }
 
-	public final QName getTypeName()
-	{
-		return m_typeName;
-	}
+    public final QName getTypeName()
+    {
+        return m_typeName;
+    }
 }

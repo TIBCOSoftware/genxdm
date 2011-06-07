@@ -24,43 +24,43 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcElementInEmptyContentException extends SmComplexTypeException
 {
-	private final QName m_childName;
-	private final LocationInSchema m_childLocation;
+    private final QName m_childName;
+    private final LocationInSchema m_childLocation;
 
-	public CvcElementInEmptyContentException(final QName elementName, final LocationInSchema elementLocation, final QName childName, final LocationInSchema childLocation)
-	{
-		super(PART_CONTENT_TYPE_IS_EMPTY, elementName, elementLocation);
-		m_childName = PreCondition.assertArgumentNotNull(childName, "childName");
-		m_childLocation = childLocation;
-	}
+    public CvcElementInEmptyContentException(final QName elementName, final LocationInSchema elementLocation, final QName childName, final LocationInSchema childLocation)
+    {
+        super(PART_CONTENT_TYPE_IS_EMPTY, elementName, elementLocation);
+        m_childName = PreCondition.assertArgumentNotNull(childName, "childName");
+        m_childLocation = childLocation;
+    }
 
-	public QName getChildName()
-	{
-		return m_childName;
-	}
+    public QName getChildName()
+    {
+        return m_childName;
+    }
 
-	public LocationInSchema getChildLocation()
-	{
-		return m_childLocation;
-	}
+    public LocationInSchema getChildLocation()
+    {
+        return m_childLocation;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Element " + m_childName + " is not allowed as a child of " + getElementName() + " because the {content type} is Empty.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Element " + m_childName + " is not allowed as a child of " + getElementName() + " because the {content type} is Empty.";
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof CvcElementInEmptyContentException)
-		{
-			final CvcElementInEmptyContentException other = (CvcElementInEmptyContentException)obj;
-			return m_childName.equals(other.m_childName);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof CvcElementInEmptyContentException)
+        {
+            final CvcElementInEmptyContentException other = (CvcElementInEmptyContentException)obj;
+            return m_childName.equals(other.m_childName);
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

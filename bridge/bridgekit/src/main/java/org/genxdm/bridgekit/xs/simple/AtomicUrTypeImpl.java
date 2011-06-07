@@ -23,7 +23,6 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.xs.SchemaSupport;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.EnumerationDefinition;
 import org.genxdm.xs.enums.DerivationMethod;
@@ -60,12 +59,12 @@ public final class AtomicUrTypeImpl extends AbstractPrimeExcludingNoneType imple
 
 	public boolean derivedFrom(final String namespace, final String name, final Set<DerivationMethod> derivationMethods)
 	{
-		return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods, new NameSource());
+		return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods);
 	}
 
 	public boolean derivedFromType(final Type ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
-		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods, new NameSource());
+		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods);
 	}
 
 	public SimpleUrTypeImpl getBaseType()

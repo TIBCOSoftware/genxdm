@@ -25,19 +25,19 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 @SuppressWarnings("serial")
 public final class SccNotationNotInValueSpace extends ComponentConstraintException
 {
-	private final QName notation;
-	private final Set<QName> values;
+    private final QName notation;
+    private final Set<QName> values;
 
-	public SccNotationNotInValueSpace(final QName notation, final Set<QName> values)
-	{
-		super(ValidationOutcome.TODO, "");
-		this.notation = notation;
-		this.values = values;
-	}
+    public SccNotationNotInValueSpace(final QName notation, final Set<QName> values)
+    {
+        super(ValidationOutcome.TODO, "");
+        this.notation = notation;
+        this.values = values;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The NOTATION value, '" + notation + "', must be in the set of QNames, '" + values + "', of notations declared in the current schema.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The NOTATION value, '" + notation + "', must be in the set of QNames, '" + values + "', of notations declared in the current schema.";
+    }
 }

@@ -26,25 +26,25 @@ import org.genxdm.xs.exceptions.SchemaException;
 @SuppressWarnings("serial")
 public abstract class SccElementDeclarationException extends ComponentConstraintException
 {
-	private final QName m_elementName;
+    private final QName m_elementName;
 
-	public static final String PART_SUBSTITUTION_GROUP_TYPE_DERIVATION = "4";
-	public static final String PART_DERIVED_FROM_ID_WITH_VALUE_CONSTRAINT = "5";
+    public static final String PART_SUBSTITUTION_GROUP_TYPE_DERIVATION = "4";
+    public static final String PART_DERIVED_FROM_ID_WITH_VALUE_CONSTRAINT = "5";
 
-	public SccElementDeclarationException(final String partNumber, final QName elementName)
-	{
-		super(ValidationOutcome.SCC_Element_Declaration_Properties_Correct, partNumber);
-		m_elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
-	}
+    public SccElementDeclarationException(final String partNumber, final QName elementName)
+    {
+        super(ValidationOutcome.SCC_Element_Declaration_Properties_Correct, partNumber);
+        m_elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
+    }
 
-	public SccElementDeclarationException(final String partNumber, final QName elementName, final SchemaException cause)
-	{
-		super(ValidationOutcome.SCC_Element_Declaration_Properties_Correct, partNumber, cause);
-		m_elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
-	}
+    public SccElementDeclarationException(final String partNumber, final QName elementName, final SchemaException cause)
+    {
+        super(ValidationOutcome.SCC_Element_Declaration_Properties_Correct, partNumber, cause);
+        m_elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
+    }
 
-	public final QName getElementName()
-	{
-		return m_elementName;
-	}
+    public final QName getElementName()
+    {
+        return m_elementName;
+    }
 }

@@ -22,18 +22,18 @@ import org.genxdm.exceptions.PreCondition;
 @SuppressWarnings("serial")
 public final class SccAttributeDerivationRequiredConflictException extends SccComplexTypeDerivationRestrictionException
 {
-	@SuppressWarnings("unused")
-	private final QName m_attributeName;
+    @SuppressWarnings("unused")
+    private final QName m_attributeName;
 
-	public SccAttributeDerivationRequiredConflictException(final QName typeName, final QName attributeName)
-	{
-		super(PART_ATTRIBUTE_REQUIRED_CONFLICT, typeName);
-		m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
-	}
+    public SccAttributeDerivationRequiredConflictException(final QName typeName, final QName attributeName)
+    {
+        super(PART_ATTRIBUTE_REQUIRED_CONFLICT, typeName);
+        m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "{required} for attribute use conflicts with {base type definition}.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "{required} for attribute use conflicts with {base type definition}.";
+    }
 }

@@ -21,55 +21,55 @@ import org.genxdm.xs.resolve.LocationInSchema;
 
 public final class SrcFrozenLocation implements LocationInSchema
 {
-	private final int m_lineNumber;
-	private final int m_columnNumber;
-	private final int m_characterOffset;
-	private final String m_publicId;
-	private final String m_systemId;
+    private final int m_lineNumber;
+    private final int m_columnNumber;
+    private final int m_characterOffset;
+    private final String m_publicId;
+    private final String m_systemId;
 
-	public SrcFrozenLocation(final int lineNumber, final int columnNumber, final int characterOffset, final String publicId, final String systemId)
-	{
-		m_lineNumber = lineNumber;
-		m_columnNumber = columnNumber;
-		m_characterOffset = characterOffset;
-		m_publicId = publicId;
-		m_systemId = systemId;
-	}
+    public SrcFrozenLocation(final int lineNumber, final int columnNumber, final int characterOffset, final String publicId, final String systemId)
+    {
+        m_lineNumber = lineNumber;
+        m_columnNumber = columnNumber;
+        m_characterOffset = characterOffset;
+        m_publicId = publicId;
+        m_systemId = systemId;
+    }
 
-	public int getLineNumber()
-	{
-		return m_lineNumber;
-	}
+    public int getLineNumber()
+    {
+        return m_lineNumber;
+    }
 
-	public int getColumnNumber()
-	{
-		return m_columnNumber;
-	}
+    public int getColumnNumber()
+    {
+        return m_columnNumber;
+    }
 
-	public int getCharacterOffset()
-	{
-		return m_characterOffset;
-	}
+    public int getCharacterOffset()
+    {
+        return m_characterOffset;
+    }
 
-	public String getPublicId()
-	{
-		return m_publicId;
-	}
+    public String getPublicId()
+    {
+        return m_publicId;
+    }
 
-	public String getSystemId()
-	{
-		return m_systemId;
-	}
+    public String getSystemId()
+    {
+        return m_systemId;
+    }
 
-	@Override
-	public String toString()
-	{
-		final HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("lineNumber", m_lineNumber);
-		map.put("columnNumber", m_columnNumber);
-		map.put("characterOffset", m_characterOffset);
-		map.put("publicId", m_publicId);
-		map.put("systemId", m_systemId);
-		return map.toString();
-	}
+    @Override
+    public String toString()
+    {
+        final HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("lineNumber", m_lineNumber);
+        map.put("columnNumber", m_columnNumber);
+        map.put("characterOffset", m_characterOffset);
+        map.put("publicId", m_publicId);
+        map.put("systemId", m_systemId);
+        return map.toString();
+    }
 }

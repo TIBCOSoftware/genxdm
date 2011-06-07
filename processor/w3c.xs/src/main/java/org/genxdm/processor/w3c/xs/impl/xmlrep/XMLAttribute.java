@@ -22,13 +22,13 @@ import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 
 public final class XMLAttribute extends XMLDeclaration
 {
-	public XMLAttribute(final QName name, final XMLScope scope, final XMLTypeRef anySimpleType, final SrcFrozenLocation location)
-	{
-		super(PreCondition.assertArgumentNotNull(name, "name"), scope, anySimpleType, location);
-	}
+    public XMLAttribute(final QName name, final XMLScope scope, final XMLTypeRef anySimpleType, final SrcFrozenLocation location)
+    {
+        super(PreCondition.assertArgumentNotNull(name, "name"), scope, anySimpleType, location);
+    }
 
-	public XMLAttribute(final QName name, final XMLScope scope, final XMLTypeRef anySimpleType)
-	{
-		super(PreCondition.assertArgumentNotNull(name, "name"), scope, anySimpleType);
-	}
+    public XMLAttribute(final QName name, final XMLScope scope, final XMLTypeRef anySimpleType)
+    {
+        super(PreCondition.assertArgumentNotNull(name, "name"), scope, anySimpleType);
+    }
 }

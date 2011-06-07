@@ -25,17 +25,17 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmUndeclaredReferenceException extends SmLocationException
 {
-	private final QName m_what;
+    private final QName m_what;
 
-	public SmUndeclaredReferenceException(final QName name, final LocationInSchema location)
-	{
-		super(ValidationOutcome.TODO, "?", location);
-		m_what = PreCondition.assertArgumentNotNull(name, "name");
-	}
+    public SmUndeclaredReferenceException(final QName name, final LocationInSchema location)
+    {
+        super(ValidationOutcome.TODO, "?", location);
+        m_what = PreCondition.assertArgumentNotNull(name, "name");
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Unresolved reference to " + m_what;
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Unresolved reference to " + m_what;
+    }
 }

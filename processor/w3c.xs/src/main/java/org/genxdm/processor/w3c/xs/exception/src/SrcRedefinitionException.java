@@ -24,18 +24,18 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public abstract class SrcRedefinitionException extends SmLocationException
 {
-	public static final String PART_SCHEMA_LOCATION_RESOLVES = "1";
-	public static final String PART_SCHEMA_NOT_WELL_FORMED = "2";
-	public static final String PART_REDEFINTION_NAMESPACE_MISMATCH = "3.1";
-	public static final String PART_TYPE_SELF_REFERENCE = "5";
+    public static final String PART_SCHEMA_LOCATION_RESOLVES = "1";
+    public static final String PART_SCHEMA_NOT_WELL_FORMED = "2";
+    public static final String PART_REDEFINTION_NAMESPACE_MISMATCH = "3.1";
+    public static final String PART_TYPE_SELF_REFERENCE = "5";
 
-	public SrcRedefinitionException(final String partNumber, final LocationInSchema location)
-	{
-		super(ValidationOutcome.SRC_Redefine, partNumber, location);
-	}
+    public SrcRedefinitionException(final String partNumber, final LocationInSchema location)
+    {
+        super(ValidationOutcome.SRC_Redefine, partNumber, location);
+    }
 
-	public SrcRedefinitionException(final String partNumber, final LocationInSchema location, final SchemaException cause)
-	{
-		super(ValidationOutcome.SRC_Redefine, partNumber, location, PreCondition.assertArgumentNotNull(cause, "cause"));
-	}
+    public SrcRedefinitionException(final String partNumber, final LocationInSchema location, final SchemaException cause)
+    {
+        super(ValidationOutcome.SRC_Redefine, partNumber, location, PreCondition.assertArgumentNotNull(cause, "cause"));
+    }
 }

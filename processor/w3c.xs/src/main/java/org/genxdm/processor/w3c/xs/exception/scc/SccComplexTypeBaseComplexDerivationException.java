@@ -25,14 +25,14 @@ import org.genxdm.xs.types.Type;
 @SuppressWarnings("serial")
 public final class SccComplexTypeBaseComplexDerivationException extends SccTypeDerivationOKComplexException
 {
-	public SccComplexTypeBaseComplexDerivationException(final Type derivedType, final Type baseType, final Set<DerivationMethod> subset, final ComponentConstraintException cause)
-	{
-		super(PART_BASE_COMPLEX, derivedType, baseType, subset, cause);
-	}
+    public SccComplexTypeBaseComplexDerivationException(final Type derivedType, final Type baseType, final Set<DerivationMethod> subset, final ComponentConstraintException cause)
+    {
+        super(PART_BASE_COMPLEX, derivedType, baseType, subset, cause);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The {type definition} of " + getDerivedType().getName() + " must be validly derived from " + getBaseName() + ".";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The {type definition} of " + getDerivedType().getName() + " must be validly derived from " + getBaseName() + ".";
+    }
 }

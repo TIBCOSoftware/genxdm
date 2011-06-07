@@ -23,17 +23,17 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcMissingKeyFieldException extends CvcIdentityConstraintException
 {
-	private final Integer m_index;
+    private final Integer m_index;
 
-	public CvcMissingKeyFieldException(final QName constraintName, final Integer index, final LocationInSchema location)
-	{
-		super(constraintName, PART_TODO, location);
-		m_index = PreCondition.assertArgumentNotNull(index, "index");
-	}
+    public CvcMissingKeyFieldException(final QName constraintName, final Integer index, final LocationInSchema location)
+    {
+        super(constraintName, PART_TODO, location);
+        m_index = PreCondition.assertArgumentNotNull(index, "index");
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Missing key field #" + m_index + " for identity constraint " + getConstraintName() + ".";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Missing key field #" + m_index + " for identity constraint " + getConstraintName() + ".";
+    }
 }

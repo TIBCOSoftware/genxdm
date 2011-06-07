@@ -21,8 +21,8 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmSimpleTypeListException extends SrcSimpleTypeException
 {
-	public SmSimpleTypeListException(final LocationInSchema location)
-	{
-		super(PART_LIST, location);
-	}
+    public SmSimpleTypeListException(final LocationInSchema location)
+    {
+        super(PART_LIST, location);
+    }
 }

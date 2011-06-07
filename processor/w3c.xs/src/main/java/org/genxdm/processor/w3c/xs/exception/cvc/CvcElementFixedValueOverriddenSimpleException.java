@@ -22,33 +22,33 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcElementFixedValueOverriddenSimpleException extends CvcElementException
 {
-	private final String m_expectValue;
-	private final String m_actualValue;
+    private final String m_expectValue;
+    private final String m_actualValue;
 
-	public CvcElementFixedValueOverriddenSimpleException(final ElementDefinition elementDeclaration, final String expectValue, final String actualValue, final LocationInSchema location)
-	{
-		super(PART_VALUE_CONSTRAINT_SIMPLE, elementDeclaration, location);
-		this.m_expectValue = PreCondition.assertArgumentNotNull(expectValue, "expectValue");
-		this.m_actualValue = PreCondition.assertArgumentNotNull(actualValue, "actualValue");
-	}
+    public CvcElementFixedValueOverriddenSimpleException(final ElementDefinition elementDeclaration, final String expectValue, final String actualValue, final LocationInSchema location)
+    {
+        super(PART_VALUE_CONSTRAINT_SIMPLE, elementDeclaration, location);
+        this.m_expectValue = PreCondition.assertArgumentNotNull(expectValue, "expectValue");
+        this.m_actualValue = PreCondition.assertArgumentNotNull(actualValue, "actualValue");
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Fixed value, '" + m_expectValue + "', specified by the element declaration '" + getElementDeclaration().getName() + "' has been overridden with '" + m_actualValue + "'.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Fixed value, '" + m_expectValue + "', specified by the element declaration '" + getElementDeclaration().getName() + "' has been overridden with '" + m_actualValue + "'.";
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof CvcElementFixedValueOverriddenSimpleException)
-		{
-			final CvcElementFixedValueOverriddenSimpleException e = (CvcElementFixedValueOverriddenSimpleException)obj;
-			return e.m_expectValue.equals(m_expectValue) && e.m_actualValue.equals(m_actualValue);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof CvcElementFixedValueOverriddenSimpleException)
+        {
+            final CvcElementFixedValueOverriddenSimpleException e = (CvcElementFixedValueOverriddenSimpleException)obj;
+            return e.m_expectValue.equals(m_expectValue) && e.m_actualValue.equals(m_actualValue);
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

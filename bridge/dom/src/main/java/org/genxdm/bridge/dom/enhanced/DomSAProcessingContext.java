@@ -63,7 +63,7 @@ public final class DomSAProcessingContext
 {
     public DomSAProcessingContext(DomProcessingContext parent)
 	{
-		this.atomBridge = new XmlAtomBridge(this, new NameSource());
+		this.atomBridge = new XmlAtomBridge(this);
 		this.m_cache = new SchemaTypeBridgeFactory().newMetaBridge();
 		this.m_metaBridge = new MetaBridgeOnSchemaTypeBridgeAdapter(m_cache);
 		this.m_model = new DomSAModel(this);

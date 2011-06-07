@@ -27,23 +27,23 @@ import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.SimpleType;
 
-public interface SmConstraintHandler
+public interface SchemaConstraintHandler
 {
-	void error(SimpleType simpleType, SchemaException exception) throws AbortException;
+    void error(SimpleType simpleType, SchemaException exception) throws AbortException;
 
-	void error(ComplexType complexType, SchemaException exception) throws AbortException;
+    void error(ComplexType complexType, SchemaException exception) throws AbortException;
 
-	void error(AttributeDefinition attribute, SchemaException exception) throws AbortException;
+    void error(AttributeDefinition attribute, SchemaException exception) throws AbortException;
 
-	void error(ElementDefinition element, SchemaException exception) throws AbortException;
+    void error(ElementDefinition element, SchemaException exception) throws AbortException;
 
-	void error(ModelGroup modelGroup, SchemaException exception) throws AbortException;
+    void error(ModelGroup modelGroup, SchemaException exception) throws AbortException;
 
-	void error(AttributeGroupDefinition attributeGroup, SchemaException exception) throws AbortException;
+    void error(AttributeGroupDefinition attributeGroup, SchemaException exception) throws AbortException;
 
-	void error(IdentityConstraint constraint, SchemaException exception) throws AbortException;
+    void error(IdentityConstraint constraint, SchemaException exception) throws AbortException;
 
-	void error(NotationDefinition notation, SchemaException exception) throws AbortException;
+    void error(NotationDefinition notation, SchemaException exception) throws AbortException;
 
-	void error(SchemaParticle particle, SchemaException exception) throws AbortException;
+    void error(SchemaParticle particle, SchemaException exception) throws AbortException;
 }

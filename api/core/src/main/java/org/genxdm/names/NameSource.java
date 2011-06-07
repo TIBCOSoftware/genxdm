@@ -34,7 +34,7 @@ import org.genxdm.xs.types.NativeType;
  */
 public class NameSource
 {
-    public NameSource()
+    private NameSource()
     {
         initialize();
     }
@@ -80,6 +80,8 @@ public class NameSource
             nativeToName.put(nativeType, name);
         }
     }
+    
+    public static final NameSource SINGLETON = new NameSource();
 
     private final HashMap<QName, NativeType> nameToNative = new HashMap<QName, NativeType>();
     private final HashMap<NativeType, QName> nativeToName = new HashMap<NativeType, QName>();

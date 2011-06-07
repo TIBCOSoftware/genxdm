@@ -20,8 +20,8 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcDanglingIDReferenceException extends CvcIDException
 {
-	public CvcDanglingIDReferenceException(final String tag, final LocationInSchema location)
-	{
-		super(CvcIDException.PART_EMPTY, location);
-	}
+    public CvcDanglingIDReferenceException(final String tag, final LocationInSchema location)
+    {
+        super(CvcIDException.PART_EMPTY, location);
+    }
 }

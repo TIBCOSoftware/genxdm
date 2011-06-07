@@ -21,11 +21,11 @@ import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 
 public final class XMLTotalDigitsFacet extends XMLFacet
 {
-	public boolean fixed = false;
-	public BigInteger value = null;
+    public boolean fixed = false;
+    public BigInteger value = null;
 
-	public XMLTotalDigitsFacet(final XMLType simpleType, final SrcFrozenLocation location)
-	{
-		super(simpleType, location);
-	}
+    public XMLTotalDigitsFacet(final XMLType simpleType, final SrcFrozenLocation location)
+    {
+        super(simpleType, location);
+    }
 }

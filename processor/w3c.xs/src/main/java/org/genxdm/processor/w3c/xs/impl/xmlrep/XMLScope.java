@@ -19,107 +19,107 @@ import org.genxdm.exceptions.PreCondition;
 
 public final class XMLScope
 {
-	private final boolean m_isGlobal;
-	private final XMLType m_type;
-	private final XMLAttribute m_attribute;
-	private final XMLElement m_element;
-	private final XMLModelGroup m_group;
-	private final XMLAttributeGroup m_attributeGroup;
+    private final boolean m_isGlobal;
+    private final XMLType m_type;
+    private final XMLAttribute m_attribute;
+    private final XMLElement m_element;
+    private final XMLModelGroup m_group;
+    private final XMLAttributeGroup m_attributeGroup;
 
-	// public static final XMLScope<?, ?> Global = new XMLScope<Object, Object>();
+    // public static final XMLScope<?, ?> Global = new XMLScope<Object, Object>();
 
-	public XMLScope()
-	{
-		m_isGlobal = true;
-		m_type = null;
-		m_attribute = null;
-		m_element = null;
-		m_group = null;
-		m_attributeGroup = null;
-	}
+    public XMLScope()
+    {
+        m_isGlobal = true;
+        m_type = null;
+        m_attribute = null;
+        m_element = null;
+        m_group = null;
+        m_attributeGroup = null;
+    }
 
-	public XMLScope(final XMLType type)
-	{
-		m_isGlobal = false;
-		m_type = PreCondition.assertArgumentNotNull(type);
-		m_attribute = null;
-		m_element = null;
-		m_group = null;
-		m_attributeGroup = null;
-	}
+    public XMLScope(final XMLType type)
+    {
+        m_isGlobal = false;
+        m_type = PreCondition.assertArgumentNotNull(type);
+        m_attribute = null;
+        m_element = null;
+        m_group = null;
+        m_attributeGroup = null;
+    }
 
-	public XMLScope(final XMLAttribute attribute)
-	{
-		m_isGlobal = false;
-		m_type = null;
-		m_attribute = PreCondition.assertArgumentNotNull(attribute);
-		m_element = null;
-		m_group = null;
-		m_attributeGroup = null;
-	}
+    public XMLScope(final XMLAttribute attribute)
+    {
+        m_isGlobal = false;
+        m_type = null;
+        m_attribute = PreCondition.assertArgumentNotNull(attribute);
+        m_element = null;
+        m_group = null;
+        m_attributeGroup = null;
+    }
 
-	public XMLScope(final XMLElement element)
-	{
-		m_isGlobal = false;
-		m_type = null;
-		m_attribute = null;
-		m_element = PreCondition.assertArgumentNotNull(element);
-		m_group = null;
-		m_attributeGroup = null;
-	}
+    public XMLScope(final XMLElement element)
+    {
+        m_isGlobal = false;
+        m_type = null;
+        m_attribute = null;
+        m_element = PreCondition.assertArgumentNotNull(element);
+        m_group = null;
+        m_attributeGroup = null;
+    }
 
-	public XMLScope(final XMLModelGroup group)
-	{
-		m_isGlobal = false;
-		m_type = null;
-		m_attribute = null;
-		m_element = null;
-		m_group = PreCondition.assertArgumentNotNull(group);
-		m_attributeGroup = null;
-	}
+    public XMLScope(final XMLModelGroup group)
+    {
+        m_isGlobal = false;
+        m_type = null;
+        m_attribute = null;
+        m_element = null;
+        m_group = PreCondition.assertArgumentNotNull(group);
+        m_attributeGroup = null;
+    }
 
-	public XMLScope(final XMLAttributeGroup attributeGroup)
-	{
-		m_isGlobal = false;
-		m_type = null;
-		m_attribute = null;
-		m_element = null;
-		m_group = null;
-		m_attributeGroup = PreCondition.assertArgumentNotNull(attributeGroup);
-	}
+    public XMLScope(final XMLAttributeGroup attributeGroup)
+    {
+        m_isGlobal = false;
+        m_type = null;
+        m_attribute = null;
+        m_element = null;
+        m_group = null;
+        m_attributeGroup = PreCondition.assertArgumentNotNull(attributeGroup);
+    }
 
-	public boolean isGlobal()
-	{
-		return m_isGlobal;
-	}
+    public boolean isGlobal()
+    {
+        return m_isGlobal;
+    }
 
-	public boolean isLocal()
-	{
-		return !m_isGlobal;
-	}
+    public boolean isLocal()
+    {
+        return !m_isGlobal;
+    }
 
-	public XMLType getType()
-	{
-		return m_type;
-	}
+    public XMLType getType()
+    {
+        return m_type;
+    }
 
-	public XMLAttribute getAttribute()
-	{
-		return m_attribute;
-	}
+    public XMLAttribute getAttribute()
+    {
+        return m_attribute;
+    }
 
-	public XMLElement getElement()
-	{
-		return m_element;
-	}
+    public XMLElement getElement()
+    {
+        return m_element;
+    }
 
-	public XMLModelGroup getModelGroup()
-	{
-		return m_group;
-	}
+    public XMLModelGroup getModelGroup()
+    {
+        return m_group;
+    }
 
-	public XMLAttributeGroup getAttributeGroup()
-	{
-		return m_attributeGroup;
-	}
+    public XMLAttributeGroup getAttributeGroup()
+    {
+        return m_attributeGroup;
+    }
 }
