@@ -216,10 +216,10 @@ final class XdmContentValidatorImpl<A> implements XdmContentValidator<A>
     }
 
     @Override
-    public void setSchema(Schema<A> cache)
+    public void setSchema(Schema cache)
     {
-        VxValidatorCacheFactory<A> factory = new ValidationFactoryImpl<A>(cache, atomBridge);
-        kernel = factory.newValidatorCache().newValidator();
+        VxValidatorCacheFactory factory = new ValidationFactoryImpl(cache);
+        kernel = factory.newValidatorCache().newValidator(atomBridge);
         kernel.setExceptionHandler(errors);
         kernel.setOutputHandler(new OutputAdapter<A>(handler));
     }

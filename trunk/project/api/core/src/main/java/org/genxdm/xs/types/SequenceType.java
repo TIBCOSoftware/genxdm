@@ -20,10 +20,8 @@ import org.genxdm.xs.enums.KeeneQuantifier;
 /**
  * Root interface for a hierarchy of sequence types.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface SequenceType<A>
+public interface SequenceType
 {
     /**
      * Implementation of the visitor design pattern.
@@ -31,12 +29,12 @@ public interface SequenceType<A>
      * @param visitor
      *            The visitor of this type.
      */
-    void accept(SequenceTypeVisitor<A> visitor);
+    void accept(SequenceTypeVisitor visitor);
 
     /**
      * The prime method extracts all the item types from this type and combines them into a choice.
      */
-    PrimeType<A> prime();
+    PrimeType prime();
 
     /**
      * The quantifier method approximates the possible number of items in this type with the occurrence indicators

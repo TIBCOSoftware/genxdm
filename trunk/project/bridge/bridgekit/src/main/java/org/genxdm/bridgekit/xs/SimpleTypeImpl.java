@@ -50,28 +50,28 @@ import org.genxdm.xs.types.Type;
 /**
  * A simple type, but not the Simple Ur-Type or the Atomic Ur-Type.
  */
-public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleType<A>
+public abstract class SimpleTypeImpl extends TypeImpl implements SimpleType
 {
-	protected abstract List<A> compile(String initialValue) throws DatatypeException;
+	protected abstract <A> List<A> compile(String initialValue, AtomBridge<A> bridge) throws DatatypeException;
 
-	protected abstract List<A> compile(String initialValue, final PrefixResolver resolver) throws DatatypeException;
+	protected abstract <A> List<A> compile(String initialValue, final PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException;
 
-	private static <A> void checkEnumerationFacets(final List<? extends A> actualValue, final SimpleType<A> simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
+	private static <A> void checkEnumerationFacets(final List<? extends A> actualValue, final SimpleType simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		// Quickee optimization; there are no enumerations for xs:anySimpleType and xs:anyAtomicType.
 		if (!simpleType.isSimpleUrType() && !simpleType.isAtomicUrType())
 		{
-			SimpleType<A> currentType = simpleType;
+			SimpleType currentType = simpleType;
 			while (true)
 			{
 				if (currentType.hasEnumerations())
 				{
 					boolean matched = false;
 					int enumCount = 0;
-					for (final EnumerationDefinition<A> facet : currentType.getEnumerations())
+					for (final EnumerationDefinition facet : currentType.getEnumerations())
 					{
 						enumCount++;
-						if (matchesValue(facet.getValue(), actualValue, atomBridge))
+						if (matchesValue(facet.getValue(atomBridge), actualValue, atomBridge))
 						{
 							matched = true;
 							break;
@@ -93,7 +93,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 				}
 				else
 				{
-					final Type<A> baseType = currentType.getBaseType();
+					final Type baseType = currentType.getBaseType();
 					if (baseType.isAtomicUrType())
 					{
 						return;
@@ -106,26 +106,26 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 					{
 						// We shouldn't get to the complex Ur-Type, because of the optimization,
 						// but if that is changed, this cast will also act as an assertion.
-						currentType = (SimpleType<A>)baseType;
+						currentType = (SimpleType)baseType;
 					}
 				}
 			}
 		}
 	}
 
-	protected static <A> void checkNonEnumerationFacets(final List<? extends A> actualValue, final SimpleType<A> simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
+	protected static <A> void checkNonEnumerationFacets(final List<? extends A> actualValue, final SimpleType simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		// check the value space facets, excluding enumeration (e.g. length, digits, bounds)
-		SimpleType<A> currentType = simpleType;
+		SimpleType currentType = simpleType;
 		while (!currentType.isNative())
 		{
 			if (currentType.hasFacets())
 			{
-				for (final Facet<A> facet : currentType.getFacets())
+				for (final Facet facet : currentType.getFacets())
 				{
 					try
 					{
-						facet.validate(actualValue, simpleType);
+						facet.validate(actualValue, simpleType, atomBridge);
 					}
 					catch (final FacetException e)
 					{
@@ -134,12 +134,12 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 					}
 				}
 			}
-			final Type<A> baseType = currentType.getBaseType();
-			if (baseType instanceof SimpleType<?>)
+			final Type baseType = currentType.getBaseType();
+			if (baseType instanceof SimpleType)
 			{
-				currentType = (SimpleType<A>)baseType;
+				currentType = (SimpleType)baseType;
 			}
-			else if (baseType instanceof SimpleUrType<?>)
+			else if (baseType instanceof SimpleUrType)
 			{
 				return;
 			}
@@ -153,7 +153,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 	/**
 	 * Checks pattern facets, walking up the type hierarchy and checking against each type.
 	 */
-	protected static <A> void checkPatternFacets(final SimpleType<A> simpleType, final String normalizedValue, final NameSource nameBridge) throws DatatypeException
+	protected static <A> void checkPatternFacets(final SimpleType simpleType, final String normalizedValue, final NameSource nameBridge) throws DatatypeException
 	{
 		// Quickee optimization; there are no patterns for xs:anySimpleType and xs:anyAtomicType.
 		if (!simpleType.isSimpleUrType() && !simpleType.isAtomicUrType())
@@ -163,7 +163,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 			// is considered valid if it matches at least one of the patterns, meaning that a logical
 			// or is performed on all the patterns defined in the same derivation step.
 
-			SimpleType<A> currentType = simpleType;
+			SimpleType currentType = simpleType;
 			while (true)
 			{
 				if (currentType.hasPatterns())
@@ -188,7 +188,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 						throw new DatatypeException(normalizedValue, simpleType);
 					}
 				}
-				final Type<A> baseType = currentType.getBaseType();
+				final Type baseType = currentType.getBaseType();
 				if (baseType.isAtomicUrType())
 				{
 					return;
@@ -201,13 +201,13 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 				{
 					// We shouldn't get to the complex Ur-Type, because of the optimization,
 					// but if that is changed, this cast will also act as an assertion.
-					currentType = (SimpleType<A>)baseType;
+					currentType = (SimpleType)baseType;
 				}
 			}
 		}
 	}
 
-	protected static <A> void checkValueSpaceFacets(final List<? extends A> actualValue, final SimpleType<A> simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
+	protected static <A> void checkValueSpaceFacets(final List<? extends A> actualValue, final SimpleType simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		checkNonEnumerationFacets(actualValue, simpleType, atomBridge);
 
@@ -243,14 +243,12 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 		}
 	}
 
-	protected final AtomBridge<A> atomBridge;
-
-	private final HashSet<EnumerationDefinition<A>> m_enumerationFacets = new HashSet<EnumerationDefinition<A>>();
+	private final HashSet<EnumerationDefinition> m_enumerationFacets = new HashSet<EnumerationDefinition>();
 
 	@SuppressWarnings("unchecked")
-	private final Facet<A>[] m_facetArray = (Facet<A>[])(Array.newInstance(Facet.class, FacetKind.values().length));
+	private final Facet[] m_facetArray = (Facet[])(Array.newInstance(Facet.class, FacetKind.values().length));
 
-	private final HashSet<Facet<A>> m_facets = new HashSet<Facet<A>>();
+	private final HashSet<Facet> m_facets = new HashSet<Facet>();
 	/**
 	 * {final} is mutable.
 	 */
@@ -264,27 +262,26 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 
 	protected final WhiteSpacePolicy m_whiteSpace;
 
-	public SimpleTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final DerivationMethod derivation, final WhiteSpacePolicy whiteSpace, final AtomBridge<A> atomBridge)
+	public SimpleTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final DerivationMethod derivation, final WhiteSpacePolicy whiteSpace)
 	{
-		super(name, isAnonymous, scope, derivation, atomBridge.getNameBridge());
+		super(name, isAnonymous, scope, derivation, new NameSource());
 		this.m_whiteSpace = whiteSpace;
-		this.atomBridge = atomBridge;
 	}
 
-	public void accept(SequenceTypeVisitor<A> visitor)
+	public void accept(SequenceTypeVisitor visitor)
 	{
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("TODO");
 	}
 
-	public void addEnumeration(final EnumerationDefinition<A> enumeration)
+	public void addEnumeration(final EnumerationDefinition enumeration)
 	{
 		assertNotLocked();
 		PreCondition.assertArgumentNotNull(enumeration, "enumeration");
 		m_enumerationFacets.add(enumeration);
 	}
 
-	public void addFacet(final Facet<A> facet)
+	public void addFacet(final Facet facet)
 	{
 		assertNotLocked();
 		PreCondition.assertArgumentNotNull(facet, "facet");
@@ -299,29 +296,29 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 		m_patternFacets.add(pattern);
 	}
 
-	public SequenceType<A> atomSet()
+	public SequenceType atomSet()
 	{
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("TODO");
 	}
 
-	public Type<A> getBaseType()
+	public Type getBaseType()
 	{
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("TODO");
 	}
 
-	public final Iterable<EnumerationDefinition<A>> getEnumerations()
+	public final Iterable<EnumerationDefinition> getEnumerations()
 	{
 		return m_enumerationFacets;
 	}
 
-	public Facet<A> getFacetOfKind(final FacetKind facetKind)
+	public Facet getFacetOfKind(final FacetKind facetKind)
 	{
 		return m_facetArray[facetKind.ordinal()];
 	}
 
-	public final Iterable<Facet<A>> getFacets()
+	public final Iterable<Facet> getFacets()
 	{
 		return m_facets;
 	}
@@ -336,7 +333,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 		return m_patternFacets;
 	}
 
-	public SimpleType<A> getNativeTypeDefinition()
+	public SimpleType getNativeTypeDefinition()
 	{
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("TODO");
@@ -389,7 +386,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 		return false;
 	}
 
-	public PrimeType<A> prime()
+	public PrimeType prime()
 	{
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("TODO");
@@ -422,7 +419,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 		}
 	}
 
-	public List<A> validate(final List<? extends A> value) throws DatatypeException
+	public <A> List<A> validate(final List<? extends A> value, AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		// TODO: Can we attempt working in the value space and then fall back to the lexical space?
 		final String initialValue = atomBridge.getC14NString(value);
@@ -433,7 +430,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 		checkPatternFacets(this, normalizedValue, atomBridge.getNameBridge());
 
 		// compile - which will perform various forms of validation, for types w/o facets
-		final List<A> actualValue = compile(normalizedValue);
+		final List<A> actualValue = compile(normalizedValue, atomBridge);
 
 		checkValueSpaceFacets(actualValue, this, atomBridge);
 
@@ -443,7 +440,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 	/**
 	 * This method can only be called on simple types.
 	 */
-	public final List<A> validate(final String initialValue) throws DatatypeException
+	public final <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		PreCondition.assertArgumentNotNull(initialValue, "initialValue");
 
@@ -453,14 +450,14 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 		checkPatternFacets(this, normalizedValue, atomBridge.getNameBridge());
 
 		// compile - which will perform various forms of validation, for types w/o facets
-		final List<A> actualValue = compile(normalizedValue);
+		final List<A> actualValue = compile(normalizedValue, atomBridge);
 
 		checkValueSpaceFacets(actualValue, this, atomBridge);
 
 		return actualValue;
 	}
 
-	public List<A> validate(final String initialValue, final PrefixResolver resolver) throws DatatypeException
+	public <A> List<A> validate(final String initialValue, final PrefixResolver resolver, AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		PreCondition.assertArgumentNotNull(initialValue, "initialValue");
 
@@ -470,7 +467,7 @@ public abstract class SimpleTypeImpl<A> extends TypeImpl<A> implements SimpleTyp
 		checkPatternFacets(this, normalizedValue, atomBridge.getNameBridge());
 
 		// compile - which will perform various forms of validation, for types w/o facets
-		final List<A> actualValue = compile(normalizedValue, resolver);
+		final List<A> actualValue = compile(normalizedValue, resolver, atomBridge);
 
 		checkValueSpaceFacets(actualValue, this, atomBridge);
 

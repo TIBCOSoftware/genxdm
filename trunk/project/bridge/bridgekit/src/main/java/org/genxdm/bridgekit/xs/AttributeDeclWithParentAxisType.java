@@ -29,16 +29,16 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.SimpleMarkerType;
 
-final class AttributeDeclWithParentAxisType<A> implements AttributeDefinition<A>
+final class AttributeDeclWithParentAxisType implements AttributeDefinition
 {
-	private final AttributeDefinition<A> m_attribute;
+	private final AttributeDefinition m_attribute;
 
-	public AttributeDeclWithParentAxisType(final AttributeDefinition<A> element, final ElementDefinition<A> parentAxis)
+	public AttributeDeclWithParentAxisType(final AttributeDefinition element, final ElementDefinition parentAxis)
 	{
 		m_attribute = PreCondition.assertArgumentNotNull(element);
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
@@ -73,12 +73,12 @@ final class AttributeDeclWithParentAxisType<A> implements AttributeDefinition<A>
 		return m_attribute.getTargetNamespace();
 	}
 
-	public SimpleMarkerType<A> getType()
+	public SimpleMarkerType getType()
 	{
 		return m_attribute.getType();
 	}
 
-	public ValueConstraint<A> getValueConstraint()
+	public ValueConstraint getValueConstraint()
 	{
 		return m_attribute.getValueConstraint();
 	}
@@ -103,7 +103,7 @@ final class AttributeDeclWithParentAxisType<A> implements AttributeDefinition<A>
 		return m_attribute.isNone();
 	}
 
-	public PrimeType<A> prime()
+	public PrimeType prime()
 	{
 		return this;
 	}
@@ -113,7 +113,7 @@ final class AttributeDeclWithParentAxisType<A> implements AttributeDefinition<A>
 		return m_attribute.quantifier();
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		return m_attribute.subtype(rhs);
 	}

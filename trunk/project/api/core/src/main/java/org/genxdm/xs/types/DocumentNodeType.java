@@ -18,13 +18,11 @@ package org.genxdm.xs.types;
 /**
  * Indicates that this type is a document node.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface DocumentNodeType<A> extends NodeType<A>
+public interface DocumentNodeType extends NodeType
 {
     /**
      * Returns the type of the content of the document node.
      */
-    SequenceType<A> getContentType();
+    SequenceType getContentType();
 }

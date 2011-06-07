@@ -20,7 +20,7 @@ import java.net.URI;
 /**
  * Notation
  */
-public interface NotationDefinition<A> extends SchemaComponent<A>
+public interface NotationDefinition extends SchemaComponent
 {
     /**
      * Returns the notation's {system identifier} property. Optional if {public identifier} is present. Must be a valid

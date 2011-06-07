@@ -17,12 +17,14 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.xs.components.ParticleTerm;
+
 /**
  * This interface represents the term that we will be using to construct the regular expression patterns. The validation
  * model is expected to provide pre-compiled regular expression patterns from which regular expression finite state
  * machines are built.
  */
-interface ValidationExpr<A, X>
+interface ValidationExpr
 {
 	boolean isGroup();
 
@@ -32,13 +34,13 @@ interface ValidationExpr<A, X>
 
 	boolean isInterleave();
 
-	Iterable<ValidationExpr<A, X>> getSubTerms();
+	Iterable<ValidationExpr> getSubTerms();
 
-	X getParticleTerm();
+	ParticleTerm getParticleTerm();
 
 	boolean matches(final QName token);
 
-	boolean intersects(final ValidationExpr<A, X> other);
+	boolean intersects(final ValidationExpr other);
 
 	int minOccurs();
 

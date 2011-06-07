@@ -23,9 +23,9 @@ import org.genxdm.xs.types.SimpleType;
 public final class SimpleTypeException extends SchemaException
 {
     private final String initialValue;
-    private final SimpleType<?> type;
+    private final SimpleType type;
 
-    public SimpleTypeException(final String initialValue, final SimpleType<?> type, final SchemaException cause)
+    public SimpleTypeException(final String initialValue, final SimpleType type, final SchemaException cause)
     {
         super(ValidationOutcome.CVC_Simple_Type, "?", cause);
         this.initialValue = PreCondition.assertArgumentNotNull(initialValue, "initialValue");

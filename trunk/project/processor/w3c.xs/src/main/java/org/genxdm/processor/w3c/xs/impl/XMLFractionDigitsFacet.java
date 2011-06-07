@@ -17,12 +17,12 @@ package org.genxdm.processor.w3c.xs.impl;
 
 import java.math.BigInteger;
 
-final class XMLFractionDigitsFacet<A> extends XMLFacet<A>
+final class XMLFractionDigitsFacet extends XMLFacet
 {
 	public boolean fixed = false;
 	public BigInteger value = null;
 
-	public XMLFractionDigitsFacet(final XMLType<A> simpleType, final SrcFrozenLocation location)
+	public XMLFractionDigitsFacet(final XMLType simpleType, final SrcFrozenLocation location)
 	{
 		super(simpleType, location);
 	}

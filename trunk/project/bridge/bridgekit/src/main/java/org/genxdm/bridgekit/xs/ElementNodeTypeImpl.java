@@ -29,13 +29,13 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class ElementNodeTypeImpl<A> extends AbstractBranchNodeType<A> implements ElementNodeType<A>
+final class ElementNodeTypeImpl extends AbstractBranchNodeType implements ElementNodeType
 {
-	private final SequenceType<A> m_dataType;
+	private final SequenceType m_dataType;
 	private final boolean m_nillable;
 	private final QName name;
 
-	public ElementNodeTypeImpl(final QName name, final SequenceType<A> dataType, final boolean nillable, final SchemaCache<A> cache)
+	public ElementNodeTypeImpl(final QName name, final SequenceType dataType, final boolean nillable, final SchemaCache cache)
 	{
 		super(NodeKind.ELEMENT, cache);
 		this.name = PreCondition.assertArgumentNotNull(name, "name");
@@ -52,7 +52,7 @@ final class ElementNodeTypeImpl<A> extends AbstractBranchNodeType<A> implements 
 		}
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
@@ -96,7 +96,7 @@ final class ElementNodeTypeImpl<A> extends AbstractBranchNodeType<A> implements 
 		}
 	}
 
-	public SequenceType<A> getType()
+	public SequenceType getType()
 	{
 		return m_dataType;
 	}
@@ -111,23 +111,23 @@ final class ElementNodeTypeImpl<A> extends AbstractBranchNodeType<A> implements 
 		return m_nillable;
 	}
 
-	public ElementNodeType<A> prime()
+	public ElementNodeType prime()
 	{
 		return this;
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case ELEMENT:
 			{
-				final ElementNodeType<A> other = (ElementNodeType<A>)rhs;
+				final ElementNodeType other = (ElementNodeType)rhs;
 				return QNameAsSet.subset(name, other.getName());
 			}
 			case SCHEMA_ELEMENT:

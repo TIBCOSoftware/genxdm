@@ -37,7 +37,7 @@ import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.SimpleType;
 
-public class IntegerDerivedType<A> extends AbstractAtomType<A>
+public class IntegerDerivedType extends AbstractAtomType
 {
 	private static final BigInteger UNSIGNED_LONG_MAX_INCLUSIVE = BigInteger.valueOf(Long.MAX_VALUE).subtract(BigInteger.valueOf(Long.MIN_VALUE));
 	private static final BigInteger UNSIGNED_INT_MAX_INCLUSIVE = BigInteger.valueOf(Integer.MAX_VALUE).subtract(BigInteger.valueOf(Integer.MIN_VALUE));
@@ -45,13 +45,13 @@ public class IntegerDerivedType<A> extends AbstractAtomType<A>
 	private static final BigInteger UNSIGNED_BYTE_MAX_INCLUSIVE = BigInteger.valueOf(Byte.MAX_VALUE).subtract(BigInteger.valueOf(Byte.MIN_VALUE));
 	private final NativeType nativeType;
 
-	public IntegerDerivedType(final NativeType nativeType, final QName name, final SimpleType<A> baseType, final AtomBridge<A> atomBridge)
+	public IntegerDerivedType(final NativeType nativeType, final QName name, final SimpleType baseType)
 	{
-		super(name, baseType, atomBridge);
+		super(name, baseType);
 		this.nativeType = PreCondition.assertArgumentNotNull(nativeType, "nativeType");
 	}
 
-	public void accept(SequenceTypeVisitor<A> visitor)
+	public void accept(SequenceTypeVisitor visitor)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -63,18 +63,18 @@ public class IntegerDerivedType<A> extends AbstractAtomType<A>
 		throw new AssertionError("TODO");
 	}
 
-	public Iterable<EnumerationDefinition<A>> getEnumerations()
+	public Iterable<EnumerationDefinition> getEnumerations()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public Facet<A> getFacetOfKind(final FacetKind facetKind)
+	public Facet getFacetOfKind(final FacetKind facetKind)
 	{
 		return null;
 	}
 
-	public Iterable<Facet<A>> getFacets()
+	public Iterable<Facet> getFacets()
 	{
 		return Collections.emptyList();
 	}
@@ -141,7 +141,7 @@ public class IntegerDerivedType<A> extends AbstractAtomType<A>
 		return false;
 	}
 
-	public List<A> validate(final String initialValue) throws DatatypeException
+	public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		try
 		{
@@ -250,7 +250,7 @@ public class IntegerDerivedType<A> extends AbstractAtomType<A>
 		}
 	}
 
-	public List<A> validate(String initialValue, PrefixResolver resolver) throws DatatypeException
+	public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");

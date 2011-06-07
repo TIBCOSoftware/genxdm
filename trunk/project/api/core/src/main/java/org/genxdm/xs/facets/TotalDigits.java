@@ -18,10 +18,8 @@ package org.genxdm.xs.facets;
 /**
  * The xs:totalDigits facet.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface TotalDigits<A> extends Facet<A>
+public interface TotalDigits extends Facet
 {
     /**
      * Returns the maximum number of decimal digits allowed for a number.

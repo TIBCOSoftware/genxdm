@@ -18,10 +18,8 @@ package org.genxdm.xs.types;
 /**
  * Indicates that this type is a processing-instruction node.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface ProcessingInstructionNodeType<A> extends NodeType<A>
+public interface ProcessingInstructionNodeType extends NodeType
 {
     /**
      * Returns the name of the processing-instruction.

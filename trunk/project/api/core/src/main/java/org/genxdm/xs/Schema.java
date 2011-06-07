@@ -26,25 +26,25 @@ import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.SimpleType;
 
-public interface Schema<A> extends ComponentBag<A>, ComponentProvider<A>
+public interface Schema extends ComponentBag, ComponentProvider
 {
-    void declareAttribute(final AttributeDefinition<A> attribute);
+    void declareAttribute(final AttributeDefinition attribute);
 
-    void declareElement(final ElementDefinition<A> element);
+    void declareElement(final ElementDefinition element);
 
-    void declareNotation(final NotationDefinition<A> notation);
+    void declareNotation(final NotationDefinition notation);
 
-    void defineAttributeGroup(final AttributeGroupDefinition<A> attributeGroup);
+    void defineAttributeGroup(final AttributeGroupDefinition attributeGroup);
 
-    void defineComplexType(final ComplexType<A> complexType);
+    void defineComplexType(final ComplexType complexType);
 
-    void defineIdentityConstraint(final IdentityConstraint<A> identityConstraint);
+    void defineIdentityConstraint(final IdentityConstraint identityConstraint);
 
-    void defineModelGroup(final ModelGroup<A> modelGroup);
+    void defineModelGroup(final ModelGroup modelGroup);
 
-    void defineSimpleType(final SimpleType<A> simpleType);
+    void defineSimpleType(final SimpleType simpleType);
 
     Iterable<String> getNamespaces();
 
-    void register(ComponentBag<A> components);
+    void register(ComponentBag components);
 }

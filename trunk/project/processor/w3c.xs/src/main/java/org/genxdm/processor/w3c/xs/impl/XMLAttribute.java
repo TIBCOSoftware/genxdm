@@ -19,14 +19,14 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 
-final class XMLAttribute<A> extends XMLDeclaration<A>
+final class XMLAttribute extends XMLDeclaration
 {
-	public XMLAttribute(final QName name, final XMLScope<A> scope, final XMLTypeRef<A> anySimpleType, final SrcFrozenLocation location)
+	public XMLAttribute(final QName name, final XMLScope scope, final XMLTypeRef anySimpleType, final SrcFrozenLocation location)
 	{
 		super(PreCondition.assertArgumentNotNull(name, "name"), scope, anySimpleType, location);
 	}
 
-	public XMLAttribute(final QName name, final XMLScope<A> scope, final XMLTypeRef<A> anySimpleType)
+	public XMLAttribute(final QName name, final XMLScope scope, final XMLTypeRef anySimpleType)
 	{
 		super(PreCondition.assertArgumentNotNull(name, "name"), scope, anySimpleType);
 	}

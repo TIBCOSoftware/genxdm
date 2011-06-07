@@ -18,9 +18,7 @@ package org.genxdm.xs.types;
 /**
  * Indicates that this type is a namespace node.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface NamespaceNodeType<A> extends NodeType<A>
+public interface NamespaceNodeType extends NodeType
 {
 }

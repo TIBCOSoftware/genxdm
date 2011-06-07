@@ -20,15 +20,15 @@ import javax.xml.namespace.QName;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.types.Type;
 
-public interface VxPSVI<A>
+public interface VxPSVI
 {
-	ElementDefinition<A> getDeclaration();
+	ElementDefinition getDeclaration();
 
 	QName getName();
 
-	VxPSVI<A> getParent();
+	VxPSVI getParent();
 
-	Type<A> getType();
+	Type getType();
 
 	boolean isNilled();
 }

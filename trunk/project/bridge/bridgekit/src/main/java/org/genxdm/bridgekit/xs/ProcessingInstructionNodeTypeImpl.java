@@ -22,17 +22,17 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.ProcessingInstructionNodeType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class ProcessingInstructionNodeTypeImpl<A> extends AbstractLeafNodeType<A> implements ProcessingInstructionNodeType<A>
+final class ProcessingInstructionNodeTypeImpl extends AbstractLeafNodeType implements ProcessingInstructionNodeType
 {
 	private final String m_name;
 
-	public ProcessingInstructionNodeTypeImpl(final String name, final SchemaCache<A> cache)
+	public ProcessingInstructionNodeTypeImpl(final String name, final SchemaCache cache)
 	{
 		super(NodeKind.PROCESSING_INSTRUCTION, cache);
 		m_name = name;
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
@@ -47,23 +47,23 @@ final class ProcessingInstructionNodeTypeImpl<A> extends AbstractLeafNodeType<A>
 		return m_name;
 	}
 
-	public ProcessingInstructionNodeType<A> prime()
+	public ProcessingInstructionNodeType prime()
 	{
 		return this;
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case PROCESSING_INSTRUCTION:
 			{
-				final ProcessingInstructionNodeType<A> pi = (ProcessingInstructionNodeType<A>)rhs;
+				final ProcessingInstructionNodeType pi = (ProcessingInstructionNodeType)rhs;
 				final String name = pi.getName();
 				if (null == name)
 				{

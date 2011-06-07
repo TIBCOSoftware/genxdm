@@ -21,52 +21,50 @@ import org.genxdm.xs.components.ElementDefinition;
 /**
  * Visitor pattern for {@link SequenceType}.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface SequenceTypeVisitor<A>
+public interface SequenceTypeVisitor
 {
-    void visit(AttributeDefinition<A> schemaAttribute);
+    void visit(AttributeDefinition schemaAttribute);
 
-    void visit(AttributeNodeType<A> attributeType);
+    void visit(AttributeNodeType attributeType);
 
-    void visit(ChoiceType<A> choiceType);
+    void visit(ChoiceType choiceType);
 
-    void visit(CommentNodeType<A> commentNodeType);
+    void visit(CommentNodeType commentNodeType);
 
-    void visit(ComplexType<A> atomicType);
+    void visit(ComplexType atomicType);
 
-    void visit(ComplexUrType<A> complexUrType);
+    void visit(ComplexUrType complexUrType);
 
-    void visit(ConcatType<A> concatType);
+    void visit(ConcatType concatType);
 
-    void visit(DocumentNodeType<A> documentNodeType);
+    void visit(DocumentNodeType documentNodeType);
 
-    void visit(ElementDefinition<A> schemaElement);
+    void visit(ElementDefinition schemaElement);
 
-    void visit(ElementNodeType<A> elementNodeType);
+    void visit(ElementNodeType elementNodeType);
 
-    void visit(EmptyType<A> emptyType);
+    void visit(EmptyType emptyType);
 
-    void visit(InterleaveType<A> interleaveType);
+    void visit(InterleaveType interleaveType);
 
-    void visit(ListSimpleType<A> atomicType);
+    void visit(ListSimpleType atomicType);
 
-    void visit(MultiplyType<A> multiplyType);
+    void visit(MultiplyType multiplyType);
 
-    void visit(NamespaceNodeType<A> namespaceNodeType);
+    void visit(NamespaceNodeType namespaceNodeType);
 
-    void visit(NodeUrType<A> nodeType);
+    void visit(NodeUrType nodeType);
 
-    void visit(NoneType<A> noneType);
+    void visit(NoneType noneType);
 
-    void visit(ProcessingInstructionNodeType<A> processingInstructionNodeType);
+    void visit(ProcessingInstructionNodeType processingInstructionNodeType);
 
-    void visit(SimpleType<A> simpleType);
+    void visit(SimpleType simpleType);
 
-    void visit(SimpleUrType<A> simpleUrType);
+    void visit(SimpleUrType simpleUrType);
 
-    void visit(TextNodeType<A> textNodeType);
+    void visit(TextNodeType textNodeType);
 
-    void visit(UnionSimpleType<A> unionType);
+    void visit(UnionSimpleType unionType);
 }

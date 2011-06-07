@@ -23,9 +23,9 @@ import javax.xml.namespace.QName;
 
 final class WxsSubstitutionGroupChecker
 {
-	public static <A> boolean detectCycles(final XMLElement<A> element)
+	public static  boolean detectCycles(final XMLElement element)
 	{
-		XMLElement<A> current = element.substitutionGroup;
+		XMLElement current = element.substitutionGroup;
 		while (null != current)
 		{
 			if (equal(current.getName(), element.getName()))
@@ -37,12 +37,12 @@ final class WxsSubstitutionGroupChecker
 		return false;
 	}
 
-	public static <A> List<QName> computeCycles(final XMLElement<A> element)
+	public static  List<QName> computeCycles(final XMLElement element)
 	{
 		final List<QName> names = new LinkedList<QName>();
 		boolean detected = false;
 
-		XMLElement<A> current = element.substitutionGroup;
+		XMLElement current = element.substitutionGroup;
 		while (null != current)
 		{
 			names.add(current.getName());

@@ -18,9 +18,7 @@ package org.genxdm.xs.types;
 /**
  * Indicates that the type is the empty-sequence.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface EmptyType<A> extends PrimeType<A>
+public interface EmptyType extends PrimeType
 {
 }

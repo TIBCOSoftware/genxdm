@@ -27,11 +27,11 @@ import org.genxdm.xs.facets.MaxLength;
 @SuppressWarnings("serial")
 public final class FacetMaxLengthException extends FacetException
 {
-    private final MaxLength<?> maxLength;
+    private final MaxLength maxLength;
     private final int actualLength;
     private final LengthFacetUOM uom;
 
-    public FacetMaxLengthException(final MaxLength<?> maxLength, final int actualLength, final LengthFacetUOM uom)
+    public FacetMaxLengthException(final MaxLength maxLength, final int actualLength, final LengthFacetUOM uom)
     {
         super(ValidationOutcome.CVC_MaxLength);
         this.maxLength = maxLength;

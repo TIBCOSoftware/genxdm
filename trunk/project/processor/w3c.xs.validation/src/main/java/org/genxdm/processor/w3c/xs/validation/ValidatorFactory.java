@@ -27,19 +27,19 @@ public final class ValidatorFactory<N, A>
 
     public ValidatorFactory(final TypedContext<N, A> pcx)
     {
-        this.factory = new ValidationFactoryImpl<A>(pcx, pcx.getAtomBridge());
+        this.factory = new ValidationFactoryImpl(pcx);
         this.atomBridge = pcx.getAtomBridge();
     }
 
     public XdmContentValidator<A> newXdmContentValidator()
     {
-        final VxValidator<A> kernel = factory.newValidatorCache().newValidator();
+        final VxValidator<A> kernel = factory.newValidatorCache().newValidator(atomBridge);
         return new XdmContentValidatorImpl<A>(kernel, atomBridge, nameBridge);
     }
 
     public SAXContentValidator<A> newSAXContentValidator()
     {
-        final VxValidator<A> kernel = factory.newValidatorCache().newValidator();
+        final VxValidator<A> kernel = factory.newValidatorCache().newValidator(atomBridge);
         return new SAXContentValidatorImpl<A>(kernel, nameBridge);
     }
 
@@ -50,6 +50,6 @@ public final class ValidatorFactory<N, A>
     }
 
     private final AtomBridge<A> atomBridge;
-    private final VxValidatorCacheFactory<A> factory;
+    private final VxValidatorCacheFactory factory;
     private final NameSource nameBridge = new NameSource();
 }

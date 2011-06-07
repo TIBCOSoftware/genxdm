@@ -125,11 +125,11 @@ class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 
 		final SchemaExceptionCatcher errors = new SchemaExceptionCatcher();
 		final SchemaLoadOptions args = new SchemaLoadOptions();
-		final W3cXmlSchemaParser<A> parser = new W3cXmlSchemaParser<A>(tpcx.getAtomBridge());
+		final W3cXmlSchemaParser parser = new W3cXmlSchemaParser();
 
 		for (final Resolved<InputStream> resource : resources)
 		{
-			ComponentBag<A> scBag = parser.parse(resource.getLocation(), resource.getResource(), resource.getSystemId(), errors, args, tpcx);
+			ComponentBag scBag = parser.parse(resource.getLocation(), resource.getResource(), resource.getSystemId(), errors, args, tpcx);
 			if(!errors.isEmpty())
 			{
 				for(SchemaException error : errors)

@@ -25,48 +25,48 @@ import org.genxdm.xs.types.SimpleType;
  * Typically used for the bulk-loading of components into a schema.
  * </p>
  * 
- * @param <A>
+ * @param 
  *            The atom handle.
  */
-public interface ComponentBag<A>
+public interface ComponentBag
 {
     /**
      * Returns the Attribute group definitions.
      */
-    Iterable<AttributeGroupDefinition<A>> getAttributeGroups();
+    Iterable<AttributeGroupDefinition> getAttributeGroups();
 
     /**
      * Returns the Attribute declarations.
      */
-    Iterable<AttributeDefinition<A>> getAttributes();
+    Iterable<AttributeDefinition> getAttributes();
 
     /**
      * Returns the Complex type definitions.
      */
-    Iterable<ComplexType<A>> getComplexTypes();
+    Iterable<ComplexType> getComplexTypes();
 
     /**
      * Returns the Element declarations.
      */
-    Iterable<ElementDefinition<A>> getElements();
+    Iterable<ElementDefinition> getElements();
 
     /**
      * Returns the Identity-constraint definitions.
      */
-    Iterable<IdentityConstraint<A>> getIdentityConstraints();
+    Iterable<IdentityConstraint> getIdentityConstraints();
 
     /**
      * Returns the Model group definitions.
      */
-    Iterable<ModelGroup<A>> getModelGroups();
+    Iterable<ModelGroup> getModelGroups();
 
     /**
      * Returns the Notation declarations.
      */
-    Iterable<NotationDefinition<A>> getNotations();
+    Iterable<NotationDefinition> getNotations();
 
     /**
      * Returns the Simple type definitions.
      */
-    Iterable<SimpleType<A>> getSimpleTypes();
+    Iterable<SimpleType> getSimpleTypes();
 }

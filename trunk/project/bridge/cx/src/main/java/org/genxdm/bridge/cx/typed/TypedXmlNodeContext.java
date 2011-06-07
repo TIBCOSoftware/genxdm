@@ -65,8 +65,8 @@ public class TypedXmlNodeContext
     {
         this.context = PreCondition.assertNotNull(context, "context");
         this.atoms = new XmlAtomBridge(this, new NameSource());
-        this.cache = new SchemaTypeBridgeFactory<XmlAtom>(atoms).newMetaBridge();
-        this.types = new MetaBridgeOnSchemaTypeBridgeAdapter<XmlAtom>(cache, atoms);
+        this.cache = new SchemaTypeBridgeFactory().newMetaBridge();
+        this.types = new MetaBridgeOnSchemaTypeBridgeAdapter(cache);
         this.model = new TypedXmlNodeModel(atoms);
     }
     
@@ -77,56 +77,56 @@ public class TypedXmlNodeContext
         return null;
     }
 
-    public void declareAttribute(AttributeDefinition<XmlAtom> attribute)
+    public void declareAttribute(AttributeDefinition attribute)
     {
         PreCondition.assertArgumentNotNull(attribute, "attribute");
         PreCondition.assertFalse(isLocked(), "isLocked()");
         cache.declareAttribute(attribute);
     }
 
-    public void declareElement(ElementDefinition<XmlAtom> element)
+    public void declareElement(ElementDefinition element)
     {
         PreCondition.assertArgumentNotNull(element, "element");
         PreCondition.assertFalse(isLocked(), "isLocked()");
         cache.declareElement(element);
     }
 
-    public void declareNotation(NotationDefinition<XmlAtom> notation)
+    public void declareNotation(NotationDefinition notation)
     {
         PreCondition.assertArgumentNotNull(notation, "notation");
         PreCondition.assertFalse(isLocked(), "isLocked()");
         cache.declareNotation(notation);
     }
 
-    public void defineAttributeGroup(AttributeGroupDefinition<XmlAtom> attributeGroup)
+    public void defineAttributeGroup(AttributeGroupDefinition attributeGroup)
     {
         PreCondition.assertArgumentNotNull(attributeGroup, "attributeGroup");
         PreCondition.assertFalse(isLocked(), "isLocked()");
         cache.defineAttributeGroup(attributeGroup);
     }
 
-    public void defineComplexType(ComplexType<XmlAtom> complexType)
+    public void defineComplexType(ComplexType complexType)
     {
         PreCondition.assertArgumentNotNull(complexType, "complexType");
         PreCondition.assertFalse(isLocked(), "isLocked()");
         cache.defineComplexType(complexType);
     }
 
-    public void defineIdentityConstraint(IdentityConstraint<XmlAtom> identityConstraint)
+    public void defineIdentityConstraint(IdentityConstraint identityConstraint)
     {
         PreCondition.assertArgumentNotNull(identityConstraint, "identityConstraint");
         PreCondition.assertFalse(isLocked(), "isLocked()");
         cache.defineIdentityConstraint(identityConstraint);
     }
 
-    public void defineModelGroup(ModelGroup<XmlAtom> modelGroup)
+    public void defineModelGroup(ModelGroup modelGroup)
     {
         PreCondition.assertArgumentNotNull(modelGroup, "modelGroup");
         PreCondition.assertFalse(isLocked(), "isLocked()");
         cache.defineModelGroup(modelGroup);
     }
 
-    public void defineSimpleType(SimpleType<XmlAtom> simpleType)
+    public void defineSimpleType(SimpleType simpleType)
     {
         PreCondition.assertArgumentNotNull(simpleType, "simpleType");
         PreCondition.assertFalse(isLocked(), "isLocked()");
@@ -143,77 +143,77 @@ public class TypedXmlNodeContext
         return atoms;
     }
 
-    public AtomicType<XmlAtom> getAtomicType(QName name)
+    public AtomicType getAtomicType(QName name)
     {
         return cache.getAtomicType(name);
     }
 
-    public AtomicType<XmlAtom> getAtomicType(NativeType name)
+    public AtomicType getAtomicType(NativeType name)
     {
         return cache.getAtomicType(name);
     }
 
-    public AtomicUrType<XmlAtom> getAtomicUrType()
+    public AtomicUrType getAtomicUrType()
     {
         return cache.getAtomicUrType();
     }
 
-    public AttributeDefinition<XmlAtom> getAttributeDeclaration(QName name)
+    public AttributeDefinition getAttributeDeclaration(QName name)
     {
         return cache.getAttributeDeclaration(name);
     }
 
-    public AttributeGroupDefinition<XmlAtom> getAttributeGroup(QName name)
+    public AttributeGroupDefinition getAttributeGroup(QName name)
     {
         return cache.getAttributeGroup(name);
     }
 
-    public Iterable<AttributeGroupDefinition<XmlAtom>> getAttributeGroups()
+    public Iterable<AttributeGroupDefinition> getAttributeGroups()
     {
         return cache.getAttributeGroups();
     }
 
-    public Iterable<AttributeDefinition<XmlAtom>> getAttributes()
+    public Iterable<AttributeDefinition> getAttributes()
     {
         return cache.getAttributes();
     }
 
-    public ComplexType<XmlAtom> getComplexType(QName name)
+    public ComplexType getComplexType(QName name)
     {
         return cache.getComplexType(name);
     }
 
-    public Iterable<ComplexType<XmlAtom>> getComplexTypes()
+    public Iterable<ComplexType> getComplexTypes()
     {
         return cache.getComplexTypes();
     }
 
-    public ComplexUrType<XmlAtom> getComplexUrType()
+    public ComplexUrType getComplexUrType()
     {
         return cache.getComplexUrType();
     }
 
-    public ElementDefinition<XmlAtom> getElementDeclaration(QName name)
+    public ElementDefinition getElementDeclaration(QName name)
     {
         return cache.getElementDeclaration(name);
     }
 
-    public Iterable<ElementDefinition<XmlAtom>> getElements()
+    public Iterable<ElementDefinition> getElements()
     {
         return cache.getElements();
     }
 
-    public IdentityConstraint<XmlAtom> getIdentityConstraint(QName name)
+    public IdentityConstraint getIdentityConstraint(QName name)
     {
         return cache.getIdentityConstraint(name);
     }
 
-    public Iterable<IdentityConstraint<XmlAtom>> getIdentityConstraints()
+    public Iterable<IdentityConstraint> getIdentityConstraints()
     {
         return cache.getIdentityConstraints();
     }
 
-    public MetaBridge<XmlAtom> getMetaBridge()
+    public MetaBridge getMetaBridge()
     {
         return types;
     }
@@ -223,12 +223,12 @@ public class TypedXmlNodeContext
         return model;
     }
 
-    public ModelGroup<XmlAtom> getModelGroup(QName name)
+    public ModelGroup getModelGroup(QName name)
     {
         return cache.getModelGroup(name);
     }
 
-    public Iterable<ModelGroup<XmlAtom>> getModelGroups()
+    public Iterable<ModelGroup> getModelGroups()
     {
         return cache.getModelGroups();
     }
@@ -238,12 +238,12 @@ public class TypedXmlNodeContext
         return cache.getNamespaces();
     }
 
-    public NotationDefinition<XmlAtom> getNotationDeclaration(QName name)
+    public NotationDefinition getNotationDeclaration(QName name)
     {
         return cache.getNotationDeclaration(name);
     }
 
-    public Iterable<NotationDefinition<XmlAtom>> getNotations()
+    public Iterable<NotationDefinition> getNotations()
     {
         return cache.getNotations();
     }
@@ -253,32 +253,32 @@ public class TypedXmlNodeContext
         return context;
     }
 
-    public SimpleType<XmlAtom> getSimpleType(QName name)
+    public SimpleType getSimpleType(QName name)
     {
         return cache.getSimpleType(name);
     }
 
-    public SimpleType<XmlAtom> getSimpleType(NativeType name)
+    public SimpleType getSimpleType(NativeType name)
     {
         return cache.getSimpleType(name);
     }
 
-    public Iterable<SimpleType<XmlAtom>> getSimpleTypes()
+    public Iterable<SimpleType> getSimpleTypes()
     {
         return cache.getSimpleTypes();
     }
 
-    public SimpleUrType<XmlAtom> getSimpleUrType()
+    public SimpleUrType getSimpleUrType()
     {
         return cache.getSimpleUrType();
     }
 
-    public Type<XmlAtom> getTypeDefinition(QName name)
+    public Type getTypeDefinition(QName name)
     {
         return cache.getTypeDefinition(name);
     }
 
-    public Type<XmlAtom> getTypeDefinition(NativeType nativeType)
+    public Type getTypeDefinition(NativeType nativeType)
     {
         return cache.getTypeDefinition(nativeType);
     }
@@ -365,7 +365,7 @@ public class TypedXmlNodeContext
     }
 
     @Override
-    public void register(ComponentBag<XmlAtom> components)
+    public void register(ComponentBag components)
     {
         PreCondition.assertFalse(isLocked(), "isLocked()");
         cache.register(components);
@@ -392,7 +392,7 @@ public class TypedXmlNodeContext
     private final XmlNodeContext context;
     private final TypedXmlNodeModel model;
     private final XmlAtomBridge atoms;
-    private final SchemaTypeBridge<XmlAtom> cache;
-    private final MetaBridgeOnSchemaTypeBridgeAdapter<XmlAtom> types;
+    private final SchemaTypeBridge cache;
+    private final MetaBridgeOnSchemaTypeBridgeAdapter types;
     private boolean locked;
 }

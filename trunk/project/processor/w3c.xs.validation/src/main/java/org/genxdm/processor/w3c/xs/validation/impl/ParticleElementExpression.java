@@ -22,14 +22,14 @@ import javax.xml.namespace.QName;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ParticleTerm;
 
-final class ParticleElementExpression<A> implements ValidationExpr<A, ParticleTerm<A>>
+final class ParticleElementExpression implements ValidationExpr
 {
 	private final boolean isMaxOccursUnbounded;
-	private final ElementDefinition<A> m_element;
+	private final ElementDefinition m_element;
 	private final int m_maxOccurs;
 	private final int m_minOccurs;
 
-	public ParticleElementExpression(final int minOccurs, final int maxOccurs, final ElementDefinition<A> element)
+	public ParticleElementExpression(final int minOccurs, final int maxOccurs, final ElementDefinition element)
 	{
 		this.m_minOccurs = minOccurs;
 		this.m_maxOccurs = maxOccurs;
@@ -37,7 +37,7 @@ final class ParticleElementExpression<A> implements ValidationExpr<A, ParticleTe
 		this.m_element = PreCondition.assertArgumentNotNull(element, "element");
 	}
 
-	public ParticleElementExpression(final int minOccurs, final ElementDefinition<A> element)
+	public ParticleElementExpression(final int minOccurs, final ElementDefinition element)
 	{
 		this.m_minOccurs = minOccurs;
 		this.m_maxOccurs = -1;
@@ -45,17 +45,17 @@ final class ParticleElementExpression<A> implements ValidationExpr<A, ParticleTe
 		this.m_element = PreCondition.assertArgumentNotNull(element, "element");
 	}
 
-	public ElementDefinition<A> getParticleTerm()
+	public ElementDefinition getParticleTerm()
 	{
 		return m_element;
 	}
 
-	public Iterable<ValidationExpr<A, ParticleTerm<A>>> getSubTerms()
+	public Iterable<ValidationExpr> getSubTerms()
 	{
 		return Collections.emptyList();
 	}
 
-	public boolean intersects(final ValidationExpr<A, ParticleTerm<A>> other)
+	public boolean intersects(final ValidationExpr other)
 	{
 		if (other.isGroup())
 		{
@@ -63,10 +63,10 @@ final class ParticleElementExpression<A> implements ValidationExpr<A, ParticleTe
 		}
 		else
 		{
-			final ParticleTerm<A> term = other.getParticleTerm();
-			if (term instanceof ElementDefinition<?>)
+			final ParticleTerm term = other.getParticleTerm();
+			if (term instanceof ElementDefinition)
 			{
-				final ElementDefinition<A> element = (ElementDefinition<A>)term;
+				final ElementDefinition element = (ElementDefinition)term;
 				return matches(element.getName());
 			}
 			else

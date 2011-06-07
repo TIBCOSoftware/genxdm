@@ -66,7 +66,6 @@ import org.genxdm.processor.w3c.xs.exception.SmUnexpectedElementException;
 import org.genxdm.processor.w3c.xs.exception.SmUnexpectedEndException;
 import org.genxdm.processor.w3c.xs.exception.SrcAttributeTypeAndSimpleTypePresentException;
 import org.genxdm.processor.w3c.xs.exception.SrcPrefixNotFoundException;
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.constraints.IdentityConstraintKind;
@@ -96,7 +95,7 @@ import org.genxdm.xs.types.SimpleType;
  * <li>Maximise the feedback from parsing by choosing when to throw/catch
  * </ul>
  */
-final class XMLSchemaParser<A> extends XMLRepresentation
+final class XMLSchemaParser extends XMLRepresentation
 {
 	private enum ModuleKind
 	{
@@ -477,12 +476,10 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return table;
 	}
 
-	private final XMLTypeRef<A> ANY_SIMPLE_TYPE;
-	private final XMLTypeRef<A> ANY_TYPE;
+	private final XMLTypeRef ANY_SIMPLE_TYPE;
+	private final XMLTypeRef ANY_TYPE;
 
-	private final AtomBridge<A> atomBridge;
-
-	private final ComponentProvider<A> bootstrap;
+	private final ComponentProvider bootstrap;
 
 	private final SchemaCatalog m_catalog;
 
@@ -501,22 +498,21 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 	private final NameSource nameBridge;
 
-	public XMLSchemaParser(final AtomBridge<A> atomBridge, final ComponentProvider<A> bootstrap, final SchemaExceptionHandler errors, final SchemaCatalog catalog, final CatalogResolver resolver, boolean processRepeatedNamespaces)
+	public XMLSchemaParser(final ComponentProvider bootstrap, final SchemaExceptionHandler errors, final SchemaCatalog catalog, final CatalogResolver resolver, boolean processRepeatedNamespaces)
 	{
-		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
-		this.nameBridge = atomBridge.getNameBridge();
+		this.nameBridge = new NameSource();
 		this.bootstrap = PreCondition.assertArgumentNotNull(bootstrap, "bootstrap");
-		this.m_pms = new SmPrefixMappingSupport(atomBridge.getNameBridge());
+		this.m_pms = new SmPrefixMappingSupport(nameBridge);
 		this.m_errors = PreCondition.assertArgumentNotNull(errors, "errors");
 		this.m_catalog = catalog;
 		this.m_resolver = resolver;
 		this.m_processRepeatedNamespaces = processRepeatedNamespaces;
-		this.m_xp = new RestrictedXPathParser<A>(bootstrap, atomBridge);
-		ANY_SIMPLE_TYPE = new XMLTypeRef<A>(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anySimpleType"));
-		ANY_TYPE = new XMLTypeRef<A>(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anyType"));
+		this.m_xp = new RestrictedXPathParser(bootstrap);
+		ANY_SIMPLE_TYPE = new XMLTypeRef(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anySimpleType"));
+		ANY_TYPE = new XMLTypeRef(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anyType"));
 	}
 
-	private void annotationContent(final String contextName, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
+	private void annotationContent(final String contextName, final XMLStreamReader reader, final XMLSchemaModule module) throws XMLStreamException, AbortException
 	{
 		boolean firstElement = true;
 		boolean done = false;
@@ -585,7 +581,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void annotationTag(final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
+	private void annotationTag(final XMLStreamReader reader, final XMLSchemaModule module) throws XMLStreamException, AbortException
 	{
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
@@ -676,7 +672,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:anyAttribute.
 	 */
-	private XMLWildcard<A> anyAttributeTag(final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
+	private XMLWildcard anyAttributeTag(final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule module) throws XMLStreamException, AbortException
 	{
 		ProcessContentsMode processContents = ProcessContentsMode.Strict;
 		NamespaceConstraint namespaceConstraint = NamespaceConstraint.Any(nameSource);
@@ -786,13 +782,13 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				}
 			}
 		}
-		return new XMLWildcard<A>(processContents, namespaceConstraint);
+		return new XMLWildcard(processContents, namespaceConstraint);
 	}
 
 	/**
 	 * xs:any
 	 */
-	private XMLParticle<A> anyElementTag(final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
+	private XMLParticle anyElementTag(final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule module) throws XMLStreamException, AbortException
 	{
 		ProcessContentsMode processContents = ProcessContentsMode.Strict;
 		NamespaceConstraint namespaceConstraint = NamespaceConstraint.Any(nameSource);
@@ -913,29 +909,32 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				}
 			}
 		}
-		final XMLWildcard<A> wildcard = new XMLWildcard<A>(processContents, namespaceConstraint);
-		return new XMLParticleWithWildcardTerm<A>(minOccurs, maxOccurs, wildcard, getFrozenLocation(reader.getLocation()));
+		final XMLWildcard wildcard = new XMLWildcard(processContents, namespaceConstraint);
+		return new XMLParticleWithWildcardTerm(minOccurs, maxOccurs, wildcard, getFrozenLocation(reader.getLocation()));
 	}
 
 	private URI anyURI(final String initialValue) throws SimpleTypeException
 	{
-		final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.ANY_URI);
-		try
-		{
-			final List<A> value = atomicType.validate(initialValue);
-			if (value.size() > 0)
-			{
-				return atomBridge.getURI(value.get(0));
-			}
-			else
-			{
-				return null;
-			}
-		}
-		catch (final DatatypeException e)
-		{
-			throw new SimpleTypeException(initialValue, atomicType, e);
-		}
+		final SimpleType atomicType = bootstrap.getAtomicType(NativeType.ANY_URI);
+		
+		// TODO: another case of using the atom bridge to verify values.
+		return URI.create(initialValue);
+//		try
+//		{
+//			final List value = atomicType.validate(initialValue);
+//			if (value.size() > 0)
+//			{
+//				return atomBridge.getURI(value.get(0));
+//			}
+//			else
+//			{
+//				return null;
+//			}
+//		}
+//		catch (final DatatypeException e)
+//		{
+//			throw new SimpleTypeException(initialValue, atomicType, e);
+//		}
 	}
 
 	private void appinfoTag(final XMLStreamReader reader) throws XMLStreamException, AbortException
@@ -1024,7 +1023,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:attributeGroup (reference)
 	 */
-	private XMLAttributeGroup<A> attribGroupRefTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final String targetNamespace) throws XMLStreamException, XMLAttributeGroupException, AbortException
+	private XMLAttributeGroup attribGroupRefTag(final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final String targetNamespace) throws XMLStreamException, XMLAttributeGroupException, AbortException
 	{
 		final QName ref;
 		try
@@ -1066,7 +1065,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			}
 		}
 
-		final XMLAttributeGroup<A> attributeGroup;
+		final XMLAttributeGroup attributeGroup;
 		try
 		{
 			attributeGroup = cache.dereferenceAttributeGroup(ref, reader.getLocation(), false);
@@ -1141,12 +1140,12 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:attributeGroup (global definition)
 	 */
-	private XMLAttributeGroup<A> attribGroupTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLAttributeGroupException, AbortException
+	private XMLAttributeGroup attribGroupTag(final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLAttributeGroupException, AbortException
 	{
-		final XMLAttributeGroup<A> attributeGroup;
-		final LinkedList<XMLAttributeUse<A>> savedLocalAttributes;
-		final LinkedList<XMLAttributeGroup<A>> savedReferencedAttributeGroups;
-		final XMLWildcard<A> savedWildcard;
+		final XMLAttributeGroup attributeGroup;
+		final LinkedList<XMLAttributeUse> savedLocalAttributes;
+		final LinkedList<XMLAttributeGroup> savedReferencedAttributeGroups;
+		final XMLWildcard savedWildcard;
 		final HashSet<QName> savedProhibited;
 		if (!redefine)
 		{
@@ -1179,10 +1178,10 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				throw new XMLAttributeGroupException(e);
 			}
 
-			savedLocalAttributes = new LinkedList<XMLAttributeUse<A>>(attributeGroup.getAttributeUses());
+			savedLocalAttributes = new LinkedList<XMLAttributeUse>(attributeGroup.getAttributeUses());
 			attributeGroup.getAttributeUses().clear();
 
-			savedReferencedAttributeGroups = new LinkedList<XMLAttributeGroup<A>>(attributeGroup.getGroups());
+			savedReferencedAttributeGroups = new LinkedList<XMLAttributeGroup>(attributeGroup.getGroups());
 			attributeGroup.getGroups().clear();
 
 			savedProhibited = new HashSet<QName>(attributeGroup.prohibited);
@@ -1246,12 +1245,12 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							}
 							else if (LN_ATTRIBUTE.equals(localName))
 							{
-								attributeLocalTag(reader, cache, module, redefine, targetNamespace, attributeGroup.getAttributeUses(), attributeGroup.prohibited, new XMLScope<A>(attributeGroup));
+								attributeLocalTag(reader, cache, module, redefine, targetNamespace, attributeGroup.getAttributeUses(), attributeGroup.prohibited, new XMLScope(attributeGroup));
 								firstElement = false;
 							}
 							else if (LN_ATTRIBUTE_GROUP.equals(localName))
 							{
-								final XMLAttributeGroup<A> ag = attribGroupRefTag(reader, cache, module, targetNamespace);
+								final XMLAttributeGroup ag = attribGroupRefTag(reader, cache, module, targetNamespace);
 								if (!redefine)
 								{
 									attributeGroup.getGroups().add(ag);
@@ -1260,11 +1259,11 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 								{
 									if (attributeGroup == ag)
 									{
-										for (final XMLAttributeUse<A> attributeUse : savedLocalAttributes)
+										for (final XMLAttributeUse attributeUse : savedLocalAttributes)
 										{
 											attributeGroup.getAttributeUses().add(attributeUse);
 										}
-										for (final XMLAttributeGroup<A> reference : savedReferencedAttributeGroups)
+										for (final XMLAttributeGroup reference : savedReferencedAttributeGroups)
 										{
 											attributeGroup.getGroups().add(reference);
 										}
@@ -1337,15 +1336,15 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:attribute (reference or local definition)
 	 */
-	private void attributeLocalTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace, final LinkedList<XMLAttributeUse<A>> attributeUses, final HashSet<QName> prohibited, final XMLScope<A> scope) throws XMLStreamException, AbortException
+	private void attributeLocalTag(final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final boolean redefine, final String targetNamespace, final LinkedList<XMLAttributeUse> attributeUses, final HashSet<QName> prohibited, final XMLScope scope) throws XMLStreamException, AbortException
 	{
 		String name = null;
-		XMLTypeRef<A> type = null;
+		XMLTypeRef type = null;
 		final QName ref = referenceOptional(reader, LN_REF, module, targetNamespace);
 		XMLCardinality use = XMLCardinality.OPTIONAL;
 		boolean qualified = module.attributeQualified;
 		XMLValueConstraint valueConstraint = null;
-		A id = null;
+		String id = null;
 
 		boolean seenForm = false;
 		boolean seenDefault = false;
@@ -1464,7 +1463,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			m_errors.error(new SmAttributeRefPresentException(getFrozenLocation(reader.getLocation())));
 		}
 
-		final XMLAttribute<A> attribute;
+		final XMLAttribute attribute;
 		try
 		{
 			attribute = determineLocalAttribute(name, qualified, ref, cache, reader, targetNamespace, scope);
@@ -1515,7 +1514,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									{
 										m_errors.error(new SrcAttributeTypeAndSimpleTypePresentException(getFrozenLocation(reader.getLocation())));
 									}
-									attribute.typeRef = simpleTypeLocalTag(new XMLScope<A>(attribute), cache, module, reader, redefine, targetNamespace);
+									attribute.typeRef = simpleTypeLocalTag(new XMLScope(attribute), cache, module, reader, redefine, targetNamespace);
 								}
 								else if (LN_ANNOTATION.equals(localName))
 								{
@@ -1565,7 +1564,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		if (forbidden)
 		{
 			final boolean required = (use.getMinOccurs() > 0);
-			final XMLAttributeUse<A> attributeUse = new XMLAttributeUse<A>(required, attribute, valueConstraint);
+			final XMLAttributeUse attributeUse = new XMLAttributeUse(required, attribute, valueConstraint);
 
 			attributeUses.add(attributeUse);
 		}
@@ -1579,9 +1578,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:attribute (global definition).
 	 */
-	private XMLAttribute<A> attributeTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final String targetNamespace) throws XMLStreamException, XMLAttributeException, AbortException
+	private XMLAttribute attributeTag(final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final String targetNamespace) throws XMLStreamException, XMLAttributeException, AbortException
 	{
-		final XMLAttribute<A> attribute;
+		final XMLAttribute attribute;
 		try
 		{
 			attribute = cache.registerAttribute(requiredNCName(LN_NAME, targetNamespace, reader), getFrozenLocation(reader.getLocation()));
@@ -1682,7 +1681,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							{
 								if (missingTypeAttribute)
 								{
-									attribute.typeRef = simpleTypeLocalTag(new XMLScope<A>(attribute), cache, module, reader, false, targetNamespace);
+									attribute.typeRef = simpleTypeLocalTag(new XMLScope(attribute), cache, module, reader, false, targetNamespace);
 								}
 								else
 								{
@@ -1738,7 +1737,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * This function is common to extension and restriction of simple content.
 	 */
-	private QName baseTypeDefinitionInComplexContent(final XMLType<A> complexType, final DerivationMethod derivation, final XMLStreamReader reader, final boolean redefine, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final String targetNamespace) throws SchemaException, AbortException
+	private QName baseTypeDefinitionInComplexContent(final XMLType complexType, final DerivationMethod derivation, final XMLStreamReader reader, final boolean redefine, final XMLSchemaCache cache, final XMLSchemaModule module, final String targetNamespace) throws SchemaException, AbortException
 	{
 		final QName baseName = requiredQName(LN_BASE, module.isChameleon(), targetNamespace, reader);
 		ensureReferenceType(baseName, reader.getLocation(), redefine, cache);
@@ -1746,7 +1745,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		// definition resolved by the
 		// actual value of the base attribute. This could be a forward reference
 		// so we use the QName.
-		complexType.setBase(new XMLTypeRef<A>(baseName), derivation);
+		complexType.setBase(new XMLTypeRef(baseName), derivation);
 		return baseName;
 	}
 
@@ -1772,7 +1771,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 *            The module being parsed - used to record the xs:ID values to ensure uniqueness.
 	 * @return The xs:ID value as a String.
 	 */
-	private A checkID(final String attributeValue, final Location location, final QName elementName, final XMLSchemaModule<A> module) throws AbortException
+	private String checkID(final String attributeValue, final Location location, final QName elementName, final XMLSchemaModule module) throws AbortException
 	{
 		try
 		{
@@ -1791,24 +1790,27 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return null;
 	}
 
-	private A checkIDValue(final String strval, final Location location, final XMLSchemaModule<A> module) throws SimpleTypeException, SmDuplicateIDException
+	private String checkIDValue(final String strval, final Location location, final XMLSchemaModule module) throws SimpleTypeException, SmDuplicateIDException
 	{
 		PreCondition.assertArgumentNotNull(strval, LN_ID);
 
-		final SimpleType<A> idType = bootstrap.getAtomicType(NativeType.ID);
+		final SimpleType idType = bootstrap.getAtomicType(NativeType.ID);
 
-		final List<A> value;
-		try
-		{
-			value = idType.validate(strval);
-		}
-		catch (final DatatypeException cause)
-		{
-			throw new SimpleTypeException(strval, idType, cause);
-		}
-		if (value.size() > 0)
-		{
-			final A id = value.get(0);
+		// TODO: the technique here is to create an atomic type and verify it.
+		// do it a different way.
+//		final List<A> value;
+//		try
+//		{
+//			value = idType.validate(strval);
+//		}
+//		catch (final DatatypeException cause)
+//		{
+//			throw new SimpleTypeException(strval, idType, cause);
+//		}
+//		if (value.size() > 0)
+//		{
+//			final A id = value.get(0);
+		    final String id = strval;
 			if (module.m_ids.contains(id))
 			{
 				throw new SmDuplicateIDException(id, new SrcFrozenLocation(location));
@@ -1818,11 +1820,11 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				module.m_ids.add(id);
 			}
 			return id;
-		}
-		else
-		{
-			return null;
-		}
+//		}
+//		else
+//		{
+//			return null;
+//		}
 	}
 
 	private void checkPrefixBound(final String prefix, final String namespaceURI, final String initialValue) throws SimpleTypeException
@@ -1851,7 +1853,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * xs:complexContent <br/>
 	 * We don't return anything because this affects multiple aspects of the complex type.
 	 */
-	private void complexContentTag(final XMLType<A> complexType, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
+	private void complexContentTag(final XMLType complexType, final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		// System.out.println(StripQualifiers.strip(getClass().getName()) +
 		// ".complexContentTag(complexType=" + complexType + ", mixed=" + mixed
@@ -1978,7 +1980,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * This does not correspond to a specific tag. <br/>
 	 * Used to parse the content of xs:complexType (global and local), but not the same as xs:complexContent.
 	 */
-	private void complexTypeContent(final XMLType<A> complexType, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLStreamReader reader, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
+	private void complexTypeContent(final XMLType complexType, final XMLSchemaCache cache, final XMLSchemaModule module, final XMLStreamReader reader, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		final CmMachine<String> machine = new CmMachine<String>(complexTypeTable, EPSILON);
 		boolean done = false;
@@ -2009,7 +2011,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 									try
 									{
-										complexType.m_contentModel = groupParticleTag(new XMLScope<A>(complexType), reader, cache, module, redefine, targetNamespace);
+										complexType.m_contentModel = groupParticleTag(new XMLScope(complexType), reader, cache, module, redefine, targetNamespace);
 									}
 									catch (final XMLModelGroupUseException e)
 									{
@@ -2021,7 +2023,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 									try
 									{
-										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.All, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.All, new XMLScope(complexType), localName, reader, cache, module, redefine, targetNamespace);
 									}
 									catch (final XMLCompositorOutsideGroupException e)
 									{
@@ -2033,7 +2035,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 									try
 									{
-										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Choice, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Choice, new XMLScope(complexType), localName, reader, cache, module, redefine, targetNamespace);
 									}
 									catch (final XMLCompositorOutsideGroupException e)
 									{
@@ -2045,7 +2047,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 									try
 									{
-										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Sequence, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Sequence, new XMLScope(complexType), localName, reader, cache, module, redefine, targetNamespace);
 									}
 									catch (final XMLCompositorOutsideGroupException e)
 									{
@@ -2054,7 +2056,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 								}
 								else if (LN_ATTRIBUTE.equals(localName))
 								{
-									attributeLocalTag(reader, cache, module, redefine, targetNamespace, complexType.getAttributeUses(), complexType.prohibited, new XMLScope<A>(complexType));
+									attributeLocalTag(reader, cache, module, redefine, targetNamespace, complexType.getAttributeUses(), complexType.prohibited, new XMLScope(complexType));
 								}
 								else if (LN_ATTRIBUTE_GROUP.equals(localName))
 								{
@@ -2127,9 +2129,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:complexType (global definition)
 	 */
-	private XMLType<A> complexTypeGlobalTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLComplexTypeException, AbortException
+	private XMLType complexTypeGlobalTag(final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLComplexTypeException, AbortException
 	{
-		final XMLType<A> complexType;
+		final XMLType complexType;
 		if (!redefine)
 		{
 			try
@@ -2252,9 +2254,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:complexType (local definition)
 	 */
-	private XMLTypeRef<A> complexTypeLocalTag(final XMLScope<A> scope, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
+	private XMLTypeRef complexTypeLocalTag(final XMLScope scope, final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
-		final XMLType<A> complexType = cache.registerAnonymousType(scope, getFrozenLocation(reader.getLocation()));
+		final XMLType complexType = cache.registerAnonymousType(scope, getFrozenLocation(reader.getLocation()));
 		complexType.setComplexFlag();
 		complexType.setBase(ANY_TYPE, DerivationMethod.Restriction);
 
@@ -2300,15 +2302,15 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 		complexTypeContent(complexType, cache, module, reader, redefine, targetNamespace);
 
-		return new XMLTypeRef<A>(complexType);
+		return new XMLTypeRef(complexType);
 	}
 
 	/**
 	 * xs:sequence, xs:choice or xs:all (outside a group)
 	 */
-	private XMLParticleWithModelGroupTerm<A> compositorOutsideGroupTag(final ModelGroup.SmCompositor compositor, final XMLScope<A> compositorScope, final String contextName, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLCompositorOutsideGroupException, AbortException
+	private XMLParticleWithModelGroupTerm compositorOutsideGroupTag(final ModelGroup.SmCompositor compositor, final XMLScope compositorScope, final String contextName, final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLCompositorOutsideGroupException, AbortException
 	{
-		final XMLModelGroup<A> group = new XMLModelGroup<A>(compositor, compositorScope, getFrozenLocation(reader.getLocation()));
+		final XMLModelGroup group = new XMLModelGroup(compositor, compositorScope, getFrozenLocation(reader.getLocation()));
 
 		BigInteger minOccurs = BigInteger.ONE;
 		BigInteger maxOccurs = BigInteger.ONE;
@@ -2406,7 +2408,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									{
 										try
 										{
-											group.getParticles().add(PreCondition.assertNotNull(elementWithinAllTag(reader, cache, module, redefine, targetNamespace, new XMLScope<A>(group))));
+											group.getParticles().add(PreCondition.assertNotNull(elementWithinAllTag(reader, cache, module, redefine, targetNamespace, new XMLScope(group))));
 										}
 										catch (final XMLElementException e)
 										{
@@ -2419,7 +2421,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									{
 										try
 										{
-											group.getParticles().add(PreCondition.assertNotNull(elementLocalTag(reader, cache, module, redefine, targetNamespace, new XMLScope<A>(group))));
+											group.getParticles().add(PreCondition.assertNotNull(elementLocalTag(reader, cache, module, redefine, targetNamespace, new XMLScope(group))));
 										}
 										catch (final XMLElementException e)
 										{
@@ -2438,7 +2440,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							{
 								try
 								{
-									group.getParticles().add(PreCondition.assertNotNull(groupParticleTag(new XMLScope<A>(group), reader, cache, module, redefine, targetNamespace)));
+									group.getParticles().add(PreCondition.assertNotNull(groupParticleTag(new XMLScope(group), reader, cache, module, redefine, targetNamespace)));
 								}
 								catch (final XMLModelGroupUseException e)
 								{
@@ -2448,12 +2450,12 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							}
 							else if (LN_CHOICE.equals(localName))
 							{
-								group.getParticles().add(PreCondition.assertNotNull(compositorOutsideGroupTag(ModelGroup.SmCompositor.Choice, new XMLScope<A>(group), contextName, reader, cache, module, redefine, targetNamespace)));
+								group.getParticles().add(PreCondition.assertNotNull(compositorOutsideGroupTag(ModelGroup.SmCompositor.Choice, new XMLScope(group), contextName, reader, cache, module, redefine, targetNamespace)));
 								firstElement = false;
 							}
 							else if (LN_SEQUENCE.equals(localName))
 							{
-								group.getParticles().add(PreCondition.assertNotNull(compositorOutsideGroupTag(ModelGroup.SmCompositor.Sequence, new XMLScope<A>(group), contextName, reader, cache, module, redefine, targetNamespace)));
+								group.getParticles().add(PreCondition.assertNotNull(compositorOutsideGroupTag(ModelGroup.SmCompositor.Sequence, new XMLScope(group), contextName, reader, cache, module, redefine, targetNamespace)));
 								firstElement = false;
 							}
 							else if (LN_ANY.equals(localName))
@@ -2501,13 +2503,13 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				}
 			}
 		}
-		return new XMLParticleWithModelGroupTerm<A>(minOccurs, maxOccurs, group, getFrozenLocation(reader.getLocation()));
+		return new XMLParticleWithModelGroupTerm(minOccurs, maxOccurs, group, getFrozenLocation(reader.getLocation()));
 	}
 
 	/**
 	 * xs:sequence, xs:choice or xs:all (within a group)
 	 */
-	private XMLModelGroup<A> compositorWithinGroupTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLModelGroup<A> group, final String contextName, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
+	private XMLModelGroup compositorWithinGroupTag(final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final XMLModelGroup group, final String contextName, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
@@ -2537,14 +2539,14 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 		// If doing a redefine, make a copy of the original group so that we can
 		// mutate the original.
-		final XMLModelGroup<A> originalGroupCopy;
+		final XMLModelGroup originalGroupCopy;
 		if (redefine)
 		{
-			originalGroupCopy = new XMLModelGroup<A>(group.getName(), group.getScope(), group.getLocation());
+			originalGroupCopy = new XMLModelGroup(group.getName(), group.getScope(), group.getLocation());
 			originalGroupCopy.setCompositor(group.getCompositor());
 			if (group.getParticles().size() > 0)
 			{
-				for (final XMLParticle<A> particle : group.getParticles())
+				for (final XMLParticle particle : group.getParticles())
 				{
 					originalGroupCopy.getParticles().add(particle);
 				}
@@ -2578,7 +2580,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							{
 								try
 								{
-									group.getParticles().add(PreCondition.assertNotNull(elementLocalTag(reader, cache, module, redefine, targetNamespace, new XMLScope<A>(group))));
+									group.getParticles().add(PreCondition.assertNotNull(elementLocalTag(reader, cache, module, redefine, targetNamespace, new XMLScope(group))));
 								}
 								catch (final XMLElementException e)
 								{
@@ -2595,19 +2597,19 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									{
 										try
 										{
-											final XMLParticleWithModelGroupTerm<A> groupParticle = groupParticleTag(new XMLScope<A>(group), reader, cache, module, redefine, targetNamespace);
+											final XMLParticleWithModelGroupTerm groupParticle = groupParticleTag(new XMLScope(group), reader, cache, module, redefine, targetNamespace);
 											if (!redefine)
 											{
 												group.getParticles().add(PreCondition.assertNotNull(groupParticle));
 											}
 											else
 											{
-												final XMLModelGroup<A> g = groupParticle.getTerm();
+												final XMLModelGroup g = groupParticle.getTerm();
 												if (group == g)
 												{
 													if (originalGroupCopy.getParticles().size() > 0)
 													{
-														for (final XMLParticle<A> particle : originalGroupCopy.getParticles())
+														for (final XMLParticle particle : originalGroupCopy.getParticles())
 														{
 															group.getParticles().add(PreCondition.assertNotNull(particle));
 														}
@@ -2647,7 +2649,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									{
 										try
 										{
-											group.getParticles().add(PreCondition.assertNotNull(compositorOutsideGroupTag(ModelGroup.SmCompositor.Choice, new XMLScope<A>(group), localName, reader, cache, module, redefine, targetNamespace)));
+											group.getParticles().add(PreCondition.assertNotNull(compositorOutsideGroupTag(ModelGroup.SmCompositor.Choice, new XMLScope(group), localName, reader, cache, module, redefine, targetNamespace)));
 										}
 										catch (final XMLCompositorOutsideGroupException e)
 										{
@@ -2677,7 +2679,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									{
 										try
 										{
-											group.getParticles().add(PreCondition.assertNotNull(compositorOutsideGroupTag(ModelGroup.SmCompositor.Sequence, new XMLScope<A>(group), localName, reader, cache, module, redefine, targetNamespace)));
+											group.getParticles().add(PreCondition.assertNotNull(compositorOutsideGroupTag(ModelGroup.SmCompositor.Sequence, new XMLScope(group), localName, reader, cache, module, redefine, targetNamespace)));
 										}
 										catch (final XMLCompositorOutsideGroupException e)
 										{
@@ -2848,7 +2850,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 				}
 				else
 				{
-					final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.UNTYPED_ATOMIC);
+					final SimpleType atomicType = bootstrap.getAtomicType(NativeType.UNTYPED_ATOMIC);
 					final DatatypeException cause = new DatatypeException(token, atomicType);
 					throw new SimpleTypeException(strval, atomicType, cause);
 				}
@@ -2881,20 +2883,20 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private XMLAttribute<A> determineLocalAttribute(final String name, final boolean qualified, final QName ref, final XMLSchemaCache<A> cache, final XMLStreamReader parser, final String targetNamespace, final XMLScope<A> scope) throws SchemaException
+	private XMLAttribute determineLocalAttribute(final String name, final boolean qualified, final QName ref, final XMLSchemaCache cache, final XMLStreamReader parser, final String targetNamespace, final XMLScope scope) throws SchemaException
 	{
 		if (null != name)
 		{
 			if (null == ref)
 			{
-				final XMLAttribute<A> attribute;
+				final XMLAttribute attribute;
 				if (qualified)
 				{
-					attribute = new XMLAttribute<A>(resolveUsingTargetNamespace(name, targetNamespace, parser.getNamespaceContext()), scope, ANY_SIMPLE_TYPE, getFrozenLocation(parser.getLocation()));
+					attribute = new XMLAttribute(resolveUsingTargetNamespace(name, targetNamespace, parser.getNamespaceContext()), scope, ANY_SIMPLE_TYPE, getFrozenLocation(parser.getLocation()));
 				}
 				else
 				{
-					attribute = new XMLAttribute<A>(new QName(nameBridge.empty(), name), scope, ANY_SIMPLE_TYPE, getFrozenLocation(parser.getLocation()));
+					attribute = new XMLAttribute(new QName(nameBridge.empty(), name), scope, ANY_SIMPLE_TYPE, getFrozenLocation(parser.getLocation()));
 				}
 				return attribute;
 			}
@@ -2920,20 +2922,20 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * Determines whether the local element is a local definition or a reference. <br/>
 	 * Imposes the constraint that one of the ref and name must be present, but not both.
 	 */
-	private XMLElement<A> determineLocalElement(final String name, final boolean qualified, final XMLTypeRef<A> typeRef, final QName ref, final XMLSchemaCache<A> cache, final XMLStreamReader parser, final String targetNamespace, final XMLScope<A> scope) throws SchemaException
+	private XMLElement determineLocalElement(final String name, final boolean qualified, final XMLTypeRef typeRef, final QName ref, final XMLSchemaCache cache, final XMLStreamReader parser, final String targetNamespace, final XMLScope scope) throws SchemaException
 	{
 		if ((null != name) && (null == ref))
 		{
-			final XMLElement<A> element;
+			final XMLElement element;
 			if (qualified)
 			{
 				final QName ename = resolveUsingTargetNamespace(name, targetNamespace, parser.getNamespaceContext());
-				element = new XMLElement<A>(ename, scope, ANY_TYPE, getFrozenLocation(parser.getLocation()));
+				element = new XMLElement(ename, scope, ANY_TYPE, getFrozenLocation(parser.getLocation()));
 			}
 			else
 			{
 				final QName ename = new QName(nameBridge.empty(), name);
-				element = new XMLElement<A>(ename, scope, ANY_TYPE, getFrozenLocation(parser.getLocation()));
+				element = new XMLElement(ename, scope, ANY_TYPE, getFrozenLocation(parser.getLocation()));
 			}
 			if (null != typeRef)
 			{
@@ -3045,7 +3047,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void elementContent(final XMLElement<A> element, final QName ref, final XMLSchemaModule<A> module, final XMLSchemaCache<A> cache, final XMLStreamReader reader, final boolean redefine, final String targetNamespace, final boolean seenType) throws XMLStreamException, AbortException
+	private void elementContent(final XMLElement element, final QName ref, final XMLSchemaModule module, final XMLSchemaCache cache, final XMLStreamReader reader, final boolean redefine, final String targetNamespace, final boolean seenType) throws XMLStreamException, AbortException
 	{
 		boolean firstElement = true;
 		boolean done = false;
@@ -3071,7 +3073,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 								{
 									m_errors.error(new SmElementSimpleTypeXorComplexTypeException(getFrozenLocation(reader.getLocation())));
 								}
-								element.typeRef = complexTypeLocalTag(new XMLScope<A>(element), reader, cache, module, redefine, targetNamespace);
+								element.typeRef = complexTypeLocalTag(new XMLScope(element), reader, cache, module, redefine, targetNamespace);
 								firstElement = false;
 							}
 							else if (LN_SIMPLE_TYPE.equals(localName))
@@ -3081,7 +3083,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 								{
 									m_errors.error(new SmElementSimpleTypeXorComplexTypeException(getFrozenLocation(reader.getLocation())));
 								}
-								element.typeRef = simpleTypeLocalTag(new XMLScope<A>(element), cache, module, reader, redefine, targetNamespace);
+								element.typeRef = simpleTypeLocalTag(new XMLScope(element), cache, module, reader, redefine, targetNamespace);
 								firstElement = false;
 							}
 							else if (LN_UNIQUE.equals(localName))
@@ -3169,10 +3171,10 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:element (reference or local definition)
 	 */
-	private XMLParticle<A> elementLocalTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace, final XMLScope<A> scope) throws XMLStreamException, XMLElementException, AbortException
+	private XMLParticle elementLocalTag(final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final boolean redefine, final String targetNamespace, final XMLScope scope) throws XMLStreamException, XMLElementException, AbortException
 	{
 		String name = null;
-		XMLTypeRef<A> typeRef = null;
+		XMLTypeRef typeRef = null;
 		final QName ref = referenceOptional(reader, LN_REF, module, targetNamespace);
 		BigInteger minOccurs = BigInteger.ONE;
 		BigInteger maxOccurs = BigInteger.ONE;
@@ -3303,7 +3305,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			}
 		}
 
-		final XMLElement<A> element;
+		final XMLElement element;
 		try
 		{
 			element = determineLocalElement(name, qualified, typeRef, ref, cache, reader, targetNamespace, scope);
@@ -3320,22 +3322,22 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		{
 			element.m_valueConstraint = valueConstraint;
 			elementContent(element, ref, module, cache, reader, redefine, targetNamespace, (null != typeRef));
-			return new XMLParticleWithElementTerm<A>(minOccurs, maxOccurs, element, null, getFrozenLocation(reader.getLocation()));
+			return new XMLParticleWithElementTerm(minOccurs, maxOccurs, element, null, getFrozenLocation(reader.getLocation()));
 		}
 		else
 		{
 			element.m_valueConstraint = null;
 			elementContent(element, null, module, cache, reader, redefine, targetNamespace, (null != typeRef));
-			return new XMLParticleWithElementTerm<A>(minOccurs, maxOccurs, element, valueConstraint, getFrozenLocation(reader.getLocation()));
+			return new XMLParticleWithElementTerm(minOccurs, maxOccurs, element, valueConstraint, getFrozenLocation(reader.getLocation()));
 		}
 	}
 
 	/**
 	 * xs:element (global definition)
 	 */
-	private XMLElement<A> elementTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final String targetNamespace) throws XMLStreamException, XMLElementException, AbortException
+	private XMLElement elementTag(final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final String targetNamespace) throws XMLStreamException, XMLElementException, AbortException
 	{
-		final XMLElement<A> element;
+		final XMLElement element;
 		try
 		{
 			element = cache.registerElement(requiredNCName(LN_NAME, targetNamespace, reader), getFrozenLocation(reader.getLocation()));
@@ -3499,10 +3501,10 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * Reference to a global element declaration or local definition (local definitions cannot be referenced). The
 	 * number of occurrences can only be zero or one when xs:element is used within xs:all.
 	 */
-	private XMLParticle<A> elementWithinAllTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace, final XMLScope<A> scope) throws XMLStreamException, XMLElementException, AbortException
+	private XMLParticle elementWithinAllTag(final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final boolean redefine, final String targetNamespace, final XMLScope scope) throws XMLStreamException, XMLElementException, AbortException
 	{
 		String name = null;
-		XMLTypeRef<A> typeRef = null;
+		XMLTypeRef typeRef = null;
 		final QName ref = referenceOptional(reader, LN_REF, module, targetNamespace);
 		BigInteger minOccurs = BigInteger.ONE;
 		BigInteger maxOccurs = BigInteger.ONE;
@@ -3629,7 +3631,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			}
 		}
 
-		final XMLElement<A> element;
+		final XMLElement element;
 		try
 		{
 			element = determineLocalElement(name, qualified, typeRef, ref, cache, reader, targetNamespace, scope);
@@ -3645,10 +3647,10 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 		elementContent(element, ref, module, cache, reader, redefine, targetNamespace, (null != typeRef));
 
-		return new XMLParticleWithElementTerm<A>(minOccurs, maxOccurs, element, valueConstraint, getFrozenLocation(reader.getLocation()));
+		return new XMLParticleWithElementTerm(minOccurs, maxOccurs, element, valueConstraint, getFrozenLocation(reader.getLocation()));
 	}
 
-	private void ensureReferenceType(final QName name, final Location location, final boolean mustExist, final XMLSchemaCache<A> cache) throws AbortException
+	private void ensureReferenceType(final QName name, final Location location, final boolean mustExist, final XMLSchemaCache cache) throws AbortException
 	{
 		PreCondition.assertArgumentNotNull(name);
 
@@ -3673,9 +3675,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:enumeration
 	 */
-	private XMLEnumeration<A> enumerationTag(final XMLType<A> simpleType, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
+	private XMLEnumeration enumerationTag(final XMLType simpleType, final XMLStreamReader reader, final XMLSchemaModule module) throws XMLStreamException, AbortException
 	{
-		final XMLEnumeration<A> enumeration = new XMLEnumeration<A>(simpleType, getFrozenLocation(reader.getLocation()));
+		final XMLEnumeration enumeration = new XMLEnumeration(simpleType, getFrozenLocation(reader.getLocation()));
 
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
@@ -3772,8 +3774,8 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * effective content for a complex type.
 	 */
 	/*
-	 * private ParticleWithModelGroupTerm<A> mangleCompositor(final boolean effectiveMixed, final
-	 * ParticleWithModelGroupTerm<A> particle) { final ModelGroupImpl<A> term = particle.getTerm(); switch
+	 * private ParticleWithModelGroupTerm mangleCompositor(final boolean effectiveMixed, final
+	 * ParticleWithModelGroupTerm particle) { final ModelGroupImpl term = particle.getTerm(); switch
 	 * (term.getCompositor()) { case All: { if (term.getParticles().isEmpty()) { if (effectiveMixed) {
 	 * particle.setMinOccurs(1); particle.setMaxOccurs(1); term.m_compositor = ModelGroup.Compositor.Sequence; return
 	 * particle; } else { return null; } } else { return particle; } } case Sequence: { if
@@ -3793,14 +3795,14 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * xs:extension (complex content) <br/>
 	 * We don't return anything because this affects multiple aspects of the complex type.
 	 */
-	private void extensionInComplexContentTag(final XMLType<A> complexType, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
+	private void extensionInComplexContentTag(final XMLType complexType, final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		// System.out.println(StripQualifiers.strip(getClass().getName()) +
 		// ".extensionInComplexContentTag(complexType=" + complexType +
 		// ", mixed=" + mixed + ")");
 		try
 		{
-			final XMLType<A> redefineType;
+			final XMLType redefineType;
 			if (!redefine)
 			{
 				redefineType = null;
@@ -3876,7 +3878,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 										complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 										try
 										{
-											complexType.m_contentModel = groupParticleTag(new XMLScope<A>(complexType), reader, cache, module, redefine, targetNamespace);
+											complexType.m_contentModel = groupParticleTag(new XMLScope(complexType), reader, cache, module, redefine, targetNamespace);
 										}
 										catch (final XMLModelGroupUseException e)
 										{
@@ -3888,7 +3890,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 										complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 										try
 										{
-											complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.All, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+											complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.All, new XMLScope(complexType), localName, reader, cache, module, redefine, targetNamespace);
 										}
 										catch (final XMLCompositorOutsideGroupException e)
 										{
@@ -3900,7 +3902,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 										complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 										try
 										{
-											complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Choice, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+											complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Choice, new XMLScope(complexType), localName, reader, cache, module, redefine, targetNamespace);
 										}
 										catch (final XMLCompositorOutsideGroupException e)
 										{
@@ -3911,7 +3913,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									{
 										try
 										{
-											final XMLParticleWithModelGroupTerm<A> contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Sequence, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+											final XMLParticleWithModelGroupTerm contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Sequence, new XMLScope(complexType), localName, reader, cache, module, redefine, targetNamespace);
 											if (!redefine)
 											{
 												complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
@@ -3929,7 +3931,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									}
 									else if (LN_ATTRIBUTE.equals(localName))
 									{
-										attributeLocalTag(reader, cache, module, redefine, targetNamespace, complexType.getAttributeUses(), complexType.prohibited, new XMLScope<A>(complexType));
+										attributeLocalTag(reader, cache, module, redefine, targetNamespace, complexType.getAttributeUses(), complexType.prohibited, new XMLScope(complexType));
 									}
 									else if (LN_ATTRIBUTE_GROUP.equals(localName))
 									{
@@ -4008,7 +4010,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:extension (simple content)
 	 */
-	private void extensionInSimpleContentTag(final XMLType<A> complexType, final XMLSchemaModule<A> module, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
+	private void extensionInSimpleContentTag(final XMLType complexType, final XMLSchemaModule module, final XMLStreamReader reader, final XMLSchemaCache cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		// When extending simple content we're adding attributes to this complex
 		// type.
@@ -4016,7 +4018,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		{
 			final QName baseName = requiredQName(LN_BASE, module.isChameleon(), targetNamespace, reader);
 			ensureReferenceType(baseName, reader.getLocation(), redefine, cache);
-			complexType.setBase(new XMLTypeRef<A>(baseName), DerivationMethod.Extension);
+			complexType.setBase(new XMLTypeRef(baseName), DerivationMethod.Extension);
 		}
 		catch (final SchemaException e)
 		{
@@ -4080,7 +4082,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							{
 								if (LN_ATTRIBUTE.equals(localName))
 								{
-									attributeLocalTag(reader, cache, module, redefine, targetNamespace, complexType.getAttributeUses(), complexType.prohibited, new XMLScope<A>(complexType));
+									attributeLocalTag(reader, cache, module, redefine, targetNamespace, complexType.getAttributeUses(), complexType.prohibited, new XMLScope(complexType));
 								}
 								else if (LN_ATTRIBUTE_GROUP.equals(localName))
 								{
@@ -4141,7 +4143,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private RestrictedXPath fieldTag(final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, XMLFieldException, AbortException
+	private RestrictedXPath fieldTag(final XMLStreamReader reader, final XMLSchemaModule module) throws XMLStreamException, XMLFieldException, AbortException
 	{
 		RestrictedXPath xpath = null;
 		final int attributeCount = reader.getAttributeCount();
@@ -4257,9 +4259,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:fractionDigits
 	 */
-	private XMLFractionDigitsFacet<A> fractionDigitsTag(final XMLType<A> simpleType, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, SmComplexTypeException, AbortException
+	private XMLFractionDigitsFacet fractionDigitsTag(final XMLType simpleType, final XMLStreamReader reader, final XMLSchemaModule module) throws XMLStreamException, SmComplexTypeException, AbortException
 	{
-		final XMLFractionDigitsFacet<A> facet = new XMLFractionDigitsFacet<A>(simpleType, getFrozenLocation(reader.getLocation()));
+		final XMLFractionDigitsFacet facet = new XMLFractionDigitsFacet(simpleType, getFrozenLocation(reader.getLocation()));
 
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
@@ -4366,7 +4368,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:group (reference)
 	 */
-	private XMLParticleWithModelGroupTerm<A> groupParticleTag(final XMLScope<A> localScope, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLModelGroupUseException, AbortException
+	private XMLParticleWithModelGroupTerm groupParticleTag(final XMLScope localScope, final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLModelGroupUseException, AbortException
 	{
 		final QName ref;
 		BigInteger minOccurs = BigInteger.ONE;
@@ -4419,7 +4421,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			}
 		}
 
-		final XMLModelGroup<A> modelGroup;
+		final XMLModelGroup modelGroup;
 		if (null != ref)
 		{
 			try
@@ -4434,7 +4436,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 		else
 		{
-			modelGroup = new XMLModelGroup<A>(ModelGroup.SmCompositor.Sequence, localScope, getFrozenLocation(reader.getLocation()));
+			modelGroup = new XMLModelGroup(ModelGroup.SmCompositor.Sequence, localScope, getFrozenLocation(reader.getLocation()));
 		}
 
 		boolean firstElement = true;
@@ -4496,15 +4498,15 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 			}
 		}
 
-		return new XMLParticleWithModelGroupTerm<A>(minOccurs, maxOccurs, modelGroup, getFrozenLocation(reader.getLocation()));
+		return new XMLParticleWithModelGroupTerm(minOccurs, maxOccurs, modelGroup, getFrozenLocation(reader.getLocation()));
 	}
 
 	/**
 	 * xs:group (definition)
 	 */
-	private XMLModelGroup<A> groupTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLModelGroupException, AbortException
+	private XMLModelGroup groupTag(final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLModelGroupException, AbortException
 	{
-		final XMLModelGroup<A> modelGroup;
+		final XMLModelGroup modelGroup;
 		if (!redefine)
 		{
 			try
@@ -4646,7 +4648,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return modelGroup;
 	}
 
-	private void importTag(final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLStreamReader reader, final String targetNamespace) throws XMLStreamException, AbortException
+	private void importTag(final XMLSchemaCache cache, final XMLSchemaModule module, final XMLStreamReader reader, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		PreCondition.assertArgumentNotNull(module, "module");
 		try
@@ -4744,7 +4746,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void includeTag(final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLStreamReader reader) throws XMLStreamException, AbortException
+	private void includeTag(final XMLSchemaCache cache, final XMLSchemaModule module, final XMLStreamReader reader) throws XMLStreamException, AbortException
 	{
 		final int attributeCount = reader.getAttributeCount();
 		URI schemaLocation = null;
@@ -4856,9 +4858,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return XMLConstants.W3C_XML_SCHEMA_NS_URI.equals(namespaceURI);
 	}
 
-	private XMLIdentityConstraint<A> keyrefTag(final XMLSchemaCache<A> cache, final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, XMLIdentityConstraintException, AbortException
+	private XMLIdentityConstraint keyrefTag(final XMLSchemaCache cache, final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule module) throws XMLStreamException, XMLIdentityConstraintException, AbortException
 	{
-		final XMLIdentityConstraint<A> keyref;
+		final XMLIdentityConstraint keyref;
 		try
 		{
 			final QName name = requiredNCName(LN_NAME, targetNamespace, reader);
@@ -5012,9 +5014,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return keyref;
 	}
 
-	private XMLIdentityConstraint<A> keyTag(final XMLSchemaCache<A> cache, final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, XMLIdentityConstraintException, AbortException
+	private XMLIdentityConstraint keyTag(final XMLSchemaCache cache, final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule module) throws XMLStreamException, XMLIdentityConstraintException, AbortException
 	{
-		final XMLIdentityConstraint<A> constraint;
+		final XMLIdentityConstraint constraint;
 		try
 		{
 			final QName name = requiredNCName(LN_NAME, targetNamespace, reader);
@@ -5163,9 +5165,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:length, xs:maxLength, xs:minLength
 	 */
-	private XMLLength<A> lengthTag(final XMLType<A> type, final boolean minimum, final boolean maximum, final String contextName, final XMLSchemaModule<A> module, final XMLStreamReader reader) throws XMLStreamException, SmComplexTypeException, AbortException
+	private XMLLength lengthTag(final XMLType type, final boolean minimum, final boolean maximum, final String contextName, final XMLSchemaModule module, final XMLStreamReader reader) throws XMLStreamException, SmComplexTypeException, AbortException
 	{
-		final XMLLength<A> length = new XMLLength<A>(type, getFrozenLocation(reader.getLocation()));
+		final XMLLength length = new XMLLength(type, getFrozenLocation(reader.getLocation()));
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
 		{
@@ -5284,7 +5286,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:list
 	 */
-	private void listTag(final XMLType<A> listType, final XMLSchemaModule<A> module, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
+	private void listTag(final XMLType listType, final XMLSchemaModule module, final XMLStreamReader reader, final XMLSchemaCache cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		listType.setBase(ANY_SIMPLE_TYPE, DerivationMethod.List);
 
@@ -5357,7 +5359,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 								if (null == listType.itemRef)
 								{
 									missingST = checkWxsElementMaxOccursUnity(missingST, LN_LIST, LN_SIMPLE_TYPE, reader.getLocation());
-									listType.itemRef = simpleTypeLocalTag(new XMLScope<A>(listType), cache, module, reader, false, targetNamespace);
+									listType.itemRef = simpleTypeLocalTag(new XMLScope(listType), cache, module, reader, false, targetNamespace);
 									firstElement = false;
 								}
 								else
@@ -5447,9 +5449,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:maxExclusive, xs:maxInclusive, xs:minExclusive, xs:minInclusive
 	 */
-	private XMLMinMaxFacet<A> minmaxTag(final XMLType<A> simpleType, final FacetKind kind, final String elementName, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, SmComplexTypeException, AbortException
+	private XMLMinMaxFacet minmaxTag(final XMLType simpleType, final FacetKind kind, final String elementName, final XMLStreamReader reader, final XMLSchemaModule module) throws XMLStreamException, SmComplexTypeException, AbortException
 	{
-		final XMLMinMaxFacet<A> minmax = new XMLMinMaxFacet<A>(kind, elementName, simpleType, getFrozenLocation(reader.getLocation()));
+		final XMLMinMaxFacet minmax = new XMLMinMaxFacet(kind, elementName, simpleType, getFrozenLocation(reader.getLocation()));
 
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
@@ -5570,23 +5572,25 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 	private String name(final String initialValue) throws SimpleTypeException
 	{
-		final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.NCNAME);
-		try
-		{
-			final List<A> value = atomicType.validate(initialValue);
-			if (value.size() > 0)
-			{
-				return atomBridge.getString(value.get(0));
-			}
-			else
-			{
-				return null;
-			}
-		}
-		catch (final DatatypeException cause)
-		{
-			throw new SimpleTypeException(initialValue, atomicType, cause);
-		}
+	    // TODO: broken (or fixed?) with the removal of A. fix (break?) it.
+	    return initialValue;
+//		final SimpleType atomicType = bootstrap.getAtomicType(NativeType.NCNAME);
+//		try
+//		{
+//			final List value = atomicType.validate(initialValue);
+//			if (value.size() > 0)
+//			{
+//				return atomBridge.getString(value.get(0));
+//			}
+//			else
+//			{
+//				return null;
+//			}
+//		}
+//		catch (final DatatypeException cause)
+//		{
+//			throw new SimpleTypeException(initialValue, atomicType, cause);
+//		}
 	}
 
 	private NamespaceConstraint namespaces(final String initialValue, final String targetNamespace) throws SimpleTypeException
@@ -5642,31 +5646,33 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 	private BigInteger nonNegativeInteger(final String initialValue) throws SimpleTypeException
 	{
-		final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.NON_NEGATIVE_INTEGER);
-		try
-		{
-			final List<A> value = atomicType.validate(initialValue);
-			if (value.size() > 0)
-			{
-				return atomBridge.getInteger(value.get(0));
-			}
-			else
-			{
-				return null;
-			}
-		}
-		catch (final DatatypeException cause)
-		{
-			throw new SimpleTypeException(initialValue, atomicType, cause);
-		}
+	    // TODO: broken with the removal of A. fix it.
+	    return new BigInteger(initialValue);
+//		final SimpleType atomicType = bootstrap.getAtomicType(NativeType.NON_NEGATIVE_INTEGER);
+//		try
+//		{
+//			final List value = atomicType.validate(initialValue);
+//			if (value.size() > 0)
+//			{
+//				return atomBridge.getInteger(value.get(0));
+//			}
+//			else
+//			{
+//				return null;
+//			}
+//		}
+//		catch (final DatatypeException cause)
+//		{
+//			throw new SimpleTypeException(initialValue, atomicType, cause);
+//		}
 	}
 
 	/**
 	 * xs:notation
 	 */
-	private XMLNotation<A> notationTag(final XMLSchemaCache<A> cache, final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, XMLNotationException, AbortException
+	private XMLNotation notationTag(final XMLSchemaCache cache, final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule module) throws XMLStreamException, XMLNotationException, AbortException
 	{
-		final XMLNotation<A> notation;
+		final XMLNotation notation;
 		try
 		{
 			notation = cache.registerNotation(requiredNCName(LN_NAME, targetNamespace, reader), getFrozenLocation(reader.getLocation()));
@@ -5770,7 +5776,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		return null;
 	}
 
-	public void parse(final URI systemId, final InputStream istream, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module) throws AbortException
+	public void parse(final URI systemId, final InputStream istream, final XMLSchemaCache cache, final XMLSchemaModule module) throws AbortException
 	{
 		PreCondition.assertArgumentNotNull(cache, "cache");
 		PreCondition.assertArgumentNotNull(module, "module");
@@ -5883,7 +5889,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void parseExternalModule(final XMLSchemaCache<A> cache, final XMLSchemaModule<A> parent, final Location location, final URI namespace, final URI schemaLocation, final ModuleKind moduleKind) throws AbortException
+	private void parseExternalModule(final XMLSchemaCache cache, final XMLSchemaModule parent, final Location location, final URI namespace, final URI schemaLocation, final ModuleKind moduleKind) throws AbortException
 	{
 		PreCondition.assertArgumentNotNull(schemaLocation, "schemaLocation");
 
@@ -5901,7 +5907,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 					throw new AssertionError("resolver required for include, import or redefine.");
 				}
 				final InputStream source = m_resolver.resolveInputStream(catalogURI);
-				final XMLSchemaModule<A> module = new XMLSchemaModule<A>(parent, schemaLocation, catalogURI);
+				final XMLSchemaModule module = new XMLSchemaModule(parent, schemaLocation, catalogURI);
 				switch (moduleKind)
 				{
 					case Include:
@@ -5924,7 +5930,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 						throw new AssertionError(moduleKind);
 					}
 				}
-				final XMLSchemaParser<A> parser = new XMLSchemaParser<A>(atomBridge, bootstrap, m_errors, m_catalog, m_resolver, m_processRepeatedNamespaces);
+				final XMLSchemaParser parser = new XMLSchemaParser(bootstrap, m_errors, m_catalog, m_resolver, m_processRepeatedNamespaces);
 				parser.parse(catalogURI, source, cache, module);
 			}
 			catch (final IOException e)
@@ -5941,9 +5947,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:pattern
 	 */
-	private XMLPatternFacet<A> patternTag(final XMLType<A> simpleType, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
+	private XMLPatternFacet patternTag(final XMLType simpleType, final XMLStreamReader reader, final XMLSchemaModule module) throws XMLStreamException, AbortException
 	{
-		final XMLPatternFacet<A> pattern = new XMLPatternFacet<A>(simpleType, getFrozenLocation(reader.getLocation()));
+		final XMLPatternFacet pattern = new XMLPatternFacet(simpleType, getFrozenLocation(reader.getLocation()));
 
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
@@ -6037,23 +6043,25 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 	private BigInteger positiveInteger(final String initialValue) throws SimpleTypeException
 	{
-		final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.POSITIVE_INTEGER);
-		try
-		{
-			final List<A> value = atomicType.validate(initialValue);
-			if (value.size() > 0)
-			{
-				return atomBridge.getInteger(value.get(0));
-			}
-			else
-			{
-				return null;
-			}
-		}
-		catch (final DatatypeException cause)
-		{
-			throw new SimpleTypeException(initialValue, atomicType, cause);
-		}
+	    // TODO: broken with removal of A. fix it.
+	    return new BigInteger(initialValue);
+//		final SimpleType atomicType = bootstrap.getAtomicType(NativeType.POSITIVE_INTEGER);
+//		try
+//		{
+//			final List value = atomicType.validate(initialValue);
+//			if (value.size() > 0)
+//			{
+//				return atomBridge.getInteger(value.get(0));
+//			}
+//			else
+//			{
+//				return null;
+//			}
+//		}
+//		catch (final DatatypeException cause)
+//		{
+//			throw new SimpleTypeException(initialValue, atomicType, cause);
+//		}
 	}
 
 	private ProcessContentsMode processContents(final String strval) throws SimpleTypeException
@@ -6094,7 +6102,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void redefineTag(final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLStreamReader reader, final String targetNamespace) throws XMLStreamException, AbortException
+	private void redefineTag(final XMLSchemaCache cache, final XMLSchemaModule module, final XMLStreamReader reader, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		{
 			URI schemaLocation = null;
@@ -6252,7 +6260,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private QName referenceOptional(final XMLStreamReader reader, final String localName, final XMLSchemaModule<A> module, final String targetNamespace) throws AbortException
+	private QName referenceOptional(final XMLStreamReader reader, final String localName, final XMLSchemaModule module, final String targetNamespace) throws AbortException
 	{
 		final String srcval = reader.getAttributeValue(null, localName);
 		if (null != srcval)
@@ -6331,31 +6339,33 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	private QName requiredNCName(final String attributeName, final String targetNamespace, final XMLStreamReader reader) throws SmComplexTypeException
 	{
 		final String name = reader.getAttributeValue(null, attributeName);
-		if (null != name)
-		{
-			final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.NCNAME);
-			try
-			{
-				final List<A> value = atomicType.validate(name);
-				if (value.size() > 0)
-				{
-					return new QName(targetNamespace, atomBridge.getString(value.get(0)));
-				}
-				else
-				{
-					throw new AssertionError();
-				}
-			}
-			catch (final DatatypeException e)
-			{
-				final SimpleTypeException ste = new SimpleTypeException(name, atomicType, e);
-				throw new SmAttributeUseException(reader.getName(), new QName(attributeName), getFrozenLocation(reader.getLocation()), ste);
-			}
-		}
-		else
-		{
-			throw new SmMissingAttributeException(reader.getName(), new QName(attributeName), getFrozenLocation(reader.getLocation()));
-		}
+		// TODO: broken with removal of A (or else fixed; you decide).  fix it (or don't).
+		return new QName(targetNamespace, name);
+//		if (null != name)
+//		{
+//			final SimpleType atomicType = bootstrap.getAtomicType(NativeType.NCNAME);
+//			try
+//			{
+//				final List value = atomicType.validate(name);
+//				if (value.size() > 0)
+//				{
+//					return new QName(targetNamespace, atomBridge.getString(value.get(0)));
+//				}
+//				else
+//				{
+//					throw new AssertionError();
+//				}
+//			}
+//			catch (final DatatypeException e)
+//			{
+//				final SimpleTypeException ste = new SimpleTypeException(name, atomicType, e);
+//				throw new SmAttributeUseException(reader.getName(), new QName(attributeName), getFrozenLocation(reader.getLocation()), ste);
+//			}
+//		}
+//		else
+//		{
+//			throw new SmMissingAttributeException(reader.getName(), new QName(attributeName), getFrozenLocation(reader.getLocation()));
+//		}
 	}
 
 	/**
@@ -6412,7 +6422,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * xs:restriction (in xs:complexContent) <br/>
 	 * We don't return anything because this affects multiple aspects of the complex type.
 	 */
-	private void restrictionInComplexContentTag(final XMLType<A> complexType, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
+	private void restrictionInComplexContentTag(final XMLType complexType, final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		if (redefine)
 		{
@@ -6497,7 +6507,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 									try
 									{
-										complexType.m_contentModel = groupParticleTag(new XMLScope<A>(complexType), reader, cache, module, redefine, targetNamespace);
+										complexType.m_contentModel = groupParticleTag(new XMLScope(complexType), reader, cache, module, redefine, targetNamespace);
 									}
 									catch (final XMLModelGroupUseException e)
 									{
@@ -6509,7 +6519,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 									try
 									{
-										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.All, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.All, new XMLScope(complexType), localName, reader, cache, module, redefine, targetNamespace);
 									}
 									catch (final XMLCompositorOutsideGroupException e)
 									{
@@ -6521,7 +6531,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 									try
 									{
-										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Choice, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Choice, new XMLScope(complexType), localName, reader, cache, module, redefine, targetNamespace);
 									}
 									catch (final XMLCompositorOutsideGroupException e)
 									{
@@ -6533,7 +6543,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 									complexType.m_contentKind = complexType.m_contentKind.isMixed() ? XMLContentTypeKind.Mixed : XMLContentTypeKind.ElementOnly;
 									try
 									{
-										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Sequence, new XMLScope<A>(complexType), localName, reader, cache, module, redefine, targetNamespace);
+										complexType.m_contentModel = compositorOutsideGroupTag(ModelGroup.SmCompositor.Sequence, new XMLScope(complexType), localName, reader, cache, module, redefine, targetNamespace);
 									}
 									catch (final XMLCompositorOutsideGroupException e)
 									{
@@ -6542,7 +6552,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 								}
 								else if (LN_ATTRIBUTE.equals(localName))
 								{
-									attributeLocalTag(reader, cache, module, redefine, targetNamespace, complexType.getAttributeUses(), complexType.prohibited, new XMLScope<A>(complexType));
+									attributeLocalTag(reader, cache, module, redefine, targetNamespace, complexType.getAttributeUses(), complexType.prohibited, new XMLScope(complexType));
 								}
 								else if (LN_ATTRIBUTE_GROUP.equals(localName))
 								{
@@ -6607,19 +6617,19 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:restriction (simple content)
 	 */
-	private void restrictionInSimpleContentTag(final XMLType<A> complexType, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
+	private void restrictionInSimpleContentTag(final XMLType complexType, final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		// We're restriction a simple type by adding facets so it makes sense
 		// that we are going to need an
 		// anonymous type to hang the facets from
-		complexType.simpleType = cache.registerAnonymousType(new XMLScope<A>(complexType), getFrozenLocation(reader.getLocation()));
+		complexType.simpleType = cache.registerAnonymousType(new XMLScope(complexType), getFrozenLocation(reader.getLocation()));
 		complexType.simpleType.setSimpleFlag();
 
 		try
 		{
 			final QName baseName = requiredQName(LN_BASE, module.isChameleon(), targetNamespace, reader);
 			ensureReferenceType(baseName, reader.getLocation(), redefine, cache);
-			final XMLTypeRef<A> baseType = new XMLTypeRef<A>(baseName);
+			final XMLTypeRef baseType = new XMLTypeRef(baseName);
 			complexType.setBase(baseType, DerivationMethod.Restriction);
 		}
 		catch (final SchemaException e)
@@ -6689,7 +6699,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							{
 								if (LN_SIMPLE_TYPE.equals(localName))
 								{
-									complexType.simpleType.setBase(simpleTypeLocalTag(new XMLScope<A>(complexType), cache, module, reader, redefine, targetNamespace), DerivationMethod.Restriction);
+									complexType.simpleType.setBase(simpleTypeLocalTag(new XMLScope(complexType), cache, module, reader, redefine, targetNamespace), DerivationMethod.Restriction);
 								}
 								else if (LN_ENUMERATION.equals(localName))
 								{
@@ -6810,7 +6820,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 								}
 								else if (LN_ATTRIBUTE.equals(localName))
 								{
-									attributeLocalTag(reader, cache, module, redefine, targetNamespace, complexType.getAttributeUses(), complexType.prohibited, new XMLScope<A>(complexType));
+									attributeLocalTag(reader, cache, module, redefine, targetNamespace, complexType.getAttributeUses(), complexType.prohibited, new XMLScope(complexType));
 								}
 								else if (LN_ATTRIBUTE_GROUP.equals(localName))
 								{
@@ -6874,7 +6884,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:restriction (simple type)
 	 */
-	private void restrictionTag(final XMLType<A> simpleType, final XMLSchemaModule<A> module, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
+	private void restrictionTag(final XMLType simpleType, final XMLSchemaModule module, final XMLStreamReader reader, final XMLSchemaCache cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		if (!redefine)
 		{
@@ -6898,7 +6908,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 						if (!redefine)
 						{
 							ensureReferenceType(name, reader.getLocation(), redefine, cache);
-							simpleType.setBase(new XMLTypeRef<A>(name), DerivationMethod.Restriction);
+							simpleType.setBase(new XMLTypeRef(name), DerivationMethod.Restriction);
 						}
 					}
 					catch (final SmComplexTypeException e)
@@ -6954,7 +6964,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							{
 								if (null == simpleType.getBaseRef())
 								{
-									final XMLTypeRef<A> baseType = simpleTypeLocalTag(new XMLScope<A>(simpleType), cache, module, reader, redefine, targetNamespace);
+									final XMLTypeRef baseType = simpleTypeLocalTag(new XMLScope(simpleType), cache, module, reader, redefine, targetNamespace);
 									simpleType.setBase(baseType, DerivationMethod.Restriction);
 								}
 								else
@@ -7137,7 +7147,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void schemaTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
+	private void schemaTag(final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module) throws XMLStreamException, AbortException
 	{
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
@@ -7305,7 +7315,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							{
 								try
 								{
-									final XMLType<A> complexType = complexTypeGlobalTag(reader, cache, module, false, targetNamespace);
+									final XMLType complexType = complexTypeGlobalTag(reader, cache, module, false, targetNamespace);
 									cache.m_globalTypes.put(complexType.getName(), complexType);
 								}
 								catch (final XMLComplexTypeException e)
@@ -7317,7 +7327,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							{
 								try
 								{
-									final XMLType<A> simpleType = simpleTypeGlobalTag(reader, cache, module, false, targetNamespace);
+									final XMLType simpleType = simpleTypeGlobalTag(reader, cache, module, false, targetNamespace);
 									cache.m_globalTypes.put(simpleType.getName(), simpleType);
 								}
 								catch (final XMLSimpleTypeException e)
@@ -7329,7 +7339,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							{
 								try
 								{
-									final XMLElement<A> element = elementTag(reader, cache, module, targetNamespace);
+									final XMLElement element = elementTag(reader, cache, module, targetNamespace);
 									cache.m_elements.put(element.getName(), element);
 								}
 								catch (final XMLElementException e)
@@ -7341,7 +7351,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							{
 								try
 								{
-									final XMLAttribute<A> attribute = attributeTag(reader, cache, module, targetNamespace);
+									final XMLAttribute attribute = attributeTag(reader, cache, module, targetNamespace);
 									cache.m_attributes.put(attribute.getName(), attribute);
 								}
 								catch (final XMLAttributeException e)
@@ -7353,7 +7363,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							{
 								try
 								{
-									final XMLModelGroup<A> group = groupTag(reader, cache, module, false, targetNamespace);
+									final XMLModelGroup group = groupTag(reader, cache, module, false, targetNamespace);
 									cache.m_modelGroups.put(group.getName(), group);
 								}
 								catch (final XMLModelGroupException e)
@@ -7365,7 +7375,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							{
 								try
 								{
-									final XMLAttributeGroup<A> attributeGroup = attribGroupTag(reader, cache, module, false, targetNamespace);
+									final XMLAttributeGroup attributeGroup = attribGroupTag(reader, cache, module, false, targetNamespace);
 									cache.m_attributeGroups.put(attributeGroup.getName(), attributeGroup);
 								}
 								catch (final XMLAttributeGroupException e)
@@ -7389,7 +7399,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							{
 								try
 								{
-									/* final NotationImpl<A> notation = */
+									/* final NotationImpl notation = */
 									notationTag(cache, reader, targetNamespace, module);
 								}
 								catch (final XMLNotationException e)
@@ -7438,7 +7448,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private RestrictedXPath selectorTag(final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, XMLSelectorException, AbortException
+	private RestrictedXPath selectorTag(final XMLStreamReader reader, final XMLSchemaModule module) throws XMLStreamException, XMLSelectorException, AbortException
 	{
 		RestrictedXPath xpath = null;
 		final int attributeCount = reader.getAttributeCount();
@@ -7549,7 +7559,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:simpleContent
 	 */
-	private void simpleContentTag(final XMLType<A> complexType, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
+	private void simpleContentTag(final XMLType complexType, final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		complexType.m_contentKind = XMLContentTypeKind.Simple;
 
@@ -7659,7 +7669,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	 * Content for an xs:simpleType (either global or local definition). <br>
 	 * Content: (xs:annotation?, (xs:restriction | xs:list | xs:union))
 	 */
-	private void simpleTypeContentTag(final XMLType<A> simpleType, final XMLSchemaModule<A> module, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
+	private void simpleTypeContentTag(final XMLType simpleType, final XMLSchemaModule module, final XMLStreamReader reader, final XMLSchemaCache cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		// Derivation property must be null so that we check that we got the
 		// required child elements.
@@ -7758,9 +7768,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:simpleType (global definition)
 	 */
-	private XMLType<A> simpleTypeGlobalTag(final XMLStreamReader reader, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLSimpleTypeException, AbortException
+	private XMLType simpleTypeGlobalTag(final XMLStreamReader reader, final XMLSchemaCache cache, final XMLSchemaModule module, final boolean redefine, final String targetNamespace) throws XMLStreamException, XMLSimpleTypeException, AbortException
 	{
-		final XMLType<A> simpleType;
+		final XMLType simpleType;
 		if (!redefine)
 		{
 			try
@@ -7841,9 +7851,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 	/**
 	 * xs:simpleType (local definition)
 	 */
-	private XMLTypeRef<A> simpleTypeLocalTag(final XMLScope<A> scope, final XMLSchemaCache<A> cache, final XMLSchemaModule<A> module, final XMLStreamReader reader, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
+	private XMLTypeRef simpleTypeLocalTag(final XMLScope scope, final XMLSchemaCache cache, final XMLSchemaModule module, final XMLStreamReader reader, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
-		final XMLType<A> simpleType = cache.registerAnonymousType(scope, getFrozenLocation(reader.getLocation()));
+		final XMLType simpleType = cache.registerAnonymousType(scope, getFrozenLocation(reader.getLocation()));
 		simpleType.setSimpleFlag();
 
 		final int attributeCount = reader.getAttributeCount();
@@ -7874,7 +7884,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 		simpleTypeContentTag(simpleType, module, reader, cache, redefine, targetNamespace);
 
-		return new XMLTypeRef<A>(simpleType);
+		return new XMLTypeRef(simpleType);
 	}
 
 	/**
@@ -7922,25 +7932,27 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 	private String token(final String initialValue) throws SimpleTypeException
 	{
-		final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.TOKEN);
-		try
-		{
-			final List<A> atoms = atomicType.validate(initialValue);
-			final A atom = atoms.get(0);
-			return atomBridge.getString(atom);
-		}
-		catch (final DatatypeException cause)
-		{
-			throw new SimpleTypeException(initialValue, atomicType, cause);
-		}
+	    // TODO: broken with removal of A.  fix it.
+	    return initialValue;
+//		final SimpleType atomicType = bootstrap.getAtomicType(NativeType.TOKEN);
+//		try
+//		{
+//			final List atoms = atomicType.validate(initialValue);
+//			final A atom = atoms.get(0);
+//			return atomBridge.getString(atom);
+//		}
+//		catch (final DatatypeException cause)
+//		{
+//			throw new SimpleTypeException(initialValue, atomicType, cause);
+//		}
 	}
 
 	/**
 	 * xs:totalDigits
 	 */
-	private XMLTotalDigitsFacet<A> totalDigitsTag(final XMLType<A> simpleType, final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, AbortException
+	private XMLTotalDigitsFacet totalDigitsTag(final XMLType simpleType, final XMLStreamReader reader, final XMLSchemaModule module) throws XMLStreamException, AbortException
 	{
-		final XMLTotalDigitsFacet<A> facet = new XMLTotalDigitsFacet<A>(simpleType, getFrozenLocation(reader.getLocation()));
+		final XMLTotalDigitsFacet facet = new XMLTotalDigitsFacet(simpleType, getFrozenLocation(reader.getLocation()));
 
 		final int attributeCount = reader.getAttributeCount();
 		for (int i = 0; i < attributeCount; i++)
@@ -8053,34 +8065,36 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 	private boolean trueOrFalse(final String initialValue) throws SimpleTypeException
 	{
-		final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.BOOLEAN);
-		try
-		{
-			final List<A> value = atomicType.validate(initialValue);
-			if (value.size() > 0)
-			{
-				return atomBridge.getBoolean(value.get(0));
-			}
-			else
-			{
-				throw new AssertionError();
-			}
-		}
-		catch (final DatatypeException cause)
-		{
-			throw new SimpleTypeException(initialValue, atomicType, cause);
-		}
+	    // TODO: broken with removal of A. fix it.
+	    return false;
+//		final SimpleType atomicType = bootstrap.getAtomicType(NativeType.BOOLEAN);
+//		try
+//		{
+//			final List value = atomicType.validate(initialValue);
+//			if (value.size() > 0)
+//			{
+//				return atomBridge.getBoolean(value.get(0));
+//			}
+//			else
+//			{
+//				throw new AssertionError();
+//			}
+//		}
+//		catch (final DatatypeException cause)
+//		{
+//			throw new SimpleTypeException(initialValue, atomicType, cause);
+//		}
 	}
 
 	/**
 	 * Obtains a {@link #LN_TYPE}, {@link #LN_ITEM_TYPE} or tokenized {@link #LN_MEMBER_TYPES} attribute value as type
 	 * reference.
 	 */
-	private XMLTypeRef<A> typeRef(final String initialValue, final String attributeName, final boolean isChameleon, final String targetNamespace, final XMLStreamReader reader) throws SmComplexTypeException
+	private XMLTypeRef typeRef(final String initialValue, final String attributeName, final boolean isChameleon, final String targetNamespace, final XMLStreamReader reader) throws SmComplexTypeException
 	{
 		if (null != initialValue)
 		{
-			return new XMLTypeRef<A>(optionalQName(initialValue, attributeName, isChameleon, targetNamespace, reader));
+			return new XMLTypeRef(optionalQName(initialValue, attributeName, isChameleon, targetNamespace, reader));
 		}
 		else
 		{
@@ -8088,7 +8102,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private void unionTag(final XMLType<A> unionType, final XMLSchemaModule<A> module, final XMLStreamReader reader, final XMLSchemaCache<A> cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
+	private void unionTag(final XMLType unionType, final XMLSchemaModule module, final XMLStreamReader reader, final XMLSchemaCache cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
 	{
 		unionType.setBase(ANY_SIMPLE_TYPE, DerivationMethod.Union);
 
@@ -8115,7 +8129,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 						final String token = tokenizer.nextToken();
 						try
 						{
-							final XMLTypeRef<A> memberType = typeRef(token, LN_MEMBER_TYPES, module.isChameleon(), targetNamespace, reader);
+							final XMLTypeRef memberType = typeRef(token, LN_MEMBER_TYPES, module.isChameleon(), targetNamespace, reader);
 							ensureReferenceType(memberType.getName(), reader.getLocation(), redefine, cache);
 							unionType.memberRefs.add(memberType);
 						}
@@ -8163,7 +8177,7 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 							final String localName = reader.getLocalName();
 							if (LN_SIMPLE_TYPE.equals(localName))
 							{
-								unionType.memberRefs.add(simpleTypeLocalTag(new XMLScope<A>(unionType), cache, module, reader, false, targetNamespace));
+								unionType.memberRefs.add(simpleTypeLocalTag(new XMLScope(unionType), cache, module, reader, false, targetNamespace));
 								firstElement = false;
 							}
 							else if (LN_ANNOTATION.equals(localName))
@@ -8212,9 +8226,9 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 		}
 	}
 
-	private XMLIdentityConstraint<A> uniqueTag(final XMLSchemaCache<A> cache, final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule<A> module) throws XMLStreamException, XMLIdentityConstraintException, AbortException
+	private XMLIdentityConstraint uniqueTag(final XMLSchemaCache cache, final XMLStreamReader reader, final String targetNamespace, final XMLSchemaModule module) throws XMLStreamException, XMLIdentityConstraintException, AbortException
 	{
-		final XMLIdentityConstraint<A> unique;
+		final XMLIdentityConstraint unique;
 		try
 		{
 			final QName name = requiredNCName(LN_NAME, targetNamespace, reader);
@@ -8376,26 +8390,29 @@ final class XMLSchemaParser<A> extends XMLRepresentation
 
 	private String validateString(final String initialValue, final NativeType derivedType) throws SimpleTypeException
 	{
-		final SimpleType<A> atomicType = bootstrap.getAtomicType(derivedType);
-		try
-		{
-			final List<A> value = atomicType.validate(initialValue);
-			if (value.size() > 0)
-			{
-				return atomBridge.getString(value.get(0));
-			}
-			else
-			{
-				return null;
-			}
-		}
-		catch (final DatatypeException cause)
-		{
-			throw new SimpleTypeException(initialValue, atomicType, cause);
-		}
+	    // TODO: why is this idiotically broken with the removal of A?
+	    // how the hell can a string not be a string, huh?
+	    return initialValue;
+//		final SimpleType atomicType = bootstrap.getAtomicType(derivedType);
+//		try
+//		{
+//			final List value = atomicType.validate(initialValue);
+//			if (value.size() > 0)
+//			{
+//				return atomBridge.getString(value.get(0));
+//			}
+//			else
+//			{
+//				return null;
+//			}
+//		}
+//		catch (final DatatypeException cause)
+//		{
+//			throw new SimpleTypeException(initialValue, atomicType, cause);
+//		}
 	}
 
-	private WhiteSpacePolicy whiteSpaceTag(final XMLStreamReader reader, final XMLSchemaModule<A> module) throws XMLStreamException, SmComplexTypeException, AbortException
+	private WhiteSpacePolicy whiteSpaceTag(final XMLStreamReader reader, final XMLSchemaModule module) throws XMLStreamException, SmComplexTypeException, AbortException
 	{
 		WhiteSpacePolicy policy = WhiteSpacePolicy.PRESERVE;
 		final int attributeCount = reader.getAttributeCount();

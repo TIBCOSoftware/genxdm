@@ -22,15 +22,15 @@ import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class ZMultiplyType<A> extends AbstractType<A> implements MultiplyType<A>
+final class ZMultiplyType extends AbstractType implements MultiplyType
 {
-	public static <A> SequenceType<A> multiply(final SequenceType<A> argument, final KeeneQuantifier multiplier)
+	public static  SequenceType multiply(final SequenceType argument, final KeeneQuantifier multiplier)
 	{
 		switch (multiplier)
 		{
 			case EMPTY:
 			{
-				return new ZEmptyType<A>();
+				return new ZEmptyType();
 			}
 			case EXACTLY_ONE:
 			{
@@ -38,45 +38,45 @@ final class ZMultiplyType<A> extends AbstractType<A> implements MultiplyType<A>
 			}
 			default:
 			{
-				if (argument instanceof MultiplyType<?>)
+				if (argument instanceof MultiplyType)
 				{
-					final MultiplyType<A> arg = (MultiplyType<A>)argument;
+					final MultiplyType arg = (MultiplyType)argument;
 					return multiply(arg.getArgument(), arg.getMultiplier().product(multiplier));
 				}
 				else
 				{
-					return new ZMultiplyType<A>(argument, multiplier);
+					return new ZMultiplyType(argument, multiplier);
 				}
 			}
 		}
 	}
 
-	public static <A> SequenceType<A> optional(final SequenceType<A> argument)
+	public static  SequenceType optional(final SequenceType argument)
 	{
 		return multiply(argument, KeeneQuantifier.OPTIONAL);
 	}
 
-	public static <A> SequenceType<A> zeroOrMore(final SequenceType<A> argument)
+	public static  SequenceType zeroOrMore(final SequenceType argument)
 	{
 		return multiply(argument, KeeneQuantifier.ZERO_OR_MORE);
 	}
 
-	private final SequenceType<A> m_argument;
+	private final SequenceType m_argument;
 
 	private final KeeneQuantifier m_multiplier;
 
-	private ZMultiplyType(final SequenceType<A> argument, final KeeneQuantifier multiplier)
+	private ZMultiplyType(final SequenceType argument, final KeeneQuantifier multiplier)
 	{
 		this.m_argument = PreCondition.assertArgumentNotNull(argument, "argument");
 		this.m_multiplier = PreCondition.assertArgumentNotNull(multiplier, "multiplier");
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public SequenceType<A> getArgument()
+	public SequenceType getArgument()
 	{
 		return m_argument;
 	}
@@ -91,7 +91,7 @@ final class ZMultiplyType<A> extends AbstractType<A> implements MultiplyType<A>
 		return false;
 	}
 
-	public PrimeType<A> prime()
+	public PrimeType prime()
 	{
 		// Formal Semantics...
 		// prime(Type?) = prime(Type)
@@ -109,7 +109,7 @@ final class ZMultiplyType<A> extends AbstractType<A> implements MultiplyType<A>
 		return m_argument.quantifier().product(m_multiplier);
 	}
 
-	public boolean subtype(final SequenceType<A> type)
+	public boolean subtype(final SequenceType type)
 	{
 		if (type.quantifier().contains(m_multiplier))
 		{

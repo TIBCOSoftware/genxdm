@@ -24,9 +24,9 @@ import org.genxdm.xs.types.Type;
 @SuppressWarnings("serial")
 public final class CvcElementLocalTypeDerivationException extends CvcElementException
 {
-	private final Type<?> m_localType;
+	private final Type m_localType;
 
-	public CvcElementLocalTypeDerivationException(final Type<?> localType, final ElementDefinition<?> elementDeclaration, final ComponentConstraintException cause, final LocationInSchema location)
+	public CvcElementLocalTypeDerivationException(final Type localType, final ElementDefinition elementDeclaration, final ComponentConstraintException cause, final LocationInSchema location)
 	{
 		super(PART_LOCAL_TYPE_DERIVATION, elementDeclaration, location, cause);
 		m_localType = PreCondition.assertArgumentNotNull(localType, "localType");

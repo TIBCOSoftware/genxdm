@@ -15,7 +15,6 @@
  */
 package org.genxdm.processor.w3c.xs.impl;
 
-import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.xml.XMLConstants;
@@ -23,7 +22,6 @@ import javax.xml.XMLConstants;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.exception.SrcPrefixNotFoundException;
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.constraints.RestrictedXPath;
 import org.genxdm.xs.exceptions.DatatypeException;
@@ -33,17 +31,15 @@ import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
 
 
-final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
+final class RestrictedXPathParser implements SmRestrictedXPathParser
 {
-	private final ComponentProvider<A> bootstrap;
-	private final AtomBridge<A> atomBridge;
+	private final ComponentProvider bootstrap;
 	private final NameSource nameBridge;
 
-	public RestrictedXPathParser(final ComponentProvider<A> bootstrap, final AtomBridge<A> atomBridge)
+	public RestrictedXPathParser(final ComponentProvider bootstrap)
 	{
 		this.bootstrap = bootstrap;
-		this.atomBridge = atomBridge;
-		this.nameBridge = atomBridge.getNameBridge();
+		this.nameBridge = new NameSource();
 	}
 
 	/**
@@ -66,11 +62,11 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 		final StringTokenizer terms = new StringTokenizer(xpath, "|");
 		if (terms.hasMoreTokens())
 		{
-			final RestrictedXPathImpl result = parseAlternate(terms.nextToken(), prefixes, nameBridge, xpath, bootstrap, atomBridge);
+			final RestrictedXPathImpl result = parseAlternate(terms.nextToken(), prefixes, nameBridge, xpath, bootstrap);
 			RestrictedXPathImpl lastTerm = result;
 			while (terms.hasMoreTokens())
 			{
-				lastTerm.setAlternate(parseAlternate(terms.nextToken(), prefixes, nameBridge, xpath, bootstrap, atomBridge));
+				lastTerm.setAlternate(parseAlternate(terms.nextToken(), prefixes, nameBridge, xpath, bootstrap));
 				lastTerm = lastTerm.getAlternate();
 			}
 			return result;
@@ -114,7 +110,7 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 		}
 	}
 
-	private static <A> RestrictedXPathImpl parseAlternate(final String xpath, final PrefixResolver prefixes, NameSource nameBridge, final String original, final ComponentProvider<A> bootstrap, final AtomBridge<A> atomBridge) throws SimpleTypeException
+	private static  RestrictedXPathImpl parseAlternate(final String xpath, final PrefixResolver prefixes, NameSource nameBridge, final String original, final ComponentProvider bootstrap) throws SimpleTypeException
 	{
 		PreCondition.assertArgumentNotNull(xpath);
 		PreCondition.assertArgumentNotNull(prefixes);
@@ -184,12 +180,12 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 							// namespace = getDefaultNamespaceForElementAndTypeNames();
 							namespace = XMLConstants.NULL_NS_URI;
 						}
-						localPart = getLocalPart(nodeTest, original, bootstrap, atomBridge);
+						localPart = getLocalPart(nodeTest, original, bootstrap);
 					}
 					else
 					{
-						ensureNCName(prefix, bootstrap, atomBridge);
-						localPart = getLocalPart(nodeTest, original, bootstrap, atomBridge);
+						ensureNCName(prefix, bootstrap);
+						localPart = getLocalPart(nodeTest, original, bootstrap);
 
 						namespace = prefixes.getNamespaceURI(prefix);
 						if (null == namespace)
@@ -206,28 +202,31 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 		return expression;
 	}
 
-	private static <A> String ensureNCName(final String initialValue, final ComponentProvider<A> bootstrap, final AtomBridge<A> atomBridge) throws SimpleTypeException
+	private static  String ensureNCName(final String initialValue, final ComponentProvider bootstrap) throws SimpleTypeException
 	{
-		final SimpleType<A> atomicType = bootstrap.getAtomicType(NativeType.NCNAME);
-		try
-		{
-			final List<A> atoms = atomicType.validate(initialValue);
-			if (atoms.size() > 0)
-			{
-				return atomBridge.getString(atoms.get(0));
-			}
-			else
-			{
-				return null;
-			}
-		}
-		catch (final DatatypeException e)
-		{
-			throw new SimpleTypeException(initialValue, atomicType, e);
-		}
+		final SimpleType atomicType = bootstrap.getAtomicType(NativeType.NCNAME);
+		// the technique here is to create an atom and then stringify it.
+		// TODO: find a different way (drvl?)
+//		try
+//		{
+//			final List<A> atoms = atomicType.validate(initialValue);
+//			if (atoms.size() > 0)
+//			{
+//				return atomBridge.getString(atoms.get(0));
+//			}
+//			else
+//			{
+//				return null;
+//			}
+//		}
+//		catch (final DatatypeException e)
+//		{
+//			throw new SimpleTypeException(initialValue, atomicType, e);
+//		}
+		return initialValue;
 	}
 
-	private static <A> String getLocalPart(final String step, final String original, final ComponentProvider<A> bootstrap, final AtomBridge<A> atomBridge) throws SimpleTypeException
+	private static  String getLocalPart(final String step, final String original, final ComponentProvider bootstrap) throws SimpleTypeException
 	{
 		final String localName = getLocalName(step);
 		if ("*".equals(localName))
@@ -236,7 +235,7 @@ final class RestrictedXPathParser<A> implements SmRestrictedXPathParser
 		}
 		else
 		{
-			return ensureNCName(localName, bootstrap, atomBridge);
+			return ensureNCName(localName, bootstrap);
 		}
 	}
 

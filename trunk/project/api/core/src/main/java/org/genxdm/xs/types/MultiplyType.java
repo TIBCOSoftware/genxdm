@@ -20,15 +20,13 @@ import org.genxdm.xs.enums.KeeneQuantifier;
 /**
  * Indicates a type with an associated cardinality.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface MultiplyType<A> extends SequenceType<A>
+public interface MultiplyType extends SequenceType
 {
     /**
      * Returns the argument type that is multiplied.
      */
-    SequenceType<A> getArgument();
+    SequenceType getArgument();
 
     /**
      * Returns the cardinality of the argument type.

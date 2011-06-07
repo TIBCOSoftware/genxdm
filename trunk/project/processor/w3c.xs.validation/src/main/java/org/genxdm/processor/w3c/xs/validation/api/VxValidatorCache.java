@@ -15,7 +15,9 @@
  */
 package org.genxdm.processor.w3c.xs.validation.api;
 
-public interface VxValidatorCache<A>
+import org.genxdm.typed.types.AtomBridge;
+
+public interface VxValidatorCache
 {
-	VxValidator<A> newValidator();
+	<A> VxValidator<A> newValidator(AtomBridge<A> bridge);
 }

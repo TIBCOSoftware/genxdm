@@ -17,7 +17,6 @@ package org.genxdm.bridgekit.xs;
 
 import java.util.List;
 
-import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.exceptions.FacetException;
 import org.genxdm.xs.exceptions.FacetFractionDigitsException;
@@ -26,17 +25,14 @@ import org.genxdm.xs.facets.FractionDigits;
 import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
 
-public final class FacetFractionDigitsImpl<A> extends FacetImpl<A> implements FractionDigits<A>
+public final class FacetFractionDigitsImpl extends FacetImpl implements FractionDigits
 {
-	private final AtomBridge<A> atomBridge;
 	private final int fractionDigits;
 
-	public FacetFractionDigitsImpl(final int fractionDigits, final boolean isFixed, final AtomBridge<A> atomBridge)
+	public FacetFractionDigitsImpl(final int fractionDigits, final boolean isFixed)
 	{
 		super(isFixed);
 		this.fractionDigits = fractionDigits;
-		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
-
 	}
 
 	public FacetKind getKind()
@@ -49,7 +45,7 @@ public final class FacetFractionDigitsImpl<A> extends FacetImpl<A> implements Fr
 		return fractionDigits;
 	}
 
-	public void validate(final List<? extends A> actualValue, final SimpleType<A> simpleType) throws FacetException
+	public <A> void validate(final List<? extends A> actualValue, final SimpleType simpleType, AtomBridge<A> atomBridge) throws FacetException
 	{
 		for (final A atom : actualValue)
 		{
