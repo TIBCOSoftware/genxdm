@@ -19,7 +19,7 @@ import java.net.URI;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.bridgekit.xs.NamedComponentImpl;
+import org.genxdm.bridgekit.xs.complex.NamedComponentImpl;
 import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.enums.ScopeExtent;
 

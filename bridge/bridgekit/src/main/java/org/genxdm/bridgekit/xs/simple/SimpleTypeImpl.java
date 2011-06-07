@@ -24,7 +24,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.bridgekit.xs.TypeImpl;
+import org.genxdm.bridgekit.xs.complex.TypeImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
