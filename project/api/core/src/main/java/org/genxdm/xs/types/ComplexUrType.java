@@ -20,20 +20,20 @@ import org.genxdm.xs.components.SchemaWildcard;
 /**
  * Marker interface for the Complex Ur-Type (xs:anyType).
  */
-public interface ComplexUrType<A> extends ComplexType<A>
+public interface ComplexUrType extends ComplexType
 {
     /**
      * Returns the {base type definition} property.
      */
-    ComplexUrType<A> getBaseType();
+    ComplexUrType getBaseType();
 
     /**
      * Returns the {attribute wildcard} property for a complex type.
      */
-    SchemaWildcard<A> getAttributeWildcard();
+    SchemaWildcard getAttributeWildcard();
 
     /**
      * Returns the {content type} property.
      */
-    ContentType<A> getContentType();
+    ContentType getContentType();
 }

@@ -27,13 +27,13 @@ import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
 
-final class XMLType<A> extends XMLComponent<A>
+final class XMLType extends XMLComponent
 {
 	private final QName name;
 	private final EnumSet<DerivationMethod> m_block = EnumSet.noneOf(DerivationMethod.class);
 	private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
 	private DerivationMethod m_derivation;
-	private XMLTypeRef<A> m_baseRef;
+	private XMLTypeRef m_baseRef;
 	private boolean m_isComplexUrType = false;
 	private boolean m_isSimpleUrType = false;
 	private boolean m_isAtomicUrType = false;
@@ -42,29 +42,29 @@ final class XMLType<A> extends XMLComponent<A>
 	private boolean m_isSimple = false;
 	private WhiteSpacePolicy m_whiteSpacePolicy = null;
 
-	public XMLTypeRef<A> itemRef = null; // xs:list
-	public final LinkedList<XMLTypeRef<A>> memberRefs = new LinkedList<XMLTypeRef<A>>(); // xs:union
+	public XMLTypeRef itemRef = null; // xs:list
+	public final LinkedList<XMLTypeRef> memberRefs = new LinkedList<XMLTypeRef>(); // xs:union
 
-	private final LinkedList<XMLAttributeUse<A>> attributeUses = new LinkedList<XMLAttributeUse<A>>();
-	private final LinkedList<XMLAttributeGroup<A>> attributeGroups = new LinkedList<XMLAttributeGroup<A>>();
+	private final LinkedList<XMLAttributeUse> attributeUses = new LinkedList<XMLAttributeUse>();
+	private final LinkedList<XMLAttributeGroup> attributeGroups = new LinkedList<XMLAttributeGroup>();
 	public final HashSet<QName> prohibited = new HashSet<QName>();
-	public XMLWildcard<A> attributeWildcard;
-	public XMLWildcard<A> elementWildcard;
+	public XMLWildcard attributeWildcard;
+	public XMLWildcard elementWildcard;
 
 	// The following trio will be used to construct the {content type} property for complex types.
 	public XMLContentTypeKind m_contentKind = XMLContentTypeKind.ElementOnly; // ElementOnly, Mixed or Simple after
 	// parsing.
-	public XMLType<A> simpleType = null; // May still be null after parsing.
-	public XMLParticleWithModelGroupTerm<A> m_contentModel = null; // May still be null after parsing.
+	public XMLType simpleType = null; // May still be null after parsing.
+	public XMLParticleWithModelGroupTerm m_contentModel = null; // May still be null after parsing.
 
-	private final LinkedList<XMLEnumeration<A>> m_enumerations = new LinkedList<XMLEnumeration<A>>();
-	private final LinkedList<XMLMinMaxFacet<A>> m_minmaxFacets = new LinkedList<XMLMinMaxFacet<A>>();
-	private final LinkedList<XMLLength<A>> m_lengthFacets = new LinkedList<XMLLength<A>>();
-	private final LinkedList<XMLPatternFacet<A>> m_patternFacets = new LinkedList<XMLPatternFacet<A>>();
-	private final LinkedList<XMLTotalDigitsFacet<A>> m_totalDigitsFacets = new LinkedList<XMLTotalDigitsFacet<A>>();
-	private final LinkedList<XMLFractionDigitsFacet<A>> m_fractionDigitsFacets = new LinkedList<XMLFractionDigitsFacet<A>>();
+	private final LinkedList<XMLEnumeration> m_enumerations = new LinkedList<XMLEnumeration>();
+	private final LinkedList<XMLMinMaxFacet> m_minmaxFacets = new LinkedList<XMLMinMaxFacet>();
+	private final LinkedList<XMLLength> m_lengthFacets = new LinkedList<XMLLength>();
+	private final LinkedList<XMLPatternFacet> m_patternFacets = new LinkedList<XMLPatternFacet>();
+	private final LinkedList<XMLTotalDigitsFacet> m_totalDigitsFacets = new LinkedList<XMLTotalDigitsFacet>();
+	private final LinkedList<XMLFractionDigitsFacet> m_fractionDigitsFacets = new LinkedList<XMLFractionDigitsFacet>();
 
-	public XMLType(final QName name, final XMLScope<A> scope)
+	public XMLType(final QName name, final XMLScope scope)
 	{
 		super(scope);
 		if (scope.isGlobal())
@@ -78,7 +78,7 @@ final class XMLType<A> extends XMLComponent<A>
 		}
 	}
 
-	public XMLType(final QName name, final XMLScope<A> scope, final SrcFrozenLocation location)
+	public XMLType(final QName name, final XMLScope scope, final SrcFrozenLocation location)
 	{
 		super(scope, location);
 		if (scope.isGlobal())
@@ -124,12 +124,12 @@ final class XMLType<A> extends XMLComponent<A>
 		return m_derivation;
 	}
 
-	public XMLTypeRef<A> getBaseRef()
+	public XMLTypeRef getBaseRef()
 	{
 		return m_baseRef;
 	}
 
-	void setBase(final XMLTypeRef<A> baseRef, final DerivationMethod derivation)
+	void setBase(final XMLTypeRef baseRef, final DerivationMethod derivation)
 	{
 		m_baseRef = PreCondition.assertArgumentNotNull(baseRef, "baseRef");
 		m_derivation = PreCondition.assertArgumentNotNull(derivation, "derivation");
@@ -187,50 +187,50 @@ final class XMLType<A> extends XMLComponent<A>
 		this.m_whiteSpacePolicy = whiteSpacePolicy;
 	}
 
-	public LinkedList<XMLEnumeration<A>> getEnumerations()
+	public LinkedList<XMLEnumeration> getEnumerations()
 	{
 		return m_enumerations;
 	}
 
-	public LinkedList<XMLMinMaxFacet<A>> getMinMaxFacets()
+	public LinkedList<XMLMinMaxFacet> getMinMaxFacets()
 	{
 		return m_minmaxFacets;
 	}
 
-	public LinkedList<XMLLength<A>> getLengthFacets()
+	public LinkedList<XMLLength> getLengthFacets()
 	{
 		return m_lengthFacets;
 	}
 
-	public LinkedList<XMLPatternFacet<A>> getPatternFacets()
+	public LinkedList<XMLPatternFacet> getPatternFacets()
 	{
 		return m_patternFacets;
 	}
 
-	public LinkedList<XMLTotalDigitsFacet<A>> getTotalDigitsFacets()
+	public LinkedList<XMLTotalDigitsFacet> getTotalDigitsFacets()
 	{
 		return m_totalDigitsFacets;
 	}
 
-	public LinkedList<XMLFractionDigitsFacet<A>> getFractionDigitsFacets()
+	public LinkedList<XMLFractionDigitsFacet> getFractionDigitsFacets()
 	{
 		return m_fractionDigitsFacets;
 	}
 
-	public void extendContentType(final boolean mixed, final XMLParticleWithModelGroupTerm<A> contentModel)
+	public void extendContentType(final boolean mixed, final XMLParticleWithModelGroupTerm contentModel)
 	{
 		if (m_contentKind.isElementOnly() || m_contentKind.isMixed())
 		{
 			if (null != m_contentModel)
 			{
-				final XMLParticleWithModelGroupTerm<A> existing = m_contentModel;
+				final XMLParticleWithModelGroupTerm existing = m_contentModel;
 
 				PreCondition.assertNotNull(existing, "existing");
 
-				final XMLModelGroup<A> anonymous = new XMLModelGroup<A>(ModelGroup.SmCompositor.Sequence, new XMLScope<A>(this));
+				final XMLModelGroup anonymous = new XMLModelGroup(ModelGroup.SmCompositor.Sequence, new XMLScope(this));
 				anonymous.getParticles().add(PreCondition.assertNotNull(existing));
 				anonymous.getParticles().add(PreCondition.assertNotNull(contentModel));
-				m_contentModel = new XMLParticleWithModelGroupTerm<A>(BigInteger.ONE, BigInteger.ONE, anonymous, existing.getLocation());
+				m_contentModel = new XMLParticleWithModelGroupTerm(BigInteger.ONE, BigInteger.ONE, anonymous, existing.getLocation());
 			}
 			else
 			{
@@ -248,12 +248,12 @@ final class XMLType<A> extends XMLComponent<A>
 		}
 	}
 
-	public LinkedList<XMLAttributeUse<A>> getAttributeUses()
+	public LinkedList<XMLAttributeUse> getAttributeUses()
 	{
 		return attributeUses;
 	}
 
-	public LinkedList<XMLAttributeGroup<A>> getAttributeGroups()
+	public LinkedList<XMLAttributeGroup> getAttributeGroups()
 	{
 		return attributeGroups;
 	}

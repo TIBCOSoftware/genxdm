@@ -17,13 +17,13 @@ package org.genxdm.processor.w3c.xs.impl;
 
 import java.math.BigInteger;
 
-final class XMLLength<A> extends XMLFacet<A>
+final class XMLLength extends XMLFacet
 {
 	public BigInteger minLength = null;
 	public BigInteger maxLength = null;
 	public boolean fixed = false;
 
-	public XMLLength(final XMLType<A> type, final SrcFrozenLocation location)
+	public XMLLength(final XMLType type, final SrcFrozenLocation location)
 	{
 		super(type, location);
 	}

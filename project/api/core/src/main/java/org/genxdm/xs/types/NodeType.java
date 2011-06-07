@@ -20,7 +20,7 @@ import org.genxdm.NodeKind;
 /**
  * Indicates that this type is one of the XQuery Data Model node types.
  */
-public interface NodeType<A> extends PrimeType<A>
+public interface NodeType extends PrimeType
 {
     /**
      * Returns the node type .

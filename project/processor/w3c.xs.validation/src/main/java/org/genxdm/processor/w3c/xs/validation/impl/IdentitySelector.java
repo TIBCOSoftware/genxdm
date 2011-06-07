@@ -29,13 +29,13 @@ import org.genxdm.xs.exceptions.AbortException;
  * Provides a streaming evaluation of a restricted XPath expression. <br/>
  * When certain conditions are met, a match handler is called
  */
-final class IdentitySelector<A>
+final class IdentitySelector
 {
 	public static final boolean DEBUG = false;
 
 	// We will callback the scope to indicate that the selector has matched.
 	// We issue one event for the start and one event for the end in a pair.
-	private final IdentityScope<A> m_scope;
+	private final IdentityScope m_scope;
 
 	// a List of branches, representing a parsed identity (selector or field)
 	// XPath expression
@@ -57,7 +57,7 @@ final class IdentitySelector<A>
 	 * @param xpath
 	 *            representing the parsed attribute xpath
 	 */
-	public IdentitySelector(final IdentityScope<A> scope, final RestrictedXPath xpath)
+	public IdentitySelector(final IdentityScope scope, final RestrictedXPath xpath)
 	{
 		m_scope = PreCondition.assertArgumentNotNull(scope, "scope");
 

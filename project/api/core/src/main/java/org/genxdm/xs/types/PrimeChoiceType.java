@@ -18,11 +18,10 @@ package org.genxdm.xs.types;
 /**
  * A choice type in which the alternatives are known to be prime types.
  *
- * @param <A> The atom handle.
  */
-public interface PrimeChoiceType<A> extends PrimeType<A>, ChoiceType<A>
+public interface PrimeChoiceType extends PrimeType, ChoiceType
 {
-    PrimeType<A> getLHS();
+    PrimeType getLHS();
 
-    PrimeType<A> getRHS();
+    PrimeType getRHS();
 }

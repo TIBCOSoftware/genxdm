@@ -21,7 +21,7 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcElementNotNillableException extends CvcElementException
 {
-	public CvcElementNotNillableException(final ElementDefinition<?> decl, final LocationInSchema location)
+	public CvcElementNotNillableException(final ElementDefinition decl, final LocationInSchema location)
 	{
 		super(PART_NOT_NILLABLE, decl, location);
 	}

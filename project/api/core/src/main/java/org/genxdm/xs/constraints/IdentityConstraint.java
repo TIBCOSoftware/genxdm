@@ -25,7 +25,7 @@ import org.genxdm.xs.enums.ScopeExtent;
 /**
  * Describes key/keyref/unique constraints on the schema.
  */
-public interface IdentityConstraint<A> extends SchemaComponent<A>
+public interface IdentityConstraint extends SchemaComponent
 {
     /**
      * Returns this constraint's {identity-constraint category} property. This is one of key, keyref or unique.
@@ -43,7 +43,7 @@ public interface IdentityConstraint<A> extends SchemaComponent<A>
      * 
      * @return a IdentityConstraint or null
      */
-    IdentityConstraint<A> getKeyConstraint();
+    IdentityConstraint getKeyConstraint();
 
     QName getName();
 

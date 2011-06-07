@@ -40,74 +40,73 @@ import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.ContentType;
 
 
-final class ValidationCache<A> implements VxValidatorCache<A>
+final class ValidationCache implements VxValidatorCache
 {
 	@SuppressWarnings("unused")
-	private final ElementDefinition<A> elementDeclaration;
-	private final ComponentProvider<A> provider;
-	private final AtomBridge<A> bridge;
+	private final ElementDefinition elementDeclaration;
+	private final ComponentProvider provider;
 	private final VxSchemaDocumentLocationStrategy sdl;
 
-	private final ConcurrentHashMap<ComplexType<A>, RegExPattern<ValidationExpr<A, ParticleTerm<A>>, QName>> m_patterns = new ConcurrentHashMap<ComplexType<A>, RegExPattern<ValidationExpr<A, ParticleTerm<A>>, QName>>();
+	private final ConcurrentHashMap<ComplexType, RegExPattern<ValidationExpr, QName>> m_patterns = new ConcurrentHashMap<ComplexType, RegExPattern<ValidationExpr, QName>>();
 
-	private final RegExBridge<ValidationExpr<A, ParticleTerm<A>>, QName> m_regexb;
+	private final RegExBridge<ValidationExpr, QName> m_regexb;
 
-	ValidationCache(final ElementDefinition<A> elementDeclaration, final ComponentProvider<A> provider, final AtomBridge<A> atomBridge, final VxSchemaDocumentLocationStrategy sdl)
+	ValidationCache(final ElementDefinition elementDeclaration, final ComponentProvider provider, final VxSchemaDocumentLocationStrategy sdl)
 	{
 		this.elementDeclaration = elementDeclaration;
 		this.provider = provider;
-		this.bridge = atomBridge;
-		m_regexb = new ValidationRegExBridge<A>(new NameSource());
+		m_regexb = new ValidationRegExBridge();
 		this.sdl = sdl;
 	}
 
-	public VxValidator<A> newValidator()
+	@Override
+	public <A> VxValidator<A> newValidator(AtomBridge<A> bridge)
 	{
 		return new ValidationKernel<A>(provider, bridge, this, sdl);
 	}
 
-	SmContentFiniteStateMachine<A> getMachine(final ComplexType<A> complexType)
+	SmContentFiniteStateMachine getMachine(final ComplexType complexType)
 	{
-		final ComplexType<A> itemType = (ComplexType<A>)complexType;
-		final RegExPattern<ValidationExpr<A, ParticleTerm<A>>, QName> pattern = ensurePattern(itemType);
+		final ComplexType itemType = (ComplexType)complexType;
+		final RegExPattern<ValidationExpr, QName> pattern = ensurePattern(itemType);
 
-		final List<ValidationExpr<A, ParticleTerm<A>>> expectedFollowers = new LinkedList<ValidationExpr<A, ParticleTerm<A>>>();
-		final RegExMachine<ValidationExpr<A, ParticleTerm<A>>, QName> regexm = PreCondition.assertArgumentNotNull(pattern.createRegExMachine(expectedFollowers), "createRegExMachine");
+		final List<ValidationExpr> expectedFollowers = new LinkedList<ValidationExpr>();
+		final RegExMachine<ValidationExpr, QName> regexm = PreCondition.assertArgumentNotNull(pattern.createRegExMachine(expectedFollowers), "createRegExMachine");
 
-		return new SmMachineImpl<A>(regexm);
+		return new SmMachineImpl(regexm);
 	}
 
-	private RegExPattern<ValidationExpr<A, ParticleTerm<A>>, QName> ensurePattern(final ComplexType<A> complexType)
+	private RegExPattern<ValidationExpr, QName> ensurePattern(final ComplexType complexType)
 	{
-		final RegExPattern<ValidationExpr<A, ParticleTerm<A>>, QName> cachedPattern = m_patterns.get(complexType);
+		final RegExPattern<ValidationExpr, QName> cachedPattern = m_patterns.get(complexType);
 		if (null != cachedPattern)
 		{
 			return cachedPattern;
 		}
 		else
 		{
-			final ContentType<A> contentType = complexType.getContentType();
+			final ContentType contentType = complexType.getContentType();
 
-			final SchemaParticle<A> contentModel = contentType.getContentModel();
-			final ValidationExpr<A, ParticleTerm<A>> expression = expression(contentModel);
-			final RegExFactory<ValidationExpr<A, ParticleTerm<A>>, QName> factory = new NfaFactory<ValidationExpr<A, ParticleTerm<A>>, QName>();
-			final RegExPattern<ValidationExpr<A, ParticleTerm<A>>, QName> pattern = factory.newPattern(expression, m_regexb);
+			final SchemaParticle contentModel = contentType.getContentModel();
+			final ValidationExpr expression = expression(contentModel);
+			final RegExFactory<ValidationExpr, QName> factory = new NfaFactory<ValidationExpr, QName>();
+			final RegExPattern<ValidationExpr, QName> pattern = factory.newPattern(expression, m_regexb);
 			m_patterns.put(complexType, pattern);
 			return pattern;
 		}
 	}
 
-	private ValidationExpr<A, ParticleTerm<A>> expression(final SchemaParticle<A> particle)
+	private ValidationExpr expression(final SchemaParticle particle)
 	{
-		final ParticleTerm<A> term = particle.getTerm();
-		if (term instanceof ModelGroup<?>)
+		final ParticleTerm term = particle.getTerm();
+		if (term instanceof ModelGroup)
 		{
-			final ModelGroup<A> group = (ModelGroup<A>)term;
-			return new ModelGroupExpression<A>(particle, group);
+			final ModelGroup group = (ModelGroup)term;
+			return new ModelGroupExpression(particle, group);
 		}
 		else
 		{
-			return new ContentModelExpression<A>(particle);
+			return new ContentModelExpression(particle);
 		}
 	}
 }

@@ -23,12 +23,12 @@ import org.genxdm.xs.facets.Limit;
 @SuppressWarnings("serial")
 public class SccLimitRestrictionException extends ComponentConstraintException
 {
-	private final Limit<?> restrictingLimit;
-	private final Limit<?> parentLimit;
+	private final Limit restrictingLimit;
+	private final Limit parentLimit;
 	private final FacetKind childFacetKind;
 	private final FacetKind parentFacetKind;
 
-	public SccLimitRestrictionException(final ValidationOutcome outcome, final String partNumber, final FacetKind childFacetKind, final FacetKind parentFacetKind, final Limit<?> restrictingLimit, final Limit<?> parentLimit)
+	public SccLimitRestrictionException(final ValidationOutcome outcome, final String partNumber, final FacetKind childFacetKind, final FacetKind parentFacetKind, final Limit restrictingLimit, final Limit parentLimit)
 	{
 		super(outcome, partNumber);
 		this.restrictingLimit = restrictingLimit;

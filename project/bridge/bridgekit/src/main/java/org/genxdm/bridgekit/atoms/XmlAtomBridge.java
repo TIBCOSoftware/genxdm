@@ -44,15 +44,15 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 	private static final QName FORG0001 = new QName("http://www.w3.org/2005/xqt-errors/", "FORG0001", "err");
 
 	private final NameSource nameBridge;
-	private Schema<XmlAtom> schema;
+	private Schema schema;
 
-	public XmlAtomBridge(final Schema<XmlAtom> schema, final NameSource nameBridge)
+	public XmlAtomBridge(final Schema schema, final NameSource nameBridge)
 	{
 		this.schema = schema;
 		this.nameBridge = IllegalNullArgumentException.check(nameBridge, "nameBridge");
 	}
 
-	public void setProcessingContext(final Schema<XmlAtom> schema)
+	public void setProcessingContext(final Schema schema)
 	{
 		this.schema = PreCondition.assertArgumentNotNull(schema, "schema");
 	}
@@ -87,12 +87,12 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 		}
 	}
 
-	public XmlAtom castAs(final XmlAtom sourceAtom, final QName targetType, final CastingContext<XmlAtom> castingContext) throws GxmlAtomCastException
+	public XmlAtom castAs(final XmlAtom sourceAtom, final QName targetType, final CastingContext castingContext) throws GxmlAtomCastException
 	{
 		return CastingSupport.castAs(sourceAtom, targetType, castingContext, schema, this);
 	}
 
-	public XmlAtom castAs(final XmlAtom sourceAtom, final NativeType targetType, final CastingContext<XmlAtom> castingContext) throws GxmlAtomCastException
+	public XmlAtom castAs(final XmlAtom sourceAtom, final NativeType targetType, final CastingContext castingContext) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(castingContext, "castingContext");
 		return CastingSupport.castAs(getNativeAtom(sourceAtom), targetType, castingContext, schema, this);
@@ -102,15 +102,15 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 	{
 		PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
-		final Type<XmlAtom> type = schema.getTypeDefinition(targetType);
+		final Type type = schema.getTypeDefinition(targetType);
 		if (null != type)
 		{
 			if (type.isAtomicType())
 			{
-				final SimpleType<XmlAtom> atomicType = (SimpleType<XmlAtom>)type;
+				final SimpleType atomicType = (SimpleType)type;
 				try
 				{
-					final List<XmlAtom> atoms = atomicType.validate(sourceValue);
+					final List<XmlAtom> atoms = atomicType.validate(sourceValue, this);
 					final int size = atoms.size();
 					if (1 == size)
 					{
@@ -1259,7 +1259,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 
 	private String normalize(final String initialValue, final NativeType nativeType)
 	{
-		final SimpleType<XmlAtom> simpleType = (SimpleType<XmlAtom>)schema.getTypeDefinition(nativeType);
+		final SimpleType simpleType = (SimpleType)schema.getTypeDefinition(nativeType);
 		return simpleType.normalize(initialValue);
 	}
 

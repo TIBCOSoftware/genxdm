@@ -21,15 +21,13 @@ import org.genxdm.xs.components.SchemaParticle;
 /**
  * Describes the use of a model group.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface ModelGroupUse<A> extends SchemaParticle<A>
+public interface ModelGroupUse extends SchemaParticle
 {
     /**
      * Returns the {particle term} property for this usage which is a model group.
      */
-    ModelGroup<A> getTerm();
+    ModelGroup getTerm();
 
     /**
      * Determines whether this particle is Emptiable (See W3C XML Schema Definition Language (XSD) Part 1: Structures).

@@ -18,13 +18,11 @@ package org.genxdm.xs.types;
 /**
  * A type that is a list of other simple types.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface ListSimpleType<A> extends SimpleType<A>
+public interface ListSimpleType extends SimpleType
 {
     /**
      * Returns the {item type definition} of the list type.
      */
-    SimpleType<A> getItemType();
+    SimpleType getItemType();
 }

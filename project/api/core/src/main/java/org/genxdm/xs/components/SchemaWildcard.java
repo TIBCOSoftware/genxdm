@@ -30,7 +30,7 @@ import org.genxdm.xs.enums.ProcessContentsMode;
  * <li>otherwise if the item's namespace is not in the prohibited list.</li>
  * </ul>
  */
-public interface SchemaWildcard<A> extends ParticleTerm<A>
+public interface SchemaWildcard extends ParticleTerm
 {
     NamespaceConstraint getNamespaceConstraint();
 

@@ -21,7 +21,7 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcElementFixedAndNilledException extends CvcElementException
 {
-	public CvcElementFixedAndNilledException(final ElementDefinition<?> decl, final LocationInSchema location)
+	public CvcElementFixedAndNilledException(final ElementDefinition decl, final LocationInSchema location)
 	{
 		super(PART_FIXED_AND_NILLED, decl, location);
 	}

@@ -21,9 +21,9 @@ import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class ZPrimeChoiceType<A> extends AbstractPrimeExcludingNoneType<A> implements PrimeChoiceType<A>
+final class ZPrimeChoiceType extends AbstractPrimeExcludingNoneType implements PrimeChoiceType
 {
-	public static <A> PrimeType<A> choice(final PrimeType<A> lhs, final PrimeType<A> rhs)
+	public static  PrimeType choice(final PrimeType lhs, final PrimeType rhs)
 	{
 		// Make an attempt to simplify, but not approximate the type expression by detecting
 		// "none" type subtrees which are the identity element for choice. However we must use
@@ -46,21 +46,21 @@ final class ZPrimeChoiceType<A> extends AbstractPrimeExcludingNoneType<A> implem
 		}
 		else
 		{
-			return new ZPrimeChoiceType<A>(lhs, rhs);
+			return new ZPrimeChoiceType(lhs, rhs);
 		}
 	}
 
-	private final PrimeType<A> m_lhs;
+	private final PrimeType m_lhs;
 
-	private final PrimeType<A> m_rhs;
+	private final PrimeType m_rhs;
 
-	private ZPrimeChoiceType(final PrimeType<A> lhs, final PrimeType<A> rhs)
+	private ZPrimeChoiceType(final PrimeType lhs, final PrimeType rhs)
 	{
 		m_lhs = PreCondition.assertArgumentNotNull(lhs);
 		m_rhs = PreCondition.assertArgumentNotNull(rhs);
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
@@ -70,12 +70,12 @@ final class ZPrimeChoiceType<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return PrimeTypeKind.CHOICE;
 	}
 
-	public PrimeType<A> getLHS()
+	public PrimeType getLHS()
 	{
 		return m_lhs;
 	}
 
-	public PrimeType<A> getRHS()
+	public PrimeType getRHS()
 	{
 		return m_rhs;
 	}
@@ -90,12 +90,12 @@ final class ZPrimeChoiceType<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return m_lhs.isNative() && m_rhs.isNative();
 	}
 
-	public PrimeChoiceType<A> prime()
+	public PrimeChoiceType prime()
 	{
 		return this;
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		return m_lhs.subtype(rhs) && m_rhs.subtype(rhs);
 	}

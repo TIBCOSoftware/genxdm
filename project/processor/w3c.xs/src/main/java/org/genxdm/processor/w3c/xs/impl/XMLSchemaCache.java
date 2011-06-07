@@ -44,53 +44,53 @@ import org.genxdm.xs.exceptions.SchemaException;
  * This class is used to do the "bookkeeping" associated with parsing in a streaming fashion and with managing forward
  * references.
  */
-final class XMLSchemaCache<A>
+final class XMLSchemaCache
 {
-	final Map<QName, XMLElement<A>> m_elements = new HashMap<QName, XMLElement<A>>();
+	final Map<QName, XMLElement> m_elements = new HashMap<QName, XMLElement>();
 	final Map<QName, SrcFrozenLocation> m_elementsUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
-	final Map<QName, XMLAttribute<A>> m_attributes = new HashMap<QName, XMLAttribute<A>>();
+	final Map<QName, XMLAttribute> m_attributes = new HashMap<QName, XMLAttribute>();
 	final Map<QName, SrcFrozenLocation> m_attributesUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
-	final Map<QName, XMLType<A>> m_globalTypes = new HashMap<QName, XMLType<A>>();
+	final Map<QName, XMLType> m_globalTypes = new HashMap<QName, XMLType>();
 	final Map<QName, SrcFrozenLocation> m_typesUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
-	final Map<QName, XMLModelGroup<A>> m_modelGroups = new HashMap<QName, XMLModelGroup<A>>();
+	final Map<QName, XMLModelGroup> m_modelGroups = new HashMap<QName, XMLModelGroup>();
 	final Map<QName, SrcFrozenLocation> m_modelGroupsUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
-	final Map<QName, XMLAttributeGroup<A>> m_attributeGroups = new HashMap<QName, XMLAttributeGroup<A>>();
+	final Map<QName, XMLAttributeGroup> m_attributeGroups = new HashMap<QName, XMLAttributeGroup>();
 	final Map<QName, SrcFrozenLocation> m_attributeGroupsUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
-	final Map<QName, XMLIdentityConstraint<A>> m_constraints = new HashMap<QName, XMLIdentityConstraint<A>>();
+	final Map<QName, XMLIdentityConstraint> m_constraints = new HashMap<QName, XMLIdentityConstraint>();
 	final Map<QName, SrcFrozenLocation> m_constraintsUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
-	final Map<QName, XMLNotation<A>> m_notations = new HashMap<QName, XMLNotation<A>>();
+	final Map<QName, XMLNotation> m_notations = new HashMap<QName, XMLNotation>();
 	final Map<QName, SrcFrozenLocation> m_notationsUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
 	final HashSet<URI> m_seenNamespaces = new HashSet<URI>();
 	final HashSet<URI> m_seenSystemIds = new HashSet<URI>();
 
-	private final XMLScope<A> GLOBAL = new XMLScope<A>();
-	private final XMLTypeRef<A> ANY_SIMPLE_TYPE;
-	private final XMLTypeRef<A> ANY_TYPE;
+	private final XMLScope GLOBAL = new XMLScope();
+	private final XMLTypeRef ANY_SIMPLE_TYPE;
+	private final XMLTypeRef ANY_TYPE;
 
 	public XMLSchemaCache(final NameSource nameBridge)
 	{
-		ANY_SIMPLE_TYPE = new XMLTypeRef<A>(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anySimpleType"));
-		ANY_TYPE = new XMLTypeRef<A>(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anyType"));
+		ANY_SIMPLE_TYPE = new XMLTypeRef(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anySimpleType"));
+		ANY_TYPE = new XMLTypeRef(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anyType"));
 	}
 
-	public Iterable<XMLType<A>> getGlobalTypes()
+	public Iterable<XMLType> getGlobalTypes()
 	{
 		return m_globalTypes.values();
 	}
 
-	public Iterable<XMLElement<A>> getElements()
+	public Iterable<XMLElement> getElements()
 	{
 		return m_elements.values();
 	}
 
-	public Iterable<XMLAttribute<A>> getAttributes()
+	public Iterable<XMLAttribute> getAttributes()
 	{
 		return m_attributes.values();
 	}
@@ -153,7 +153,7 @@ final class XMLSchemaCache<A>
 	{
 		for (final QName name : m_elements.keySet())
 		{
-			final XMLElement<A> element = m_elements.get(name);
+			final XMLElement element = m_elements.get(name);
 			if (null != element.substitutionGroup && element.typeRef.isComplexUrType())
 			{
 				element.typeRef = element.substitutionGroup.typeRef;
@@ -161,13 +161,13 @@ final class XMLSchemaCache<A>
 		}
 	}
 
-	public XMLAttribute<A> registerAttribute(final QName name, final SrcFrozenLocation location) throws SmDuplicateAttributeException
+	public XMLAttribute registerAttribute(final QName name, final SrcFrozenLocation location) throws SmDuplicateAttributeException
 	{
 		PreCondition.assertArgumentNotNull(name);
 
 		if (m_attributes.containsKey(name))
 		{
-			final XMLAttribute<A> attribute = m_attributes.get(name);
+			final XMLAttribute attribute = m_attributes.get(name);
 			if (m_attributesUnresolved.containsKey(name))
 			{
 				m_attributesUnresolved.remove(name);
@@ -181,13 +181,13 @@ final class XMLSchemaCache<A>
 		}
 		else
 		{
-			final XMLAttribute<A> attribute = new XMLAttribute<A>(name, GLOBAL, ANY_SIMPLE_TYPE, location);
+			final XMLAttribute attribute = new XMLAttribute(name, GLOBAL, ANY_SIMPLE_TYPE, location);
 			m_attributes.put(name, attribute);
 			return attribute;
 		}
 	}
 
-	public XMLAttribute<A> dereferenceAttribute(final QName name, final Location reference)
+	public XMLAttribute dereferenceAttribute(final QName name, final Location reference)
 	{
 		PreCondition.assertArgumentNotNull(name);
 
@@ -197,7 +197,7 @@ final class XMLSchemaCache<A>
 		}
 		else
 		{
-			final XMLAttribute<A> attribute = new XMLAttribute<A>(name, GLOBAL, ANY_SIMPLE_TYPE);
+			final XMLAttribute attribute = new XMLAttribute(name, GLOBAL, ANY_SIMPLE_TYPE);
 			m_attributesUnresolved.put(name, new SrcFrozenLocation(reference));
 			m_attributes.put(name, attribute);
 			return attribute;
@@ -208,13 +208,13 @@ final class XMLSchemaCache<A>
 	 * Guarantee that a global attribute group declaration exists with the specified name. <br/>
 	 * Forward references are handled by creating place-holders that get filled in later.
 	 */
-	public XMLAttributeGroup<A> registerAttributeGroup(final QName name, final SrcFrozenLocation location) throws SmDuplicateAttributeGroupException
+	public XMLAttributeGroup registerAttributeGroup(final QName name, final SrcFrozenLocation location) throws SmDuplicateAttributeGroupException
 	{
 		PreCondition.assertArgumentNotNull(name);
 
 		if (m_attributeGroups.containsKey(name))
 		{
-			final XMLAttributeGroup<A> attributeGroup = m_attributeGroups.get(name);
+			final XMLAttributeGroup attributeGroup = m_attributeGroups.get(name);
 			if (m_attributeGroupsUnresolved.containsKey(name))
 			{
 				m_attributeGroupsUnresolved.remove(name);
@@ -228,13 +228,13 @@ final class XMLSchemaCache<A>
 		}
 		else
 		{
-			final XMLAttributeGroup<A> attributeGroup = new XMLAttributeGroup<A>(name, GLOBAL, location);
+			final XMLAttributeGroup attributeGroup = new XMLAttributeGroup(name, GLOBAL, location);
 			m_attributeGroups.put(name, attributeGroup);
 			return attributeGroup;
 		}
 	}
 
-	public XMLAttributeGroup<A> dereferenceAttributeGroup(final QName name, final Location reference, final boolean mustExist) throws SchemaException
+	public XMLAttributeGroup dereferenceAttributeGroup(final QName name, final Location reference, final boolean mustExist) throws SchemaException
 	{
 		PreCondition.assertArgumentNotNull(name);
 
@@ -250,7 +250,7 @@ final class XMLSchemaCache<A>
 			}
 			else
 			{
-				final XMLAttributeGroup<A> attributeGroup = new XMLAttributeGroup<A>(name, GLOBAL);
+				final XMLAttributeGroup attributeGroup = new XMLAttributeGroup(name, GLOBAL);
 				m_attributeGroupsUnresolved.put(name, new SrcFrozenLocation(reference));
 				m_attributeGroups.put(name, attributeGroup);
 				return attributeGroup;
@@ -262,11 +262,11 @@ final class XMLSchemaCache<A>
 	 * Guarantee that a global element declaration exists with the specified name. <br/>
 	 * Forward references are handled by creating placeholders that get filled in later.
 	 */
-	public XMLIdentityConstraint<A> registerIdentityConstraint(final IdentityConstraintKind kind, final QName name, final SrcFrozenLocation location) throws SmDuplicateIdentityConstraintException
+	public XMLIdentityConstraint registerIdentityConstraint(final IdentityConstraintKind kind, final QName name, final SrcFrozenLocation location) throws SmDuplicateIdentityConstraintException
 	{
 		PreCondition.assertArgumentNotNull(name);
 
-		final XMLIdentityConstraint<A> constraint;
+		final XMLIdentityConstraint constraint;
 		if (m_constraints.containsKey(name))
 		{
 			constraint = m_constraints.get(name);
@@ -282,7 +282,7 @@ final class XMLSchemaCache<A>
 		}
 		else
 		{
-			constraint = new XMLIdentityConstraint<A>(name, GLOBAL, location);
+			constraint = new XMLIdentityConstraint(name, GLOBAL, location);
 			m_constraints.put(name, constraint);
 		}
 		constraint.category = kind;
@@ -293,7 +293,7 @@ final class XMLSchemaCache<A>
 	 * Dereferences the identity constraint if it has already been seen or creates a placeholder identity constraint
 	 * marked as unresolved.
 	 */
-	public XMLIdentityConstraint<A> dereferenceIdentityConstraint(final QName name, final Location reference)
+	public XMLIdentityConstraint dereferenceIdentityConstraint(final QName name, final Location reference)
 	{
 		PreCondition.assertArgumentNotNull(name);
 
@@ -303,20 +303,20 @@ final class XMLSchemaCache<A>
 		}
 		else
 		{
-			final XMLIdentityConstraint<A> constraint = new XMLIdentityConstraint<A>(name, GLOBAL);
+			final XMLIdentityConstraint constraint = new XMLIdentityConstraint(name, GLOBAL);
 			m_constraints.put(name, constraint);
 			m_constraintsUnresolved.put(name, new SrcFrozenLocation(reference));
 			return constraint;
 		}
 	}
 
-	public XMLType<A> registerType(final QName name, final SrcFrozenLocation location) throws SmDuplicateTypeException
+	public XMLType registerType(final QName name, final SrcFrozenLocation location) throws SmDuplicateTypeException
 	{
 		PreCondition.assertArgumentNotNull(name);
 
 		if (m_globalTypes.containsKey(name))
 		{
-			final XMLType<A> type = m_globalTypes.get(name);
+			final XMLType type = m_globalTypes.get(name);
 			if (m_typesUnresolved.containsKey(name))
 			{
 				m_typesUnresolved.remove(name);
@@ -331,18 +331,18 @@ final class XMLSchemaCache<A>
 		}
 		else
 		{
-			final XMLType<A> type = new XMLType<A>(name, GLOBAL, location);
+			final XMLType type = new XMLType(name, GLOBAL, location);
 			m_globalTypes.put(name, type);
 			return type;
 		}
 	}
 
-	public XMLType<A> registerAnonymousType(final XMLScope<A> scope, final SrcFrozenLocation location)
+	public XMLType registerAnonymousType(final XMLScope scope, final SrcFrozenLocation location)
 	{
-		return new XMLType<A>(null, scope, location);
+		return new XMLType(null, scope, location);
 	}
 
-	public XMLType<A> dereferenceType(final QName name, final Location reference, final boolean mustExist) throws SchemaException
+	public XMLType dereferenceType(final QName name, final Location reference, final boolean mustExist) throws SchemaException
 	{
 		PreCondition.assertArgumentNotNull(name);
 
@@ -358,7 +358,7 @@ final class XMLSchemaCache<A>
 			}
 			else
 			{
-				final XMLType<A> type = new XMLType<A>(name, GLOBAL);
+				final XMLType type = new XMLType(name, GLOBAL);
 				m_typesUnresolved.put(name, new SrcFrozenLocation(reference));
 				m_globalTypes.put(name, type);
 				return type;
@@ -366,13 +366,13 @@ final class XMLSchemaCache<A>
 		}
 	}
 
-	public XMLModelGroup<A> registerModelGroup(final QName name, final SrcFrozenLocation location) throws SmDuplicateModelGroupException
+	public XMLModelGroup registerModelGroup(final QName name, final SrcFrozenLocation location) throws SmDuplicateModelGroupException
 	{
 		PreCondition.assertArgumentNotNull(name);
 
 		if (m_modelGroups.containsKey(name))
 		{
-			final XMLModelGroup<A> modelGroup = m_modelGroups.get(name);
+			final XMLModelGroup modelGroup = m_modelGroups.get(name);
 			if (m_modelGroupsUnresolved.containsKey(name))
 			{
 				m_modelGroupsUnresolved.remove(name);
@@ -386,13 +386,13 @@ final class XMLSchemaCache<A>
 		}
 		else
 		{
-			final XMLModelGroup<A> modelGroup = new XMLModelGroup<A>(name, GLOBAL, location);
+			final XMLModelGroup modelGroup = new XMLModelGroup(name, GLOBAL, location);
 			m_modelGroups.put(name, modelGroup);
 			return modelGroup;
 		}
 	}
 
-	public XMLModelGroup<A> dereferenceModelGroup(final QName name, final Location reference, final boolean mustExist) throws SchemaException
+	public XMLModelGroup dereferenceModelGroup(final QName name, final Location reference, final boolean mustExist) throws SchemaException
 	{
 		PreCondition.assertArgumentNotNull(name);
 
@@ -408,7 +408,7 @@ final class XMLSchemaCache<A>
 			}
 			else
 			{
-				final XMLModelGroup<A> modelGroup = new XMLModelGroup<A>(name, GLOBAL);
+				final XMLModelGroup modelGroup = new XMLModelGroup(name, GLOBAL);
 				m_modelGroups.put(name, modelGroup);
 				m_modelGroupsUnresolved.put(name, new SrcFrozenLocation(reference));
 				return modelGroup;
@@ -416,13 +416,13 @@ final class XMLSchemaCache<A>
 		}
 	}
 
-	public XMLNotation<A> registerNotation(final QName name, final SrcFrozenLocation location) throws SmDuplicateNotationException
+	public XMLNotation registerNotation(final QName name, final SrcFrozenLocation location) throws SmDuplicateNotationException
 	{
 		PreCondition.assertArgumentNotNull(name);
 
 		if (m_notations.containsKey(name))
 		{
-			final XMLNotation<A> notation = m_notations.get(name);
+			final XMLNotation notation = m_notations.get(name);
 			if (m_notationsUnresolved.containsKey(name))
 			{
 				m_notationsUnresolved.remove(name);
@@ -436,19 +436,19 @@ final class XMLSchemaCache<A>
 		}
 		else
 		{
-			final XMLNotation<A> notation = new XMLNotation<A>(name, GLOBAL, location);
+			final XMLNotation notation = new XMLNotation(name, GLOBAL, location);
 			m_notations.put(name, notation);
 			return notation;
 		}
 	}
 
-	public XMLElement<A> registerElement(final QName name, final SrcFrozenLocation location) throws SmDuplicateElementException
+	public XMLElement registerElement(final QName name, final SrcFrozenLocation location) throws SmDuplicateElementException
 	{
 		PreCondition.assertArgumentNotNull(name);
 
 		if (m_elements.containsKey(name))
 		{
-			final XMLElement<A> element = m_elements.get(name);
+			final XMLElement element = m_elements.get(name);
 			if (m_elementsUnresolved.containsKey(name))
 			{
 				m_elementsUnresolved.remove(name);
@@ -462,7 +462,7 @@ final class XMLSchemaCache<A>
 		}
 		else
 		{
-			final XMLElement<A> element = new XMLElement<A>(name, GLOBAL, ANY_TYPE, location);
+			final XMLElement element = new XMLElement(name, GLOBAL, ANY_TYPE, location);
 			m_elements.put(name, element);
 			return element;
 		}
@@ -471,7 +471,7 @@ final class XMLSchemaCache<A>
 	/**
 	 * Dereferences a global element or creates a global placeholder element marked as unresolved.
 	 */
-	public XMLElement<A> dereferenceElement(final QName name, final Location reference)
+	public XMLElement dereferenceElement(final QName name, final Location reference)
 	{
 		PreCondition.assertArgumentNotNull(name);
 
@@ -481,7 +481,7 @@ final class XMLSchemaCache<A>
 		}
 		else
 		{
-			final XMLElement<A> element = new XMLElement<A>(name, GLOBAL, ANY_TYPE);
+			final XMLElement element = new XMLElement(name, GLOBAL, ANY_TYPE);
 			m_elements.put(name, element);
 			m_elementsUnresolved.put(name, new SrcFrozenLocation(reference));
 			return element;

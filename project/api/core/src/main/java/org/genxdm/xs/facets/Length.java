@@ -18,10 +18,8 @@ package org.genxdm.xs.facets;
 /**
  * The xs:length facet.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface Length<A> extends Facet<A>
+public interface Length extends Facet
 {
     /**
      * Returns the exact length allowed for a datatype.

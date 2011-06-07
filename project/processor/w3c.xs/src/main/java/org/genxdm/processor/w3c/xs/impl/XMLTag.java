@@ -17,9 +17,9 @@ package org.genxdm.processor.w3c.xs.impl;
 
 import org.genxdm.exceptions.PreCondition;
 
-abstract class XMLTag<A>
+abstract class XMLTag
 {
-	public A id;
+	public String id;
 	private SrcFrozenLocation m_location;
 
 	public XMLTag()

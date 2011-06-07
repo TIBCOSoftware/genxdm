@@ -28,12 +28,12 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class AttributeNodeTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implements AttributeNodeType<A>
+final class AttributeNodeTypeImpl extends AbstractPrimeExcludingNoneType implements AttributeNodeType
 {
 	private final QName name;
-	private final SequenceType<A> m_type;
+	private final SequenceType m_type;
 
-	public AttributeNodeTypeImpl(final QName name, final SequenceType<A> type, final SchemaCache<A> cache)
+	public AttributeNodeTypeImpl(final QName name, final SequenceType type, final SchemaCache cache)
 	{
 		this.name = PreCondition.assertArgumentNotNull(name, "name");
 		if (null != type)
@@ -46,12 +46,12 @@ final class AttributeNodeTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> i
 		}
 	}
 
-	public PrimeType<A> prime()
+	public PrimeType prime()
 	{
 		return this;
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
@@ -100,7 +100,7 @@ final class AttributeNodeTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> i
 		}
 	}
 
-	public SequenceType<A> getType()
+	public SequenceType getType()
 	{
 		return m_type;
 	}
@@ -120,18 +120,18 @@ final class AttributeNodeTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> i
 		return false;
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case ATTRIBUTE:
 			{
-				final AttributeNodeType<A> other = (AttributeNodeType<A>)rhs;
+				final AttributeNodeType other = (AttributeNodeType)rhs;
 				return QNameAsSet.subset(name, other.getName());
 			}
 			default:

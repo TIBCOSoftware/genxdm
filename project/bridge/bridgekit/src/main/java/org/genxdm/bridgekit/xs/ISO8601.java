@@ -27,7 +27,7 @@ final class ISO8601
 		START, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, FINISH;
 	}
 
-	public static <A> A parseGregorian(final String s, final AtomBridge<A> atomBridge, final SimpleType<A> type) throws DatatypeException
+	public static <A> A parseGregorian(final String s, final AtomBridge<A> atomBridge, final SimpleType type) throws DatatypeException
 	{
 		PreCondition.assertArgumentNotNull(s, "s");
 		final int length = s.length();

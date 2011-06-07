@@ -18,14 +18,14 @@ package org.genxdm.processor.w3c.xs.impl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.facets.FacetKind;
 
-final class XMLMinMaxFacet<A> extends XMLFacet<A>
+final class XMLMinMaxFacet extends XMLFacet
 {
 	private final FacetKind m_kind;
 	public final String elementName;
 	public boolean fixed = false;
 	public String value;
 
-	public XMLMinMaxFacet(final FacetKind kind, final String elementName, final XMLType<A> simpleType, final SrcFrozenLocation location)
+	public XMLMinMaxFacet(final FacetKind kind, final String elementName, final XMLType simpleType, final SrcFrozenLocation location)
 	{
 		super(simpleType, location);
 		this.m_kind = PreCondition.assertArgumentNotNull(kind);

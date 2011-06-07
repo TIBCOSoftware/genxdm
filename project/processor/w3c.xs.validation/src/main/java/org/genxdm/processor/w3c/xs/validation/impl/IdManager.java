@@ -32,22 +32,22 @@ import org.genxdm.xs.types.SimpleType;
 /**
  * Responsible for implementing ID/IDREF functionality.
  */
-final class IdManager<A>
+final class IdManager
 {
 	private final HashSet<String> m_definedIds = new HashSet<String>();
 	private final HashMap<String, List<LocationInSchema>> m_danglingIDREFLocations = new HashMap<String, List<LocationInSchema>>();
 
-	public void text(final List<? extends A> actualValue, final SimpleType<A> actualType, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
+	public <A> void text(final List<? extends A> actualValue, final SimpleType actualType, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		value(actualValue, actualType, locatable, errors, atomBridge);
 	}
 
-	public void attribute(final List<? extends A> actualValue, final SimpleType<A> actualType, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
+	public <A> void attribute(final List<? extends A> actualValue, final SimpleType actualType, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		value(actualValue, actualType, locatable, errors, atomBridge);
 	}
 
-	private void value(final List<? extends A> actualValue, final SimpleType<A> actualType, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
+	private <A> void value(final List<? extends A> actualValue, final SimpleType actualType, final Locatable locatable, final SchemaExceptionHandler errors, final AtomBridge<A> atomBridge) throws AbortException
 	{
 		if (actualType.isID())
 		{
@@ -66,14 +66,14 @@ final class IdManager<A>
 		}
 	}
 
-	private String castAsString(final A atom, final AtomBridge<A> atomBridge)
+	private <A> String castAsString(final A atom, final AtomBridge<A> atomBridge)
 	{
 		PreCondition.assertArgumentNotNull(atom, "atom");
 		PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
 		return atomBridge.getC14NForm(atom);
 	}
 
-	public void processId(final String id, final Locatable locatable, final AtomBridge<A> atomBridge, final SchemaExceptionHandler errors) throws AbortException
+	public <A> void processId(final String id, final Locatable locatable, final AtomBridge<A> atomBridge, final SchemaExceptionHandler errors) throws AbortException
 	{
 		if (!m_definedIds.add(id))
 		{

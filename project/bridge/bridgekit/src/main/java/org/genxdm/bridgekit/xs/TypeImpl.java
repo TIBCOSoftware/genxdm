@@ -28,7 +28,7 @@ import org.genxdm.xs.types.Type;
 /**
  * Implementation Note: We're trying to maintain a single implementation of Type to represent complex and simple types as well as lists and unions. The advantage of this is that the implementation does not have to downcast.
  */
-abstract class TypeImpl<A> extends NamedComponentImpl<A> implements Type<A>
+abstract class TypeImpl extends NamedComponentImpl implements Type
 {
 	private final DerivationMethod derivation;
 	private final QName name;
@@ -47,7 +47,7 @@ abstract class TypeImpl<A> extends NamedComponentImpl<A> implements Type<A>
 		return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods, nameBridge);
 	}
 
-	public boolean derivedFromType(final Type<A> ancestorType, final Set<DerivationMethod> derivationMethods)
+	public boolean derivedFromType(final Type ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
 		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods, nameBridge);
 	}

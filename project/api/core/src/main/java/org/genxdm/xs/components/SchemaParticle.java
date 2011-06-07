@@ -18,7 +18,7 @@ package org.genxdm.xs.components;
 /**
  * A particle is a component of a group.
  */
-public interface SchemaParticle<A>
+public interface SchemaParticle
 {
     /**
      * Returns the {max occurs} property for this particle.
@@ -33,7 +33,7 @@ public interface SchemaParticle<A>
     /**
      * Returns the {particle term} property for this particle.
      */
-    ParticleTerm<A> getTerm();
+    ParticleTerm getTerm();
 
     /**
      * Returns <code>true</code> if the {max occurs} property is unbounded.

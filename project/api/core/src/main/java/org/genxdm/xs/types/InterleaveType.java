@@ -18,18 +18,16 @@ package org.genxdm.xs.types;
 /**
  * A type indicating the interleave of two alternative sequence types.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface InterleaveType<A> extends SequenceType<A>
+public interface InterleaveType extends SequenceType
 {
     /**
      * The first sequence type.
      */
-    SequenceType<A> getLHS();
+    SequenceType getLHS();
 
     /**
      * The second sequence type.
      */
-    SequenceType<A> getRHS();
+    SequenceType getRHS();
 }

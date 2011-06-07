@@ -28,16 +28,16 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class ElementNodeWithParentAxisType<A> implements ElementNodeType<A>
+final class ElementNodeWithParentAxisType implements ElementNodeType
 {
-	private final ElementNodeType<A> m_element;
+	private final ElementNodeType m_element;
 
-	public ElementNodeWithParentAxisType(final ElementNodeType<A> element, final ElementDefinition<A> parentAxis)
+	public ElementNodeWithParentAxisType(final ElementNodeType element, final ElementDefinition parentAxis)
 	{
 		m_element = PreCondition.assertArgumentNotNull(element);
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
@@ -72,7 +72,7 @@ final class ElementNodeWithParentAxisType<A> implements ElementNodeType<A>
 		return m_element.getTargetNamespace();
 	}
 
-	public SequenceType<A> getType()
+	public SequenceType getType()
 	{
 		return m_element.getType();
 	}
@@ -102,7 +102,7 @@ final class ElementNodeWithParentAxisType<A> implements ElementNodeType<A>
 		return m_element.isNone();
 	}
 
-	public PrimeType<A> prime()
+	public PrimeType prime()
 	{
 		return this;
 	}
@@ -112,7 +112,7 @@ final class ElementNodeWithParentAxisType<A> implements ElementNodeType<A>
 		return m_element.quantifier();
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		return m_element.subtype(rhs);
 	}

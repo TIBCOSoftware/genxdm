@@ -19,7 +19,7 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.constraints.NamespaceConstraint;
 import org.genxdm.xs.enums.ProcessContentsMode;
 
-final class XMLWildcard<A> implements XMLParticleTerm<A>
+final class XMLWildcard implements XMLParticleTerm
 {
 	public String id;
 	private ProcessContentsMode m_processContents;

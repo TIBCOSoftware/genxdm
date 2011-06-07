@@ -41,32 +41,30 @@ import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.SimpleUrType;
 import org.genxdm.xs.types.Type;
 
-final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implements SimpleUrType<A>
+final class SimpleUrTypeImpl extends AbstractPrimeExcludingNoneType implements SimpleUrType
 {
-	private final AtomBridge<A> atomBridge;
 	private final NameSource nameBridge;
 	private final QName m_name;
-	private final SchemaCache<A> cache;
+	private final SchemaCache cache;
 
-	public SimpleUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final AtomBridge<A> atomBridge, final SchemaCache<A> cache)
+	public SimpleUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final SchemaCache cache)
 	{
-		this.atomBridge = atomBridge;
-		this.nameBridge = atomBridge.getNameBridge();
+		this.nameBridge = new NameSource();
 		this.m_name = new QName(W3C_XML_SCHEMA_NS_URI, "anySimpleType");
 		this.cache = cache;
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
 
-	public void addEnumeration(final EnumerationDefinition<A> enumeration)
+	public void addEnumeration(final EnumerationDefinition enumeration)
 	{
 		throw new AssertionError(getName());
 	}
 
-	public void addFacet(final Facet<A> facet)
+	public void addFacet(final Facet facet)
 	{
 		throw new AssertionError(getName());
 	}
@@ -81,12 +79,12 @@ final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods, nameBridge);
 	}
 
-	public boolean derivedFromType(final Type<A> ancestorType, final Set<DerivationMethod> derivationMethods)
+	public boolean derivedFromType(final Type ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
 		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods, nameBridge);
 	}
 
-	public ComplexUrType<A> getBaseType()
+	public ComplexUrType getBaseType()
 	{
 		return cache.getComplexUrType();
 	}
@@ -96,17 +94,17 @@ final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return DerivationMethod.Restriction;
 	}
 
-	public Iterable<EnumerationDefinition<A>> getEnumerations()
+	public Iterable<EnumerationDefinition> getEnumerations()
 	{
 		throw new AssertionError(getName());
 	}
 
-	public Facet<A> getFacetOfKind(final FacetKind facetKind)
+	public Facet getFacetOfKind(final FacetKind facetKind)
 	{
 		throw new AssertionError(getName());
 	}
 
-	public Iterable<Facet<A>> getFacets()
+	public Iterable<Facet> getFacets()
 	{
 		throw new AssertionError(getName());
 	}
@@ -136,7 +134,7 @@ final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return NativeType.ANY_SIMPLE_TYPE;
 	}
 
-	public SimpleType<A> getNativeTypeDefinition()
+	public SimpleType getNativeTypeDefinition()
 	{
 		return this;
 	}
@@ -266,7 +264,7 @@ final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return initialValue;
 	}
 
-	public SimpleUrType<A> prime()
+	public SimpleUrType prime()
 	{
 		return this;
 	}
@@ -281,13 +279,13 @@ final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		throw new AssertionError(getName());
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case ANY_TYPE:
@@ -308,19 +306,19 @@ final class SimpleUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implem
 		return "xs:anySimpleType";
 	}
 
-	public List<A> validate(final List<? extends A> value)
+	public <A> List<A> validate(final List<? extends A> value, AtomBridge<A> atomBridge)
 	{
 		final String strval = atomBridge.getC14NString(value);
 		return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(strval));
 	}
 
-	public List<A> validate(final String value)
+	public <A> List<A> validate(final String value, AtomBridge<A> atomBridge)
 	{
 		return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(value));
 	}
 
-	public List<A> validate(final String value, final PrefixResolver resolver)
+	public <A> List<A> validate(final String value, final PrefixResolver resolver, AtomBridge<A> atomBridge)
 	{
-		return validate(value);
+		return validate(value, atomBridge);
 	}
 }

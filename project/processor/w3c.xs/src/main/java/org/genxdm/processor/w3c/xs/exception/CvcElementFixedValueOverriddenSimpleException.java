@@ -25,7 +25,7 @@ public final class CvcElementFixedValueOverriddenSimpleException extends CvcElem
 	private final String m_expectValue;
 	private final String m_actualValue;
 
-	public CvcElementFixedValueOverriddenSimpleException(final ElementDefinition<?> elementDeclaration, final String expectValue, final String actualValue, final LocationInSchema location)
+	public CvcElementFixedValueOverriddenSimpleException(final ElementDefinition elementDeclaration, final String expectValue, final String actualValue, final LocationInSchema location)
 	{
 		super(PART_VALUE_CONSTRAINT_SIMPLE, elementDeclaration, location);
 		this.m_expectValue = PreCondition.assertArgumentNotNull(expectValue, "expectValue");

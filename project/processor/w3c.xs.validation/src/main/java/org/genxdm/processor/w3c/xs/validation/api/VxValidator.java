@@ -31,7 +31,7 @@ public interface VxValidator<A>
 
     void endDocument() throws IOException, AbortException;
 
-    VxPSVI<A> endElement() throws IOException, AbortException;
+    VxPSVI endElement() throws IOException, AbortException;
 
     void reset();
 

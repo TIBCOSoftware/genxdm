@@ -44,28 +44,28 @@ import org.genxdm.xs.types.Type;
 /**
  * xs:anyType
  */
-final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> implements ComplexUrType<A>
+final class ComplexUrTypeImpl extends AbstractPrimeExcludingNoneType implements ComplexUrType
 {
-	private final SchemaWildcard<A> attributeWildcard;
-	private final ContentType<A> contentType;
+	private final SchemaWildcard attributeWildcard;
+	private final ContentType contentType;
 	private final QName name;
 
 	public ComplexUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final NameSource nameBridge)
 	{
 		this.name = new QName(W3C_XML_SCHEMA_NS_URI, "anyType");
 
-		final SchemaWildcard<A> anyTerm = new WildcardImpl<A>(ProcessContentsMode.Lax, NamespaceConstraint.Any(nameBridge));
+		final SchemaWildcard anyTerm = new WildcardImpl(ProcessContentsMode.Lax, NamespaceConstraint.Any(nameBridge));
 
-		final LinkedList<SchemaParticle<A>> particles = new LinkedList<SchemaParticle<A>>();
-		particles.add(new ParticleWithWildcardTerm<A>(0, anyTerm));
+		final LinkedList<SchemaParticle> particles = new LinkedList<SchemaParticle>();
+		particles.add(new ParticleWithWildcardTerm(0, anyTerm));
 
-		final ModelGroup<A> modelGroup = new ModelGroupImpl<A>(ModelGroup.SmCompositor.Sequence, particles, null, true, ScopeExtent.Local);
+		final ModelGroup modelGroup = new ModelGroupImpl(ModelGroup.SmCompositor.Sequence, particles, null, true, ScopeExtent.Local);
 
-		this.contentType = new ContentTypeImpl<A>(true, new ParticleWithModelGroupTerm<A>(1, 1, modelGroup));
+		this.contentType = new ContentTypeImpl(true, new ParticleWithModelGroupTerm(1, 1, modelGroup));
 		this.attributeWildcard = anyTerm;
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
@@ -75,27 +75,27 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		return false;
 	}
 
-	public boolean derivedFromType(final Type<A> ancestorType, final Set<DerivationMethod> derivationMethods)
+	public boolean derivedFromType(final Type ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
 		return false;
 	}
 
-	public Map<QName, AttributeUse<A>> getAttributeUses()
+	public Map<QName, AttributeUse> getAttributeUses()
 	{
 		return Collections.emptyMap();
 	}
 
-	public SchemaWildcard<A> getAttributeWildcard()
+	public SchemaWildcard getAttributeWildcard()
 	{
 		return attributeWildcard;
 	}
 
-	public ComplexUrTypeImpl<A> getBaseType()
+	public ComplexUrTypeImpl getBaseType()
 	{
 		return null;
 	}
 
-	public ContentType<A> getContentType()
+	public ContentType getContentType()
 	{
 		return contentType;
 	}
@@ -196,7 +196,7 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		// Ignore.
 	}
 
-	public PrimeType<A> prime()
+	public PrimeType prime()
 	{
 		return this;
 	}
@@ -206,7 +206,7 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		throw new AssertionError(getName());
 	}
 
-	public void setAttributeWildcard(final SchemaWildcard<A> attributeWildcard)
+	public void setAttributeWildcard(final SchemaWildcard attributeWildcard)
 	{
 		throw new AssertionError(getName());
 	}
@@ -216,7 +216,7 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		throw new AssertionError(getName());
 	}
 
-	public void setContentType(final ContentType<A> contentType)
+	public void setContentType(final ContentType contentType)
 	{
 		throw new AssertionError(getName());
 	}
@@ -226,14 +226,14 @@ final class ComplexUrTypeImpl<A> extends AbstractPrimeExcludingNoneType<A> imple
 		throw new AssertionError(getName());
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		PreCondition.assertArgumentNotNull(rhs, "type");
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case ANY_TYPE:

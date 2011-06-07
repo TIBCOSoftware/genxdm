@@ -18,13 +18,11 @@ package org.genxdm.xs.constraints;
 /**
  * A partial interface used by declarations that may have identity constraints.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface HasValueConstraint<A>
+public interface HasValueConstraint
 {
     /**
      * Returns the {value constraint} property, may be <code>null</code>.
      */
-    ValueConstraint<A> getValueConstraint();
+    ValueConstraint getValueConstraint();
 }

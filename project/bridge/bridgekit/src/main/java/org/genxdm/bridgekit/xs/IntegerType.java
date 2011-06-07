@@ -38,19 +38,19 @@ import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.SimpleType;
 
-final class IntegerType<A> extends AbstractAtomType<A>
+final class IntegerType extends AbstractAtomType
 {
-	private final Facet<A> FRACTION_DIGITS;
-	private final Iterable<Facet<A>> FACETS;
+	private final Facet FRACTION_DIGITS;
+	private final Iterable<Facet> FACETS;
 
-	public IntegerType(final QName name, final SimpleType<A> baseType, final AtomBridge<A> atomBridge)
+	public IntegerType(final QName name, final SimpleType baseType)
 	{
-		super(name, baseType, atomBridge);
-		FRACTION_DIGITS = new FacetFractionDigitsImpl<A>(0, true, atomBridge);
-		FACETS = new UnaryIterable<Facet<A>>(FRACTION_DIGITS);
+		super(name, baseType);
+		FRACTION_DIGITS = new FacetFractionDigitsImpl(0, true);
+		FACETS = new UnaryIterable<Facet>(FRACTION_DIGITS);
 	}
 
-	public void accept(SequenceTypeVisitor<A> visitor)
+	public void accept(SequenceTypeVisitor visitor)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -62,13 +62,13 @@ final class IntegerType<A> extends AbstractAtomType<A>
 		throw new AssertionError("TODO");
 	}
 
-	public Iterable<EnumerationDefinition<A>> getEnumerations()
+	public Iterable<EnumerationDefinition> getEnumerations()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public Facet<A> getFacetOfKind(final FacetKind facetKind)
+	public Facet getFacetOfKind(final FacetKind facetKind)
 	{
 		PreCondition.assertArgumentNotNull(facetKind, "facetKind");
 		switch (facetKind)
@@ -92,7 +92,7 @@ final class IntegerType<A> extends AbstractAtomType<A>
 		}
 	}
 
-	public Iterable<Facet<A>> getFacets()
+	public Iterable<Facet> getFacets()
 	{
 		return FACETS;
 	}
@@ -169,7 +169,7 @@ final class IntegerType<A> extends AbstractAtomType<A>
 		return false;
 	}
 
-	public List<A> validate(final String initialValue) throws DatatypeException
+	public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		try
 		{
@@ -183,7 +183,7 @@ final class IntegerType<A> extends AbstractAtomType<A>
 		}
 	}
 
-	public List<A> validate(String initialValue, PrefixResolver resolver) throws DatatypeException
+	public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");

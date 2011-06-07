@@ -15,6 +15,6 @@
  */
 package org.genxdm.processor.w3c.xs.impl;
 
-interface XMLParticleTerm<A>
+interface XMLParticleTerm
 {
 }

@@ -21,11 +21,11 @@ import org.genxdm.xs.types.ContentType;
 import org.genxdm.xs.types.ContentTypeKind;
 import org.genxdm.xs.types.SimpleType;
 
-public final class ContentTypeImpl<A> implements ContentType<A>
+public final class ContentTypeImpl implements ContentType
 {
-	private ModelGroupUse<A> contentModel;
+	private ModelGroupUse contentModel;
 	private ContentTypeKind kind;
-	private SimpleType<A> simpleType;
+	private SimpleType simpleType;
 
 	public ContentTypeImpl()
 	{
@@ -34,28 +34,28 @@ public final class ContentTypeImpl<A> implements ContentType<A>
 		this.contentModel = null;
 	}
 
-	public ContentTypeImpl(final boolean mixed, final ModelGroupUse<A> contentModel)
+	public ContentTypeImpl(final boolean mixed, final ModelGroupUse contentModel)
 	{
 		this.kind = mixed ? ContentTypeKind.Mixed : ContentTypeKind.ElementOnly;
 		this.simpleType = null;
 		this.contentModel = PreCondition.assertArgumentNotNull(contentModel, "contentModel");
 	}
 
-	public ContentTypeImpl(final SimpleType<A> simpleType)
+	public ContentTypeImpl(final SimpleType simpleType)
 	{
 		this.kind = ContentTypeKind.Simple;
 		this.simpleType = PreCondition.assertArgumentNotNull(simpleType, "simpleType");
 		this.contentModel = null;
 	}
 
-	public void copyTo(final ContentTypeImpl<A> destination)
+	public void copyTo(final ContentTypeImpl destination)
 	{
 		destination.kind = kind;
 		destination.simpleType = simpleType;
 		destination.contentModel = contentModel;
 	}
 
-	public ModelGroupUse<A> getContentModel() throws AssertionError
+	public ModelGroupUse getContentModel() throws AssertionError
 	{
 		PreCondition.assertTrue(isMixed() || isElementOnly(), "isMixed() || isElementOnly()");
 		return contentModel;
@@ -66,7 +66,7 @@ public final class ContentTypeImpl<A> implements ContentType<A>
 		return PreCondition.assertArgumentNotNull(kind, "kind");
 	}
 
-	public SimpleType<A> getSimpleType() throws AssertionError
+	public SimpleType getSimpleType() throws AssertionError
 	{
 		PreCondition.assertTrue(isSimple(), "isSimple()");
 		return simpleType;

@@ -17,17 +17,17 @@ package org.genxdm.processor.w3c.xs.impl;
 
 import org.genxdm.exceptions.PreCondition;
 
-abstract class XMLFacet<A> extends XMLTag<A>
+abstract class XMLFacet extends XMLTag
 {
-	private final XMLType<A> simpleType;
+	private final XMLType simpleType;
 
-	public XMLFacet(final XMLType<A> simpleType, final SrcFrozenLocation location)
+	public XMLFacet(final XMLType simpleType, final SrcFrozenLocation location)
 	{
 		super(location);
 		this.simpleType = PreCondition.assertArgumentNotNull(simpleType, "simpleType");
 	}
 
-	public final XMLType<A> getSimpleType()
+	public final XMLType getSimpleType()
 	{
 		return simpleType;
 	}

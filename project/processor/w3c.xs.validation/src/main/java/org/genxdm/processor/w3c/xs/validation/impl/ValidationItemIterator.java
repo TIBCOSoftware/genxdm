@@ -21,11 +21,11 @@ import java.util.NoSuchElementException;
 /**
  * An {@link Iterator} for walking up the stack of {@link ValidationItem}s.
  */
-final class ValidationItemIterator<A> implements Iterator<ValidationItem<A>>
+final class ValidationItemIterator implements Iterator<ValidationItem>
 {
-	private ValidationItem<A> m_pendingItem;
+	private ValidationItem m_pendingItem;
 
-	public ValidationItemIterator(final ValidationItem<A> pendingItem)
+	public ValidationItemIterator(final ValidationItem pendingItem)
 	{
 		m_pendingItem = PreCondition.assertArgumentNotNull(pendingItem);
 	}
@@ -35,11 +35,11 @@ final class ValidationItemIterator<A> implements Iterator<ValidationItem<A>>
 		return (null != m_pendingItem);
 	}
 
-	public ValidationItem<A> next() throws NoSuchElementException
+	public ValidationItem next() throws NoSuchElementException
 	{
 		if (null != m_pendingItem)
 		{
-			final ValidationItem<A> nextItem = m_pendingItem;
+			final ValidationItem nextItem = m_pendingItem;
 			m_pendingItem = m_pendingItem.getParentItem();
 			return nextItem;
 		}

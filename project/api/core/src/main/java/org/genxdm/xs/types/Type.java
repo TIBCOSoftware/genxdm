@@ -25,16 +25,16 @@ import org.genxdm.xs.enums.DerivationMethod;
 /**
  * Represents all types in a schema, both simple types and complex types.
  */
-public interface Type<A> extends SchemaComponent<A>, SequenceType<A>
+public interface Type extends SchemaComponent, SequenceType
 {
     boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods);
 
-    boolean derivedFromType(Type<A> ancestorType, Set<DerivationMethod> derivationMethods);
+    boolean derivedFromType(Type ancestorType, Set<DerivationMethod> derivationMethods);
 
     /**
      * Returns the {base type definition} of this type. This may be a simple type or a complex type.
      */
-    Type<A> getBaseType();
+    Type getBaseType();
 
     /**
      * Returns the {derivation method} property of this type from its base type.

@@ -18,13 +18,11 @@ package org.genxdm.xs.types;
 /**
  * A type that may be downcast to either {@link ComplexType} or {@link ComplexUrType}.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface ComplexMarkerType<A> extends Type<A>
+public interface ComplexMarkerType extends Type
 {
     /**
      * Returns the {content type} property.
      */
-    ContentType<A> getContentType();
+    ContentType getContentType();
 }
