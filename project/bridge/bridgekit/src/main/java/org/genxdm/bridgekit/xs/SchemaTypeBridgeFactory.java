@@ -22,17 +22,10 @@ import org.genxdm.xs.SchemaTypeBridge;
 /**
  * A factory for the schema model metadata bridge.
  */
-public final class SchemaTypeBridgeFactory<A>
+public final class SchemaTypeBridgeFactory
 {
-	private final AtomBridge<A> atomBridge;
-
-	public SchemaTypeBridgeFactory(final AtomBridge<A> atomBridge)
+	public SchemaTypeBridge newMetaBridge()
 	{
-		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
-	}
-
-	public SchemaTypeBridge<A> newMetaBridge()
-	{
-		return new SchemaTypeBridgeImpl<A>(atomBridge);
+		return new SchemaTypeBridgeImpl();
 	}
 }

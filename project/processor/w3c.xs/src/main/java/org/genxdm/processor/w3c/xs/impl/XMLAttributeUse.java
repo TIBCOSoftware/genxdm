@@ -17,20 +17,20 @@ package org.genxdm.processor.w3c.xs.impl;
 
 import org.genxdm.exceptions.PreCondition;
 
-final class XMLAttributeUse<A>
+final class XMLAttributeUse
 {
 	private final boolean m_isRequired;
-	private final XMLAttribute<A> m_attribute;
+	private final XMLAttribute m_attribute;
 	private final XMLValueConstraint m_valueConstraint;
 
-	public XMLAttributeUse(final boolean isRequired, final XMLAttribute<A> attribute, final XMLValueConstraint valueConstraint)
+	public XMLAttributeUse(final boolean isRequired, final XMLAttribute attribute, final XMLValueConstraint valueConstraint)
 	{
 		m_isRequired = isRequired;
 		m_attribute = PreCondition.assertArgumentNotNull(attribute);
 		m_valueConstraint = valueConstraint;
 	}
 
-	public XMLAttribute<A> getDeclaration()
+	public XMLAttribute getDeclaration()
 	{
 		return m_attribute;
 	}

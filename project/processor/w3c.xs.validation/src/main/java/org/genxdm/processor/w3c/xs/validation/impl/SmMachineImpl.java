@@ -26,14 +26,14 @@ import org.genxdm.xs.components.SchemaWildcard;
 
 
 
-final class SmMachineImpl<A> implements SmContentFiniteStateMachine<A>
+final class SmMachineImpl implements SmContentFiniteStateMachine
 {
-	private ElementDefinition<A> m_element;
-	private final LinkedList<ValidationExpr<A, ParticleTerm<A>>> m_matchers = new LinkedList<ValidationExpr<A, ParticleTerm<A>>>();
-	private final RegExMachine<ValidationExpr<A, ParticleTerm<A>>, QName> m_regexm;
-	private SchemaWildcard<A> m_wildcard;
+	private ElementDefinition m_element;
+	private final LinkedList<ValidationExpr> m_matchers = new LinkedList<ValidationExpr>();
+	private final RegExMachine<ValidationExpr, QName> m_regexm;
+	private SchemaWildcard m_wildcard;
 
-	public SmMachineImpl(final RegExMachine<ValidationExpr<A, ParticleTerm<A>>, QName> regexm)
+	public SmMachineImpl(final RegExMachine<ValidationExpr, QName> regexm)
 	{
 		m_regexm = PreCondition.assertArgumentNotNull(regexm, "regexm");
 	}
@@ -43,17 +43,17 @@ final class SmMachineImpl<A> implements SmContentFiniteStateMachine<A>
 		return m_regexm.step(null, null);
 	}
 
-	public ElementDefinition<A> getElement()
+	public ElementDefinition getElement()
 	{
 		return m_element;
 	}
 
-	private ParticleTerm<A> getParticleTerm()
+	private ParticleTerm getParticleTerm()
 	{
 		final int size = m_matchers.size();
 		if (size > 0)
 		{
-			final ValidationExpr<A, ParticleTerm<A>> expr = m_matchers.get(0);
+			final ValidationExpr expr = m_matchers.get(0);
 			return expr.getParticleTerm();
 		}
 		else
@@ -62,7 +62,7 @@ final class SmMachineImpl<A> implements SmContentFiniteStateMachine<A>
 		}
 	}
 
-	public SchemaWildcard<A> getWildcard()
+	public SchemaWildcard getWildcard()
 	{
 		return m_wildcard;
 	}
@@ -83,16 +83,16 @@ final class SmMachineImpl<A> implements SmContentFiniteStateMachine<A>
 		final boolean stepped = m_regexm.step(name, m_matchers);
 		if (stepped)
 		{
-			final ParticleTerm<A> term = getParticleTerm();
-			if (term instanceof ElementDefinition<?>)
+			final ParticleTerm term = getParticleTerm();
+			if (term instanceof ElementDefinition)
 			{
-				m_element = (ElementDefinition<A>)term;
+				m_element = (ElementDefinition)term;
 				m_wildcard = null;
 			}
-			else if (term instanceof SchemaWildcard<?>)
+			else if (term instanceof SchemaWildcard)
 			{
 				m_element = null;
-				m_wildcard = (SchemaWildcard<A>)term;
+				m_wildcard = (SchemaWildcard)term;
 			}
 			else
 			{

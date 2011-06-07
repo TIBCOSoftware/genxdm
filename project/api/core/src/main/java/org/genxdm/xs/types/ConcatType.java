@@ -18,18 +18,16 @@ package org.genxdm.xs.types;
 /**
  * A type indicating the sequential concatenation of two sequence types.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface ConcatType<A> extends SequenceType<A>
+public interface ConcatType extends SequenceType
 {
     /**
      * Returns the first sequence type in the sequence.
      */
-    SequenceType<A> getLHS();
+    SequenceType getLHS();
 
     /**
      * Returns the second sequence type in the sequence.
      */
-    SequenceType<A> getRHS();
+    SequenceType getRHS();
 }

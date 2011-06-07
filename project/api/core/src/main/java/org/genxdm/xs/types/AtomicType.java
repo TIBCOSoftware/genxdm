@@ -18,10 +18,8 @@ package org.genxdm.xs.types;
 /**
  * An Atomic Type definition. Implemented by anything derived from xs:anyAtomicType.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface AtomicType<A> extends SimpleType<A>, PrimeType<A>
+public interface AtomicType extends SimpleType, PrimeType
 {
     /**
      * Returns the most derived native atomic type of this atomic type definition.
@@ -31,7 +29,7 @@ public interface AtomicType<A> extends SimpleType<A>, PrimeType<A>
     /**
      * Returns the most derived native atomic type definition of this atomic type definition.
      */
-    AtomicType<A> getNativeTypeDefinition();
+    AtomicType getNativeTypeDefinition();
 
-    AtomicType<A> prime();
+    AtomicType prime();
 }

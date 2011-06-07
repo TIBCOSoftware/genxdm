@@ -23,7 +23,7 @@ import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class NoneTypeImpl<A> extends AbstractType<A> implements NoneType<A>
+final class NoneTypeImpl extends AbstractType implements NoneType
 {
 	private final QName errorCode;
 
@@ -37,7 +37,7 @@ final class NoneTypeImpl<A> extends AbstractType<A> implements NoneType<A>
 		this.errorCode = errorCode;
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
@@ -67,7 +67,7 @@ final class NoneTypeImpl<A> extends AbstractType<A> implements NoneType<A>
 		return true;
 	}
 
-	public final PrimeType<A> prime()
+	public final PrimeType prime()
 	{
 		return this;
 	}
@@ -77,7 +77,7 @@ final class NoneTypeImpl<A> extends AbstractType<A> implements NoneType<A>
 		return KeeneQuantifier.EXACTLY_ONE;
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		switch (rhs.getKind())
 		{

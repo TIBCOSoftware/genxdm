@@ -21,9 +21,7 @@ import org.genxdm.xs.types.NodeType;
 /**
  * A data component is a named schema component that may have value constraints.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface SchemaDataComponent<A> extends SchemaComponent<A>, HasValueConstraint<A>, NodeType<A>
+public interface SchemaDataComponent extends SchemaComponent, HasValueConstraint, NodeType
 {
 }

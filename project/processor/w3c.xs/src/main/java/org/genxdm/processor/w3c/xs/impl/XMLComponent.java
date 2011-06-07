@@ -19,16 +19,16 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 
-abstract class XMLComponent<A> extends XMLTag<A>
+abstract class XMLComponent extends XMLTag
 {
-	private final XMLScope<A> scope;
+	private final XMLScope scope;
 
-	public XMLComponent(final XMLScope<A> scope)
+	public XMLComponent(final XMLScope scope)
 	{
 		this.scope = PreCondition.assertArgumentNotNull(scope, "scope");
 	}
 
-	public XMLComponent(final XMLScope<A> scope, final SrcFrozenLocation location)
+	public XMLComponent(final XMLScope scope, final SrcFrozenLocation location)
 	{
 		super(location);
 		this.scope = PreCondition.assertArgumentNotNull(scope, "scope");
@@ -36,7 +36,7 @@ abstract class XMLComponent<A> extends XMLTag<A>
 
 	public abstract QName getName();
 
-	public final XMLScope<A> getScope()
+	public final XMLScope getScope()
 	{
 		return scope;
 	}

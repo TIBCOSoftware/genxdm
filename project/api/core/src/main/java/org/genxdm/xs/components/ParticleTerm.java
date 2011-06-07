@@ -18,6 +18,6 @@ package org.genxdm.xs.components;
 /**
  * A marker interface for items that can be the term of a particle.
  */
-public interface ParticleTerm<A>
+public interface ParticleTerm
 {
 }

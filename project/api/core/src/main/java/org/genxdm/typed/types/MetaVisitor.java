@@ -25,45 +25,45 @@ import org.genxdm.xs.types.SequenceType;
  * @param <A>
  *            The atom handle.
  */
-public interface MetaVisitor<A>
+public interface MetaVisitor
 {
-    void atomicType(SequenceType<A> node, QName name, SequenceType<A> baseType);
+    void atomicType(SequenceType node, QName name, SequenceType baseType);
 
-    void atomicUrType(SequenceType<A> node);
+    void atomicUrType(SequenceType node);
 
-    void attributeType(SequenceType<A> node, QName name, SequenceType<A> type);
+    void attributeType(SequenceType node, QName name, SequenceType type);
 
-    void choiceType(SequenceType<A> node, SequenceType<A> lhs, SequenceType<A> rhs);
+    void choiceType(SequenceType node, SequenceType lhs, SequenceType rhs);
 
-    void commentType(SequenceType<A> node);
+    void commentType(SequenceType node);
 
-    void complexType(SequenceType<A> node, QName name, SequenceType<A> baseType);
+    void complexType(SequenceType node, QName name, SequenceType baseType);
 
-    void complexUrType(SequenceType<A> node);
+    void complexUrType(SequenceType node);
 
-    void concatType(SequenceType<A> node, SequenceType<A> lhs, SequenceType<A> rhs);
+    void concatType(SequenceType node, SequenceType lhs, SequenceType rhs);
 
-    void documentType(SequenceType<A> node, SequenceType<A> contentType);
+    void documentType(SequenceType node, SequenceType contentType);
 
-    void elementType(SequenceType<A> node, QName name, SequenceType<A> type, boolean nillable);
+    void elementType(SequenceType node, QName name, SequenceType type, boolean nillable);
 
-    void emptyType(SequenceType<A> node);
+    void emptyType(SequenceType node);
 
-    void interleaveType(SequenceType<A> node, SequenceType<A> lhs, SequenceType<A> rhs);
+    void interleaveType(SequenceType node, SequenceType lhs, SequenceType rhs);
 
-    void multiplyType(SequenceType<A> node, SequenceType<A> argument, Quantifier multiplier);
+    void multiplyType(SequenceType node, SequenceType argument, Quantifier multiplier);
 
-    void namespaceType(SequenceType<A> node);
+    void namespaceType(SequenceType node);
 
-    void noneType(SequenceType<A> node);
+    void noneType(SequenceType node);
 
-    void processingInstructionType(SequenceType<A> node, String name);
+    void processingInstructionType(SequenceType node, String name);
 
-    void schemaAttributeType(SequenceType<A> node, QName name);
+    void schemaAttributeType(SequenceType node, QName name);
 
-    void schemaElementType(SequenceType<A> type, QName name);
+    void schemaElementType(SequenceType type, QName name);
 
-    void simpleUrType(SequenceType<A> node);
+    void simpleUrType(SequenceType node);
 
-    void textType(SequenceType<A> node);
+    void textType(SequenceType node);
 }

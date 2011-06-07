@@ -35,14 +35,14 @@ import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.SimpleType;
 
-final class NCNameType<A> extends AbstractAtomType<A>
+final class NCNameType extends AbstractAtomType
 {
-	public NCNameType(final QName name, final SimpleType<A> baseType, final AtomBridge<A> atomBridge)
+	public NCNameType(final QName name, final SimpleType baseType)
 	{
-		super(name, baseType, atomBridge);
+		super(name, baseType);
 	}
 
-	public void accept(SequenceTypeVisitor<A> visitor)
+	public void accept(SequenceTypeVisitor visitor)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
@@ -54,19 +54,19 @@ final class NCNameType<A> extends AbstractAtomType<A>
 		throw new AssertionError("TODO");
 	}
 
-	public Iterable<EnumerationDefinition<A>> getEnumerations()
+	public Iterable<EnumerationDefinition> getEnumerations()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public Facet<A> getFacetOfKind(FacetKind facetKind)
+	public Facet getFacetOfKind(FacetKind facetKind)
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-	public Iterable<Facet<A>> getFacets()
+	public Iterable<Facet> getFacets()
 	{
 		return Collections.emptyList();
 	}
@@ -133,13 +133,13 @@ final class NCNameType<A> extends AbstractAtomType<A>
 		return false;
 	}
 
-	public List<A> validate(final String initialValue) throws DatatypeException
+	public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
 	{
 		final String normalized = normalize(initialValue);
 		return atomBridge.wrapAtom(atomBridge.createStringDerived(castAsNCName(normalized, this), NativeType.NCNAME));
 	}
 
-	public static String castAsNCName(final String normalized, final SimpleType<?> type) throws DatatypeException
+	public static String castAsNCName(final String normalized, final SimpleType type) throws DatatypeException
 	{
 		final String name = NameType.castAsName(normalized, type);
 		if (name.indexOf(":") == -1)
@@ -152,7 +152,7 @@ final class NCNameType<A> extends AbstractAtomType<A>
 		}
 	}
 
-	public List<A> validate(String initialValue, PrefixResolver resolver) throws DatatypeException
+	public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");

@@ -19,38 +19,38 @@ import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.ElementUse;
 import org.genxdm.xs.constraints.ValueConstraint;
 
-public final class ParticleWithElementTerm<A> extends ParticleImpl<A> implements ElementUse<A>
+public final class ParticleWithElementTerm extends ParticleImpl implements ElementUse
 {
-	private ValueConstraint<A> m_valueConstraint = null;
+	private ValueConstraint m_valueConstraint = null;
 
-	public ParticleWithElementTerm(final int minOccurs, final int maxOccurs, final ElementDefinition<A> element)
+	public ParticleWithElementTerm(final int minOccurs, final int maxOccurs, final ElementDefinition element)
 	{
 		super(minOccurs, maxOccurs, false, element);
 	}
 
-	public ParticleWithElementTerm(final int minOccurs, final ElementDefinition<A> element)
+	public ParticleWithElementTerm(final int minOccurs, final ElementDefinition element)
 	{
 		super(minOccurs, -1, true, element);
 	}
 
-	public ValueConstraint<A> getValueConstraint()
+	public ValueConstraint getValueConstraint()
 	{
 		return m_valueConstraint;
 	}
 
-	public void setValueConstraint(final ValueConstraint<A> valueConstraint)
+	public void setValueConstraint(final ValueConstraint valueConstraint)
 	{
 		assertNotLocked();
 		this.m_valueConstraint = valueConstraint;
 	}
 
-	public ElementDefinition<A> getTerm()
+	public ElementDefinition getTerm()
 	{
 		// We know this is safe by construction.
-		return (ElementDefinition<A>)m_term;
+		return (ElementDefinition)m_term;
 	}
 
-	public ValueConstraint<A> getEffectiveValueConstraint()
+	public ValueConstraint getEffectiveValueConstraint()
 	{
 		if (null != m_valueConstraint)
 		{

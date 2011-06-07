@@ -15,21 +15,20 @@
  */
 package org.genxdm.xs.facets;
 
+import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.exceptions.FacetMinMaxException;
 import org.genxdm.xs.types.SimpleType;
 
 /**
  * One of the xs:maxInclusive, xs:minInclusive, xs:maxExclusive and xs:minExclusive facets.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface Limit<A> extends Facet<A>
+public interface Limit extends Facet
 {
     /**
      * The value of the facet.
      */
-    A getLimit();
+    <A> A getLimit(AtomBridge<A> bridge);
 
     /**
      * Validates the specified atom, with the specified type against this facet.
@@ -41,5 +40,5 @@ public interface Limit<A> extends Facet<A>
      * @throws FacetMinMaxException
      *             if the atom does not comply with the facet.
      */
-    void validate(A atom, SimpleType<A> simpleType) throws FacetMinMaxException;
+    <A> void validate(A atom, SimpleType simpleType, AtomBridge<A> bridge) throws FacetMinMaxException;
 }

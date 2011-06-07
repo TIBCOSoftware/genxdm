@@ -40,7 +40,7 @@ public final class XmlAttributeNode
         checkId();
     }
     
-    XmlAttributeNode( final String namespace, final String localName, final String prefix, final Type<XmlAtom> type, final List<XmlAtom> data)
+    XmlAttributeNode( final String namespace, final String localName, final String prefix, final Type type, final List<XmlAtom> data)
     {
         super(NodeKind.ATTRIBUTE, type, data);
         this.namespaceURI = (namespace == null) ? "" : namespace;
@@ -65,7 +65,7 @@ public final class XmlAttributeNode
         // true if type is xs:ID
         if ( (type != null) && type.isNative() && type.isAtomicType() )
         {
-            AtomicType<XmlAtom> atomicType = (AtomicType<XmlAtom>)type;
+            AtomicType atomicType = (AtomicType)type;
             if (atomicType.isID())
                 return true;
         }
@@ -80,7 +80,7 @@ public final class XmlAttributeNode
         // true if type is xs:IDREF or xs:IDREFS
         if ( type.isNative() && type.isAtomicType() )
         {
-            AtomicType<XmlAtom> atomicType = (AtomicType<XmlAtom>)type;
+            AtomicType atomicType = (AtomicType)type;
             if (atomicType.isIDREF() || atomicType.isIDREFS())
                 return true;
         }

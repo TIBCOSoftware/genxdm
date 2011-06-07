@@ -18,7 +18,6 @@ package org.genxdm.xs;
 import javax.xml.namespace.QName;
 
 import org.genxdm.names.NameSource;
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.types.AttributeNodeType;
 import org.genxdm.xs.types.CommentNodeType;
@@ -35,66 +34,64 @@ import org.genxdm.xs.types.TextNodeType;
 /**
  * The metadata interface provided by the schema model implementation.
  * 
- * @param <A>
+ * @param 
  *            The atom handle.
  */
-public interface SchemaTypeBridge<A> extends Schema<A>
+public interface SchemaTypeBridge extends Schema
 {
-    SequenceType<A> atomSet(SequenceType<A> type);
+    SequenceType atomSet(SequenceType type);
 
-    SequenceType<A> attributeAxis(SequenceType<A> contextType);
+    SequenceType attributeAxis(SequenceType contextType);
 
-    AttributeNodeType<A> attributeType(QName name, SequenceType<A> type);
+    AttributeNodeType attributeType(QName name, SequenceType type);
 
-    AttributeNodeType<A> attributeWild(SequenceType<A> type);
+    AttributeNodeType attributeWild(SequenceType type);
 
-    SequenceType<A> childAxis(SequenceType<A> contextType);
+    SequenceType childAxis(SequenceType contextType);
 
-    SequenceType<A> choice(SequenceType<A> one, SequenceType<A> two);
+    SequenceType choice(SequenceType one, SequenceType two);
 
-    CommentNodeType<A> commentType();
+    CommentNodeType commentType();
 
-    SequenceType<A> concat(SequenceType<A> one, SequenceType<A> two);
+    SequenceType concat(SequenceType one, SequenceType two);
 
-    DocumentNodeType<A> documentType(SequenceType<A> contextType);
+    DocumentNodeType documentType(SequenceType contextType);
 
-    ElementNodeType<A> elementType(QName name, SequenceType<A> type, boolean nillable);
+    ElementNodeType elementType(QName name, SequenceType type, boolean nillable);
 
-    ElementNodeType<A> elementWild(SequenceType<A> type, boolean nillable);
+    ElementNodeType elementWild(SequenceType type, boolean nillable);
 
-    EmptyType<A> emptyType();
+    EmptyType emptyType();
 
-    AtomBridge<A> getAtomBridge();
-
-    QName getName(SequenceType<A> type);
+    QName getName(SequenceType type);
 
     NameSource getNameBridge();
 
-    SequenceType<A> interleave(SequenceType<A> one, SequenceType<A> two);
+    SequenceType interleave(SequenceType one, SequenceType two);
 
-    PrimeType<A> itemType();
+    PrimeType itemType();
 
-    SequenceType<A> multiply(SequenceType<A> argument, KeeneQuantifier multiplier);
+    SequenceType multiply(SequenceType argument, KeeneQuantifier multiplier);
 
-    NamespaceNodeType<A> namespaceType();
+    NamespaceNodeType namespaceType();
 
-    PrimeType<A> nodeType();
+    PrimeType nodeType();
 
-    NoneType<A> noneType();
+    NoneType noneType();
 
-    NoneType<A> noneType(QName errorCode);
+    NoneType noneType(QName errorCode);
 
-    SequenceType<A> oneOrMore(SequenceType<A> type);
+    SequenceType oneOrMore(SequenceType type);
 
-    SequenceType<A> optional(SequenceType<A> type);
+    SequenceType optional(SequenceType type);
 
-    ProcessingInstructionNodeType<A> processingInstructionType(String name);
+    ProcessingInstructionNodeType processingInstructionType(String name);
 
-    boolean sameAs(SequenceType<A> one, SequenceType<A> two);
+    boolean sameAs(SequenceType one, SequenceType two);
 
-    boolean subtype(SequenceType<A> lhs, SequenceType<A> rhs);
+    boolean subtype(SequenceType lhs, SequenceType rhs);
 
-    TextNodeType<A> textType();
+    TextNodeType textType();
 
-    SequenceType<A> zeroOrMore(SequenceType<A> type);
+    SequenceType zeroOrMore(SequenceType type);
 }

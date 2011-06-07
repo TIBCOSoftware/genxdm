@@ -18,18 +18,16 @@ package org.genxdm.xs.types;
 /**
  * A type indicating a binary choice between two alternative sequence types.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface ChoiceType<A> extends SequenceType<A>
+public interface ChoiceType extends SequenceType
 {
     /**
      * Returns the first choice type.
      */
-    SequenceType<A> getLHS();
+    SequenceType getLHS();
 
     /**
      * Returns the second choice type.
      */
-    SequenceType<A> getRHS();
+    SequenceType getRHS();
 }

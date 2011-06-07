@@ -17,12 +17,11 @@ package org.genxdm.processor.w3c.xs.impl;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.SmRegExCompiler;
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.ComponentProvider;
-import org.genxdm.xs.resolve.SchemaCatalog;
 import org.genxdm.xs.resolve.CatalogResolver;
+import org.genxdm.xs.resolve.SchemaCatalog;
 
-final class SmParserFactory<A>
+final class SmParserFactory
 {
 	private SchemaCatalog m_catalog = DefaultSmCatalog.SINGLETON;
 	private CatalogResolver m_resolver = DefaultSmResolver.SINGLETON;
@@ -61,9 +60,9 @@ final class SmParserFactory<A>
 		m_processRepeatedNamespaces = processRepeatedNamespaces;
 	}
 
-	public XMLParserImpl<A> newInstance(final ComponentProvider<A> cache, final AtomBridge<A> atomBridge)
+	public XMLParserImpl newInstance(final ComponentProvider cache)
 	{
-		final XMLParserImpl<A> parser = new XMLParserImpl<A>(cache, atomBridge);
+		final XMLParserImpl parser = new XMLParserImpl(cache);
 		parser.setCatalog(m_catalog);
 		parser.setResolver(m_resolver);
 		parser.setRegExCompiler(m_regexc);

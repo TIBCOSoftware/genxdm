@@ -34,7 +34,7 @@ import org.genxdm.xs.Schema;
  *            The atom handle.
  */
 public interface TypedContext<N, A> 
-    extends Schema<A>, TypedDocumentHandlerFactory<N, A>
+    extends Schema, TypedDocumentHandlerFactory<N, A>
 {
     /**
      * Returns the bridge used for atom interaction.
@@ -44,7 +44,7 @@ public interface TypedContext<N, A>
     /**
      * Returns the bridge used for meta-data interaction.
      */
-    MetaBridge<A> getMetaBridge();
+    MetaBridge getMetaBridge();
 
     /**
      * Returns the {@link TypedModel} for navigating the document model. <br/>

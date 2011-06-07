@@ -21,6 +21,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.KeeneQuantifier;
@@ -32,7 +33,7 @@ import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.Type;
 
-abstract class AbstractAtomType<A> implements AtomicType<A>
+abstract class AbstractAtomType implements AtomicType
 {
 	/**
 	 * Removes leading and trailing whitespace, and any leading plus sign provided it is followed by a digit (0 through 9).
@@ -73,25 +74,22 @@ abstract class AbstractAtomType<A> implements AtomicType<A>
 		return collapsed;
 	}
 
-	protected final AtomBridge<A> atomBridge;
-
-	private final Type<A> baseType;
+	private final Type baseType;
 
 	private final QName name;
 
-	AbstractAtomType(final QName name, final Type<A> baseType, final AtomBridge<A> atomBridge)
+	AbstractAtomType(final QName name, final Type baseType)
 	{
 		this.name = PreCondition.assertArgumentNotNull(name);
 		this.baseType = PreCondition.assertArgumentNotNull(baseType);
-		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge);
 	}
 
-	public final boolean derivedFromType(final Type<A> ancestorType, final Set<DerivationMethod> derivationMethods)
+	public final boolean derivedFromType(final Type ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
-		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods, atomBridge.getNameBridge());
+		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods, new NameSource());
 	}
 
-	public final Type<A> getBaseType()
+	public final Type getBaseType()
 	{
 		return baseType;
 	}
@@ -116,7 +114,7 @@ abstract class AbstractAtomType<A> implements AtomicType<A>
 		return name;
 	}
 
-	public final AtomicType<A> getNativeTypeDefinition()
+	public final AtomicType getNativeTypeDefinition()
 	{
 		return this;
 	}
@@ -201,7 +199,7 @@ abstract class AbstractAtomType<A> implements AtomicType<A>
 		return getWhiteSpacePolicy().apply(initialValue);
 	}
 
-	public final AtomicType<A> prime()
+	public final AtomicType prime()
 	{
 		return this;
 	}
@@ -211,13 +209,13 @@ abstract class AbstractAtomType<A> implements AtomicType<A>
 		return KeeneQuantifier.EXACTLY_ONE;
 	}
 
-	public final boolean subtype(final PrimeType<A> rhs)
+	public final boolean subtype(final PrimeType rhs)
 	{
 		switch (rhs.getKind())
 		{
 			case CHOICE:
 			{
-				final PrimeChoiceType<A> choiceType = (PrimeChoiceType<A>)rhs;
+				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
 				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
 			}
 			case ANY_ATOMIC_TYPE:
@@ -228,7 +226,7 @@ abstract class AbstractAtomType<A> implements AtomicType<A>
 			}
 			case ATOM:
 			{
-				final AtomicType<A> atomicType = (AtomicType<A>)rhs;
+				final AtomicType atomicType = (AtomicType)rhs;
 				return SchemaSupport.subtype(this, atomicType);
 			}
 			case EMPTY:
@@ -252,7 +250,7 @@ abstract class AbstractAtomType<A> implements AtomicType<A>
 		return name.toString();
 	}
 
-	public final List<A> validate(final List<? extends A> atoms) throws DatatypeException
+	public final <A> List<A> validate(final List<? extends A> atoms, AtomBridge<A> bridge) throws DatatypeException
 	{
 		final int size = atoms.size();
 		switch (size)
@@ -260,19 +258,19 @@ abstract class AbstractAtomType<A> implements AtomicType<A>
 			case 1:
 			{
 				final A atom = atoms.get(0);
-				final NativeType nativeType = atomBridge.getNativeType(atom);
+				final NativeType nativeType = bridge.getNativeType(atom);
 				if (nativeType.isA(getNativeType()))
 				{
-					return atomBridge.wrapAtom(atom);
+					return bridge.wrapAtom(atom);
 				}
 				else if (nativeType == NativeType.UNTYPED_ATOMIC)
 				{
-					return validate(atomBridge.getC14NForm(atom));
+					return validate(bridge.getC14NForm(atom), bridge);
 				}
 				else
 				{
 					// TODO: Need to investigate this because it is inefficient.
-					return validate(atomBridge.getC14NForm(atom));
+					return validate(bridge.getC14NForm(atom), bridge);
 					// throw new AssertionError(nativeType + "=>" + getNativeType());
 				}
 			}

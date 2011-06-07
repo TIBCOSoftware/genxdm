@@ -34,57 +34,57 @@ import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.Type;
 
-final class XsiSchema<A> implements ComponentBag<A>
+final class XsiSchema implements ComponentBag
 {
-	private final HashMap<QName, AttributeDefinition<A>> m_attributes = new HashMap<QName, AttributeDefinition<A>>();
+	private final HashMap<QName, AttributeDefinition> m_attributes = new HashMap<QName, AttributeDefinition>();
 
-	private final HashMap<QName, SimpleType<A>> m_simpleTypes = new HashMap<QName, SimpleType<A>>();
-	final AttributeDefinition<A> XSI_NIL;
+	private final HashMap<QName, SimpleType> m_simpleTypes = new HashMap<QName, SimpleType>();
+	final AttributeDefinition XSI_NIL;
 
-	final AttributeDefinition<A> XSI_NO_NAMESPACE_SCHEMA_LOCATION;
-	final AttributeDefinition<A> XSI_SCHEMA_LOCATION;
-	final AttributeDefinition<A> XSI_TYPE;
+	final AttributeDefinition XSI_NO_NAMESPACE_SCHEMA_LOCATION;
+	final AttributeDefinition XSI_SCHEMA_LOCATION;
+	final AttributeDefinition XSI_TYPE;
 
 	/**
 	 * Constructs the W3C XML Schema native types and atributes.
 	 */
-	public XsiSchema(final SchemaCacheImpl<A> cache)
+	public XsiSchema(final SchemaCacheImpl cache)
 	{
-		final SimpleType<A> ANY_URI = cache.getAtomicType(NativeType.ANY_URI);
+		final SimpleType ANY_URI = cache.getAtomicType(NativeType.ANY_URI);
 
 		{
 			final QName name = new QName(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "type");
-			final SimpleType<A> type = cache.getAtomicType(NativeType.QNAME);
-			XSI_TYPE = new AttributeDeclTypeImpl<A>(name, ScopeExtent.Global, type);
+			final SimpleType type = cache.getAtomicType(NativeType.QNAME);
+			XSI_TYPE = new AttributeDeclTypeImpl(name, ScopeExtent.Global, type);
 			register(XSI_TYPE);
 		}
 
 		{
 			final QName name = new QName(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "nil");
-			final SimpleType<A> type = cache.getAtomicType(NativeType.BOOLEAN);
-			XSI_NIL = new AttributeDeclTypeImpl<A>(name, ScopeExtent.Global, type);
+			final SimpleType type = cache.getAtomicType(NativeType.BOOLEAN);
+			XSI_NIL = new AttributeDeclTypeImpl(name, ScopeExtent.Global, type);
 			register(XSI_NIL);
 		}
 
 		{
-			final SimpleType<A> LIST_OF_ANY_URI = new ListTypeImpl<A>(cache.generateUniqueName(), true, ScopeExtent.Local, ANY_URI, cache.getSimpleUrType(), null, cache.getAtomBridge());
+			final SimpleType LIST_OF_ANY_URI = new ListTypeImpl(cache.generateUniqueName(), true, ScopeExtent.Local, ANY_URI, cache.getSimpleUrType(), null);
 			register(LIST_OF_ANY_URI);
 			final QName name = new QName(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "schemaLocation");
-			XSI_SCHEMA_LOCATION = new AttributeDeclTypeImpl<A>(name, ScopeExtent.Global, LIST_OF_ANY_URI);
+			XSI_SCHEMA_LOCATION = new AttributeDeclTypeImpl(name, ScopeExtent.Global, LIST_OF_ANY_URI);
 			register(XSI_SCHEMA_LOCATION);
 		}
 
 		{
 			final QName name = new QName(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "noNamespaceSchemaLocation");
-			final SimpleType<A> type = cache.getSimpleType(cache.getNameBridge().nativeType(NativeType.ANY_URI));
-			XSI_NO_NAMESPACE_SCHEMA_LOCATION = new AttributeDeclTypeImpl<A>(name, ScopeExtent.Global, type);
+			final SimpleType type = cache.getSimpleType(cache.getNameBridge().nativeType(NativeType.ANY_URI));
+			XSI_NO_NAMESPACE_SCHEMA_LOCATION = new AttributeDeclTypeImpl(name, ScopeExtent.Global, type);
 			register(XSI_NO_NAMESPACE_SCHEMA_LOCATION);
 		}
 	}
 
-	public SimpleType<A> getAtomicType(final QName name)
+	public SimpleType getAtomicType(final QName name)
 	{
-		final SimpleType<A> simpleType = getSimpleType(name);
+		final SimpleType simpleType = getSimpleType(name);
 		if (simpleType.isAtomicType())
 		{
 			return simpleType;
@@ -95,87 +95,87 @@ final class XsiSchema<A> implements ComponentBag<A>
 		}
 	}
 
-	public AttributeDefinition<A> getAttribute(final QName name)
+	public AttributeDefinition getAttribute(final QName name)
 	{
 		return m_attributes.get(name);
 	}
 
-	public AttributeGroupDefinition<A> getAttributeGroup(final QName name)
+	public AttributeGroupDefinition getAttributeGroup(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<AttributeGroupDefinition<A>> getAttributeGroups()
+	public Iterable<AttributeGroupDefinition> getAttributeGroups()
 	{
 		return Collections.emptyList();
 	}
 
-	public Iterable<AttributeDefinition<A>> getAttributes()
+	public Iterable<AttributeDefinition> getAttributes()
 	{
 		return m_attributes.values();
 	}
 
-	public ComplexType<A> getComplexType(final QName name)
+	public ComplexType getComplexType(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<ComplexType<A>> getComplexTypes()
+	public Iterable<ComplexType> getComplexTypes()
 	{
 		return Collections.emptyList();
 	}
 
-	public ElementDefinition<A> getElement(final QName name)
+	public ElementDefinition getElement(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<ElementDefinition<A>> getElements()
+	public Iterable<ElementDefinition> getElements()
 	{
 		return Collections.emptyList();
 	}
 
-	public IdentityConstraint<A> getIdentityConstraint(final QName name)
+	public IdentityConstraint getIdentityConstraint(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<IdentityConstraint<A>> getIdentityConstraints()
+	public Iterable<IdentityConstraint> getIdentityConstraints()
 	{
 		return Collections.emptyList();
 	}
 
-	public ModelGroup<A> getModelGroup(final QName name)
+	public ModelGroup getModelGroup(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<ModelGroup<A>> getModelGroups()
+	public Iterable<ModelGroup> getModelGroups()
 	{
 		return Collections.emptyList();
 	}
 
-	public NotationDefinition<A> getNotation(final QName name)
+	public NotationDefinition getNotation(final QName name)
 	{
 		return null;
 	}
 
-	public Iterable<NotationDefinition<A>> getNotations()
+	public Iterable<NotationDefinition> getNotations()
 	{
 		return Collections.emptyList();
 	}
 
-	public SimpleType<A> getSimpleType(final QName name)
+	public SimpleType getSimpleType(final QName name)
 	{
 		return m_simpleTypes.get(name);
 	}
 
-	public Iterable<SimpleType<A>> getSimpleTypes()
+	public Iterable<SimpleType> getSimpleTypes()
 	{
 		return m_simpleTypes.values();
 	}
 
-	public Type<A> getType(final QName name)
+	public Type getType(final QName name)
 	{
 		return getSimpleType(name);
 	}
@@ -225,12 +225,12 @@ final class XsiSchema<A> implements ComponentBag<A>
 		return hasSimpleType(name);
 	}
 
-	private void register(final AttributeDefinition<A> attribute)
+	private void register(final AttributeDefinition attribute)
 	{
 		m_attributes.put(attribute.getName(), attribute);
 	}
 
-	private void register(final SimpleType<A> simpleType)
+	private void register(final SimpleType simpleType)
 	{
 		m_simpleTypes.put(simpleType.getName(), simpleType);
 	}

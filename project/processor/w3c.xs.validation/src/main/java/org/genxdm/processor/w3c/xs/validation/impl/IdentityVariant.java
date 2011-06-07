@@ -20,12 +20,12 @@ import java.util.ArrayList;
 /**
  * A variant that can store one of two things, dangling references or a value.
  */
-final class IdentityVariant<A>
+final class IdentityVariant
 {
-	private final ArrayList<IdentityDanglingReference<A>> m_refs;
+	private final ArrayList<IdentityDanglingReference> m_refs;
 	private final Boolean m_value;
 
-	public IdentityVariant(final ArrayList<IdentityDanglingReference<A>> refs)
+	public IdentityVariant(final ArrayList<IdentityDanglingReference> refs)
 	{
 		m_refs = PreCondition.assertArgumentNotNull(refs, "refs");
 		m_value = null;
@@ -42,7 +42,7 @@ final class IdentityVariant<A>
 		return (null != m_refs);
 	}
 
-	public ArrayList<IdentityDanglingReference<A>> getDanglingRefs()
+	public ArrayList<IdentityDanglingReference> getDanglingRefs()
 	{
 		PreCondition.assertTrue(isDanglingRefs(), "isDanglingRefs()");
 		return m_refs;

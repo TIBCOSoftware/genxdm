@@ -28,7 +28,7 @@ import org.genxdm.exceptions.SpillagePolicy;
  * @param <A>
  *            The atom handle.
  */
-public interface CastingContext<A>
+public interface CastingContext
 {
     /**
      * Return the emulation mode which principally determines how numeric values are parsed and serialized.

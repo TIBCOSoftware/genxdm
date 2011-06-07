@@ -25,9 +25,9 @@ import org.genxdm.xs.facets.FractionDigits;
 public final class FacetFractionDigitsException extends FacetException
 {
     private final String value;
-    private final FractionDigits<?> fractionDigits;
+    private final FractionDigits fractionDigits;
 
-    public FacetFractionDigitsException(final String value, final FractionDigits<?> fractionDigits)
+    public FacetFractionDigitsException(final String value, final FractionDigits fractionDigits)
     {
         this.value = PreCondition.assertArgumentNotNull(value, "value");
         this.fractionDigits = fractionDigits;

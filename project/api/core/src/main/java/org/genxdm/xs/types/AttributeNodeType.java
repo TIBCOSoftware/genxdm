@@ -20,13 +20,11 @@ import org.genxdm.xs.components.SchemaComponent;
 /**
  * Describes something that is an attribute node type with schema value constraints.
  * 
- * @param <A>
- *            The atom handle.
  */
-public interface AttributeNodeType<A> extends SchemaComponent<A>, NodeType<A>
+public interface AttributeNodeType extends SchemaComponent, NodeType
 {
     /**
      * The {type definition} property.
      */
-    SequenceType<A> getType();
+    SequenceType getType();
 }

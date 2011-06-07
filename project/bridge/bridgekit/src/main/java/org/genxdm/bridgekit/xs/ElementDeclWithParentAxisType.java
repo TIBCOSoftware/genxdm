@@ -32,16 +32,16 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.Type;
 
-final class ElementDeclWithParentAxisType<A> implements ElementDefinition<A>
+final class ElementDeclWithParentAxisType implements ElementDefinition
 {
-	private final ElementDefinition<A> m_element;
+	private final ElementDefinition m_element;
 
-	public ElementDeclWithParentAxisType(final ElementDefinition<A> element, final ElementDefinition<A> parentAxis)
+	public ElementDeclWithParentAxisType(final ElementDefinition element, final ElementDefinition parentAxis)
 	{
 		m_element = PreCondition.assertArgumentNotNull(element);
 	}
 
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
@@ -51,7 +51,7 @@ final class ElementDeclWithParentAxisType<A> implements ElementDefinition<A>
 		return m_element.getDisallowedSubtitutions();
 	}
 
-	public Iterable<IdentityConstraint<A>> getIdentityConstraints()
+	public Iterable<IdentityConstraint> getIdentityConstraints()
 	{
 		return m_element.getIdentityConstraints();
 	}
@@ -81,7 +81,7 @@ final class ElementDeclWithParentAxisType<A> implements ElementDefinition<A>
 		return m_element.getScopeExtent();
 	}
 
-	public ElementDefinition<A> getSubstitutionGroup()
+	public ElementDefinition getSubstitutionGroup()
 	{
 		return m_element.getSubstitutionGroup();
 	}
@@ -91,7 +91,7 @@ final class ElementDeclWithParentAxisType<A> implements ElementDefinition<A>
 		return m_element.getSubstitutionGroupExclusions();
 	}
 
-	public Iterable<ElementDefinition<A>> getSubstitutionGroupMembers()
+	public Iterable<ElementDefinition> getSubstitutionGroupMembers()
 	{
 		return m_element.getSubstitutionGroupMembers();
 	}
@@ -101,12 +101,12 @@ final class ElementDeclWithParentAxisType<A> implements ElementDefinition<A>
 		return m_element.getTargetNamespace();
 	}
 
-	public Type<A> getType()
+	public Type getType()
 	{
 		return m_element.getType();
 	}
 
-	public ValueConstraint<A> getValueConstraint()
+	public ValueConstraint getValueConstraint()
 	{
 		return m_element.getValueConstraint();
 	}
@@ -156,7 +156,7 @@ final class ElementDeclWithParentAxisType<A> implements ElementDefinition<A>
 		return m_element.isNone();
 	}
 
-	public PrimeType<A> prime()
+	public PrimeType prime()
 	{
 		return this;
 	}
@@ -166,7 +166,7 @@ final class ElementDeclWithParentAxisType<A> implements ElementDefinition<A>
 		return m_element.quantifier();
 	}
 
-	public boolean subtype(final PrimeType<A> rhs)
+	public boolean subtype(final PrimeType rhs)
 	{
 		return m_element.subtype(rhs);
 	}

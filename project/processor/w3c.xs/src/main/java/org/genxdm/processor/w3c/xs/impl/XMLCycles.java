@@ -22,12 +22,12 @@ import java.util.Stack;
  * Rather than checking cycles as an independent step, cycle checking is integral to the conversion process. This should
  * avoid duplication of code while also making the conversion process robust.
  */
-final class XMLCycles<A>
+final class XMLCycles
 {
-	final Stack<XMLAttributeGroup<A>> attributeGroups = new Stack<XMLAttributeGroup<A>>();
-	final Stack<XMLAttribute<A>> attributes = new Stack<XMLAttribute<A>>();
-	final Stack<XMLIdentityConstraint<A>> constraints = new Stack<XMLIdentityConstraint<A>>();
-	final Stack<XMLElement<A>> elements = new Stack<XMLElement<A>>();
-	final Stack<XMLModelGroup<A>> groups = new Stack<XMLModelGroup<A>>();
-	final Stack<XMLType<A>> types = new Stack<XMLType<A>>();
+	final Stack<XMLAttributeGroup> attributeGroups = new Stack<XMLAttributeGroup>();
+	final Stack<XMLAttribute> attributes = new Stack<XMLAttribute>();
+	final Stack<XMLIdentityConstraint> constraints = new Stack<XMLIdentityConstraint>();
+	final Stack<XMLElement> elements = new Stack<XMLElement>();
+	final Stack<XMLModelGroup> groups = new Stack<XMLModelGroup>();
+	final Stack<XMLType> types = new Stack<XMLType>();
 }

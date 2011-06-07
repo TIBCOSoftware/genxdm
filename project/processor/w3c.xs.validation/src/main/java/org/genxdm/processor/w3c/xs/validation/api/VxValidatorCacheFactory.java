@@ -17,11 +17,11 @@ package org.genxdm.processor.w3c.xs.validation.api;
 
 import org.genxdm.xs.components.ElementDefinition;
 
-public interface VxValidatorCacheFactory<A>
+public interface VxValidatorCacheFactory
 {
-	VxValidatorCache<A> newValidatorCache();
+	VxValidatorCache newValidatorCache();
 
-	VxValidatorCache<A> newValidatorCache(ElementDefinition<A> elementDeclaration);
+	VxValidatorCache newValidatorCache(ElementDefinition elementDeclaration);
 
-	VxValidatorCacheFactory<A> setSchemaDocumentLocationStrategy(final VxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy);
+	VxValidatorCacheFactory setSchemaDocumentLocationStrategy(final VxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy);
 }

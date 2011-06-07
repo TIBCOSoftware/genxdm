@@ -33,32 +33,32 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.UnionSimpleType;
 
-public final class UnionTypeImpl<A> extends SimpleTypeImpl<A> implements UnionSimpleType<A>
+public final class UnionTypeImpl extends SimpleTypeImpl implements UnionSimpleType
 {
-	private final SimpleType<A> m_baseType;
-	private final Iterable<SimpleType<A>> m_memberTypes;
+	private final SimpleType m_baseType;
+	private final Iterable<SimpleType> m_memberTypes;
 
-	public UnionTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final SimpleType<A> baseType, final Iterable<SimpleType<A>> memberTypes, final WhiteSpacePolicy whiteSpace, final AtomBridge<A> atomBridge)
+	public UnionTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final SimpleType baseType, final Iterable<SimpleType> memberTypes, final WhiteSpacePolicy whiteSpace)
 	{
-		super(name, isAnonymous, scope, DerivationMethod.Union, whiteSpace, atomBridge);
+		super(name, isAnonymous, scope, DerivationMethod.Union, whiteSpace);
 		m_baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");
 		m_memberTypes = PreCondition.assertArgumentNotNull(memberTypes, "memberTypes");
 	}
 
 	@Override
-	public void accept(final SequenceTypeVisitor<A> visitor)
+	public void accept(final SequenceTypeVisitor visitor)
 	{
 		visitor.visit(this);
 	}
 
 	@SuppressWarnings("unused")
-	private List<A> compile(final List<? extends A> value) throws DatatypeException
+	private <A> List<A> compile(final List<? extends A> value, AtomBridge<A> atomBridge) throws DatatypeException
 	{
-		for (final SimpleType<A> memberType : getMemberTypes())
+		for (final SimpleType memberType : getMemberTypes())
 		{
 			try
 			{
-				return memberType.validate(value);
+				return memberType.validate(value, atomBridge);
 			}
 			catch (final DatatypeException e)
 			{
@@ -69,13 +69,13 @@ public final class UnionTypeImpl<A> extends SimpleTypeImpl<A> implements UnionSi
 		throw new DatatypeException(strval, this);
 	}
 
-	protected List<A> compile(final String initialValue) throws DatatypeException
+	protected <A> List<A> compile(final String initialValue, AtomBridge<A> bridge) throws DatatypeException
 	{
-		for (final SimpleType<A> memberType : getMemberTypes())
+		for (final SimpleType memberType : getMemberTypes())
 		{
 			try
 			{
-				return memberType.validate(initialValue);
+				return memberType.validate(initialValue, bridge);
 			}
 			catch (final DatatypeException e)
 			{
@@ -85,13 +85,13 @@ public final class UnionTypeImpl<A> extends SimpleTypeImpl<A> implements UnionSi
 		throw new DatatypeException(initialValue, this);
 	}
 
-	protected List<A> compile(final String initialValue, final PrefixResolver resolver) throws DatatypeException
+	protected <A> List<A> compile(final String initialValue, final PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
 	{
-		for (final SimpleType<A> memberType : getMemberTypes())
+		for (final SimpleType memberType : getMemberTypes())
 		{
 			try
 			{
-				return memberType.validate(initialValue, resolver);
+				return memberType.validate(initialValue, resolver, bridge);
 			}
 			catch (final DatatypeException e)
 			{
@@ -101,12 +101,12 @@ public final class UnionTypeImpl<A> extends SimpleTypeImpl<A> implements UnionSi
 		throw new DatatypeException(initialValue, this);
 	}
 
-	public SimpleType<A> getBaseType()
+	public SimpleType getBaseType()
 	{
 		return m_baseType;
 	}
 
-	public Iterable<SimpleType<A>> getMemberTypes()
+	public Iterable<SimpleType> getMemberTypes()
 	{
 		return m_memberTypes;
 	}
@@ -168,10 +168,10 @@ public final class UnionTypeImpl<A> extends SimpleTypeImpl<A> implements UnionSi
 		return WhiteSpacePolicy.COLLAPSE.apply(initialValue);
 	}
 
-	public PrimeType<A> prime()
+	public PrimeType prime()
 	{
-		PrimeType<A> result = null;
-		for (final SimpleType<A> simpleType : m_memberTypes)
+		PrimeType result = null;
+		for (final SimpleType simpleType : m_memberTypes)
 		{
 			if (null == result)
 			{

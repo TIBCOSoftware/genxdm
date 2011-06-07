@@ -24,43 +24,43 @@ import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.components.ParticleTerm;
 import org.genxdm.xs.components.SchemaWildcard;
 
-final class ParticleWildcardExpression<A> implements ValidationExpr<A, ParticleTerm<A>>
+final class ParticleWildcardExpression implements ValidationExpr
 {
-	private final SchemaParticle<A> m_particle;
-	private final SchemaWildcard<A> m_wildcard;
+	private final SchemaParticle m_particle;
+	private final SchemaWildcard m_wildcard;
 
-	public ParticleWildcardExpression(final SchemaParticle<A> particle, final SchemaWildcard<A> wildcard)
+	public ParticleWildcardExpression(final SchemaParticle particle, final SchemaWildcard wildcard)
 	{
 		m_particle = PreCondition.assertArgumentNotNull(particle, "particle");
 		m_wildcard = PreCondition.assertArgumentNotNull(wildcard, "wildcard");
 	}
 
-	public ParticleTerm<A> getParticleTerm()
+	public ParticleTerm getParticleTerm()
 	{
 		return m_wildcard;
 	}
 
-	public Iterable<ValidationExpr<A, ParticleTerm<A>>> getSubTerms()
+	public Iterable<ValidationExpr> getSubTerms()
 	{
 		// We are not building a deep finite state machine.
 		return Collections.emptyList();
 	}
 
-	public boolean intersects(final ValidationExpr<A, ParticleTerm<A>> other)
+	public boolean intersects(final ValidationExpr other)
 	{
 		if (other.isGroup())
 		{
 			return false;
 		}
 
-		final ParticleTerm<A> term = other.getParticleTerm();
+		final ParticleTerm term = other.getParticleTerm();
 
-		if (term instanceof ElementDefinition<?>)
+		if (term instanceof ElementDefinition)
 		{
-			final ElementDefinition<A> element = (ElementDefinition<A>)term;
+			final ElementDefinition element = (ElementDefinition)term;
 			return m_wildcard.getNamespaceConstraint().allowsNamespaceName(element.getName().getNamespaceURI());
 		}
-		else if (term instanceof SchemaWildcard<?>)
+		else if (term instanceof SchemaWildcard)
 		{
 			throw new UnsupportedOperationException("TODO");
 			// return m_wildcard.intersects((SchemaWildcard)term);

@@ -34,7 +34,7 @@ import org.genxdm.xs.types.Type;
 public final class XmlElementNode
     extends XmlContainerNode
 {
-    XmlElementNode(final String namespace, final String localName, final String prefix, final Type<XmlAtom> type)
+    XmlElementNode(final String namespace, final String localName, final String prefix, final Type type)
     {
         super(NodeKind.ELEMENT);
         this.type = type;
@@ -154,7 +154,7 @@ public final class XmlElementNode
         return names;
     }
 
-    public Type<XmlAtom> getType()
+    public Type getType()
     {
         return type;
     }
@@ -350,5 +350,5 @@ public final class XmlElementNode
     protected XmlAttributeNode firstAttribute;
     protected XmlNamespaceNode firstNamespace;
     
-    private Type<XmlAtom> type;
+    private Type type;
 }

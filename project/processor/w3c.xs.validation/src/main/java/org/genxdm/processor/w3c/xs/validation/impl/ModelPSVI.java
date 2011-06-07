@@ -72,19 +72,19 @@ import org.genxdm.xs.types.UnionSimpleType;
  * child pointers and supply push and pop methods. Also note that the objects are recycled by the push method using the
  * child pointer.
  */
-final class ModelPSVI<A> implements VxPSVI<A>, Locatable
+final class ModelPSVI implements VxPSVI, Locatable
 {
-	private ModelPSVI<A> m_parentItem;
+	private ModelPSVI m_parentItem;
 
-	public ModelPSVI<A> getParent()
+	public ModelPSVI getParent()
 	{
 		return m_parentItem;
 	}
 
-	private final ValidationCache<A> cache;
-	private final ComponentProvider<A> metaBridge;
+	private final ValidationCache cache;
+	private final ComponentProvider metaBridge;
 
-	private ModelPSVI<A> m_childItem; // for recycling
+	private ModelPSVI m_childItem; // for recycling
 
 	private final NodeKind m_nodeKind;
 
@@ -107,8 +107,8 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 		return new SrcFrozenLocation(m_lineNumber, m_columnNumber, m_characterOffset, m_publicId, m_systemId);
 	}
 
-	private Type<A> m_type;
-	private SmContentFiniteStateMachine<A> m_machine;
+	private Type m_type;
+	private SmContentFiniteStateMachine m_machine;
 
 	private ProcessContentsMode m_processContents;
 
@@ -116,7 +116,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 	// it encounters an error. It is not obliged to report more than the first error.
 	private boolean m_suspendChecking;
 
-	private ElementDefinition<A> m_elementDecl;
+	private ElementDefinition m_elementDecl;
 
 	// Did the instance use xsi:nil="true"?
 	private boolean m_nilled;
@@ -124,10 +124,10 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 	/**
 	 * Identity scopes may exist for an element information item.
 	 */
-	public final ArrayList<IdentityScope<A>> m_identityScopes = new ArrayList<IdentityScope<A>>();
-	public final HashMap<IdentityConstraint<A>, IdentityScope<A>> m_keyScopes = new HashMap<IdentityConstraint<A>, IdentityScope<A>>();
+	public final ArrayList<IdentityScope> m_identityScopes = new ArrayList<IdentityScope>();
+	public final HashMap<IdentityConstraint, IdentityScope> m_keyScopes = new HashMap<IdentityConstraint, IdentityScope>();
 
-	private ModelPSVI(final ModelPSVI<A> parent, final NodeKind nodeKind, final ProcessContentsMode processContents, final ComponentProvider<A> metaBridge, final ValidationCache<A> cache)
+	private ModelPSVI(final ModelPSVI parent, final NodeKind nodeKind, final ProcessContentsMode processContents, final ComponentProvider metaBridge, final ValidationCache cache)
 	{
 		this.m_parentItem = parent;
 		this.m_nodeKind = PreCondition.assertArgumentNotNull(nodeKind, "nodeKind");
@@ -136,16 +136,16 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 		reset(processContents);
 	}
 
-	public ModelPSVI(final ProcessContentsMode processContents, final ComponentProvider<A> metaBridge, final ValidationCache<A> cache)
+	public ModelPSVI(final ProcessContentsMode processContents, final ComponentProvider metaBridge, final ValidationCache cache)
 	{
 		this(null, NodeKind.DOCUMENT, processContents, metaBridge, cache);
 	}
 
-	public ModelPSVI<A> push(final QName elementName)
+	public ModelPSVI push(final QName elementName)
 	{
 		if (m_childItem == null)
 		{
-			m_childItem = new ModelPSVI<A>(this, NodeKind.ELEMENT, getProcessContents(), this.metaBridge, this.cache);
+			m_childItem = new ModelPSVI(this, NodeKind.ELEMENT, getProcessContents(), this.metaBridge, this.cache);
 		}
 		else
 		{
@@ -182,7 +182,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 				{
 					if (explicitNil)
 					{
-						final ValueConstraint<A> valueConstraint = m_elementDecl.getValueConstraint();
+						final ValueConstraint valueConstraint = m_elementDecl.getValueConstraint();
 						if (null != valueConstraint && valueConstraint.getVariety().isFixed())
 						{
 							errors.error(new CvcElementFixedAndNilledException(m_elementDecl, getLocation()));
@@ -204,7 +204,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 
 	public boolean step(final QName childName, final Locatable childLocatable, final SchemaExceptionHandler errors) throws AbortException
 	{
-		final Type<A> elementType = getType();
+		final Type elementType = getType();
 		if (null == elementType)
 		{
 			// TODO: We should really see if locally valid wrt to type has been flagged.
@@ -212,15 +212,15 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 			return false;
 		}
 
-		if (elementType instanceof SimpleType<?>)
+		if (elementType instanceof SimpleType)
 		{
 			// TODO: Do we include the xs:anySimpleType (simple ur-type)?
 			errors.error(new CvcElementInSimpleTypeException(getName(), getLocation(), childName, childLocatable.getLocation()));
 			return false;
 		}
-		else if (elementType instanceof ComplexMarkerType<?>)
+		else if (elementType instanceof ComplexMarkerType)
 		{
-			final ComplexMarkerType<A> complexType = (ComplexMarkerType<A>)elementType;
+			final ComplexMarkerType complexType = (ComplexMarkerType)elementType;
 			if (m_suspendChecking)
 			{
 				return false;
@@ -364,7 +364,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 		}
 	}
 
-	public ModelPSVI<A> pop()
+	public ModelPSVI pop()
 	{
 		return m_parentItem;
 	}
@@ -381,12 +381,12 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 		m_nilled = false;
 	}
 
-	public void annotate(final Type<A> type)
+	public void annotate(final Type type)
 	{
 		m_type = PreCondition.assertArgumentNotNull(type);
-		if (type instanceof ComplexType<?>)
+		if (type instanceof ComplexType)
 		{
-			final ComplexType<A> complexType = (ComplexType<A>)type;
+			final ComplexType complexType = (ComplexType)type;
 			final ContentTypeKind kind = complexType.getContentType().getKind();
 			if (kind.isComplex())
 			{
@@ -395,12 +395,12 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 		}
 	}
 
-	public ElementDefinition<A> getDeclaration()
+	public ElementDefinition getDeclaration()
 	{
 		return m_elementDecl;
 	}
 
-	public Type<A> getType()
+	public Type getType()
 	{
 		return m_type;
 	}
@@ -430,16 +430,16 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 		return m_suspendChecking;
 	}
 
-	public static <A> void assignPSVI(final ModelPSVI<A> elementItem, final Type<A> localType, final SchemaExceptionHandler errors) throws AbortException, SchemaException
+	public static  void assignPSVI(final ModelPSVI elementItem, final Type localType, final SchemaExceptionHandler errors) throws AbortException, SchemaException
 	{
-		final SmContentFiniteStateMachine<A> machine = elementItem.m_parentItem.m_machine;
+		final SmContentFiniteStateMachine machine = elementItem.m_parentItem.m_machine;
 		if (null != machine)
 		{
 			if (machine.isElementMatch())
 			{
 				elementItem.m_elementDecl = machine.getElement();
 				checkDeclNotAbstract(elementItem.m_elementDecl, elementItem, errors);
-				final Type<A> dynamicType;
+				final Type dynamicType;
 				if (null != localType)
 				{
 					dynamicType = localType;
@@ -449,7 +449,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 				{
 					dynamicType = elementItem.m_elementDecl.getType();
 				}
-				final ElementDefinition<A> substitutionGroup = elementItem.m_elementDecl.getSubstitutionGroup();
+				final ElementDefinition substitutionGroup = elementItem.m_elementDecl.getSubstitutionGroup();
 				if (null != substitutionGroup)
 				{
 					checkDeclSubstitutionsNotBlocked(elementItem.m_elementDecl, dynamicType, errors, elementItem);
@@ -459,7 +459,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 			else
 			{
 				// It must be a wildcard match.
-				final SchemaWildcard<A> wildcard = machine.getWildcard();
+				final SchemaWildcard wildcard = machine.getWildcard();
 				elementItem.setProcessContents(wildcard.getProcessContents());
 
 				elementItem.recoverPSVI(localType, errors);
@@ -471,7 +471,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 		}
 	}
 
-	public void recoverPSVI(final Type<A> localType, final SchemaExceptionHandler errors) throws AbortException, SchemaException
+	public void recoverPSVI(final Type localType, final SchemaExceptionHandler errors) throws AbortException, SchemaException
 	{
 		final QName elementName = getName();
 
@@ -495,7 +495,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 					}
 					else
 					{
-						final Type<A> elementType = m_elementDecl.getType();
+						final Type elementType = m_elementDecl.getType();
 
 						if (m_elementDecl.hasSubstitutionGroup())
 						{
@@ -535,7 +535,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 					}
 					else
 					{
-						final Type<A> elementType = m_elementDecl.getType();
+						final Type elementType = m_elementDecl.getType();
 
 						if (m_elementDecl.hasSubstitutionGroup())
 						{
@@ -564,7 +564,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 		}
 	}
 
-	private static <A> void checkDeclNotAbstract(final ElementDefinition<A> elementDeclaration, final Locatable locatable, final SchemaExceptionHandler errors) throws AbortException
+	private static void checkDeclNotAbstract(final ElementDefinition elementDeclaration, final Locatable locatable, final SchemaExceptionHandler errors) throws AbortException
 	{
 		// Check that the declaration is not abstract.
 		if (elementDeclaration.isAbstract())
@@ -573,10 +573,10 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 		}
 	}
 
-	private static <A, S> void checkDeclSubstitutionsNotBlocked(final ElementDefinition<A> elementDeclaration, final Type<A> elementType, final SchemaExceptionHandler errors, final Locatable locatable) throws AbortException
+	private static void checkDeclSubstitutionsNotBlocked(final ElementDefinition elementDeclaration, final Type elementType, final SchemaExceptionHandler errors, final Locatable locatable) throws AbortException
 	{
 		// Note: Substitution can be blocked by extension and restriction as well.
-		final ElementDefinition<A> substitutionGroup = elementDeclaration.getSubstitutionGroup();
+		final ElementDefinition substitutionGroup = elementDeclaration.getSubstitutionGroup();
 		final Set<DerivationMethod> block = substitutionGroup.getDisallowedSubtitutions();
 		if (block.contains(DerivationMethod.Substitution))
 		{
@@ -584,7 +584,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 			errors.error(new CvcSubstitutionBlockedByHeadDeclarationException(elementDeclaration, substitutionGroup, locatable.getLocation()));
 		}
 
-		final Type<A> headType = substitutionGroup.getType();
+		final Type headType = substitutionGroup.getType();
 
 		if (block.contains(DerivationMethod.Extension))
 		{
@@ -602,9 +602,9 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 			}
 		}
 
-		if (headType instanceof ComplexType<?>)
+		if (headType instanceof ComplexType)
 		{
-			final ComplexType<A> complexType = (ComplexType<A>)headType;
+			final ComplexType complexType = (ComplexType)headType;
 			final Set<DerivationMethod> prohibitedSubstitutions = complexType.getProhibitedSubstitutions();
 			if (prohibitedSubstitutions.contains(DerivationMethod.Substitution))
 			{
@@ -632,15 +632,15 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 		}
 	}
 
-	private static <A, S> void checkLocalTypeValidlyDerivedFromElementType(final ElementDefinition<A> elementDeclaration, final Type<A> localType, final Locatable locatable) throws CvcElementLocalTypeDerivationException
+	private static void checkLocalTypeValidlyDerivedFromElementType(final ElementDefinition elementDeclaration, final Type localType, final Locatable locatable) throws CvcElementLocalTypeDerivationException
 	{
 		final Set<DerivationMethod> block = elementDeclaration.getDisallowedSubtitutions();
-		final Type<A> elementType = elementDeclaration.getType();
-		if (localType instanceof SimpleType<?>)
+		final Type elementType = elementDeclaration.getType();
+		if (localType instanceof SimpleType)
 		{
 			try
 			{
-				checkTypeDerivationOKSimple((SimpleType<A>)localType, elementType, block);
+				checkTypeDerivationOKSimple((SimpleType)localType, elementType, block);
 			}
 			catch (final ComponentConstraintException e)
 			{
@@ -652,9 +652,9 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 			final Set<DerivationMethod> union = new HashSet<DerivationMethod>();
 
 			union.addAll(block);
-			if (elementType instanceof ComplexType<?>)
+			if (elementType instanceof ComplexType)
 			{
-				final ComplexType<A> complexType = (ComplexType<A>)elementType;
+				final ComplexType complexType = (ComplexType)elementType;
 				union.addAll(complexType.getProhibitedSubstitutions());
 			}
 
@@ -672,7 +672,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 	/**
 	 * Type Derivation OK (Simple) (3.14.6)
 	 */
-	private static <A, S> void checkTypeDerivationOKSimple(final SimpleType<A> D, final Type<A> B, final Set<DerivationMethod> subset) throws ComponentConstraintException
+	private static void checkTypeDerivationOKSimple(final SimpleType D, final Type B, final Set<DerivationMethod> subset) throws ComponentConstraintException
 	{
 		if (D.getName().equals(B.getName()))
 		{
@@ -680,7 +680,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 		}
 		else
 		{
-			final Type<A> deesBaseType = D.getBaseType();
+			final Type deesBaseType = D.getBaseType();
 			if (subset.contains(DerivationMethod.Restriction) || deesBaseType.getFinal().contains(DerivationMethod.Restriction))
 			{
 				throw new SccSimpleTypeDerivationRestrictionException(D.getName());
@@ -699,10 +699,10 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 			{
 				isOK = true;
 			}
-			else if (B instanceof UnionSimpleType<?>)
+			else if (B instanceof UnionSimpleType)
 			{
-				final UnionSimpleType<A> unionType = (UnionSimpleType<A>)B;
-				for (final SimpleType<A> memberType : unionType.getMemberTypes())
+				final UnionSimpleType unionType = (UnionSimpleType)B;
+				for (final SimpleType memberType : unionType.getMemberTypes())
 				{
 					if (isTypeDerivationOK(D, memberType, subset))
 					{
@@ -718,7 +718,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 		}
 	}
 
-	private static <A, S> void checkTypeDerivationOKComplex(final Type<A> D, final Type<A> B, final Set<DerivationMethod> subset) throws ComponentConstraintException
+	private static <A, S> void checkTypeDerivationOKComplex(final Type D, final Type B, final Set<DerivationMethod> subset) throws ComponentConstraintException
 	{
 		if (D.getName().equals(B.getName()))
 		{
@@ -735,7 +735,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 				throw new SccComplexTypeDerivationMethodException(D, B, subset);
 			}
 
-			final Type<A> deeBaseType = D.getBaseType();
+			final Type deeBaseType = D.getBaseType();
 			if (deeBaseType.getName().equals(B.getName()))
 			{
 				// B is D's {base type definition}
@@ -748,11 +748,11 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 				}
 				else
 				{
-					if (deeBaseType instanceof ComplexType<?>)
+					if (deeBaseType instanceof ComplexType)
 					{
 						try
 						{
-							checkTypeDerivationOK((ComplexType<A>)deeBaseType, B, subset);
+							checkTypeDerivationOK((ComplexType)deeBaseType, B, subset);
 						}
 						catch (final ComponentConstraintException e)
 						{
@@ -763,7 +763,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 					{
 						try
 						{
-							checkTypeDerivationOKSimple((SimpleType<A>)deeBaseType, B, subset);
+							checkTypeDerivationOKSimple((SimpleType)deeBaseType, B, subset);
 						}
 						catch (final ComponentConstraintException e)
 						{
@@ -775,13 +775,13 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 		}
 	}
 
-	private static <A, S> void checkTypeDerivationOK(final Type<A> D, final Type<A> B, final Set<DerivationMethod> subset) throws ComponentConstraintException
+	private static void checkTypeDerivationOK(final Type D, final Type B, final Set<DerivationMethod> subset) throws ComponentConstraintException
 	{
-		if (D instanceof SimpleType<?>)
+		if (D instanceof SimpleType)
 		{
-			checkTypeDerivationOKSimple((SimpleType<A>)D, B, subset);
+			checkTypeDerivationOKSimple((SimpleType)D, B, subset);
 		}
-		else if (D instanceof ComplexType<?>)
+		else if (D instanceof ComplexType)
 		{
 			checkTypeDerivationOKComplex(D, B, subset);
 		}
@@ -791,7 +791,7 @@ final class ModelPSVI<A> implements VxPSVI<A>, Locatable
 		}
 	}
 
-	private static <A, S> boolean isTypeDerivationOK(final Type<A> D, final Type<A> B, final Set<DerivationMethod> subset)
+	private static boolean isTypeDerivationOK(final Type D, final Type B, final Set<DerivationMethod> subset)
 	{
 		try
 		{

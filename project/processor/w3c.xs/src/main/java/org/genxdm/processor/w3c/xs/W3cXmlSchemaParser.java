@@ -21,29 +21,27 @@ import java.net.URI;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.impl.RegExCompilerJDK;
 import org.genxdm.processor.w3c.xs.impl.XMLParserImpl;
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.SchemaLoadOptions;
 import org.genxdm.xs.components.ComponentBag;
 import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
-public final class W3cXmlSchemaParser<A>
+public final class W3cXmlSchemaParser
 {
-    public W3cXmlSchemaParser(final AtomBridge<A> atomBridge)
+    public W3cXmlSchemaParser()
     {
-        this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
         this.regexc = DEFAULT_REGEX_COMPILER;
     }
 
-    public ComponentBag<A> parse(final URI schemaLocation, final InputStream istream,
+    public ComponentBag parse(final URI schemaLocation, final InputStream istream,
                                  final URI systemId, final SchemaExceptionHandler errors,
-                                 final SchemaLoadOptions args, final ComponentProvider<A> components)
+                                 final SchemaLoadOptions args, final ComponentProvider components)
         throws AbortException
     {
         PreCondition.assertArgumentNotNull(istream, "istream");
         PreCondition.assertArgumentNotNull(components, "components");
-        final XMLParserImpl<A> parser = new XMLParserImpl<A>(components, atomBridge);
+        final XMLParserImpl parser = new XMLParserImpl(components);
 
         parser.setCatalog(args.getCatalog());
         parser.setResolver(args.getResolver());
@@ -70,8 +68,6 @@ public final class W3cXmlSchemaParser<A>
             this.regexc = DEFAULT_REGEX_COMPILER;
         }
     }
-
-    private final AtomBridge<A> atomBridge;
 
     // The default Regular Expression compiler is backed by the JDK.
     private static final SmRegExCompiler DEFAULT_REGEX_COMPILER = new RegExCompilerJDK();

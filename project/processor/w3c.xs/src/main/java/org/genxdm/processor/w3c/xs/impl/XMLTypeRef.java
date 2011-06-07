@@ -23,9 +23,9 @@ import org.genxdm.exceptions.PreCondition;
 /**
  * A reference to either a global type identified by name or a local type (anonymous) identified by an object reference.
  */
-final class XMLTypeRef<A>
+final class XMLTypeRef
 {
-	private final XMLType<A> localType;
+	private final XMLType localType;
 	private final QName name;
 
 	public XMLTypeRef(final QName name)
@@ -34,14 +34,14 @@ final class XMLTypeRef<A>
 		this.localType = null;
 	}
 
-	public XMLTypeRef(final XMLType<A> localType)
+	public XMLTypeRef(final XMLType localType)
 	{
 		this.name = null;
 		this.localType = PreCondition.assertArgumentNotNull(localType, "localType");
 		PreCondition.assertTrue(localType.getScope().isLocal());
 	}
 
-	public XMLType<A> getLocal()
+	public XMLType getLocal()
 	{
 		return localType;
 	}

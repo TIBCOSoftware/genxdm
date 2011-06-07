@@ -17,13 +17,14 @@ package org.genxdm.xs.facets;
 
 import java.util.List;
 
+import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.exceptions.FacetException;
 import org.genxdm.xs.types.SimpleType;
 
 /**
  * Common interface for all facets excluding xs:enumeration and xs:pattern.
  */
-public interface Facet<A>
+public interface Facet
 {
     /**
      * Determines whether the facet is fixed.
@@ -40,5 +41,5 @@ public interface Facet<A>
      * @param simpleType
      *            The type that validated the actual value.
      */
-    void validate(List<? extends A> actualValue, SimpleType<A> simpleType) throws FacetException;
+    <A> void validate(List<? extends A> actualValue, SimpleType simpleType, AtomBridge<A> bridge) throws FacetException;
 }

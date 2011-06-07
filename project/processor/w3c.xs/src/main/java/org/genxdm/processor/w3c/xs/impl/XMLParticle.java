@@ -19,11 +19,11 @@ import java.math.BigInteger;
 
 import org.genxdm.exceptions.PreCondition;
 
-abstract class XMLParticle<A> extends XMLTag<A>
+abstract class XMLParticle extends XMLTag
 {
 	private final BigInteger m_minOccurs;
 	private final BigInteger m_maxOccurs;
-	private final XMLParticleTerm<A> m_term;
+	private final XMLParticleTerm m_term;
 
 	/**
 	 * Sentinel value for {@link #getMaxOccurs} being "unbounded". <br/>
@@ -33,7 +33,7 @@ abstract class XMLParticle<A> extends XMLTag<A>
 	 */
 	public static BigInteger UNBOUNDED = BigInteger.ONE.negate();
 
-	public XMLParticle(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLParticleTerm<A> term, final SrcFrozenLocation location)
+	public XMLParticle(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLParticleTerm term, final SrcFrozenLocation location)
 	{
 		super(location);
 		this.m_minOccurs = PreCondition.assertArgumentNotNull(minOccurs, "minOccurs");
@@ -51,7 +51,7 @@ abstract class XMLParticle<A> extends XMLTag<A>
 		return m_maxOccurs;
 	}
 
-	public XMLParticleTerm<A> getTerm()
+	public XMLParticleTerm getTerm()
 	{
 		return m_term;
 	}

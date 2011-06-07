@@ -88,24 +88,24 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 
 	private final AtomBridge<A> m_atomBridge;
 	private final AttributeManager<A> m_attributes;
-	private ValidationItem<A> m_currentItem;
-	private ModelPSVI<A> m_currentPSVI;
+	private ValidationItem m_currentItem;
+	private ModelPSVI m_currentPSVI;
 
-	private final ValidationItem<A> m_documentItem;
-	private final ModelPSVI<A> m_documentPSVI;
+	private final ValidationItem m_documentItem;
+	private final ModelPSVI m_documentPSVI;
 	// Set by reset method. Preconditions guarantee that it is never null.
 	private VxOutputHandler<A> m_downstream;
 	// private Location m_location;
 	private SchemaExceptionHandler m_errors = SmExceptionThrower.SINGLETON;
 	private final VxSchemaDocumentLocationStrategy sdl;
 
-	private final IdentityConstraintManager<A> m_icm = new IdentityConstraintManager<A>();
+	private final IdentityConstraintManager m_icm = new IdentityConstraintManager();
 
-	private final IdManager<A> m_idm = new IdManager<A>();
+	private final IdManager m_idm = new IdManager();
 
 	// Maintain state for each element.
 	// private URI m_baseURI;
-	private final ModelAnalyzerImpl<A> m_mac; // Model Analyzer Component
+	private final ModelAnalyzerImpl m_mac; // Model Analyzer Component
 	private final ValidationPrefixResolver m_namespaces;
 
 	// Index of node within document is used to determine node identity.
@@ -115,18 +115,18 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 	private final StringBuilder m_text = new StringBuilder();
 	private URI documentURI;
 
-	public ValidationKernel(final ComponentProvider<A> definitions, final AtomBridge<A> atomBridge, final ValidationCache<A> cache, final VxSchemaDocumentLocationStrategy sdl)
+	public ValidationKernel(final ComponentProvider definitions, final AtomBridge<A> atomBridge, final ValidationCache cache, final VxSchemaDocumentLocationStrategy sdl)
 	{
 		m_atomBridge = PreCondition.assertNotNull(atomBridge);
 		NameSource names = new NameSource();
 		m_namespaces = new ValidationPrefixResolver(names);
 		m_attributes = new AttributeManager<A>(definitions, m_atomBridge, names);
-		m_currentItem = m_documentItem = new ValidationItem<A>();
+		m_currentItem = m_documentItem = new ValidationItem();
 		// A strict start is necessary to ensure that the root element has a declaration.
 		// However, the specification does not seem very clear on what should be the starting mode.
-		m_currentPSVI = m_documentPSVI = new ModelPSVI<A>(ProcessContentsMode.Strict, definitions, cache);
+		m_currentPSVI = m_documentPSVI = new ModelPSVI(ProcessContentsMode.Strict, definitions, cache);
 
-		m_mac = new ModelAnalyzerImpl<A>(definitions, cache);
+		m_mac = new ModelAnalyzerImpl(definitions, cache);
 		this.sdl = sdl;
 	}
 
@@ -135,20 +135,20 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		m_text.append(ch, start, length);
 	}
 
-	private void checkValueConstraintForElement(final ElementDefinition<A> elementDeclaration, final SimpleType<A> simpleType, final List<? extends A> actualValue) throws AbortException
+	private void checkValueConstraintForElement(final ElementDefinition elementDeclaration, final SimpleType simpleType, final List<? extends A> actualValue) throws AbortException
 	{
-		final ValueConstraint<A> valueConstraint = elementDeclaration.getValueConstraint();
+		final ValueConstraint valueConstraint = elementDeclaration.getValueConstraint();
 		if (null != valueConstraint)
 		{
 			switch (valueConstraint.getVariety())
 			{
 				case Fixed:
 				{
-					final List<A> initialFixed = valueConstraint.getValue();
+					final List<A> initialFixed = valueConstraint.getValue(m_atomBridge);
 
 					try
 					{
-						final List<A> actualFixed = simpleType.validate(initialFixed);
+						final List<A> actualFixed = simpleType.validate(initialFixed, m_atomBridge);
 						if (!ValidationSupport.equalValues(actualFixed, actualValue))
 						{
 							final String fixedC14N = m_atomBridge.getC14NString(actualFixed);
@@ -189,7 +189,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		}
 	}
 
-	public VxPSVI<A> endElement() throws IOException, AbortException
+	public VxPSVI endElement() throws IOException, AbortException
 	{
 		if (m_text.length() > 0)
 		{
@@ -210,7 +210,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 				handleNoTextCalls();
 			}
 
-			final VxPSVI<A> psvi = m_mac.endElement();
+			final VxPSVI psvi = m_mac.endElement();
 
 			m_icm.endElement(m_currentPSVI, m_currentItem);
 
@@ -233,17 +233,17 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 
 	private void handleNoTextCalls() throws IOException, AbortException
 	{
-		final Type<A> elementType = m_currentPSVI.getType();
+		final Type elementType = m_currentPSVI.getType();
 		if (null != elementType)
 		{
-			if (elementType instanceof SimpleType<?>)
+			if (elementType instanceof SimpleType)
 			{
-				handleNoTextCallsForSimpleContentModel((SimpleType<A>)elementType);
+				handleNoTextCallsForSimpleContentModel((SimpleType)elementType);
 			}
 			else
 			{
-				final ComplexType<A> complexType = (ComplexType<A>)elementType;
-				final ContentType<A> contentType = complexType.getContentType();
+				final ComplexType complexType = (ComplexType)elementType;
+				final ContentType contentType = complexType.getContentType();
 				switch (contentType.getKind())
 				{
 					case Simple:
@@ -267,7 +267,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		}
 	}
 
-	private void handleNoTextCallsForSimpleContentModel(final SimpleType<A> simpleType) throws IOException, AbortException
+	private void handleNoTextCallsForSimpleContentModel(final SimpleType simpleType) throws IOException, AbortException
 	{
 		if (m_currentPSVI.isNilled())
 		{
@@ -276,8 +276,8 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		else
 		{
 			// any default or fixed values.
-			final ElementDefinition<A> declaration = m_currentPSVI.getDeclaration();
-			final ValueConstraint<A> valueConstraint = (null != declaration) ? declaration.getValueConstraint() : null;
+			final ElementDefinition declaration = m_currentPSVI.getDeclaration();
+			final ValueConstraint valueConstraint = (null != declaration) ? declaration.getValueConstraint() : null;
 			if (null != valueConstraint)
 			{
 				switch (valueConstraint.getVariety())
@@ -285,10 +285,10 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 					case Fixed:
 					case Default:
 					{
-						final List<A> initialValue = valueConstraint.getValue();
+						final List<A> initialValue = valueConstraint.getValue(m_atomBridge);
 						try
 						{
-							final List<A> actualValue = simpleType.validate(initialValue);
+							final List<A> actualValue = simpleType.validate(initialValue, m_atomBridge);
 
 							m_idm.text(actualValue, simpleType, m_currentItem, m_errors, m_atomBridge);
 							m_icm.text(actualValue, simpleType, m_currentItem, m_nodeIndex, m_atomBridge);
@@ -325,7 +325,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 				// which will throw an exception if having no text is a problem.
 				try
 				{
-					final List<A> actualValue = simpleType.validate("");
+					final List<A> actualValue = simpleType.validate("", m_atomBridge);
 
 					m_idm.text(actualValue, simpleType, m_currentItem, m_errors, m_atomBridge);
 					m_icm.text(actualValue, simpleType, m_currentItem, m_nodeIndex, m_atomBridge);
@@ -364,23 +364,23 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 			case Strict:
 			case Lax:
 			{
-				final ElementDefinition<A> declaration = m_currentPSVI.getDeclaration();
+				final ElementDefinition declaration = m_currentPSVI.getDeclaration();
 				if (m_currentPSVI.isNilled() && (null != declaration))
 				{
 					m_errors.error(new CvcElementUnexpectedChildInNilledElementException(declaration, m_currentItem.getLocation()));
 				}
 
-				final Type<A> elementType = m_currentPSVI.getType();
+				final Type elementType = m_currentPSVI.getType();
 				if (null != elementType)
 				{
-					if (elementType instanceof SimpleMarkerType<?>)
+					if (elementType instanceof SimpleMarkerType)
 					{
-						if (elementType instanceof SimpleType<?>)
+						if (elementType instanceof SimpleType)
 						{
-							final SimpleType<A> simpleType = (SimpleType<A>)elementType;
+							final SimpleType simpleType = (SimpleType)elementType;
 							try
 							{
-								final List<A> actualValue = simpleType.validate(initialValue);
+								final List<A> actualValue = simpleType.validate(initialValue, m_atomBridge);
 
 								if (null != declaration)
 								{
@@ -404,7 +404,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 								}
 							}
 						}
-						else if (elementType instanceof SimpleUrType<?>)
+						else if (elementType instanceof SimpleUrType)
 						{
 							if (null != m_downstream)
 							{
@@ -416,18 +416,18 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 							throw new AssertionError(elementType);
 						}
 					}
-					else if (elementType instanceof ComplexMarkerType<?>)
+					else if (elementType instanceof ComplexMarkerType)
 					{
-						final ComplexMarkerType<A> complexType = (ComplexMarkerType<A>)elementType;
-						final ContentType<A> contentType = complexType.getContentType();
+						final ComplexMarkerType complexType = (ComplexMarkerType)elementType;
+						final ContentType contentType = complexType.getContentType();
 						switch (contentType.getKind())
 						{
 							case Simple:
 							{
-								final SimpleType<A> simpleType = contentType.getSimpleType();
+								final SimpleType simpleType = contentType.getSimpleType();
 								try
 								{
-									final List<A> actualValue = simpleType.validate(initialValue);
+									final List<A> actualValue = simpleType.validate(initialValue, m_atomBridge);
 
 									if (null != declaration)
 									{
@@ -558,7 +558,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 	{
 		m_text.setLength(0);
 
-		final ValidationItem<A> parentItem = m_currentItem;
+		final ValidationItem parentItem = m_currentItem;
 		// TODO: Supply a location?
 		m_currentItem = parentItem.push(++m_nodeIndex);
 
@@ -574,7 +574,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 
 		// Digest the attributes from the XMLSchema-instance namespace.
 		m_attributes.initialize(elementName, m_currentItem, attributes, m_namespaces, documentURI, m_errors, sdl);
-		final Type<A> localType = m_attributes.getLocalType();
+		final Type localType = m_attributes.getLocalType();
 		final Boolean explicitNil = m_attributes.getLocalNil();
 
 		m_currentPSVI = m_mac.startElement(elementName, localType, explicitNil);
@@ -617,21 +617,21 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 			case Strict:
 			case Lax:
 			{
-				final ElementDefinition<A> declaration = m_currentPSVI.getDeclaration();
+				final ElementDefinition declaration = m_currentPSVI.getDeclaration();
 				if (m_currentPSVI.isNilled())
 				{
 					m_errors.error(new CvcElementUnexpectedChildInNilledElementException(declaration, m_currentItem.getLocation()));
 				}
 
-				final Type<A> elementType = m_currentPSVI.getType();
+				final Type elementType = m_currentPSVI.getType();
 				if (null != elementType)
 				{
-					if (elementType instanceof SimpleType<?>)
+					if (elementType instanceof SimpleType)
 					{
-						final SimpleType<A> simpleType = (SimpleType<A>)elementType;
+						final SimpleType simpleType = (SimpleType)elementType;
 						try
 						{
-							final List<A> actualValue = simpleType.validate(initialValue);
+							final List<A> actualValue = simpleType.validate(initialValue, m_atomBridge);
 
 							if (null != declaration)
 							{
@@ -657,16 +657,16 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 					}
 					else
 					{
-						final ComplexType<A> complexType = (ComplexType<A>)elementType;
-						final ContentType<A> contentType = complexType.getContentType();
+						final ComplexType complexType = (ComplexType)elementType;
+						final ContentType contentType = complexType.getContentType();
 						switch (contentType.getKind())
 						{
 							case Simple:
 							{
-								final SimpleType<A> simpleType = contentType.getSimpleType();
+								final SimpleType simpleType = contentType.getSimpleType();
 								try
 								{
-									final List<A> actualValue = simpleType.validate(initialValue);
+									final List<A> actualValue = simpleType.validate(initialValue, m_atomBridge);
 
 									checkValueConstraintForElement(declaration, simpleType, actualValue);
 

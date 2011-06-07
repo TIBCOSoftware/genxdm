@@ -32,7 +32,7 @@ import java.util.List;
  * <p/>
  * Model groups can also be used for attribute groups, in which case the compositor is always ALL.
  */
-public interface ModelGroup<A> extends ParticleTerm<A>, SchemaComponent<A>
+public interface ModelGroup extends ParticleTerm, SchemaComponent
 {
     public enum SmCompositor
     {
@@ -62,5 +62,5 @@ public interface ModelGroup<A> extends ParticleTerm<A>, SchemaComponent<A>
     /**
      * Returns the {particles} property of this model group.
      */
-    List<SchemaParticle<A>> getParticles();
+    List<SchemaParticle> getParticles();
 }
