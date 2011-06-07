@@ -20,8 +20,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.genxdm.processor.w3c.xs.exception.CvcDanglingIDReferenceException;
-import org.genxdm.processor.w3c.xs.exception.SmDuplicateIDException;
+import org.genxdm.processor.w3c.xs.exception.cvc.CvcDanglingIDReferenceException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateIDException;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;

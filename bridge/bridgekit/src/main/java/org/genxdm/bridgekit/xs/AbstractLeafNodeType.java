@@ -16,6 +16,7 @@
 package org.genxdm.bridgekit.xs;
 
 import org.genxdm.NodeKind;
+import org.genxdm.bridgekit.xs.simple.AbstractPrimeExcludingNoneType;
 import org.genxdm.xs.types.NodeType;
 
 abstract class AbstractLeafNodeType extends AbstractPrimeExcludingNoneType implements NodeType

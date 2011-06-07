@@ -37,35 +37,72 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
-import org.genxdm.processor.w3c.xs.exception.CvcUnexpectedAttributeException;
-import org.genxdm.processor.w3c.xs.exception.CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException;
-import org.genxdm.processor.w3c.xs.exception.SmAttributeDefaultAndUseImpliesOptionalException;
-import org.genxdm.processor.w3c.xs.exception.SmAttributeRefPresentException;
-import org.genxdm.processor.w3c.xs.exception.SmAttributeRefXorNameException;
-import org.genxdm.processor.w3c.xs.exception.SmAttributeUseException;
-import org.genxdm.processor.w3c.xs.exception.SmComplexTypeException;
-import org.genxdm.processor.w3c.xs.exception.SmDuplicateIDException;
-import org.genxdm.processor.w3c.xs.exception.SmElementRefPresentException;
-import org.genxdm.processor.w3c.xs.exception.SmElementRefXorNameException;
-import org.genxdm.processor.w3c.xs.exception.SmElementSimpleTypeXorComplexTypeException;
-import org.genxdm.processor.w3c.xs.exception.SmIllegalNamespaceException;
-import org.genxdm.processor.w3c.xs.exception.SmImportNotWellFormedException;
-import org.genxdm.processor.w3c.xs.exception.SmInclusionNamespaceMismatchException;
-import org.genxdm.processor.w3c.xs.exception.SmInclusionNotWellFormedException;
-import org.genxdm.processor.w3c.xs.exception.SmMissingAttributeException;
-import org.genxdm.processor.w3c.xs.exception.SmNoSchemaForNamespaceException;
-import org.genxdm.processor.w3c.xs.exception.SmRedefineTypeSelfReferenceException;
-import org.genxdm.processor.w3c.xs.exception.SmRedefinitionNamespaceMismatchException;
-import org.genxdm.processor.w3c.xs.exception.SmRedefinitionNotWellFormedException;
-import org.genxdm.processor.w3c.xs.exception.SmSimpleTypeListException;
-import org.genxdm.processor.w3c.xs.exception.SmSimpleTypeRestrictionException;
-import org.genxdm.processor.w3c.xs.exception.SmSimpleTypeUnionException;
-import org.genxdm.processor.w3c.xs.exception.SmSourceAttributeDefaultAndFixedPresentException;
-import org.genxdm.processor.w3c.xs.exception.SmTopLevelSchemaNotWellFormedException;
-import org.genxdm.processor.w3c.xs.exception.SmUnexpectedElementException;
-import org.genxdm.processor.w3c.xs.exception.SmUnexpectedEndException;
-import org.genxdm.processor.w3c.xs.exception.SrcAttributeTypeAndSimpleTypePresentException;
-import org.genxdm.processor.w3c.xs.exception.SrcPrefixNotFoundException;
+import org.genxdm.processor.w3c.xs.exception.cvc.CvcUnexpectedAttributeException;
+import org.genxdm.processor.w3c.xs.exception.cvc.CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmAttributeDefaultAndUseImpliesOptionalException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmAttributeRefPresentException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmAttributeRefXorNameException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmAttributeUseException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmComplexTypeException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateIDException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmElementRefPresentException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmElementRefXorNameException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmElementSimpleTypeXorComplexTypeException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmIllegalNamespaceException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmImportNotWellFormedException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmInclusionNamespaceMismatchException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmInclusionNotWellFormedException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmMissingAttributeException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmNoSchemaForNamespaceException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmRedefineTypeSelfReferenceException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmRedefinitionNamespaceMismatchException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmRedefinitionNotWellFormedException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmSimpleTypeListException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmSimpleTypeRestrictionException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmSimpleTypeUnionException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmSourceAttributeDefaultAndFixedPresentException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmTopLevelSchemaNotWellFormedException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmUnexpectedElementException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmUnexpectedEndException;
+import org.genxdm.processor.w3c.xs.exception.src.SrcAttributeTypeAndSimpleTypePresentException;
+import org.genxdm.processor.w3c.xs.exception.src.SrcPrefixNotFoundException;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLAttribute;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLAttributeException;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLAttributeGroup;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLAttributeGroupException;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLAttributeUse;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLCardinality;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLComplexTypeException;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLCompositorOutsideGroupException;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLContentTypeKind;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLElement;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLElementException;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLEnumeration;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLFieldException;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLFractionDigitsFacet;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLIdentityConstraint;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLIdentityConstraintException;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLLength;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLMinMaxFacet;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLModelGroup;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLModelGroupException;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLModelGroupUseException;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLNotation;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLNotationException;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLParticle;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLParticleWithElementTerm;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLParticleWithModelGroupTerm;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLParticleWithWildcardTerm;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLPatternFacet;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLRepresentation;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLScope;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLSelectorException;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLSimpleTypeException;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLTotalDigitsFacet;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLType;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLTypeRef;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLValueConstraint;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLWildcard;
 import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.constraints.IdentityConstraintKind;
@@ -5698,7 +5735,7 @@ final class XMLSchemaParser extends XMLRepresentation
 				{
 					try
 					{
-						notation.publicId = token(reader.getAttributeValue(i));
+						notation.setPublicId(token(reader.getAttributeValue(i)));
 					}
 					catch (final SimpleTypeException e)
 					{
@@ -5709,7 +5746,7 @@ final class XMLSchemaParser extends XMLRepresentation
 				{
 					try
 					{
-						notation.systemId = anyURI(reader.getAttributeValue(i));
+						notation.setSystemId(anyURI(reader.getAttributeValue(i)));
 					}
 					catch (final SimpleTypeException e)
 					{
@@ -5735,7 +5772,7 @@ final class XMLSchemaParser extends XMLRepresentation
 			}
 		}
 
-		if (null == notation.publicId && null == notation.systemId)
+		if (null == notation.getPublicId() && null == notation.getSystemId())
 		{
 			// Either public or system should be defined.
 			m_errors.error(new SmMissingAttributeException(reader.getName(), new QName(LN_PUBLIC), getFrozenLocation(reader.getLocation())));

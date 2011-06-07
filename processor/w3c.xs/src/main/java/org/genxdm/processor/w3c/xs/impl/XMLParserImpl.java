@@ -23,6 +23,8 @@ import java.net.URI;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.SmRegExCompiler;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLComponentLocator;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLSccExceptionAdapter;
 import org.genxdm.xs.components.ComponentBag;
 import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.exceptions.AbortException;

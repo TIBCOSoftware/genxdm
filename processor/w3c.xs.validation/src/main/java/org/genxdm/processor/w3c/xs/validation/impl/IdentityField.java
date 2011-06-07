@@ -23,8 +23,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.processor.w3c.xs.exception.CvcIdentityConstraintFieldNodeNotSimpleTypeException;
-import org.genxdm.processor.w3c.xs.exception.SmDuplicateKeyFieldException;
+import org.genxdm.processor.w3c.xs.exception.cvc.CvcIdentityConstraintFieldNodeNotSimpleTypeException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateKeyFieldException;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.constraints.RestrictedXPath;
 import org.genxdm.xs.exceptions.AbortException;

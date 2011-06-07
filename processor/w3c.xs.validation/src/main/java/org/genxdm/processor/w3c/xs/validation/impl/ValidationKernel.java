@@ -23,11 +23,11 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.genxdm.names.NameSource;
-import org.genxdm.processor.w3c.xs.exception.CvcElementFixedValueOverriddenSimpleException;
-import org.genxdm.processor.w3c.xs.exception.CvcElementUnexpectedChildInNilledElementException;
-import org.genxdm.processor.w3c.xs.exception.CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException;
-import org.genxdm.processor.w3c.xs.exception.CvcUnexpectedTextInEmptyContentException;
-import org.genxdm.processor.w3c.xs.exception.SmExceptionSupplier;
+import org.genxdm.processor.w3c.xs.exception.cvc.CvcElementFixedValueOverriddenSimpleException;
+import org.genxdm.processor.w3c.xs.exception.cvc.CvcElementUnexpectedChildInNilledElementException;
+import org.genxdm.processor.w3c.xs.exception.cvc.CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException;
+import org.genxdm.processor.w3c.xs.exception.cvc.CvcUnexpectedTextInEmptyContentException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmExceptionSupplier;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
 import org.genxdm.processor.w3c.xs.validation.api.VxOutputHandler;
 import org.genxdm.processor.w3c.xs.validation.api.VxPSVI;
