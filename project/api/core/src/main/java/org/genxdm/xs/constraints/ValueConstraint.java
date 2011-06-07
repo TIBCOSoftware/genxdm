@@ -22,6 +22,7 @@ import java.util.List;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.exceptions.DatatypeException;
+import org.genxdm.xs.exceptions.SimpleTypeException;
 import org.genxdm.xs.types.SimpleType;
 
 /**
@@ -44,8 +45,6 @@ public final class ValueConstraint
         }
     }
 
-    // TODO: remove the list member, keeping the lexical value;
-    // maybe identify the type, and then change the getValue method?
     private final Kind variety;
     private final SimpleType constrainedType;
     private final String lexicalForm;
@@ -69,6 +68,7 @@ public final class ValueConstraint
      * Returns the the {value} property of the value constraint.
      */
     public <A> List<A> getValue(AtomBridge<A> bridge)
+//        throws SimpleTypeException
     {
         List<A> value = null;
         try
@@ -77,8 +77,9 @@ public final class ValueConstraint
         }
         catch (DatatypeException dte)
         {
-            // TODO: do something more reasonable
-            throw new RuntimeException(dte);
+            // this should never happen, mind.  if it does, then there's
+            // breakage in the atom bridge supplied.
+            throw new RuntimeException(new SimpleTypeException(lexicalForm, constrainedType, dte));
         }
         return Collections.unmodifiableList(new ArrayList<A>(value));
     }

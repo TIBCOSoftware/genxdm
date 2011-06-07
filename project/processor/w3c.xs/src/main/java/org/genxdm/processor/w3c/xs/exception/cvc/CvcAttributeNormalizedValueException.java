@@ -24,31 +24,31 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcAttributeNormalizedValueException extends CvcAttributeException
 {
-	private final String normalizedValue;
+    private final String normalizedValue;
 
-	public CvcAttributeNormalizedValueException(final QName attributeName, final String normalizedValue, final LocationInSchema location, final SimpleTypeException cause)
-	{
-		super(PART_NORMALIZED_VALUE, attributeName, location, cause);
-		this.normalizedValue = PreCondition.assertArgumentNotNull(normalizedValue, "normalizedValue");
-	}
+    public CvcAttributeNormalizedValueException(final QName attributeName, final String normalizedValue, final LocationInSchema location, final SimpleTypeException cause)
+    {
+        super(PART_NORMALIZED_VALUE, attributeName, location, cause);
+        this.normalizedValue = PreCondition.assertArgumentNotNull(normalizedValue, "normalizedValue");
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The normalized value, '" + normalizedValue + "', of the attribute " + getAttributeName() + " is not locally valid with respect to the {type definition}.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The normalized value, '" + normalizedValue + "', of the attribute " + getAttributeName() + " is not locally valid with respect to the {type definition}.";
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof CvcAttributeNormalizedValueException)
-		{
-			final CvcAttributeNormalizedValueException e = (CvcAttributeNormalizedValueException)obj;
-			return e.getAttributeName().equals(getAttributeName()) && e.normalizedValue.equals(normalizedValue);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof CvcAttributeNormalizedValueException)
+        {
+            final CvcAttributeNormalizedValueException e = (CvcAttributeNormalizedValueException)obj;
+            return e.getAttributeName().equals(getAttributeName()) && e.normalizedValue.equals(normalizedValue);
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

@@ -57,7 +57,7 @@ public final class W3cXmlSchemaParser
      *            The new compiler. May be <code>null</code> to reset to
      *            default.
      */
-    public void setRegExCompiler(final SmRegExCompiler regexc)
+    public void setRegExCompiler(final SchemaRegExCompiler regexc)
     {
         if (null != regexc)
         {
@@ -70,9 +70,9 @@ public final class W3cXmlSchemaParser
     }
 
     // The default Regular Expression compiler is backed by the JDK.
-    private static final SmRegExCompiler DEFAULT_REGEX_COMPILER = new RegExCompilerJDK();
+    private static final SchemaRegExCompiler DEFAULT_REGEX_COMPILER = new RegExCompilerJDK();
 
     // The actual Regular Expression compiler may be changed.
-    private SmRegExCompiler regexc;
+    private SchemaRegExCompiler regexc;
 
 }

@@ -24,10 +24,10 @@ import java.util.Stack;
  */
 public final class XMLCycles
 {
-	public final Stack<XMLAttributeGroup> attributeGroups = new Stack<XMLAttributeGroup>();
-	public final Stack<XMLAttribute> attributes = new Stack<XMLAttribute>();
-	public final Stack<XMLIdentityConstraint> constraints = new Stack<XMLIdentityConstraint>();
-	public final Stack<XMLElement> elements = new Stack<XMLElement>();
-	public final Stack<XMLModelGroup> groups = new Stack<XMLModelGroup>();
-	public final Stack<XMLType> types = new Stack<XMLType>();
+    public final Stack<XMLAttributeGroup> attributeGroups = new Stack<XMLAttributeGroup>();
+    public final Stack<XMLAttribute> attributes = new Stack<XMLAttribute>();
+    public final Stack<XMLIdentityConstraint> constraints = new Stack<XMLIdentityConstraint>();
+    public final Stack<XMLElement> elements = new Stack<XMLElement>();
+    public final Stack<XMLModelGroup> groups = new Stack<XMLModelGroup>();
+    public final Stack<XMLType> types = new Stack<XMLType>();
 }

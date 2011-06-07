@@ -25,36 +25,36 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmAttributeUseException extends SmComplexTypeException
 {
-	private final QName attributeName;
+    private final QName attributeName;
 
-	public SmAttributeUseException(final QName elementName, final QName attributeName, final LocationInSchema location, final SimpleTypeException cause)
-	{
-		super(PART_ATTRIBUTE_VALID, elementName, location, cause);
-		this.attributeName = PreCondition.assertArgumentNotNull(attributeName, "name");
-	}
+    public SmAttributeUseException(final QName elementName, final QName attributeName, final LocationInSchema location, final SimpleTypeException cause)
+    {
+        super(PART_ATTRIBUTE_VALID, elementName, location, cause);
+        this.attributeName = PreCondition.assertArgumentNotNull(attributeName, "name");
+    }
 
-	public SmAttributeUseException(final QName elementName, final QName attributeName, final LocationInSchema location, final CvcIDException cause)
-	{
-		super(PART_ATTRIBUTE_VALID, elementName, location, cause);
-		this.attributeName = PreCondition.assertArgumentNotNull(attributeName, "name");
-	}
+    public SmAttributeUseException(final QName elementName, final QName attributeName, final LocationInSchema location, final CvcIDException cause)
+    {
+        super(PART_ATTRIBUTE_VALID, elementName, location, cause);
+        this.attributeName = PreCondition.assertArgumentNotNull(attributeName, "name");
+    }
 
-	public QName getAttributeName()
-	{
-		return attributeName;
-	}
+    public QName getAttributeName()
+    {
+        return attributeName;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		final String localMessage = "The attribute, '" + attributeName + "', is not valid with respect to its attribute use.";
+    @Override
+    public String getMessage()
+    {
+        final String localMessage = "The attribute, '" + attributeName + "', is not valid with respect to its attribute use.";
 
-		final StringBuilder message = new StringBuilder();
-		message.append(getOutcome().getSection());
-		message.append(".");
-		message.append(getPartNumber());
-		message.append(": ");
-		message.append(localMessage);
-		return message.toString();
-	}
+        final StringBuilder message = new StringBuilder();
+        message.append(getOutcome().getSection());
+        message.append(".");
+        message.append(getPartNumber());
+        message.append(": ");
+        message.append(localMessage);
+        return message.toString();
+    }
 }

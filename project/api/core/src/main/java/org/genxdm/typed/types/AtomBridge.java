@@ -541,11 +541,6 @@ public interface AtomBridge<A>
      */
     int getMonth(A gregorian);
 
-    /**
-     * Returns a {@link NameSource} implementation consistent with this atom bridge.
-     */
-    NameSource getNameBridge();
-
     String getNamespaceFromQName(A atom);
 
     /**

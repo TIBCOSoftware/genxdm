@@ -21,14 +21,14 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SrcBaseMustHaveSimpleOrMixedContentTypeComplexTypeException extends SmSourceComplexTypeException
 {
-	public SrcBaseMustHaveSimpleOrMixedContentTypeComplexTypeException(final LocationInSchema location)
-	{
-		super(PART_SIMPLE_CONTENT, location);
-	}
+    public SrcBaseMustHaveSimpleOrMixedContentTypeComplexTypeException(final LocationInSchema location)
+    {
+        super(PART_SIMPLE_CONTENT, location);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Base complex type must have simple or mixed content.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Base complex type must have simple or mixed content.";
+    }
 }

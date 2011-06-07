@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.processor.w3c.xs.impl;
 
-import org.genxdm.xs.resolve.LocationInSchema;
-
-/**
- * Marker interface indicating a location in a file.
- */
-public interface SmFileLocation extends LocationInSchema
+@SuppressWarnings("serial")
+public final class SchemaRegExCompileException extends Exception
 {
+    private final String pattern;
 
+    public SchemaRegExCompileException(final Throwable cause, final String pattern)
+    {
+        super(cause);
+        this.pattern = pattern;
+    }
+
+    public String getPattern()
+    {
+        return pattern;
+    }
 }

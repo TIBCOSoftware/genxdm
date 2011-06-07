@@ -25,46 +25,46 @@ import org.genxdm.exceptions.PreCondition;
  */
 public final class XMLTypeRef
 {
-	private final XMLType localType;
-	private final QName name;
+    private final XMLType localType;
+    private final QName name;
 
-	public XMLTypeRef(final QName name)
-	{
-		this.name = PreCondition.assertArgumentNotNull(name, "name");
-		this.localType = null;
-	}
+    public XMLTypeRef(final QName name)
+    {
+        this.name = PreCondition.assertArgumentNotNull(name, "name");
+        this.localType = null;
+    }
 
-	public XMLTypeRef(final XMLType localType)
-	{
-		this.name = null;
-		this.localType = PreCondition.assertArgumentNotNull(localType, "localType");
-		PreCondition.assertTrue(localType.getScope().isLocal());
-	}
+    public XMLTypeRef(final XMLType localType)
+    {
+        this.name = null;
+        this.localType = PreCondition.assertArgumentNotNull(localType, "localType");
+        PreCondition.assertTrue(localType.getScope().isLocal());
+    }
 
-	public XMLType getLocal()
-	{
-		return localType;
-	}
+    public XMLType getLocal()
+    {
+        return localType;
+    }
 
-	public QName getName()
-	{
-		return PreCondition.assertNotNull(name, "name");
-	}
+    public QName getName()
+    {
+        return PreCondition.assertNotNull(name, "name");
+    }
 
-	public boolean isComplexUrType()
-	{
-		if (null != name)
-		{
-			return XMLConstants.W3C_XML_SCHEMA_NS_URI.equals(name.getNamespaceURI()) && "anyType".equals(name.getLocalPart());
-		}
-		else
-		{
-			return false;
-		}
-	}
+    public boolean isComplexUrType()
+    {
+        if (null != name)
+        {
+            return XMLConstants.W3C_XML_SCHEMA_NS_URI.equals(name.getNamespaceURI()) && "anyType".equals(name.getLocalPart());
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public boolean isGlobal()
-	{
-		return (null != name);
-	}
+    public boolean isGlobal()
+    {
+        return (null != name);
+    }
 }

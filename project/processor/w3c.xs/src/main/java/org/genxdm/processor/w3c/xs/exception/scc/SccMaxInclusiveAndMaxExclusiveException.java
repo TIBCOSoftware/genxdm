@@ -21,19 +21,19 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 @SuppressWarnings("serial")
 public final class SccMaxInclusiveAndMaxExclusiveException extends ComponentConstraintException
 {
-	private final String m_maxInclusive;
-	private final String m_maxExclusive;
+    private final String m_maxInclusive;
+    private final String m_maxExclusive;
 
-	public SccMaxInclusiveAndMaxExclusiveException(final String maxInclusive, final String maxExclusive)
-	{
-		super(ValidationOutcome.SCC_MaxInclusiveAndMaxExclusive, "4.3.8.4");
-		m_maxInclusive = maxInclusive;
-		m_maxExclusive = maxExclusive;
-	}
+    public SccMaxInclusiveAndMaxExclusiveException(final String maxInclusive, final String maxExclusive)
+    {
+        super(ValidationOutcome.SCC_MaxInclusiveAndMaxExclusive, "4.3.8.4");
+        m_maxInclusive = maxInclusive;
+        m_maxExclusive = maxExclusive;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "maxInclusive(" + m_maxInclusive + ") and maxExclusive(" + m_maxExclusive + ") specified in the same derivation step of a datatype definition";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "maxInclusive(" + m_maxInclusive + ") and maxExclusive(" + m_maxExclusive + ") specified in the same derivation step of a datatype definition";
+    }
 }

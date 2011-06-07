@@ -22,14 +22,14 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcIdentityConstraintFieldNodeNotSimpleTypeException extends CvcIdentityConstraintException
 {
-	public CvcIdentityConstraintFieldNodeNotSimpleTypeException(final QName constraintName, final LocationInSchema location)
-	{
-		super(constraintName, PART_THREE, location);
-	}
+    public CvcIdentityConstraintFieldNodeNotSimpleTypeException(final QName constraintName, final LocationInSchema location)
+    {
+        super(constraintName, PART_THREE, location);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Field evaluates to a node that is not a simple type.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Field evaluates to a node that is not a simple type.";
+    }
 }

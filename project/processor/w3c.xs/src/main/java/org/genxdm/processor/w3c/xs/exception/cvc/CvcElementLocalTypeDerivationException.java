@@ -24,39 +24,39 @@ import org.genxdm.xs.types.Type;
 @SuppressWarnings("serial")
 public final class CvcElementLocalTypeDerivationException extends CvcElementException
 {
-	private final Type m_localType;
+    private final Type m_localType;
 
-	public CvcElementLocalTypeDerivationException(final Type localType, final ElementDefinition elementDeclaration, final ComponentConstraintException cause, final LocationInSchema location)
-	{
-		super(PART_LOCAL_TYPE_DERIVATION, elementDeclaration, location, cause);
-		m_localType = PreCondition.assertArgumentNotNull(localType, "localType");
-	}
+    public CvcElementLocalTypeDerivationException(final Type localType, final ElementDefinition elementDeclaration, final ComponentConstraintException cause, final LocationInSchema location)
+    {
+        super(PART_LOCAL_TYPE_DERIVATION, elementDeclaration, location, cause);
+        m_localType = PreCondition.assertArgumentNotNull(localType, "localType");
+    }
 
-	@Override
-	public String getMessage()
-	{
-		final String localMessage = "The local type '" + m_localType + "' is not validly derived from the type definition '" + getElementDeclaration().getType() + "', of element '" + getElementDeclaration() + "'.";
+    @Override
+    public String getMessage()
+    {
+        final String localMessage = "The local type '" + m_localType + "' is not validly derived from the type definition '" + getElementDeclaration().getType() + "', of element '" + getElementDeclaration() + "'.";
 
-		final StringBuilder message = new StringBuilder();
-		message.append(getOutcome().getSection());
-		message.append(".");
-		message.append(getPartNumber());
-		message.append(": ");
-		message.append(localMessage);
-		return message.toString();
-	}
+        final StringBuilder message = new StringBuilder();
+        message.append(getOutcome().getSection());
+        message.append(".");
+        message.append(getPartNumber());
+        message.append(": ");
+        message.append(localMessage);
+        return message.toString();
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof CvcElementLocalTypeDerivationException)
-		{
-			final CvcElementLocalTypeDerivationException e = (CvcElementLocalTypeDerivationException)obj;
-			return (m_localType.equals(e.m_localType) && getElementDeclaration().equals(e.getElementDeclaration()));
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof CvcElementLocalTypeDerivationException)
+        {
+            final CvcElementLocalTypeDerivationException e = (CvcElementLocalTypeDerivationException)obj;
+            return (m_localType.equals(e.m_localType) && getElementDeclaration().equals(e.getElementDeclaration()));
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

@@ -25,59 +25,59 @@ import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 
 public final class XMLAttributeGroup extends XMLComponent
 {
-	private final QName name;
-	private final LinkedList<XMLAttributeUse> attributeUses = new LinkedList<XMLAttributeUse>();
-	private final LinkedList<XMLAttributeGroup> groups = new LinkedList<XMLAttributeGroup>();
-	public final HashSet<QName> prohibited = new HashSet<QName>();
-	public XMLWildcard wildcard;
+    private final QName name;
+    private final LinkedList<XMLAttributeUse> attributeUses = new LinkedList<XMLAttributeUse>();
+    private final LinkedList<XMLAttributeGroup> groups = new LinkedList<XMLAttributeGroup>();
+    public final HashSet<QName> prohibited = new HashSet<QName>();
+    public XMLWildcard wildcard;
 
-	public XMLAttributeGroup(final QName name, final XMLScope scope, final SrcFrozenLocation location)
-	{
-		super(scope, location);
-		if (scope.isGlobal())
-		{
-			this.name = PreCondition.assertArgumentNotNull(name, "name");
-		}
-		else
-		{
-			PreCondition.assertNull(name, "name");
-			this.name = null;
-		}
-	}
+    public XMLAttributeGroup(final QName name, final XMLScope scope, final SrcFrozenLocation location)
+    {
+        super(scope, location);
+        if (scope.isGlobal())
+        {
+            this.name = PreCondition.assertArgumentNotNull(name, "name");
+        }
+        else
+        {
+            PreCondition.assertNull(name, "name");
+            this.name = null;
+        }
+    }
 
-	public XMLAttributeGroup(final QName name, final XMLScope scope)
-	{
-		super(scope);
-		if (scope.isGlobal())
-		{
-			this.name = PreCondition.assertArgumentNotNull(name, "name");
-		}
-		else
-		{
-			PreCondition.assertNull(name, "name");
-			this.name = null;
-		}
-	}
+    public XMLAttributeGroup(final QName name, final XMLScope scope)
+    {
+        super(scope);
+        if (scope.isGlobal())
+        {
+            this.name = PreCondition.assertArgumentNotNull(name, "name");
+        }
+        else
+        {
+            PreCondition.assertNull(name, "name");
+            this.name = null;
+        }
+    }
 
-	public QName getName()
-	{
-		if (getScope().isGlobal())
-		{
-			return name;
-		}
-		else
-		{
-			throw new AssertionError();
-		}
-	}
+    public QName getName()
+    {
+        if (getScope().isGlobal())
+        {
+            return name;
+        }
+        else
+        {
+            throw new AssertionError();
+        }
+    }
 
-	public LinkedList<XMLAttributeUse> getAttributeUses()
-	{
-		return attributeUses;
-	}
+    public LinkedList<XMLAttributeUse> getAttributeUses()
+    {
+        return attributeUses;
+    }
 
-	public LinkedList<XMLAttributeGroup> getGroups()
-	{
-		return groups;
-	}
+    public LinkedList<XMLAttributeGroup> getGroups()
+    {
+        return groups;
+    }
 }

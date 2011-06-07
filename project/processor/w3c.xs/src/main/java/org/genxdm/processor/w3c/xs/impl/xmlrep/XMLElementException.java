@@ -21,14 +21,14 @@ import org.genxdm.xs.exceptions.SchemaException;
 @SuppressWarnings("serial")
 public final class XMLElementException extends Exception
 {
-	public XMLElementException(final SchemaException cause)
-	{
-		super(PreCondition.assertArgumentNotNull(cause, "cause"));
-	}
+    public XMLElementException(final SchemaException cause)
+    {
+        super(PreCondition.assertArgumentNotNull(cause, "cause"));
+    }
 
-	@Override
-	public SchemaException getCause()
-	{
-		return (SchemaException)super.getCause();
-	}
+    @Override
+    public SchemaException getCause()
+    {
+        return (SchemaException)super.getCause();
+    }
 }

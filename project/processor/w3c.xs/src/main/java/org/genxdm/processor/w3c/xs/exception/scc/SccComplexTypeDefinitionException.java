@@ -26,29 +26,29 @@ import org.genxdm.xs.exceptions.SimpleTypeException;
 @SuppressWarnings("serial")
 public abstract class SccComplexTypeDefinitionException extends ComponentConstraintException
 {
-	private final QName m_typeName;
+    private final QName m_typeName;
 
-	public static final String PART_PROPERTIES = "1";
-	public static final String PART_BASE_SIMPLE_TYPE = "2";
-	public static final String PART_CIRCULAR_DEFINITIONS = "3";
-	public static final String PART_ATTRIBUTE_UNIQUENESS = "4";
-	public static final String PART_ATTRIBUTE_DERIVED_FROM_ID = "5";
-	public static final String PART_FIXED_OVERRIDE = "?";
+    public static final String PART_PROPERTIES = "1";
+    public static final String PART_BASE_SIMPLE_TYPE = "2";
+    public static final String PART_CIRCULAR_DEFINITIONS = "3";
+    public static final String PART_ATTRIBUTE_UNIQUENESS = "4";
+    public static final String PART_ATTRIBUTE_DERIVED_FROM_ID = "5";
+    public static final String PART_FIXED_OVERRIDE = "?";
 
-	public SccComplexTypeDefinitionException(final String partNumber, final QName typeName)
-	{
-		super(ValidationOutcome.SCC_Complex_Type_Definition_Properties, partNumber);
-		m_typeName = PreCondition.assertArgumentNotNull(typeName, "typeName");
-	}
+    public SccComplexTypeDefinitionException(final String partNumber, final QName typeName)
+    {
+        super(ValidationOutcome.SCC_Complex_Type_Definition_Properties, partNumber);
+        m_typeName = PreCondition.assertArgumentNotNull(typeName, "typeName");
+    }
 
-	public SccComplexTypeDefinitionException(final String partNumber, final QName typeName, final SimpleTypeException cause)
-	{
-		super(ValidationOutcome.SCC_Complex_Type_Definition_Properties, partNumber, cause);
-		m_typeName = PreCondition.assertArgumentNotNull(typeName, "typeName");
-	}
+    public SccComplexTypeDefinitionException(final String partNumber, final QName typeName, final SimpleTypeException cause)
+    {
+        super(ValidationOutcome.SCC_Complex_Type_Definition_Properties, partNumber, cause);
+        m_typeName = PreCondition.assertArgumentNotNull(typeName, "typeName");
+    }
 
-	public final QName getTypeName()
-	{
-		return m_typeName;
-	}
+    public final QName getTypeName()
+    {
+        return m_typeName;
+    }
 }

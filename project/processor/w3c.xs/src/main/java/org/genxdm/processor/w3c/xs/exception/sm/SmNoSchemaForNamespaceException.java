@@ -25,22 +25,22 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmNoSchemaForNamespaceException extends SmLocationException
 {
-	private final URI namespaceURI;
+    private final URI namespaceURI;
 
-	public SmNoSchemaForNamespaceException(final URI namespaceURI, final LocationInSchema location)
-	{
-		super(ValidationOutcome.TODO, "1", location);
-		this.namespaceURI = PreCondition.assertArgumentNotNull(namespaceURI, "namespaceURI");
-	}
+    public SmNoSchemaForNamespaceException(final URI namespaceURI, final LocationInSchema location)
+    {
+        super(ValidationOutcome.TODO, "1", location);
+        this.namespaceURI = PreCondition.assertArgumentNotNull(namespaceURI, "namespaceURI");
+    }
 
-	public URI getNamespaceUri()
-	{
-		return namespaceURI;
-	}
+    public URI getNamespaceUri()
+    {
+        return namespaceURI;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "No schema for namespace " + namespaceURI + ".";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "No schema for namespace " + namespaceURI + ".";
+    }
 }

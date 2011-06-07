@@ -24,43 +24,43 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcElementInSimpleContentTypeException extends SmComplexTypeException
 {
-	private final QName m_childName;
-	private final LocationInSchema m_childLocation;
+    private final QName m_childName;
+    private final LocationInSchema m_childLocation;
 
-	public CvcElementInSimpleContentTypeException(final QName elementName, final LocationInSchema elementLocation, final QName childName, final LocationInSchema childLocation)
-	{
-		super(PART_CONTENT_TYPE_IS_SIMPLE, elementName, elementLocation);
-		m_childName = PreCondition.assertArgumentNotNull(childName, "childName");
-		m_childLocation = childLocation;
-	}
+    public CvcElementInSimpleContentTypeException(final QName elementName, final LocationInSchema elementLocation, final QName childName, final LocationInSchema childLocation)
+    {
+        super(PART_CONTENT_TYPE_IS_SIMPLE, elementName, elementLocation);
+        m_childName = PreCondition.assertArgumentNotNull(childName, "childName");
+        m_childLocation = childLocation;
+    }
 
-	public QName getChildName()
-	{
-		return m_childName;
-	}
+    public QName getChildName()
+    {
+        return m_childName;
+    }
 
-	public LocationInSchema getChildLocation()
-	{
-		return m_childLocation;
-	}
+    public LocationInSchema getChildLocation()
+    {
+        return m_childLocation;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The element \"" + getElementName() + "\" cannot have children because the {content type} is Simple.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The element \"" + getElementName() + "\" cannot have children because the {content type} is Simple.";
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof CvcElementInSimpleContentTypeException)
-		{
-			final CvcElementInSimpleContentTypeException e = (CvcElementInSimpleContentTypeException)obj;
-			return e.getElementName().equals(getElementName());
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof CvcElementInSimpleContentTypeException)
+        {
+            final CvcElementInSimpleContentTypeException e = (CvcElementInSimpleContentTypeException)obj;
+            return e.getElementName().equals(getElementName());
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

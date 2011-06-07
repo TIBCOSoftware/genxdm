@@ -26,24 +26,24 @@ import org.genxdm.xs.exceptions.SimpleTypeException;
 @SuppressWarnings("serial")
 public abstract class SccElementDefaultValidImmediateException extends ComponentConstraintException
 {
-	private final QName m_elementName;
+    private final QName m_elementName;
 
-	public static final String PART_CONTENT_TYPE_SIMPLE_OR_MIXED = "2.1";
+    public static final String PART_CONTENT_TYPE_SIMPLE_OR_MIXED = "2.1";
 
-	public SccElementDefaultValidImmediateException(final String partNumber, final QName elementName)
-	{
-		super(ValidationOutcome.SCC_Element_Default_Valid_Immediate, partNumber);
-		m_elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
-	}
+    public SccElementDefaultValidImmediateException(final String partNumber, final QName elementName)
+    {
+        super(ValidationOutcome.SCC_Element_Default_Valid_Immediate, partNumber);
+        m_elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
+    }
 
-	public SccElementDefaultValidImmediateException(final String partNumber, final QName elementName, final SimpleTypeException cause)
-	{
-		super(ValidationOutcome.SCC_Element_Default_Valid_Immediate, partNumber, cause);
-		m_elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
-	}
+    public SccElementDefaultValidImmediateException(final String partNumber, final QName elementName, final SimpleTypeException cause)
+    {
+        super(ValidationOutcome.SCC_Element_Default_Valid_Immediate, partNumber, cause);
+        m_elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
+    }
 
-	public final QName getElementName()
-	{
-		return m_elementName;
-	}
+    public final QName getElementName()
+    {
+        return m_elementName;
+    }
 }

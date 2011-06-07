@@ -28,95 +28,95 @@ import org.genxdm.xs.types.Type;
 @SuppressWarnings("serial")
 public abstract class SccTypeDerivationOKComplexException extends ComponentConstraintException
 {
-	private final Type derivedType;
-	private final Type m_baseName;
-	private final Set<DerivationMethod> m_subset;
+    private final Type derivedType;
+    private final Type m_baseName;
+    private final Set<DerivationMethod> m_subset;
 
-	public static final String PART_METHOD = "1";
-	public static final String PART_HIERARCHY = "2";
-	public static final String PART_COMPLEX_UR_TYPE = "2.3.1";
-	public static final String PART_BASE_COMPLEX = "2.3.2.1";
-	public static final String PART_BASE_SIMPLE = "2.3.2.2";
+    public static final String PART_METHOD = "1";
+    public static final String PART_HIERARCHY = "2";
+    public static final String PART_COMPLEX_UR_TYPE = "2.3.1";
+    public static final String PART_BASE_COMPLEX = "2.3.2.1";
+    public static final String PART_BASE_SIMPLE = "2.3.2.2";
 
-	public SccTypeDerivationOKComplexException(final String partNumber, final Type derivedType, final Type baseName, final Set<DerivationMethod> subset)
-	{
-		super(ValidationOutcome.SCC_Type_Derivation_OK_Complex, partNumber);
-		this.derivedType = PreCondition.assertArgumentNotNull(derivedType, "derivedType");
-		this.m_baseName = PreCondition.assertArgumentNotNull(baseName, "baseName");
-		this.m_subset = PreCondition.assertArgumentNotNull(subset, "subset");
-	}
+    public SccTypeDerivationOKComplexException(final String partNumber, final Type derivedType, final Type baseName, final Set<DerivationMethod> subset)
+    {
+        super(ValidationOutcome.SCC_Type_Derivation_OK_Complex, partNumber);
+        this.derivedType = PreCondition.assertArgumentNotNull(derivedType, "derivedType");
+        this.m_baseName = PreCondition.assertArgumentNotNull(baseName, "baseName");
+        this.m_subset = PreCondition.assertArgumentNotNull(subset, "subset");
+    }
 
-	public SccTypeDerivationOKComplexException(final String partNumber, final Type derivedType, final Type baseName, final Set<DerivationMethod> subset, final ComponentConstraintException cause)
-	{
-		super(ValidationOutcome.SCC_Type_Derivation_OK_Complex, partNumber, cause);
-		this.derivedType = PreCondition.assertArgumentNotNull(derivedType, "derivedType");
-		this.m_baseName = PreCondition.assertArgumentNotNull(baseName, "baseName");
-		this.m_subset = PreCondition.assertArgumentNotNull(subset, "subset");
-	}
+    public SccTypeDerivationOKComplexException(final String partNumber, final Type derivedType, final Type baseName, final Set<DerivationMethod> subset, final ComponentConstraintException cause)
+    {
+        super(ValidationOutcome.SCC_Type_Derivation_OK_Complex, partNumber, cause);
+        this.derivedType = PreCondition.assertArgumentNotNull(derivedType, "derivedType");
+        this.m_baseName = PreCondition.assertArgumentNotNull(baseName, "baseName");
+        this.m_subset = PreCondition.assertArgumentNotNull(subset, "subset");
+    }
 
-	public final Type getDerivedType()
-	{
-		return derivedType;
-	}
+    public final Type getDerivedType()
+    {
+        return derivedType;
+    }
 
-	public final Type getBaseName()
-	{
-		return m_baseName;
-	}
+    public final Type getBaseName()
+    {
+        return m_baseName;
+    }
 
-	public final Set<DerivationMethod> getSubset()
-	{
-		return m_subset;
-	}
+    public final Set<DerivationMethod> getSubset()
+    {
+        return m_subset;
+    }
 
-	protected static String derivations(final Iterable<DerivationMethod> set)
-	{
-		final Iterator<DerivationMethod> it = set.iterator();
-		if (it.hasNext())
-		{
-			final DerivationMethod first = it.next();
-			if (it.hasNext())
-			{
-				final StringBuilder sb = new StringBuilder();
-				sb.append(derivation(first));
-				while (it.hasNext())
-				{
-					sb.append(" ");
-					sb.append(derivation(it.next()));
-				}
-				return sb.toString();
-			}
-			else
-			{
-				return derivation(first);
-			}
-		}
-		else
-		{
-			return "";
-		}
-	}
+    protected static String derivations(final Iterable<DerivationMethod> set)
+    {
+        final Iterator<DerivationMethod> it = set.iterator();
+        if (it.hasNext())
+        {
+            final DerivationMethod first = it.next();
+            if (it.hasNext())
+            {
+                final StringBuilder sb = new StringBuilder();
+                sb.append(derivation(first));
+                while (it.hasNext())
+                {
+                    sb.append(" ");
+                    sb.append(derivation(it.next()));
+                }
+                return sb.toString();
+            }
+            else
+            {
+                return derivation(first);
+            }
+        }
+        else
+        {
+            return "";
+        }
+    }
 
-	protected static String derivation(final DerivationMethod derivation)
-	{
-		switch (derivation)
-		{
-			case Extension:
-			{
-				return "extension";
-			}
-			case Restriction:
-			{
-				return "restriction";
-			}
-			case Substitution:
-			{
-				return "substitution";
-			}
-			default:
-			{
-				throw new AssertionError(derivation);
-			}
-		}
-	}
+    protected static String derivation(final DerivationMethod derivation)
+    {
+        switch (derivation)
+        {
+            case Extension:
+            {
+                return "extension";
+            }
+            case Restriction:
+            {
+                return "restriction";
+            }
+            case Substitution:
+            {
+                return "substitution";
+            }
+            default:
+            {
+                throw new AssertionError(derivation);
+            }
+        }
+    }
 }

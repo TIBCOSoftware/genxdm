@@ -25,23 +25,23 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmRedefineTypeSelfReferenceException extends SrcRedefinitionException
 {
-	private final QName expectName;
-	private final QName actualName;
+    private final QName expectName;
+    private final QName actualName;
 
-	public SmRedefineTypeSelfReferenceException(final QName expectName, final QName actualName, final LocationInSchema location)
-	{
-		super(PART_TYPE_SELF_REFERENCE, location);
-		this.expectName = PreCondition.assertArgumentNotNull(expectName, "expectName");
-		this.actualName = PreCondition.assertArgumentNotNull(actualName, "actualName");
-	}
+    public SmRedefineTypeSelfReferenceException(final QName expectName, final QName actualName, final LocationInSchema location)
+    {
+        super(PART_TYPE_SELF_REFERENCE, location);
+        this.expectName = PreCondition.assertArgumentNotNull(expectName, "expectName");
+        this.actualName = PreCondition.assertArgumentNotNull(actualName, "actualName");
+    }
 
-	public QName getExpectName()
-	{
-		return expectName;
-	}
+    public QName getExpectName()
+    {
+        return expectName;
+    }
 
-	public QName getActualName()
-	{
-		return actualName;
-	}
+    public QName getActualName()
+    {
+        return actualName;
+    }
 }

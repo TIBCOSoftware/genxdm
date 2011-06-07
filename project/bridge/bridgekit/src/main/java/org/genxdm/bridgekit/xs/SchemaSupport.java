@@ -18,7 +18,6 @@ package org.genxdm.bridgekit.xs;
 import java.util.Set;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.names.NameSource;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.types.PrimeType;
@@ -69,17 +68,16 @@ public final class SchemaSupport
 	/**
 	 * Determines whether the candidateType is derived from the ancestorTYpe based upon walking up from lhs towards the complex Ur-type.
 	 */
-	public static  boolean derivedFromType(final Type candidateType, final Type ancestorType, final Set<DerivationMethod> derivationMethods, final NameSource nameBridge)
+	public static  boolean derivedFromType(final Type candidateType, final Type ancestorType, final Set<DerivationMethod> derivationMethods)
 	{
 		PreCondition.assertArgumentNotNull(candidateType, "candidateType");
 		PreCondition.assertArgumentNotNull(ancestorType, "ancestorType");
 		PreCondition.assertArgumentNotNull(derivationMethods, "derivationMethods");
-		PreCondition.assertArgumentNotNull(nameBridge, "nameBridge");
 
-		return derivedFrom(candidateType, ancestorType.getTargetNamespace(), ancestorType.getLocalName(), derivationMethods, nameBridge);
+		return derivedFrom(candidateType, ancestorType.getTargetNamespace(), ancestorType.getLocalName(), derivationMethods);
 	}
 
-	public static  boolean derivedFrom(final Type candidateType, final String namespace, final String localName, final Set<DerivationMethod> derivationMethods, final NameSource nameBridge)
+	public static  boolean derivedFrom(final Type candidateType, final String namespace, final String localName, final Set<DerivationMethod> derivationMethods)
 	{
 		PreCondition.assertArgumentNotNull(candidateType, "candidateType");
 		PreCondition.assertArgumentNotNull(namespace, "namespace");

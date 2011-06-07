@@ -21,19 +21,19 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmInclusionNotWellFormedException extends SmInclusionException
 {
-	public SmInclusionNotWellFormedException(final LocationInSchema location)
-	{
-		super(PART_NOT_WELL_FORMED, location);
-	}
+    public SmInclusionNotWellFormedException(final LocationInSchema location)
+    {
+        super(PART_NOT_WELL_FORMED, location);
+    }
 
-	public SmInclusionNotWellFormedException(final LocationInSchema location, final SchemaException cause)
-	{
-		super(PART_NOT_WELL_FORMED, location, cause);
-	}
+    public SmInclusionNotWellFormedException(final LocationInSchema location, final SchemaException cause)
+    {
+        super(PART_NOT_WELL_FORMED, location, cause);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The included schema is not well-formed.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The included schema is not well-formed.";
+    }
 }

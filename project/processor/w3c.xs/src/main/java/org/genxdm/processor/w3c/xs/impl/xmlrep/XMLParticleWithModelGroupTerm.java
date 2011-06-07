@@ -21,13 +21,13 @@ import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 
 public final class XMLParticleWithModelGroupTerm extends XMLParticle
 {
-	public XMLParticleWithModelGroupTerm(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLModelGroup modelGroup, final SrcFrozenLocation location)
-	{
-		super(minOccurs, maxOccurs, modelGroup, location);
-	}
+    public XMLParticleWithModelGroupTerm(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLModelGroup modelGroup, final SrcFrozenLocation location)
+    {
+        super(minOccurs, maxOccurs, modelGroup, location);
+    }
 
-	public XMLModelGroup getTerm()
-	{
-		return (XMLModelGroup)super.getTerm();
-	}
+    public XMLModelGroup getTerm()
+    {
+        return (XMLModelGroup)super.getTerm();
+    }
 }

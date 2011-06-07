@@ -21,8 +21,8 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmSimpleTypeUnionException extends SrcSimpleTypeException
 {
-	public SmSimpleTypeUnionException(final LocationInSchema location)
-	{
-		super(PART_UNION, location);
-	}
+    public SmSimpleTypeUnionException(final LocationInSchema location)
+    {
+        super(PART_UNION, location);
+    }
 }

@@ -22,14 +22,14 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcElementDeclarationAndTypeException extends CvcElementSchemaValidityAssessmentException
 {
-	public CvcElementDeclarationAndTypeException(final QName elementName, final LocationInSchema location)
-	{
-		super(PART_ONE, elementName, location);
-	}
+    public CvcElementDeclarationAndTypeException(final QName elementName, final LocationInSchema location)
+    {
+        super(PART_ONE, elementName, location);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "A non-absent element declaration or type definition is not known for the element " + getElementName() + ".";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "A non-absent element declaration or type definition is not known for the element " + getElementName() + ".";
+    }
 }

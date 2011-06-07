@@ -22,8 +22,8 @@ import org.genxdm.xs.facets.Limit;
 @SuppressWarnings("serial")
 public class SccMinInclusionRestrictionException extends SccLimitRestrictionException
 {
-	public SccMinInclusionRestrictionException(final FacetKind parentFacetKind, final Limit restrictingLimit, final Limit parentLimit)
-	{
-		super(ValidationOutcome.SCC_MinInclusiveValidRestriction, parentFacetKind == FacetKind.MinInclusive ? "1" : parentFacetKind == FacetKind.MaxInclusive ? "2" : parentFacetKind == FacetKind.MinExclusive ? "3" : "4", FacetKind.MinInclusive, parentFacetKind, restrictingLimit, parentLimit);
-	}
+    public SccMinInclusionRestrictionException(final FacetKind parentFacetKind, final Limit restrictingLimit, final Limit parentLimit)
+    {
+        super(ValidationOutcome.SCC_MinInclusiveValidRestriction, parentFacetKind == FacetKind.MinInclusive ? "1" : parentFacetKind == FacetKind.MaxInclusive ? "2" : parentFacetKind == FacetKind.MinExclusive ? "3" : "4", FacetKind.MinInclusive, parentFacetKind, restrictingLimit, parentLimit);
+    }
 }

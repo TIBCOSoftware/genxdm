@@ -22,18 +22,18 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcNoRootElementException extends SmLocationException
 {
-	public CvcNoRootElementException(final LocationInSchema location)
-	{
-		super(ValidationOutcome.TODO, "?", location);
-	}
+    public CvcNoRootElementException(final LocationInSchema location)
+    {
+        super(ValidationOutcome.TODO, "?", location);
+    }
 
-	public String getPatternKey()
-	{
-		return "NoRootElementException";
-	}
+    public String getPatternKey()
+    {
+        return "NoRootElementException";
+    }
 
-	public Object[] getArguments()
-	{
-		return null;
-	}
+    public Object[] getArguments()
+    {
+        return null;
+    }
 }

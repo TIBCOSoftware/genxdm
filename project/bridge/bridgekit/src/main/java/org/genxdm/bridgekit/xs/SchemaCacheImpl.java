@@ -92,7 +92,7 @@ final class SchemaCacheImpl implements SchemaCache, ComponentProvider, Schema
 	private int m_nextType = 0;
 	final ConcurrentHashMap<QName, NotationDefinition> m_notations = new ConcurrentHashMap<QName, NotationDefinition>();
 	private final ConcurrentHashMap<QName, SimpleType> m_simpleTypes = new ConcurrentHashMap<QName, SimpleType>();
-	private final NameSource nameBridge;
+	private final NameSource nameBridge = NameSource.SINGLETON;
 	private final NamespaceNodeType NAMESPACE;
 	/**
 	 * The set of namespaces of all components. We build this during registration, which acts as the gateway.
@@ -106,8 +106,6 @@ final class SchemaCacheImpl implements SchemaCache, ComponentProvider, Schema
 
 	public SchemaCacheImpl()
 	{
-		this.nameBridge = new NameSource();
-
 		assertNotLocked();
 
 		final String W3C_XML_SCHEMA_NS_URI = XMLConstants.W3C_XML_SCHEMA_NS_URI;

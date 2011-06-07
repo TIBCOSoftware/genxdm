@@ -25,16 +25,16 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 @SuppressWarnings("serial")
 public final class SmCyclicTypeException extends ComponentConstraintException
 {
-	private final QName name;
+    private final QName name;
 
-	public SmCyclicTypeException(final QName name)
-	{
-		super(ValidationOutcome.TODO, "?");
-		this.name = PreCondition.assertArgumentNotNull(name, "name");
-	}
+    public SmCyclicTypeException(final QName name)
+    {
+        super(ValidationOutcome.TODO, "?");
+        this.name = PreCondition.assertArgumentNotNull(name, "name");
+    }
 
-	public String getMessage()
-	{
-		return "Cycle detected involving type " + name;
-	}
+    public String getMessage()
+    {
+        return "Cycle detected involving type " + name;
+    }
 }

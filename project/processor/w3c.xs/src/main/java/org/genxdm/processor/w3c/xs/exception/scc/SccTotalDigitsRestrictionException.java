@@ -21,19 +21,19 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 @SuppressWarnings("serial")
 final public class SccTotalDigitsRestrictionException extends ComponentConstraintException
 {
-	private final int m_totalDigits;
-	private final int m_restrictedTotalDigits;
+    private final int m_totalDigits;
+    private final int m_restrictedTotalDigits;
 
-	public SccTotalDigitsRestrictionException(final int totalDigits, final int restrictedTotalDigits)
-	{
-		super(ValidationOutcome.SCC_TotalDigitsValidRestriction, "0");
-		m_totalDigits = totalDigits;
-		m_restrictedTotalDigits = restrictedTotalDigits;
-	}
+    public SccTotalDigitsRestrictionException(final int totalDigits, final int restrictedTotalDigits)
+    {
+        super(ValidationOutcome.SCC_TotalDigitsValidRestriction, "0");
+        m_totalDigits = totalDigits;
+        m_restrictedTotalDigits = restrictedTotalDigits;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The {value}, " + m_totalDigits + ", of totalDigits must be less than or equal to the {value}, " + m_restrictedTotalDigits + ", of its inherited totalDigits.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The {value}, " + m_totalDigits + ", of totalDigits must be less than or equal to the {value}, " + m_restrictedTotalDigits + ", of its inherited totalDigits.";
+    }
 }

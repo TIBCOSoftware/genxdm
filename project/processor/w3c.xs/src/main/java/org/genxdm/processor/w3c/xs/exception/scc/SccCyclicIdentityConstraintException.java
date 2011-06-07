@@ -25,16 +25,16 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 @SuppressWarnings("serial")
 public final class SccCyclicIdentityConstraintException extends ComponentConstraintException
 {
-	private final QName m_name;
+    private final QName m_name;
 
-	public SccCyclicIdentityConstraintException(final QName name)
-	{
-		super(ValidationOutcome.TODO, "?");
-		m_name = PreCondition.assertArgumentNotNull(name, "name");
-	}
+    public SccCyclicIdentityConstraintException(final QName name)
+    {
+        super(ValidationOutcome.TODO, "?");
+        m_name = PreCondition.assertArgumentNotNull(name, "name");
+    }
 
-	public String getMessage()
-	{
-		return "Cycle detected involving identity constraint " + m_name;
-	}
+    public String getMessage()
+    {
+        return "Cycle detected involving identity constraint " + m_name;
+    }
 }

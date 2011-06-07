@@ -25,36 +25,36 @@ import java.net.URL;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.resolve.CatalogResolver;
 
-enum DefaultSmResolver implements CatalogResolver
+enum DefaultCatalogResolver implements CatalogResolver
 {
-	SINGLETON;
+    SINGLETON;
 
-	public InputStream resolveInputStream(final URI uri) throws IOException
-	{
-		PreCondition.assertArgumentNotNull(uri, "uri");
+    public InputStream resolveInputStream(final URI uri) throws IOException
+    {
+        PreCondition.assertArgumentNotNull(uri, "uri");
 
-		final URL toRetrieve;
+        final URL toRetrieve;
 
-		if (!uri.isAbsolute()) // assume local file
-		{
-			final File canonFile = new File(uri.toString()).getCanonicalFile();
-			toRetrieve = canonFile.toURI().toURL();
-		}
-		else
-		{
-			toRetrieve = uri.toURL();
-		}
+        if (!uri.isAbsolute()) // assume local file
+        {
+            final File canonFile = new File(uri.toString()).getCanonicalFile();
+            toRetrieve = canonFile.toURI().toURL();
+        }
+        else
+        {
+            toRetrieve = uri.toURL();
+        }
 
-		if (toRetrieve == null)
-		{
-			throw new FileNotFoundException(uri.toString());
-		}
+        if (toRetrieve == null)
+        {
+            throw new FileNotFoundException(uri.toString());
+        }
 
-		final InputStream stream = toRetrieve.openStream();
-		if (stream == null)
-		{
-			throw new FileNotFoundException(toRetrieve.toString());
-		}
-		return stream;
-	}
+        final InputStream stream = toRetrieve.openStream();
+        if (stream == null)
+        {
+            throw new FileNotFoundException(toRetrieve.toString());
+        }
+        return stream;
+    }
 }

@@ -21,8 +21,8 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmDuplicateIDException extends CvcIDException
 {
-	public SmDuplicateIDException(final Object tag, final LocationInSchema location)
-	{
-		super(PART_DUPLICATE, location);
-	}
+    public SmDuplicateIDException(final Object tag, final LocationInSchema location)
+    {
+        super(PART_DUPLICATE, location);
+    }
 }

@@ -26,26 +26,26 @@ import org.genxdm.xs.exceptions.SimpleTypeException;
 @SuppressWarnings("serial")
 public abstract class SccAttributeDeclarationException extends ComponentConstraintException
 {
-	private final QName m_attributeName;
+    private final QName m_attributeName;
 
-	public static final String PART_PROPERTIES = "1";
-	public static final String PART_VALUE_CONSTRAINT = "2";
-	public static final String PART_DERIVED_FROM_ID = "3";
+    public static final String PART_PROPERTIES = "1";
+    public static final String PART_VALUE_CONSTRAINT = "2";
+    public static final String PART_DERIVED_FROM_ID = "3";
 
-	public SccAttributeDeclarationException(final String partNumber, final QName attributeName)
-	{
-		super(ValidationOutcome.SCC_Attribute_Declaration_Properties_Correct, partNumber);
-		m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
-	}
+    public SccAttributeDeclarationException(final String partNumber, final QName attributeName)
+    {
+        super(ValidationOutcome.SCC_Attribute_Declaration_Properties_Correct, partNumber);
+        m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
+    }
 
-	public SccAttributeDeclarationException(final String partNumber, final QName attributeName, final SimpleTypeException cause)
-	{
-		super(ValidationOutcome.SCC_Attribute_Declaration_Properties_Correct, partNumber, cause);
-		m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
-	}
+    public SccAttributeDeclarationException(final String partNumber, final QName attributeName, final SimpleTypeException cause)
+    {
+        super(ValidationOutcome.SCC_Attribute_Declaration_Properties_Correct, partNumber, cause);
+        m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
+    }
 
-	public final QName getAttributeName()
-	{
-		return m_attributeName;
-	}
+    public final QName getAttributeName()
+    {
+        return m_attributeName;
+    }
 }

@@ -86,7 +86,7 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 	private final ConcurrentHashMap<Type, ArrayList<AttributeUse>> m_attributeUses = new ConcurrentHashMap<Type, ArrayList<AttributeUse>>();
 
 	private final SchemaCacheImpl m_cache;
-	private final NameSource m_nameBridge;
+	private final NameSource m_nameBridge = NameSource.SINGLETON;
 
 	private final ProcessingInstructionNodeType PROCESSING_INSTRUCTION;
 	private final TextNodeType TEXT;
@@ -96,7 +96,6 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 	public SchemaTypeBridgeImpl()
 	{
 		m_cache = new SchemaCacheImpl();
-		m_nameBridge = new NameSource();
 
 		ANY_COMPLEX_TYPE = m_cache.getComplexUrType();
 		ANY_SIMPLE_TYPE = m_cache.getSimpleUrType();

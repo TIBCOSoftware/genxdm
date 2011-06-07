@@ -28,32 +28,32 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public abstract class CvcElementException extends SmLocationException
 {
-	private final ElementDefinition elementDeclaration;
+    private final ElementDefinition elementDeclaration;
 
-	public static final String PART_ABSTRACT = "2";
-	public static final String PART_NOT_NILLABLE = "3.1";
-	public static final String PART_NO_CHILDREN = "3.2.1";
-	public static final String PART_FIXED_AND_NILLED = "3.2.2";
-	public static final String PART_LOCAL_TYPE_RESOLVE = "4.2";
-	public static final String PART_LOCAL_TYPE_DERIVATION = "4.3";
-	public static final String PART_VALUE_CONSTRAINT_WITH_CHILD_ELEMENT = "5.2.2.1";
-	public static final String PART_VALUE_CONSTRAINT_MIXED = "5.2.2.2.1";
-	public static final String PART_VALUE_CONSTRAINT_SIMPLE = "5.2.2.2.2";
+    public static final String PART_ABSTRACT = "2";
+    public static final String PART_NOT_NILLABLE = "3.1";
+    public static final String PART_NO_CHILDREN = "3.2.1";
+    public static final String PART_FIXED_AND_NILLED = "3.2.2";
+    public static final String PART_LOCAL_TYPE_RESOLVE = "4.2";
+    public static final String PART_LOCAL_TYPE_DERIVATION = "4.3";
+    public static final String PART_VALUE_CONSTRAINT_WITH_CHILD_ELEMENT = "5.2.2.1";
+    public static final String PART_VALUE_CONSTRAINT_MIXED = "5.2.2.2.1";
+    public static final String PART_VALUE_CONSTRAINT_SIMPLE = "5.2.2.2.2";
 
-	public CvcElementException(final String partNumber, final ElementDefinition elementDeclaration, final LocationInSchema location)
-	{
-		super(ValidationOutcome.CVC_Element_Locally_Valid, partNumber, location);
-		this.elementDeclaration = PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration");
-	}
+    public CvcElementException(final String partNumber, final ElementDefinition elementDeclaration, final LocationInSchema location)
+    {
+        super(ValidationOutcome.CVC_Element_Locally_Valid, partNumber, location);
+        this.elementDeclaration = PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration");
+    }
 
-	public CvcElementException(final String partNumber, final ElementDefinition elementDeclaration, final LocationInSchema location, final ComponentConstraintException cause)
-	{
-		super(ValidationOutcome.CVC_Element_Locally_Valid, partNumber, location, cause);
-		this.elementDeclaration = PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration");
-	}
+    public CvcElementException(final String partNumber, final ElementDefinition elementDeclaration, final LocationInSchema location, final ComponentConstraintException cause)
+    {
+        super(ValidationOutcome.CVC_Element_Locally_Valid, partNumber, location, cause);
+        this.elementDeclaration = PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration");
+    }
 
-	public final ElementDefinition getElementDeclaration()
-	{
-		return elementDeclaration;
-	}
+    public final ElementDefinition getElementDeclaration()
+    {
+        return elementDeclaration;
+    }
 }

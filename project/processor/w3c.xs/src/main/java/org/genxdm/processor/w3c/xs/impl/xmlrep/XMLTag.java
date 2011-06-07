@@ -20,26 +20,26 @@ import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 
 abstract class XMLTag
 {
-	public String id;
-	private SrcFrozenLocation m_location;
+    public String id;
+    private SrcFrozenLocation m_location;
 
-	public XMLTag()
-	{
-		m_location = null;
-	}
+    public XMLTag()
+    {
+        m_location = null;
+    }
 
-	public XMLTag(final SrcFrozenLocation location)
-	{
-		setLocation(location);
-	}
+    public XMLTag(final SrcFrozenLocation location)
+    {
+        setLocation(location);
+    }
 
-	public SrcFrozenLocation getLocation()
-	{
-		return m_location;
-	}
+    public SrcFrozenLocation getLocation()
+    {
+        return m_location;
+    }
 
-	public void setLocation(final SrcFrozenLocation location)
-	{
-		m_location = PreCondition.assertArgumentNotNull(location, "location");
-	}
+    public void setLocation(final SrcFrozenLocation location)
+    {
+        m_location = PreCondition.assertArgumentNotNull(location, "location");
+    }
 }

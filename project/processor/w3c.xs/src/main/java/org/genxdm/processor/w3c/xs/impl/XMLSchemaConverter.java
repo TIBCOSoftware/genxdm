@@ -16,6 +16,7 @@
 package org.genxdm.processor.w3c.xs.impl;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ import java.util.Set;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.xs.complex.AttributeDeclTypeImpl;
 import org.genxdm.bridgekit.xs.complex.AttributeGroupImpl;
 import org.genxdm.bridgekit.xs.complex.ComplexTypeImpl;
@@ -54,8 +56,7 @@ import org.genxdm.bridgekit.xs.simple.AtomicTypeImpl;
 import org.genxdm.bridgekit.xs.simple.NotationImpl;
 import org.genxdm.bridgekit.xs.simple.SimpleTypeImpl;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.names.NameSource;
-import org.genxdm.processor.w3c.xs.SmRegExCompiler;
+import org.genxdm.processor.w3c.xs.SchemaRegExCompiler;
 import org.genxdm.processor.w3c.xs.exception.SicOversizedIntegerException;
 import org.genxdm.processor.w3c.xs.exception.scc.SccAttributeDeclarationSimpleTypeException;
 import org.genxdm.processor.w3c.xs.exception.scc.SccAttributeGroupMemberNamesException;
@@ -99,7 +100,6 @@ import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLType;
 import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLTypeRef;
 import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLValueConstraint;
 import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLWildcard;
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
 import org.genxdm.xs.components.ComponentProvider;
@@ -150,142 +150,11 @@ import org.genxdm.xs.types.UnionSimpleType;
  */
 public final class XMLSchemaConverter
 {
-    /**
-     * Integer.MAX_VALUE as a BigInteger; needed to ensure that we throw an exception rather than attempt to convert
-     * BigInteger values larger than Integer.MAX_VALUE.
-     */
-    private static final BigInteger MAX_INT_SIZE = BigInteger.valueOf(Integer.MAX_VALUE);
-
-    public static  Pair<SmComponentBagImpl, XMLComponentLocator> convert(final SmRegExCompiler regexc, final ComponentProvider rtmCache, final XMLSchemaCache xmlCache, final SchemaExceptionHandler errors) throws AbortException
-    {
-        final SmComponentBagImpl schema = new SmComponentBagImpl();
-        final XMLComponentLocator locations = new XMLComponentLocator();
-
-        final XMLSchemaConverter converter = new XMLSchemaConverter(regexc, rtmCache, xmlCache, schema, locations, errors);
-
-        xmlCache.computeSubstitutionGroups();
-
-        converter.convertTypes();
-        converter.convertAttributes();
-        converter.convertElements();
-        converter.convertAttributeGroups();
-        converter.convertIdentityConstraints();
-        converter.convertModelGroups();
-        converter.convertNotations();
-
-        return new Pair<SmComponentBagImpl, XMLComponentLocator>(schema, locations);
-    }
-
-    static boolean isMaxOccursUnbounded(final BigInteger maxOccurs) throws SicOversizedIntegerException
-    {
-        PreCondition.assertArgumentNotNull(maxOccurs, "maxOccurs");
-
-        if (XMLParticle.UNBOUNDED.equals(maxOccurs))
-        {
-            return true;
-        }
-        else
-        {
-            if (MAX_INT_SIZE.compareTo(maxOccurs) < 0)
-            {
-                throw new SicOversizedIntegerException(maxOccurs);
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
-
-    static int maxOccurs(final BigInteger maxOccurs) throws SicOversizedIntegerException
-    {
-        PreCondition.assertArgumentNotNull(maxOccurs, "maxOccurs");
-
-        if (XMLParticle.UNBOUNDED.equals(maxOccurs))
-        {
-            throw new IllegalStateException("maxOccurs is unbounded");
-        }
-        else
-        {
-            if (MAX_INT_SIZE.compareTo(maxOccurs) < 0)
-            {
-                throw new SicOversizedIntegerException(maxOccurs);
-            }
-            else
-            {
-                return maxOccurs.intValue();
-            }
-        }
-    }
-
-    static int minOccurs(final BigInteger minOccurs) throws SicOversizedIntegerException
-    {
-        PreCondition.assertArgumentNotNull(minOccurs, "minOccurs");
-        if (MAX_INT_SIZE.compareTo(minOccurs) < 0)
-        {
-            throw new SicOversizedIntegerException(minOccurs);
-        }
-        else
-        {
-            PreCondition.assertTrue(minOccurs.compareTo(BigInteger.ZERO) >= 0, "minOccurs >= 0");
-            return minOccurs.intValue();
-        }
-    }
-
-    private static  boolean subtype(final Type lhs, final Type rhs)
-    {
-        PreCondition.assertArgumentNotNull(lhs, "lhs");
-        PreCondition.assertArgumentNotNull(rhs, "rhs");
-        if (!rhs.isComplexUrType())
-        {
-            Type currentType = lhs;
-            while (true)
-            {
-                if (currentType == rhs)
-                {
-                    return true;
-                }
-                else
-                {
-                    if (!currentType.isComplexUrType())
-                    {
-                        currentType = currentType.getBaseType();
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-        else
-        {
-            // All item types are derived from the Complex Ur-type.
-            return true;
-        }
-    }
-
-    private final ContentType EMPTY_CONTENT = new ContentTypeImpl();
-    private final XMLCycles m_cycles;
-
-    private final SchemaExceptionHandler m_errors;
-
-    private final ComponentProvider m_existingCache;
-
-    private final XMLSchemaCache m_inCache;
-
-    private final XMLComponentLocator m_locations;
-    private final NameSource nameBridge;
-
-    private final SmComponentBagImpl m_outBag;
-
-    private final SmRegExCompiler regexc;
-
-    private XMLSchemaConverter(final SmRegExCompiler regexc, final ComponentProvider outCache, final XMLSchemaCache inCache, final SmComponentBagImpl schema, final XMLComponentLocator locations, final SchemaExceptionHandler errors)
+    private XMLSchemaConverter(final SchemaRegExCompiler regexc, final ComponentProvider outCache, final XMLSchemaCache inCache, final ComponentBagImpl schema, final XMLComponentLocator locations, final SchemaExceptionHandler errors)
     {
         this.regexc = regexc;
         this.m_existingCache = outCache;
-        this.nameBridge = new NameSource();
+        this.m_atoms = new CanonicalAtomBridge(outCache);
         this.m_inCache = inCache;
         this.m_outBag = schema;
         this.m_locations = locations;
@@ -665,7 +534,7 @@ public final class XMLSchemaConverter
             case Exclude:
             {
                 // This approach is a bit long-winded but it generalizes better
-                // to multiple excusions.
+                // to multiple exclusions.
                 final Iterator<String> namespaces = convert(input.getNamespaces()).iterator();
                 if (namespaces.hasNext())
                 {
@@ -907,11 +776,11 @@ public final class XMLSchemaConverter
             final ComplexTypeImpl complexType;
             if (null != attributeUses)
             {
-                complexType = new ComplexTypeImpl(outName, false, isAnonymous, scope, baseType, xmlComplexType.getDerivationMethod(), attributeUses, EMPTY_CONTENT, xmlComplexType.getBlock(), nameBridge, m_existingCache);
+                complexType = new ComplexTypeImpl(outName, false, isAnonymous, scope, baseType, xmlComplexType.getDerivationMethod(), attributeUses, EMPTY_CONTENT, xmlComplexType.getBlock(), m_existingCache);
             }
             else
             {
-                complexType = new ComplexTypeImpl(outName, false, isAnonymous, scope, baseType, xmlComplexType.getDerivationMethod(), null, EMPTY_CONTENT, xmlComplexType.getBlock(), nameBridge, m_existingCache);
+                complexType = new ComplexTypeImpl(outName, false, isAnonymous, scope, baseType, xmlComplexType.getDerivationMethod(), null, EMPTY_CONTENT, xmlComplexType.getBlock(), m_existingCache);
             }
             m_outBag.add(complexType);
             m_locations.m_complexTypeLocations.put(complexType, xmlComplexType.getLocation());
@@ -934,7 +803,7 @@ public final class XMLSchemaConverter
                 }
                 else
                 {
-                    // TODO:
+                    // TODO: use a better exception
                     throw new AssertionError(derivation);
                 }
             }
@@ -1219,10 +1088,9 @@ public final class XMLSchemaConverter
                 }
                 else
                 {
-                    // TODO: broken by removal of A.  fix it.
-//                  final String initialValue = xmlElement.m_valueConstraint.getValue();
-//                  final List<A> actualValue = atomBridge.wrapAtom(atomBridge.createUntypedAtomic(initialValue));
-//                  element.setValueConstraint(new ValueConstraint(xmlElement.m_valueConstraint.kind, actualValue, initialValue));
+                  final String initialValue = xmlElement.m_valueConstraint.getValue();
+                  final SimpleType simpleType = m_existingCache.getSimpleType(NativeType.UNTYPED_ATOMIC);
+                  element.setValueConstraint(new ValueConstraint(xmlElement.m_valueConstraint.kind, simpleType, initialValue));
                 }
             }
             else
@@ -1295,40 +1163,29 @@ public final class XMLSchemaConverter
 
     private ValueConstraint convertElementValueConstraint(final XMLValueConstraint xmlValueConstraint, final Type type) throws SchemaException
     {
-        // TODO: broken by removal of A.  Fix it.
+        if (xmlValueConstraint != null)
+        {
+            if (type instanceof SimpleType)
+            {
+                return convertValueConstraint(XMLRepresentation.LN_ELEMENT, xmlValueConstraint, (SimpleType)type);
+            }
+            else if (type instanceof ComplexType)
+            {
+                final ContentType contentType = ((ComplexType)type).getContentType();
+                if (contentType.isSimple())
+                {
+                    return convertValueConstraint(XMLRepresentation.LN_ELEMENT, xmlValueConstraint, contentType.getSimpleType());
+                }
+                else
+                {
+                    final String initialValue = xmlValueConstraint.getValue();
+                    return new ValueConstraint(xmlValueConstraint.kind, m_existingCache.getSimpleType(NativeType.UNTYPED_ATOMIC), initialValue);
+                }
+            }
+            // TODO: better exception? does this ever actually happen?
+            throw new AssertionError(type); // neither simple nor complex?
+        }
         return null;
-//      if (null != xmlValueConstraint)
-//      {
-//          if (type instanceof SimpleType)
-//          {
-//              final SimpleType simpleType = (SimpleType)type;
-//              return convertValueConstraint(XMLRepresentation.LN_ELEMENT, xmlValueConstraint, simpleType);
-//          }
-//          else if (type instanceof ComplexType)
-//          {
-//              final ComplexType elementType = (ComplexType)type;
-//              final ContentType contentType = elementType.getContentType();
-//              if (contentType.isSimple())
-//              {
-//                  final SimpleType simpleType = contentType.getSimpleType();
-//                  return convertValueConstraint(XMLRepresentation.LN_ELEMENT, xmlValueConstraint, simpleType);
-//              }
-//              else
-//              {
-//                  final String initialValue = xmlValueConstraint.getValue();
-//                  final List actualValue = atomBridge.wrapAtom(atomBridge.createUntypedAtomic(initialValue));
-//                  return new ValueConstraint(xmlValueConstraint.kind, actualValue, initialValue);
-//              }
-//          }
-//          else
-//          {
-//              throw new AssertionError(type);
-//          }
-//      }
-//      else
-//      {
-//          return null;
-//      }
     }
 
     private IdentityConstraint convertIdentityConstraint(final XMLIdentityConstraint xmlConstraint) throws SchemaException
@@ -1756,28 +1613,28 @@ public final class XMLSchemaConverter
         }
     }
 
-    private ValueConstraint convertValueConstraint(final String elementName, final XMLValueConstraint xmlValueConstraint, final SimpleType simpleType) throws SchemaException
+    private ValueConstraint convertValueConstraint(final String elementName, final XMLValueConstraint xmlValueConstraint, final SimpleType simpleType) 
+        throws SchemaException
     {
-        // TODO: broken by removal of A. fix it.
+        if (xmlValueConstraint != null)
+        {
+            final String initialValue = xmlValueConstraint.getValue();
+            try
+            {
+                List<XmlAtom> val = simpleType.validate(initialValue, m_atoms);
+                if (val.size() > 0)
+                    return new ValueConstraint(xmlValueConstraint.kind, simpleType, m_atoms.getString(val.get(0)));
+                // TODO: throw a better exception
+                throw new AssertionError(); // no value in the value constraint
+            }
+            catch (DatatypeException dte)
+            {
+                final SimpleTypeException ste = new SimpleTypeException(initialValue, simpleType, dte);
+                throw new SmAttributeUseException(new QName(elementName), xmlValueConstraint.getAttributeName(), xmlValueConstraint.getLocation(), ste);
+            }
+            
+        }
         return null;
-//      if (null != xmlValueConstraint)
-//      {
-//          final String initialValue = xmlValueConstraint.getValue();
-//          try
-//          {
-//              final List value = simpleType.validate(initialValue);
-//              return new ValueConstraint(xmlValueConstraint.kind, value, initialValue);
-//          }
-//          catch (final DatatypeException dte)
-//          {
-//              final SimpleTypeException ste = new SimpleTypeException(initialValue, simpleType, dte);
-//              throw new SmAttributeUseException(new QName(elementName), xmlValueConstraint.getAttributeName(), xmlValueConstraint.getLocation(), ste);
-//          }
-//      }
-//      else
-//      {
-//          return null;
-//      }
     }
 
     private SchemaWildcard convertWildcard(final XMLWildcard wildcard)
@@ -1870,30 +1727,28 @@ public final class XMLSchemaConverter
 
     private EnumerationDefinition enumeration(final SimpleType type, final SimpleType baseType, final XMLEnumeration sourceEnum) throws SmAttributeUseException
     {
-        // TODO: borken by removal of A. fix it.
-        return null;
-//      try
-//      {
-//          final SimpleType notationType = m_existingCache.getAtomicType(NativeType.NOTATION);
-//          if (baseType.getName().equals(notationType.getName()) || baseType.derivedFromType(notationType, EnumSet.of(DerivationMethod.Restriction)))
-//          {
-//              final PrefixResolver resolver = sourceEnum.getPrefixResolver();
-//              final List<String> value = baseType.validate(sourceEnum.getValue(), resolver);
-//              return new FacetEnumerationImpl(value);
-//          }
-//          else
-//          {
-//              final List<String> value = baseType.validate(sourceEnum.getValue());
-//              return new FacetEnumerationImpl(value);
-//          }
-//      }
-//      catch (final DatatypeException dte)
-//      {
-//          final SimpleTypeException ste = new SimpleTypeException(sourceEnum.getValue(), baseType, dte);
-//          final QName elementName = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, XMLRepresentation.LN_ENUMERATION);
-//          final QName attributeName = new QName(XMLRepresentation.LN_VALUE);
-//          throw new SmAttributeUseException(elementName, attributeName, sourceEnum.getLocation(), ste);
-//      }
+        try
+        {
+            final SimpleType notationType = m_existingCache.getAtomicType(NativeType.NOTATION);
+            if (baseType.getName().equals(notationType.getName()) || baseType.derivedFromType(notationType, EnumSet.of(DerivationMethod.Restriction)))
+            {
+                final PrefixResolver resolver = sourceEnum.getPrefixResolver();
+                final List<XmlAtom> value = baseType.validate(sourceEnum.getValue(), resolver, m_atoms);
+                return new FacetEnumerationImpl(atomListToStringList(value));
+            }
+            else
+            {
+                final List<XmlAtom> value = baseType.validate(sourceEnum.getValue(), m_atoms);
+                return new FacetEnumerationImpl(atomListToStringList(value));
+            }
+        }
+        catch (final DatatypeException dte)
+        {
+            final SimpleTypeException ste = new SimpleTypeException(sourceEnum.getValue(), baseType, dte);
+            final QName elementName = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, XMLRepresentation.LN_ENUMERATION);
+            final QName attributeName = new QName(XMLRepresentation.LN_VALUE);
+            throw new SmAttributeUseException(elementName, attributeName, sourceEnum.getLocation(), ste);
+        }
     }
 
     private SimpleType extractSimpleType(final XMLTypeRef typeRef) throws AbortException, SchemaException
@@ -1929,6 +1784,16 @@ public final class XMLSchemaConverter
     private Facet fractionDigits(final XMLFractionDigitsFacet xmlFacet) throws SicOversizedIntegerException
     {
         return new FacetFractionDigitsImpl(getIntValue(xmlFacet.value), xmlFacet.fixed);
+    }
+    
+    private List<String> atomListToStringList(Iterable<XmlAtom> initial)
+    {
+        List<String> result = new ArrayList<String>();
+        for (XmlAtom atom : initial)
+        {
+            result.add(m_atoms.getString(atom));
+        }
+        return result;
     }
 
     /**
@@ -2007,6 +1872,7 @@ public final class XMLSchemaConverter
             }
             else if (itemType instanceof UnionSimpleType)
             {
+                // is this a TODO? or does the specification forbid lists of unions?
                 throw new UnsupportedOperationException();
             }
             else
@@ -2017,39 +1883,39 @@ public final class XMLSchemaConverter
         }
         else if (simpleType instanceof UnionSimpleType)
         {
+            // TODO: is a limit on a union forbidden?
             throw new UnsupportedOperationException();
         }
         else
         {
-            // Simple Ur-Type?
+            // Simple Ur-Type? TODO: no limits?
             throw new UnsupportedOperationException();
         }
     }
 
     private Facet minmax(final XMLMinMaxFacet xmlFacet, final SimpleType baseType) throws SchemaException
     {
-//      final List value;
-//      {
-//          final String initialValue = xmlFacet.value;
-//          try
-//          {
-//              value = baseType.validate(initialValue);
-//          }
-//          catch (final DatatypeException dte)
-//          {
-//              final SimpleTypeException ste = new SimpleTypeException(initialValue, baseType, dte);
-//              final QName elementName = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, xmlFacet.elementName);
-//              final QName attributeName = new QName(XMLRepresentation.LN_VALUE);
-//              final SrcFrozenLocation location = xmlFacet.getLocation();
-//              throw new SmAttributeUseException(elementName, attributeName, location, ste);
-//          }
-//      }
-//      if (value.size() > 0)
-//      {
-//          return limit(value.get(0), baseType, xmlFacet.getOperator(), xmlFacet.fixed);
-//      }
-        if ( (xmlFacet.value != null) && (xmlFacet.value.length() > 0) )
-            return limit(xmlFacet.value, baseType, xmlFacet.getOperator(), xmlFacet.fixed);
+        // TODO
+        final List<XmlAtom> value;
+        {
+            final String initialValue = xmlFacet.value;
+            try
+            {
+                value = baseType.validate(initialValue, m_atoms);
+            }
+            catch (final DatatypeException dte)
+            {
+                final SimpleTypeException ste = new SimpleTypeException(initialValue, baseType, dte);
+                final QName elementName = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, xmlFacet.elementName);
+                final QName attributeName = new QName(XMLRepresentation.LN_VALUE);
+                final SrcFrozenLocation location = xmlFacet.getLocation();
+                throw new SmAttributeUseException(elementName, attributeName, location, ste);
+            }
+        }
+        if (value.size() > 0)
+        {
+            return limit(m_atoms.getString(value.get(0)), baseType, xmlFacet.getOperator(), xmlFacet.fixed);
+        }
         return null;
     }
 
@@ -2063,7 +1929,7 @@ public final class XMLSchemaConverter
                 final RegExPattern regexp = regexc.compile(regex);
                 return new FacetPatternImpl(regexp, regex);
             }
-            catch (final SmRegExCompileException e)
+            catch (final SchemaRegExCompileException e)
             {
                 final DatatypeException dte = new DatatypeException(regex, null);
                 throw new SimpleTypeException(regex, null, dte);
@@ -2104,4 +1970,137 @@ public final class XMLSchemaConverter
     {
         return new FacetTotalDigitsImpl(getIntValue(xmlFacet.value), xmlFacet.fixed);
     }
+
+    public static  Pair<ComponentBagImpl, XMLComponentLocator> convert(final SchemaRegExCompiler regexc, final ComponentProvider rtmCache, final XMLSchemaCache xmlCache, final SchemaExceptionHandler errors) throws AbortException
+    {
+        final ComponentBagImpl schema = new ComponentBagImpl();
+        final XMLComponentLocator locations = new XMLComponentLocator();
+
+        final XMLSchemaConverter converter = new XMLSchemaConverter(regexc, rtmCache, xmlCache, schema, locations, errors);
+
+        xmlCache.computeSubstitutionGroups();
+
+        converter.convertTypes();
+        converter.convertAttributes();
+        converter.convertElements();
+        converter.convertAttributeGroups();
+        converter.convertIdentityConstraints();
+        converter.convertModelGroups();
+        converter.convertNotations();
+
+        return new Pair<ComponentBagImpl, XMLComponentLocator>(schema, locations);
+    }
+
+    static boolean isMaxOccursUnbounded(final BigInteger maxOccurs) throws SicOversizedIntegerException
+    {
+        PreCondition.assertArgumentNotNull(maxOccurs, "maxOccurs");
+
+        if (XMLParticle.UNBOUNDED.equals(maxOccurs))
+        {
+            return true;
+        }
+        else
+        {
+            if (MAX_INT_SIZE.compareTo(maxOccurs) < 0)
+            {
+                throw new SicOversizedIntegerException(maxOccurs);
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+    static int maxOccurs(final BigInteger maxOccurs) throws SicOversizedIntegerException
+    {
+        PreCondition.assertArgumentNotNull(maxOccurs, "maxOccurs");
+
+        if (XMLParticle.UNBOUNDED.equals(maxOccurs))
+        {
+            throw new IllegalStateException("maxOccurs is unbounded");
+        }
+        else
+        {
+            if (MAX_INT_SIZE.compareTo(maxOccurs) < 0)
+            {
+                throw new SicOversizedIntegerException(maxOccurs);
+            }
+            else
+            {
+                return maxOccurs.intValue();
+            }
+        }
+    }
+
+    static int minOccurs(final BigInteger minOccurs) throws SicOversizedIntegerException
+    {
+        PreCondition.assertArgumentNotNull(minOccurs, "minOccurs");
+        if (MAX_INT_SIZE.compareTo(minOccurs) < 0)
+        {
+            throw new SicOversizedIntegerException(minOccurs);
+        }
+        else
+        {
+            PreCondition.assertTrue(minOccurs.compareTo(BigInteger.ZERO) >= 0, "minOccurs >= 0");
+            return minOccurs.intValue();
+        }
+    }
+
+    private static  boolean subtype(final Type lhs, final Type rhs)
+    {
+        PreCondition.assertArgumentNotNull(lhs, "lhs");
+        PreCondition.assertArgumentNotNull(rhs, "rhs");
+        if (!rhs.isComplexUrType())
+        {
+            Type currentType = lhs;
+            while (true)
+            {
+                if (currentType == rhs)
+                {
+                    return true;
+                }
+                else
+                {
+                    if (!currentType.isComplexUrType())
+                    {
+                        currentType = currentType.getBaseType();
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        else
+        {
+            // All item types are derived from the Complex Ur-type.
+            return true;
+        }
+    }
+
+    /**
+     * Integer.MAX_VALUE as a BigInteger; needed to ensure that we throw an exception rather than attempt to convert
+     * BigInteger values larger than Integer.MAX_VALUE.
+     */
+    private static final BigInteger MAX_INT_SIZE = BigInteger.valueOf(Integer.MAX_VALUE);
+
+    private final ContentType EMPTY_CONTENT = new ContentTypeImpl();
+    private final XMLCycles m_cycles;
+
+    private final SchemaExceptionHandler m_errors;
+
+    private final ComponentProvider m_existingCache;
+    
+    private final CanonicalAtomBridge m_atoms;
+
+    private final XMLSchemaCache m_inCache;
+
+    private final XMLComponentLocator m_locations;
+
+    private final ComponentBagImpl m_outBag;
+
+    private final SchemaRegExCompiler regexc;
+
 }

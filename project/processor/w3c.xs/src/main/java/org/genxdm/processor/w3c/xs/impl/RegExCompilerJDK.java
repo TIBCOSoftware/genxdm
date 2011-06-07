@@ -19,59 +19,59 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.processor.w3c.xs.SmRegExCompiler;
+import org.genxdm.processor.w3c.xs.SchemaRegExCompiler;
 import org.genxdm.xs.facets.RegExPattern;
 
 /**
  * Regular Expression implementation using the JDK implementation.
  */
-final public class RegExCompilerJDK implements SmRegExCompiler
+final public class RegExCompilerJDK implements SchemaRegExCompiler
 {
-	private final Integer m_flags;
+    private final Integer m_flags;
 
-	/**
-	 * Constructs a JDK Regular Expression compiler.
-	 */
-	public RegExCompilerJDK()
-	{
-		m_flags = null;
-	}
+    /**
+     * Constructs a JDK Regular Expression compiler.
+     */
+    public RegExCompilerJDK()
+    {
+        m_flags = null;
+    }
 
-	/**
-	 * Constructs a JDK Regular Expression compiler using the JDK flags. <br/>
-	 * The flags are passed through to the pattern compiler.
-	 * 
-	 * @param flags
-	 *            Flags using by the JDK during pattern compilation.
-	 */
-	public RegExCompilerJDK(final int flags)
-	{
-		m_flags = flags;
-	}
+    /**
+     * Constructs a JDK Regular Expression compiler using the JDK flags. <br/>
+     * The flags are passed through to the pattern compiler.
+     * 
+     * @param flags
+     *            Flags using by the JDK during pattern compilation.
+     */
+    public RegExCompilerJDK(final int flags)
+    {
+        m_flags = flags;
+    }
 
-	public RegExPattern compile(final String regex, final String flags) throws SmRegExCompileException
-	{
-		// TODO: Handle flags.
-		return compile(regex);
-	}
+    public RegExPattern compile(final String regex, final String flags) throws SchemaRegExCompileException
+    {
+        // TODO: Handle flags.
+        return compile(regex);
+    }
 
-	public RegExPattern compile(final String regex) throws SmRegExCompileException
-	{
-		PreCondition.assertArgumentNotNull(regex, "regex");
-		try
-		{
-			if (null != m_flags)
-			{
-				return new RegExPatternJDK(Pattern.compile(regex, m_flags));
-			}
-			else
-			{
-				return new RegExPatternJDK(Pattern.compile(regex));
-			}
-		}
-		catch (final PatternSyntaxException e)
-		{
-			throw new SmRegExCompileException(e, e.getPattern());
-		}
-	}
+    public RegExPattern compile(final String regex) throws SchemaRegExCompileException
+    {
+        PreCondition.assertArgumentNotNull(regex, "regex");
+        try
+        {
+            if (null != m_flags)
+            {
+                return new RegExPatternJDK(Pattern.compile(regex, m_flags));
+            }
+            else
+            {
+                return new RegExPatternJDK(Pattern.compile(regex));
+            }
+        }
+        catch (final PatternSyntaxException e)
+        {
+            throw new SchemaRegExCompileException(e, e.getPattern());
+        }
+    }
 }

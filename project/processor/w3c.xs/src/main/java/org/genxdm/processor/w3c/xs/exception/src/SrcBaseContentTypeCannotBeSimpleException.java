@@ -24,29 +24,29 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SrcBaseContentTypeCannotBeSimpleException extends SmSourceComplexTypeException
 {
-	private final QName baseType;
-	private final QName derivedType;
+    private final QName baseType;
+    private final QName derivedType;
 
-	public SrcBaseContentTypeCannotBeSimpleException(final QName derivedType, final QName baseType, final LocationInSchema location)
-	{
-		super(PART_BASE_CONTENT_CANNOT_BE_SIMPLE, location);
-		this.derivedType = PreCondition.assertArgumentNotNull(derivedType, "derivedType");
-		this.baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");
-	}
+    public SrcBaseContentTypeCannotBeSimpleException(final QName derivedType, final QName baseType, final LocationInSchema location)
+    {
+        super(PART_BASE_CONTENT_CANNOT_BE_SIMPLE, location);
+        this.derivedType = PreCondition.assertArgumentNotNull(derivedType, "derivedType");
+        this.baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");
+    }
 
-	public QName getBaseType()
-	{
-		return baseType;
-	}
+    public QName getBaseType()
+    {
+        return baseType;
+    }
 
-	public QName getDerivedType()
-	{
-		return derivedType;
-	}
+    public QName getDerivedType()
+    {
+        return derivedType;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "The complex type, '" + derivedType + "',  cannot be derived by extension from the complex type, '" + baseType + "', with simple content or simple type.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "The complex type, '" + derivedType + "',  cannot be derived by extension from the complex type, '" + baseType + "', with simple content or simple type.";
+    }
 }

@@ -24,36 +24,36 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class CvcUnexpectedTextInEmptyContentException extends SmComplexTypeException
 {
-	private final String m_text;
+    private final String m_text;
 
-	public CvcUnexpectedTextInEmptyContentException(final QName elementName, final String text, final LocationInSchema location)
-	{
-		super(PART_CONTENT_TYPE_IS_EMPTY, elementName, location);
-		m_text = PreCondition.assertArgumentNotNull(text, "text");
-	}
+    public CvcUnexpectedTextInEmptyContentException(final QName elementName, final String text, final LocationInSchema location)
+    {
+        super(PART_CONTENT_TYPE_IS_EMPTY, elementName, location);
+        m_text = PreCondition.assertArgumentNotNull(text, "text");
+    }
 
-	public String getText()
-	{
-		return m_text;
-	}
+    public String getText()
+    {
+        return m_text;
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "Unexpected text, '" + m_text + "', in empty content model for element information item " + getElementName() + ".";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "Unexpected text, '" + m_text + "', in empty content model for element information item " + getElementName() + ".";
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof CvcUnexpectedTextInEmptyContentException)
-		{
-			final CvcUnexpectedTextInEmptyContentException other = (CvcUnexpectedTextInEmptyContentException)obj;
-			return m_text.equals(other.m_text);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof CvcUnexpectedTextInEmptyContentException)
+        {
+            final CvcUnexpectedTextInEmptyContentException other = (CvcUnexpectedTextInEmptyContentException)obj;
+            return m_text.equals(other.m_text);
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

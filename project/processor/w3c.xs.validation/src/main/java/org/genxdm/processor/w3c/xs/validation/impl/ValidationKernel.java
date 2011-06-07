@@ -118,7 +118,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 	public ValidationKernel(final ComponentProvider definitions, final AtomBridge<A> atomBridge, final ValidationCache cache, final VxSchemaDocumentLocationStrategy sdl)
 	{
 		m_atomBridge = PreCondition.assertNotNull(atomBridge);
-		NameSource names = new NameSource();
+		NameSource names = NameSource.SINGLETON;
 		m_namespaces = new ValidationPrefixResolver(names);
 		m_attributes = new AttributeManager<A>(definitions, m_atomBridge, names);
 		m_currentItem = m_documentItem = new ValidationItem();

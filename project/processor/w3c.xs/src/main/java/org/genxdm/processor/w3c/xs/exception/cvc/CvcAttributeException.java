@@ -26,27 +26,27 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public abstract class CvcAttributeException extends SmLocationException
 {
-	private final QName m_attributeName;
+    private final QName m_attributeName;
 
-	public static final String PART_DECLARATION_ABSENT = "1";
-	public static final String PART_TYPE_ABSENT = "2";
-	public static final String PART_NORMALIZED_VALUE = "3";
-	public static final String PART_VALUE_CONSTRAINT = "4";
+    public static final String PART_DECLARATION_ABSENT = "1";
+    public static final String PART_TYPE_ABSENT = "2";
+    public static final String PART_NORMALIZED_VALUE = "3";
+    public static final String PART_VALUE_CONSTRAINT = "4";
 
-	public CvcAttributeException(final String partNumber, final QName attributeName, final LocationInSchema location)
-	{
-		super(ValidationOutcome.CVC_Attribute, partNumber, location);
-		this.m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
-	}
+    public CvcAttributeException(final String partNumber, final QName attributeName, final LocationInSchema location)
+    {
+        super(ValidationOutcome.CVC_Attribute, partNumber, location);
+        this.m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
+    }
 
-	public CvcAttributeException(final String partNumber, final QName attributeName, final LocationInSchema location, final SimpleTypeException cause)
-	{
-		super(ValidationOutcome.CVC_Attribute, partNumber, location, cause);
-		m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
-	}
+    public CvcAttributeException(final String partNumber, final QName attributeName, final LocationInSchema location, final SimpleTypeException cause)
+    {
+        super(ValidationOutcome.CVC_Attribute, partNumber, location, cause);
+        m_attributeName = PreCondition.assertArgumentNotNull(attributeName, "attributeName");
+    }
 
-	public final QName getAttributeName()
-	{
-		return m_attributeName;
-	}
+    public final QName getAttributeName()
+    {
+        return m_attributeName;
+    }
 }

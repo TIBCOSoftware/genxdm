@@ -20,28 +20,28 @@ import javax.xml.namespace.QName;
 @SuppressWarnings("serial")
 public final class SccAttributeDeclarationTypeIDConflictsValueConstraintException extends SccAttributeDeclarationException
 {
-	public SccAttributeDeclarationTypeIDConflictsValueConstraintException(final QName attributeName)
-	{
-		super(PART_DERIVED_FROM_ID, attributeName);
-	}
+    public SccAttributeDeclarationTypeIDConflictsValueConstraintException(final QName attributeName)
+    {
+        super(PART_DERIVED_FROM_ID, attributeName);
+    }
 
-	@Override
-	public String getMessage()
-	{
-		return "If the {type definition} is derived from ID then there must not be a {value constraint}.";
-	}
+    @Override
+    public String getMessage()
+    {
+        return "If the {type definition} is derived from ID then there must not be a {value constraint}.";
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof SccAttributeDeclarationTypeIDConflictsValueConstraintException)
-		{
-			final SccAttributeDeclarationTypeIDConflictsValueConstraintException e = (SccAttributeDeclarationTypeIDConflictsValueConstraintException)obj;
-			return e.getAttributeName().equals(getAttributeName());
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof SccAttributeDeclarationTypeIDConflictsValueConstraintException)
+        {
+            final SccAttributeDeclarationTypeIDConflictsValueConstraintException e = (SccAttributeDeclarationTypeIDConflictsValueConstraintException)obj;
+            return e.getAttributeName().equals(getAttributeName());
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

@@ -25,24 +25,24 @@ import org.genxdm.exceptions.PreCondition;
 @SuppressWarnings("serial")
 public final class SicOversizedIntegerException extends SicException
 {
-	private final BigInteger m_value;
+    private final BigInteger m_value;
 
-	public SicOversizedIntegerException(final BigInteger value)
-	{
-		super(PART_OVERSIZED_INTEGER);
-		m_value = PreCondition.assertArgumentNotNull(value, "value");
-	}
+    public SicOversizedIntegerException(final BigInteger value)
+    {
+        super(PART_OVERSIZED_INTEGER);
+        m_value = PreCondition.assertArgumentNotNull(value, "value");
+    }
 
-	public String getMessage()
-	{
-		final String localMessage = "The integer '" + m_value + "' is too large for this implementation.";
+    public String getMessage()
+    {
+        final String localMessage = "The integer '" + m_value + "' is too large for this implementation.";
 
-		final StringBuilder message = new StringBuilder();
-		message.append(getOutcome().getSection());
-		message.append(".");
-		message.append(this.getPartNumber());
-		message.append(": ");
-		message.append(localMessage);
-		return message.toString();
-	}
+        final StringBuilder message = new StringBuilder();
+        message.append(getOutcome().getSection());
+        message.append(".");
+        message.append(this.getPartNumber());
+        message.append(": ");
+        message.append(localMessage);
+        return message.toString();
+    }
 }

@@ -24,19 +24,19 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public abstract class SrcElementException extends SmLocationException
 {
-	public static final String PART_DEFAULT_AND_FIXED_PRESENT = "1";
-	public static final String PART_REF_XOR_NAME = "2.1";
-	public static final String PART_REF_PRESENT = "2.2";
-	public static final String PART_SIMPLE_XOR_COMPLEX = "3";
-	public static final String PART_DECLARATIONS = "4";
+    public static final String PART_DEFAULT_AND_FIXED_PRESENT = "1";
+    public static final String PART_REF_XOR_NAME = "2.1";
+    public static final String PART_REF_PRESENT = "2.2";
+    public static final String PART_SIMPLE_XOR_COMPLEX = "3";
+    public static final String PART_DECLARATIONS = "4";
 
-	public SrcElementException(final String partNumber, final LocationInSchema location)
-	{
-		super(ValidationOutcome.SRC_Element, partNumber, location);
-	}
+    public SrcElementException(final String partNumber, final LocationInSchema location)
+    {
+        super(ValidationOutcome.SRC_Element, partNumber, location);
+    }
 
-	public SrcElementException(final String partNumber, final LocationInSchema location, final SchemaException cause)
-	{
-		super(ValidationOutcome.SRC_Element, partNumber, location, PreCondition.assertArgumentNotNull(cause, "cause"));
-	}
+    public SrcElementException(final String partNumber, final LocationInSchema location, final SchemaException cause)
+    {
+        super(ValidationOutcome.SRC_Element, partNumber, location, PreCondition.assertArgumentNotNull(cause, "cause"));
+    }
 }
