@@ -22,6 +22,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.xs.complex.AttributeNodeTypeImpl;
+import org.genxdm.bridgekit.xs.complex.CommentNodeTypeImpl;
+import org.genxdm.bridgekit.xs.complex.ComplexUrTypeImpl;
+import org.genxdm.bridgekit.xs.complex.DocumentNodeTypeImpl;
+import org.genxdm.bridgekit.xs.complex.ElementNodeTypeImpl;
+import org.genxdm.bridgekit.xs.complex.NamespaceNodeTypeImpl;
+import org.genxdm.bridgekit.xs.complex.ProcessingInstructionNodeTypeImpl;
+import org.genxdm.bridgekit.xs.complex.TextNodeTypeImpl;
+import org.genxdm.bridgekit.xs.complex.ZEmptyType;
+import org.genxdm.bridgekit.xs.complex.ZMultiplyType;
+import org.genxdm.bridgekit.xs.complex.ZPrimeChoiceType;
 import org.genxdm.bridgekit.xs.simple.AtomicUrTypeImpl;
 import org.genxdm.bridgekit.xs.simple.SimpleUrTypeImpl;
 import org.genxdm.exceptions.PreCondition;

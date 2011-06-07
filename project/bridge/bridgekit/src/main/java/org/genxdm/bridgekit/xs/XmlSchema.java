@@ -21,6 +21,7 @@ import java.util.HashMap;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.xs.complex.AttributeDeclTypeImpl;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
 import org.genxdm.xs.components.ComponentBag;
