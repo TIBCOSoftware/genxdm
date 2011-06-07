@@ -20,7 +20,7 @@ import org.genxdm.xs.exceptions.AtomCastException;
 /**
  * Internal implementation interface for organizing value comparisons.
  */
-interface ValueComparator<A>
+public interface ValueComparator<A>
 {
 	boolean compare(A lhsAtom) throws AtomCastException;
 }

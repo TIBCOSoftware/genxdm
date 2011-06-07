@@ -17,7 +17,7 @@ package org.genxdm.bridgekit.xs;
 
 import org.genxdm.exceptions.PreCondition;
 
-abstract class LockableImpl
+public abstract class LockableImpl
 {
 	private boolean m_isLocked = false;
 

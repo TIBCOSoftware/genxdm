@@ -22,6 +22,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.xs.simple.AtomicUrTypeImpl;
+import org.genxdm.bridgekit.xs.simple.SimpleUrTypeImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;

@@ -29,51 +29,76 @@ import java.util.Set;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.genxdm.bridgekit.xs.AtomicTypeImpl;
 import org.genxdm.bridgekit.xs.AttributeDeclTypeImpl;
 import org.genxdm.bridgekit.xs.AttributeGroupImpl;
-import org.genxdm.bridgekit.xs.AttributeUseImpl;
 import org.genxdm.bridgekit.xs.ComplexTypeImpl;
 import org.genxdm.bridgekit.xs.ContentTypeImpl;
 import org.genxdm.bridgekit.xs.ElementDeclTypeImpl;
-import org.genxdm.bridgekit.xs.FacetFractionDigitsImpl;
-import org.genxdm.bridgekit.xs.FacetLengthImpl;
-import org.genxdm.bridgekit.xs.FacetMaxLengthImpl;
-import org.genxdm.bridgekit.xs.FacetMinLengthImpl;
-import org.genxdm.bridgekit.xs.FacetPatternImpl;
-import org.genxdm.bridgekit.xs.FacetTotalDigitsImpl;
-import org.genxdm.bridgekit.xs.FacetValueCompImpl;
-import org.genxdm.bridgekit.xs.IdentityConstraintImpl;
 import org.genxdm.bridgekit.xs.ListTypeImpl;
 import org.genxdm.bridgekit.xs.ModelGroupImpl;
-import org.genxdm.bridgekit.xs.NotationImpl;
 import org.genxdm.bridgekit.xs.ParticleWithElementTerm;
 import org.genxdm.bridgekit.xs.ParticleWithModelGroupTerm;
 import org.genxdm.bridgekit.xs.ParticleWithWildcardTerm;
-import org.genxdm.bridgekit.xs.SimpleTypeImpl;
 import org.genxdm.bridgekit.xs.UnionTypeImpl;
 import org.genxdm.bridgekit.xs.WildcardImpl;
+import org.genxdm.bridgekit.xs.constraint.AttributeUseImpl;
+import org.genxdm.bridgekit.xs.constraint.FacetFractionDigitsImpl;
+import org.genxdm.bridgekit.xs.constraint.FacetLengthImpl;
+import org.genxdm.bridgekit.xs.constraint.FacetMaxLengthImpl;
+import org.genxdm.bridgekit.xs.constraint.FacetMinLengthImpl;
+import org.genxdm.bridgekit.xs.constraint.FacetPatternImpl;
+import org.genxdm.bridgekit.xs.constraint.FacetTotalDigitsImpl;
+import org.genxdm.bridgekit.xs.constraint.FacetValueCompImpl;
+import org.genxdm.bridgekit.xs.constraint.IdentityConstraintImpl;
+import org.genxdm.bridgekit.xs.simple.AtomicTypeImpl;
+import org.genxdm.bridgekit.xs.simple.NotationImpl;
+import org.genxdm.bridgekit.xs.simple.SimpleTypeImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.SmRegExCompiler;
-import org.genxdm.processor.w3c.xs.exception.SccAttributeDeclarationSimpleTypeException;
-import org.genxdm.processor.w3c.xs.exception.SccAttributeGroupMemberNamesException;
-import org.genxdm.processor.w3c.xs.exception.SccBaseTypeMustBeSimpleTypeException;
-import org.genxdm.processor.w3c.xs.exception.SccCyclicAttributeException;
-import org.genxdm.processor.w3c.xs.exception.SccCyclicAttributeGroupException;
-import org.genxdm.processor.w3c.xs.exception.SccCyclicElementException;
-import org.genxdm.processor.w3c.xs.exception.SccCyclicIdentityConstraintException;
-import org.genxdm.processor.w3c.xs.exception.SccCyclicModelGroupException;
-import org.genxdm.processor.w3c.xs.exception.SccItemTypeMustBeAtomicOrUnionException;
-import org.genxdm.processor.w3c.xs.exception.SccMemberTypeMustBeAtomicOrListException;
 import org.genxdm.processor.w3c.xs.exception.SicOversizedIntegerException;
-import org.genxdm.processor.w3c.xs.exception.SmAttributeUseException;
-import org.genxdm.processor.w3c.xs.exception.SmCyclicTypeException;
-import org.genxdm.processor.w3c.xs.exception.SmUndeclaredReferenceException;
-import org.genxdm.processor.w3c.xs.exception.SrcBaseContentTypeCannotBeSimpleException;
-import org.genxdm.processor.w3c.xs.exception.SrcBaseMustHaveSimpleOrMixedContentTypeComplexTypeException;
-import org.genxdm.processor.w3c.xs.exception.SrcBaseTypeMustBeComplexTypeException;
-import org.genxdm.processor.w3c.xs.exception.SrcSimpleTypeAmongChildrenOfRestrictionException;
+import org.genxdm.processor.w3c.xs.exception.scc.SccAttributeDeclarationSimpleTypeException;
+import org.genxdm.processor.w3c.xs.exception.scc.SccAttributeGroupMemberNamesException;
+import org.genxdm.processor.w3c.xs.exception.scc.SccBaseTypeMustBeSimpleTypeException;
+import org.genxdm.processor.w3c.xs.exception.scc.SccCyclicAttributeException;
+import org.genxdm.processor.w3c.xs.exception.scc.SccCyclicAttributeGroupException;
+import org.genxdm.processor.w3c.xs.exception.scc.SccCyclicElementException;
+import org.genxdm.processor.w3c.xs.exception.scc.SccCyclicIdentityConstraintException;
+import org.genxdm.processor.w3c.xs.exception.scc.SccCyclicModelGroupException;
+import org.genxdm.processor.w3c.xs.exception.scc.SccItemTypeMustBeAtomicOrUnionException;
+import org.genxdm.processor.w3c.xs.exception.scc.SccMemberTypeMustBeAtomicOrListException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmAttributeUseException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmCyclicTypeException;
+import org.genxdm.processor.w3c.xs.exception.sm.SmUndeclaredReferenceException;
+import org.genxdm.processor.w3c.xs.exception.src.SrcBaseContentTypeCannotBeSimpleException;
+import org.genxdm.processor.w3c.xs.exception.src.SrcBaseMustHaveSimpleOrMixedContentTypeComplexTypeException;
+import org.genxdm.processor.w3c.xs.exception.src.SrcBaseTypeMustBeComplexTypeException;
+import org.genxdm.processor.w3c.xs.exception.src.SrcSimpleTypeAmongChildrenOfRestrictionException;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLAttribute;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLAttributeGroup;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLAttributeUse;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLComponentLocator;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLCycles;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLElement;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLEnumeration;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLFractionDigitsFacet;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLIdentityConstraint;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLLength;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLMinMaxFacet;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLModelGroup;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLNotation;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLParticle;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLParticleWithElementTerm;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLParticleWithModelGroupTerm;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLParticleWithWildcardTerm;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLPatternFacet;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLRepresentation;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLScope;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLTotalDigitsFacet;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLType;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLTypeRef;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLValueConstraint;
+import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLWildcard;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
@@ -123,7 +148,7 @@ import org.genxdm.xs.types.UnionSimpleType;
  * distracting arguments to methods. The use of a static entry point and a private initializer protects against multiple
  * invocations.
  */
-final class XMLSchemaConverter
+public final class XMLSchemaConverter
 {
 	/**
 	 * Integer.MAX_VALUE as a BigInteger; needed to ensure that we throw an exception rather than attempt to convert
@@ -1516,7 +1541,7 @@ final class XMLSchemaConverter
 
 	private NotationDefinition convertNotation(final XMLNotation xmlNotation)
 	{
-		final NotationDefinition notation = new NotationImpl(xmlNotation.getName(), xmlNotation.publicId, xmlNotation.systemId);
+		final NotationDefinition notation = new NotationImpl(xmlNotation.getName(), xmlNotation.getPublicId(), xmlNotation.getSystemId());
 		m_outBag.add(notation);
 		m_locations.m_notationLocations.put(notation, xmlNotation.getLocation());
 		return notation;

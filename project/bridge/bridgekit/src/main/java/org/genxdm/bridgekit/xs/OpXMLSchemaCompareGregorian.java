@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 
 import javax.xml.datatype.DatatypeConstants;
 
+import org.genxdm.bridgekit.xs.simple.Gregorian;
 import org.genxdm.typed.types.AtomBridge;
 
 public final class OpXMLSchemaCompareGregorian<A> implements ValueComparator<A>

@@ -18,8 +18,8 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.genxdm.processor.w3c.xs.exception.CvcMissingKeyFieldException;
-import org.genxdm.processor.w3c.xs.exception.SrcDuplicateKeyTargetException;
+import org.genxdm.processor.w3c.xs.exception.cvc.CvcMissingKeyFieldException;
+import org.genxdm.processor.w3c.xs.exception.src.SrcDuplicateKeyTargetException;
 import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.constraints.IdentityConstraintKind;
 import org.genxdm.xs.exceptions.AbortException;

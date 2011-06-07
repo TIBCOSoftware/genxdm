@@ -18,6 +18,7 @@ package org.genxdm.bridgekit.xs;
 import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.names.QNameAsSet;
+import org.genxdm.bridgekit.xs.simple.AbstractPrimeExcludingNoneType;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.NodeKind;
 import org.genxdm.xs.enums.ScopeExtent;

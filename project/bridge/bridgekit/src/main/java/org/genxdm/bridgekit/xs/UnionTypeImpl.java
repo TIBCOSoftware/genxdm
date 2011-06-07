@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.xs.simple.SimpleTypeImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.enums.DerivationMethod;

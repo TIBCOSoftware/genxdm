@@ -28,7 +28,7 @@ import org.genxdm.xs.types.Type;
 /**
  * Implementation Note: We're trying to maintain a single implementation of Type to represent complex and simple types as well as lists and unions. The advantage of this is that the implementation does not have to downcast.
  */
-abstract class TypeImpl extends NamedComponentImpl implements Type
+public abstract class TypeImpl extends NamedComponentImpl implements Type
 {
 	private final DerivationMethod derivation;
 	private final QName name;
