@@ -20,6 +20,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.xs.complex.AttributeDeclWithParentAxisType;
+import org.genxdm.bridgekit.xs.complex.AttributeNodeTypeImpl;
+import org.genxdm.bridgekit.xs.complex.CommentNodeTypeImpl;
+import org.genxdm.bridgekit.xs.complex.ElementDeclWithParentAxisType;
+import org.genxdm.bridgekit.xs.complex.ElementNodeTypeImpl;
+import org.genxdm.bridgekit.xs.complex.ElementNodeWithParentAxisType;
+import org.genxdm.bridgekit.xs.complex.NoneTypeImpl;
+import org.genxdm.bridgekit.xs.complex.ProcessingInstructionNodeTypeImpl;
+import org.genxdm.bridgekit.xs.complex.TextNodeTypeImpl;
+import org.genxdm.bridgekit.xs.complex.ZChoiceType;
+import org.genxdm.bridgekit.xs.complex.ZConcatType;
+import org.genxdm.bridgekit.xs.complex.ZInterleaveType;
+import org.genxdm.bridgekit.xs.complex.ZMultiplyType;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.xs.SchemaTypeBridge;

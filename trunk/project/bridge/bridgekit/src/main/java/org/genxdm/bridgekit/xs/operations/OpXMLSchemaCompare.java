@@ -13,21 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.bridgekit.xs.simple;
+package org.genxdm.bridgekit.xs.operations;
 
-import org.genxdm.bridgekit.xs.complex.AbstractType;
-import org.genxdm.xs.enums.KeeneQuantifier;
-import org.genxdm.xs.types.PrimeType;
-
-public abstract class AbstractPrimeExcludingNoneType extends AbstractType implements PrimeType
+public enum OpXMLSchemaCompare
 {
-	public final boolean isNone()
-	{
-		return false;
-	}
-
-	public final KeeneQuantifier quantifier()
-	{
-		return KeeneQuantifier.EXACTLY_ONE;
-	}
+	Ge, Gt, Le, Lt;
 }
