@@ -55,7 +55,7 @@ public final class ComplexUrTypeImpl extends AbstractPrimeExcludingNoneType impl
 	{
 		this.name = new QName(W3C_XML_SCHEMA_NS_URI, "anyType");
 
-		final SchemaWildcard anyTerm = new WildcardImpl(ProcessContentsMode.Lax, NamespaceConstraint.Any(nameBridge));
+		final SchemaWildcard anyTerm = new WildcardImpl(ProcessContentsMode.Lax, NamespaceConstraint.Any());
 
 		final LinkedList<SchemaParticle> particles = new LinkedList<SchemaParticle>();
 		particles.add(new ParticleWithWildcardTerm(0, anyTerm));

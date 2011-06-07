@@ -21,7 +21,6 @@ import java.util.HashMap;
 import javax.xml.XMLConstants;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.names.NameSource;
 import org.genxdm.xs.resolve.PrefixResolver;
 
 final class SmPrefixMappingSupport implements PrefixResolver
@@ -30,7 +29,7 @@ final class SmPrefixMappingSupport implements PrefixResolver
 	private final String XML_NS_URI;
 	private final String XMLNS_ATTRIBUTE_NS_URI;
 
-	public SmPrefixMappingSupport(final NameSource nameBridge)
+	public SmPrefixMappingSupport()
 	{
 		NULL_NS_URI = XMLConstants.NULL_NS_URI;
 		XML_NS_URI = XMLConstants.XML_NS_URI;
@@ -42,9 +41,9 @@ final class SmPrefixMappingSupport implements PrefixResolver
 		reset();
 	}
 
-	public SmPrefixMappingSupport(final String prefix, final String uri, final NameSource nameBridge)
+	public SmPrefixMappingSupport(final String prefix, final String uri)
 	{
-		this(nameBridge);
+		this();
 
 		declarePrefix(prefix, uri);
 	}
