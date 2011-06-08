@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.net.URI;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.processor.w3c.xs.SchemaRegExCompiler;
 import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLComponentLocator;
 import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLSccExceptionAdapter;
 import org.genxdm.xs.components.ComponentBag;
@@ -30,6 +29,7 @@ import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.exceptions.SchemaExceptionCatcher;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
+import org.genxdm.xs.facets.SchemaRegExCompiler;
 import org.genxdm.xs.resolve.CatalogResolver;
 import org.genxdm.xs.resolve.SchemaCatalog;
 

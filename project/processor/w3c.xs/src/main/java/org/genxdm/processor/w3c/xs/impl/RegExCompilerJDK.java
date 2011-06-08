@@ -19,8 +19,9 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.processor.w3c.xs.SchemaRegExCompiler;
+import org.genxdm.xs.exceptions.SchemaRegExCompileException;
 import org.genxdm.xs.facets.RegExPattern;
+import org.genxdm.xs.facets.SchemaRegExCompiler;
 
 /**
  * Regular Expression implementation using the JDK implementation.

@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.xs.exceptions;
 
-import org.genxdm.processor.w3c.xs.impl.SchemaRegExCompileException;
-import org.genxdm.xs.facets.RegExPattern;
-
-public interface SchemaRegExCompiler
+@SuppressWarnings("serial")
+public final class SchemaRegExCompileException extends Exception
 {
-    RegExPattern compile(String regex) throws SchemaRegExCompileException;
+    private final String pattern;
 
-    RegExPattern compile(String regex, String flags) throws SchemaRegExCompileException;
+    public SchemaRegExCompileException(final Throwable cause, final String pattern)
+    {
+        super(cause);
+        this.pattern = pattern;
+    }
+
+    public String getPattern()
+    {
+        return pattern;
+    }
 }
