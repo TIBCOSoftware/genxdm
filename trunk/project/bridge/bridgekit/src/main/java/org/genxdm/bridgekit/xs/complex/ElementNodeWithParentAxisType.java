@@ -18,9 +18,9 @@ package org.genxdm.bridgekit.xs.complex;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.NodeKind;
-import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.ElementNodeType;
 import org.genxdm.xs.types.PrimeType;
@@ -107,7 +107,7 @@ public final class ElementNodeWithParentAxisType implements ElementNodeType
 		return this;
 	}
 
-	public KeeneQuantifier quantifier()
+	public Quantifier quantifier()
 	{
 		return m_element.quantifier();
 	}

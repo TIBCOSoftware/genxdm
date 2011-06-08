@@ -23,12 +23,11 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.names.NameSource;
+import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.AttributeUse;
 import org.genxdm.xs.enums.DerivationMethod;
-import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.ContentType;
@@ -208,9 +207,9 @@ public final class ComplexTypeImpl extends TypeImpl implements ComplexType, Prim
 		return this;
 	}
 
-	public KeeneQuantifier quantifier()
+	public Quantifier quantifier()
 	{
-		return KeeneQuantifier.EXACTLY_ONE;
+		return Quantifier.EXACTLY_ONE;
 	}
 
 	public void setAbstract(final boolean isAbstract)

@@ -17,10 +17,10 @@ package org.genxdm.bridgekit.xs.complex;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.NodeKind;
-import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.Quantifier;
+import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
@@ -79,9 +79,9 @@ public final class AttributeDeclTypeImpl extends DataComponentImpl implements At
 		return this;
 	}
 
-	public KeeneQuantifier quantifier()
+	public Quantifier quantifier()
 	{
-		return KeeneQuantifier.EXACTLY_ONE;
+		return Quantifier.EXACTLY_ONE;
 	}
 
 	public void setType(final SimpleType type)

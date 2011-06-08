@@ -28,12 +28,29 @@ public class SimpleSchemaParse
     {
         W3cXmlSchemaParser parser = new W3cXmlSchemaParser();
         
-        //parser.parse(URI (location), 
+        //parser.parse(URI (schema location), 
         //             InputStream, URI (sysid), 
         //             SchemaExceptionHandler, 
         //             SchemaLoadOptions, 
         //             ComponentProvider)
         // stream and component provider must not be null.
+        
+        // xmlparser is instantiated with the component provider.
+        // schema load options provides access to the catalog and resolver,
+        // which are set on the xmlparser.
+        // note: schema load options also has an infinitely expandable set of
+        // options, defined as qname/string pairs, which are all discarded in
+        // the current implementation.  the catalog and catalog resolver are
+        // theoretically used for finding schemas.  and in fact, that's what
+        // happens (for import and include).
+        // the regex compiler can also be set (it has a default on w3cxmlschemaparser,
+        // and a mutator method to set it).  it's passed to the xmlparser.
+        
+        // xmlparser.parse is then called with the schema location uri, stream,
+        // system id, and the exception handler.
+        
+        // 
+        
         // and ... what do we do?
         assertTrue(true);
     }

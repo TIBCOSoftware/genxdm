@@ -18,8 +18,8 @@ package org.genxdm.bridgekit.xs;
 import java.util.Set;
 
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.enums.DerivationMethod;
-import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.Type;
@@ -134,8 +134,8 @@ public final class SchemaSupport
 		PreCondition.assertArgumentNotNull(lhs, "lhs");
 		PreCondition.assertArgumentNotNull(rhs, "rhs");
 
-		final KeeneQuantifier qLHS = lhs.quantifier();
-		final KeeneQuantifier qRHS = rhs.quantifier();
+		final Quantifier qLHS = lhs.quantifier();
+		final Quantifier qRHS = rhs.quantifier();
 		if (qLHS.isOptional() && lhs.prime().isNone())
 		{
 			return qRHS.contains(qLHS);

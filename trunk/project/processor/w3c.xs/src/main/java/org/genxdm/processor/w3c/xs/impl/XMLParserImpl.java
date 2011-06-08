@@ -82,7 +82,7 @@ final public class XMLParserImpl
         final SchemaExceptionCatcher caught = new SchemaExceptionCatcher();
 
         // Delegate the parsing into an XML representation
-        final XMLSchemaParser parser = new XMLSchemaParser(this.cache, caught, getCatalog(), m_resolver, processRepeatedNamespaces());
+        final XMLSchemaParser parser = new XMLSchemaParser(this.cache, caught, m_catalog, m_resolver, processRepeatedNamespaces());
 
         parser.parse(systemId, istream, cache, module);
 

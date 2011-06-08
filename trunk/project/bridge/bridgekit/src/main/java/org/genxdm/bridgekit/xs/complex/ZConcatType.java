@@ -16,7 +16,7 @@
 package org.genxdm.bridgekit.xs.complex;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.types.ConcatType;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.SequenceType;
@@ -75,7 +75,7 @@ public final class ZConcatType implements ConcatType
 		return ZPrimeChoiceType.choice(m_lhs.prime(), m_rhs.prime());
 	}
 
-	public KeeneQuantifier quantifier()
+	public Quantifier quantifier()
 	{
 		return m_lhs.quantifier().sum(m_rhs.quantifier());
 	}
