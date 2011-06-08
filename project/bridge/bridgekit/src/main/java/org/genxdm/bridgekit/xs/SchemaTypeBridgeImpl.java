@@ -31,8 +31,10 @@ import org.genxdm.bridgekit.xs.complex.ProcessingInstructionNodeTypeImpl;
 import org.genxdm.bridgekit.xs.complex.TextNodeTypeImpl;
 import org.genxdm.bridgekit.xs.complex.ZChoiceType;
 import org.genxdm.bridgekit.xs.complex.ZConcatType;
+import org.genxdm.bridgekit.xs.complex.ZEmptyType;
 import org.genxdm.bridgekit.xs.complex.ZInterleaveType;
 import org.genxdm.bridgekit.xs.complex.ZMultiplyType;
+import org.genxdm.bridgekit.xs.complex.ZPrimeChoiceType;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.xs.SchemaTypeBridge;
@@ -75,24 +77,6 @@ import org.genxdm.xs.types.Type;
 
 final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 {
-	private final AtomicUrType ANY_ATOMIC_TYPE;
-	private final ComplexUrType ANY_COMPLEX_TYPE;
-	private final SimpleUrType ANY_SIMPLE_TYPE;
-
-	// private final DocumentNodeType DOCUMENT;
-	// private final ElementNodeType ELEMENT;
-	private final CommentNodeType COMMENT;
-
-	private final ConcurrentHashMap<Type, ArrayList<AttributeUse>> m_attributeUses = new ConcurrentHashMap<Type, ArrayList<AttributeUse>>();
-
-	private final SchemaCacheImpl m_cache;
-	private final NameSource m_nameBridge = NameSource.SINGLETON;
-
-	private final ProcessingInstructionNodeType PROCESSING_INSTRUCTION;
-	private final TextNodeType TEXT;
-    private static final String ESCAPE = "\u001B";
-	private final QName WILDNAME = new QName(ESCAPE, ESCAPE);
-
 	public SchemaTypeBridgeImpl()
 	{
 		m_cache = new SchemaCacheImpl();
@@ -100,7 +84,7 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 		ANY_COMPLEX_TYPE = m_cache.getComplexUrType();
 		ANY_SIMPLE_TYPE = m_cache.getSimpleUrType();
 		ANY_ATOMIC_TYPE = m_cache.getAtomicUrType();
-		// ELEMENT = new ElementNodeTypeImpl(WILDNAME, null, false, m_cache);
+		ANY_ITEM = ZPrimeChoiceType.choice(m_cache.ANY_KIND, m_cache.ANY_ATOMIC_TYPE);
 		COMMENT = new CommentNodeTypeImpl(m_cache);
 		PROCESSING_INSTRUCTION = new ProcessingInstructionNodeTypeImpl(null, m_cache);
 		TEXT = new TextNodeTypeImpl(m_cache);
@@ -422,7 +406,7 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 
 	public EmptyType emptyType()
 	{
-		return m_cache.empty();
+		return EMPTY;
 	}
 
 	private ArrayList<AttributeUse> ensureAttributeUses(final ComplexType complexType)
@@ -559,7 +543,7 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 
 	public NameSource getNameBridge()
 	{
-		return m_cache.getNameBridge();
+		return NameSource.SINGLETON;
 	}
 
 	public Iterable<String> getNamespaces()
@@ -730,7 +714,7 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 
 	public PrimeType itemType()
 	{
-		return m_cache.item();
+		return ANY_ITEM;
 	}
 
 	public void lock()
@@ -983,4 +967,25 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 	{
 		return multiply(type, KeeneQuantifier.ZERO_OR_MORE);
 	}
+
+    private final PrimeType ANY_ITEM;
+    private final AtomicUrType ANY_ATOMIC_TYPE;
+    private final ComplexUrType ANY_COMPLEX_TYPE;
+    private final SimpleUrType ANY_SIMPLE_TYPE;
+    private final EmptyType EMPTY = new ZEmptyType();
+
+    // private final DocumentNodeType DOCUMENT;
+    // private final ElementNodeType ELEMENT;
+    private final CommentNodeType COMMENT;
+
+    private final ConcurrentHashMap<Type, ArrayList<AttributeUse>> m_attributeUses = new ConcurrentHashMap<Type, ArrayList<AttributeUse>>();
+
+    private final SchemaCacheImpl m_cache;
+    private final NameSource m_nameBridge = NameSource.SINGLETON;
+
+    private final ProcessingInstructionNodeType PROCESSING_INSTRUCTION;
+    private final TextNodeType TEXT;
+    private static final String ESCAPE = "\u001B";
+    private final QName WILDNAME = new QName(ESCAPE, ESCAPE);
+
 }

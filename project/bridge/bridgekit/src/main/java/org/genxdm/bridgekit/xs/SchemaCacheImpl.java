@@ -30,24 +30,22 @@ import org.genxdm.bridgekit.xs.complex.ElementNodeTypeImpl;
 import org.genxdm.bridgekit.xs.complex.NamespaceNodeTypeImpl;
 import org.genxdm.bridgekit.xs.complex.ProcessingInstructionNodeTypeImpl;
 import org.genxdm.bridgekit.xs.complex.TextNodeTypeImpl;
-import org.genxdm.bridgekit.xs.complex.ZEmptyType;
 import org.genxdm.bridgekit.xs.complex.ZMultiplyType;
 import org.genxdm.bridgekit.xs.complex.ZPrimeChoiceType;
 import org.genxdm.bridgekit.xs.simple.AtomicUrTypeImpl;
 import org.genxdm.bridgekit.xs.simple.SimpleUrTypeImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.Schema;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
-import org.genxdm.xs.components.SchemaComponent;
 import org.genxdm.xs.components.ComponentBag;
 import org.genxdm.xs.components.ComponentKind;
 import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
+import org.genxdm.xs.components.SchemaComponent;
 import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.types.AtomicType;
 import org.genxdm.xs.types.AtomicUrType;
@@ -56,7 +54,6 @@ import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.ComplexUrType;
 import org.genxdm.xs.types.DocumentNodeType;
 import org.genxdm.xs.types.ElementNodeType;
-import org.genxdm.xs.types.EmptyType;
 import org.genxdm.xs.types.NamespaceNodeType;
 import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.NodeType;
@@ -67,12 +64,11 @@ import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.SimpleUrType;
 import org.genxdm.xs.types.Type;
 
-final class SchemaCacheImpl implements SchemaCache, ComponentProvider, Schema
+final class SchemaCacheImpl implements ComponentProvider, Schema
 {
-	private final AtomicUrTypeImpl ANY_ATOMIC_TYPE;
+	final AtomicUrTypeImpl ANY_ATOMIC_TYPE;
 	private final ComplexUrTypeImpl ANY_COMPLEX_TYPE;
-	private final PrimeType ANY_ITEM;
-	private final PrimeType ANY_KIND;
+	final PrimeType ANY_KIND;
 	private final SimpleUrTypeImpl ANY_SIMPLE_TYPE;
 	private final AttributeNodeType ATTRIBUTE;
 
@@ -80,7 +76,6 @@ final class SchemaCacheImpl implements SchemaCache, ComponentProvider, Schema
 	private final NodeType COMMENT;
 	private final DocumentNodeType DOCUMENT;
 	private final ElementNodeType ELEMENT;
-	private final EmptyType EMPTY;
 	final ConcurrentHashMap<QName, AttributeGroupDefinition> m_attributeGroups = new ConcurrentHashMap<QName, AttributeGroupDefinition>();
 	final ConcurrentHashMap<QName, AttributeDefinition> m_attributes = new ConcurrentHashMap<QName, AttributeDefinition>();
 
@@ -131,8 +126,6 @@ final class SchemaCacheImpl implements SchemaCache, ComponentProvider, Schema
 		final SequenceType X = ZMultiplyType.zeroOrMore(ZPrimeChoiceType.choice(ELEMENT, ZPrimeChoiceType.choice(TEXT, ZPrimeChoiceType.choice(COMMENT, PROCESSING_INSTRUCTION))));
 		DOCUMENT = new DocumentNodeTypeImpl(X, this);
 		ANY_KIND = ZPrimeChoiceType.choice(ELEMENT, ZPrimeChoiceType.choice(ATTRIBUTE, ZPrimeChoiceType.choice(TEXT, ZPrimeChoiceType.choice(DOCUMENT, ZPrimeChoiceType.choice(COMMENT, ZPrimeChoiceType.choice(NAMESPACE, PROCESSING_INSTRUCTION))))));
-		ANY_ITEM = ZPrimeChoiceType.choice(ANY_KIND, ANY_ATOMIC_TYPE);
-		EMPTY = new ZEmptyType();
 	}
 
 	private void assertNotLocked()
@@ -247,14 +240,10 @@ final class SchemaCacheImpl implements SchemaCache, ComponentProvider, Schema
 		}
 	}
 
+	// no longer accessible via interface.
 	public ElementNodeType elementWild(final SequenceType type, final boolean nillable)
 	{
 		return new ElementNodeTypeImpl(WILDNAME, type, nillable, this);
-	}
-
-	public EmptyType empty()
-	{
-		return EMPTY;
 	}
 
 	public synchronized QName generateUniqueName()
@@ -726,16 +715,6 @@ final class SchemaCacheImpl implements SchemaCache, ComponentProvider, Schema
 		return m_isLocked;
 	}
 
-	public PrimeType item()
-	{
-		return ANY_ITEM;
-	}
-
-	public SequenceType itemSet()
-	{
-		return ZMultiplyType.zeroOrMore(item());
-	}
-
 	public void lock()
 	{
 		m_isLocked = true;
@@ -811,8 +790,4 @@ final class SchemaCacheImpl implements SchemaCache, ComponentProvider, Schema
 		}
 	}
 
-	public PrimeType text()
-	{
-		return TEXT;
-	}
 }

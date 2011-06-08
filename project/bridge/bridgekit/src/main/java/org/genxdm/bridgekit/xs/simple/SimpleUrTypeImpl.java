@@ -21,9 +21,9 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.bridgekit.xs.SchemaCache;
 import org.genxdm.bridgekit.xs.SchemaSupport;
 import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.EnumerationDefinition;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
@@ -47,9 +47,9 @@ public final class SimpleUrTypeImpl
     implements SimpleUrType
 {
 	private final QName m_name;
-	private final SchemaCache cache;
+	private final ComponentProvider cache;
 
-	public SimpleUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final SchemaCache cache)
+	public SimpleUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final ComponentProvider cache)
 	{
 		this.m_name = new QName(W3C_XML_SCHEMA_NS_URI, "anySimpleType");
 		this.cache = cache;
