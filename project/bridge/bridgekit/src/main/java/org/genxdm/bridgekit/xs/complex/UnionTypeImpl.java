@@ -22,8 +22,8 @@ import javax.xml.namespace.QName;
 import org.genxdm.bridgekit.xs.simple.SimpleTypeImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.enums.DerivationMethod;
-import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
 import org.genxdm.xs.exceptions.DatatypeException;
@@ -186,8 +186,8 @@ public final class UnionTypeImpl extends SimpleTypeImpl implements UnionSimpleTy
 		return result;
 	}
 
-	public KeeneQuantifier quantifier()
+	public Quantifier quantifier()
 	{
-		return KeeneQuantifier.EXACTLY_ONE;
+		return Quantifier.EXACTLY_ONE;
 	}
 }

@@ -16,7 +16,7 @@
 package org.genxdm.bridgekit.xs.complex;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.types.MultiplyType;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.SequenceType;
@@ -24,7 +24,7 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 public final class ZMultiplyType extends AbstractType implements MultiplyType
 {
-	public static  SequenceType multiply(final SequenceType argument, final KeeneQuantifier multiplier)
+	public static SequenceType multiply(final SequenceType argument, final Quantifier multiplier)
 	{
 		switch (multiplier)
 		{
@@ -53,19 +53,19 @@ public final class ZMultiplyType extends AbstractType implements MultiplyType
 
 	public static  SequenceType optional(final SequenceType argument)
 	{
-		return multiply(argument, KeeneQuantifier.OPTIONAL);
+		return multiply(argument, Quantifier.OPTIONAL);
 	}
 
 	public static  SequenceType zeroOrMore(final SequenceType argument)
 	{
-		return multiply(argument, KeeneQuantifier.ZERO_OR_MORE);
+		return multiply(argument, Quantifier.ZERO_OR_MORE);
 	}
 
 	private final SequenceType m_argument;
 
-	private final KeeneQuantifier m_multiplier;
+	private final Quantifier m_multiplier;
 
-	private ZMultiplyType(final SequenceType argument, final KeeneQuantifier multiplier)
+	private ZMultiplyType(final SequenceType argument, final Quantifier multiplier)
 	{
 		this.m_argument = PreCondition.assertArgumentNotNull(argument, "argument");
 		this.m_multiplier = PreCondition.assertArgumentNotNull(multiplier, "multiplier");
@@ -81,7 +81,7 @@ public final class ZMultiplyType extends AbstractType implements MultiplyType
 		return m_argument;
 	}
 
-	public KeeneQuantifier getMultiplier()
+	public Quantifier getMultiplier()
 	{
 		return m_multiplier;
 	}
@@ -100,7 +100,7 @@ public final class ZMultiplyType extends AbstractType implements MultiplyType
 		return m_argument.prime();
 	}
 
-	public KeeneQuantifier quantifier()
+	public Quantifier quantifier()
 	{
 		// Formal Semantics...
 		// quantifier(Type?) = quantifier(Type).?
@@ -124,7 +124,7 @@ public final class ZMultiplyType extends AbstractType implements MultiplyType
 	@Override
 	public String toString()
 	{
-		final KeeneQuantifier card = quantifier();
+		final Quantifier card = quantifier();
 		if (card.isNone())
 		{
 			return "none";

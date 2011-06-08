@@ -24,7 +24,6 @@ import org.genxdm.typed.types.MetaBridge;
 import org.genxdm.typed.types.MetaVisitor;
 import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.SchemaTypeBridge;
-import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.types.AttributeNodeType;
 import org.genxdm.xs.types.ChoiceType;
 import org.genxdm.xs.types.CommentNodeType;
@@ -45,76 +44,6 @@ import org.genxdm.xs.types.Type;
 
 public final class MetaBridgeOnSchemaTypeBridgeAdapter implements MetaBridge
 {
-	private static KeeneQuantifier convert(final Quantifier gq)
-	{
-		switch (gq)
-		{
-			case NONE:
-			{
-				return KeeneQuantifier.NONE;
-			}
-			case EMPTY:
-			{
-				return KeeneQuantifier.EMPTY;
-			}
-			case EXACTLY_ONE:
-			{
-				return KeeneQuantifier.EXACTLY_ONE;
-			}
-			case OPTIONAL:
-			{
-				return KeeneQuantifier.OPTIONAL;
-			}
-			case ONE_OR_MORE:
-			{
-				return KeeneQuantifier.ONE_OR_MORE;
-			}
-			case ZERO_OR_MORE:
-			{
-				return KeeneQuantifier.ZERO_OR_MORE;
-			}
-			default:
-			{
-				throw new AssertionError(gq);
-			}
-		}
-	}
-
-	private static Quantifier convert(final KeeneQuantifier sq)
-	{
-		switch (sq)
-		{
-			case NONE:
-			{
-				return Quantifier.NONE;
-			}
-			case EMPTY:
-			{
-				return Quantifier.EMPTY;
-			}
-			case EXACTLY_ONE:
-			{
-				return Quantifier.EXACTLY_ONE;
-			}
-			case OPTIONAL:
-			{
-				return Quantifier.OPTIONAL;
-			}
-			case ONE_OR_MORE:
-			{
-				return Quantifier.ONE_OR_MORE;
-			}
-			case ZERO_OR_MORE:
-			{
-				return Quantifier.ZERO_OR_MORE;
-			}
-			default:
-			{
-				throw new AssertionError(sq);
-			}
-		}
-	}
-
 	private final SchemaTypeBridge metaBridge;
 
 	public MetaBridgeOnSchemaTypeBridgeAdapter(final SchemaTypeBridge metaBridge)
@@ -169,7 +98,7 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter implements MetaBridge
 		else if (type instanceof MultiplyType)
 		{
 			final MultiplyType multiply = (MultiplyType)type;
-			visitor.multiplyType(multiply, multiply.getArgument(), convert(multiply.getMultiplier()));
+			visitor.multiplyType(multiply, multiply.getArgument(), multiply.getMultiplier());
 		}
 		else if (type instanceof NamespaceNodeType)
 		{
@@ -615,7 +544,7 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter implements MetaBridge
 
 	public SequenceType multiply(final SequenceType argument, final Quantifier multiplier)
 	{
-		return metaBridge.multiply(argument, convert(multiplier));
+		return metaBridge.multiply(argument, multiplier);
 	}
 
 	public SequenceType namespaceAxis(final SequenceType contextType)
@@ -806,7 +735,7 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter implements MetaBridge
 
 	public Quantifier quantifier(final SequenceType type)
 	{
-		return convert(type.quantifier());
+		return type.quantifier();
 	}
 
 	public boolean sameAs(final SequenceType one, final SequenceType two)

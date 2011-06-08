@@ -17,7 +17,7 @@ package org.genxdm.bridgekit.xs.complex;
 
 import org.genxdm.bridgekit.xs.SchemaSupport;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.types.ChoiceType;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.SequenceType;
@@ -40,11 +40,11 @@ public final class ZChoiceType implements ChoiceType
 		}
 		else if (lhs.prime().isNone() && lhs.quantifier().isOptional())
 		{
-			return ZMultiplyType.multiply(rhs, KeeneQuantifier.OPTIONAL);
+			return ZMultiplyType.multiply(rhs, Quantifier.OPTIONAL);
 		}
 		else if (rhs.prime().isNone() && rhs.quantifier().isOptional())
 		{
-			return ZMultiplyType.multiply(lhs, KeeneQuantifier.OPTIONAL);
+			return ZMultiplyType.multiply(lhs, Quantifier.OPTIONAL);
 		}
 		else if (SchemaSupport.subtype(lhs, rhs))
 		{
@@ -95,7 +95,7 @@ public final class ZChoiceType implements ChoiceType
 		return ZPrimeChoiceType.choice(m_lhs.prime(), m_rhs.prime());
 	}
 
-	public KeeneQuantifier quantifier()
+	public Quantifier quantifier()
 	{
 		return m_lhs.quantifier().choice(m_rhs.quantifier());
 	}

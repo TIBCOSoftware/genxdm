@@ -5462,6 +5462,14 @@ final class XMLSchemaParser extends XMLRepresentation
         final XMLInputFactory factory = XMLInputFactory.newInstance();
 
         final XMLStreamReader reader;
+        // TODO: this is potentially a problem.
+        // while it won't read schemas recursively (which is good),
+        // it uses a different 'xml schema cache' for every instantiation
+        // of this parser (both the schema cache and this parser are
+        // instantiated and called from xmlparserimpl.parse()).
+        // this means that it is trivially easy to read the same
+        // schema over and over and over, and it is not at all clear
+        // what sort of action should happen when this occurs.
         try
         {
             if (null != systemId)
@@ -5475,7 +5483,7 @@ final class XMLSchemaParser extends XMLRepresentation
         }
         catch (final XMLStreamException e)
         {
-            // TODO: figure out what happens.  comment was in received code.
+            // TODO: figure out what happens.  following comment was in received code.
             // I'm not sure what has happened here, but it doesn't fit into the
             // category of not
             // being well formed XML. Perhaps it's not XML at all. We'll throw

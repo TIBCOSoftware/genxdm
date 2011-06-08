@@ -18,11 +18,11 @@ package org.genxdm.bridgekit.xs.complex;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.NodeKind;
-import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
@@ -108,7 +108,7 @@ public final class AttributeDeclWithParentAxisType implements AttributeDefinitio
 		return this;
 	}
 
-	public KeeneQuantifier quantifier()
+	public Quantifier quantifier()
 	{
 		return m_attribute.quantifier();
 	}

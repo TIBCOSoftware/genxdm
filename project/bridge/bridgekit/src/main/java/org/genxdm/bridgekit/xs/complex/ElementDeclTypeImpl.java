@@ -23,12 +23,12 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.NodeKind;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.enums.DerivationMethod;
-import org.genxdm.NodeKind;
-import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.ElementNodeType;
 import org.genxdm.xs.types.PrimeChoiceType;
@@ -182,9 +182,9 @@ public final class ElementDeclTypeImpl extends DataComponentImpl implements Elem
 		return this;
 	}
 
-	public KeeneQuantifier quantifier()
+	public Quantifier quantifier()
 	{
-		return KeeneQuantifier.EXACTLY_ONE;
+		return Quantifier.EXACTLY_ONE;
 	}
 
 	public void removeSubstitutionGroupMember(final ElementDefinition member)
