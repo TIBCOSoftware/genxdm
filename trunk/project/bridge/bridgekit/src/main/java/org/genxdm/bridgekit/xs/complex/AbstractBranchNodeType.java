@@ -15,18 +15,18 @@
  */
 package org.genxdm.bridgekit.xs.complex;
 
-import org.genxdm.bridgekit.xs.SchemaCache;
+import org.genxdm.NodeKind;
 import org.genxdm.bridgekit.xs.simple.AbstractPrimeExcludingNoneType;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.NodeKind;
+import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.types.NodeType;
 
 abstract class AbstractBranchNodeType extends AbstractPrimeExcludingNoneType implements NodeType
 {
-	protected final SchemaCache cache;
+	protected final ComponentProvider cache;
 	private final NodeKind nodeKind;
 
-	public AbstractBranchNodeType(final NodeKind nodeKind, final SchemaCache cache)
+	public AbstractBranchNodeType(final NodeKind nodeKind, final ComponentProvider cache)
 	{
 		this.nodeKind = PreCondition.assertArgumentNotNull(nodeKind);
 		this.cache = cache;

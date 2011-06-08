@@ -16,7 +16,7 @@
 package org.genxdm.bridgekit.xs.complex;
 
 import org.genxdm.NodeKind;
-import org.genxdm.bridgekit.xs.SchemaCache;
+import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.types.CommentNodeType;
 import org.genxdm.xs.types.PrimeChoiceType;
 import org.genxdm.xs.types.PrimeType;
@@ -25,7 +25,7 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 public final class CommentNodeTypeImpl extends AbstractLeafNodeType implements CommentNodeType
 {
-	public CommentNodeTypeImpl(final SchemaCache cache)
+	public CommentNodeTypeImpl(final ComponentProvider cache)
 	{
 		super(NodeKind.COMMENT, cache);
 	}

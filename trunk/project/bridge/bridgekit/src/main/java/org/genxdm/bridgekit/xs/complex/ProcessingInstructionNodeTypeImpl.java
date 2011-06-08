@@ -16,7 +16,7 @@
 package org.genxdm.bridgekit.xs.complex;
 
 import org.genxdm.NodeKind;
-import org.genxdm.bridgekit.xs.SchemaCache;
+import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.types.PrimeChoiceType;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
@@ -27,7 +27,7 @@ public final class ProcessingInstructionNodeTypeImpl extends AbstractLeafNodeTyp
 {
 	private final String m_name;
 
-	public ProcessingInstructionNodeTypeImpl(final String name, final SchemaCache cache)
+	public ProcessingInstructionNodeTypeImpl(final String name, final ComponentProvider cache)
 	{
 		super(NodeKind.PROCESSING_INSTRUCTION, cache);
 		m_name = name;

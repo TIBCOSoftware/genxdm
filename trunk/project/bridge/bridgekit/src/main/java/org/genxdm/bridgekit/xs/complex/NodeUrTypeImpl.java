@@ -15,7 +15,6 @@
  */
 package org.genxdm.bridgekit.xs.complex;
 
-import org.genxdm.bridgekit.xs.SchemaCache;
 import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.types.NodeUrType;
 import org.genxdm.xs.types.PrimeType;
@@ -25,7 +24,7 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 final class NodeUrTypeImpl implements NodeUrType
 {
-	public NodeUrTypeImpl(final SchemaCache cache)
+	public NodeUrTypeImpl()
 	{
 	}
 

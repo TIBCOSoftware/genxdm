@@ -16,7 +16,7 @@
 package org.genxdm.bridgekit.xs.complex;
 
 import org.genxdm.NodeKind;
-import org.genxdm.bridgekit.xs.SchemaCache;
+import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.types.PrimeChoiceType;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
@@ -25,7 +25,7 @@ import org.genxdm.xs.types.TextNodeType;
 
 public final class TextNodeTypeImpl extends AbstractLeafNodeType implements TextNodeType
 {
-	public TextNodeTypeImpl(final SchemaCache cache)
+	public TextNodeTypeImpl(final ComponentProvider cache)
 	{
 		super(NodeKind.TEXT, cache);
 	}
