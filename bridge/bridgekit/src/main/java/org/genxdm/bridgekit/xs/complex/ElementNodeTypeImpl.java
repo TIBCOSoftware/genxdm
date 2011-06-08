@@ -17,10 +17,10 @@ package org.genxdm.bridgekit.xs.complex;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.bridgekit.names.QNameAsSet;
-import org.genxdm.bridgekit.xs.SchemaCache;
-import org.genxdm.exceptions.PreCondition;
 import org.genxdm.NodeKind;
+import org.genxdm.bridgekit.names.QNameAsSet;
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.ElementNodeType;
 import org.genxdm.xs.types.NativeType;
@@ -36,7 +36,7 @@ public final class ElementNodeTypeImpl extends AbstractBranchNodeType implements
 	private final boolean m_nillable;
 	private final QName name;
 
-	public ElementNodeTypeImpl(final QName name, final SequenceType dataType, final boolean nillable, final SchemaCache cache)
+	public ElementNodeTypeImpl(final QName name, final SequenceType dataType, final boolean nillable, final ComponentProvider cache)
 	{
 		super(NodeKind.ELEMENT, cache);
 		this.name = PreCondition.assertArgumentNotNull(name, "name");

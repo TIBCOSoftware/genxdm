@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.xs.complex.AttributeDeclTypeImpl;
 import org.genxdm.bridgekit.xs.complex.ListTypeImpl;
+import org.genxdm.names.NameSource;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
 import org.genxdm.xs.components.ComponentBag;
@@ -78,7 +79,7 @@ final class XsiSchema implements ComponentBag
 
 		{
 			final QName name = new QName(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "noNamespaceSchemaLocation");
-			final SimpleType type = cache.getSimpleType(cache.getNameBridge().nativeType(NativeType.ANY_URI));
+			final SimpleType type = cache.getSimpleType(NameSource.SINGLETON.nativeType(NativeType.ANY_URI));
 			XSI_NO_NAMESPACE_SCHEMA_LOCATION = new AttributeDeclTypeImpl(name, ScopeExtent.Global, type);
 			register(XSI_NO_NAMESPACE_SCHEMA_LOCATION);
 		}

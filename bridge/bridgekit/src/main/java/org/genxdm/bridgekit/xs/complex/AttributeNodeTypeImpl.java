@@ -17,11 +17,11 @@ package org.genxdm.bridgekit.xs.complex;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.NodeKind;
 import org.genxdm.bridgekit.names.QNameAsSet;
-import org.genxdm.bridgekit.xs.SchemaCache;
 import org.genxdm.bridgekit.xs.simple.AbstractPrimeExcludingNoneType;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.NodeKind;
+import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.AttributeNodeType;
 import org.genxdm.xs.types.PrimeChoiceType;
@@ -35,7 +35,7 @@ public final class AttributeNodeTypeImpl extends AbstractPrimeExcludingNoneType 
 	private final QName name;
 	private final SequenceType m_type;
 
-	public AttributeNodeTypeImpl(final QName name, final SequenceType type, final SchemaCache cache)
+	public AttributeNodeTypeImpl(final QName name, final SequenceType type, ComponentProvider cache)
 	{
 		this.name = PreCondition.assertArgumentNotNull(name, "name");
 		if (null != type)
