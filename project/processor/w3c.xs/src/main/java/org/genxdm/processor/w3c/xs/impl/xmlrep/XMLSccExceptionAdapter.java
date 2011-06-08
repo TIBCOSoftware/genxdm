@@ -16,7 +16,6 @@
 package org.genxdm.processor.w3c.xs.impl.xmlrep;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.processor.w3c.xs.SchemaConstraintHandler;
 import org.genxdm.processor.w3c.xs.exception.scc.SccLocationException;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
@@ -26,6 +25,7 @@ import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaConstraintHandler;
 import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.resolve.LocationInSchema;
