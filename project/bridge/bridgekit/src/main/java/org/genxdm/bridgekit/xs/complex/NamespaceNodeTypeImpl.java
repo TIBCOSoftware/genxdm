@@ -16,7 +16,7 @@
 package org.genxdm.bridgekit.xs.complex;
 
 import org.genxdm.NodeKind;
-import org.genxdm.bridgekit.xs.SchemaCache;
+import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.types.NamespaceNodeType;
 import org.genxdm.xs.types.PrimeChoiceType;
 import org.genxdm.xs.types.PrimeType;
@@ -25,7 +25,7 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 public final class NamespaceNodeTypeImpl extends AbstractLeafNodeType implements NamespaceNodeType
 {
-	public NamespaceNodeTypeImpl(final SchemaCache cache)
+	public NamespaceNodeTypeImpl(final ComponentProvider cache)
 	{
 		super(NodeKind.NAMESPACE, cache);
 	}
