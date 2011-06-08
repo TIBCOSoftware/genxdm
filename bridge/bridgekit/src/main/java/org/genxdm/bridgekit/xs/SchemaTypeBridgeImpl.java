@@ -37,6 +37,7 @@ import org.genxdm.bridgekit.xs.complex.ZMultiplyType;
 import org.genxdm.bridgekit.xs.complex.ZPrimeChoiceType;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
+import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.SchemaTypeBridge;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
@@ -52,7 +53,6 @@ import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.constraints.ModelGroupUse;
 import org.genxdm.xs.constraints.NamespaceConstraint;
 import org.genxdm.xs.constraints.WildcardUse;
-import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.types.AtomicType;
 import org.genxdm.xs.types.AtomicUrType;
 import org.genxdm.xs.types.AttributeNodeType;
@@ -193,11 +193,11 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 		final AttributeDefinition attribute = attributeUse.getAttribute();
 		if (null != parentAxis)
 		{
-			return multiply(new AttributeDeclWithParentAxisType(attribute, parentAxis), attributeUse.isRequired() ? KeeneQuantifier.EXACTLY_ONE : KeeneQuantifier.OPTIONAL);
+			return multiply(new AttributeDeclWithParentAxisType(attribute, parentAxis), attributeUse.isRequired() ? Quantifier.EXACTLY_ONE : Quantifier.OPTIONAL);
 		}
 		else
 		{
-			return multiply(attribute, attributeUse.isRequired() ? KeeneQuantifier.EXACTLY_ONE : KeeneQuantifier.OPTIONAL);
+			return multiply(attribute, attributeUse.isRequired() ? Quantifier.EXACTLY_ONE : Quantifier.OPTIONAL);
 		}
 	}
 
@@ -391,11 +391,11 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 		final ElementDefinition elementDecl = elementUse.getTerm();
 		if (null != parentDecl)
 		{
-			return multiply(new ElementDeclWithParentAxisType(elementDecl, parentDecl), KeeneQuantifier.approximate(minOccurs, maxOccurs));
+			return multiply(new ElementDeclWithParentAxisType(elementDecl, parentDecl), Quantifier.approximate(minOccurs, maxOccurs));
 		}
 		else
 		{
-			return multiply(elementDecl, KeeneQuantifier.approximate(minOccurs, maxOccurs));
+			return multiply(elementDecl, Quantifier.approximate(minOccurs, maxOccurs));
 		}
 	}
 
@@ -539,11 +539,6 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 		{
 			throw new AssertionError("getName(" + type.getClass() + ")");
 		}
-	}
-
-	public NameSource getNameBridge()
-	{
-		return NameSource.SINGLETON;
 	}
 
 	public Iterable<String> getNamespaces()
@@ -766,7 +761,7 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 		}
 		if (null != contentModel)
 		{
-			return multiply(contentModel, KeeneQuantifier.approximate(minOccurs, maxOccurs));
+			return multiply(contentModel, Quantifier.approximate(minOccurs, maxOccurs));
 		}
 		else
 		{
@@ -774,7 +769,7 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 		}
 	}
 
-	public SequenceType multiply(final SequenceType argument, final KeeneQuantifier multiplier)
+	public SequenceType multiply(final SequenceType argument, final Quantifier multiplier)
 	{
 		PreCondition.assertArgumentNotNull(argument, "argument");
 		if (null != argument)
@@ -825,14 +820,14 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 
 	public SequenceType oneOrMore(final SequenceType type)
 	{
-		return multiply(type, KeeneQuantifier.ONE_OR_MORE);
+		return multiply(type, Quantifier.ONE_OR_MORE);
 	}
 
 	public SequenceType optional(final SequenceType type)
 	{
 		if (null != type)
 		{
-			return multiply(type, KeeneQuantifier.OPTIONAL);
+			return multiply(type, Quantifier.OPTIONAL);
 		}
 		else
 		{
@@ -929,7 +924,7 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 		{
 		case Any:
 		{
-			return multiply(new ElementNodeWithParentAxisType(elementWild(null, true), parentDecl), KeeneQuantifier.approximate(minOccurs, maxOccurs));
+			return multiply(new ElementNodeWithParentAxisType(elementWild(null, true), parentDecl), Quantifier.approximate(minOccurs, maxOccurs));
 		}
 		case Include:
 		{
@@ -947,13 +942,13 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 					type = append;
 				}
 			}
-			return multiply(type, KeeneQuantifier.approximate(minOccurs, maxOccurs));
+			return multiply(type, Quantifier.approximate(minOccurs, maxOccurs));
 		}
 		case Exclude:
 		{
 			// TODO: How do we define a regular expression type that excludes certain namespaces?
 			// TODO: We don't even have the concept of AND.
-			return multiply(new ElementNodeWithParentAxisType(new ElementNodeTypeImpl(WILDNAME, null, true, m_cache), parentDecl), KeeneQuantifier.approximate(minOccurs,
+			return multiply(new ElementNodeWithParentAxisType(new ElementNodeTypeImpl(WILDNAME, null, true, m_cache), parentDecl), Quantifier.approximate(minOccurs,
 					maxOccurs));
 		}
 		default:
@@ -965,7 +960,7 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 
 	public SequenceType zeroOrMore(final SequenceType type)
 	{
-		return multiply(type, KeeneQuantifier.ZERO_OR_MORE);
+		return multiply(type, Quantifier.ZERO_OR_MORE);
 	}
 
     private final PrimeType ANY_ITEM;

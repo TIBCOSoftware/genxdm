@@ -28,9 +28,9 @@ import org.genxdm.bridgekit.xs.complex.TypeImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.components.EnumerationDefinition;
 import org.genxdm.xs.enums.DerivationMethod;
-import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
 import org.genxdm.xs.exceptions.DatatypeException;
@@ -393,7 +393,7 @@ public abstract class SimpleTypeImpl extends TypeImpl implements SimpleType
 		throw new UnsupportedOperationException("TODO");
 	}
 
-	public KeeneQuantifier quantifier()
+	public Quantifier quantifier()
 	{
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("TODO");
