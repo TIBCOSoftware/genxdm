@@ -22,12 +22,15 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.impl.RegExCompilerJDK;
 import org.genxdm.processor.w3c.xs.impl.XMLParserImpl;
 import org.genxdm.xs.SchemaLoadOptions;
+import org.genxdm.xs.SchemaParser;
 import org.genxdm.xs.components.ComponentBag;
 import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
+import org.genxdm.xs.facets.SchemaRegExCompiler;
 
-public final class W3cXmlSchemaParser
+public final class W3cXmlSchemaParser 
+    implements SchemaParser
 {
     public W3cXmlSchemaParser()
     {

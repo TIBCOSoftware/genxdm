@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs;
+package org.genxdm.xs.exceptions;
 
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
@@ -22,8 +22,6 @@ import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.constraints.IdentityConstraint;
-import org.genxdm.xs.exceptions.AbortException;
-import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.SimpleType;
 
