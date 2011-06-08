@@ -18,7 +18,6 @@ package org.genxdm.processor.w3c.xs.impl;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.names.NameSource;
 import org.genxdm.xs.SchemaTypeBridge;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.ElementDefinition;
@@ -50,14 +49,12 @@ final class PrintSequenceTypeVisitor implements SequenceTypeVisitor
 {
     private final StringBuilder m_sb = new StringBuilder();
     private final SchemaTypeBridge m_metaBridge;
-    private final NameSource m_nameBridge;
     private final NamespaceResolver m_namespaces;
     private final String m_defaultElementAndTypeNamespace;
 
     public PrintSequenceTypeVisitor(final SchemaTypeBridge metaBridge, final NamespaceResolver namespaces, final String defaultElementAndTypeNamespace)
     {
         m_metaBridge = PreCondition.assertArgumentNotNull(metaBridge, "metaBridge");
-        m_nameBridge = m_metaBridge.getNameBridge();
         m_namespaces = PreCondition.assertArgumentNotNull(namespaces, "namespaces");
         m_defaultElementAndTypeNamespace = PreCondition.assertArgumentNotNull(defaultElementAndTypeNamespace, "defaultElementAndTypeNamespace");
     }
@@ -112,7 +109,7 @@ final class PrintSequenceTypeVisitor implements SequenceTypeVisitor
     public void visit(final ElementNodeType elementNodeType)
     {
         m_sb.append("element(");
-        m_sb.append(getLexicalQName(elementNodeType.getName(), m_namespaces, m_defaultElementAndTypeNamespace, m_nameBridge));
+        m_sb.append(getLexicalQName(elementNodeType.getName(), m_namespaces, m_defaultElementAndTypeNamespace));
         final SequenceType dataType = elementNodeType.getType();
         if (!(dataType instanceof ComplexUrType))
         {
@@ -133,11 +130,11 @@ final class PrintSequenceTypeVisitor implements SequenceTypeVisitor
     {
         final QName name = schemaElement.getName();
         m_sb.append("schema-element(");
-        m_sb.append(getLexicalQName(name, m_namespaces, null, m_nameBridge));
+        m_sb.append(getLexicalQName(name, m_namespaces, null));
         m_sb.append(")");
     }
 
-    private static String getLexicalQName(final QName name, final NamespaceResolver namespaces, final String defaultNamespace, final NameSource nameBridge)
+    private static String getLexicalQName(final QName name, final NamespaceResolver namespaces, final String defaultNamespace)
     {
         if (null != name)
         {
@@ -198,13 +195,13 @@ final class PrintSequenceTypeVisitor implements SequenceTypeVisitor
 
     public void visit(final SimpleType simpleType)
     {
-        m_sb.append(getLexicalQName(simpleType.getName(), m_namespaces, m_defaultElementAndTypeNamespace, m_nameBridge));
+        m_sb.append(getLexicalQName(simpleType.getName(), m_namespaces, m_defaultElementAndTypeNamespace));
     }
 
     public void visit(final AttributeNodeType attributeNodeType)
     {
         m_sb.append("attribute(");
-        m_sb.append(getLexicalQName(attributeNodeType.getName(), m_namespaces, null, m_nameBridge));
+        m_sb.append(getLexicalQName(attributeNodeType.getName(), m_namespaces, null));
         final SequenceType dataType = attributeNodeType.getType();
         if (!(dataType instanceof SimpleUrType))
         {
@@ -221,7 +218,7 @@ final class PrintSequenceTypeVisitor implements SequenceTypeVisitor
     {
         final QName declaration = schemaAttribute.getName();
         m_sb.append("schema-attribute(");
-        m_sb.append(getLexicalQName(declaration, m_namespaces, null, m_nameBridge));
+        m_sb.append(getLexicalQName(declaration, m_namespaces, null));
         m_sb.append(")");
     }
 
@@ -343,17 +340,17 @@ final class PrintSequenceTypeVisitor implements SequenceTypeVisitor
 
     public void visit(final ComplexType complexType)
     {
-        m_sb.append(getLexicalQName(complexType.getName(), m_namespaces, m_defaultElementAndTypeNamespace, m_nameBridge));
+        m_sb.append(getLexicalQName(complexType.getName(), m_namespaces, m_defaultElementAndTypeNamespace));
     }
 
     public void visit(final SimpleUrType simpleUrType)
     {
-        m_sb.append(getLexicalQName(simpleUrType.getName(), m_namespaces, m_defaultElementAndTypeNamespace, m_nameBridge));
+        m_sb.append(getLexicalQName(simpleUrType.getName(), m_namespaces, m_defaultElementAndTypeNamespace));
     }
 
     public void visit(final ComplexUrType complexUrType)
     {
-        m_sb.append(getLexicalQName(complexUrType.getName(), m_namespaces, m_defaultElementAndTypeNamespace, m_nameBridge));
+        m_sb.append(getLexicalQName(complexUrType.getName(), m_namespaces, m_defaultElementAndTypeNamespace));
     }
 
     public void visit(final ListSimpleType atomicType)

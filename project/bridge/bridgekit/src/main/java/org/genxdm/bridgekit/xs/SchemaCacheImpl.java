@@ -354,11 +354,6 @@ final class SchemaCacheImpl implements ComponentProvider, Schema
 		return m_modelGroups.values();
 	}
 
-	public NameSource getNameBridge()
-	{
-		return nameBridge;
-	}
-
 	public Iterable<String> getNamespaces()
 	{
 		return namespaces;

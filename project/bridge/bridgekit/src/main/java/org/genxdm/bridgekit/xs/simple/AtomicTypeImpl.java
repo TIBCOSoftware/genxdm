@@ -22,8 +22,8 @@ import javax.xml.namespace.QName;
 import org.genxdm.bridgekit.xs.SchemaSupport;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.enums.DerivationMethod;
-import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
 import org.genxdm.xs.exceptions.DatatypeException;
@@ -346,9 +346,9 @@ public final class AtomicTypeImpl extends SimpleTypeImpl implements AtomicType
 		return this;
 	}
 
-	public KeeneQuantifier quantifier()
+	public Quantifier quantifier()
 	{
-		return KeeneQuantifier.EXACTLY_ONE;
+		return Quantifier.EXACTLY_ONE;
 	}
 
 	public boolean subtype(final PrimeType rhs)

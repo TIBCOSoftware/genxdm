@@ -15,8 +15,6 @@
  */
 package org.genxdm.bridgekit.xs;
 
-import org.genxdm.exceptions.PreCondition;
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.SchemaTypeBridge;
 
 /**

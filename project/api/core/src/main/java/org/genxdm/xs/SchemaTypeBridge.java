@@ -18,7 +18,7 @@ package org.genxdm.xs;
 import javax.xml.namespace.QName;
 
 import org.genxdm.names.NameSource;
-import org.genxdm.xs.enums.KeeneQuantifier;
+import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.types.AttributeNodeType;
 import org.genxdm.xs.types.CommentNodeType;
 import org.genxdm.xs.types.DocumentNodeType;
@@ -65,13 +65,11 @@ public interface SchemaTypeBridge extends Schema
 
     QName getName(SequenceType type);
 
-    NameSource getNameBridge();
-
     SequenceType interleave(SequenceType one, SequenceType two);
 
     PrimeType itemType();
 
-    SequenceType multiply(SequenceType argument, KeeneQuantifier multiplier);
+    SequenceType multiply(SequenceType argument, Quantifier multiplier);
 
     NamespaceNodeType namespaceType();
 

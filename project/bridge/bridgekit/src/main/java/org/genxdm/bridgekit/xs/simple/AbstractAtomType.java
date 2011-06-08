@@ -23,8 +23,8 @@ import javax.xml.namespace.QName;
 import org.genxdm.bridgekit.xs.SchemaSupport;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.enums.DerivationMethod;
-import org.genxdm.xs.enums.KeeneQuantifier;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.AtomicType;
 import org.genxdm.xs.types.NativeType;
@@ -204,9 +204,9 @@ abstract class AbstractAtomType implements AtomicType
 		return this;
 	}
 
-	public final KeeneQuantifier quantifier()
+	public final Quantifier quantifier()
 	{
-		return KeeneQuantifier.EXACTLY_ONE;
+		return Quantifier.EXACTLY_ONE;
 	}
 
 	public final boolean subtype(final PrimeType rhs)
