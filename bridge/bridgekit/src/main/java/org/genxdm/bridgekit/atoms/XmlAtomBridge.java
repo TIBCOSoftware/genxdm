@@ -24,7 +24,6 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.GxmlAtomCastException;
-import org.genxdm.exceptions.IllegalNullArgumentException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
@@ -102,7 +101,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 	{
 		PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
-		final Type type = schema.getTypeDefinition(targetType);
+		final Type type = schema.getComponentProvider().getTypeDefinition(targetType);
 		if (null != type)
 		{
 			if (type.isAtomicType())
@@ -1254,7 +1253,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 
 	private String normalize(final String initialValue, final NativeType nativeType)
 	{
-		final SimpleType simpleType = (SimpleType)schema.getTypeDefinition(nativeType);
+		final SimpleType simpleType = (SimpleType)schema.getComponentProvider().getTypeDefinition(nativeType);
 		return simpleType.normalize(initialValue);
 	}
 

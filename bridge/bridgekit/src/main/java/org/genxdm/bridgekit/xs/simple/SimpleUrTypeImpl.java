@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.xs.SchemaSupport;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.components.EnumerationDefinition;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;

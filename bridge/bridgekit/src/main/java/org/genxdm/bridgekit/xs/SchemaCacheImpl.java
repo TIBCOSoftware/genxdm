@@ -36,12 +36,12 @@ import org.genxdm.bridgekit.xs.simple.AtomicUrTypeImpl;
 import org.genxdm.bridgekit.xs.simple.SimpleUrTypeImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
+import org.genxdm.xs.ComponentBag;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.Schema;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
-import org.genxdm.xs.components.ComponentBag;
 import org.genxdm.xs.components.ComponentKind;
-import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
@@ -64,7 +64,7 @@ import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.SimpleUrType;
 import org.genxdm.xs.types.Type;
 
-final class SchemaCacheImpl implements ComponentProvider, Schema
+final class SchemaCacheImpl implements ComponentBag, ComponentProvider, Schema
 {
 	final AtomicUrTypeImpl ANY_ATOMIC_TYPE;
 	private final ComplexUrTypeImpl ANY_COMPLEX_TYPE;
@@ -784,5 +784,17 @@ final class SchemaCacheImpl implements ComponentProvider, Schema
 			}
 		}
 	}
+
+    @Override
+    public ComponentProvider getComponentProvider()
+    {
+        return this;
+    }
+
+    @Override
+    public ComponentBag getComponents()
+    {
+        return this;
+    }
 
 }

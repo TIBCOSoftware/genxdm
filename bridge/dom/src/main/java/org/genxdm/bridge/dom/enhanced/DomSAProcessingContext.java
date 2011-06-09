@@ -17,7 +17,6 @@ package org.genxdm.bridge.dom.enhanced;
 
 import java.net.URI;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLReporter;
 
 import org.genxdm.ProcessingContext;
@@ -29,7 +28,6 @@ import org.genxdm.bridgekit.xs.MetaBridgeOnSchemaTypeBridgeAdapter;
 import org.genxdm.bridgekit.xs.SchemaTypeBridgeFactory;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.Resolver;
-import org.genxdm.names.NameSource;
 import org.genxdm.processor.io.ValidatingDocumentHandler;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
@@ -40,22 +38,17 @@ import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
 import org.genxdm.typed.variant.VariantBridge;
+import org.genxdm.xs.ComponentBag;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.SchemaTypeBridge;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
-import org.genxdm.xs.components.ComponentBag;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.constraints.IdentityConstraint;
-import org.genxdm.xs.types.AtomicType;
-import org.genxdm.xs.types.AtomicUrType;
 import org.genxdm.xs.types.ComplexType;
-import org.genxdm.xs.types.ComplexUrType;
-import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
-import org.genxdm.xs.types.SimpleUrType;
-import org.genxdm.xs.types.Type;
 import org.w3c.dom.Node;
 
 public final class DomSAProcessingContext 
@@ -132,85 +125,22 @@ public final class DomSAProcessingContext
 		m_cache.defineSimpleType(simpleType);
 	}
 	
-	public QName generateUniqueName()
-	{
-		return m_cache.generateUniqueName();
-	}
-
 	public AtomBridge<XmlAtom> getAtomBridge()
 	{
 		return atomBridge;
 	}
 
-	public AtomicType getAtomicType(final QName name)
-	{
-		return m_cache.getAtomicType(name);
-	}
+    @Override
+    public ComponentProvider getComponentProvider()
+    {
+        return m_metaBridge.getComponentProvider();
+    }
 
-	public AtomicType getAtomicType(final NativeType name)
-	{
-		return m_cache.getAtomicType(name);
-	}
-
-	public AtomicUrType getAtomicUrType()
-	{
-		return m_cache.getAtomicUrType();
-	}
-
-	public AttributeDefinition getAttributeDeclaration(final QName attributeName)
-	{
-		return m_cache.getAttributeDeclaration(attributeName);
-	}
-
-	public AttributeGroupDefinition getAttributeGroup(final QName name)
-	{
-		return m_cache.getAttributeGroup(name);
-	}
-
-	public Iterable<AttributeGroupDefinition> getAttributeGroups()
-	{
-		return m_cache.getAttributeGroups();
-	}
-
-	public Iterable<AttributeDefinition> getAttributes()
-	{
-		return m_cache.getAttributes();
-	}
-
-	public ComplexType getComplexType(final QName name)
-	{
-		return m_cache.getComplexType(name);
-	}
-
-	public Iterable<ComplexType> getComplexTypes()
-	{
-		return m_cache.getComplexTypes();
-	}
-
-	public ComplexUrType getComplexUrType()
-	{
-		return m_cache.getComplexUrType();
-	}
-	
-	public ElementDefinition getElementDeclaration(final QName elementName)
-	{
-		return m_cache.getElementDeclaration(elementName);
-	}
-
-	public Iterable<ElementDefinition> getElements()
-	{
-		return m_cache.getElements();
-	}
-
-	public IdentityConstraint getIdentityConstraint(final QName name)
-	{
-		return m_cache.getIdentityConstraint(name);
-	}
-
-	public Iterable<IdentityConstraint> getIdentityConstraints()
-	{
-		return m_cache.getIdentityConstraints();
-	}
+    @Override
+    public ComponentBag getComponents()
+    {
+        return m_metaBridge.getComponents();
+    }
 
 	public MetaBridge getMetaBridge()
 	{
@@ -222,114 +152,19 @@ public final class DomSAProcessingContext
 		return m_model;
 	}
 
-	public ModelGroup getModelGroup(final QName name)
-	{
-		return m_cache.getModelGroup(name);
-	}
-
-	public Iterable<ModelGroup> getModelGroups()
-	{
-		return m_cache.getModelGroups();
-	}
-	
 	public Iterable<String> getNamespaces()
 	{
 		return m_cache.getNamespaces();
 	}
 
-	public NotationDefinition getNotationDeclaration(final QName name)
-	{
-		return m_cache.getNotationDeclaration(name);
-	}
-	
-	public Iterable<NotationDefinition> getNotations()
-	{
-		return m_cache.getNotations();
-	}
-	
     public ProcessingContext<Node> getProcessingContext()
 	{
 	    return parent;
 	}
 
-	public SimpleType getSimpleType(final QName name)
-	{
-		return m_cache.getSimpleType(name);
-	}
-
-	public SimpleType getSimpleType(final NativeType name)
-	{
-		return m_cache.getSimpleType(name);
-	}
-
-	public Iterable<SimpleType> getSimpleTypes()
-	{
-		return m_cache.getSimpleTypes();
-	}
-
-	public SimpleUrType getSimpleUrType()
-	{
-		return m_cache.getSimpleUrType();
-	}
-	
-	public Type getTypeDefinition(final QName typeName)
-	{
-		return m_cache.getTypeDefinition(typeName);
-	}
-
-	public Type getTypeDefinition(final NativeType nativeType)
-	{
-		return m_cache.getTypeDefinition(nativeType);
-	}
-	
 	public VariantBridge<Node, XmlAtom> getVariantBridge()
 	{
 	    return new DomValueBridge();
-	}
-
-	public boolean hasAttribute(final QName name)
-	{
-		return m_cache.hasAttribute(name);
-	}
-
-	public boolean hasAttributeGroup(final QName name)
-	{
-		return m_cache.hasAttributeGroup(name);
-	}
-
-	public boolean hasComplexType(final QName name)
-	{
-		return m_cache.hasComplexType(name);
-	}
-
-	public boolean hasElement(final QName name)
-	{
-		return m_cache.hasElement(name);
-	}
-
-	public boolean hasIdentityConstraint(final QName name)
-	{
-		return m_cache.hasIdentityConstraint(name);
-	}
-
-	public boolean hasModelGroup(final QName name)
-	{
-		return m_cache.hasModelGroup(name);
-	}
-
-	public boolean hasNotation(final QName name)
-	{
-		return m_cache.hasNotation(name);
-	}
-
-	public boolean hasSimpleType(final QName name)
-	{
-		return m_cache.hasSimpleType(name);
-	}
-
-	public boolean hasType(final QName name)
-	{
-		return m_cache.hasType(name);
 	}
 
 	public boolean isAtom(final Object item)
@@ -391,4 +226,5 @@ public final class DomSAProcessingContext
 	private final DomSAModel m_model;
 
     private boolean locked;
+
 }

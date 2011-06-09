@@ -124,7 +124,7 @@ final class CastingSupport
 			PreCondition.assertTrue(false, targetType.toString());
 		}
 
-		final Type type = pcx.getTypeDefinition(targetType);
+		final Type type = pcx.getComponentProvider().getTypeDefinition(targetType);
 		if (null != type)
 		{
 			if (type.isAtomicType())
@@ -2273,7 +2273,7 @@ final class CastingSupport
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
 
-		final Type type = pcx.getTypeDefinition(targetType);
+		final Type type = pcx.getComponentProvider().getTypeDefinition(targetType);
 		if (null != type)
 		{
 			if (type.isAtomicType())
@@ -3038,7 +3038,7 @@ final class CastingSupport
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
 
-		final Type type = pcx.getTypeDefinition(targetType);
+		final Type type = pcx.getComponentProvider().getTypeDefinition(targetType);
 		if (null != type)
 		{
 			if (type.isAtomicType())

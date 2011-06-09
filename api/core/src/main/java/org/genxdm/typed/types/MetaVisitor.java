@@ -22,8 +22,6 @@ import org.genxdm.xs.types.SequenceType;
 /**
  * Visitor pattern for types.
  * 
- * @param <A>
- *            The atom handle.
  */
 public interface MetaVisitor
 {
