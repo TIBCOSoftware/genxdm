@@ -28,8 +28,10 @@ import java.util.Set;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.xs.simple.Gregorian;
 import org.genxdm.exceptions.GxmlAtomCastException;
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.exception.scc.SccAllGroupAppearsException;
 import org.genxdm.processor.w3c.xs.exception.scc.SccAttributeDeclarationTypeIDConflictsValueConstraintException;
@@ -83,13 +85,13 @@ import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
-import org.genxdm.xs.components.SchemaComponent;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.EnumerationDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
-import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.components.ParticleTerm;
+import org.genxdm.xs.components.SchemaComponent;
+import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.AttributeUse;
 import org.genxdm.xs.constraints.IdentityConstraint;
@@ -100,9 +102,9 @@ import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.ComponentConstraintException;
+import org.genxdm.xs.exceptions.FacetException;
 import org.genxdm.xs.exceptions.SchemaConstraintHandler;
 import org.genxdm.xs.exceptions.SchemaException;
-import org.genxdm.xs.exceptions.FacetMinMaxException;
 import org.genxdm.xs.facets.Facet;
 import org.genxdm.xs.facets.FacetKind;
 import org.genxdm.xs.facets.FractionDigits;
@@ -129,59 +131,68 @@ final class SchemaConstraintChecker
     // TODO: look for commented-out bits.  they're disabled and broken.  Probably fix technique:
     // create a canonical atom bridge for use here only, and use it just as it's shown in use.
     private static int FOURTEEN_HOURS_IN_MINUTES = 840;
-
-//  private static <A> void append(final A atom, final StringBuilder buffer, final AtomBridge<A> atomBridge)
-//  {
-//      final QName typeName = atomBridge.getDataType(atom);
-//
-//      final String displayString = atomBridge.getC14NForm(atom);
-//
-//      final String localName = typeName.getLocalPart();
-//
-//      buffer.append(localName.toString());
-//      buffer.append("('");
-//      buffer.append(displayString);
-//      buffer.append("')");
-//  }
-//
-//  private static <A> A castUp(final A sourceAtom, final NativeType targetType, final AtomBridge<A> atomBridge)
-//  {
-//      // TODO: This has the hallmark of a helper function?
-//      switch (targetType)
-//      {
-//          case FLOAT:
-//          {
-//              return atomBridge.createFloat(atomBridge.getFloat(sourceAtom));
-//          }
-//          case DECIMAL:
-//          {
-//              return atomBridge.createDecimal(atomBridge.getDecimal(sourceAtom));
-//          }
-//          case INT:
-//          {
-//              return atomBridge.createInt(atomBridge.getInt(sourceAtom));
-//          }
-//          case DATE:
-//          {
-//              return atomBridge.createDate(atomBridge.getYear(sourceAtom), atomBridge.getMonth(sourceAtom), atomBridge.getDayOfMonth(sourceAtom), atomBridge.getGmtOffset(sourceAtom));
-//          }
-//          default:
-//          {
-//              throw new AssertionError(targetType);
-//          }
-//      }
-//  }
-
-    private static  void checkAttribute(final AttributeDefinition attribute, final SchemaConstraintHandler errors, NameSource nameBridge) throws AbortException
+    
+    SchemaConstraintChecker(final ComponentBag bag, final ComponentProvider existing)
     {
-        checkAttributeDeclarationPropertiesCorrect(attribute, errors, nameBridge);
-
-        checkAttributeForXmlnsNotAllowed(attribute, errors, nameBridge);
-
-        checkAttributeForXsiNotAllowed(attribute, errors, nameBridge);
+        this.components = PreCondition.assertNotNull(bag, "bag");
+        this.provider = PreCondition.assertNotNull(existing, "provider");
+        this.atomBridge = new CanonicalAtomBridge(provider);
     }
 
-    private static  void checkAttributeDeclarationPropertiesCorrect(final AttributeDefinition attribute, final SchemaConstraintHandler errors, NameSource nameBridge) throws AbortException
+    private void append(final XmlAtom atom, final StringBuilder buffer)
+    {
+        final QName typeName = atomBridge.getDataType(atom);
+
+        final String displayString = atomBridge.getC14NForm(atom);
+
+        final String localName = typeName.getLocalPart();
+
+        buffer.append(localName.toString());
+        buffer.append("('");
+        buffer.append(displayString);
+        buffer.append("')");
+    }
+
+    private XmlAtom castUp(final XmlAtom sourceAtom, final NativeType targetType)
+    {
+        // TODO: This has the hallmark of a helper function?
+        switch (targetType)
+        {
+            case FLOAT:
+            {
+                return atomBridge.createFloat(atomBridge.getFloat(sourceAtom));
+            }
+            case DECIMAL:
+            {
+                return atomBridge.createDecimal(atomBridge.getDecimal(sourceAtom));
+            }
+            case INT:
+            {
+                return atomBridge.createInt(atomBridge.getInt(sourceAtom));
+            }
+            case DATE:
+            {
+                return atomBridge.createDate(atomBridge.getYear(sourceAtom), atomBridge.getMonth(sourceAtom), atomBridge.getDayOfMonth(sourceAtom), atomBridge.getGmtOffset(sourceAtom));
+            }
+            default:
+            {
+                throw new AssertionError(targetType);
+            }
+        }
+    }
+
+    private void checkAttribute(final AttributeDefinition attribute, final SchemaConstraintHandler errors) 
+        throws AbortException
+    {
+        checkAttributeDeclarationPropertiesCorrect(attribute, errors);
+
+        checkAttributeForXmlnsNotAllowed(attribute, errors);
+
+        checkAttributeForXsiNotAllowed(attribute, errors);
+    }
+
+    private void checkAttributeDeclarationPropertiesCorrect(final AttributeDefinition attribute, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
         final SimpleType attributeType = (SimpleType)attribute.getType();
         if (null != attributeType)
@@ -200,10 +211,9 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  void checkAttributeDerivationRestrictionComplexType(final ComplexType complexType, final ComplexType baseType, final SchemaConstraintHandler errors) throws AbortException
+    private void checkAttributeDerivationRestrictionComplexType(final ComplexType complexType, final ComplexType baseType, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
-        final NameSource nameBridge = NameSource.SINGLETON;
-
         final HashMap<QName, AttributeUse> attributes = new HashMap<QName, AttributeUse>();
         for (final AttributeUse attributeUse : complexType.getAttributeUses().values())
         {
@@ -221,7 +231,7 @@ final class SchemaConstraintChecker
 
             if (attribute.getScopeExtent() != ScopeExtent.Global)
             {
-                checkAttribute(attribute, errors, nameBridge);
+                checkAttribute(attribute, errors);
             }
         }
 
@@ -248,13 +258,13 @@ final class SchemaConstraintChecker
                     {
                         if (vcR.getVariety().isFixed())
                         {
-//                          final List<A> vB = vcB.getValue();
-//                          final List<A> vR = vcR.getValue();
-//                          if (!equalValues(vR, vB))
-//                          {
-//                              // TODO: Wrong Exception
-//                              errors.error(complexType, new SccAttributeDerivationRequiredConflictException(qname(complexType.getName()), qname(attributeName)));
-//                          }
+                            final List<XmlAtom> vB = vcB.getValue(atomBridge);
+                            final List<XmlAtom> vR = vcR.getValue(atomBridge);
+                            if (!equalValues(vR, vB))
+                            {
+                                // TODO: Wrong Exception
+                                errors.error(complexType, new SccAttributeDerivationRequiredConflictException(complexType.getName(), attributeName));
+                            }
                         }
                     }
                     else
@@ -266,7 +276,8 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  void checkAttributeForXmlnsNotAllowed(final AttributeDefinition attribute, final SchemaConstraintHandler errors, final NameSource nameBridge) throws AbortException
+    private void checkAttributeForXmlnsNotAllowed(final AttributeDefinition attribute, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
         final QName name = attribute.getName();
         if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI == name.getNamespaceURI())
@@ -279,15 +290,17 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  void checkAttributeForXsiNotAllowed(final AttributeDefinition attribute, final SchemaConstraintHandler errors, final NameSource nameBridge) throws AbortException
+    private void checkAttributeForXsiNotAllowed(final AttributeDefinition attribute, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
         if (XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI == attribute.getName().getNamespaceURI())
         {
-            errors.error(attribute, new SccXsiNotAllowedException(qname(attribute.getName())));
+            errors.error(attribute, new SccXsiNotAllowedException(attribute.getName()));
         }
     }
 
-    private static  void checkAttributeGroup(final AttributeGroupDefinition attributeGroup, final SchemaConstraintHandler errors, NameSource nameBridge) throws AbortException
+    private void checkAttributeGroup(final AttributeGroupDefinition attributeGroup, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
         if (attributeGroup.hasAttributeUses())
         {
@@ -299,7 +312,7 @@ final class SchemaConstraintChecker
 
                 if (unique.contains(attributeName))
                 {
-                    errors.error(attributeGroup, new SccComplexTypeAttributeUniquenessException(qname(attributeGroup.getName()), qname(attributeName)));
+                    errors.error(attributeGroup, new SccComplexTypeAttributeUniquenessException(attributeGroup.getName(), attributeName));
                 }
                 else
                 {
@@ -308,15 +321,15 @@ final class SchemaConstraintChecker
 
                 if (attribute.getScopeExtent() != ScopeExtent.Global)
                 {
-                    checkAttribute(attribute, errors, nameBridge);
+                    checkAttribute(attribute, errors);
                 }
             }
         }
     }
 
-    private static  void checkAttributeUses(final ComplexType complexType, final SchemaConstraintHandler errors) throws AbortException
+    private void checkAttributeUses(final ComplexType complexType, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
-        final NameSource nameBridge = NameSource.SINGLETON;
         // Check that the attribute names are unique, and check each local
         // attribute declaration.
         final HashSet<QName> unique = new HashSet<QName>();
@@ -342,23 +355,24 @@ final class SchemaConstraintChecker
                 final ValueConstraint valueConstraintAtt = attribute.getValueConstraint();
                 if (null != valueConstraintAtt && valueConstraintAtt.getVariety().isFixed())
                 {
-//                  final String valueUse = atomBridge.getC14NString(valueConstraintUse.getValue());
-//                  final String valueAtt = atomBridge.getC14NString(valueConstraintAtt.getValue());
-//                  if (!valueUse.equals(valueAtt))
-//                  {
-//                      errors.error(complexType, new SccComplexTypeAttributeFixedOverrideException(qname(complexType.getName()), qname(attribute.getName())));
-//                  }
+                    final String valueUse = atomBridge.getC14NString(valueConstraintUse.getValue(atomBridge));
+                    final String valueAtt = atomBridge.getC14NString(valueConstraintAtt.getValue(atomBridge));
+                    if (!valueUse.equals(valueAtt))
+                    {
+                        errors.error(complexType, new SccComplexTypeAttributeFixedOverrideException(complexType.getName(), attribute.getName()));
+                    }
                 }
             }
 
             if (attribute.getScopeExtent() != ScopeExtent.Global)
             {
-                checkAttribute(attribute, errors, nameBridge);
+                checkAttribute(attribute, errors);
             }
         }
     }
 
-    private static  void checkClause5(final ComplexType complexType, final ComplexType baseType, final SchemaConstraintHandler errors, NameSource nameBridge) throws AbortException
+    private void checkClause5(final ComplexType complexType, final ComplexType baseType, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
         if (baseType.isComplexUrType())
         {
@@ -382,20 +396,20 @@ final class SchemaConstraintChecker
                 }
                 else
                 {
-                    errors.error(complexType, new SccDerivationRestrictionContentTypeException(qname(complexType.getName())));
+                    errors.error(complexType, new SccDerivationRestrictionContentTypeException(complexType.getName()));
                 }
             }
         }
     }
 
-    private static  void checkComplexType(final ComplexType complexType, final ComponentBagImpl components, final SchemaConstraintHandler errors) throws AbortException
+    private void checkComplexType(final ComplexType complexType, final ComponentBag components, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
-        final NameSource nameBridge = NameSource.SINGLETON;
         checkComplexTypeDefinitionProperties(complexType, errors);
 
         if (complexType.getDerivationMethod().isExtension())
         {
-            checkDerivationValidExtensionComplexType(complexType, errors, nameBridge);
+            checkDerivationValidExtensionComplexType(complexType, errors);
         }
         if (complexType.getDerivationMethod().isRestriction())
         {
@@ -405,7 +419,8 @@ final class SchemaConstraintChecker
         checkAttributeUses(complexType, errors);
     }
 
-    private static  void checkComplexTypeDefinitionProperties(final ComplexType complexType, final SchemaConstraintHandler errors) throws AbortException
+    private void checkComplexTypeDefinitionProperties(final ComplexType complexType, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
         complexType.getName();
 
@@ -423,7 +438,8 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  void checkDerivationValidExtensionComplexType(final ComplexType complexType, final SchemaConstraintHandler errors, NameSource nameBridge) throws AbortException
+    private void checkDerivationValidExtensionComplexType(final ComplexType complexType, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
         if (complexType.getBaseType() instanceof ComplexType)
         {
@@ -432,7 +448,7 @@ final class SchemaConstraintChecker
             // extension.
             if (baseType.isFinal(DerivationMethod.Extension))
             {
-                errors.error(complexType, new SccFinalOfBaseTypeContainsExtensionException(SccDerivationExtensionException.PART_WHEN_BASE_COMPLEX_TYPE_FINAL_OF_BASE_MUST_NOT_CONTAINT_EXTENSION, qname(complexType.getName())));
+                errors.error(complexType, new SccFinalOfBaseTypeContainsExtensionException(SccDerivationExtensionException.PART_WHEN_BASE_COMPLEX_TYPE_FINAL_OF_BASE_MUST_NOT_CONTAINT_EXTENSION, complexType.getName()));
             }
 
             // TODO: 1.2 {attribute uses} must be a subset...
@@ -441,7 +457,7 @@ final class SchemaConstraintChecker
 
             if (!clause14(complexType, baseType))
             {
-                errors.error(complexType, new SccDerivationExtensionContentTypeException(qname(complexType.getName())));
+                errors.error(complexType, new SccDerivationExtensionContentTypeException(complexType.getName()));
             }
         }
         else if (complexType.getBaseType() instanceof SimpleType)
@@ -451,12 +467,12 @@ final class SchemaConstraintChecker
 
             if (!clause21(contentTypeD, simpleTypeB))
             {
-                errors.error(complexType, new SccContentTypeMismatchBaseTypeContainsExtensionException(qname(complexType.getName())));
+                errors.error(complexType, new SccContentTypeMismatchBaseTypeContainsExtensionException(complexType.getName()));
             }
 
             if (!clause22(simpleTypeB))
             {
-                errors.error(complexType, new SccFinalOfBaseTypeContainsExtensionException(SccDerivationExtensionException.PART_WHEN_BASE_SIMPLE_TYPE_FINAL_OF_BASE_MUST_NOT_CONTAINT_EXTENSION, qname(complexType.getName())));
+                errors.error(complexType, new SccFinalOfBaseTypeContainsExtensionException(SccDerivationExtensionException.PART_WHEN_BASE_SIMPLE_TYPE_FINAL_OF_BASE_MUST_NOT_CONTAINT_EXTENSION, complexType.getName()));
             }
         }
         else
@@ -465,10 +481,9 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  void checkDerivationValidRestrictionComplexType(final ComplexType complexType, final SchemaConstraintHandler errors) throws AbortException
+    private void checkDerivationValidRestrictionComplexType(final ComplexType complexType, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
-        final NameSource nameBridge = NameSource.SINGLETON;
-
         // The {base type definition} must be a complex type definition.
         if (complexType.getBaseType() instanceof ComplexType)
         {
@@ -483,7 +498,7 @@ final class SchemaConstraintChecker
 
             checkAttributeDerivationRestrictionComplexType(complexType, baseType, errors);
 
-            checkClause5(complexType, baseType, errors, nameBridge);
+            checkClause5(complexType, baseType, errors);
         }
         else
         {
@@ -494,12 +509,14 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  void checkElement(final ElementDefinition element, final SchemaConstraintHandler errors, NameSource nameBridge) throws AbortException
+    private void checkElement(final ElementDefinition element, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
-        checkElementDeclaration(element, nameBridge, errors);
+        checkElementDeclaration(element, errors);
     }
 
-    private static  void checkElementDeclaration(final ElementDefinition element, final NameSource nameBridge, final SchemaConstraintHandler errors) throws AbortException
+    private void checkElementDeclaration(final ElementDefinition element, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
         // 4. If there is a {substitution group affiliation}, the {type
         // definition} of the element must be
@@ -510,7 +527,7 @@ final class SchemaConstraintChecker
             final ElementDefinition substitutionGroup = element.getSubstitutionGroup();
             try
             {
-                checkTypeDerivationOK(element.getType(), substitutionGroup.getType(), substitutionGroup.getSubstitutionGroupExclusions(), nameBridge);
+                checkTypeDerivationOK(element.getType(), substitutionGroup.getType(), substitutionGroup.getSubstitutionGroupExclusions());
             }
             catch (final ComponentConstraintException e)
             {
@@ -556,9 +573,9 @@ final class SchemaConstraintChecker
                 case Fixed:
                 case Default:
                 {
-                    if (isDerivedFrom(elementType, nameBridge.nativeType(NativeType.ID)))
+                    if (isDerivedFrom(elementType, NameSource.SINGLETON.nativeType(NativeType.ID)))
                     {
-                        errors.error(element, new SccElementDeclarationDerivedFromIDWithValueConstraintException(qname(element.getName())));
+                        errors.error(element, new SccElementDeclarationDerivedFromIDWithValueConstraintException(element.getName()));
                     }
                 }
                 break;
@@ -570,7 +587,8 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  void checkIdentityConstraint(final IdentityConstraint constraint, final SchemaConstraintHandler errors) throws AbortException
+    private void checkIdentityConstraint(final IdentityConstraint constraint, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
         switch (constraint.getCategory())
         {
@@ -590,13 +608,13 @@ final class SchemaConstraintChecker
                     {
                         if (referencedKey.getFields().size() != constraint.getFields().size())
                         {
-                            errors.error(constraint, new SccIdentityConstraintKeyrefFieldsCardinalityException(qname(constraint.getName()), constraint.getFields().size(), qname(referencedKey.getName()), referencedKey.getFields().size()));
+                            errors.error(constraint, new SccIdentityConstraintKeyrefFieldsCardinalityException(constraint.getName(), constraint.getFields().size(), referencedKey.getName(), referencedKey.getFields().size()));
                         }
                     }
                     break;
                     case KeyRef:
                     {
-                        errors.error(constraint, new SccIdentityConstraintKeyrefReferenceException(qname(constraint.getName())));
+                        errors.error(constraint, new SccIdentityConstraintKeyrefReferenceException(constraint.getName()));
                     }
                     default:
                     {
@@ -612,309 +630,312 @@ final class SchemaConstraintChecker
         }
     }
 
-//  private static  void checkLimitRestriction(final Limit restrictingLimit, final Limit parentMaxInclusive, final Limit parentMaxExclusive, final Limit parentMinInclusive, final Limit parentMinExclusive,
-//          final SimpleType simpleType, final SmConstraintHandler errors) throws AbortException
-//  {
-//      final A derivedAtom = restrictingLimit.getLimit();
-//
-//      switch (restrictingLimit.getKind())
-//      {
-//          case MinInclusive:
-//          {
-//              if (parentMaxExclusive != null)
-//              {
-//                  final A baseAtom = parentMaxExclusive.getLimit();
-//                  try
-//                  {
-//                      final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
-//                      if (!result.isDeterminate() || result != SmCompareKind.BEFORE)
-//                      {
-//                          errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
-//                      }
-//                  }
-//                  catch (final GxmlAtomCastException e)
-//                  {
-//                      errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
-//                  }
-//              }
-//              if (parentMaxInclusive != null)
-//              {
-//                  final A baseAtom = parentMaxInclusive.getLimit();
-//                  try
-//                  {
-//                      final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
-//                      if (!result.isDeterminate() || result == SmCompareKind.AFTER)
-//                      {
-//                          errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
-//                      }
-//                  }
-//                  catch (final GxmlAtomCastException e)
-//                  {
-//                      errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
-//                  }
-//              }
-//              if (parentMinInclusive != null)
-//              {
-//                  final A baseAtom = parentMinInclusive.getLimit();
-//                  try
-//                  {
-//                      final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
-//                      if (!result.isDeterminate() || result == SmCompareKind.BEFORE)
-//                      {
-//                          errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
-//                      }
-//                  }
-//                  catch (final GxmlAtomCastException e)
-//                  {
-//                      errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
-//                  }
-//              }
-//              if (parentMinExclusive != null)
-//              {
-//                  final A baseAtom = parentMinExclusive.getLimit();
-//                  try
-//                  {
-//                      final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
-//                      if (!result.isDeterminate() || result != SmCompareKind.AFTER)
-//                      {
-//                          errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
-//                      }
-//                  }
-//                  catch (final GxmlAtomCastException e)
-//                  {
-//                      errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
-//                  }
-//              }
-//          }
-//          break;
-//          case MaxInclusive:
-//          {
-//              if (parentMaxExclusive != null)
-//              {
-//                  final A baseAtom = parentMaxExclusive.getLimit();
-//                  try
-//                  {
-//                      final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
-//                      if (!result.isDeterminate() || result != SmCompareKind.BEFORE)
-//                      {
-//                          errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
-//                      }
-//                  }
-//                  catch (final GxmlAtomCastException e)
-//                  {
-//                      errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
-//                  }
-//              }
-//              if (parentMaxInclusive != null)
-//              {
-//                  final A baseAtom = parentMaxInclusive.getLimit();
-//                  try
-//                  {
-//                      final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
-//                      if (!result.isDeterminate() || result == SmCompareKind.AFTER)
-//                      {
-//                          errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
-//                      }
-//                  }
-//                  catch (final GxmlAtomCastException e)
-//                  {
-//                      errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
-//                  }
-//              }
-//              if (parentMinInclusive != null)
-//              {
-//                  final A baseAtom = parentMinInclusive.getLimit();
-//                  try
-//                  {
-//                      final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
-//                      if (!result.isDeterminate() || result == SmCompareKind.BEFORE)
-//                      {
-//                          errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
-//                      }
-//                  }
-//                  catch (final GxmlAtomCastException e)
-//                  {
-//                      errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
-//                  }
-//              }
-//              if (parentMinExclusive != null)
-//              {
-//                  final A baseAtom = parentMinExclusive.getLimit();
-//                  try
-//                  {
-//                      final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
-//                      if (!result.isDeterminate() || result != SmCompareKind.AFTER)
-//                      {
-//                          errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
-//                      }
-//                  }
-//                  catch (final GxmlAtomCastException e)
-//                  {
-//                      errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
-//                  }
-//              }
-//          }
-//          break;
-//          case MinExclusive:
-//          {
-//              if (parentMaxExclusive != null)
-//              {
-//                  final A baseAtom = parentMaxExclusive.getLimit();
-//                  try
-//                  {
-//                      final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
-//                      if (!result.isDeterminate() || result != SmCompareKind.BEFORE)
-//                      {
-//                          errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
-//                      }
-//                  }
-//                  catch (final GxmlAtomCastException e)
-//                  {
-//                      errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
-//                  }
-//              }
-//              if (parentMaxInclusive != null)
-//              {
-//                  final A baseAtom = parentMaxInclusive.getLimit();
-//                  try
-//                  {
-//                      final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
-//                      if (!result.isDeterminate() || result == SmCompareKind.AFTER)
-//                      {
-//                          errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
-//                      }
-//                  }
-//                  catch (final GxmlAtomCastException e)
-//                  {
-//                      errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxExclusive));
-//                  }
-//              }
-//              if (parentMinInclusive != null)
-//              {
-//                  final A baseAtom = parentMinInclusive.getLimit();
-//                  try
-//                  {
-//                      final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
-//                      if (!result.isDeterminate() || result == SmCompareKind.BEFORE)
-//                      {
-//                          errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
-//                      }
-//                  }
-//                  catch (final GxmlAtomCastException e)
-//                  {
-//                      errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinInclusive));
-//                  }
-//              }
-//              if (parentMinExclusive != null)
-//              {
-//                  final A baseAtom = parentMinExclusive.getLimit();
-//                  try
-//                  {
-//                      final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
-//                      if (!result.isDeterminate() || result == SmCompareKind.BEFORE)
-//                      {
-//                          errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
-//                      }
-//                  }
-//                  catch (final GxmlAtomCastException e)
-//                  {
-//                      errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
-//                  }
-//              }
-//          }
-//          break;
-//          case MaxExclusive:
-//          {
-//              if (parentMaxExclusive != null)
-//              {
-//                  final A baseAtom = parentMaxExclusive.getLimit();
-//                  try
-//                  {
-//                      final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
-//                      if (!result.isDeterminate() || result == SmCompareKind.AFTER)
-//                      {
-//                          errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
-//                      }
-//                  }
-//                  catch (final GxmlAtomCastException e)
-//                  {
-//                      errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
-//                  }
-//              }
-//              if (parentMaxInclusive != null)
-//              {
-//                  final A baseAtom = parentMaxInclusive.getLimit();
-//                  try
-//                  {
-//                      final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
-//                      if (!result.isDeterminate() || result == SmCompareKind.AFTER)
-//                      {
-//                          errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
-//                      }
-//                  }
-//                  catch (final GxmlAtomCastException e)
-//                  {
-//                      errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
-//                  }
-//              }
-//              if (parentMinInclusive != null)
-//              {
-//                  final A baseAtom = parentMinInclusive.getLimit();
-//                  try
-//                  {
-//                      final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
-//                      if (!result.isDeterminate() || result != SmCompareKind.AFTER)
-//                      {
-//                          errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
-//                      }
-//                  }
-//                  catch (final GxmlAtomCastException e)
-//                  {
-//                      errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
-//                  }
-//              }
-//              if (parentMinExclusive != null)
-//              {
-//                  final A baseAtom = parentMinExclusive.getLimit();
-//                  try
-//                  {
-//                      final SmCompareKind result = compare(upcast(derivedAtom, baseAtom, atomBridge), baseAtom, atomBridge);
-//                      if (!result.isDeterminate() || result != SmCompareKind.AFTER)
-//                      {
-//                          errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
-//                      }
-//                  }
-//                  catch (final GxmlAtomCastException e)
-//                  {
-//                      errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
-//                  }
-//              }
-//          }
-//          break;
-//          default:
-//          {
-//              throw new AssertionError(restrictingLimit.getKind());
-//          }
-//      }
-//  }
+    private void checkLimitRestriction(final Limit restrictingLimit, final Limit parentMaxInclusive, 
+                                       final Limit parentMaxExclusive, final Limit parentMinInclusive, final Limit parentMinExclusive,
+                                       final SimpleType simpleType, final SchemaConstraintHandler errors) 
+        throws AbortException
+    {
+        final XmlAtom derivedAtom = restrictingLimit.getLimit(atomBridge);
 
-//  private static  void checkMinExclusiveLessThanEqualToMaxExclusive(final Limit minExclusive, final Limit maxExclusive, final SimpleType simpleType, final SmConstraintHandler errors)
-//          throws AbortException
-//  {
-//      final A min = minExclusive.getLimit();
-//      try
-//      {
-//          maxExclusive.validate(min, simpleType);
-//      }
-//      catch (final FacetMinMaxException e)
-//      {
-//          final String minString = atomBridge.getC14NForm(min);
-//          final String maxString = getDisplayString(maxExclusive.getLimit(), atomBridge);
-//          errors.error(simpleType, new SccMinInclusiveLessThanEqualToMaxInclusiveException(minString, maxString));
-//      }
-//  }
+        switch (restrictingLimit.getKind())
+        {
+            case MinInclusive:
+            {
+                if (parentMaxExclusive != null)
+                {
+                    final XmlAtom baseAtom = parentMaxExclusive.getLimit(atomBridge);
+                    try
+                    {
+                        final CompareKind result = compare(upcast(derivedAtom, baseAtom), baseAtom);
+                        if (!result.isDeterminate() || result != CompareKind.BEFORE)
+                        {
+                            errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
+                        }
+                    }
+                    catch (final GxmlAtomCastException e)
+                    {
+                        errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
+                    }
+                }
+                if (parentMaxInclusive != null)
+                {
+                    final XmlAtom baseAtom = parentMaxInclusive.getLimit(atomBridge);
+                    try
+                    {
+                        final CompareKind result = compare(upcast(derivedAtom, baseAtom), baseAtom);
+                        if (!result.isDeterminate() || result == CompareKind.AFTER)
+                        {
+                            errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
+                        }
+                    }
+                    catch (final GxmlAtomCastException e)
+                    {
+                        errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
+                    }
+                }
+                if (parentMinInclusive != null)
+                {
+                    final XmlAtom baseAtom = parentMinInclusive.getLimit(atomBridge);
+                    try
+                    {
+                        final CompareKind result = compare(upcast(derivedAtom, baseAtom), baseAtom);
+                        if (!result.isDeterminate() || result == CompareKind.BEFORE)
+                        {
+                            errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
+                        }
+                    }
+                    catch (final GxmlAtomCastException e)
+                    {
+                        errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
+                    }
+                }
+                if (parentMinExclusive != null)
+                {
+                    final XmlAtom baseAtom = parentMinExclusive.getLimit(atomBridge);
+                    try
+                    {
+                        final CompareKind result = compare(upcast(derivedAtom, baseAtom), baseAtom);
+                        if (!result.isDeterminate() || result != CompareKind.AFTER)
+                        {
+                            errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+                        }
+                    }
+                    catch (final GxmlAtomCastException e)
+                    {
+                        errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+                    }
+                }
+            }
+            break;
+            case MaxInclusive:
+            {
+                if (parentMaxExclusive != null)
+                {
+                    final XmlAtom baseAtom = parentMaxExclusive.getLimit(atomBridge);
+                    try
+                    {
+                        final CompareKind result = compare(upcast(derivedAtom, baseAtom), baseAtom);
+                        if (!result.isDeterminate() || result != CompareKind.BEFORE)
+                        {
+                            errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
+                        }
+                    }
+                    catch (final GxmlAtomCastException e)
+                    {
+                        errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
+                    }
+                }
+                if (parentMaxInclusive != null)
+                {
+                    final XmlAtom baseAtom = parentMaxInclusive.getLimit(atomBridge);
+                    try
+                    {
+                        final CompareKind result = compare(upcast(derivedAtom, baseAtom), baseAtom);
+                        if (!result.isDeterminate() || result == CompareKind.AFTER)
+                        {
+                            errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
+                        }
+                    }
+                    catch (final GxmlAtomCastException e)
+                    {
+                        errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
+                    }
+                }
+                if (parentMinInclusive != null)
+                {
+                    final XmlAtom baseAtom = parentMinInclusive.getLimit(atomBridge);
+                    try
+                    {
+                        final CompareKind result = compare(upcast(derivedAtom, baseAtom), baseAtom);
+                        if (!result.isDeterminate() || result == CompareKind.BEFORE)
+                        {
+                            errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
+                        }
+                    }
+                    catch (final GxmlAtomCastException e)
+                    {
+                        errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
+                    }
+                }
+                if (parentMinExclusive != null)
+                {
+                    final XmlAtom baseAtom = parentMinExclusive.getLimit(atomBridge);
+                    try
+                    {
+                        final CompareKind result = compare(upcast(derivedAtom, baseAtom), baseAtom);
+                        if (!result.isDeterminate() || result != CompareKind.AFTER)
+                        {
+                            errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+                        }
+                    }
+                    catch (final GxmlAtomCastException e)
+                    {
+                        errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+                    }
+                }
+            }
+            break;
+            case MinExclusive:
+            {
+                if (parentMaxExclusive != null)
+                {
+                    final XmlAtom baseAtom = parentMaxExclusive.getLimit(atomBridge);
+                    try
+                    {
+                        final CompareKind result = compare(upcast(derivedAtom, baseAtom), baseAtom);
+                        if (!result.isDeterminate() || result != CompareKind.BEFORE)
+                        {
+                            errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
+                        }
+                    }
+                    catch (final GxmlAtomCastException e)
+                    {
+                        errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
+                    }
+                }
+                if (parentMaxInclusive != null)
+                {
+                    final XmlAtom baseAtom = parentMaxInclusive.getLimit(atomBridge);
+                    try
+                    {
+                        final CompareKind result = compare(upcast(derivedAtom, baseAtom), baseAtom);
+                        if (!result.isDeterminate() || result == CompareKind.AFTER)
+                        {
+                            errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
+                        }
+                    }
+                    catch (final GxmlAtomCastException e)
+                    {
+                        errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxExclusive));
+                    }
+                }
+                if (parentMinInclusive != null)
+                {
+                    final XmlAtom baseAtom = parentMinInclusive.getLimit(atomBridge);
+                    try
+                    {
+                        final CompareKind result = compare(upcast(derivedAtom, baseAtom), baseAtom);
+                        if (!result.isDeterminate() || result == CompareKind.BEFORE)
+                        {
+                            errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
+                        }
+                    }
+                    catch (final GxmlAtomCastException e)
+                    {
+                        errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinInclusive));
+                    }
+                }
+                if (parentMinExclusive != null)
+                {
+                    final XmlAtom baseAtom = parentMinExclusive.getLimit(atomBridge);
+                    try
+                    {
+                        final CompareKind result = compare(upcast(derivedAtom, baseAtom), baseAtom);
+                        if (!result.isDeterminate() || result == CompareKind.BEFORE)
+                        {
+                            errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+                        }
+                    }
+                    catch (final GxmlAtomCastException e)
+                    {
+                        errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+                    }
+                }
+            }
+            break;
+            case MaxExclusive:
+            {
+                if (parentMaxExclusive != null)
+                {
+                    final XmlAtom baseAtom = parentMaxExclusive.getLimit(atomBridge);
+                    try
+                    {
+                        final CompareKind result = compare(upcast(derivedAtom, baseAtom), baseAtom);
+                        if (!result.isDeterminate() || result == CompareKind.AFTER)
+                        {
+                            errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
+                        }
+                    }
+                    catch (final GxmlAtomCastException e)
+                    {
+                        errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
+                    }
+                }
+                if (parentMaxInclusive != null)
+                {
+                    final XmlAtom baseAtom = parentMaxInclusive.getLimit(atomBridge);
+                    try
+                    {
+                        final CompareKind result = compare(upcast(derivedAtom, baseAtom), baseAtom);
+                        if (!result.isDeterminate() || result == CompareKind.AFTER)
+                        {
+                            errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
+                        }
+                    }
+                    catch (final GxmlAtomCastException e)
+                    {
+                        errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
+                    }
+                }
+                if (parentMinInclusive != null)
+                {
+                    final XmlAtom baseAtom = parentMinInclusive.getLimit(atomBridge);
+                    try
+                    {
+                        final CompareKind result = compare(upcast(derivedAtom, baseAtom), baseAtom);
+                        if (!result.isDeterminate() || result != CompareKind.AFTER)
+                        {
+                            errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
+                        }
+                    }
+                    catch (final GxmlAtomCastException e)
+                    {
+                        errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+                    }
+                }
+                if (parentMinExclusive != null)
+                {
+                    final XmlAtom baseAtom = parentMinExclusive.getLimit(atomBridge);
+                    try
+                    {
+                        final CompareKind result = compare(upcast(derivedAtom, baseAtom), baseAtom);
+                        if (!result.isDeterminate() || result != CompareKind.AFTER)
+                        {
+                            errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+                        }
+                    }
+                    catch (final GxmlAtomCastException e)
+                    {
+                        errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
+                    }
+                }
+            }
+            break;
+            default:
+            {
+                throw new AssertionError(restrictingLimit.getKind());
+            }
+        }
+    }
 
-    private static  void checkModelGroup(final ModelGroup modelGroup, final SchemaConstraintHandler errors) throws AbortException
+    private void checkMinExclusiveLessThanEqualToMaxExclusive(final Limit minExclusive, final Limit maxExclusive, final SimpleType simpleType, final SchemaConstraintHandler errors)
+        throws AbortException
+    {
+        final XmlAtom min = minExclusive.getLimit(atomBridge);
+        try
+        {
+            maxExclusive.validate(min, simpleType, atomBridge);
+        }
+        catch (final FacetException e)
+        {
+            final String minString = atomBridge.getC14NForm(min);
+            final String maxString = getDisplayString(maxExclusive.getLimit(atomBridge));
+            errors.error(simpleType, new SccMinInclusiveLessThanEqualToMaxInclusiveException(minString, maxString));
+        }
+    }
+
+    private void checkModelGroup(final ModelGroup modelGroup, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
         for (final SchemaParticle particle : modelGroup.getParticles())
         {
@@ -937,7 +958,8 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  void checkModelGroupUseValidRestriction(final ComplexType complexType, final ModelGroupUse R, final ModelGroupUse B, final SchemaConstraintHandler errors) throws AbortException
+    private void checkModelGroupUseValidRestriction(final ComplexType complexType, final ModelGroupUse R, final ModelGroupUse B, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
         if (equalBounds(R, B) && (R.getTerm() == B.getTerm()))
         {
@@ -1014,11 +1036,13 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  void checkNotation(final NotationDefinition notation, final SchemaConstraintHandler errors) throws AbortException
+    private void checkNotation(final NotationDefinition notation, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
     }
 
-    private static  void checkOccurrenceRangeOK(final ComplexType complexType, final SchemaParticle one, final SchemaParticle two, final SchemaConstraintHandler errors) throws AbortException
+    private void checkOccurrenceRangeOK(final ComplexType complexType, final SchemaParticle one, final SchemaParticle two, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
         if (one.getMinOccurs() < two.getMinOccurs())
         {
@@ -1044,7 +1068,8 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  void checkOccurrences(final SchemaParticle particle, final SchemaConstraintHandler errors) throws AbortException
+    private void checkOccurrences(final SchemaParticle particle, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
         if (!particle.isMaxOccursUnbounded())
         {
@@ -1061,7 +1086,8 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  void checkParticleDerivationOKAllAllSequenceSequence(final ComplexType complexType, final ModelGroupUse R, final ModelGroupUse B, final SchemaConstraintHandler errors) throws AbortException
+    private void checkParticleDerivationOKAllAllSequenceSequence(final ComplexType complexType, final ModelGroupUse R, final ModelGroupUse B, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
         checkOccurrenceRangeOK(complexType, R, B, errors);
 
@@ -1086,7 +1112,8 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  void checkParticleValidRestriction(final ComplexType complexType, final SchemaParticle R, final SchemaParticle B, final SchemaConstraintHandler errors) throws AbortException
+    private void checkParticleValidRestriction(final ComplexType complexType, final SchemaParticle R, final SchemaParticle B, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
 
     }
@@ -1095,50 +1122,49 @@ final class SchemaConstraintChecker
      * Checks the compiled components satisfy Schema Component Constraints. <br>
      * The cache is used only to provide the locations for error reporting purposes since the locations are not maintained in the compiled schema model.
      */
-    public static  void checkSchemaComponentConstraints(final ComponentBagImpl bag, final ComponentProvider existing, final SchemaConstraintHandler errors) throws AbortException
+    public void checkSchemaComponentConstraints(final SchemaConstraintHandler errors) throws AbortException
     {
-        final NameSource nameBridge = NameSource.SINGLETON;
-        for (final SimpleType simpleType : bag.getSimpleTypes())
+        for (final SimpleType simpleType : components.getSimpleTypes())
         {
-            checkSimpleType(simpleType, bag, existing, errors);
+            checkSimpleType(simpleType, errors);
         }
-        for (final ComplexType complexType : bag.getComplexTypes())
+        for (final ComplexType complexType : components.getComplexTypes())
         {
-            checkComplexType(complexType, bag, errors);
+            checkComplexType(complexType, components, errors);
         }
-        for (final AttributeDefinition attribute : bag.getAttributes())
+        for (final AttributeDefinition attribute : components.getAttributes())
         {
-            checkAttribute(attribute, errors, nameBridge);
+            checkAttribute(attribute, errors);
         }
-        for (final ElementDefinition element : bag.getElements())
+        for (final ElementDefinition element : components.getElements())
         {
-            checkElement(element, errors, nameBridge);
+            checkElement(element, errors);
         }
-        for (final AttributeGroupDefinition attributeGroup : bag.getAttributeGroups())
+        for (final AttributeGroupDefinition attributeGroup : components.getAttributeGroups())
         {
-            checkAttributeGroup(attributeGroup, errors, nameBridge);
+            checkAttributeGroup(attributeGroup, errors);
         }
-        for (final IdentityConstraint constraint : bag.getIdentityConstraints())
+        for (final IdentityConstraint constraint : components.getIdentityConstraints())
         {
             checkIdentityConstraint(constraint, errors);
         }
-        for (final ModelGroup modelGroup : bag.getModelGroups())
+        for (final ModelGroup modelGroup : components.getModelGroups())
         {
             checkModelGroup(modelGroup, errors);
         }
-        for (final NotationDefinition notation : bag.getNotations())
+        for (final NotationDefinition notation : components.getNotations())
         {
             checkNotation(notation, errors);
         }
     }
 
-    private static  void checkSimpleType(final SimpleType simpleType, final ComponentBag bag, final ComponentProvider existing, final SchemaConstraintHandler errors) throws AbortException
+    private void checkSimpleType(final SimpleType simpleType, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
-        final NameSource nameBridge = NameSource.SINGLETON;
         final WhiteSpacePolicy whiteSpace = simpleType.getWhiteSpacePolicy();
         if (null != whiteSpace)
         {
-            checkWhitespaceValidRestriction(whiteSpace, simpleType, errors, nameBridge);
+            checkWhitespaceValidRestriction(whiteSpace, simpleType, errors);
         }
         if (simpleType.hasFacets())
         {
@@ -1215,7 +1241,7 @@ final class SchemaConstraintChecker
                             throw new AssertionError(limit.getKind());
                         }
                     }
-//                  checkLimitRestriction(limit, parentMaxInclusive, parentMaxExclusive, parentMinInclusive, parentMinExclusive, simpleType, errors);
+                    checkLimitRestriction(limit, parentMaxInclusive, parentMaxExclusive, parentMinInclusive, parentMinExclusive, simpleType, errors);
                 }
                 else if (facet instanceof TotalDigits)
                 {
@@ -1252,39 +1278,39 @@ final class SchemaConstraintChecker
             }
             if (maxInclusive != null && maxExclusive != null)
             {
-//              final String maxIncString = getDisplayString(maxInclusive.getLimit(), atomBridge);
-//              final String maxExcString = getDisplayString(maxExclusive.getLimit(), atomBridge);
-//              errors.error(simpleType, new SccMaxInclusiveAndMaxExclusiveException(maxIncString, maxExcString));
+                final String maxIncString = getDisplayString(maxInclusive.getLimit(atomBridge));
+                final String maxExcString = getDisplayString(maxExclusive.getLimit(atomBridge));
+                errors.error(simpleType, new SccMaxInclusiveAndMaxExclusiveException(maxIncString, maxExcString));
             }
             if (minInclusive != null && maxInclusive != null)
             {
-//              final A min = minInclusive.getLimit();
-//              final A max = maxInclusive.getLimit();
-//
-//              try
-//              {
-//                  minInclusive.validate(max, simpleType);
-//              }
-//              catch (final FacetMinMaxException e)
-//              {
-//                  final String minString = getDisplayString(min, atomBridge);
-//                  final String maxString = getDisplayString(max, atomBridge);
-//                  errors.error(simpleType, new SccMinInclusiveLessThanEqualToMaxInclusiveException(minString, maxString));
-//              }
-//              try
-//              {
-//                  maxInclusive.validate(min, simpleType);
-//              }
-//              catch (final FacetMinMaxException e)
-//              {
-//                  final String minString = getDisplayString(min, atomBridge);
-//                  final String maxString = getDisplayString(max, atomBridge);
-//                  errors.error(simpleType, new SccMinInclusiveLessThanEqualToMaxInclusiveException(minString, maxString));
-//              }
+                final XmlAtom min = minInclusive.getLimit(atomBridge);
+                final XmlAtom max = maxInclusive.getLimit(atomBridge);
+
+                try
+                {
+                    minInclusive.validate(max, simpleType, atomBridge);
+                }
+                catch (final FacetException e)
+                {
+                    final String minString = getDisplayString(min);
+                    final String maxString = getDisplayString(max);
+                    errors.error(simpleType, new SccMinInclusiveLessThanEqualToMaxInclusiveException(minString, maxString));
+                }
+                try
+                {
+                    maxInclusive.validate(min, simpleType, atomBridge);
+                }
+                catch (final FacetException e)
+                {
+                    final String minString = getDisplayString(min);
+                    final String maxString = getDisplayString(max);
+                    errors.error(simpleType, new SccMinInclusiveLessThanEqualToMaxInclusiveException(minString, maxString));
+                }
             }
             if (minExclusive != null && maxExclusive != null)
             {
-//              checkMinExclusiveLessThanEqualToMaxExclusive(minExclusive, maxExclusive, simpleType, errors);
+                checkMinExclusiveLessThanEqualToMaxExclusive(minExclusive, maxExclusive, simpleType, errors);
             }
             // If length is a member of {facets} then
             if (length != null)
@@ -1295,7 +1321,7 @@ final class SchemaConstraintChecker
                     {
                         if (!existsTypeDerivedByRestrictionWithMinLength(simpleType, minLength.getMinLength()))
                         {
-                            errors.error(simpleType, new SccMinLengthDerivedException(minLength.getMinLength(), length.getValue(), qname(simpleType.getName())));
+                            errors.error(simpleType, new SccMinLengthDerivedException(minLength.getMinLength(), length.getValue(), simpleType.getName()));
                         }
                     }
                     else
@@ -1309,7 +1335,7 @@ final class SchemaConstraintChecker
                     {
                         if (!existsTypeDerivedByRestrictionWithMaxLength(simpleType, maxLength.getMaxLength()))
                         {
-                            errors.error(simpleType, new SccMaxLengthDerivedException(maxLength.getMaxLength(), length.getValue(), qname(simpleType.getName())));
+                            errors.error(simpleType, new SccMaxLengthDerivedException(maxLength.getMaxLength(), length.getValue(), simpleType.getName()));
                         }
                     }
                     else
@@ -1319,43 +1345,44 @@ final class SchemaConstraintChecker
                 }
             }
         }
-        final SimpleType notationType = existing.getAtomicType(NativeType.NOTATION);
-//      if (simpleType.derivedFromType(notationType, EnumSet.of(DerivationMethod.Restriction)))
-//      {
-//          for (final EnumerationDefinition enumeration : simpleType.getEnumerations())
-//          {
-//              for (final A atom : enumeration.getValue())
-//              {
-//                  final QName reference = atomBridge.getNotation(atom);
-//
-//                  boolean match = false;
-//                  for (final NotationDefinition notation : bag.getNotations())
-//                  {
-//                      if (reference.equals(notation.getName()))
-//                      {
-//                          match = true;
-//                          break;
-//                      }
-//                  }
-//                  if (!match)
-//                  {
-//                      final Set<QName> names = getComponentNames(bag.getNotations());
-//                      errors.error(simpleType, new SccNotationNotInValueSpace(reference, names));
-//                  }
-//              }
-//          }
-//      }
+        final SimpleType notationType = provider.getAtomicType(NativeType.NOTATION);
+        if (simpleType.derivedFromType(notationType, EnumSet.of(DerivationMethod.Restriction)))
+        {
+            for (final EnumerationDefinition enumeration : simpleType.getEnumerations())
+            {
+                for (final XmlAtom atom : enumeration.getValue(atomBridge))
+                {
+                    final QName reference = atomBridge.getNotation(atom);
+
+                    boolean match = false;
+                    for (final NotationDefinition notation : components.getNotations())
+                    {
+                        if (reference.equals(notation.getName()))
+                        {
+                            match = true;
+                            break;
+                        }
+                    }
+                    if (!match)
+                    {
+                        final Set<QName> names = getComponentNames(components.getNotations());
+                        errors.error(simpleType, new SccNotationNotInValueSpace(reference, names));
+                    }
+                }
+            }
+        }
     }
 
-    private static  void checkTypeDerivationOK(final Type D, final Type B, final Set<DerivationMethod> subset, NameSource nameBridge) throws ComponentConstraintException
+    private void checkTypeDerivationOK(final Type D, final Type B, final Set<DerivationMethod> subset) 
+        throws ComponentConstraintException
     {
         if (D instanceof SimpleType)
         {
-            checkTypeDerivationOKSimple((SimpleType)D, B, subset, nameBridge);
+            checkTypeDerivationOKSimple((SimpleType)D, B, subset);
         }
         else if (D instanceof ComplexType)
         {
-            checkTypeDerivationOKComplex((ComplexType)D, B, subset, nameBridge);
+            checkTypeDerivationOKComplex((ComplexType)D, B, subset);
         }
         else
         {
@@ -1363,7 +1390,8 @@ final class SchemaConstraintChecker
         }
     }
 
-    public static  void checkTypeDerivationOKComplex(final ComplexType D, final Type B, final Set<DerivationMethod> subset, NameSource nameBridge) throws ComponentConstraintException
+    private void checkTypeDerivationOKComplex(final ComplexType D, final Type B, final Set<DerivationMethod> subset) 
+        throws ComponentConstraintException
     {
         if (D == B)
         {
@@ -1397,7 +1425,7 @@ final class SchemaConstraintChecker
                     {
                         try
                         {
-                            checkTypeDerivationOK(deeBaseType, B, subset, nameBridge);
+                            checkTypeDerivationOK(deeBaseType, B, subset);
                         }
                         catch (final ComponentConstraintException e)
                         {
@@ -1408,7 +1436,7 @@ final class SchemaConstraintChecker
                     {
                         try
                         {
-                            checkTypeDerivationOKSimple((SimpleType)deeBaseType, B, subset, nameBridge);
+                            checkTypeDerivationOKSimple((SimpleType)deeBaseType, B, subset);
                         }
                         catch (final ComponentConstraintException e)
                         {
@@ -1427,7 +1455,8 @@ final class SchemaConstraintChecker
     /**
      * Type Derivation OK (Simple) (3.14.6)
      */
-    public static  void checkTypeDerivationOKSimple(final SimpleType D, final Type B, final Set<DerivationMethod> subset, final NameSource nameBridge) throws ComponentConstraintException
+    private void checkTypeDerivationOKSimple(final SimpleType D, final Type B, final Set<DerivationMethod> subset) 
+        throws ComponentConstraintException
     {
         if (D == B)
         {
@@ -1437,7 +1466,7 @@ final class SchemaConstraintChecker
         {
             if (subset.contains(DerivationMethod.Restriction) || (D.getBaseType().getFinal().contains(DerivationMethod.Restriction)))
             {
-                throw new SccSimpleTypeDerivationRestrictionException(qname(D.getName()));
+                throw new SccSimpleTypeDerivationRestrictionException(D.getName());
             }
 
             boolean isOK = false;
@@ -1445,7 +1474,7 @@ final class SchemaConstraintChecker
             {
                 isOK = true;
             }
-            else if (!D.getBaseType().isComplexUrType() && isTypeDerivationOK(D.getBaseType(), B, subset, nameBridge))
+            else if (!D.getBaseType().isComplexUrType() && isTypeDerivationOK(D.getBaseType(), B, subset))
             {
                 isOK = true;
             }
@@ -1458,7 +1487,7 @@ final class SchemaConstraintChecker
                 final UnionSimpleType unionType = (UnionSimpleType)B;
                 for (final SimpleType memberType : unionType.getMemberTypes())
                 {
-                    if (isTypeDerivationOK(D, memberType, subset, nameBridge))
+                    if (isTypeDerivationOK(D, memberType, subset))
                     {
                         isOK = true;
                         break;
@@ -1467,12 +1496,13 @@ final class SchemaConstraintChecker
             }
             if (!isOK)
             {
-                throw new SccSimpleTypeDerivationException(qname(D.getName()));
+                throw new SccSimpleTypeDerivationException(D.getName());
             }
         }
     }
 
-    private static  void checkWhitespaceValidRestriction(final WhiteSpacePolicy ws, final SimpleType simpleType, final SchemaConstraintHandler errors, final NameSource nameBridge) throws AbortException
+    private void checkWhitespaceValidRestriction(final WhiteSpacePolicy ws, final SimpleType simpleType, final SchemaConstraintHandler errors) 
+        throws AbortException
     {
         final Type baseType = simpleType.getBaseType();
         if (baseType instanceof SimpleType)
@@ -1499,7 +1529,7 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  boolean clause14(final ComplexType complexType, final ComplexType baseType)
+    private boolean clause14(final ComplexType complexType, final ComplexType baseType)
     {
         // 1.4 One of the following must be true.
         final ContentType contentTypeD = complexType.getContentType();
@@ -1508,7 +1538,7 @@ final class SchemaConstraintChecker
         return clause141(contentTypeD, contentTypeB) || clause142(contentTypeD, contentTypeB) || clause143(contentTypeD, contentTypeB);
     }
 
-    private static  boolean clause141(final ContentType contentTypeD, final ContentType contentTypeB)
+    private boolean clause141(final ContentType contentTypeD, final ContentType contentTypeB)
     {
         if (contentTypeD.isSimple() && contentTypeB.isSimple())
         {
@@ -1520,12 +1550,12 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  boolean clause142(final ContentType contentTypeD, final ContentType contentTypeB)
+    private boolean clause142(final ContentType contentTypeD, final ContentType contentTypeB)
     {
         return contentTypeD.isEmpty() && contentTypeB.isEmpty();
     }
 
-    private static  boolean clause143(final ContentType contentTypeD, final ContentType contentTypeB)
+    private boolean clause143(final ContentType contentTypeD, final ContentType contentTypeB)
     {
         if (clause1431(contentTypeD))
         {
@@ -1537,22 +1567,22 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  boolean clause1431(final ContentType contentTypeD)
+    private boolean clause1431(final ContentType contentTypeD)
     {
         return contentTypeD.isMixed() || contentTypeD.isElementOnly();
     }
 
-    private static  boolean clause1432(final ContentType contentTypeD, final ContentType contentTypeB)
+    private boolean clause1432(final ContentType contentTypeD, final ContentType contentTypeB)
     {
         return clause14321(contentTypeB) || clause14322(contentTypeD, contentTypeB);
     }
 
-    private static  boolean clause14321(final ContentType contentTypeB)
+    private boolean clause14321(final ContentType contentTypeB)
     {
         return contentTypeB.isEmpty();
     }
 
-    private static  boolean clause14322(final ContentType contentTypeD, final ContentType contentTypeB)
+    private boolean clause14322(final ContentType contentTypeD, final ContentType contentTypeB)
     {
         if (clause143221(contentTypeD, contentTypeB))
         {
@@ -1566,7 +1596,7 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  boolean clause143221(final ContentType contentTypeD, final ContentType contentTypeB)
+    private boolean clause143221(final ContentType contentTypeD, final ContentType contentTypeB)
     {
         if (contentTypeD.isMixed() && contentTypeB.isMixed())
         {
@@ -1579,12 +1609,12 @@ final class SchemaConstraintChecker
         return false;
     }
 
-    private static  boolean clause143222(final ModelGroupUse contentModelD, final ModelGroupUse contentModelB)
+    private boolean clause143222(final ModelGroupUse contentModelD, final ModelGroupUse contentModelB)
     {
         return isValidParticleExtension(contentModelD, contentModelB);
     }
 
-    private static  boolean clause21(final ContentType contentTypeD, final SimpleType simpleTypeB)
+    private boolean clause21(final ContentType contentTypeD, final SimpleType simpleTypeB)
     {
         if (contentTypeD.isSimple())
         {
@@ -1596,24 +1626,24 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  boolean clause22(final SimpleType simpleTypeB)
+    private boolean clause22(final SimpleType simpleTypeB)
     {
         return !simpleTypeB.isFinal(DerivationMethod.Extension);
     }
 
-    private static  boolean clause52(final ComplexType complexType, final ComplexType baseType)
+    private boolean clause52(final ComplexType complexType, final ComplexType baseType)
     {
         // 5.2 All the following must be true.
         return contentTypeMustBeSimple521(complexType) && clause522(complexType, baseType);
     }
 
-    private static  boolean clause522(final ComplexType complexType, final ComplexType baseType)
+    private boolean clause522(final ComplexType complexType, final ComplexType baseType)
     {
         return clause5221(complexType, baseType) || isMixedWithEmptiableParticle5222(baseType);
 
     }
 
-    private static  boolean clause5221(final ComplexType complexType, final ComplexType baseType)
+    private boolean clause5221(final ComplexType complexType, final ComplexType baseType)
     {
         // 5.2.2.1 The {content type} of the {base type definition} must be a
         // simple type definition from which the
@@ -1630,22 +1660,22 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  boolean clause53(final ComplexType complexType, final ComplexType baseType)
+    private boolean clause53(final ComplexType complexType, final ComplexType baseType)
     {
         return complexType.getContentType().isEmpty() && clause532(baseType);
     }
 
-    private static  boolean clause532(final ComplexType baseType)
+    private boolean clause532(final ComplexType baseType)
     {
         return clause5321(baseType) || clause5322(baseType);
     }
 
-    private static  boolean clause5321(final ComplexType baseType)
+    private boolean clause5321(final ComplexType baseType)
     {
         return baseType.getContentType().isEmpty();
     }
 
-    private static  boolean clause5322(final ComplexType baseType)
+    private boolean clause5322(final ComplexType baseType)
     {
         final ContentType contentType = baseType.getContentType();
         if (contentType.isElementOnly() || contentType.isMixed())
@@ -1658,134 +1688,134 @@ final class SchemaConstraintChecker
         }
     }
 
-//  private static <A> SmCompareKind compare(final A lhsAtom, final A rhsAtom, final AtomBridge<A> atomBridge)
-//  {
-//      final NativeType lhsNativeType = atomBridge.getNativeType(lhsAtom);
-//      if (lhsNativeType.isInt())
-//      {
-//          final int lhs = atomBridge.getInt(lhsAtom);
-//          final int rhs = atomBridge.getInt(castUp(rhsAtom, NativeType.INT, atomBridge));
-//          if (lhs > rhs)
-//          {
-//              return SmCompareKind.AFTER;
-//          }
-//          else if (lhs < rhs)
-//          {
-//              return SmCompareKind.BEFORE;
-//          }
-//          else
-//          {
-//              return SmCompareKind.EQUAL;
-//          }
-//      }
-//      else if (lhsNativeType.isInteger())
-//      {
-//          final BigInteger lhs = atomBridge.getInteger(lhsAtom);
-//          final BigInteger rhs = atomBridge.getInteger(castUp(rhsAtom, NativeType.INTEGER, atomBridge));
-//          return SmCompareKind.lookup(lhs.compareTo(rhs));
-//      }
-//      else if (lhsNativeType == NativeType.DECIMAL)
-//      {
-//          final BigDecimal lhs = atomBridge.getDecimal(lhsAtom);
-//          final BigDecimal rhs = atomBridge.getDecimal(castUp(rhsAtom, NativeType.DECIMAL, atomBridge));
-//          return SmCompareKind.lookup(lhs.compareTo(rhs));
-//      }
-//      else if (lhsNativeType == NativeType.FLOAT)
-//      {
-//          final float lhs = atomBridge.getFloat(lhsAtom);
-//          // final float lhs = atomBridge.getFloat(castUp(lhsAtom,
-//          // NativeType.FLOAT, atomBridge));
-//          final float rhs = atomBridge.getFloat(castUp(rhsAtom, NativeType.FLOAT, atomBridge));
-//          if (lhs > rhs)
-//          {
-//              return SmCompareKind.AFTER;
-//          }
-//          else if (lhs < rhs)
-//          {
-//              return SmCompareKind.BEFORE;
-//          }
-//          else
-//          {
-//              return SmCompareKind.EQUAL;
-//          }
-//      }
-//      else if (lhsNativeType == NativeType.DOUBLE)
-//      {
-//          final double lhs = atomBridge.getDouble(lhsAtom);
-//          final double rhs = atomBridge.getDouble(rhsAtom);
-//          if (lhs > rhs)
-//          {
-//              return SmCompareKind.AFTER;
-//          }
-//          else if (lhs < rhs)
-//          {
-//              return SmCompareKind.BEFORE;
-//          }
-//          else if (lhs == rhs)
-//          {
-//              return SmCompareKind.EQUAL;
-//          }
-//          else
-//          {
-//              throw new AssertionError("lhs=" + lhs + ", rhs=" + rhs);
-//          }
-//      }
-//      else if (lhsNativeType == NativeType.DATE)
-//      {
-//          final Gregorian P = normalize(Gregorian.dateTime(castUp(lhsAtom, NativeType.DATE, atomBridge), atomBridge));
-//          final Gregorian Q = normalize(Gregorian.dateTime(castUp(rhsAtom, NativeType.DATE, atomBridge), atomBridge));
-//          if (P.hasGmtOffset())
-//          {
-//              if (Q.hasGmtOffset())
-//              {
-//                  return compareFields(P, Q);
-//              }
-//              else
-//              {
-//                  if (compareFields(P, Q.normalize(+FOURTEEN_HOURS_IN_MINUTES)) == SmCompareKind.BEFORE)
-//                  {
-//                      return SmCompareKind.BEFORE;
-//                  }
-//                  else if (compareFields(P, Q.normalize(-FOURTEEN_HOURS_IN_MINUTES)) == SmCompareKind.AFTER)
-//                  {
-//                      return SmCompareKind.AFTER;
-//                  }
-//                  else
-//                  {
-//                      return SmCompareKind.INDETERMINATE;
-//                  }
-//              }
-//          }
-//          else
-//          {
-//              if (Q.hasGmtOffset())
-//              {
-//                  if (compareFields(P.normalize(-FOURTEEN_HOURS_IN_MINUTES), Q) == SmCompareKind.BEFORE)
-//                  {
-//                      return SmCompareKind.BEFORE;
-//                  }
-//                  else if (compareFields(P.normalize(+FOURTEEN_HOURS_IN_MINUTES), Q) == SmCompareKind.AFTER)
-//                  {
-//                      return SmCompareKind.AFTER;
-//                  }
-//                  else
-//                  {
-//                      return SmCompareKind.INDETERMINATE;
-//                  }
-//              }
-//              else
-//              {
-//                  return compareFields(P, Q);
-//              }
-//          }
-//      }
-//      else
-//      {
-//          throw new AssertionError(lhsNativeType);
-//      }
-//  }
+    private CompareKind compare(final XmlAtom lhsAtom, final XmlAtom rhsAtom)
+    {
+        final NativeType lhsNativeType = atomBridge.getNativeType(lhsAtom);
+        if (lhsNativeType.isInt())
+        {
+            final int lhs = atomBridge.getInt(lhsAtom);
+            final int rhs = atomBridge.getInt(castUp(rhsAtom, NativeType.INT));
+            if (lhs > rhs)
+            {
+                return CompareKind.AFTER;
+            }
+            else if (lhs < rhs)
+            {
+                return CompareKind.BEFORE;
+            }
+            else
+            {
+                return CompareKind.EQUAL;
+            }
+        }
+        else if (lhsNativeType.isInteger())
+        {
+            final BigInteger lhs = atomBridge.getInteger(lhsAtom);
+            final BigInteger rhs = atomBridge.getInteger(castUp(rhsAtom, NativeType.INTEGER));
+            return CompareKind.lookup(lhs.compareTo(rhs));
+        }
+        else if (lhsNativeType == NativeType.DECIMAL)
+        {
+            final BigDecimal lhs = atomBridge.getDecimal(lhsAtom);
+            final BigDecimal rhs = atomBridge.getDecimal(castUp(rhsAtom, NativeType.DECIMAL));
+            return CompareKind.lookup(lhs.compareTo(rhs));
+        }
+        else if (lhsNativeType == NativeType.FLOAT)
+        {
+            final float lhs = atomBridge.getFloat(lhsAtom);
+            // final float lhs = atomBridge.getFloat(castUp(lhsAtom,
+            // NativeType.FLOAT, atomBridge));
+            final float rhs = atomBridge.getFloat(castUp(rhsAtom, NativeType.FLOAT));
+            if (lhs > rhs)
+            {
+                return CompareKind.AFTER;
+            }
+            else if (lhs < rhs)
+            {
+                return CompareKind.BEFORE;
+            }
+            else
+            {
+                return CompareKind.EQUAL;
+            }
+        }
+        else if (lhsNativeType == NativeType.DOUBLE)
+        {
+            final double lhs = atomBridge.getDouble(lhsAtom);
+            final double rhs = atomBridge.getDouble(rhsAtom);
+            if (lhs > rhs)
+            {
+                return CompareKind.AFTER;
+            }
+            else if (lhs < rhs)
+            {
+                return CompareKind.BEFORE;
+            }
+            else if (lhs == rhs)
+            {
+                return CompareKind.EQUAL;
+            }
+            else
+            {
+                throw new AssertionError("lhs=" + lhs + ", rhs=" + rhs);
+            }
+        }
+        else if (lhsNativeType == NativeType.DATE)
+        {
+            final Gregorian P = normalize(Gregorian.dateTime(castUp(lhsAtom, NativeType.DATE), atomBridge));
+            final Gregorian Q = normalize(Gregorian.dateTime(castUp(rhsAtom, NativeType.DATE), atomBridge));
+            if (P.hasGmtOffset())
+            {
+                if (Q.hasGmtOffset())
+                {
+                    return compareFields(P, Q);
+                }
+                else
+                {
+                    if (compareFields(P, Q.normalize(+FOURTEEN_HOURS_IN_MINUTES)) == CompareKind.BEFORE)
+                    {
+                        return CompareKind.BEFORE;
+                    }
+                    else if (compareFields(P, Q.normalize(-FOURTEEN_HOURS_IN_MINUTES)) == CompareKind.AFTER)
+                    {
+                        return CompareKind.AFTER;
+                    }
+                    else
+                    {
+                        return CompareKind.INDETERMINATE;
+                    }
+                }
+            }
+            else
+            {
+                if (Q.hasGmtOffset())
+                {
+                    if (compareFields(P.normalize(-FOURTEEN_HOURS_IN_MINUTES), Q) == CompareKind.BEFORE)
+                    {
+                        return CompareKind.BEFORE;
+                    }
+                    else if (compareFields(P.normalize(+FOURTEEN_HOURS_IN_MINUTES), Q) == CompareKind.AFTER)
+                    {
+                        return CompareKind.AFTER;
+                    }
+                    else
+                    {
+                        return CompareKind.INDETERMINATE;
+                    }
+                }
+                else
+                {
+                    return compareFields(P, Q);
+                }
+            }
+        }
+        else
+        {
+            throw new AssertionError(lhsNativeType);
+        }
+    }
 
-    private static CompareKind compareFields(final Gregorian P, final Gregorian Q)
+    private CompareKind compareFields(final Gregorian P, final Gregorian Q)
     {
         if (P.hasYear())
         {
@@ -1871,7 +1901,7 @@ final class SchemaConstraintChecker
         return CompareKind.EQUAL;
     }
 
-    public static Gregorian normalize(final Gregorian gregorian)
+    private Gregorian normalize(final Gregorian gregorian)
     {
         if (gregorian.hasGmtOffset())
         {
@@ -1883,12 +1913,12 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  boolean contentTypeMustBeSimple521(final ComplexType complexType)
+    private boolean contentTypeMustBeSimple521(final ComplexType complexType)
     {
         return complexType.getContentType().isSimple();
     }
 
-    private static  boolean equalBounds(final SchemaParticle one, final SchemaParticle two)
+    private boolean equalBounds(final SchemaParticle one, final SchemaParticle two)
     {
         if (one.getMinOccurs() == two.getMinOccurs())
         {
@@ -1914,7 +1944,7 @@ final class SchemaConstraintChecker
         }
     }
 
-    public static <A> boolean equalValues(final List<? extends A> expect, final List<? extends A> actual)
+    private boolean equalValues(final List<XmlAtom> expect, final List<XmlAtom> actual)
     {
         final int size = expect.size();
         if (size == actual.size())
@@ -1934,7 +1964,7 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  boolean existsTypeDerivedByRestrictionWithMaxLength(final SimpleType simpleType, int maxLength)
+    private boolean existsTypeDerivedByRestrictionWithMaxLength(final SimpleType simpleType, int maxLength)
     {
         if (simpleType.getDerivationMethod().isRestriction())
         {
@@ -1972,7 +2002,7 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  boolean existsTypeDerivedByRestrictionWithMinLength(final SimpleType simpleType, int minLength)
+    private boolean existsTypeDerivedByRestrictionWithMinLength(final SimpleType simpleType, int minLength)
     {
         if (simpleType.getDerivationMethod().isRestriction())
         {
@@ -2010,7 +2040,7 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  Set<QName> getComponentNames(final Iterable<? extends SchemaComponent> components)
+    private Set<QName> getComponentNames(final Iterable<? extends SchemaComponent> components)
     {
         final Set<QName> names = new HashSet<QName>();
         for (final SchemaComponent component : components)
@@ -2020,59 +2050,59 @@ final class SchemaConstraintChecker
         return Collections.unmodifiableSet(names);
     }
 
-//  public static <A> String getDisplayString(final A atom, final AtomBridge<A> atomBridge)
-//  {
-//      if (null != atom)
-//      {
-//          final StringBuilder buffer = new StringBuilder();
-//
-//          append(atom, buffer, atomBridge);
-//
-//          return buffer.toString();
-//      }
-//      else
-//      {
-//          return "()";
-//      }
-//  }
-//
-//  public static <A> String getDisplayString(final List<? extends A> value, final AtomBridge<A> atomBridge)
-//  {
-//      final Iterator<? extends A> atoms = value.iterator();
-//
-//      if (atoms.hasNext())
-//      {
-//          final A first = atoms.next();
-//
-//          if (atoms.hasNext())
-//          {
-//              final StringBuilder buffer = new StringBuilder();
-//
-//              buffer.append('(');
-//
-//              append(first, buffer, atomBridge);
-//
-//              while (atoms.hasNext())
-//              {
-//                  buffer.append(", ");
-//
-//                  append(atoms.next(), buffer, atomBridge);
-//              }
-//
-//              buffer.append(')');
-//
-//              return buffer.toString();
-//          }
-//          else
-//          {
-//              return getDisplayString(first, atomBridge);
-//          }
-//      }
-//      else
-//      {
-//          return "()";
-//      }
-//  }
+    private String getDisplayString(final XmlAtom atom)
+    {
+        if (null != atom)
+        {
+            final StringBuilder buffer = new StringBuilder();
+
+            append(atom, buffer);
+
+            return buffer.toString();
+        }
+        else
+        {
+            return "()";
+        }
+    }
+
+    private String getDisplayString(final List<XmlAtom> value)
+    {
+        final Iterator<XmlAtom> atoms = value.iterator();
+
+        if (atoms.hasNext())
+        {
+            final XmlAtom first = atoms.next();
+
+            if (atoms.hasNext())
+            {
+                final StringBuilder buffer = new StringBuilder();
+
+                buffer.append('(');
+
+                append(first, buffer);
+
+                while (atoms.hasNext())
+                {
+                    buffer.append(", ");
+
+                    append(atoms.next(), buffer);
+                }
+
+                buffer.append(')');
+
+                return buffer.toString();
+            }
+            else
+            {
+                return getDisplayString(first);
+            }
+        }
+        else
+        {
+            return "()";
+        }
+    }
 
     /**
      * Searches up the inheritance tree and returns to first facet of the requested kind, or null if no such facet is inherited
@@ -2081,7 +2111,7 @@ final class SchemaConstraintChecker
      * @param simpleType
      * @return the requested, inherited facet or null if no such facet exists
      */
-    private static  Facet getParentFacet(final FacetKind facetKind, final SimpleType simpleType)
+    private Facet getParentFacet(final FacetKind facetKind, final SimpleType simpleType)
     {
         Type baseType = simpleType.getBaseType();
         Facet parentFacet = null;
@@ -2100,7 +2130,7 @@ final class SchemaConstraintChecker
         return parentFacet;
     }
 
-    private static  boolean hasMaxLengthAndNoLength(final SimpleType simpleType, final int maxLength)
+    private boolean hasMaxLengthAndNoLength(final SimpleType simpleType, final int maxLength)
     {
         if (simpleType.hasFacets())
         {
@@ -2126,7 +2156,7 @@ final class SchemaConstraintChecker
 
     }
 
-    private static  boolean hasMinLengthAndNoLength(final SimpleType simpleType, final int minLength)
+    private boolean hasMinLengthAndNoLength(final SimpleType simpleType, final int minLength)
     {
         if (simpleType.hasFacets())
         {
@@ -2151,7 +2181,7 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  boolean isDerivedFrom(final Type type, final QName typeName)
+    private boolean isDerivedFrom(final Type type, final QName typeName)
     {
         Type currentType = type;
         while (!currentType.isComplexUrType())
@@ -2165,7 +2195,7 @@ final class SchemaConstraintChecker
         return false;
     }
 
-    private static  boolean isMixedWithEmptiableParticle5222(final ComplexType type)
+    private boolean isMixedWithEmptiableParticle5222(final ComplexType type)
     {
         final ContentType contentType = type.getContentType();
         if (contentType.isMixed())
@@ -2178,7 +2208,7 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  boolean isSimpleDerivationOK(final Type complexType, final Type baseType)
+    private boolean isSimpleDerivationOK(final Type complexType, final Type baseType)
     {
         // TODO See checkTypeDerivationSimple
         complexType.getName();
@@ -2187,11 +2217,11 @@ final class SchemaConstraintChecker
         return true;
     }
 
-    private static  boolean isTypeDerivationOK(final Type D, final Type B, final Set<DerivationMethod> subset, NameSource nameBridge)
+    private boolean isTypeDerivationOK(final Type D, final Type B, final Set<DerivationMethod> subset)
     {
         try
         {
-            checkTypeDerivationOK(D, B, subset, nameBridge);
+            checkTypeDerivationOK(D, B, subset);
         }
         catch (final SchemaException e)
         {
@@ -2208,7 +2238,7 @@ final class SchemaConstraintChecker
      * @param B
      *            The base particle.
      */
-    private static  boolean isValidParticleExtension(final ModelGroupUse E, final ModelGroupUse B)
+    private boolean isValidParticleExtension(final ModelGroupUse E, final ModelGroupUse B)
     {
         final int minOccurs = E.getMinOccurs();
         final int maxOccurs = E.getMaxOccurs();
@@ -2254,12 +2284,7 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static QName qname(final QName name)
-    {
-        return name;
-    }
-
-    private static  boolean recursivelyIdenticalElements(final ElementDefinition one, final ElementDefinition two)
+    private boolean recursivelyIdenticalElements(final ElementDefinition one, final ElementDefinition two)
     {
         if (one == two)
         {
@@ -2285,7 +2310,7 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  boolean recursivelyIdenticalModelGroups(final ModelGroup one, final ModelGroup two)
+    private boolean recursivelyIdenticalModelGroups(final ModelGroup one, final ModelGroup two)
     {
         if (one == two)
         {
@@ -2323,7 +2348,7 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  boolean recursivelyIdenticalParticleTerms(final ParticleTerm one, final ParticleTerm two)
+    private boolean recursivelyIdenticalParticleTerms(final ParticleTerm one, final ParticleTerm two)
     {
         if (one == two)
         {
@@ -2350,7 +2375,7 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  boolean recursivelyIdenticalProperties(final ModelGroupUse one, final ModelGroupUse two)
+    private boolean recursivelyIdenticalProperties(final ModelGroupUse one, final ModelGroupUse two)
     {
         if (one == two)
         {
@@ -2369,7 +2394,7 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  boolean recursivelyIdenticalProperties(final SchemaParticle one, final SchemaParticle two)
+    private boolean recursivelyIdenticalProperties(final SchemaParticle one, final SchemaParticle two)
     {
         if (one == two)
         {
@@ -2388,24 +2413,29 @@ final class SchemaConstraintChecker
         }
     }
 
-    private static  boolean recursivelyIdenticalWildcards(final SchemaWildcard one, final SchemaWildcard two)
+    private boolean recursivelyIdenticalWildcards(final SchemaWildcard one, final SchemaWildcard two)
     {
         // TODO:
         return true;
     }
 
-//  private static <A> A upcast(final A sourceAtom, final A baseAtom, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
-//  {
-//      final QName baseType = atomBridge.getDataType(baseAtom);
-//      final A atom = atomBridge.upCast(sourceAtom);
-//      final QName atomType = atomBridge.getDataType(atom);
-//      if (baseType.equals(atomType))
-//      {
-//          return atom;
-//      }
-//      else
-//      {
-//          return upcast(atom, baseAtom, atomBridge);
-//      }
-//  }
+    private XmlAtom upcast(final XmlAtom sourceAtom, final XmlAtom baseAtom)
+        throws GxmlAtomCastException
+    {
+        final QName baseType = atomBridge.getDataType(baseAtom);
+        final XmlAtom atom = atomBridge.upCast(sourceAtom);
+        final QName atomType = atomBridge.getDataType(atom);
+        if (baseType.equals(atomType))
+        {
+            return atom;
+        }
+        else
+        {
+            return upcast(atom, baseAtom);
+        }
+    }
+    
+    private final CanonicalAtomBridge atomBridge;
+    private final ComponentBag components;
+    private final ComponentProvider provider;
 }
