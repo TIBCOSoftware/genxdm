@@ -70,33 +70,36 @@ public final class FacetValueCompImpl extends FacetImpl implements Limit
 		return calculateValue(bridge);
 	}
 
-	@Override
-	public <A> void validate(final A atom, final SimpleType simpleType, AtomBridge<A> bridge) throws FacetMinMaxException
-	{
-		PreCondition.assertArgumentNotNull(atom, "atom");
-		PreCondition.assertArgumentNotNull(simpleType, "simpleType");
-
-		// TODO: If it is a list type we might have to work one way, union,
-        // another
-        SimpleType uberType = baseType.getNativeTypeDefinition();
-
-        final A rhsAtom = castAsUberType(getLimit(bridge), uberType.getName(), bridge);
-        ValueComparator<A> comparator = calculateComparator(rhsAtom, m_kind, uberType.getNativeType(), bridge);
-		
-        try
-		{
-			final A lhsAtom = castAsUberType(atom, uberType.getName(), bridge);
-
-			if (!comparator.compare(lhsAtom))
-			{
-				final String actual = bridge.getC14NForm(lhsAtom);
-				throw new FacetMinMaxException(this, actual, bridge);
-			}
-		}
-		catch (final AtomCastException e)
-		{
-			throw new FacetMinMaxException(this, e.getSourceValue(), bridge);
-		}
+    @Override
+    public <A> void validate(final List<? extends A> actualValue, final SimpleType simpleType, AtomBridge<A> bridge) throws FacetException
+    {
+        PreCondition.assertArgumentNotNull(simpleType, "simpleType");
+        for (final A atom : actualValue)
+        {
+//    		PreCondition.assertArgumentNotNull(atom, "atom");
+    
+    		// TODO: If it is a list type we might have to work one way, union,
+            // another
+            SimpleType uberType = baseType.getNativeTypeDefinition();
+    
+            final A rhsAtom = castAsUberType(getLimit(bridge), uberType.getName(), bridge);
+            ValueComparator<A> comparator = calculateComparator(rhsAtom, m_kind, uberType.getNativeType(), bridge);
+    		
+            try
+    		{
+    			final A lhsAtom = castAsUberType(atom, uberType.getName(), bridge);
+    
+    			if (!comparator.compare(lhsAtom))
+    			{
+    				final String actual = bridge.getC14NForm(lhsAtom);
+    				throw new FacetMinMaxException(this, actual, bridge);
+    			}
+    		}
+    		catch (final AtomCastException e)
+    		{
+    			throw new FacetMinMaxException(this, e.getSourceValue(), bridge);
+    		}
+        }
 	}
 
 	public static OpXMLSchemaCompare calculateOpCode(final FacetKind kind)
@@ -196,15 +199,6 @@ public final class FacetValueCompImpl extends FacetImpl implements Limit
 			{
 				throw new AssertionError(nativeType);
 			}
-		}
-	}
-
-	@Override
-	public <A> void validate(final List<? extends A> actualValue, final SimpleType simpleType, AtomBridge<A> bridge) throws FacetException
-	{
-		for (final A atom : actualValue)
-		{
-			validate(atom, simpleType, bridge);
 		}
 	}
 
