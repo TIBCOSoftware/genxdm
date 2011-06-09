@@ -79,11 +79,11 @@ import org.genxdm.processor.w3c.xs.exception.scc.SccWhiteSpaceParentCollapseExce
 import org.genxdm.processor.w3c.xs.exception.scc.SccWhiteSpaceParentReplaceException;
 import org.genxdm.processor.w3c.xs.exception.scc.SccXmlnsNotAllowedException;
 import org.genxdm.processor.w3c.xs.exception.scc.SccXsiNotAllowedException;
+import org.genxdm.xs.ComponentBag;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
 import org.genxdm.xs.components.SchemaComponent;
-import org.genxdm.xs.components.ComponentBag;
-import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.EnumerationDefinition;
 import org.genxdm.xs.components.ModelGroup;

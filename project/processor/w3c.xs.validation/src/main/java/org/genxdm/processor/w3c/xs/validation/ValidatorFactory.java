@@ -27,7 +27,7 @@ public final class ValidatorFactory<N, A>
 
     public ValidatorFactory(final TypedContext<N, A> pcx)
     {
-        this.factory = new ValidationFactoryImpl(pcx);
+        this.factory = new ValidationFactoryImpl(pcx.getMetaBridge().getComponentProvider());
         this.atomBridge = pcx.getAtomBridge();
     }
 

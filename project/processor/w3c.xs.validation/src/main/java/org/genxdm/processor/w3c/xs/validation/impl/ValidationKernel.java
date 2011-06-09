@@ -34,7 +34,7 @@ import org.genxdm.processor.w3c.xs.validation.api.VxPSVI;
 import org.genxdm.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrategy;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.xs.enums.ProcessContentsMode;

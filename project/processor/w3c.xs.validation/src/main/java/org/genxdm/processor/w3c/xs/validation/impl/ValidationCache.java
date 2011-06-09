@@ -31,7 +31,7 @@ import org.genxdm.processor.w3c.xs.validation.regex.api.RegExMachine;
 import org.genxdm.processor.w3c.xs.validation.regex.api.RegExPattern;
 import org.genxdm.processor.w3c.xs.validation.regex.impl.nfa.NfaFactory;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.ParticleTerm;

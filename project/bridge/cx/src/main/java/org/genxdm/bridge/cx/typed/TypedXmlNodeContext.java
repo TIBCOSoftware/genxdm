@@ -17,7 +17,6 @@ package org.genxdm.bridge.cx.typed;
 
 import java.net.URI;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLReporter;
 
 import org.genxdm.ProcessingContext;
@@ -29,7 +28,6 @@ import org.genxdm.bridgekit.xs.MetaBridgeOnSchemaTypeBridgeAdapter;
 import org.genxdm.bridgekit.xs.SchemaTypeBridgeFactory;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.Resolver;
-import org.genxdm.names.NameSource;
 import org.genxdm.processor.io.ValidatingDocumentHandler;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
@@ -40,22 +38,17 @@ import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
 import org.genxdm.typed.variant.VariantBridge;
+import org.genxdm.xs.ComponentBag;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.SchemaTypeBridge;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
-import org.genxdm.xs.components.ComponentBag;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.constraints.IdentityConstraint;
-import org.genxdm.xs.types.AtomicType;
-import org.genxdm.xs.types.AtomicUrType;
 import org.genxdm.xs.types.ComplexType;
-import org.genxdm.xs.types.ComplexUrType;
-import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
-import org.genxdm.xs.types.SimpleUrType;
-import org.genxdm.xs.types.Type;
 
 public class TypedXmlNodeContext
     implements TypedContext<XmlNode, XmlAtom>
@@ -133,84 +126,21 @@ public class TypedXmlNodeContext
         cache.defineSimpleType(simpleType);
     }
 
-    public QName generateUniqueName()
-    {
-        return cache.generateUniqueName();
-    }
-
     public AtomBridge<XmlAtom> getAtomBridge()
     {
         return atoms;
     }
 
-    public AtomicType getAtomicType(QName name)
+    @Override
+    public ComponentProvider getComponentProvider()
     {
-        return cache.getAtomicType(name);
+        return types.getComponentProvider();
     }
 
-    public AtomicType getAtomicType(NativeType name)
+    @Override
+    public ComponentBag getComponents()
     {
-        return cache.getAtomicType(name);
-    }
-
-    public AtomicUrType getAtomicUrType()
-    {
-        return cache.getAtomicUrType();
-    }
-
-    public AttributeDefinition getAttributeDeclaration(QName name)
-    {
-        return cache.getAttributeDeclaration(name);
-    }
-
-    public AttributeGroupDefinition getAttributeGroup(QName name)
-    {
-        return cache.getAttributeGroup(name);
-    }
-
-    public Iterable<AttributeGroupDefinition> getAttributeGroups()
-    {
-        return cache.getAttributeGroups();
-    }
-
-    public Iterable<AttributeDefinition> getAttributes()
-    {
-        return cache.getAttributes();
-    }
-
-    public ComplexType getComplexType(QName name)
-    {
-        return cache.getComplexType(name);
-    }
-
-    public Iterable<ComplexType> getComplexTypes()
-    {
-        return cache.getComplexTypes();
-    }
-
-    public ComplexUrType getComplexUrType()
-    {
-        return cache.getComplexUrType();
-    }
-
-    public ElementDefinition getElementDeclaration(QName name)
-    {
-        return cache.getElementDeclaration(name);
-    }
-
-    public Iterable<ElementDefinition> getElements()
-    {
-        return cache.getElements();
-    }
-
-    public IdentityConstraint getIdentityConstraint(QName name)
-    {
-        return cache.getIdentityConstraint(name);
-    }
-
-    public Iterable<IdentityConstraint> getIdentityConstraints()
-    {
-        return cache.getIdentityConstraints();
+        return types.getComponents();
     }
 
     public MetaBridge getMetaBridge()
@@ -223,29 +153,9 @@ public class TypedXmlNodeContext
         return model;
     }
 
-    public ModelGroup getModelGroup(QName name)
-    {
-        return cache.getModelGroup(name);
-    }
-
-    public Iterable<ModelGroup> getModelGroups()
-    {
-        return cache.getModelGroups();
-    }
-
     public Iterable<String> getNamespaces()
     {
         return cache.getNamespaces();
-    }
-
-    public NotationDefinition getNotationDeclaration(QName name)
-    {
-        return cache.getNotationDeclaration(name);
-    }
-
-    public Iterable<NotationDefinition> getNotations()
-    {
-        return cache.getNotations();
     }
 
     public ProcessingContext<XmlNode> getProcessingContext()
@@ -253,84 +163,9 @@ public class TypedXmlNodeContext
         return context;
     }
 
-    public SimpleType getSimpleType(QName name)
-    {
-        return cache.getSimpleType(name);
-    }
-
-    public SimpleType getSimpleType(NativeType name)
-    {
-        return cache.getSimpleType(name);
-    }
-
-    public Iterable<SimpleType> getSimpleTypes()
-    {
-        return cache.getSimpleTypes();
-    }
-
-    public SimpleUrType getSimpleUrType()
-    {
-        return cache.getSimpleUrType();
-    }
-
-    public Type getTypeDefinition(QName name)
-    {
-        return cache.getTypeDefinition(name);
-    }
-
-    public Type getTypeDefinition(NativeType nativeType)
-    {
-        return cache.getTypeDefinition(nativeType);
-    }
-    
     public VariantBridge<XmlNode, XmlAtom> getVariantBridge()
     {
         return new XmlVariantBridge();
-    }
-
-    public boolean hasAttribute(QName name)
-    {
-        return cache.hasAttribute(name);
-    }
-
-    public boolean hasAttributeGroup(QName name)
-    {
-        return cache.hasAttributeGroup(name);
-    }
-
-    public boolean hasComplexType(QName name)
-    {
-        return cache.hasComplexType(name);
-    }
-
-    public boolean hasElement(QName name)
-    {
-        return cache.hasElement(name);
-    }
-
-    public boolean hasIdentityConstraint(QName name)
-    {
-        return cache.hasIdentityConstraint(name);
-    }
-
-    public boolean hasModelGroup(QName name)
-    {
-        return cache.hasModelGroup(name);
-    }
-
-    public boolean hasNotation(QName name)
-    {
-        return cache.hasNotation(name);
-    }
-
-    public boolean hasSimpleType(QName name)
-    {
-        return cache.hasSimpleType(name);
-    }
-
-    public boolean hasType(QName name)
-    {
-        return cache.hasType(name);
     }
 
     public boolean isAtom(Object item)

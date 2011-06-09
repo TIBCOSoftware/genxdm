@@ -272,7 +272,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 				case ATTRIBUTE:
 				{
 					final QName typeName = DomSupport.getAnnotationType(node, m_metaBridge);
-					final Type type = pcx.getTypeDefinition(typeName);
+					final Type type = pcx.getComponentProvider().getTypeDefinition(typeName);
 					if (type instanceof SimpleType)
 					{
 						final SimpleType simpleType = (SimpleType)type;

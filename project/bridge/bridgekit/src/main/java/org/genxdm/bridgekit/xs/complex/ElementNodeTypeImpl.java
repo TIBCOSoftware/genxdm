@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 import org.genxdm.NodeKind;
 import org.genxdm.bridgekit.names.QNameAsSet;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.ElementNodeType;
 import org.genxdm.xs.types.NativeType;
