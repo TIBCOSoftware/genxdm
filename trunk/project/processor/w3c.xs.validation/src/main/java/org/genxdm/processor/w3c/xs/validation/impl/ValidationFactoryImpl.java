@@ -18,7 +18,7 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 import org.genxdm.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrategy;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCache;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCacheFactory;
-import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
 
 

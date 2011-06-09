@@ -244,5 +244,5 @@ public class XmlLeafNode
     protected List<XmlAtom> atoms;
     protected final Type type;
     // TODO: this hackery should not be necessary.
-    private static final Type UNTYPED_ATOMIC_TYPE = new SchemaTypeBridgeFactory().newMetaBridge().getAtomicType(NativeType.UNTYPED_ATOMIC);
+    private static final Type UNTYPED_ATOMIC_TYPE = new SchemaTypeBridgeFactory().newMetaBridge().getComponentProvider().getAtomicType(NativeType.UNTYPED_ATOMIC);
 }

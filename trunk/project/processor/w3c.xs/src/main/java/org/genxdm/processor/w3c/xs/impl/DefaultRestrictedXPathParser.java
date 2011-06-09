@@ -22,7 +22,7 @@ import javax.xml.XMLConstants;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.exception.src.SrcPrefixNotFoundException;
-import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.constraints.RestrictedXPath;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.exceptions.SimpleTypeException;

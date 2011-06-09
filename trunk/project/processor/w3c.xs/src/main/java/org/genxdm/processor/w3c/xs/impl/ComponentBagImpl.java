@@ -21,10 +21,10 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.xs.ComponentBag;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
-import org.genxdm.xs.components.ComponentBag;
-import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
