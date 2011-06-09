@@ -20,7 +20,7 @@ import java.math.BigInteger;
 
 import javax.xml.XMLConstants;
 
-final class NumericSupport
+public final class NumericSupport
 {
 	private static final BigDecimal DECIMAL_ONE = new BigDecimal(BigInteger.ONE);
 	private static final BigDecimal DECIMAL_TEN = BigDecimal.valueOf(10);

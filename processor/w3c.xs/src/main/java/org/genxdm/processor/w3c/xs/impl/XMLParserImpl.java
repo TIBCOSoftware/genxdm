@@ -15,8 +15,6 @@
  */
 package org.genxdm.processor.w3c.xs.impl;
 
-import static org.genxdm.processor.w3c.xs.impl.SchemaConstraintChecker.checkSchemaComponentConstraints;
-
 import java.io.InputStream;
 import java.net.URI;
 
@@ -99,7 +97,8 @@ final public class XMLParserImpl
         {
             final XMLSccExceptionAdapter scc = new XMLSccExceptionAdapter(caught, converted.getSecond());
 
-            checkSchemaComponentConstraints(converted.getFirst(), this.cache, scc);
+            SchemaConstraintChecker checker = new SchemaConstraintChecker(converted.getFirst(), this.cache);
+            checker.checkSchemaComponentConstraints(scc);
 
             if (caught.size() == 0)
             {
