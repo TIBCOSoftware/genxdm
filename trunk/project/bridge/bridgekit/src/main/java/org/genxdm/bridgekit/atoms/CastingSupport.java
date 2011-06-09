@@ -28,13 +28,14 @@ import org.genxdm.exceptions.SpillagePolicy;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.Schema;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.Type;
 
-final class CastingSupport
+public final class CastingSupport
 {
 	private static final BigInteger BYTE_MAX_VALUE = BigInteger.valueOf(Byte.MAX_VALUE);
 	private static final BigInteger BYTE_MIN_VALUE = BigInteger.valueOf(Byte.MIN_VALUE);
@@ -107,7 +108,7 @@ final class CastingSupport
 		}
 	}
 
-	public static <A> A castAs(final A sourceAtom, final QName targetType, final CastingContext castingContext, final Schema pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+	public static <A> A castAs(final A sourceAtom, final QName targetType, final CastingContext castingContext, final ComponentProvider pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
@@ -124,7 +125,7 @@ final class CastingSupport
 			PreCondition.assertTrue(false, targetType.toString());
 		}
 
-		final Type type = pcx.getComponentProvider().getTypeDefinition(targetType);
+		final Type type = pcx.getTypeDefinition(targetType);
 		if (null != type)
 		{
 			if (type.isAtomicType())
@@ -164,7 +165,7 @@ final class CastingSupport
 		}
 	}
 
-	public static <A> A castAsOrErrors(final A sourceAtom, final NativeType sourceType, final NativeType targetType, final Schema pcx, final AtomBridge<A> atomBridge, final NameSource nameBridge)
+	public static <A> A castAsOrErrors(final A sourceAtom, final NativeType sourceType, final NativeType targetType, final ComponentProvider pcx, final AtomBridge<A> atomBridge, final NameSource nameBridge)
 			throws GxmlAtomCastException
 	{
 		if (sourceType.isString() || sourceType == NativeType.UNTYPED_ATOMIC)
@@ -178,7 +179,7 @@ final class CastingSupport
 
 	}
 
-	public static <A> A castAs(final A sourceAtom, final NativeType targetType, final CastingContext castingContext, final Schema pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+	public static <A> A castAs(final A sourceAtom, final NativeType targetType, final CastingContext castingContext, final ComponentProvider pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
@@ -2268,12 +2269,12 @@ final class CastingSupport
 		return castIntegerAsUnsignedShort(BigInteger.valueOf((long)fltval), checkCapacity, raiseError);
 	}
 
-	private static <A> A castFromStringOrUntypedAtomic(final String sourceAtom, final NativeType targetType, final Schema pcx, AtomBridge<A> bridge) throws GxmlAtomCastException
+	private static <A> A castFromStringOrUntypedAtomic(final String sourceAtom, final NativeType targetType, final ComponentProvider pcx, AtomBridge<A> bridge) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
 
-		final Type type = pcx.getComponentProvider().getTypeDefinition(targetType);
+		final Type type = pcx.getTypeDefinition(targetType);
 		if (null != type)
 		{
 			if (type.isAtomicType())
@@ -3020,7 +3021,7 @@ final class CastingSupport
 	/**
 	 * First cast to xs:string then cast to the target type.
 	 */
-	private static <A> A castThroughString(final A sourceAtom, final NativeType targetType, final CastingContext castingContext, final Schema pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+	private static <A> A castThroughString(final A sourceAtom, final NativeType targetType, final CastingContext castingContext, final ComponentProvider pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
 	{
 		try
 		{
@@ -3033,12 +3034,12 @@ final class CastingSupport
 		}
 	}
 
-	private static <A> A castWithinBranchAs(final A sourceAtom, final NativeType targetType, final Schema pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+	private static <A> A castWithinBranchAs(final A sourceAtom, final NativeType targetType, final ComponentProvider pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
 		PreCondition.assertArgumentNotNull(targetType, "targetType");
 
-		final Type type = pcx.getComponentProvider().getTypeDefinition(targetType);
+		final Type type = pcx.getTypeDefinition(targetType);
 		if (null != type)
 		{
 			if (type.isAtomicType())

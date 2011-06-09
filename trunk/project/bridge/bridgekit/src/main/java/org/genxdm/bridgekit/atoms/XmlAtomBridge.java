@@ -88,13 +88,13 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 
 	public XmlAtom castAs(final XmlAtom sourceAtom, final QName targetType, final CastingContext castingContext) throws GxmlAtomCastException
 	{
-		return CastingSupport.castAs(sourceAtom, targetType, castingContext, schema, this);
+		return CastingSupport.castAs(sourceAtom, targetType, castingContext, schema.getComponentProvider(), this);
 	}
 
 	public XmlAtom castAs(final XmlAtom sourceAtom, final NativeType targetType, final CastingContext castingContext) throws GxmlAtomCastException
 	{
 		PreCondition.assertArgumentNotNull(castingContext, "castingContext");
-		return CastingSupport.castAs(getNativeAtom(sourceAtom), targetType, castingContext, schema, this);
+		return CastingSupport.castAs(getNativeAtom(sourceAtom), targetType, castingContext, schema.getComponentProvider(), this);
 	}
 
 	public XmlAtom compile(final String sourceValue, final NativeType targetType) throws GxmlAtomCastException

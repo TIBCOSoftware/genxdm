@@ -29,16 +29,4 @@ public interface Limit extends Facet
      * The value of the facet.
      */
     <A> A getLimit(AtomBridge<A> bridge);
-
-    /**
-     * Validates the specified atom, with the specified type against this facet.
-     * 
-     * @param atom
-     *            The atom to be validated.
-     * @param simpleType
-     *            The type of the atom.
-     * @throws FacetMinMaxException
-     *             if the atom does not comply with the facet.
-     */
-    <A> void validate(A atom, SimpleType simpleType, AtomBridge<A> bridge) throws FacetMinMaxException;
 }

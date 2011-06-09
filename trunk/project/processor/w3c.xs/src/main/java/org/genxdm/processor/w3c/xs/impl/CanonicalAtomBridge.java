@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.atoms.CastingSupport;
+import org.genxdm.bridgekit.atoms.NumericSupport;
 import org.genxdm.bridgekit.atoms.XmlAnyURI;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XmlBase64Binary;
@@ -58,7 +60,7 @@ public class CanonicalAtomBridge
 
     CanonicalAtomBridge(ComponentProvider provider)
     {
-        this.components = provider;
+        this.components = PreCondition.assertNotNull(provider, "provider");
     }
     
     @Override
@@ -88,16 +90,16 @@ public class CanonicalAtomBridge
     public XmlAtom castAs(XmlAtom sourceAtom, QName targetType, CastingContext castingContext)
         throws GxmlAtomCastException
     {
-        // TODO Auto-generated method stub
-        return null;
+        PreCondition.assertArgumentNotNull(castingContext, "castingContext");
+        return CastingSupport.castAs(sourceAtom, targetType, castingContext, components, this);
     }
 
     @Override
     public XmlAtom castAs(XmlAtom sourceAtom, NativeType targetType, CastingContext castingContext)
         throws GxmlAtomCastException
     {
-        // TODO Auto-generated method stub
-        return null;
+        PreCondition.assertArgumentNotNull(castingContext, "castingContext");
+        return CastingSupport.castAs(getNativeAtom(sourceAtom), targetType, castingContext, components, this);
     }
 
     @Override
@@ -1233,15 +1235,45 @@ public class CanonicalAtomBridge
     @Override
     public String getXPath10Form(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        final XmlAtom nativeAtom = getNativeAtom(atom);
+        if (nativeAtom instanceof XmlDouble)
+        {
+            return NumericSupport.formatDoubleXPath10(((XmlDouble)nativeAtom).getDoubleValue());
+        }
+        else if (nativeAtom instanceof XmlFloat)
+        {
+            return NumericSupport.formatFloatXPath10(((XmlFloat)nativeAtom).getFloatValue());
+        }
+        else if (nativeAtom instanceof XmlDecimal)
+        {
+            return NumericSupport.formatDecimalXPath10(((XmlDecimal)nativeAtom).getBigDecimalValue());
+        }
+        else
+        {
+            return nativeAtom.getC14NForm();
+        }
     }
 
     @Override
     public String getXQuery10Form(XmlAtom atom)
     {
-        // TODO Auto-generated method stub
-        return null;
+        final XmlAtom nativeAtom = getNativeAtom(atom);
+        if (nativeAtom instanceof XmlDouble)
+        {
+            return NumericSupport.formatDoubleXQuery10(((XmlDouble)nativeAtom).getDoubleValue());
+        }
+        else if (nativeAtom instanceof XmlFloat)
+        {
+            return NumericSupport.formatFloatXQuery10(((XmlFloat)nativeAtom).getFloatValue());
+        }
+        else if (nativeAtom instanceof XmlDecimal)
+        {
+            return NumericSupport.formatDecimalXQuery10(((XmlDecimal)nativeAtom).getBigDecimalValue());
+        }
+        else
+        {
+            return nativeAtom.getC14NForm();
+        }
     }
 
     @Override
