@@ -831,7 +831,7 @@ public final class DomSupport implements DomConstants
             case ELEMENT:
             {
                 final QName typeName = getAnnotationType(node, metaBridge);
-                final Type type = pcx.getTypeDefinition(typeName);
+                final Type type = metaBridge.getComponentProvider().getTypeDefinition(typeName);
                 if (type instanceof SimpleType)
                 {
                     final SimpleType simpleType = (SimpleType)type;

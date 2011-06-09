@@ -3,8 +3,6 @@ package org.genxdm.xs;
 import java.io.InputStream;
 import java.net.URI;
 
-import org.genxdm.xs.components.ComponentBag;
-import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.facets.SchemaRegExCompiler;

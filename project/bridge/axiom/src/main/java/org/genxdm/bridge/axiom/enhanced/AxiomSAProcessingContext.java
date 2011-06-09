@@ -18,7 +18,6 @@ package org.genxdm.bridge.axiom.enhanced;
 import java.net.URI;
 import java.util.EnumSet;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLReporter;
 
 import org.genxdm.bridge.axiom.AxiomProcessingContext;
@@ -31,8 +30,6 @@ import org.genxdm.bridgekit.xs.MetaBridgeOnSchemaTypeBridgeAdapter;
 import org.genxdm.bridgekit.xs.SchemaTypeBridgeFactory;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.Resolver;
-import org.genxdm.names.NameSource;
-import org.genxdm.nodes.Bookmark;
 import org.genxdm.processor.io.ValidatingDocumentHandler;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
@@ -44,22 +41,17 @@ import org.genxdm.typed.io.TypedDocumentHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.MetaBridge;
 import org.genxdm.typed.variant.VariantBridge;
+import org.genxdm.xs.ComponentBag;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.SchemaTypeBridge;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
-import org.genxdm.xs.components.ComponentBag;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.constraints.IdentityConstraint;
-import org.genxdm.xs.types.AtomicType;
-import org.genxdm.xs.types.AtomicUrType;
 import org.genxdm.xs.types.ComplexType;
-import org.genxdm.xs.types.ComplexUrType;
-import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
-import org.genxdm.xs.types.SimpleUrType;
-import org.genxdm.xs.types.Type;
 
 public final class AxiomSAProcessingContext 
     implements TypedContext<Object, XmlAtom>
@@ -82,64 +74,44 @@ public final class AxiomSAProcessingContext
 		return atomBridge.atom(item);
 	}
 	
-	public Bookmark<Object> bookmark(Object node)
-	{
-	    // TODO
-	    return null;
-	}
-	
 	public void declareAttribute(final AttributeDefinition attribute)
 	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
+	    metaBridge.declareAttribute(attribute);
 	}
 	
 	public void declareElement(final ElementDefinition element)
 	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
+	    metaBridge.declareElement(element);
 	}
 	
 	public void declareNotation(NotationDefinition notation)
 	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
+	    metaBridge.declareNotation(notation);
 	}
 	
 	public void defineAttributeGroup(AttributeGroupDefinition attributeGroup)
 	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
+	    metaBridge.defineAttributeGroup(attributeGroup);
 	}
 	
 	public void defineComplexType(final ComplexType complexType)
 	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
+	    metaBridge.defineComplexType(complexType);
 	}
 	
 	public void defineIdentityConstraint(IdentityConstraint identityConstraint)
 	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
+	    metaBridge.defineIdentityConstraint(identityConstraint);
 	}
 
 	public void defineModelGroup(ModelGroup modelGroup)
 	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
+	    metaBridge.defineModelGroup(modelGroup);
 	}
 
 	public void defineSimpleType(final SimpleType simpleType)
 	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
-
-	public QName generateUniqueName()
-	{
-		// TODO Auto-generated method stub
-		return null;
+	    metaBridge.defineSimpleType(simpleType);
 	}
 
 	public AtomBridge<XmlAtom> getAtomBridge()
@@ -147,91 +119,18 @@ public final class AxiomSAProcessingContext
 		return atomBridge;
 	}
 
-	public AtomicType getAtomicType(QName name)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public ComponentProvider getComponentProvider()
+    {
+        return metaBridge.getComponentProvider();
+    }
 
-	public AtomicType getAtomicType(NativeType name)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    @Override
+    public ComponentBag getComponents()
+    {
+        return metaBridge.getComponents();
+    }
 
-	public AtomicUrType getAtomicUrType()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
-
-	public AttributeDefinition getAttributeDeclaration(QName attributeName)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
-
-	public AttributeGroupDefinition getAttributeGroup(QName name)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Iterable<AttributeGroupDefinition> getAttributeGroups()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
-	
-	public Iterable<AttributeDefinition> getAttributes()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
-
-	public ComplexType getComplexType(QName name)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Iterable<ComplexType> getComplexTypes()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
-
-	public ComplexUrType getComplexUrType()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ElementDefinition getElementDeclaration(QName elementName)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
-
-	public Iterable<ElementDefinition> getElements()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
-
-	public IdentityConstraint getIdentityConstraint(QName name)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Iterable<IdentityConstraint> getIdentityConstraints()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
-
-	public MetaBridge getMetaBridge()
+    public MetaBridge getMetaBridge()
 	{
 		return metaBridge;
 	}
@@ -241,134 +140,21 @@ public final class AxiomSAProcessingContext
 		return model;
 	}
 
-	public ModelGroup getModelGroup(QName name)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Iterable<ModelGroup> getModelGroups()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
-	
 	public Iterable<String> getNamespaces()
 	{
 		// TODO Auto-generated method stub
 		throw new AssertionError("TODO");
 	}
 
-    public NotationDefinition getNotationDeclaration(QName name)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public Iterable<NotationDefinition> getNotations()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
-	
 	public AxiomProcessingContext getProcessingContext()
 	{
 	    return context;
 	}
 
-	public SimpleType getSimpleType(QName name)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public SimpleType getSimpleType(NativeType name)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Iterable<SimpleType> getSimpleTypes()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
-
-	public SimpleUrType getSimpleUrType()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Type getTypeDefinition(QName typeName)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
-
-	public Type getTypeDefinition(final NativeType nativeType)
-	{
-		return cache.getTypeDefinition(nativeType);
-	}
-	
 	public VariantBridge<Object, XmlAtom> getVariantBridge()
 	{
 	    // TODO
 	    return null;
-	}
-
-	public boolean hasAttribute(QName name)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean hasAttributeGroup(QName name)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean hasComplexType(QName name)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean hasElement(QName name)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean hasIdentityConstraint(QName name)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean hasModelGroup(QName name)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean hasNotation(QName name)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean hasSimpleType(QName name)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean hasType(final QName name)
-	{
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public boolean isAtom(final Object item)

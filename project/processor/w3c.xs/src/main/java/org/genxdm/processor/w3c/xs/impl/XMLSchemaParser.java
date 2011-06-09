@@ -103,7 +103,7 @@ import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLType;
 import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLTypeRef;
 import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLValueConstraint;
 import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLWildcard;
-import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.constraints.IdentityConstraintKind;
 import org.genxdm.xs.constraints.NamespaceConstraint;

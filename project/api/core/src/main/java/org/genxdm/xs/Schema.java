@@ -17,8 +17,6 @@ package org.genxdm.xs;
 
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
-import org.genxdm.xs.components.ComponentBag;
-import org.genxdm.xs.components.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
@@ -26,7 +24,17 @@ import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.SimpleType;
 
-public interface Schema extends ComponentBag, ComponentProvider
+/** A SchemaComponent registry.
+ * 
+ * This interface declares methods for provisioning a schema context.
+ * register() provides a bulk-load: generate all the components
+ * (somehow) and then register them all.  The other methods provide
+ * component-kind declarations and definitions.  See ComponentBag
+ * for methods that iterate over each of these component kinds.
+ * See ComponentProvider for methods that access components by name.
+ *
+ */
+public interface Schema
 {
     void declareAttribute(final AttributeDefinition attribute);
 
@@ -43,8 +51,16 @@ public interface Schema extends ComponentBag, ComponentProvider
     void defineModelGroup(final ModelGroup modelGroup);
 
     void defineSimpleType(final SimpleType simpleType);
+    
+    // TODO: overload with a namespace argument?
+    ComponentProvider getComponentProvider();
+    
+    ComponentBag getComponents();
+    
+    // TODO: overload with a namespace argument?
+//    ComponentBag getComponents(String namespace);
 
     Iterable<String> getNamespaces();
-
+    
     void register(ComponentBag components);
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.xs.components;
+package org.genxdm.xs;
 
 import javax.xml.namespace.QName;
 

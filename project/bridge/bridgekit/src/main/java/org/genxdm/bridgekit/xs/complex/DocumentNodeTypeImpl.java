@@ -17,7 +17,7 @@ package org.genxdm.bridgekit.xs.complex;
 
 import org.genxdm.NodeKind;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.components.ComponentProvider;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.types.DocumentNodeType;
 import org.genxdm.xs.types.PrimeChoiceType;
 import org.genxdm.xs.types.PrimeType;

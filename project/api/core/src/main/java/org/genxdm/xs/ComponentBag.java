@@ -13,8 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.xs.components;
+package org.genxdm.xs;
 
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.SimpleType;
@@ -25,8 +30,6 @@ import org.genxdm.xs.types.SimpleType;
  * Typically used for the bulk-loading of components into a schema.
  * </p>
  * 
- * @param 
- *            The atom handle.
  */
 public interface ComponentBag
 {

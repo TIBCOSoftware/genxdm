@@ -38,10 +38,11 @@ import org.genxdm.bridgekit.xs.complex.ZPrimeChoiceType;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.Quantifier;
+import org.genxdm.xs.ComponentBag;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.SchemaTypeBridge;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
-import org.genxdm.xs.components.ComponentBag;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.NotationDefinition;
@@ -75,7 +76,7 @@ import org.genxdm.xs.types.SimpleUrType;
 import org.genxdm.xs.types.TextNodeType;
 import org.genxdm.xs.types.Type;
 
-final class SchemaTypeBridgeImpl implements SchemaTypeBridge
+final class SchemaTypeBridgeImpl implements ComponentBag, ComponentProvider, SchemaTypeBridge
 {
 	public SchemaTypeBridgeImpl()
 	{
@@ -113,47 +114,47 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 		final PrimeType prime = type.prime();
 		switch (prime.getKind())
 		{
-		case CHOICE:
-		{
-			final PrimeChoiceType choiceType = (PrimeChoiceType) prime;
-			return multiply(choice(attributeAxis(choiceType.getLHS()), attributeAxis(choiceType.getRHS())), type.quantifier());
-		}
-		case ELEMENT:
-		{
-			return attributeWild(getTypeDefinition(NativeType.UNTYPED_ATOMIC));
-		}
-		case SCHEMA_ELEMENT:
-		{
-			final ElementDefinition elementDecl = (ElementDefinition) prime;
-			final Type smType = elementDecl.getType();
-			if (smType instanceof ComplexType)
-			{
-				final ComplexType complexType = (ComplexType) smType;
-				return attributeAxisFromComplexType(complexType, elementDecl);
-			}
-			else if (smType instanceof SimpleType)
-			{
-				return emptyType();
-			}
-			else
-			{
-				// The type must be either a simple or a complex type.
-				throw new AssertionError();
-			}
-		}
-		case COMPLEX:
-		{
-			final ComplexType complexType = (ComplexType) prime;
-			return attributeAxisFromComplexType(complexType, null);
-		}
-		case NONE:
-		{
-			return noneType();
-		}
-		default:
-		{
-			return emptyType();
-		}
+    		case CHOICE:
+    		{
+    			final PrimeChoiceType choiceType = (PrimeChoiceType) prime;
+    			return multiply(choice(attributeAxis(choiceType.getLHS()), attributeAxis(choiceType.getRHS())), type.quantifier());
+    		}
+    		case ELEMENT:
+    		{
+    			return attributeWild(getTypeDefinition(NativeType.UNTYPED_ATOMIC));
+    		}
+    		case SCHEMA_ELEMENT:
+    		{
+    			final ElementDefinition elementDecl = (ElementDefinition) prime;
+    			final Type smType = elementDecl.getType();
+    			if (smType instanceof ComplexType)
+    			{
+    				final ComplexType complexType = (ComplexType) smType;
+    				return attributeAxisFromComplexType(complexType, elementDecl);
+    			}
+    			else if (smType instanceof SimpleType)
+    			{
+    				return emptyType();
+    			}
+    			else
+    			{
+    				// The type must be either a simple or a complex type.
+    				throw new AssertionError();
+    			}
+    		}
+    		case COMPLEX:
+    		{
+    			final ComplexType complexType = (ComplexType) prime;
+    			return attributeAxisFromComplexType(complexType, null);
+    		}
+    		case NONE:
+    		{
+    			return noneType();
+    		}
+    		default:
+    		{
+    			return emptyType();
+    		}
 		}
 	}
 
@@ -482,6 +483,18 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
 	{
 		return ANY_COMPLEX_TYPE;
 	}
+
+    @Override
+    public ComponentProvider getComponentProvider()
+    {
+        return this;
+    }
+
+    @Override
+    public ComponentBag getComponents()
+    {
+        return this;
+    }
 
 	public ElementDefinition getElementDeclaration(final QName elementName)
 	{
@@ -982,5 +995,4 @@ final class SchemaTypeBridgeImpl implements SchemaTypeBridge
     private final TextNodeType TEXT;
     private static final String ESCAPE = "\u001B";
     private final QName WILDNAME = new QName(ESCAPE, ESCAPE);
-
 }

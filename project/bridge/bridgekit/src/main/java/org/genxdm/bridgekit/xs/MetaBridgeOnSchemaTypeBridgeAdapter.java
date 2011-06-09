@@ -23,10 +23,19 @@ import org.genxdm.names.NamespaceResolver;
 import org.genxdm.typed.types.MetaBridge;
 import org.genxdm.typed.types.MetaVisitor;
 import org.genxdm.typed.types.Quantifier;
+import org.genxdm.xs.ComponentBag;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.SchemaTypeBridge;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.NotationDefinition;
+import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.types.AttributeNodeType;
 import org.genxdm.xs.types.ChoiceType;
 import org.genxdm.xs.types.CommentNodeType;
+import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.DocumentNodeType;
 import org.genxdm.xs.types.ElementNodeType;
 import org.genxdm.xs.types.EmptyType;
@@ -177,7 +186,7 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter implements MetaBridge
 		return metaBridge.attributeAxis(type);
 	}
 
-	public SequenceType attributeType(final QName name, final SequenceType type)
+	public AttributeNodeType attributeType(final QName name, final SequenceType type)
 	{
 		return metaBridge.attributeType(name, type);
 	}
@@ -355,7 +364,7 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter implements MetaBridge
 		}
 	}
 
-	public SequenceType elementType(final QName name, final SequenceType type, final boolean nillable)
+	public ElementNodeType elementType(final QName name, final SequenceType type, final boolean nillable)
 	{
 		return metaBridge.elementType(name, type, nillable);
 	}
@@ -382,7 +391,7 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter implements MetaBridge
 			}
 			case ATTRIBUTE:
 			{
-				return metaBridge.multiply(zeroOrMore(attributeType(null, metaBridge.getTypeDefinition(NativeType.UNTYPED_ATOMIC))), type.quantifier());
+				return metaBridge.multiply(zeroOrMore(attributeType(null, metaBridge.getComponentProvider().getTypeDefinition(NativeType.UNTYPED_ATOMIC))), type.quantifier());
 			}
 			case SCHEMA_ATTRIBUTE:
 			{
@@ -469,12 +478,12 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter implements MetaBridge
 
 	public Type getType(final QName typeName)
 	{
-		return metaBridge.getTypeDefinition(typeName);
+		return metaBridge.getComponentProvider().getTypeDefinition(typeName);
 	}
 
 	public Type getType(final NativeType nativeType)
 	{
-		return metaBridge.getTypeDefinition(nativeType);
+		return metaBridge.getComponentProvider().getTypeDefinition(nativeType);
 	}
 
 	public SequenceType handle(final SequenceType sequenceType)
@@ -537,7 +546,7 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter implements MetaBridge
 		return type instanceof TextNodeType;
 	}
 
-	public SequenceType itemType()
+	public PrimeType itemType()
 	{
 		return metaBridge.itemType();
 	}
@@ -616,17 +625,17 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter implements MetaBridge
 		}
 	}
 
-	public SequenceType nodeType()
+	public PrimeType nodeType()
 	{
 		return metaBridge.nodeType();
 	}
 
-	public SequenceType noneType()
+	public NoneType noneType()
 	{
 		return metaBridge.noneType();
 	}
 
-	public SequenceType noneType(final QName errorCode)
+	public NoneType noneType(final QName errorCode)
 	{
 		return metaBridge.noneType(errorCode);
 	}
@@ -663,7 +672,7 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter implements MetaBridge
 			}
 			case ATTRIBUTE:
 			{
-				return metaBridge.multiply(zeroOrMore(attributeType(null, metaBridge.getTypeDefinition(NativeType.UNTYPED_ATOMIC))), type.quantifier());
+				return metaBridge.multiply(zeroOrMore(attributeType(null, metaBridge.getComponentProvider().getTypeDefinition(NativeType.UNTYPED_ATOMIC))), type.quantifier());
 			}
 			case SCHEMA_ATTRIBUTE:
 			{
@@ -747,17 +756,17 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter implements MetaBridge
 
 	public SequenceType schemaAttribute(final QName attributeName)
 	{
-		return metaBridge.getAttributeDeclaration(attributeName);
+		return metaBridge.getComponentProvider().getAttributeDeclaration(attributeName);
 	}
 
 	public SequenceType schemaElement(final QName elementName)
 	{
-		return metaBridge.getElementDeclaration(elementName);
+		return metaBridge.getComponentProvider().getElementDeclaration(elementName);
 	}
 
 	public SequenceType schemaType(final QName typeName)
 	{
-		return metaBridge.getTypeDefinition(typeName);
+		return metaBridge.getComponentProvider().getTypeDefinition(typeName);
 	}
 
 	public SequenceType selfAxis(final SequenceType type)
@@ -836,4 +845,88 @@ public final class MetaBridgeOnSchemaTypeBridgeAdapter implements MetaBridge
 	{
 		return metaBridge.zeroOrMore(type);
 	}
+
+    @Override
+    public AttributeNodeType attributeWild(SequenceType type)
+    {
+        return metaBridge.attributeWild(type);
+    }
+
+    @Override
+    public ElementNodeType elementWild(SequenceType type, boolean nillable)
+    {
+        return metaBridge.elementWild(type, nillable);
+    }
+
+    @Override
+    public void declareAttribute(AttributeDefinition attribute)
+    {
+        metaBridge.declareAttribute(attribute);
+    }
+
+    @Override
+    public void declareElement(ElementDefinition element)
+    {
+        metaBridge.declareElement(element);
+    }
+
+    @Override
+    public void declareNotation(NotationDefinition notation)
+    {
+        metaBridge.declareNotation(notation);
+    }
+
+    @Override
+    public void defineAttributeGroup(AttributeGroupDefinition attributeGroup)
+    {
+        metaBridge.defineAttributeGroup(attributeGroup);
+    }
+
+    @Override
+    public void defineComplexType(ComplexType complexType)
+    {
+        metaBridge.defineComplexType(complexType);
+    }
+
+    @Override
+    public void defineIdentityConstraint(IdentityConstraint identityConstraint)
+    {
+        metaBridge.defineIdentityConstraint(identityConstraint);
+    }
+
+    @Override
+    public void defineModelGroup(ModelGroup modelGroup)
+    {
+        metaBridge.defineModelGroup(modelGroup);
+    }
+
+    @Override
+    public void defineSimpleType(SimpleType simpleType)
+    {
+        metaBridge.defineSimpleType(simpleType);
+    }
+
+    @Override
+    public ComponentProvider getComponentProvider()
+    {
+        return metaBridge.getComponentProvider();
+    }
+
+    @Override
+    public ComponentBag getComponents()
+    {
+        return metaBridge.getComponents();
+    }
+
+    @Override
+    public Iterable<String> getNamespaces()
+    {
+        return metaBridge.getNamespaces();
+    }
+
+    @Override
+    public void register(ComponentBag components)
+    {
+        metaBridge.register(components);
+    }
 }
