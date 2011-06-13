@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.impl;
+package org.genxdm.processor.w3c.xs;
 
 import java.net.URI;
 
 import org.genxdm.xs.resolve.SchemaCatalog;
 
-enum DefaultSchemaCatalog implements SchemaCatalog
+public enum DefaultSchemaCatalog implements SchemaCatalog
 {
     SINGLETON;
 

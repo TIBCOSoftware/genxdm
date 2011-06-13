@@ -23,6 +23,8 @@ import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLComponentLocator;
 import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLSccExceptionAdapter;
 import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.ComponentProvider;
+import org.genxdm.xs.SchemaLoadOptions;
+import org.genxdm.xs.SchemaParser;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.exceptions.SchemaExceptionCatcher;
@@ -31,7 +33,7 @@ import org.genxdm.xs.facets.SchemaRegExCompiler;
 import org.genxdm.xs.resolve.CatalogResolver;
 import org.genxdm.xs.resolve.SchemaCatalog;
 
-final public class XMLParserImpl
+final public class XMLParserImpl implements SchemaParser
 {
     public XMLParserImpl(final ComponentProvider cache)
     {
@@ -150,9 +152,10 @@ final public class XMLParserImpl
         return XMLSchemaConverter.convert(m_regexc, this.cache, cache, errors);
     }
 
-    public void setResolver(final CatalogResolver resolver)
+    public void setCatalogResolver(final CatalogResolver resolver, final SchemaCatalog catalog)
     {
         m_resolver = resolver;
+        m_catalog = catalog;
     }
 
     public CatalogResolver getResolver()
@@ -160,16 +163,16 @@ final public class XMLParserImpl
         return m_resolver;
     }
 
-    public void setCatalog(final SchemaCatalog catalog)
-    {
-        m_catalog = catalog;
-    }
-
     public SchemaCatalog getCatalog()
     {
         return m_catalog;
     }
 
+    public void setComponentProvider(final ComponentProvider provider)
+    {
+        this.cache = provider;
+    }
+    
     public void setRegExCompiler(final SchemaRegExCompiler regexc)
     {
         m_regexc = regexc;
@@ -189,11 +192,16 @@ final public class XMLParserImpl
     {
         return m_processRepeatedNamespaces;
     }
+    
+    public void setSchemaLoadOptions(final SchemaLoadOptions options)
+    {
+        // TODO: not implemented
+    }
 
     /**
      * Injected during initialization, already contains native and xsi schema components.
      */
-    private final ComponentProvider cache;
+    private ComponentProvider cache;
 
     private SchemaCatalog m_catalog;
     private CatalogResolver m_resolver;
