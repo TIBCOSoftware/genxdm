@@ -13,11 +13,10 @@ import java.util.Properties;
 import org.genxdm.Feature;
 import org.genxdm.io.Resolved;
 import org.genxdm.processor.w3c.xs.W3cXmlSchemaParser;
-import org.genxdm.processor.w3c.xs.validation.XdmContentValidator;
 import org.genxdm.processor.w3c.xs.validation.ValidatorFactory;
+import org.genxdm.processor.w3c.xs.validation.XdmContentValidator;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.xs.ComponentBag;
-import org.genxdm.xs.SchemaLoadOptions;
 import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.exceptions.SchemaExceptionCatcher;
 import org.genxdm.xs.resolve.CatalogResolver;
@@ -124,12 +123,15 @@ class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 		resources.add(getResolver().resolveInputStream(uri));
 
 		final SchemaExceptionCatcher errors = new SchemaExceptionCatcher();
-		final SchemaLoadOptions args = new SchemaLoadOptions();
+//		final SchemaLoadOptions args = new SchemaLoadOptions();
 		final W3cXmlSchemaParser parser = new W3cXmlSchemaParser();
+		
+		parser.setComponentProvider(tpcx.getMetaBridge().getComponentProvider());
+		parser.setCatalogResolver(new MyResolver(), new MyCatalog());
 
 		for (final Resolved<InputStream> resource : resources)
 		{
-			ComponentBag scBag = parser.parse(resource.getLocation(), resource.getResource(), resource.getSystemId(), errors, args, tpcx.getMetaBridge().getComponentProvider());
+			ComponentBag scBag = parser.parse(resource.getLocation(), resource.getResource(), resource.getSystemId(), errors);
 			if(!errors.isEmpty())
 			{
 				for(SchemaException error : errors)
