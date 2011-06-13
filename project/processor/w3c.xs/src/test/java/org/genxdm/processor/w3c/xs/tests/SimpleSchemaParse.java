@@ -28,28 +28,18 @@ public class SimpleSchemaParse
     {
         W3cXmlSchemaParser parser = new W3cXmlSchemaParser();
         
+        // be sure to set the resolver, catalog, and component provider.
+        
         //parser.parse(URI (schema location), 
         //             InputStream, URI (sysid), 
-        //             SchemaExceptionHandler, 
-        //             SchemaLoadOptions, 
-        //             ComponentProvider)
-        // stream and component provider must not be null.
+        //             SchemaExceptionHandler)
+        // stream must not be null.
         
-        // xmlparser is instantiated with the component provider.
-        // schema load options provides access to the catalog and resolver,
-        // which are set on the xmlparser.
-        // note: schema load options also has an infinitely expandable set of
-        // options, defined as qname/string pairs, which are all discarded in
-        // the current implementation.  the catalog and catalog resolver are
-        // theoretically used for finding schemas.  and in fact, that's what
-        // happens (for import and include).
-        // the regex compiler can also be set (it has a default on w3cxmlschemaparser,
-        // and a mutator method to set it).  it's passed to the xmlparser.
-        
-        // xmlparser.parse is then called with the schema location uri, stream,
-        // system id, and the exception handler.
-        
-        // 
+        // okay.  now, in resources we have po.xsd, ipo.xsd + address.xsd, and report.xsd.
+        // these are taken from the schema primer, so we can treat them as a basic
+        // test suite.  might need to revisit the primer to adjust the various
+        // schemas (the primer suggests changes to the bases, but doesn't present
+        // the whole changed schema which means they have to be edited by hand).
         
         // and ... what do we do?
         assertTrue(true);
