@@ -20,29 +20,29 @@ package org.genxdm.bridgekit.xs.simple;
  */
 final class HexCodec
 {
-	public static String encodeHex(final byte[] values)
-	{
-		final char[] buf = new char[(values.length << 1)];
-		final int len = values.length;
-		for (int i = 0; i < len; i++)
-		{
-			int b = values[i];
-			if (b < 0)
-			{
-				b = 256 + b;
-			}
-			buf[(i << 1)] = hexchar(b >> 4);
-			buf[(i << 1) + 1] = hexchar(b % 16);
-		}
-		return new String(buf);
-	}
+    public static String encodeHex(final byte[] values)
+    {
+        final char[] buf = new char[(values.length << 1)];
+        final int len = values.length;
+        for (int i = 0; i < len; i++)
+        {
+            int b = values[i];
+            if (b < 0)
+            {
+                b = 256 + b;
+            }
+            buf[(i << 1)] = hexchar(b >> 4);
+            buf[(i << 1) + 1] = hexchar(b % 16);
+        }
+        return new String(buf);
+    }
 
-	private static char hexchar(final int value)
-	{
-		if (value <= 9)
-		{
-			return (char)('0' + (char)value);
-		}
-		return (char)(('A' - 10) + (char)value);
-	}
+    private static char hexchar(final int value)
+    {
+        if (value <= 9)
+        {
+            return (char)('0' + (char)value);
+        }
+        return (char)(('A' - 10) + (char)value);
+    }
 }

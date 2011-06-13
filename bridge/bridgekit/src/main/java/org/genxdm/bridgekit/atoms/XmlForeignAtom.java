@@ -22,40 +22,40 @@ import org.genxdm.xs.types.NativeType;
 
 public final class XmlForeignAtom extends XmlAbstractAtom
 {
-	public final QName atomType;
-	public final XmlAtom baseAtom;
+    public final QName atomType;
+    public final XmlAtom baseAtom;
 
-	public XmlForeignAtom(final QName atomType, final XmlAtom baseAtom)
-	{
-		this.atomType = IllegalNullArgumentException.check(atomType, "atomType");
-		this.baseAtom = IllegalNullArgumentException.check(baseAtom, "baseAtom");
-	}
+    public XmlForeignAtom(final QName atomType, final XmlAtom baseAtom)
+    {
+        this.atomType = IllegalNullArgumentException.check(atomType, "atomType");
+        this.baseAtom = IllegalNullArgumentException.check(baseAtom, "baseAtom");
+    }
 
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof XmlForeignAtom)
-		{
-			final XmlForeignAtom other = (XmlForeignAtom)obj;
-			return atomType.equals(other.atomType) && baseAtom.equals(other.baseAtom);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof XmlForeignAtom)
+        {
+            final XmlForeignAtom other = (XmlForeignAtom)obj;
+            return atomType.equals(other.atomType) && baseAtom.equals(other.baseAtom);
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return baseAtom.getC14NForm();
-	}
+    public String getC14NForm()
+    {
+        return baseAtom.getC14NForm();
+    }
 
-	public NativeType getNativeType()
-	{
-		return baseAtom.getNativeType();
-	}
+    public NativeType getNativeType()
+    {
+        return baseAtom.getNativeType();
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return baseAtom.isWhiteSpace();
-	}
+    public boolean isWhiteSpace()
+    {
+        return baseAtom.isWhiteSpace();
+    }
 }

@@ -23,58 +23,58 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlNOTATION extends XmlAbstractAtom
 {
-	private final String localName;
-	private final String namespaceURI;
-	private final String prefix;
+    private final String localName;
+    private final String namespaceURI;
+    private final String prefix;
 
-	public XmlNOTATION(final String namespaceURI, final String localName, final String prefix)
-	{
-		this.namespaceURI = namespaceURI;
-		this.localName = PreCondition.assertArgumentNotNull(localName, "localName");
-		this.prefix = prefix;
-	}
+    public XmlNOTATION(final String namespaceURI, final String localName, final String prefix)
+    {
+        this.namespaceURI = namespaceURI;
+        this.localName = PreCondition.assertArgumentNotNull(localName, "localName");
+        this.prefix = prefix;
+    }
 
-	public String getC14NForm()
-	{
-		return formatQNameC14N(localName, prefix);
-	}
+    public String getC14NForm()
+    {
+        return formatQNameC14N(localName, prefix);
+    }
 
-	private static String formatQNameC14N(final String localName, final String prefix)
-	{
-		PreCondition.assertArgumentNotNull(localName, "localName");
-		PreCondition.assertArgumentNotNull(prefix, "prefix");
-		if (prefix.length() > 0)
-		{
-			return prefix.concat(":").concat(localName);
-		}
-		else
-		{
-			return localName;
-		}
-	}
+    private static String formatQNameC14N(final String localName, final String prefix)
+    {
+        PreCondition.assertArgumentNotNull(localName, "localName");
+        PreCondition.assertArgumentNotNull(prefix, "prefix");
+        if (prefix.length() > 0)
+        {
+            return prefix.concat(":").concat(localName);
+        }
+        else
+        {
+            return localName;
+        }
+    }
 
-	public String getLocalName()
-	{
-		return localName;
-	}
+    public String getLocalName()
+    {
+        return localName;
+    }
 
-	public String getNamespaceURI()
-	{
-		return namespaceURI;
-	}
+    public String getNamespaceURI()
+    {
+        return namespaceURI;
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.NOTATION;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.NOTATION;
+    }
 
-	public String getPrefix()
-	{
-		return prefix;
-	}
+    public String getPrefix()
+    {
+        return prefix;
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 }

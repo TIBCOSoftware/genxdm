@@ -16,7 +16,6 @@
 package org.genxdm.bridgekit.xs.complex;
 
 import org.genxdm.NodeKind;
-import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.types.CommentNodeType;
 import org.genxdm.xs.types.PrimeChoiceType;
 import org.genxdm.xs.types.PrimeType;
@@ -25,51 +24,51 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 public final class CommentNodeTypeImpl extends AbstractLeafNodeType implements CommentNodeType
 {
-	public CommentNodeTypeImpl(final ComponentProvider cache)
-	{
-		super(NodeKind.COMMENT, cache);
-	}
+    public CommentNodeTypeImpl()
+    {
+        super(NodeKind.COMMENT);
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return PrimeTypeKind.COMMENT;
-	}
+    public PrimeTypeKind getKind()
+    {
+        return PrimeTypeKind.COMMENT;
+    }
 
-	public PrimeType prime()
-	{
-		return this;
-	}
+    public PrimeType prime()
+    {
+        return this;
+    }
 
-	public boolean subtype(final PrimeType rhs)
-	{
-		switch (rhs.getKind())
-		{
-			case CHOICE:
-			{
-				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
-				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
-			}
-			case COMMENT:
-			{
-				return true;
-			}
-			case EMPTY:
-			{
-				return false;
-			}
-			case NONE:
-			{
-				return false;
-			}
-			default:
-			{
-				return false;
-			}
-		}
-	}
+    public boolean subtype(final PrimeType rhs)
+    {
+        switch (rhs.getKind())
+        {
+            case CHOICE:
+            {
+                final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
+                return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
+            }
+            case COMMENT:
+            {
+                return true;
+            }
+            case EMPTY:
+            {
+                return false;
+            }
+            case NONE:
+            {
+                return false;
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    }
 }

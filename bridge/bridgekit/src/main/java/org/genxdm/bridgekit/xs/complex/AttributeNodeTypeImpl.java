@@ -32,120 +32,120 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 public final class AttributeNodeTypeImpl extends AbstractPrimeExcludingNoneType implements AttributeNodeType
 {
-	private final QName name;
-	private final SequenceType m_type;
+    private final QName name;
+    private final SequenceType m_type;
 
-	public AttributeNodeTypeImpl(final QName name, final SequenceType type, ComponentProvider cache)
-	{
-		this.name = PreCondition.assertArgumentNotNull(name, "name");
-		if (null != type)
-		{
-			this.m_type = type;
-		}
-		else
-		{
-			this.m_type = cache.getSimpleUrType();
-		}
-	}
+    public AttributeNodeTypeImpl(final QName name, final SequenceType type, ComponentProvider cache)
+    {
+        this.name = PreCondition.assertArgumentNotNull(name, "name");
+        if (null != type)
+        {
+            this.m_type = type;
+        }
+        else
+        {
+            this.m_type = cache.getSimpleUrType();
+        }
+    }
 
-	public PrimeType prime()
-	{
-		return this;
-	}
+    public PrimeType prime()
+    {
+        return this;
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return PrimeTypeKind.ATTRIBUTE;
-	}
+    public PrimeTypeKind getKind()
+    {
+        return PrimeTypeKind.ATTRIBUTE;
+    }
 
-	public String getLocalName()
-	{
-		if (null != name)
-		{
-			return name.getLocalPart();
-		}
-		else
-		{
-			return null;
-		}
-	}
+    public String getLocalName()
+    {
+        if (null != name)
+        {
+            return name.getLocalPart();
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	public QName getName()
-	{
-		return name;
-	}
+    public QName getName()
+    {
+        return name;
+    }
 
-	public NodeKind getNodeKind()
-	{
-		return NodeKind.ATTRIBUTE;
-	}
+    public NodeKind getNodeKind()
+    {
+        return NodeKind.ATTRIBUTE;
+    }
 
-	public ScopeExtent getScopeExtent()
-	{
-		return ScopeExtent.Global;
-	}
+    public ScopeExtent getScopeExtent()
+    {
+        return ScopeExtent.Global;
+    }
 
-	public String getTargetNamespace()
-	{
-		if (null != name)
-		{
-			return name.getNamespaceURI();
-		}
-		else
-		{
-			return null;
-		}
-	}
+    public String getTargetNamespace()
+    {
+        if (null != name)
+        {
+            return name.getNamespaceURI();
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	public SequenceType getType()
-	{
-		return m_type;
-	}
+    public SequenceType getType()
+    {
+        return m_type;
+    }
 
-	public boolean isAnonymous()
-	{
-		return false;
-	}
+    public boolean isAnonymous()
+    {
+        return false;
+    }
 
-	public boolean isChoice()
-	{
-		return false;
-	}
+    public boolean isChoice()
+    {
+        return false;
+    }
 
-	public boolean isNative()
-	{
-		return false;
-	}
+    public boolean isNative()
+    {
+        return false;
+    }
 
-	public boolean subtype(final PrimeType rhs)
-	{
-		switch (rhs.getKind())
-		{
-			case CHOICE:
-			{
-				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
-				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
-			}
-			case ATTRIBUTE:
-			{
-				final AttributeNodeType other = (AttributeNodeType)rhs;
-				return QNameAsSet.subset(name, other.getName());
-			}
-			default:
-			{
-				return false;
-			}
-		}
-	}
+    public boolean subtype(final PrimeType rhs)
+    {
+        switch (rhs.getKind())
+        {
+            case CHOICE:
+            {
+                final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
+                return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
+            }
+            case ATTRIBUTE:
+            {
+                final AttributeNodeType other = (AttributeNodeType)rhs;
+                return QNameAsSet.subset(name, other.getName());
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    }
 
-	@Override
-	public String toString()
-	{
-		return "attribute " + name + " of type " + m_type;
-	}
+    @Override
+    public String toString()
+    {
+        return "attribute " + name + " of type " + m_type;
+    }
 }

@@ -30,96 +30,96 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 public final class ElementNodeWithParentAxisType implements ElementNodeType
 {
-	private final ElementNodeType m_element;
+    private final ElementNodeType m_element;
 
-	public ElementNodeWithParentAxisType(final ElementNodeType element, final ElementDefinition parentAxis)
-	{
-		m_element = PreCondition.assertArgumentNotNull(element);
-	}
+    public ElementNodeWithParentAxisType(final ElementNodeType element, final ElementDefinition parentAxis)
+    {
+        m_element = PreCondition.assertArgumentNotNull(element);
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return m_element.getKind();
-	}
+    public PrimeTypeKind getKind()
+    {
+        return m_element.getKind();
+    }
 
-	public String getLocalName()
-	{
-		return m_element.getLocalName();
-	}
+    public String getLocalName()
+    {
+        return m_element.getLocalName();
+    }
 
-	public QName getName()
-	{
-		return m_element.getName();
-	}
+    public QName getName()
+    {
+        return m_element.getName();
+    }
 
-	public NodeKind getNodeKind()
-	{
-		return m_element.getNodeKind();
-	}
+    public NodeKind getNodeKind()
+    {
+        return m_element.getNodeKind();
+    }
 
-	public ScopeExtent getScopeExtent()
-	{
-		return m_element.getScopeExtent();
-	}
+    public ScopeExtent getScopeExtent()
+    {
+        return m_element.getScopeExtent();
+    }
 
-	public String getTargetNamespace()
-	{
-		return m_element.getTargetNamespace();
-	}
+    public String getTargetNamespace()
+    {
+        return m_element.getTargetNamespace();
+    }
 
-	public SequenceType getType()
-	{
-		return m_element.getType();
-	}
+    public SequenceType getType()
+    {
+        return m_element.getType();
+    }
 
-	public boolean isAnonymous()
-	{
-		return m_element.isAnonymous();
-	}
+    public boolean isAnonymous()
+    {
+        return m_element.isAnonymous();
+    }
 
-	public boolean isChoice()
-	{
-		return m_element.isChoice();
-	}
+    public boolean isChoice()
+    {
+        return m_element.isChoice();
+    }
 
-	public boolean isNative()
-	{
-		return m_element.isNative();
-	}
+    public boolean isNative()
+    {
+        return m_element.isNative();
+    }
 
-	public boolean isNillable()
-	{
-		return m_element.isNillable();
-	}
+    public boolean isNillable()
+    {
+        return m_element.isNillable();
+    }
 
-	public boolean isNone()
-	{
-		return m_element.isNone();
-	}
+    public boolean isNone()
+    {
+        return m_element.isNone();
+    }
 
-	public PrimeType prime()
-	{
-		return this;
-	}
+    public PrimeType prime()
+    {
+        return this;
+    }
 
-	public Quantifier quantifier()
-	{
-		return m_element.quantifier();
-	}
+    public Quantifier quantifier()
+    {
+        return m_element.quantifier();
+    }
 
-	public boolean subtype(final PrimeType rhs)
-	{
-		return m_element.subtype(rhs);
-	}
+    public boolean subtype(final PrimeType rhs)
+    {
+        return m_element.subtype(rhs);
+    }
 
-	@Override
-	public String toString()
-	{
-		return m_element.toString();
-	}
+    @Override
+    public String toString()
+    {
+        return m_element.toString();
+    }
 }

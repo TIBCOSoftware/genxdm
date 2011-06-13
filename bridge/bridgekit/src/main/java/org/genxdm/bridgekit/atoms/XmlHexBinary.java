@@ -25,46 +25,46 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlHexBinary extends XmlAbstractAtom
 {
-	private final byte[] bytes;
+    private final byte[] bytes;
 
-	public XmlHexBinary(final byte[] bytes)
-	{
-		this.bytes = PreCondition.assertArgumentNotNull(bytes, "bytes");
-	}
+    public XmlHexBinary(final byte[] bytes)
+    {
+        this.bytes = PreCondition.assertArgumentNotNull(bytes, "bytes");
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof XmlHexBinary)
-		{
-			return Arrays.equals(bytes, ((XmlHexBinary)obj).getByteArrayValue());
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof XmlHexBinary)
+        {
+            return Arrays.equals(bytes, ((XmlHexBinary)obj).getByteArrayValue());
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	/**
-	 * Returns this value as a byte array.
-	 */
-	public byte[] getByteArrayValue()
-	{
-		return bytes;
-	}
+    /**
+     * Returns this value as a byte array.
+     */
+    public byte[] getByteArrayValue()
+    {
+        return bytes;
+    }
 
-	public String getC14NForm()
-	{
-		return HexBinarySupport.encodeHex(bytes);
-	}
+    public String getC14NForm()
+    {
+        return HexBinarySupport.encodeHex(bytes);
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.HEX_BINARY;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.HEX_BINARY;
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 }

@@ -21,21 +21,21 @@ import org.genxdm.Model;
 
 public final class IterableChildAxisElementsByName<N> implements Iterable<N>
 {
-	private final N m_origin;
-	private final String m_namespaceURI;
-	private final String m_localName;
-	private final Model<N> m_model;
+    private final N m_origin;
+    private final String m_namespaceURI;
+    private final String m_localName;
+    private final Model<N> m_model;
 
-	public IterableChildAxisElementsByName(final N origin, final String namespaceURI, final String localName, final Model<N> model)
-	{
-		this.m_model = model;
-		this.m_origin = origin;
-		this.m_namespaceURI = namespaceURI;
-		this.m_localName = localName;
-	}
+    public IterableChildAxisElementsByName(final N origin, final String namespaceURI, final String localName, final Model<N> model)
+    {
+        this.m_model = model;
+        this.m_origin = origin;
+        this.m_namespaceURI = namespaceURI;
+        this.m_localName = localName;
+    }
 
-	public Iterator<N> iterator()
-	{
-		return new IteratorChildAxisElementsByName<N>(m_origin, m_namespaceURI, m_localName, m_model);
-	}
+    public Iterator<N> iterator()
+    {
+        return new IteratorChildAxisElementsByName<N>(m_origin, m_namespaceURI, m_localName, m_model);
+    }
 }

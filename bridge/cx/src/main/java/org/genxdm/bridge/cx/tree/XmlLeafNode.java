@@ -26,7 +26,7 @@ import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XmlAtomBridge;
 import org.genxdm.bridgekit.atoms.XmlUntypedAtomic;
 import org.genxdm.bridgekit.misc.UnaryIterable;
-import org.genxdm.bridgekit.xs.SchemaTypeBridgeFactory;
+import org.genxdm.bridgekit.xs.SchemaCacheFactory;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.names.NamespaceBinding;
@@ -244,5 +244,5 @@ public class XmlLeafNode
     protected List<XmlAtom> atoms;
     protected final Type type;
     // TODO: this hackery should not be necessary.
-    private static final Type UNTYPED_ATOMIC_TYPE = new SchemaTypeBridgeFactory().newMetaBridge().getComponentProvider().getAtomicType(NativeType.UNTYPED_ATOMIC);
+    private static final Type UNTYPED_ATOMIC_TYPE = new SchemaCacheFactory().newSchemaCache().getComponentProvider().getAtomicType(NativeType.UNTYPED_ATOMIC);
 }

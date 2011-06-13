@@ -16,7 +16,6 @@
 package org.genxdm.bridgekit.xs.complex;
 
 import org.genxdm.NodeKind;
-import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.types.PrimeChoiceType;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
@@ -25,68 +24,68 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 public final class ProcessingInstructionNodeTypeImpl extends AbstractLeafNodeType implements ProcessingInstructionNodeType
 {
-	private final String m_name;
+    private final String m_name;
 
-	public ProcessingInstructionNodeTypeImpl(final String name, final ComponentProvider cache)
-	{
-		super(NodeKind.PROCESSING_INSTRUCTION, cache);
-		m_name = name;
-	}
+    public ProcessingInstructionNodeTypeImpl(final String name)
+    {
+        super(NodeKind.PROCESSING_INSTRUCTION);
+        m_name = name;
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return PrimeTypeKind.PROCESSING_INSTRUCTION;
-	}
+    public PrimeTypeKind getKind()
+    {
+        return PrimeTypeKind.PROCESSING_INSTRUCTION;
+    }
 
-	public String getName()
-	{
-		return m_name;
-	}
+    public String getName()
+    {
+        return m_name;
+    }
 
-	public ProcessingInstructionNodeType prime()
-	{
-		return this;
-	}
+    public ProcessingInstructionNodeType prime()
+    {
+        return this;
+    }
 
-	public boolean subtype(final PrimeType rhs)
-	{
-		switch (rhs.getKind())
-		{
-			case CHOICE:
-			{
-				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
-				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
-			}
-			case PROCESSING_INSTRUCTION:
-			{
-				final ProcessingInstructionNodeType pi = (ProcessingInstructionNodeType)rhs;
-				final String name = pi.getName();
-				if (null == name)
-				{
-					// null is wildcard.
-					return true;
-				}
-				else
-				{
-					if (null != m_name)
-					{
-						return m_name.equals(name);
-					}
-					else
-					{
-						return false;
-					}
-				}
-			}
-			default:
-			{
-				return false;
-			}
-		}
-	}
+    public boolean subtype(final PrimeType rhs)
+    {
+        switch (rhs.getKind())
+        {
+            case CHOICE:
+            {
+                final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
+                return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
+            }
+            case PROCESSING_INSTRUCTION:
+            {
+                final ProcessingInstructionNodeType pi = (ProcessingInstructionNodeType)rhs;
+                final String name = pi.getName();
+                if (null == name)
+                {
+                    // null is wildcard.
+                    return true;
+                }
+                else
+                {
+                    if (null != m_name)
+                    {
+                        return m_name.equals(name);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    }
 }

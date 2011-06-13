@@ -38,134 +38,134 @@ import org.genxdm.xs.types.SimpleType;
 
 public final class NameType extends AbstractAtomType
 {
-	public NameType(final QName name, final SimpleType baseType)
-	{
-		super(name, baseType);
-	}
+    public NameType(final QName name, final SimpleType baseType)
+    {
+        super(name, baseType);
+    }
 
-	public void accept(SequenceTypeVisitor visitor)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public void accept(SequenceTypeVisitor visitor)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Iterable<EnumerationDefinition> getEnumerations()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Iterable<EnumerationDefinition> getEnumerations()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Facet getFacetOfKind(FacetKind facetKind)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Facet getFacetOfKind(FacetKind facetKind)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Iterable<Facet> getFacets()
-	{
-		return Collections.emptyList();
-	}
+    public Iterable<Facet> getFacets()
+    {
+        return Collections.emptyList();
+    }
 
-	public Set<DerivationMethod> getFinal()
-	{
-		return Collections.emptySet();
-	}
+    public Set<DerivationMethod> getFinal()
+    {
+        return Collections.emptySet();
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.NAME;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.NAME;
+    }
 
-	public Iterable<Pattern> getPatterns()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Iterable<Pattern> getPatterns()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public ScopeExtent getScopeExtent()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public ScopeExtent getScopeExtent()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public WhiteSpacePolicy getWhiteSpacePolicy()
-	{
-		return WhiteSpacePolicy.COLLAPSE;
-	}
+    public WhiteSpacePolicy getWhiteSpacePolicy()
+    {
+        return WhiteSpacePolicy.COLLAPSE;
+    }
 
-	public boolean hasEnumerations()
-	{
-		return false;
-	}
+    public boolean hasEnumerations()
+    {
+        return false;
+    }
 
-	public boolean hasFacetOfKind(final FacetKind facetKind)
-	{
-		return false;
-	}
+    public boolean hasFacetOfKind(final FacetKind facetKind)
+    {
+        return false;
+    }
 
-	public boolean hasFacets()
-	{
-		return false;
-	}
+    public boolean hasFacets()
+    {
+        return false;
+    }
 
-	public boolean hasPatterns()
-	{
-		return false;
-	}
+    public boolean hasPatterns()
+    {
+        return false;
+    }
 
-	public boolean isAbstract()
-	{
-		return false;
-	}
+    public boolean isAbstract()
+    {
+        return false;
+    }
 
-	public boolean isID()
-	{
-		return false;
-	}
+    public boolean isID()
+    {
+        return false;
+    }
 
-	public boolean isIDREF()
-	{
-		return false;
-	}
+    public boolean isIDREF()
+    {
+        return false;
+    }
 
-	public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
-	{
-		final String normalized = normalize(initialValue);
-		return atomBridge.wrapAtom(atomBridge.createStringDerived(castAsName(normalized, this), NativeType.NAME));
-	}
+    public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
+    {
+        final String normalized = normalize(initialValue);
+        return atomBridge.wrapAtom(atomBridge.createStringDerived(castAsName(normalized, this), NativeType.NAME));
+    }
 
-	public static String castAsName(final String name, final SimpleType type) throws DatatypeException
-	{
-		PreCondition.assertArgumentNotNull(name, "name");
-		if (0 == name.length())
-		{
-			throw new DatatypeException(name, type);
-		}
-		char c = name.charAt(0);
-		if (c != '_' && !XmlCharacterSupport.isLetter(c) && c != ':')
-		{
-			throw new DatatypeException(name, type);
-		}
-		for (int i = name.length() - 1; i > 0; i--)
-		{
-			c = name.charAt(i);
-			if (!XmlCharacterSupport.isNameChar(c))
-			{
-				throw new DatatypeException(name, type);
-			}
-		}
-		return name;
-	}
+    public static String castAsName(final String name, final SimpleType type) throws DatatypeException
+    {
+        PreCondition.assertArgumentNotNull(name, "name");
+        if (0 == name.length())
+        {
+            throw new DatatypeException(name, type);
+        }
+        char c = name.charAt(0);
+        if (c != '_' && !XmlCharacterSupport.isLetter(c) && c != ':')
+        {
+            throw new DatatypeException(name, type);
+        }
+        for (int i = name.length() - 1; i > 0; i--)
+        {
+            c = name.charAt(i);
+            if (!XmlCharacterSupport.isNameChar(c))
+            {
+                throw new DatatypeException(name, type);
+            }
+        }
+        return name;
+    }
 
-	public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 }

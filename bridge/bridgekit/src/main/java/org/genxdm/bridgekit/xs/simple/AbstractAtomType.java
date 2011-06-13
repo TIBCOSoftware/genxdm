@@ -35,249 +35,249 @@ import org.genxdm.xs.types.Type;
 
 abstract class AbstractAtomType implements AtomicType
 {
-	/**
-	 * Removes leading and trailing whitespace, and any leading plus sign provided it is followed by a digit (0 through 9).
-	 * 
-	 * @param strval
-	 *            The value to be trimmed.
-	 * @return A trimmed numeric representation ready for parsing.
-	 * @throws NumberFormatException
-	 *             if the number starts with two consecutive signs; http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=5038425
-	 */
-	protected static String trim(final String strval) throws NumberFormatException
-	{
-		final String collapsed = strval.trim();
+    /**
+     * Removes leading and trailing whitespace, and any leading plus sign provided it is followed by a digit (0 through 9).
+     * 
+     * @param strval
+     *            The value to be trimmed.
+     * @return A trimmed numeric representation ready for parsing.
+     * @throws NumberFormatException
+     *             if the number starts with two consecutive signs; http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=5038425
+     */
+    protected static String trim(final String strval) throws NumberFormatException
+    {
+        final String collapsed = strval.trim();
 
-		final int collapsedLength = collapsed.length();
+        final int collapsedLength = collapsed.length();
 
-		if (collapsedLength > 1)
-		{
-			final char sign = collapsed.charAt(0);
-			if (sign == '+' || sign == '-')
-			{
-				final char first = collapsed.charAt(1);
+        if (collapsedLength > 1)
+        {
+            final char sign = collapsed.charAt(0);
+            if (sign == '+' || sign == '-')
+            {
+                final char first = collapsed.charAt(1);
 
-				if (first == '-' || first == '+')
-				{
-					throw new NumberFormatException(strval);
-				}
-				if (sign == '+' && first >= '0' && first <= '9')
-				{
-					return collapsed.substring(1);
-				}
-			}
-		}
-		else if (collapsedLength == 0 || collapsed.charAt(0) > '9' || collapsed.charAt(0) < '0')
-		{
-			throw new NumberFormatException(strval);
-		}
-		return collapsed;
-	}
+                if (first == '-' || first == '+')
+                {
+                    throw new NumberFormatException(strval);
+                }
+                if (sign == '+' && first >= '0' && first <= '9')
+                {
+                    return collapsed.substring(1);
+                }
+            }
+        }
+        else if (collapsedLength == 0 || collapsed.charAt(0) > '9' || collapsed.charAt(0) < '0')
+        {
+            throw new NumberFormatException(strval);
+        }
+        return collapsed;
+    }
 
-	private final Type baseType;
+    private final Type baseType;
 
-	private final QName name;
+    private final QName name;
 
-	AbstractAtomType(final QName name, final Type baseType)
-	{
-		this.name = PreCondition.assertArgumentNotNull(name);
-		this.baseType = PreCondition.assertArgumentNotNull(baseType);
-	}
+    AbstractAtomType(final QName name, final Type baseType)
+    {
+        this.name = PreCondition.assertArgumentNotNull(name);
+        this.baseType = PreCondition.assertArgumentNotNull(baseType);
+    }
 
-	public final boolean derivedFromType(final Type ancestorType, final Set<DerivationMethod> derivationMethods)
-	{
-		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods);
-	}
+    public final boolean derivedFromType(final Type ancestorType, final Set<DerivationMethod> derivationMethods)
+    {
+        return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods);
+    }
 
-	public final Type getBaseType()
-	{
-		return baseType;
-	}
+    public final Type getBaseType()
+    {
+        return baseType;
+    }
 
-	public final DerivationMethod getDerivationMethod()
-	{
-		return DerivationMethod.Restriction;
-	}
+    public final DerivationMethod getDerivationMethod()
+    {
+        return DerivationMethod.Restriction;
+    }
 
-	public final PrimeTypeKind getKind()
-	{
-		return PrimeTypeKind.ATOM;
-	}
+    public final PrimeTypeKind getKind()
+    {
+        return PrimeTypeKind.ATOM;
+    }
 
-	public final String getLocalName()
-	{
-		return name.getLocalPart();
-	}
+    public final String getLocalName()
+    {
+        return name.getLocalPart();
+    }
 
-	public final QName getName()
-	{
-		return name;
-	}
+    public final QName getName()
+    {
+        return name;
+    }
 
-	public final AtomicType getNativeTypeDefinition()
-	{
-		return this;
-	}
+    public final AtomicType getNativeTypeDefinition()
+    {
+        return this;
+    }
 
-	public final String getTargetNamespace()
-	{
-		return name.getNamespaceURI();
-	}
+    public final String getTargetNamespace()
+    {
+        return name.getNamespaceURI();
+    }
 
-	public final boolean isAnonymous()
-	{
-		return false;
-	}
+    public final boolean isAnonymous()
+    {
+        return false;
+    }
 
-	public boolean isAtomicType()
-	{
-		return true;
-	}
+    public boolean isAtomicType()
+    {
+        return true;
+    }
 
-	public final boolean isAtomicUrType()
-	{
-		return false;
-	}
+    public final boolean isAtomicUrType()
+    {
+        return false;
+    }
 
-	public final boolean isChoice()
-	{
-		return false;
-	}
+    public final boolean isChoice()
+    {
+        return false;
+    }
 
-	public final boolean isComplexUrType()
-	{
-		return false;
-	}
+    public final boolean isComplexUrType()
+    {
+        return false;
+    }
 
-	public final boolean isFinal(final DerivationMethod derivation)
-	{
-		switch (derivation)
-		{
-			case Extension:
-			{
-				return false;
-			}
-			default:
-			{
-				throw new AssertionError("isFinal(" + derivation + ")");
-			}
-		}
-	}
+    public final boolean isFinal(final DerivationMethod derivation)
+    {
+        switch (derivation)
+        {
+            case Extension:
+            {
+                return false;
+            }
+            default:
+            {
+                throw new AssertionError("isFinal(" + derivation + ")");
+            }
+        }
+    }
 
-	public final boolean isIDREFS()
-	{
-		return false;
-	}
+    public final boolean isIDREFS()
+    {
+        return false;
+    }
 
-	public final boolean isListType()
-	{
-		return false;
-	}
+    public final boolean isListType()
+    {
+        return false;
+    }
 
-	public final boolean isNative()
-	{
-		return true;
-	}
+    public final boolean isNative()
+    {
+        return true;
+    }
 
-	public final boolean isNone()
-	{
-		return false;
-	}
+    public final boolean isNone()
+    {
+        return false;
+    }
 
-	public final boolean isSimpleUrType()
-	{
-		return false;
-	}
+    public final boolean isSimpleUrType()
+    {
+        return false;
+    }
 
-	public final boolean isUnionType()
-	{
-		return false;
-	}
+    public final boolean isUnionType()
+    {
+        return false;
+    }
 
-	public final String normalize(final String initialValue)
-	{
-		return getWhiteSpacePolicy().apply(initialValue);
-	}
+    public final String normalize(final String initialValue)
+    {
+        return getWhiteSpacePolicy().apply(initialValue);
+    }
 
-	public final AtomicType prime()
-	{
-		return this;
-	}
+    public final AtomicType prime()
+    {
+        return this;
+    }
 
-	public final Quantifier quantifier()
-	{
-		return Quantifier.EXACTLY_ONE;
-	}
+    public final Quantifier quantifier()
+    {
+        return Quantifier.EXACTLY_ONE;
+    }
 
-	public final boolean subtype(final PrimeType rhs)
-	{
-		switch (rhs.getKind())
-		{
-			case CHOICE:
-			{
-				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
-				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
-			}
-			case ANY_ATOMIC_TYPE:
-			case ANY_SIMPLE_TYPE:
-			case ANY_TYPE:
-			{
-				return true;
-			}
-			case ATOM:
-			{
-				final AtomicType atomicType = (AtomicType)rhs;
-				return SchemaSupport.subtype(this, atomicType);
-			}
-			case EMPTY:
-			{
-				return false;
-			}
-			case NONE:
-			{
-				return false;
-			}
-			default:
-			{
-				return false;
-			}
-		}
-	}
+    public final boolean subtype(final PrimeType rhs)
+    {
+        switch (rhs.getKind())
+        {
+            case CHOICE:
+            {
+                final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
+                return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
+            }
+            case ANY_ATOMIC_TYPE:
+            case ANY_SIMPLE_TYPE:
+            case ANY_TYPE:
+            {
+                return true;
+            }
+            case ATOM:
+            {
+                final AtomicType atomicType = (AtomicType)rhs;
+                return SchemaSupport.subtype(this, atomicType);
+            }
+            case EMPTY:
+            {
+                return false;
+            }
+            case NONE:
+            {
+                return false;
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    }
 
-	@Override
-	public final String toString()
-	{
-		return name.toString();
-	}
+    @Override
+    public final String toString()
+    {
+        return name.toString();
+    }
 
-	public final <A> List<A> validate(final List<? extends A> atoms, AtomBridge<A> bridge) throws DatatypeException
-	{
-		final int size = atoms.size();
-		switch (size)
-		{
-			case 1:
-			{
-				final A atom = atoms.get(0);
-				final NativeType nativeType = bridge.getNativeType(atom);
-				if (nativeType.isA(getNativeType()))
-				{
-					return bridge.wrapAtom(atom);
-				}
-				else if (nativeType == NativeType.UNTYPED_ATOMIC)
-				{
-					return validate(bridge.getC14NForm(atom), bridge);
-				}
-				else
-				{
-					// TODO: Need to investigate this because it is inefficient.
-					return validate(bridge.getC14NForm(atom), bridge);
-					// throw new AssertionError(nativeType + "=>" + getNativeType());
-				}
-			}
-			default:
-			{
-				throw new AssertionError("validate(" + atoms + ")");
-			}
-		}
-	}
+    public final <A> List<A> validate(final List<? extends A> atoms, AtomBridge<A> bridge) throws DatatypeException
+    {
+        final int size = atoms.size();
+        switch (size)
+        {
+            case 1:
+            {
+                final A atom = atoms.get(0);
+                final NativeType nativeType = bridge.getNativeType(atom);
+                if (nativeType.isA(getNativeType()))
+                {
+                    return bridge.wrapAtom(atom);
+                }
+                else if (nativeType == NativeType.UNTYPED_ATOMIC)
+                {
+                    return validate(bridge.getC14NForm(atom), bridge);
+                }
+                else
+                {
+                    // TODO: Need to investigate this because it is inefficient.
+                    return validate(bridge.getC14NForm(atom), bridge);
+                    // throw new AssertionError(nativeType + "=>" + getNativeType());
+                }
+            }
+            default:
+            {
+                throw new AssertionError("validate(" + atoms + ")");
+            }
+        }
+    }
 }

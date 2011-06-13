@@ -23,46 +23,46 @@ import org.genxdm.xs.enums.ScopeExtent;
 
 public abstract class NamedComponentImpl extends LockableImpl implements SchemaComponent
 {
-	private final boolean isAnonymous;
-	private final QName name;
-	private final ScopeExtent scope;
+    private final boolean isAnonymous;
+    private final QName name;
+    private final ScopeExtent scope;
 
-	public NamedComponentImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope)
-	{
-		if (isAnonymous)
-		{
-			this.name = name;
-		}
-		else
-		{
-			this.name = PreCondition.assertArgumentNotNull(name, "name");
-		}
-		this.isAnonymous = isAnonymous;
-		this.scope = PreCondition.assertArgumentNotNull(scope, "scope");
-	}
+    public NamedComponentImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope)
+    {
+        if (isAnonymous)
+        {
+            this.name = name;
+        }
+        else
+        {
+            this.name = PreCondition.assertArgumentNotNull(name, "name");
+        }
+        this.isAnonymous = isAnonymous;
+        this.scope = PreCondition.assertArgumentNotNull(scope, "scope");
+    }
 
-	public final String getLocalName()
-	{
-		return name.getLocalPart();
-	}
+    public final String getLocalName()
+    {
+        return name.getLocalPart();
+    }
 
-	public final QName getName()
-	{
-		return name;
-	}
+    public final QName getName()
+    {
+        return name;
+    }
 
-	public final ScopeExtent getScopeExtent()
-	{
-		return scope;
-	}
+    public final ScopeExtent getScopeExtent()
+    {
+        return scope;
+    }
 
-	public final String getTargetNamespace()
-	{
-		return name.getNamespaceURI();
-	}
+    public final String getTargetNamespace()
+    {
+        return name.getNamespaceURI();
+    }
 
-	public final boolean isAnonymous()
-	{
-		return isAnonymous;
-	}
+    public final boolean isAnonymous()
+    {
+        return isAnonymous;
+    }
 }

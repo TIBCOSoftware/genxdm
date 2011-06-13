@@ -22,53 +22,53 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlDouble extends XmlAbstractAtom
 {
-	private final double doubleValue;
+    private final double doubleValue;
 
-	public XmlDouble(final double doubleValue)
-	{
-		this.doubleValue = doubleValue;
-	}
+    public XmlDouble(final double doubleValue)
+    {
+        this.doubleValue = doubleValue;
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof XmlDouble)
-		{
-			return doubleValue == ((XmlDouble)obj).doubleValue;
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof XmlDouble)
+        {
+            return doubleValue == ((XmlDouble)obj).doubleValue;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return NumericSupport.formatDoubleC14N(doubleValue);
-	}
+    public String getC14NForm()
+    {
+        return NumericSupport.formatDoubleC14N(doubleValue);
+    }
 
-	/**
-	 * Returns this value as a <code>double</code>.
-	 */
-	public double getDoubleValue()
-	{
-		return doubleValue;
-	}
+    /**
+     * Returns this value as a <code>double</code>.
+     */
+    public double getDoubleValue()
+    {
+        return doubleValue;
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.DOUBLE;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.DOUBLE;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		long bits = Double.doubleToLongBits(doubleValue);
-		return (int)(bits ^ (bits >>> 32));
-	}
+    @Override
+    public int hashCode()
+    {
+        long bits = Double.doubleToLongBits(doubleValue);
+        return (int)(bits ^ (bits >>> 32));
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 }

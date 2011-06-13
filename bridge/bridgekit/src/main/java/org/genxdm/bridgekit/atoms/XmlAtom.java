@@ -21,9 +21,9 @@ import org.genxdm.xs.types.NativeType;
 
 public interface XmlAtom extends List<XmlAtom>
 {
-	String getC14NForm();
+    String getC14NForm();
 
-	NativeType getNativeType();
+    NativeType getNativeType();
 
-	boolean isWhiteSpace();
+    boolean isWhiteSpace();
 }

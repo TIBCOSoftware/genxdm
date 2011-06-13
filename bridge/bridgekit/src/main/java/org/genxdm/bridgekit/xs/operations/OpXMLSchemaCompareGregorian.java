@@ -24,83 +24,83 @@ import org.genxdm.typed.types.AtomBridge;
 
 public final class OpXMLSchemaCompareGregorian<A> implements ValueComparator<A>
 {
-	private static int FOURTEEN_HOURS_IN_MINUTES = 840;
+    private static int FOURTEEN_HOURS_IN_MINUTES = 840;
 
-	private final OpXMLSchemaCompare m_opcode;
-	private final Gregorian operandRHS;
-	private final AtomBridge<A> atomBridge;
+    private final OpXMLSchemaCompare m_opcode;
+    private final Gregorian operandRHS;
+    private final AtomBridge<A> atomBridge;
 
-	public OpXMLSchemaCompareGregorian(final OpXMLSchemaCompare opcode, final A rhsAtom, final AtomBridge<A> atomBridge)
-	{
-		this.m_opcode = opcode;
-		this.operandRHS = Gregorian.dateTime(rhsAtom, atomBridge);
-		this.atomBridge = atomBridge;
-	}
+    public OpXMLSchemaCompareGregorian(final OpXMLSchemaCompare opcode, final A rhsAtom, final AtomBridge<A> atomBridge)
+    {
+        this.m_opcode = opcode;
+        this.operandRHS = Gregorian.dateTime(rhsAtom, atomBridge);
+        this.atomBridge = atomBridge;
+    }
 
-	public boolean compare(final A lhsAtom)
-	{
-		final Gregorian operandLHS = Gregorian.dateTime(lhsAtom, atomBridge);
+    public boolean compare(final A lhsAtom)
+    {
+        final Gregorian operandLHS = Gregorian.dateTime(lhsAtom, atomBridge);
 
-		switch (m_opcode)
-		{
-			case Gt:
-			{
-				return compare(operandLHS, operandRHS, +1) > 0;
-			}
-			case Ge:
-			{
-				return compare(operandLHS, operandRHS, +1) >= 0;
-			}
-			case Lt:
-			{
-				return compare(operandLHS, operandRHS, -1) < 0;
-			}
-			case Le:
-			{
-				return compare(operandLHS, operandRHS, -1) <= 0;
-			}
-			default:
-			{
-				throw new RuntimeException(m_opcode.toString());
-			}
-		}
-	}
+        switch (m_opcode)
+        {
+            case Gt:
+            {
+                return compare(operandLHS, operandRHS, +1) > 0;
+            }
+            case Ge:
+            {
+                return compare(operandLHS, operandRHS, +1) >= 0;
+            }
+            case Lt:
+            {
+                return compare(operandLHS, operandRHS, -1) < 0;
+            }
+            case Le:
+            {
+                return compare(operandLHS, operandRHS, -1) <= 0;
+            }
+            default:
+            {
+                throw new RuntimeException(m_opcode.toString());
+            }
+        }
+    }
 
-	public static int compare(final Gregorian L, final Gregorian R, final int sign)
-	{
-		if (DatatypeConstants.FIELD_UNDEFINED != L.getGmtOffset())
-		{
-			if (DatatypeConstants.FIELD_UNDEFINED != R.getGmtOffset())
-			{
-				final BigDecimal thisTime = L.getTimeSpanSinceEpoch();
-				final BigDecimal thatTime = R.getTimeSpanSinceEpoch();
+    public static int compare(final Gregorian L, final Gregorian R, final int sign)
+    {
+        if (DatatypeConstants.FIELD_UNDEFINED != L.getGmtOffset())
+        {
+            if (DatatypeConstants.FIELD_UNDEFINED != R.getGmtOffset())
+            {
+                final BigDecimal thisTime = L.getTimeSpanSinceEpoch();
+                final BigDecimal thatTime = R.getTimeSpanSinceEpoch();
 
-				return thisTime.compareTo(thatTime);
-			}
-			else
-			{
-				final BigDecimal thisTime = L.getTimeSpanSinceEpoch();
-				final BigDecimal thatTime = R.normalize(sign * -FOURTEEN_HOURS_IN_MINUTES).getTimeSpanSinceEpoch();
+                return thisTime.compareTo(thatTime);
+            }
+            else
+            {
+                final BigDecimal thisTime = L.getTimeSpanSinceEpoch();
+                final BigDecimal thatTime = R.normalize(sign * -FOURTEEN_HOURS_IN_MINUTES).getTimeSpanSinceEpoch();
 
-				return thisTime.compareTo(thatTime);
-			}
-		}
-		else
-		{
-			if (DatatypeConstants.FIELD_UNDEFINED != R.getGmtOffset())
-			{
-				final BigDecimal thisTime = L.normalize(sign * +FOURTEEN_HOURS_IN_MINUTES).getTimeSpanSinceEpoch();
-				final BigDecimal thatTime = R.getTimeSpanSinceEpoch();
+                return thisTime.compareTo(thatTime);
+            }
+        }
+        else
+        {
+            if (DatatypeConstants.FIELD_UNDEFINED != R.getGmtOffset())
+            {
+                final BigDecimal thisTime = L.normalize(sign * +FOURTEEN_HOURS_IN_MINUTES).getTimeSpanSinceEpoch();
+                final BigDecimal thatTime = R.getTimeSpanSinceEpoch();
 
-				return thisTime.compareTo(thatTime);
-			}
-			else
-			{
-				final BigDecimal thisTime = L.normalize(0).getTimeSpanSinceEpoch();
-				final BigDecimal thatTime = R.normalize(0).getTimeSpanSinceEpoch();
+                return thisTime.compareTo(thatTime);
+            }
+            else
+            {
+                final BigDecimal thisTime = L.normalize(0).getTimeSpanSinceEpoch();
+                final BigDecimal thatTime = R.normalize(0).getTimeSpanSinceEpoch();
 
-				return thisTime.compareTo(thatTime);
-			}
-		}
-	}
+                return thisTime.compareTo(thatTime);
+            }
+        }
+    }
 }

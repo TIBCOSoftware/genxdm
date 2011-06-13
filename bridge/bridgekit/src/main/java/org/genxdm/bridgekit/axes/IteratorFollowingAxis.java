@@ -24,87 +24,87 @@ import org.genxdm.exceptions.PreCondition;
 
 final class IteratorFollowingAxis<N> implements Iterator<N>
 {
-	private N m_next;
-	private final Model<N> m_navigator;
+    private N m_next;
+    private final Model<N> m_navigator;
 
-	public IteratorFollowingAxis(final N origin, final Model<N> navigator)
-	{
-		m_navigator = PreCondition.assertArgumentNotNull(navigator);
-		m_next = prime(origin, navigator);
-	}
+    public IteratorFollowingAxis(final N origin, final Model<N> navigator)
+    {
+        m_navigator = PreCondition.assertArgumentNotNull(navigator);
+        m_next = prime(origin, navigator);
+    }
 
-	public boolean hasNext()
-	{
-		return (null != m_next);
-	}
+    public boolean hasNext()
+    {
+        return (null != m_next);
+    }
 
-	public N next() throws NoSuchElementException
-	{
-		if (m_next != null)
-		{
-			final N last = m_next;
-			final N headChild = m_navigator.getFirstChild(m_next);
-			if (null != headChild)
-			{
-				m_next = headChild;
-			}
-			else
-			{
-				m_next = jump(m_next, m_navigator);
-			}
-			return last;
-		}
-		else
-		{
-			// The iteration has no more elements.
-			throw new NoSuchElementException();
-		}
-	}
+    public N next() throws NoSuchElementException
+    {
+        if (m_next != null)
+        {
+            final N last = m_next;
+            final N headChild = m_navigator.getFirstChild(m_next);
+            if (null != headChild)
+            {
+                m_next = headChild;
+            }
+            else
+            {
+                m_next = jump(m_next, m_navigator);
+            }
+            return last;
+        }
+        else
+        {
+            // The iteration has no more elements.
+            throw new NoSuchElementException();
+        }
+    }
 
-	public void remove()
-	{
-		throw new UnsupportedOperationException();
-	}
+    public void remove()
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	private static <N> N prime(final N origin, final Model<N> navigator)
-	{
-		if (navigator.isAttribute(origin) || navigator.isNamespace(origin))
-		{
-			final N parent = navigator.getParent(origin);
-			if (null != parent)
-			{
-				return navigator.getFirstChild(parent);
-			}
-			else
-			{
-				return null;
-			}
-		}
-		else
-		{
-			return jump(origin, navigator);
-		}
-	}
+    private static <N> N prime(final N origin, final Model<N> navigator)
+    {
+        if (navigator.isAttribute(origin) || navigator.isNamespace(origin))
+        {
+            final N parent = navigator.getParent(origin);
+            if (null != parent)
+            {
+                return navigator.getFirstChild(parent);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        else
+        {
+            return jump(origin, navigator);
+        }
+    }
 
-	private static <N> N jump(final N origin, final Model<N> navigator)
-	{
-		final N nextSibling = navigator.getNextSibling(origin);
-		if (null != nextSibling)
-		{
-			return nextSibling;
-		}
-		else
-		{
-			final N parent = navigator.getParent(origin);
-			if (null != parent)
-			{
-				return jump(parent, navigator);
-			}
-			else
-			{
-				// terminates.
-				return null;
-			}
-		}
-	}
+    private static <N> N jump(final N origin, final Model<N> navigator)
+    {
+        final N nextSibling = navigator.getNextSibling(origin);
+        if (null != nextSibling)
+        {
+            return nextSibling;
+        }
+        else
+        {
+            final N parent = navigator.getParent(origin);
+            if (null != parent)
+            {
+                return jump(parent, navigator);
+            }
+            else
+            {
+                // terminates.
+                return null;
+            }
+        }
+    }
 }

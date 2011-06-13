@@ -23,15 +23,15 @@ import org.genxdm.xs.facets.Facet;
  */
 abstract class FacetImpl extends LockableImpl implements Facet
 {
-	private final boolean isFixed;
+    private final boolean isFixed;
 
-	public FacetImpl(final boolean isFixed)
-	{
-		this.isFixed = isFixed;
-	}
+    public FacetImpl(final boolean isFixed)
+    {
+        this.isFixed = isFixed;
+    }
 
-	public final boolean isFixed()
-	{
-		return isFixed;
-	}
+    public final boolean isFixed()
+    {
+        return isFixed;
+    }
 }

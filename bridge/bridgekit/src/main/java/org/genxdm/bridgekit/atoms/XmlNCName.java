@@ -22,56 +22,56 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlNCName extends XmlAbstractAtom
 {
-	private final String stringValue;
-	private final int hashCode;
+    private final String stringValue;
+    private final int hashCode;
 
-	/**
-	 * Intentionally package protected because this must only be created through the name bridge.
-	 * 
-	 * @param stringValue
-	 */
-	public XmlNCName(final String stringValue)
-	{
-		this.stringValue = stringValue;
-		// The caching of the hashCode has the side effect of detecting a null stringValue early.
-		this.hashCode = stringValue.hashCode();
-	}
+    /**
+     * Intentionally package protected because this must only be created through the name bridge.
+     * 
+     * @param stringValue
+     */
+    public XmlNCName(final String stringValue)
+    {
+        this.stringValue = stringValue;
+        // The caching of the hashCode has the side effect of detecting a null stringValue early.
+        this.hashCode = stringValue.hashCode();
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		else if (obj instanceof XmlNCName)
-		{
-			return stringValue.equals(((XmlNCName)obj).stringValue);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        else if (obj instanceof XmlNCName)
+        {
+            return stringValue.equals(((XmlNCName)obj).stringValue);
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return stringValue;
-	}
+    public String getC14NForm()
+    {
+        return stringValue;
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.NCNAME;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.NCNAME;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return hashCode;
-	}
+    @Override
+    public int hashCode()
+    {
+        return hashCode;
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 }
