@@ -22,74 +22,74 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlYearMonthDuration extends XmlAbstractAtom implements Comparable<XmlYearMonthDuration>
 {
-	public static XmlYearMonthDuration valueOf(final int months)
-	{
-		return new XmlYearMonthDuration(months);
-	}
+    public static XmlYearMonthDuration valueOf(final int months)
+    {
+        return new XmlYearMonthDuration(months);
+    }
 
-	private final int months;
+    private final int months;
 
-	private XmlYearMonthDuration(final int months)
-	{
-		this.months = months;
-	}
+    private XmlYearMonthDuration(final int months)
+    {
+        this.months = months;
+    }
 
-	public int compareTo(final XmlYearMonthDuration other)
-	{
-		if (months > other.months)
-		{
-			return +1;
-		}
-		else if (months < other.months)
-		{
-			return -1;
-		}
-		else
-		{
-			return 0;
-		}
-	}
+    public int compareTo(final XmlYearMonthDuration other)
+    {
+        if (months > other.months)
+        {
+            return +1;
+        }
+        else if (months < other.months)
+        {
+            return -1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj == this)
-		{
-			return true;
-		}
-		else if (obj instanceof XmlYearMonthDuration)
-		{
-			return months == ((XmlYearMonthDuration)obj).months;
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj == this)
+        {
+            return true;
+        }
+        else if (obj instanceof XmlYearMonthDuration)
+        {
+            return months == ((XmlYearMonthDuration)obj).months;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return DurationSupport.formatYearMonthDurationC14N(months);
-	}
+    public String getC14NForm()
+    {
+        return DurationSupport.formatYearMonthDurationC14N(months);
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.DURATION_YEARMONTH;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.DURATION_YEARMONTH;
+    }
 
-	public int getTotalMonthsValue()
-	{
-		return months;
-	}
+    public int getTotalMonthsValue()
+    {
+        return months;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return months;
-	}
+    @Override
+    public int hashCode()
+    {
+        return months;
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 }

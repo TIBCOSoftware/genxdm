@@ -38,176 +38,176 @@ import org.genxdm.xs.types.SimpleType;
 
 public final class DecimalType extends AbstractAtomType
 {
-	public DecimalType(final QName name, final SimpleType baseType)
-	{
-		super(name, baseType);
-	}
+    public DecimalType(final QName name, final SimpleType baseType)
+    {
+        super(name, baseType);
+    }
 
-	public void accept(SequenceTypeVisitor visitor)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public void accept(SequenceTypeVisitor visitor)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Iterable<EnumerationDefinition> getEnumerations()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Iterable<EnumerationDefinition> getEnumerations()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Facet getFacetOfKind(FacetKind facetKind)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Facet getFacetOfKind(FacetKind facetKind)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Iterable<Facet> getFacets()
-	{
-		return Collections.emptyList();
-	}
+    public Iterable<Facet> getFacets()
+    {
+        return Collections.emptyList();
+    }
 
-	public Set<DerivationMethod> getFinal()
-	{
-		return Collections.emptySet();
-	}
+    public Set<DerivationMethod> getFinal()
+    {
+        return Collections.emptySet();
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.DECIMAL;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.DECIMAL;
+    }
 
-	public Iterable<Pattern> getPatterns()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Iterable<Pattern> getPatterns()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public ScopeExtent getScopeExtent()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public ScopeExtent getScopeExtent()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public WhiteSpacePolicy getWhiteSpacePolicy()
-	{
-		return WhiteSpacePolicy.COLLAPSE;
-	}
+    public WhiteSpacePolicy getWhiteSpacePolicy()
+    {
+        return WhiteSpacePolicy.COLLAPSE;
+    }
 
-	public boolean hasEnumerations()
-	{
-		return false;
-	}
+    public boolean hasEnumerations()
+    {
+        return false;
+    }
 
-	public boolean hasFacetOfKind(final FacetKind facetKind)
-	{
-		return false;
-	}
+    public boolean hasFacetOfKind(final FacetKind facetKind)
+    {
+        return false;
+    }
 
-	public boolean hasFacets()
-	{
-		return false;
-	}
+    public boolean hasFacets()
+    {
+        return false;
+    }
 
-	public boolean hasPatterns()
-	{
-		return false;
-	}
+    public boolean hasPatterns()
+    {
+        return false;
+    }
 
-	public boolean isAbstract()
-	{
-		return false;
-	}
+    public boolean isAbstract()
+    {
+        return false;
+    }
 
-	public boolean isID()
-	{
-		return false;
-	}
+    public boolean isID()
+    {
+        return false;
+    }
 
-	public boolean isIDREF()
-	{
-		return false;
-	}
+    public boolean isIDREF()
+    {
+        return false;
+    }
 
-	public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
-	{
-		try
-		{
-			final String trimmed = scale(trim(initialValue), false, this);
+    public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
+    {
+        try
+        {
+            final String trimmed = scale(trim(initialValue), false, this);
 
-			if (0 == trimmed.length())
-			{
-				throw new DatatypeException(initialValue, this);
-			}
-			else
-			{
-				return atomBridge.wrapAtom(atomBridge.createDecimal(new BigDecimal(trimmed)));
-			}
-		}
-		catch (final NumberFormatException e)
-		{
-			throw new DatatypeException(initialValue, this);
-		}
-	}
+            if (0 == trimmed.length())
+            {
+                throw new DatatypeException(initialValue, this);
+            }
+            else
+            {
+                return atomBridge.wrapAtom(atomBridge.createDecimal(new BigDecimal(trimmed)));
+            }
+        }
+        catch (final NumberFormatException e)
+        {
+            throw new DatatypeException(initialValue, this);
+        }
+    }
 
-	public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	private static String scale(String value, boolean allowExponential, final SimpleType type) throws DatatypeException
-	{
-		int exponential = value.indexOf('e');
-		if (exponential < 0)
-		{
-			exponential = value.indexOf('E');
-		}
+    private static String scale(String value, boolean allowExponential, final SimpleType type) throws DatatypeException
+    {
+        int exponential = value.indexOf('e');
+        if (exponential < 0)
+        {
+            exponential = value.indexOf('E');
+        }
 
-		boolean hasExponential = exponential >= 0;
-		if (!allowExponential && hasExponential)
-		{
-			throw new DatatypeException(value, type);
-		}
-		int dotIdx = value.indexOf('.');
-		if (dotIdx >= 0 && (!hasExponential || dotIdx < exponential))
-		{
-			int last = (hasExponential ? exponential : value.length()) - 1;
-			if (value.charAt(last) == '0')
-			{
-				do
-				{
-					last--;
-				}
-				while (value.charAt(last) == '0');
-				if (value.charAt(last) == '.')
-				{
-					last--;
-					if (last < 0)
-					{
-						last = 0;
-						value = '0' + value;
-						if (exponential > 0)
-						{
-							exponential++;
-						}
-					}
-				}
-				if (hasExponential)
-				{
-					value = value.substring(0, last + 1) + value.substring(exponential);
-				}
-				else
-				{
-					value = value.substring(0, last + 1);
-				}
-			}
-		}
-		return value;
-	}
+        boolean hasExponential = exponential >= 0;
+        if (!allowExponential && hasExponential)
+        {
+            throw new DatatypeException(value, type);
+        }
+        int dotIdx = value.indexOf('.');
+        if (dotIdx >= 0 && (!hasExponential || dotIdx < exponential))
+        {
+            int last = (hasExponential ? exponential : value.length()) - 1;
+            if (value.charAt(last) == '0')
+            {
+                do
+                {
+                    last--;
+                }
+                while (value.charAt(last) == '0');
+                if (value.charAt(last) == '.')
+                {
+                    last--;
+                    if (last < 0)
+                    {
+                        last = 0;
+                        value = '0' + value;
+                        if (exponential > 0)
+                        {
+                            exponential++;
+                        }
+                    }
+                }
+                if (hasExponential)
+                {
+                    value = value.substring(0, last + 1) + value.substring(exponential);
+                }
+                else
+                {
+                    value = value.substring(0, last + 1);
+                }
+            }
+        }
+        return value;
+    }
 }

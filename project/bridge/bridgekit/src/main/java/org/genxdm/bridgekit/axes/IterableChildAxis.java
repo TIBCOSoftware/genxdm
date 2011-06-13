@@ -29,17 +29,17 @@ import org.genxdm.exceptions.PreCondition;
  */
 public final class IterableChildAxis<N> implements Iterable<N>
 {
-	private final N origin;
-	private final Model<N> navigator;
+    private final N origin;
+    private final Model<N> navigator;
 
-	public IterableChildAxis(final N origin, final Model<N> navigator)
-	{
-		this.origin = PreCondition.assertArgumentNotNull(origin, "origin");
-		this.navigator = PreCondition.assertArgumentNotNull(navigator, "navigator");
-	}
+    public IterableChildAxis(final N origin, final Model<N> navigator)
+    {
+        this.origin = PreCondition.assertArgumentNotNull(origin, "origin");
+        this.navigator = PreCondition.assertArgumentNotNull(navigator, "navigator");
+    }
 
-	public Iterator<N> iterator()
-	{
-		return new IteratorChildAxis<N>(origin, navigator);
-	}
+    public Iterator<N> iterator()
+    {
+        return new IteratorChildAxis<N>(origin, navigator);
+    }
 }

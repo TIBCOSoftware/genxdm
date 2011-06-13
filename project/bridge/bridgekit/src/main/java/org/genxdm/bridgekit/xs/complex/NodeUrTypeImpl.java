@@ -24,58 +24,58 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 final class NodeUrTypeImpl implements NodeUrType
 {
-	public NodeUrTypeImpl()
-	{
-	}
+    public NodeUrTypeImpl()
+    {
+    }
 
-	public PrimeType prime()
-	{
-		return this;
-	}
+    public PrimeType prime()
+    {
+        return this;
+    }
 
-	public Quantifier quantifier()
-	{
-		return Quantifier.EXACTLY_ONE;
-	}
+    public Quantifier quantifier()
+    {
+        return Quantifier.EXACTLY_ONE;
+    }
 
-	public boolean isNone()
-	{
-		return false;
-	}
+    public boolean isNone()
+    {
+        return false;
+    }
 
-	public boolean subtype(final PrimeType rhs)
-	{
-		return rhs.quantifier().contains(Quantifier.EMPTY);
-	}
+    public boolean subtype(final PrimeType rhs)
+    {
+        return rhs.quantifier().contains(Quantifier.EMPTY);
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return PrimeTypeKind.NODE;
-	}
+    public PrimeTypeKind getKind()
+    {
+        return PrimeTypeKind.NODE;
+    }
 
-	public boolean isNative()
-	{
-		return false;
-	}
+    public boolean isNative()
+    {
+        return false;
+    }
 
-	public boolean isChoice()
-	{
-		return false;
-	}
+    public boolean isChoice()
+    {
+        return false;
+    }
 
-	public SequenceType atomSet()
-	{
-		return this;
-	}
+    public SequenceType atomSet()
+    {
+        return this;
+    }
 
-	@Override
-	public String toString()
-	{
-		return "node()";
-	}
+    @Override
+    public String toString()
+    {
+        return "node()";
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 }

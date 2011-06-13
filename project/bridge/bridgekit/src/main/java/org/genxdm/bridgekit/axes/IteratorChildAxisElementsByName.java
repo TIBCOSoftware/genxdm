@@ -22,58 +22,58 @@ import org.genxdm.Model;
 
 final class IteratorChildAxisElementsByName<N> implements Iterator<N>
 {
-	private N m_pending;
-	private final String m_namespaceURI;
-	private final String m_localName;
-	private final Model<N> m_model;
+    private N m_pending;
+    private final String m_namespaceURI;
+    private final String m_localName;
+    private final Model<N> m_model;
 
-	public IteratorChildAxisElementsByName(final N origin, final String namespaceURI, final String localName, final Model<N> model)
-	{
-		this.m_model = model;
-		this.m_namespaceURI = namespaceURI;
-		this.m_localName = localName;
-		this.m_pending = getNextElementByName(model.getFirstChild(origin), namespaceURI, localName, model);
-	}
+    public IteratorChildAxisElementsByName(final N origin, final String namespaceURI, final String localName, final Model<N> model)
+    {
+        this.m_model = model;
+        this.m_namespaceURI = namespaceURI;
+        this.m_localName = localName;
+        this.m_pending = getNextElementByName(model.getFirstChild(origin), namespaceURI, localName, model);
+    }
 
-	public boolean hasNext()
-	{
-		return (null != m_pending);
-	}
+    public boolean hasNext()
+    {
+        return (null != m_pending);
+    }
 
-	public N next() throws NoSuchElementException
-	{
-		if (m_pending != null)
-		{
-			final N last = m_pending;
-			m_pending = getNextElementByName(m_model.getNextSibling(m_pending), m_namespaceURI, m_localName, m_model);
-			return last;
-		}
-		else
-		{
-			// The iteration has no more elements.
-			throw new NoSuchElementException();
-		}
-	}
+    public N next() throws NoSuchElementException
+    {
+        if (m_pending != null)
+        {
+            final N last = m_pending;
+            m_pending = getNextElementByName(m_model.getNextSibling(m_pending), m_namespaceURI, m_localName, m_model);
+            return last;
+        }
+        else
+        {
+            // The iteration has no more elements.
+            throw new NoSuchElementException();
+        }
+    }
 
-	public void remove()
-	{
-		throw new UnsupportedOperationException();
-	}
+    public void remove()
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	private static <N> N getNextElementByName(final N initial, final String namespaceURI, final String localName, final Model<N> model)
-	{
-		N candidate = initial;
-		while (null != candidate)
-		{
-			if (model.isElement(candidate) && model.matches(candidate, namespaceURI, localName))
-			{
-				return candidate;
-			}
-			else
-			{
-				candidate = model.getNextSibling(candidate);
-			}
-		}
-		return null;
-	}
+    private static <N> N getNextElementByName(final N initial, final String namespaceURI, final String localName, final Model<N> model)
+    {
+        N candidate = initial;
+        while (null != candidate)
+        {
+            if (model.isElement(candidate) && model.matches(candidate, namespaceURI, localName))
+            {
+                return candidate;
+            }
+            else
+            {
+                candidate = model.getNextSibling(candidate);
+            }
+        }
+        return null;
+    }
 }

@@ -27,66 +27,66 @@ import org.genxdm.xs.types.SimpleType;
 
 public final class FacetFractionDigitsImpl extends FacetImpl implements FractionDigits
 {
-	private final int fractionDigits;
+    private final int fractionDigits;
 
-	public FacetFractionDigitsImpl(final int fractionDigits, final boolean isFixed)
-	{
-		super(isFixed);
-		this.fractionDigits = fractionDigits;
-	}
+    public FacetFractionDigitsImpl(final int fractionDigits, final boolean isFixed)
+    {
+        super(isFixed);
+        this.fractionDigits = fractionDigits;
+    }
 
-	public FacetKind getKind()
-	{
-		return FacetKind.FractionDigits;
-	}
+    public FacetKind getKind()
+    {
+        return FacetKind.FractionDigits;
+    }
 
-	public int getFractionDigits()
-	{
-		return fractionDigits;
-	}
+    public int getFractionDigits()
+    {
+        return fractionDigits;
+    }
 
-	public <A> void validate(final List<? extends A> actualValue, final SimpleType simpleType, AtomBridge<A> atomBridge) throws FacetException
-	{
-		for (final A atom : actualValue)
-		{
-			if (fractionDigits(atom, atomBridge) > fractionDigits)
-			{
-				final String displayString = atomBridge.getC14NString(actualValue);
-				throw new FacetFractionDigitsException(displayString, this);
-			}
-		}
-	}
+    public <A> void validate(final List<? extends A> actualValue, final SimpleType simpleType, AtomBridge<A> atomBridge) throws FacetException
+    {
+        for (final A atom : actualValue)
+        {
+            if (fractionDigits(atom, atomBridge) > fractionDigits)
+            {
+                final String displayString = atomBridge.getC14NString(actualValue);
+                throw new FacetFractionDigitsException(displayString, this);
+            }
+        }
+    }
 
-	private static <A> int fractionDigits(final A atom, final AtomBridge<A> atomBridge)
-	{
-		final NativeType nativeType = atomBridge.getNativeType(atom);
-		if (nativeType.isInteger())
-		{
-			return 0;
-		}
-		else if (nativeType.isDecimal())
-		{
-			final String s = atomBridge.getC14NForm(atom);
-			if (s.endsWith(".0"))
-			{
-				return 0;
-			}
-			else
-			{
-				final int decimalPoint = s.indexOf('.');
-				if (decimalPoint >= 0)
-				{
-					return s.length() - decimalPoint - 1;
-				}
-				else
-				{
-					throw new AssertionError(nativeType);
-				}
-			}
-		}
-		else
-		{
-			throw new AssertionError(nativeType);
-		}
-	}
+    private static <A> int fractionDigits(final A atom, final AtomBridge<A> atomBridge)
+    {
+        final NativeType nativeType = atomBridge.getNativeType(atom);
+        if (nativeType.isInteger())
+        {
+            return 0;
+        }
+        else if (nativeType.isDecimal())
+        {
+            final String s = atomBridge.getC14NForm(atom);
+            if (s.endsWith(".0"))
+            {
+                return 0;
+            }
+            else
+            {
+                final int decimalPoint = s.indexOf('.');
+                if (decimalPoint >= 0)
+                {
+                    return s.length() - decimalPoint - 1;
+                }
+                else
+                {
+                    throw new AssertionError(nativeType);
+                }
+            }
+        }
+        else
+        {
+            throw new AssertionError(nativeType);
+        }
+    }
 }

@@ -21,13 +21,13 @@ import org.genxdm.typed.types.Emulation;
 
 public class CanonicalCastingContext implements CastingContext
 {
-	public Emulation getEmulation()
-	{
-		return Emulation.C14N;
-	}
+    public Emulation getEmulation()
+    {
+        return Emulation.C14N;
+    }
 
-	public SpillagePolicy getSpillagePolicy()
-	{
-		return SpillagePolicy.DO_THE_RIGHT_THING;
-	}
+    public SpillagePolicy getSpillagePolicy()
+    {
+        return SpillagePolicy.DO_THE_RIGHT_THING;
+    }
 }

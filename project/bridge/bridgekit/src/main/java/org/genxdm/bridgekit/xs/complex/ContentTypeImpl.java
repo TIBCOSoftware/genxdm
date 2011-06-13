@@ -23,77 +23,77 @@ import org.genxdm.xs.types.SimpleType;
 
 public final class ContentTypeImpl implements ContentType
 {
-	private ModelGroupUse contentModel;
-	private ContentTypeKind kind;
-	private SimpleType simpleType;
+    private ModelGroupUse contentModel;
+    private ContentTypeKind kind;
+    private SimpleType simpleType;
 
-	public ContentTypeImpl()
-	{
-		this.kind = ContentTypeKind.Empty;
-		this.simpleType = null;
-		this.contentModel = null;
-	}
+    public ContentTypeImpl()
+    {
+        this.kind = ContentTypeKind.Empty;
+        this.simpleType = null;
+        this.contentModel = null;
+    }
 
-	public ContentTypeImpl(final boolean mixed, final ModelGroupUse contentModel)
-	{
-		this.kind = mixed ? ContentTypeKind.Mixed : ContentTypeKind.ElementOnly;
-		this.simpleType = null;
-		this.contentModel = PreCondition.assertArgumentNotNull(contentModel, "contentModel");
-	}
+    public ContentTypeImpl(final boolean mixed, final ModelGroupUse contentModel)
+    {
+        this.kind = mixed ? ContentTypeKind.Mixed : ContentTypeKind.ElementOnly;
+        this.simpleType = null;
+        this.contentModel = PreCondition.assertArgumentNotNull(contentModel, "contentModel");
+    }
 
-	public ContentTypeImpl(final SimpleType simpleType)
-	{
-		this.kind = ContentTypeKind.Simple;
-		this.simpleType = PreCondition.assertArgumentNotNull(simpleType, "simpleType");
-		this.contentModel = null;
-	}
+    public ContentTypeImpl(final SimpleType simpleType)
+    {
+        this.kind = ContentTypeKind.Simple;
+        this.simpleType = PreCondition.assertArgumentNotNull(simpleType, "simpleType");
+        this.contentModel = null;
+    }
 
-	public void copyTo(final ContentTypeImpl destination)
-	{
-		destination.kind = kind;
-		destination.simpleType = simpleType;
-		destination.contentModel = contentModel;
-	}
+    public void copyTo(final ContentTypeImpl destination)
+    {
+        destination.kind = kind;
+        destination.simpleType = simpleType;
+        destination.contentModel = contentModel;
+    }
 
-	public ModelGroupUse getContentModel() throws AssertionError
-	{
-		PreCondition.assertTrue(isMixed() || isElementOnly(), "isMixed() || isElementOnly()");
-		return contentModel;
-	}
+    public ModelGroupUse getContentModel() throws AssertionError
+    {
+        PreCondition.assertTrue(isMixed() || isElementOnly(), "isMixed() || isElementOnly()");
+        return contentModel;
+    }
 
-	public ContentTypeKind getKind()
-	{
-		return PreCondition.assertArgumentNotNull(kind, "kind");
-	}
+    public ContentTypeKind getKind()
+    {
+        return PreCondition.assertArgumentNotNull(kind, "kind");
+    }
 
-	public SimpleType getSimpleType() throws AssertionError
-	{
-		PreCondition.assertTrue(isSimple(), "isSimple()");
-		return simpleType;
-	}
+    public SimpleType getSimpleType() throws AssertionError
+    {
+        PreCondition.assertTrue(isSimple(), "isSimple()");
+        return simpleType;
+    }
 
-	public boolean isComplex()
-	{
-		return kind.isComplex();
-	}
+    public boolean isComplex()
+    {
+        return kind.isComplex();
+    }
 
-	public boolean isElementOnly()
-	{
-		return kind.isElementOnly();
-	}
+    public boolean isElementOnly()
+    {
+        return kind.isElementOnly();
+    }
 
-	public boolean isEmpty()
-	{
-		return kind.isEmpty();
-	}
+    public boolean isEmpty()
+    {
+        return kind.isEmpty();
+    }
 
-	public boolean isMixed()
-	{
-		return kind.isMixed();
-	}
+    public boolean isMixed()
+    {
+        return kind.isMixed();
+    }
 
-	public boolean isSimple()
-	{
-		return kind.isSimple();
-	}
+    public boolean isSimple()
+    {
+        return kind.isSimple();
+    }
 }

@@ -22,5 +22,5 @@ import org.genxdm.xs.exceptions.AtomCastException;
  */
 public interface ValueComparator<A>
 {
-	boolean compare(A lhsAtom) throws AtomCastException;
+    boolean compare(A lhsAtom) throws AtomCastException;
 }

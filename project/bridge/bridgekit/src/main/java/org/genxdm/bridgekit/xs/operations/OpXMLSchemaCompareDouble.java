@@ -19,44 +19,44 @@ import org.genxdm.typed.types.AtomBridge;
 
 public final class OpXMLSchemaCompareDouble<A> implements ValueComparator<A>
 {
-	private final OpXMLSchemaCompare m_opcode;
-	private final double doubleR;
-	private final AtomBridge<A> atomBridge;
+    private final OpXMLSchemaCompare m_opcode;
+    private final double doubleR;
+    private final AtomBridge<A> atomBridge;
 
-	public OpXMLSchemaCompareDouble(final OpXMLSchemaCompare opcode, final A rhsAtom, final AtomBridge<A> atomBridge)
-	{
-		this.m_opcode = opcode;
-		this.doubleR = atomBridge.getDouble(rhsAtom);
-		this.atomBridge = atomBridge;
+    public OpXMLSchemaCompareDouble(final OpXMLSchemaCompare opcode, final A rhsAtom, final AtomBridge<A> atomBridge)
+    {
+        this.m_opcode = opcode;
+        this.doubleR = atomBridge.getDouble(rhsAtom);
+        this.atomBridge = atomBridge;
 
-	}
+    }
 
-	public boolean compare(final A lhs)
-	{
-		final double doubleL = atomBridge.getDouble(lhs);
+    public boolean compare(final A lhs)
+    {
+        final double doubleL = atomBridge.getDouble(lhs);
 
-		switch (m_opcode)
-		{
-			case Gt:
-			{
-				return doubleL > doubleR;
-			}
-			case Ge:
-			{
-				return doubleL >= doubleR;
-			}
-			case Lt:
-			{
-				return doubleL < doubleR;
-			}
-			case Le:
-			{
-				return doubleL <= doubleR;
-			}
-			default:
-			{
-				throw new AssertionError(m_opcode);
-			}
-		}
-	}
+        switch (m_opcode)
+        {
+            case Gt:
+            {
+                return doubleL > doubleR;
+            }
+            case Ge:
+            {
+                return doubleL >= doubleR;
+            }
+            case Lt:
+            {
+                return doubleL < doubleR;
+            }
+            case Le:
+            {
+                return doubleL <= doubleR;
+            }
+            default:
+            {
+                throw new AssertionError(m_opcode);
+            }
+        }
+    }
 }

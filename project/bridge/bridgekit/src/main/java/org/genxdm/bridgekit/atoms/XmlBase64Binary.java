@@ -25,52 +25,52 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlBase64Binary extends XmlAbstractAtom
 {
-	private final byte[] bytes;
+    private final byte[] bytes;
 
-	public XmlBase64Binary(final byte[] bytes)
-	{
-		this.bytes = PreCondition.assertArgumentNotNull(bytes, "bytes");
-	}
+    public XmlBase64Binary(final byte[] bytes)
+    {
+        this.bytes = PreCondition.assertArgumentNotNull(bytes, "bytes");
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof XmlBase64Binary)
-		{
-			return Arrays.equals(bytes, ((XmlBase64Binary)obj).getByteArrayValue());
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof XmlBase64Binary)
+        {
+            return Arrays.equals(bytes, ((XmlBase64Binary)obj).getByteArrayValue());
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	/**
-	 * Returns this value as a byte array.
-	 */
-	public byte[] getByteArrayValue()
-	{
-		return bytes;
-	}
+    /**
+     * Returns this value as a byte array.
+     */
+    public byte[] getByteArrayValue()
+    {
+        return bytes;
+    }
 
-	public String getC14NForm()
-	{
-		return Base64BinarySupport.encodeBase64(bytes, true);
-	}
+    public String getC14NForm()
+    {
+        return Base64BinarySupport.encodeBase64(bytes, true);
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.BASE64_BINARY;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.BASE64_BINARY;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return bytes.hashCode();
-	}
+    @Override
+    public int hashCode()
+    {
+        return bytes.hashCode();
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 }

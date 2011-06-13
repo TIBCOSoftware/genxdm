@@ -25,51 +25,51 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlDuration extends XmlAbstractAtom
 {
-	private final int months;
-	private final BigDecimal seconds;
+    private final int months;
+    private final BigDecimal seconds;
 
-	public XmlDuration(final int months, final BigDecimal seconds)
-	{
-		this.months = months;
-		this.seconds = PreCondition.assertArgumentNotNull(seconds, "seconds");
-	}
+    public XmlDuration(final int months, final BigDecimal seconds)
+    {
+        this.months = months;
+        this.seconds = PreCondition.assertArgumentNotNull(seconds, "seconds");
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof XmlDuration)
-		{
-			final XmlDuration other = (XmlDuration)obj;
-			return months == other.getTotalMonthsValue() && seconds.equals(other.getTotalSecondsValue());
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof XmlDuration)
+        {
+            final XmlDuration other = (XmlDuration)obj;
+            return months == other.getTotalMonthsValue() && seconds.equals(other.getTotalSecondsValue());
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return DurationSupport.formatDurationC14N(seconds, months);
-	}
+    public String getC14NForm()
+    {
+        return DurationSupport.formatDurationC14N(seconds, months);
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.DURATION;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.DURATION;
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 
-	public int getTotalMonthsValue()
-	{
-		return months;
-	}
+    public int getTotalMonthsValue()
+    {
+        return months;
+    }
 
-	public BigDecimal getTotalSecondsValue()
-	{
-		return seconds;
-	}
+    public BigDecimal getTotalSecondsValue()
+    {
+        return seconds;
+    }
 }

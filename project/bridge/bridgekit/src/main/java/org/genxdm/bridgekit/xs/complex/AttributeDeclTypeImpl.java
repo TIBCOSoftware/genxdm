@@ -30,83 +30,83 @@ import org.genxdm.xs.types.SimpleType;
 
 public final class AttributeDeclTypeImpl extends DataComponentImpl implements AttributeDefinition
 {
-	private SimpleMarkerType m_type;
+    private SimpleMarkerType m_type;
 
-	public AttributeDeclTypeImpl(final QName name, final ScopeExtent scope, final SimpleMarkerType type)
-	{
-		super(name, scope);
-		this.m_type = PreCondition.assertArgumentNotNull(type, "type");
-	}
+    public AttributeDeclTypeImpl(final QName name, final ScopeExtent scope, final SimpleMarkerType type)
+    {
+        super(name, scope);
+        this.m_type = PreCondition.assertArgumentNotNull(type, "type");
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return PrimeTypeKind.SCHEMA_ATTRIBUTE;
-	}
+    public PrimeTypeKind getKind()
+    {
+        return PrimeTypeKind.SCHEMA_ATTRIBUTE;
+    }
 
-	public NodeKind getNodeKind()
-	{
-		return NodeKind.ATTRIBUTE;
-	}
+    public NodeKind getNodeKind()
+    {
+        return NodeKind.ATTRIBUTE;
+    }
 
-	public SimpleMarkerType getType()
-	{
-		return m_type;
-	}
+    public SimpleMarkerType getType()
+    {
+        return m_type;
+    }
 
-	public boolean isChoice()
-	{
-		return false;
-	}
+    public boolean isChoice()
+    {
+        return false;
+    }
 
-	public boolean isNative()
-	{
-		// This is a schema-attribute.
-		return false;
-	}
+    public boolean isNative()
+    {
+        // This is a schema-attribute.
+        return false;
+    }
 
-	public boolean isNone()
-	{
-		return false;
-	}
+    public boolean isNone()
+    {
+        return false;
+    }
 
-	public PrimeType prime()
-	{
-		return this;
-	}
+    public PrimeType prime()
+    {
+        return this;
+    }
 
-	public Quantifier quantifier()
-	{
-		return Quantifier.EXACTLY_ONE;
-	}
+    public Quantifier quantifier()
+    {
+        return Quantifier.EXACTLY_ONE;
+    }
 
-	public void setType(final SimpleType type)
-	{
-		assertNotLocked();
-		m_type = PreCondition.assertArgumentNotNull(type, "type");
-	}
+    public void setType(final SimpleType type)
+    {
+        assertNotLocked();
+        m_type = PreCondition.assertArgumentNotNull(type, "type");
+    }
 
-	public boolean subtype(final PrimeType rhs)
-	{
-		if (rhs instanceof AttributeDefinition)
-		{
-			AttributeDefinition rhsAttDecl = (AttributeDefinition)rhs;
-			if (rhsAttDecl.getScopeExtent() == ScopeExtent.Global)
-			{
-				if (getName().equals(rhsAttDecl.getName()))
-				{
-					return true;
-				}
-			}
-			else
-			{
-				return rhs == this;
-			}
-		}
-		return false;
-	}
+    public boolean subtype(final PrimeType rhs)
+    {
+        if (rhs instanceof AttributeDefinition)
+        {
+            AttributeDefinition rhsAttDecl = (AttributeDefinition)rhs;
+            if (rhsAttDecl.getScopeExtent() == ScopeExtent.Global)
+            {
+                if (getName().equals(rhsAttDecl.getName()))
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return rhs == this;
+            }
+        }
+        return false;
+    }
 }

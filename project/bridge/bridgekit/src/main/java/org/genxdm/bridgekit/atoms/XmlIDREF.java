@@ -23,53 +23,53 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlIDREF extends XmlAbstractAtom
 {
-	private final String value;
+    private final String value;
 
-	public XmlIDREF(final String value)
-	{
-		this.value = PreCondition.assertArgumentNotNull(value, "value");
-	}
+    public XmlIDREF(final String value)
+    {
+        this.value = PreCondition.assertArgumentNotNull(value, "value");
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		else if (obj instanceof XmlIDREF)
-		{
-			return value.equals(((XmlIDREF)obj).value);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        else if (obj instanceof XmlIDREF)
+        {
+            return value.equals(((XmlIDREF)obj).value);
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return value;
-	}
+    public String getC14NForm()
+    {
+        return value;
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.IDREF;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.IDREF;
+    }
 
-	public String getString()
-	{
-		return value;
-	}
+    public String getString()
+    {
+        return value;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return value.hashCode();
-	}
+    @Override
+    public int hashCode()
+    {
+        return value.hashCode();
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 }

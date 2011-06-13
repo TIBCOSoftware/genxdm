@@ -25,100 +25,100 @@ import org.genxdm.exceptions.PreCondition;
 
 final class IteratorPrecedingAxis<N> implements Iterator<N>
 {
-	private N m_next;
-	private N m_exclude;
-	private final Model<N> navigator;
+    private N m_next;
+    private N m_exclude;
+    private final Model<N> navigator;
 
-	public IteratorPrecedingAxis(final N origin, final Model<N> navigator)
-	{
-		this.navigator = PreCondition.assertArgumentNotNull(navigator);
-		m_next = prime(origin);
-	}
+    public IteratorPrecedingAxis(final N origin, final Model<N> navigator)
+    {
+        this.navigator = PreCondition.assertArgumentNotNull(navigator);
+        m_next = prime(origin);
+    }
 
-	public boolean hasNext()
-	{
-		return (null != m_next);
-	}
+    public boolean hasNext()
+    {
+        return (null != m_next);
+    }
 
-	public N next() throws NoSuchElementException
-	{
-		if (m_next != null)
-		{
-			final N last = m_next;
+    public N next() throws NoSuchElementException
+    {
+        if (m_next != null)
+        {
+            final N last = m_next;
 
-			m_next = next(m_next);
+            m_next = next(m_next);
 
-			return last;
-		}
-		else
-		{
-			// The iteration has no more elements.
-			throw new NoSuchElementException();
-		}
-	}
+            return last;
+        }
+        else
+        {
+            // The iteration has no more elements.
+            throw new NoSuchElementException();
+        }
+    }
 
-	public void remove()
-	{
-		throw new UnsupportedOperationException();
-	}
+    public void remove()
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	private N prime(final N origin)
-	{
-		if (navigator.isAttribute(origin) || navigator.isNamespace(origin))
-		{
-			final N parent = navigator.getParent(origin);
-			if (null != parent)
-			{
-				m_exclude = navigator.getParent(parent);
-				return next(parent);
-			}
-			else
-			{
-				return null;
-			}
-		}
-		else
-		{
-			m_exclude = navigator.getParent(origin);
-			return next(origin);
-		}
-	}
+    private N prime(final N origin)
+    {
+        if (navigator.isAttribute(origin) || navigator.isNamespace(origin))
+        {
+            final N parent = navigator.getParent(origin);
+            if (null != parent)
+            {
+                m_exclude = navigator.getParent(parent);
+                return next(parent);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        else
+        {
+            m_exclude = navigator.getParent(origin);
+            return next(origin);
+        }
+    }
 
-	private N next(final N current)
-	{
-		N candidate = navigator.getPreviousSibling(current);
-		if (null != candidate)
-		{
-			// Return the deepest and last node starting from this one.
-			N result = candidate;
-			candidate = navigator.getLastChild(result);
-			while (null != candidate)
-			{
-				result = candidate;
-				candidate = navigator.getLastChild(result);
-			}
-			return result;
-		}
-		else
-		{
-			candidate = navigator.getParent(current);
-			if (candidate != null)
-			{
-				if (!Ordering.isSameNode(candidate, m_exclude, navigator))
-				{
-					return candidate;
-				}
-				else
-				{
-					m_exclude = navigator.getParent(m_exclude);
-					return next(candidate);
-				}
-			}
-			else
-			{
-				// terminates.
-				return null;
-			}
-		}
-	}
+    private N next(final N current)
+    {
+        N candidate = navigator.getPreviousSibling(current);
+        if (null != candidate)
+        {
+            // Return the deepest and last node starting from this one.
+            N result = candidate;
+            candidate = navigator.getLastChild(result);
+            while (null != candidate)
+            {
+                result = candidate;
+                candidate = navigator.getLastChild(result);
+            }
+            return result;
+        }
+        else
+        {
+            candidate = navigator.getParent(current);
+            if (candidate != null)
+            {
+                if (!Ordering.isSameNode(candidate, m_exclude, navigator))
+                {
+                    return candidate;
+                }
+                else
+                {
+                    m_exclude = navigator.getParent(m_exclude);
+                    return next(candidate);
+                }
+            }
+            else
+            {
+                // terminates.
+                return null;
+            }
+        }
+    }
 }

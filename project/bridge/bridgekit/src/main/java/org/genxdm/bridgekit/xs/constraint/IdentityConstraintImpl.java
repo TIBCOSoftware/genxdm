@@ -28,62 +28,62 @@ import org.genxdm.xs.enums.ScopeExtent;
 
 public final class IdentityConstraintImpl extends NamedComponentImpl implements IdentityConstraint
 {
-	private final IdentityConstraintKind m_category;
-	private final List<RestrictedXPath> m_fields;
-	private final IdentityConstraint m_keyConstraint;
-	private final QName m_name;
-	private final RestrictedXPath m_selector;
+    private final IdentityConstraintKind m_category;
+    private final List<RestrictedXPath> m_fields;
+    private final IdentityConstraint m_keyConstraint;
+    private final QName m_name;
+    private final RestrictedXPath m_selector;
 
-	public IdentityConstraintImpl(final QName name, final IdentityConstraintKind category, final RestrictedXPath selector, final List<RestrictedXPath> fields, final IdentityConstraint keyConstraint)
-	{
-		super(name, false, ScopeExtent.Global);
-		m_name = PreCondition.assertArgumentNotNull(name, "name");
-		m_category = PreCondition.assertArgumentNotNull(category, "category");
-		m_selector = PreCondition.assertArgumentNotNull(selector, "selector");
-		m_fields = PreCondition.assertArgumentNotNull(fields, "fields");
-		m_keyConstraint = keyConstraint;
-	}
+    public IdentityConstraintImpl(final QName name, final IdentityConstraintKind category, final RestrictedXPath selector, final List<RestrictedXPath> fields, final IdentityConstraint keyConstraint)
+    {
+        super(name, false, ScopeExtent.Global);
+        m_name = PreCondition.assertArgumentNotNull(name, "name");
+        m_category = PreCondition.assertArgumentNotNull(category, "category");
+        m_selector = PreCondition.assertArgumentNotNull(selector, "selector");
+        m_fields = PreCondition.assertArgumentNotNull(fields, "fields");
+        m_keyConstraint = keyConstraint;
+    }
 
-	public IdentityConstraintKind getCategory()
-	{
-		return m_category;
-	}
+    public IdentityConstraintKind getCategory()
+    {
+        return m_category;
+    }
 
-	public List<RestrictedXPath> getFields()
-	{
-		return m_fields;
-	}
+    public List<RestrictedXPath> getFields()
+    {
+        return m_fields;
+    }
 
-	public IdentityConstraint getKeyConstraint()
-	{
-		return m_keyConstraint;
-	}
+    public IdentityConstraint getKeyConstraint()
+    {
+        return m_keyConstraint;
+    }
 
-	public RestrictedXPath getSelector()
-	{
-		return m_selector;
-	}
+    public RestrictedXPath getSelector()
+    {
+        return m_selector;
+    }
 
-	public boolean sameAs(final IdentityConstraint constraint)
-	{
-		PreCondition.assertArgumentNotNull(constraint, "constraint");
-		if (this == constraint)
-		{
-			return true;
-		}
-		else
-		{
-			return getName().equals(constraint.getName());
-		}
-	}
+    public boolean sameAs(final IdentityConstraint constraint)
+    {
+        PreCondition.assertArgumentNotNull(constraint, "constraint");
+        if (this == constraint)
+        {
+            return true;
+        }
+        else
+        {
+            return getName().equals(constraint.getName());
+        }
+    }
 
-	@Override
-	public String toString()
-	{
-		final StringBuilder sb = new StringBuilder();
-		sb.append(m_category);
-		sb.append(":");
-		sb.append(m_name);
-		return sb.toString();
-	}
+    @Override
+    public String toString()
+    {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(m_category);
+        sb.append(":");
+        sb.append(m_name);
+        return sb.toString();
+    }
 }

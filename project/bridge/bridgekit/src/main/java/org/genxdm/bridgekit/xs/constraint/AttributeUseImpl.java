@@ -23,50 +23,50 @@ import org.genxdm.xs.constraints.ValueConstraint;
 
 public final class AttributeUseImpl extends LockableImpl implements AttributeUse
 {
-	private final AttributeDefinition m_attribute;
-	private final boolean m_isRequired;
+    private final AttributeDefinition m_attribute;
+    private final boolean m_isRequired;
 
-	/**
-	 * {value constraint} is mutable and default to <code>null</code>/
-	 */
-	private ValueConstraint m_valueConstraint = null;
+    /**
+     * {value constraint} is mutable and default to <code>null</code>/
+     */
+    private ValueConstraint m_valueConstraint = null;
 
-	public AttributeUseImpl(final boolean isRequired, final AttributeDefinition attribute)
-	{
-		m_isRequired = isRequired;
-		m_attribute = PreCondition.assertArgumentNotNull(attribute, "attribute");
-	}
+    public AttributeUseImpl(final boolean isRequired, final AttributeDefinition attribute)
+    {
+        m_isRequired = isRequired;
+        m_attribute = PreCondition.assertArgumentNotNull(attribute, "attribute");
+    }
 
-	public AttributeDefinition getAttribute()
-	{
-		return m_attribute;
-	}
+    public AttributeDefinition getAttribute()
+    {
+        return m_attribute;
+    }
 
-	public ValueConstraint getEffectiveValueConstraint()
-	{
-		if (null != m_valueConstraint)
-		{
-			return m_valueConstraint;
-		}
-		else
-		{
-			return m_attribute.getValueConstraint();
-		}
-	}
+    public ValueConstraint getEffectiveValueConstraint()
+    {
+        if (null != m_valueConstraint)
+        {
+            return m_valueConstraint;
+        }
+        else
+        {
+            return m_attribute.getValueConstraint();
+        }
+    }
 
-	public ValueConstraint getValueConstraint()
-	{
-		return m_valueConstraint;
-	}
+    public ValueConstraint getValueConstraint()
+    {
+        return m_valueConstraint;
+    }
 
-	public boolean isRequired()
-	{
-		return m_isRequired;
-	}
+    public boolean isRequired()
+    {
+        return m_isRequired;
+    }
 
-	public void setValueConstraint(final ValueConstraint valueConstraint)
-	{
-		assertNotLocked();
-		m_valueConstraint = valueConstraint;
-	}
+    public void setValueConstraint(final ValueConstraint valueConstraint)
+    {
+        assertNotLocked();
+        m_valueConstraint = valueConstraint;
+    }
 }

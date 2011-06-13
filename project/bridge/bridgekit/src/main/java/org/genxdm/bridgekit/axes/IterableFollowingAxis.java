@@ -30,17 +30,17 @@ import org.genxdm.exceptions.PreCondition;
  */
 public final class IterableFollowingAxis<N> implements Iterable<N>
 {
-	private final N m_origin;
-	private final Model<N> m_navigator;
+    private final N m_origin;
+    private final Model<N> m_navigator;
 
-	public IterableFollowingAxis(final N origin, final Model<N> navigator)
-	{
-		m_origin = PreCondition.assertArgumentNotNull(origin, "origin");
-		m_navigator = PreCondition.assertArgumentNotNull(navigator, "navigator");
-	}
+    public IterableFollowingAxis(final N origin, final Model<N> navigator)
+    {
+        m_origin = PreCondition.assertArgumentNotNull(origin, "origin");
+        m_navigator = PreCondition.assertArgumentNotNull(navigator, "navigator");
+    }
 
-	public Iterator<N> iterator()
-	{
-		return new IteratorFollowingAxis<N>(m_origin, m_navigator);
-	}
+    public Iterator<N> iterator()
+    {
+        return new IteratorFollowingAxis<N>(m_origin, m_navigator);
+    }
 }

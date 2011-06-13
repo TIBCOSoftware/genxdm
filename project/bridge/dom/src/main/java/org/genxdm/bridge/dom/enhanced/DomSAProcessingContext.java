@@ -24,8 +24,9 @@ import org.genxdm.bridge.dom.DomProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XmlAtomBridge;
 import org.genxdm.bridgekit.tree.CursorOnTypedModel;
-import org.genxdm.bridgekit.xs.MetaBridgeOnSchemaTypeBridgeAdapter;
-import org.genxdm.bridgekit.xs.SchemaTypeBridgeFactory;
+import org.genxdm.bridgekit.xs.SchemaCache;
+import org.genxdm.bridgekit.xs.SchemaCacheFactory;
+import org.genxdm.bridgekit.xs.TypesBridgeImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.Resolver;
 import org.genxdm.processor.io.ValidatingDocumentHandler;
@@ -36,11 +37,10 @@ import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.Validator;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.typed.types.MetaBridge;
+import org.genxdm.typed.types.TypesBridge;
 import org.genxdm.typed.variant.VariantBridge;
 import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.ComponentProvider;
-import org.genxdm.xs.SchemaTypeBridge;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
 import org.genxdm.xs.components.ElementDefinition;
@@ -57,8 +57,8 @@ public final class DomSAProcessingContext
     public DomSAProcessingContext(DomProcessingContext parent)
 	{
 		this.atomBridge = new XmlAtomBridge(this);
-		this.m_cache = new SchemaTypeBridgeFactory().newMetaBridge();
-		this.m_metaBridge = new MetaBridgeOnSchemaTypeBridgeAdapter(m_cache);
+		this.m_cache = new SchemaCacheFactory().newSchemaCache();
+		this.m_metaBridge = new TypesBridgeImpl(m_cache);
 		this.m_model = new DomSAModel(this);
 		this.parent = PreCondition.assertNotNull(parent);
 	}
@@ -142,7 +142,7 @@ public final class DomSAProcessingContext
         return m_metaBridge.getComponents();
     }
 
-	public MetaBridge getMetaBridge()
+	public TypesBridge getMetaBridge()
 	{
 		return m_metaBridge;
 	}
@@ -220,8 +220,8 @@ public final class DomSAProcessingContext
 
 	private final DomProcessingContext parent;
     private final XmlAtomBridge atomBridge;
-	private final SchemaTypeBridge m_cache;
-	private final MetaBridge m_metaBridge;
+	private final SchemaCache m_cache;
+	private final TypesBridge m_metaBridge;
 
 	private final DomSAModel m_model;
 

@@ -25,56 +25,56 @@ import org.genxdm.xs.types.NativeType;
  */
 public class XmlAnyURI extends XmlAbstractAtom
 {
-	private final URI value;
+    private final URI value;
 
-	public XmlAnyURI(final URI value)
-	{
-		this.value = PreCondition.assertArgumentNotNull(value, "value");
-	}
+    public XmlAnyURI(final URI value)
+    {
+        this.value = PreCondition.assertArgumentNotNull(value, "value");
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		else if (obj instanceof XmlAnyURI)
-		{
-			return value.equals(((XmlAnyURI)obj).value);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        else if (obj instanceof XmlAnyURI)
+        {
+            return value.equals(((XmlAnyURI)obj).value);
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return value.toString();
-	}
+    public String getC14NForm()
+    {
+        return value.toString();
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.ANY_URI;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.ANY_URI;
+    }
 
-	/**
-	 * Returns this value as a {@link URI}.
-	 */
-	public URI getURI()
-	{
-		return value;
-	}
+    /**
+     * Returns this value as a {@link URI}.
+     */
+    public URI getURI()
+    {
+        return value;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return value.hashCode();
-	}
+    @Override
+    public int hashCode()
+    {
+        return value.hashCode();
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 }

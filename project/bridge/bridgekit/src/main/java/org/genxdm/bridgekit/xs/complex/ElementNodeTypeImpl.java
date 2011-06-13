@@ -32,126 +32,126 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 public final class ElementNodeTypeImpl extends AbstractBranchNodeType implements ElementNodeType
 {
-	private final SequenceType m_dataType;
-	private final boolean m_nillable;
-	private final QName name;
+    private final SequenceType m_dataType;
+    private final boolean m_nillable;
+    private final QName name;
 
-	public ElementNodeTypeImpl(final QName name, final SequenceType dataType, final boolean nillable, final ComponentProvider cache)
-	{
-		super(NodeKind.ELEMENT, cache);
-		this.name = PreCondition.assertArgumentNotNull(name, "name");
-		if (null != dataType)
-		{
-			m_dataType = dataType;
-			m_nillable = nillable;
-		}
-		else
-		{
-			// Normalization as per formal semantics.
-			m_dataType = cache.getTypeDefinition(NativeType.ANY_TYPE);
-			m_nillable = (null != name);
-		}
-	}
+    public ElementNodeTypeImpl(final QName name, final SequenceType dataType, final boolean nillable, final ComponentProvider cache)
+    {
+        super(NodeKind.ELEMENT, cache);
+        this.name = PreCondition.assertArgumentNotNull(name, "name");
+        if (null != dataType)
+        {
+            m_dataType = dataType;
+            m_nillable = nillable;
+        }
+        else
+        {
+            // Normalization as per formal semantics.
+            m_dataType = cache.getTypeDefinition(NativeType.ANY_TYPE);
+            m_nillable = (null != name);
+        }
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return PrimeTypeKind.ELEMENT;
-	}
+    public PrimeTypeKind getKind()
+    {
+        return PrimeTypeKind.ELEMENT;
+    }
 
-	public String getLocalName()
-	{
-		if (null != name)
-		{
-			return name.getLocalPart();
-		}
-		else
-		{
-			return null;
-		}
-	}
+    public String getLocalName()
+    {
+        if (null != name)
+        {
+            return name.getLocalPart();
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	public QName getName()
-	{
-		return name;
-	}
+    public QName getName()
+    {
+        return name;
+    }
 
-	public ScopeExtent getScopeExtent()
-	{
-		return ScopeExtent.Global;
-	}
+    public ScopeExtent getScopeExtent()
+    {
+        return ScopeExtent.Global;
+    }
 
-	public String getTargetNamespace()
-	{
-		if (name != null)
-		{
-			return name.getNamespaceURI();
-		}
-		else
-		{
-			return null;
-		}
-	}
+    public String getTargetNamespace()
+    {
+        if (name != null)
+        {
+            return name.getNamespaceURI();
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	public SequenceType getType()
-	{
-		return m_dataType;
-	}
+    public SequenceType getType()
+    {
+        return m_dataType;
+    }
 
-	public boolean isAnonymous()
-	{
-		return false;
-	}
+    public boolean isAnonymous()
+    {
+        return false;
+    }
 
-	public boolean isNillable()
-	{
-		return m_nillable;
-	}
+    public boolean isNillable()
+    {
+        return m_nillable;
+    }
 
-	public ElementNodeType prime()
-	{
-		return this;
-	}
+    public ElementNodeType prime()
+    {
+        return this;
+    }
 
-	public boolean subtype(final PrimeType rhs)
-	{
-		switch (rhs.getKind())
-		{
-			case CHOICE:
-			{
-				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
-				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
-			}
-			case ELEMENT:
-			{
-				final ElementNodeType other = (ElementNodeType)rhs;
-				return QNameAsSet.subset(name, other.getName());
-			}
-			case SCHEMA_ELEMENT:
-			{
-				return false;
-			}
-			default:
-			{
-				return false;
-			}
-		}
-	}
+    public boolean subtype(final PrimeType rhs)
+    {
+        switch (rhs.getKind())
+        {
+            case CHOICE:
+            {
+                final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
+                return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
+            }
+            case ELEMENT:
+            {
+                final ElementNodeType other = (ElementNodeType)rhs;
+                return QNameAsSet.subset(name, other.getName());
+            }
+            case SCHEMA_ELEMENT:
+            {
+                return false;
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    }
 
-	@Override
-	public String toString()
-	{
-		if (m_nillable)
-		{
-			return "element " + name + " nillable of type " + m_dataType;
-		}
-		else
-		{
-			return "element " + name + " of type " + m_dataType;
-		}
-	}
+    @Override
+    public String toString()
+    {
+        if (m_nillable)
+        {
+            return "element " + name + " nillable of type " + m_dataType;
+        }
+        else
+        {
+            return "element " + name + " of type " + m_dataType;
+        }
+    }
 }

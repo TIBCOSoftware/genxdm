@@ -28,180 +28,180 @@ import org.genxdm.xs.types.NativeType;
  */
 public enum XmlBoolean implements XmlAtom
 {
-	FALSE(false), TRUE(true);
+    FALSE(false), TRUE(true);
 
-	public static XmlBoolean valueOf(final boolean booleanValue)
-	{
-		return booleanValue ? TRUE : FALSE;
-	}
+    public static XmlBoolean valueOf(final boolean booleanValue)
+    {
+        return booleanValue ? TRUE : FALSE;
+    }
 
-	private final boolean booleanValue;
+    private final boolean booleanValue;
 
-	private XmlBoolean(final boolean booleanValue)
-	{
-		this.booleanValue = booleanValue;
-	}
+    private XmlBoolean(final boolean booleanValue)
+    {
+        this.booleanValue = booleanValue;
+    }
 
-	public void add(final int index, final XmlAtom element)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public void add(final int index, final XmlAtom element)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public boolean add(final XmlAtom e)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public boolean add(final XmlAtom e)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public boolean addAll(final Collection<? extends XmlAtom> c)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public boolean addAll(final Collection<? extends XmlAtom> c)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public boolean addAll(final int index, final Collection<? extends XmlAtom> c)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public boolean addAll(final int index, final Collection<? extends XmlAtom> c)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	/**
-	 * Returns this value as a boolean.
-	 */
-	public boolean getBooleanValue()
-	{
-		return booleanValue;
-	}
+    /**
+     * Returns this value as a boolean.
+     */
+    public boolean getBooleanValue()
+    {
+        return booleanValue;
+    }
 
-	public void clear()
-	{
-		throw new UnsupportedOperationException();
-	}
+    public void clear()
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public boolean contains(Object o)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public boolean contains(Object o)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public boolean containsAll(Collection<?> c)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public boolean containsAll(Collection<?> c)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public XmlBoolean get(final int index)
-	{
-		if (0 == index)
-		{
-			return this;
-		}
-		else
-		{
-			throw new ArrayIndexOutOfBoundsException(index);
-		}
-	}
+    public XmlBoolean get(final int index)
+    {
+        if (0 == index)
+        {
+            return this;
+        }
+        else
+        {
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return booleanValue ? "true" : "false";
-	}
+    public String getC14NForm()
+    {
+        return booleanValue ? "true" : "false";
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.BOOLEAN;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.BOOLEAN;
+    }
 
-	public int indexOf(Object o)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public int indexOf(Object o)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public boolean isEmpty()
-	{
-		return false;
-	}
+    public boolean isEmpty()
+    {
+        return false;
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 
-	public Iterator<XmlAtom> iterator()
-	{
-		return new UnaryIterator<XmlAtom>(this);
-	}
+    public Iterator<XmlAtom> iterator()
+    {
+        return new UnaryIterator<XmlAtom>(this);
+    }
 
-	public int lastIndexOf(Object o)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public int lastIndexOf(Object o)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public ListIterator<XmlAtom> listIterator()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public ListIterator<XmlAtom> listIterator()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public ListIterator<XmlAtom> listIterator(int index)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public ListIterator<XmlAtom> listIterator(int index)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public XmlAtom remove(final int index)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public XmlAtom remove(final int index)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public boolean remove(final Object o)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public boolean remove(final Object o)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public boolean removeAll(final Collection<?> c)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public boolean removeAll(final Collection<?> c)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public boolean retainAll(final Collection<?> c)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public boolean retainAll(final Collection<?> c)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public XmlAtom set(final int index, final XmlAtom element)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public XmlAtom set(final int index, final XmlAtom element)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public int size()
-	{
-		return 1;
-	}
+    public int size()
+    {
+        return 1;
+    }
 
-	public List<XmlAtom> subList(final int fromIndex, final int toIndex)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public List<XmlAtom> subList(final int fromIndex, final int toIndex)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Object[] toArray()
-	{
-		return new Object[] { this };
-	}
+    public Object[] toArray()
+    {
+        return new Object[] { this };
+    }
 
-	@SuppressWarnings("unchecked")
-	public final <T> T[] toArray(T[] a)
-	{
-		final int size = size();
-		if (a.length < size)
-		{
-			a = (T[])java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
-		}
-		System.arraycopy(toArray(), 0, a, 0, size);
-		if (a.length > size)
-		{
-			a[size] = null;
-		}
-		return a;
-	}
+    @SuppressWarnings("unchecked")
+    public final <T> T[] toArray(T[] a)
+    {
+        final int size = size();
+        if (a.length < size)
+        {
+            a = (T[])java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
+        }
+        System.arraycopy(toArray(), 0, a, 0, size);
+        if (a.length > size)
+        {
+            a[size] = null;
+        }
+        return a;
+    }
 }

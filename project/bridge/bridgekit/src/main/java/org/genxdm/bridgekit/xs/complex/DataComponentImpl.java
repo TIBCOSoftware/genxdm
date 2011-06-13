@@ -24,21 +24,21 @@ import org.genxdm.xs.enums.ScopeExtent;
 
 public abstract class DataComponentImpl extends NamedComponentImpl implements SchemaDataComponent, HasValueConstraint
 {
-	// The {value constraint} is mutable and optional.
-	private ValueConstraint m_valueConstraint = null;
+    // The {value constraint} is mutable and optional.
+    private ValueConstraint m_valueConstraint = null;
 
-	public DataComponentImpl(final QName name, final ScopeExtent scope)
-	{
-		super(name, false, scope);
-	}
+    public DataComponentImpl(final QName name, final ScopeExtent scope)
+    {
+        super(name, false, scope);
+    }
 
-	public final ValueConstraint getValueConstraint()
-	{
-		return m_valueConstraint;
-	}
+    public final ValueConstraint getValueConstraint()
+    {
+        return m_valueConstraint;
+    }
 
-	public final void setValueConstraint(final ValueConstraint valueConstraint)
-	{
-		m_valueConstraint = valueConstraint;
-	}
+    public final void setValueConstraint(final ValueConstraint valueConstraint)
+    {
+        m_valueConstraint = valueConstraint;
+    }
 }

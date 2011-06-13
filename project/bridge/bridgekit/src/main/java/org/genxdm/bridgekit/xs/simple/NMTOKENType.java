@@ -37,127 +37,127 @@ import org.genxdm.xs.types.SimpleType;
 
 public final class NMTOKENType extends AbstractAtomType
 {
-	public NMTOKENType(final QName name, final SimpleType baseType)
-	{
-		super(name, baseType);
-	}
+    public NMTOKENType(final QName name, final SimpleType baseType)
+    {
+        super(name, baseType);
+    }
 
-	public void accept(SequenceTypeVisitor visitor)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public void accept(SequenceTypeVisitor visitor)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Iterable<EnumerationDefinition> getEnumerations()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Iterable<EnumerationDefinition> getEnumerations()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Facet getFacetOfKind(FacetKind facetKind)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Facet getFacetOfKind(FacetKind facetKind)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Iterable<Facet> getFacets()
-	{
-		return Collections.emptyList();
-	}
+    public Iterable<Facet> getFacets()
+    {
+        return Collections.emptyList();
+    }
 
-	public Set<DerivationMethod> getFinal()
-	{
-		return Collections.emptySet();
-	}
+    public Set<DerivationMethod> getFinal()
+    {
+        return Collections.emptySet();
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.NMTOKEN;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.NMTOKEN;
+    }
 
-	public Iterable<Pattern> getPatterns()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Iterable<Pattern> getPatterns()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public ScopeExtent getScopeExtent()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public ScopeExtent getScopeExtent()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public WhiteSpacePolicy getWhiteSpacePolicy()
-	{
-		return WhiteSpacePolicy.COLLAPSE;
-	}
+    public WhiteSpacePolicy getWhiteSpacePolicy()
+    {
+        return WhiteSpacePolicy.COLLAPSE;
+    }
 
-	public boolean hasEnumerations()
-	{
-		return false;
-	}
+    public boolean hasEnumerations()
+    {
+        return false;
+    }
 
-	public boolean hasFacetOfKind(final FacetKind facetKind)
-	{
-		return false;
-	}
+    public boolean hasFacetOfKind(final FacetKind facetKind)
+    {
+        return false;
+    }
 
-	public boolean hasFacets()
-	{
-		return false;
-	}
+    public boolean hasFacets()
+    {
+        return false;
+    }
 
-	public boolean hasPatterns()
-	{
-		return false;
-	}
+    public boolean hasPatterns()
+    {
+        return false;
+    }
 
-	public boolean isAbstract()
-	{
-		return false;
-	}
+    public boolean isAbstract()
+    {
+        return false;
+    }
 
-	public boolean isID()
-	{
-		return false;
-	}
+    public boolean isID()
+    {
+        return false;
+    }
 
-	public boolean isIDREF()
-	{
-		return false;
-	}
+    public boolean isIDREF()
+    {
+        return false;
+    }
 
-	public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
-	{
-		final String normalized = normalize(initialValue);
-		return atomBridge.wrapAtom(atomBridge.createStringDerived(castAsNMTOKEN(normalized, this), NativeType.NMTOKEN));
-	}
+    public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
+    {
+        final String normalized = normalize(initialValue);
+        return atomBridge.wrapAtom(atomBridge.createStringDerived(castAsNMTOKEN(normalized, this), NativeType.NMTOKEN));
+    }
 
-	private static String castAsNMTOKEN(final String normalized, final SimpleType type) throws DatatypeException
-	{
-		for (int i = 0, len = normalized.length(); i < len; i++)
-		{
-			if (!XmlCharacterSupport.isNameChar(normalized.charAt(i)))
-			{
-				// final char c = normalized.charAt(i);
-				throw new DatatypeException(normalized, type);
-				// throw new SmDattypeException(normalized, typeXsNamespace.NMTOKEN, Err.FORG0001.qname(), new
-				// Exception("character '" + c + "' (#x" + Integer.toHexString(c) +
-				// ") is not allowed by an NMTOKEN"));
-			}
-		}
-		return normalized;
-	}
+    private static String castAsNMTOKEN(final String normalized, final SimpleType type) throws DatatypeException
+    {
+        for (int i = 0, len = normalized.length(); i < len; i++)
+        {
+            if (!XmlCharacterSupport.isNameChar(normalized.charAt(i)))
+            {
+                // final char c = normalized.charAt(i);
+                throw new DatatypeException(normalized, type);
+                // throw new SmDattypeException(normalized, typeXsNamespace.NMTOKEN, Err.FORG0001.qname(), new
+                // Exception("character '" + c + "' (#x" + Integer.toHexString(c) +
+                // ") is not allowed by an NMTOKEN"));
+            }
+        }
+        return normalized;
+    }
 
-	public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 }

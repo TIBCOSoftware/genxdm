@@ -39,260 +39,260 @@ import org.genxdm.xs.types.Type;
 
 public final class ElementDeclTypeImpl extends DataComponentImpl implements ElementDefinition
 {
-	private final EnumSet<DerivationMethod> m_block = EnumSet.noneOf(DerivationMethod.class);
-	private final Set<DerivationMethod> m_blockUnmodifiable = Collections.unmodifiableSet(m_block);
-	private final HashMap<QName, IdentityConstraint> m_constraints = new HashMap<QName, IdentityConstraint>();
-	private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
-	private final Set<DerivationMethod> m_finalUnmodifiable = Collections.unmodifiableSet(m_final);
+    private final EnumSet<DerivationMethod> m_block = EnumSet.noneOf(DerivationMethod.class);
+    private final Set<DerivationMethod> m_blockUnmodifiable = Collections.unmodifiableSet(m_block);
+    private final HashMap<QName, IdentityConstraint> m_constraints = new HashMap<QName, IdentityConstraint>();
+    private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
+    private final Set<DerivationMethod> m_finalUnmodifiable = Collections.unmodifiableSet(m_final);
 
-	/**
-	 * The {abstract} property is mutable defaults to <code>false</code>
-	 */
-	private boolean m_isAbstract = false;
+    /**
+     * The {abstract} property is mutable defaults to <code>false</code>
+     */
+    private boolean m_isAbstract = false;
 
-	/**
-	 * The {nullable} property is mutable defaults to <code>false</code>
-	 */
-	private boolean m_isNillable = false;
+    /**
+     * The {nullable} property is mutable defaults to <code>false</code>
+     */
+    private boolean m_isNillable = false;
 
-	/**
-	 * The {substitution group} (head) is mutable.
-	 */
-	private ElementDeclTypeImpl m_substitutionGroup = null;
+    /**
+     * The {substitution group} (head) is mutable.
+     */
+    private ElementDeclTypeImpl m_substitutionGroup = null;
 
-	private final HashSet<ElementDefinition> m_substitutionGroupMembers = new HashSet<ElementDefinition>();
+    private final HashSet<ElementDefinition> m_substitutionGroupMembers = new HashSet<ElementDefinition>();
 
-	/**
-	 * The {type} property is mutable.
-	 */
-	private Type m_type;
+    /**
+     * The {type} property is mutable.
+     */
+    private Type m_type;
 
-	public ElementDeclTypeImpl(final QName name, final ScopeExtent scope, final Type type)
-	{
-		super(name, scope);
-		this.m_type = PreCondition.assertArgumentNotNull(type, "type");
-	}
+    public ElementDeclTypeImpl(final QName name, final ScopeExtent scope, final Type type)
+    {
+        super(name, scope);
+        this.m_type = PreCondition.assertArgumentNotNull(type, "type");
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public void addIdentityConstraint(final IdentityConstraint identityConstraint)
-	{
-		PreCondition.assertArgumentNotNull(identityConstraint, "identityConstraint");
-		m_constraints.put(identityConstraint.getName(), identityConstraint);
-	}
+    public void addIdentityConstraint(final IdentityConstraint identityConstraint)
+    {
+        PreCondition.assertArgumentNotNull(identityConstraint, "identityConstraint");
+        m_constraints.put(identityConstraint.getName(), identityConstraint);
+    }
 
-	public void addSubstitutionGroupMember(final ElementDefinition member)
-	{
-		assertNotLocked();
-		PreCondition.assertArgumentNotNull(member, "member");
-		m_substitutionGroupMembers.add(member);
-	}
+    public void addSubstitutionGroupMember(final ElementDefinition member)
+    {
+        assertNotLocked();
+        PreCondition.assertArgumentNotNull(member, "member");
+        m_substitutionGroupMembers.add(member);
+    }
 
-	public Set<DerivationMethod> getDisallowedSubtitutions()
-	{
-		return m_blockUnmodifiable;
-	}
+    public Set<DerivationMethod> getDisallowedSubtitutions()
+    {
+        return m_blockUnmodifiable;
+    }
 
-	public Iterable<IdentityConstraint> getIdentityConstraints()
-	{
-		return m_constraints.values();
-	}
+    public Iterable<IdentityConstraint> getIdentityConstraints()
+    {
+        return m_constraints.values();
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return PrimeTypeKind.SCHEMA_ELEMENT;
-	}
+    public PrimeTypeKind getKind()
+    {
+        return PrimeTypeKind.SCHEMA_ELEMENT;
+    }
 
-	public NodeKind getNodeKind()
-	{
-		return NodeKind.ELEMENT;
-	}
+    public NodeKind getNodeKind()
+    {
+        return NodeKind.ELEMENT;
+    }
 
-	public ElementDefinition getSubstitutionGroup()
-	{
-		return m_substitutionGroup;
-	}
+    public ElementDefinition getSubstitutionGroup()
+    {
+        return m_substitutionGroup;
+    }
 
-	public Set<DerivationMethod> getSubstitutionGroupExclusions()
-	{
-		return m_finalUnmodifiable;
-	}
+    public Set<DerivationMethod> getSubstitutionGroupExclusions()
+    {
+        return m_finalUnmodifiable;
+    }
 
-	public Iterable<ElementDefinition> getSubstitutionGroupMembers()
-	{
-		return m_substitutionGroupMembers;
-	}
+    public Iterable<ElementDefinition> getSubstitutionGroupMembers()
+    {
+        return m_substitutionGroupMembers;
+    }
 
-	public Type getType()
-	{
-		return m_type;
-	}
+    public Type getType()
+    {
+        return m_type;
+    }
 
-	public boolean hasIdentityConstraints()
-	{
-		return !m_constraints.isEmpty();
-	}
+    public boolean hasIdentityConstraints()
+    {
+        return !m_constraints.isEmpty();
+    }
 
-	public boolean hasSubstitutionGroup()
-	{
-		return (null != m_substitutionGroup);
-	}
+    public boolean hasSubstitutionGroup()
+    {
+        return (null != m_substitutionGroup);
+    }
 
-	public boolean hasSubstitutionGroupMembers()
-	{
-		return !m_substitutionGroupMembers.isEmpty();
-	}
+    public boolean hasSubstitutionGroupMembers()
+    {
+        return !m_substitutionGroupMembers.isEmpty();
+    }
 
-	public boolean isAbstract()
-	{
-		return m_isAbstract;
-	}
+    public boolean isAbstract()
+    {
+        return m_isAbstract;
+    }
 
-	public boolean isChoice()
-	{
-		return false;
-	}
+    public boolean isChoice()
+    {
+        return false;
+    }
 
-	public boolean isDisallowedSubstitution(final DerivationMethod derivation)
-	{
-		PreCondition.assertArgumentNotNull(derivation, "derivation");
-		return m_block.contains(derivation);
-	}
+    public boolean isDisallowedSubstitution(final DerivationMethod derivation)
+    {
+        PreCondition.assertArgumentNotNull(derivation, "derivation");
+        return m_block.contains(derivation);
+    }
 
-	public boolean isNative()
-	{
-		return false;
-	}
+    public boolean isNative()
+    {
+        return false;
+    }
 
-	public boolean isNillable()
-	{
-		return m_isNillable;
-	}
+    public boolean isNillable()
+    {
+        return m_isNillable;
+    }
 
-	public boolean isNone()
-	{
-		return false;
-	}
+    public boolean isNone()
+    {
+        return false;
+    }
 
-	public PrimeType prime()
-	{
-		return this;
-	}
+    public PrimeType prime()
+    {
+        return this;
+    }
 
-	public Quantifier quantifier()
-	{
-		return Quantifier.EXACTLY_ONE;
-	}
+    public Quantifier quantifier()
+    {
+        return Quantifier.EXACTLY_ONE;
+    }
 
-	public void removeSubstitutionGroupMember(final ElementDefinition member)
-	{
-		assertNotLocked();
-		PreCondition.assertArgumentNotNull(member, "member");
-		m_substitutionGroupMembers.add(member);
-	}
+    public void removeSubstitutionGroupMember(final ElementDefinition member)
+    {
+        assertNotLocked();
+        PreCondition.assertArgumentNotNull(member, "member");
+        m_substitutionGroupMembers.add(member);
+    }
 
-	public void setAbstract(boolean isAbstract)
-	{
-		assertNotLocked();
-		m_isAbstract = isAbstract;
-	}
+    public void setAbstract(boolean isAbstract)
+    {
+        assertNotLocked();
+        m_isAbstract = isAbstract;
+    }
 
-	public void setBlock(final DerivationMethod derivation, final boolean enabled)
-	{
-		assertNotLocked();
-		if (enabled)
-		{
-			m_block.add(derivation);
-		}
-		else
-		{
-			m_block.remove(derivation);
-		}
-	}
+    public void setBlock(final DerivationMethod derivation, final boolean enabled)
+    {
+        assertNotLocked();
+        if (enabled)
+        {
+            m_block.add(derivation);
+        }
+        else
+        {
+            m_block.remove(derivation);
+        }
+    }
 
-	public void setFinal(final DerivationMethod derivation, final boolean enabled)
-	{
-		assertNotLocked();
-		if (enabled)
-		{
-			m_final.add(derivation);
-		}
-		else
-		{
-			m_final.remove(derivation);
-		}
-	}
+    public void setFinal(final DerivationMethod derivation, final boolean enabled)
+    {
+        assertNotLocked();
+        if (enabled)
+        {
+            m_final.add(derivation);
+        }
+        else
+        {
+            m_final.remove(derivation);
+        }
+    }
 
-	public void setNillable(boolean isNillable)
-	{
-		assertNotLocked();
-		m_isNillable = isNillable;
-	}
+    public void setNillable(boolean isNillable)
+    {
+        assertNotLocked();
+        m_isNillable = isNillable;
+    }
 
-	public void setSubstitutionGroup(final ElementDeclTypeImpl substitutionGroup)
-	{
-		assertNotLocked();
-		if (m_substitutionGroup != substitutionGroup)
-		{
-			if (null != m_substitutionGroup)
-			{
-				m_substitutionGroup.removeSubstitutionGroupMember(this);
-			}
-			if (null != substitutionGroup)
-			{
-				substitutionGroup.addSubstitutionGroupMember(this);
-			}
-			m_substitutionGroup = substitutionGroup;
-		}
-	}
+    public void setSubstitutionGroup(final ElementDeclTypeImpl substitutionGroup)
+    {
+        assertNotLocked();
+        if (m_substitutionGroup != substitutionGroup)
+        {
+            if (null != m_substitutionGroup)
+            {
+                m_substitutionGroup.removeSubstitutionGroupMember(this);
+            }
+            if (null != substitutionGroup)
+            {
+                substitutionGroup.addSubstitutionGroupMember(this);
+            }
+            m_substitutionGroup = substitutionGroup;
+        }
+    }
 
-	public void setType(final Type type)
-	{
-		assertNotLocked();
-		m_type = PreCondition.assertArgumentNotNull(type, "type");
-	}
+    public void setType(final Type type)
+    {
+        assertNotLocked();
+        m_type = PreCondition.assertArgumentNotNull(type, "type");
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public boolean subtype(final PrimeType rhs)
-	{
-		PreCondition.assertArgumentNotNull(rhs, "rhs");
-		switch (rhs.getKind())
-		{
-			case CHOICE:
-			{
-				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
-				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
-			}
-			case SCHEMA_ELEMENT:
-			{
-				final ElementDefinition other = (ElementDefinition)rhs;
-				return getName().equals(other.getName());
-			}
-			case ELEMENT:
-			{
-				final ElementNodeType other = (ElementNodeType)rhs;
-				return getName().equals(other.getName());
-			}
-			case COMPLEX:
-			case ANY_TYPE:
-			case NODE:
-			case ITEM:
-			{
-				return true;
-			}
-			default:
-			{
-				return false;
-			}
-		}
-	}
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public boolean subtype(final PrimeType rhs)
+    {
+        PreCondition.assertArgumentNotNull(rhs, "rhs");
+        switch (rhs.getKind())
+        {
+            case CHOICE:
+            {
+                final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
+                return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
+            }
+            case SCHEMA_ELEMENT:
+            {
+                final ElementDefinition other = (ElementDefinition)rhs;
+                return getName().equals(other.getName());
+            }
+            case ELEMENT:
+            {
+                final ElementNodeType other = (ElementNodeType)rhs;
+                return getName().equals(other.getName());
+            }
+            case COMPLEX:
+            case ANY_TYPE:
+            case NODE:
+            case ITEM:
+            {
+                return true;
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    }
 
-	@Override
-	public String toString()
-	{
-		return "schema-element(" + getName().toString() + ")";
-	}
+    @Override
+    public String toString()
+    {
+        return "schema-element(" + getName().toString() + ")";
+    }
 }

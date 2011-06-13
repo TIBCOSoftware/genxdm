@@ -24,109 +24,109 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 public final class ZPrimeChoiceType extends AbstractPrimeExcludingNoneType implements PrimeChoiceType
 {
-	public static  PrimeType choice(final PrimeType lhs, final PrimeType rhs)
-	{
-		// Make an attempt to simplify, but not approximate the type expression by detecting
-		// "none" type subtrees which are the identity element for choice. However we must use
-		// the prime() and quantifier() approximations to detect the "none" type in a subtree.
-		if (lhs.prime().isNone() && lhs.quantifier().isExactlyOne())
-		{
-			return rhs;
-		}
-		else if (rhs.prime().isNone() && rhs.quantifier().isExactlyOne())
-		{
-			return lhs;
-		}
-		else if (lhs.subtype(rhs))
-		{
-			return rhs;
-		}
-		else if (rhs.subtype(lhs))
-		{
-			return lhs;
-		}
-		else
-		{
-			return new ZPrimeChoiceType(lhs, rhs);
-		}
-	}
+    public static  PrimeType choice(final PrimeType lhs, final PrimeType rhs)
+    {
+        // Make an attempt to simplify, but not approximate the type expression by detecting
+        // "none" type subtrees which are the identity element for choice. However we must use
+        // the prime() and quantifier() approximations to detect the "none" type in a subtree.
+        if (lhs.prime().isNone() && lhs.quantifier().isExactlyOne())
+        {
+            return rhs;
+        }
+        else if (rhs.prime().isNone() && rhs.quantifier().isExactlyOne())
+        {
+            return lhs;
+        }
+        else if (lhs.subtype(rhs))
+        {
+            return rhs;
+        }
+        else if (rhs.subtype(lhs))
+        {
+            return lhs;
+        }
+        else
+        {
+            return new ZPrimeChoiceType(lhs, rhs);
+        }
+    }
 
-	private final PrimeType m_lhs;
+    private final PrimeType m_lhs;
 
-	private final PrimeType m_rhs;
+    private final PrimeType m_rhs;
 
-	private ZPrimeChoiceType(final PrimeType lhs, final PrimeType rhs)
-	{
-		m_lhs = PreCondition.assertArgumentNotNull(lhs);
-		m_rhs = PreCondition.assertArgumentNotNull(rhs);
-	}
+    private ZPrimeChoiceType(final PrimeType lhs, final PrimeType rhs)
+    {
+        m_lhs = PreCondition.assertArgumentNotNull(lhs);
+        m_rhs = PreCondition.assertArgumentNotNull(rhs);
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return PrimeTypeKind.CHOICE;
-	}
+    public PrimeTypeKind getKind()
+    {
+        return PrimeTypeKind.CHOICE;
+    }
 
-	public PrimeType getLHS()
-	{
-		return m_lhs;
-	}
+    public PrimeType getLHS()
+    {
+        return m_lhs;
+    }
 
-	public PrimeType getRHS()
-	{
-		return m_rhs;
-	}
+    public PrimeType getRHS()
+    {
+        return m_rhs;
+    }
 
-	public boolean isChoice()
-	{
-		return true;
-	}
+    public boolean isChoice()
+    {
+        return true;
+    }
 
-	public boolean isNative()
-	{
-		return m_lhs.isNative() && m_rhs.isNative();
-	}
+    public boolean isNative()
+    {
+        return m_lhs.isNative() && m_rhs.isNative();
+    }
 
-	public PrimeChoiceType prime()
-	{
-		return this;
-	}
+    public PrimeChoiceType prime()
+    {
+        return this;
+    }
 
-	public boolean subtype(final PrimeType rhs)
-	{
-		return m_lhs.subtype(rhs) && m_rhs.subtype(rhs);
-	}
+    public boolean subtype(final PrimeType rhs)
+    {
+        return m_lhs.subtype(rhs) && m_rhs.subtype(rhs);
+    }
 
-	@Override
-	public String toString()
-	{
-		final boolean lhsParen = m_lhs.isChoice();
-		final boolean rhsParen = m_rhs.isChoice();
-		if (lhsParen)
-		{
-			if (rhsParen)
-			{
-				return "(".concat(m_lhs.toString()).concat(") | (").concat(m_rhs.toString()).concat(")");
-			}
-			else
-			{
-				return "(".concat(m_lhs.toString()).concat(") | ").concat(m_rhs.toString());
-			}
-		}
-		else
-		{
-			if (rhsParen)
-			{
-				return m_lhs.toString().concat(" | (").concat(m_rhs.toString()).concat(")");
-			}
-			else
-			{
-				return m_lhs.toString().concat(" | ").concat(m_rhs.toString());
-			}
-		}
-	}
+    @Override
+    public String toString()
+    {
+        final boolean lhsParen = m_lhs.isChoice();
+        final boolean rhsParen = m_rhs.isChoice();
+        if (lhsParen)
+        {
+            if (rhsParen)
+            {
+                return "(".concat(m_lhs.toString()).concat(") | (").concat(m_rhs.toString()).concat(")");
+            }
+            else
+            {
+                return "(".concat(m_lhs.toString()).concat(") | ").concat(m_rhs.toString());
+            }
+        }
+        else
+        {
+            if (rhsParen)
+            {
+                return m_lhs.toString().concat(" | (").concat(m_rhs.toString()).concat(")");
+            }
+            else
+            {
+                return m_lhs.toString().concat(" | ").concat(m_rhs.toString());
+            }
+        }
+    }
 }

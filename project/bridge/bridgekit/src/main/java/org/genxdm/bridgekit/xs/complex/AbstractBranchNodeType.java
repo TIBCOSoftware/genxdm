@@ -23,27 +23,27 @@ import org.genxdm.xs.types.NodeType;
 
 abstract class AbstractBranchNodeType extends AbstractPrimeExcludingNoneType implements NodeType
 {
-	protected final ComponentProvider cache;
-	private final NodeKind nodeKind;
+    protected final ComponentProvider cache;
+    private final NodeKind nodeKind;
 
-	public AbstractBranchNodeType(final NodeKind nodeKind, final ComponentProvider cache)
-	{
-		this.nodeKind = PreCondition.assertArgumentNotNull(nodeKind);
-		this.cache = cache;
-	}
+    public AbstractBranchNodeType(final NodeKind nodeKind, final ComponentProvider cache)
+    {
+        this.nodeKind = PreCondition.assertArgumentNotNull(nodeKind);
+        this.cache = cache;
+    }
 
-	public final NodeKind getNodeKind()
-	{
-		return nodeKind;
-	}
+    public final NodeKind getNodeKind()
+    {
+        return nodeKind;
+    }
 
-	public boolean isNative()
-	{
-		return false;
-	}
+    public boolean isNative()
+    {
+        return false;
+    }
 
-	public boolean isChoice()
-	{
-		return false;
-	}
+    public boolean isChoice()
+    {
+        return false;
+    }
 }

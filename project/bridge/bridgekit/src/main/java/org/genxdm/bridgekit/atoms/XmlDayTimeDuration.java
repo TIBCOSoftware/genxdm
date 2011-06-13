@@ -25,48 +25,48 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlDayTimeDuration extends XmlAbstractAtom implements Comparable<XmlDayTimeDuration>
 {
-	private final BigDecimal seconds;
+    private final BigDecimal seconds;
 
-	public XmlDayTimeDuration(final BigDecimal seconds)
-	{
-		this.seconds = PreCondition.assertArgumentNotNull(seconds, "seconds");
-	}
+    public XmlDayTimeDuration(final BigDecimal seconds)
+    {
+        this.seconds = PreCondition.assertArgumentNotNull(seconds, "seconds");
+    }
 
-	public int compareTo(final XmlDayTimeDuration other)
-	{
-		return seconds.compareTo(other.seconds);
-	}
+    public int compareTo(final XmlDayTimeDuration other)
+    {
+        return seconds.compareTo(other.seconds);
+    }
 
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj instanceof XmlDayTimeDuration)
-		{
-			return seconds.equals(((XmlDayTimeDuration)obj).seconds);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof XmlDayTimeDuration)
+        {
+            return seconds.equals(((XmlDayTimeDuration)obj).seconds);
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return DurationSupport.formatDayTimeDurationC14N(seconds);
-	}
+    public String getC14NForm()
+    {
+        return DurationSupport.formatDayTimeDurationC14N(seconds);
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.DURATION_DAYTIME;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.DURATION_DAYTIME;
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 
-	public BigDecimal getTotalSecondsValue()
-	{
-		return seconds;
-	}
+    public BigDecimal getTotalSecondsValue()
+    {
+        return seconds;
+    }
 }

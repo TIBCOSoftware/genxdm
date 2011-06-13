@@ -23,13 +23,13 @@ import org.genxdm.xs.types.SimpleType;
 public final class DurationType extends AbstractDurationType
 {
 
-	public DurationType(final QName name, final SimpleType baseType)
-	{
-		super(name, baseType);
-	}
+    public DurationType(final QName name, final SimpleType baseType)
+    {
+        super(name, baseType);
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.DURATION;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.DURATION;
+    }
 }

@@ -22,82 +22,82 @@ import org.genxdm.xs.types.NativeType;
 
 public final class XmlIntegerDerived extends XmlAbstractAtom
 {
-	public static XmlIntegerDerived valueOf(final BigInteger integerValue, final NativeType nativeType)
-	{
-		return new XmlIntegerDerived(integerValue, nativeType);
-	}
+    public static XmlIntegerDerived valueOf(final BigInteger integerValue, final NativeType nativeType)
+    {
+        return new XmlIntegerDerived(integerValue, nativeType);
+    }
 
-	public static XmlIntegerDerived valueOf(final long integerValue, final NativeType nativeType)
-	{
-		return new XmlIntegerDerived(BigInteger.valueOf(integerValue), nativeType);
-	}
+    public static XmlIntegerDerived valueOf(final long integerValue, final NativeType nativeType)
+    {
+        return new XmlIntegerDerived(BigInteger.valueOf(integerValue), nativeType);
+    }
 
-	private final NativeType type;
+    private final NativeType type;
 
-	private final BigInteger value;
+    private final BigInteger value;
 
-	private XmlIntegerDerived(final BigInteger integerValue, final NativeType nativeType)
-	{
-		this.value = PreCondition.assertArgumentNotNull(integerValue, "integerValue");
-		this.type = PreCondition.assertArgumentNotNull(nativeType, "nativeType");
-	}
+    private XmlIntegerDerived(final BigInteger integerValue, final NativeType nativeType)
+    {
+        this.value = PreCondition.assertArgumentNotNull(integerValue, "integerValue");
+        this.type = PreCondition.assertArgumentNotNull(nativeType, "nativeType");
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		else if (obj instanceof XmlIntegerDerived)
-		{
-			final XmlIntegerDerived x = (XmlIntegerDerived)obj;
-			return type == x.type && value.equals(x.value);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        else if (obj instanceof XmlIntegerDerived)
+        {
+            final XmlIntegerDerived x = (XmlIntegerDerived)obj;
+            return type == x.type && value.equals(x.value);
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return value.toString();
-	}
+    public String getC14NForm()
+    {
+        return value.toString();
+    }
 
-	public NativeType getNativeType()
-	{
-		return type;
-	}
+    public NativeType getNativeType()
+    {
+        return type;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return value.hashCode();
-	}
+    @Override
+    public int hashCode()
+    {
+        return value.hashCode();
+    }
 
-	public BigInteger integerValue()
-	{
-		return value;
-	}
+    public BigInteger integerValue()
+    {
+        return value;
+    }
 
-	public int intValue()
-	{
-		return value.intValue();
-	}
+    public int intValue()
+    {
+        return value.intValue();
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 
-	public long longValue()
-	{
-		return value.longValue();
-	}
+    public long longValue()
+    {
+        return value.longValue();
+    }
 
-	public short shortValue()
-	{
-		return value.shortValue();
-	}
+    public short shortValue()
+    {
+        return value.shortValue();
+    }
 }

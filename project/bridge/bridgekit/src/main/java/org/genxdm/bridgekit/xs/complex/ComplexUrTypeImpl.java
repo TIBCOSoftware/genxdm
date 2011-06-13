@@ -47,210 +47,210 @@ import org.genxdm.xs.types.Type;
  */
 public final class ComplexUrTypeImpl extends AbstractPrimeExcludingNoneType implements ComplexUrType
 {
-	private final SchemaWildcard attributeWildcard;
-	private final ContentType contentType;
-	private final QName name;
+    private final SchemaWildcard attributeWildcard;
+    private final ContentType contentType;
+    private final QName name;
 
-	public ComplexUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final NameSource nameBridge)
-	{
-		this.name = new QName(W3C_XML_SCHEMA_NS_URI, "anyType");
+    public ComplexUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final NameSource nameBridge)
+    {
+        this.name = new QName(W3C_XML_SCHEMA_NS_URI, "anyType");
 
-		final SchemaWildcard anyTerm = new WildcardImpl(ProcessContentsMode.Lax, NamespaceConstraint.Any());
+        final SchemaWildcard anyTerm = new WildcardImpl(ProcessContentsMode.Lax, NamespaceConstraint.Any());
 
-		final LinkedList<SchemaParticle> particles = new LinkedList<SchemaParticle>();
-		particles.add(new ParticleWithWildcardTerm(0, anyTerm));
+        final LinkedList<SchemaParticle> particles = new LinkedList<SchemaParticle>();
+        particles.add(new ParticleWithWildcardTerm(0, anyTerm));
 
-		final ModelGroup modelGroup = new ModelGroupImpl(ModelGroup.SmCompositor.Sequence, particles, null, true, ScopeExtent.Local);
+        final ModelGroup modelGroup = new ModelGroupImpl(ModelGroup.SmCompositor.Sequence, particles, null, true, ScopeExtent.Local);
 
-		this.contentType = new ContentTypeImpl(true, new ParticleWithModelGroupTerm(1, 1, modelGroup));
-		this.attributeWildcard = anyTerm;
-	}
+        this.contentType = new ContentTypeImpl(true, new ParticleWithModelGroupTerm(1, 1, modelGroup));
+        this.attributeWildcard = anyTerm;
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public boolean derivedFrom(final String namespace, final String name, final Set<DerivationMethod> derivationMethods)
-	{
-		return false;
-	}
+    public boolean derivedFrom(final String namespace, final String name, final Set<DerivationMethod> derivationMethods)
+    {
+        return false;
+    }
 
-	public boolean derivedFromType(final Type ancestorType, final Set<DerivationMethod> derivationMethods)
-	{
-		return false;
-	}
+    public boolean derivedFromType(final Type ancestorType, final Set<DerivationMethod> derivationMethods)
+    {
+        return false;
+    }
 
-	public Map<QName, AttributeUse> getAttributeUses()
-	{
-		return Collections.emptyMap();
-	}
+    public Map<QName, AttributeUse> getAttributeUses()
+    {
+        return Collections.emptyMap();
+    }
 
-	public SchemaWildcard getAttributeWildcard()
-	{
-		return attributeWildcard;
-	}
+    public SchemaWildcard getAttributeWildcard()
+    {
+        return attributeWildcard;
+    }
 
-	public ComplexUrTypeImpl getBaseType()
-	{
-		return null;
-	}
+    public ComplexUrTypeImpl getBaseType()
+    {
+        return null;
+    }
 
-	public ContentType getContentType()
-	{
-		return contentType;
-	}
+    public ContentType getContentType()
+    {
+        return contentType;
+    }
 
-	public DerivationMethod getDerivationMethod()
-	{
-		return DerivationMethod.Restriction;
-	}
+    public DerivationMethod getDerivationMethod()
+    {
+        return DerivationMethod.Restriction;
+    }
 
-	public Set<DerivationMethod> getFinal()
-	{
-		return EnumSet.noneOf(DerivationMethod.class);
-	}
+    public Set<DerivationMethod> getFinal()
+    {
+        return EnumSet.noneOf(DerivationMethod.class);
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return PrimeTypeKind.ANY_TYPE;
-	}
+    public PrimeTypeKind getKind()
+    {
+        return PrimeTypeKind.ANY_TYPE;
+    }
 
-	public String getLocalName()
-	{
-		return name.getLocalPart();
-	}
+    public String getLocalName()
+    {
+        return name.getLocalPart();
+    }
 
-	public QName getName()
-	{
-		return name;
-	}
+    public QName getName()
+    {
+        return name;
+    }
 
-	public Set<DerivationMethod> getProhibitedSubstitutions()
-	{
-		// TODO: Is this immutable? If not, wrap it with Collections.unmod
-		return EnumSet.noneOf(DerivationMethod.class);
-	}
+    public Set<DerivationMethod> getProhibitedSubstitutions()
+    {
+        // TODO: Is this immutable? If not, wrap it with Collections.unmod
+        return EnumSet.noneOf(DerivationMethod.class);
+    }
 
-	public ScopeExtent getScopeExtent()
-	{
-		return ScopeExtent.Global;
-	}
+    public ScopeExtent getScopeExtent()
+    {
+        return ScopeExtent.Global;
+    }
 
-	public String getTargetNamespace()
-	{
-		return name.getNamespaceURI();
-	}
+    public String getTargetNamespace()
+    {
+        return name.getNamespaceURI();
+    }
 
-	public boolean isAbstract()
-	{
-		return false;
-	}
+    public boolean isAbstract()
+    {
+        return false;
+    }
 
-	public boolean isAnonymous()
-	{
-		return false;
-	}
+    public boolean isAnonymous()
+    {
+        return false;
+    }
 
-	public boolean isAtomicType()
-	{
-		return false;
-	}
+    public boolean isAtomicType()
+    {
+        return false;
+    }
 
-	public boolean isAtomicUrType()
-	{
-		return false;
-	}
+    public boolean isAtomicUrType()
+    {
+        return false;
+    }
 
-	public boolean isChoice()
-	{
-		return false;
-	}
+    public boolean isChoice()
+    {
+        return false;
+    }
 
-	public boolean isComplexUrType()
-	{
-		return true;
-	}
+    public boolean isComplexUrType()
+    {
+        return true;
+    }
 
-	public boolean isFinal(final DerivationMethod derivation)
-	{
-		return false;
-	}
+    public boolean isFinal(final DerivationMethod derivation)
+    {
+        return false;
+    }
 
-	public boolean isLocked()
-	{
-		return true;
-	}
+    public boolean isLocked()
+    {
+        return true;
+    }
 
-	public boolean isNative()
-	{
-		return true;
-	}
+    public boolean isNative()
+    {
+        return true;
+    }
 
-	public boolean isSimpleUrType()
-	{
-		return false;
-	}
+    public boolean isSimpleUrType()
+    {
+        return false;
+    }
 
-	public void lock()
-	{
-		// Ignore.
-	}
+    public void lock()
+    {
+        // Ignore.
+    }
 
-	public PrimeType prime()
-	{
-		return this;
-	}
+    public PrimeType prime()
+    {
+        return this;
+    }
 
-	public void setAbstract(final boolean isAbstract)
-	{
-		throw new AssertionError(getName());
-	}
+    public void setAbstract(final boolean isAbstract)
+    {
+        throw new AssertionError(getName());
+    }
 
-	public void setAttributeWildcard(final SchemaWildcard attributeWildcard)
-	{
-		throw new AssertionError(getName());
-	}
+    public void setAttributeWildcard(final SchemaWildcard attributeWildcard)
+    {
+        throw new AssertionError(getName());
+    }
 
-	public void setBlock(final DerivationMethod derivation, final boolean enabled)
-	{
-		throw new AssertionError(getName());
-	}
+    public void setBlock(final DerivationMethod derivation, final boolean enabled)
+    {
+        throw new AssertionError(getName());
+    }
 
-	public void setContentType(final ContentType contentType)
-	{
-		throw new AssertionError(getName());
-	}
+    public void setContentType(final ContentType contentType)
+    {
+        throw new AssertionError(getName());
+    }
 
-	public void setFinal(final DerivationMethod derivation, final boolean enabled)
-	{
-		throw new AssertionError(getName());
-	}
+    public void setFinal(final DerivationMethod derivation, final boolean enabled)
+    {
+        throw new AssertionError(getName());
+    }
 
-	public boolean subtype(final PrimeType rhs)
-	{
-		PreCondition.assertArgumentNotNull(rhs, "type");
-		switch (rhs.getKind())
-		{
-			case CHOICE:
-			{
-				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
-				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
-			}
-			case ANY_TYPE:
-			{
-				return true;
-			}
-			default:
-			{
-				return false;
-			}
-		}
-	}
+    public boolean subtype(final PrimeType rhs)
+    {
+        PreCondition.assertArgumentNotNull(rhs, "type");
+        switch (rhs.getKind())
+        {
+            case CHOICE:
+            {
+                final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
+                return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
+            }
+            case ANY_TYPE:
+            {
+                return true;
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    }
 
-	@Override
-	public final String toString()
-	{
-		return getName().toString();
-	}
+    @Override
+    public final String toString()
+    {
+        return getName().toString();
+    }
 }

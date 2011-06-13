@@ -25,84 +25,84 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 public final class ZChoiceType implements ChoiceType
 {
-	public static  SequenceType choice(final SequenceType lhs, final SequenceType rhs)
-	{
-		// Make an attempt to simplify, but not approximate the type expression by detecting
-		// "none" type subtrees which are the identity element for choice. However we must use
-		// the prime() and quantifier() approximations to detect the "none" type in a subtree.
-		if (lhs.prime().isNone() && lhs.quantifier().isExactlyOne())
-		{
-			return rhs;
-		}
-		else if (rhs.prime().isNone() && rhs.quantifier().isExactlyOne())
-		{
-			return lhs;
-		}
-		else if (lhs.prime().isNone() && lhs.quantifier().isOptional())
-		{
-			return ZMultiplyType.multiply(rhs, Quantifier.OPTIONAL);
-		}
-		else if (rhs.prime().isNone() && rhs.quantifier().isOptional())
-		{
-			return ZMultiplyType.multiply(lhs, Quantifier.OPTIONAL);
-		}
-		else if (SchemaSupport.subtype(lhs, rhs))
-		{
-			return rhs;
-		}
-		else if (SchemaSupport.subtype(rhs, lhs))
-		{
-			return lhs;
-		}
-		else
-		{
-			return new ZChoiceType(lhs, rhs);
-		}
-	}
+    public static  SequenceType choice(final SequenceType lhs, final SequenceType rhs)
+    {
+        // Make an attempt to simplify, but not approximate the type expression by detecting
+        // "none" type subtrees which are the identity element for choice. However we must use
+        // the prime() and quantifier() approximations to detect the "none" type in a subtree.
+        if (lhs.prime().isNone() && lhs.quantifier().isExactlyOne())
+        {
+            return rhs;
+        }
+        else if (rhs.prime().isNone() && rhs.quantifier().isExactlyOne())
+        {
+            return lhs;
+        }
+        else if (lhs.prime().isNone() && lhs.quantifier().isOptional())
+        {
+            return ZMultiplyType.multiply(rhs, Quantifier.OPTIONAL);
+        }
+        else if (rhs.prime().isNone() && rhs.quantifier().isOptional())
+        {
+            return ZMultiplyType.multiply(lhs, Quantifier.OPTIONAL);
+        }
+        else if (SchemaSupport.subtype(lhs, rhs))
+        {
+            return rhs;
+        }
+        else if (SchemaSupport.subtype(rhs, lhs))
+        {
+            return lhs;
+        }
+        else
+        {
+            return new ZChoiceType(lhs, rhs);
+        }
+    }
 
-	private final SequenceType m_lhs;
+    private final SequenceType m_lhs;
 
-	private final SequenceType m_rhs;
+    private final SequenceType m_rhs;
 
-	private ZChoiceType(final SequenceType lhs, final SequenceType rhs)
-	{
-		m_lhs = PreCondition.assertArgumentNotNull(lhs);
-		m_rhs = PreCondition.assertArgumentNotNull(rhs);
-	}
+    private ZChoiceType(final SequenceType lhs, final SequenceType rhs)
+    {
+        m_lhs = PreCondition.assertArgumentNotNull(lhs);
+        m_rhs = PreCondition.assertArgumentNotNull(rhs);
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public SequenceType getLHS()
-	{
-		return m_lhs;
-	}
+    public SequenceType getLHS()
+    {
+        return m_lhs;
+    }
 
-	public SequenceType getRHS()
-	{
-		return m_rhs;
-	}
+    public SequenceType getRHS()
+    {
+        return m_rhs;
+    }
 
-	public boolean isChoice()
-	{
-		return true;
-	}
+    public boolean isChoice()
+    {
+        return true;
+    }
 
-	public PrimeType prime()
-	{
-		return ZPrimeChoiceType.choice(m_lhs.prime(), m_rhs.prime());
-	}
+    public PrimeType prime()
+    {
+        return ZPrimeChoiceType.choice(m_lhs.prime(), m_rhs.prime());
+    }
 
-	public Quantifier quantifier()
-	{
-		return m_lhs.quantifier().choice(m_rhs.quantifier());
-	}
+    public Quantifier quantifier()
+    {
+        return m_lhs.quantifier().choice(m_rhs.quantifier());
+    }
 
-	@Override
-	public String toString()
-	{
-		return "(" + m_lhs + " | " + m_rhs + ")";
-	}
+    @Override
+    public String toString()
+    {
+        return "(" + m_lhs + " | " + m_rhs + ")";
+    }
 }

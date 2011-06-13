@@ -24,115 +24,115 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 public final class ZMultiplyType extends AbstractType implements MultiplyType
 {
-	public static SequenceType multiply(final SequenceType argument, final Quantifier multiplier)
-	{
-		switch (multiplier)
-		{
-			case EMPTY:
-			{
-				return new ZEmptyType();
-			}
-			case EXACTLY_ONE:
-			{
-				return argument;
-			}
-			default:
-			{
-				if (argument instanceof MultiplyType)
-				{
-					final MultiplyType arg = (MultiplyType)argument;
-					return multiply(arg.getArgument(), arg.getMultiplier().product(multiplier));
-				}
-				else
-				{
-					return new ZMultiplyType(argument, multiplier);
-				}
-			}
-		}
-	}
+    public static SequenceType multiply(final SequenceType argument, final Quantifier multiplier)
+    {
+        switch (multiplier)
+        {
+            case EMPTY:
+            {
+                return new ZEmptyType();
+            }
+            case EXACTLY_ONE:
+            {
+                return argument;
+            }
+            default:
+            {
+                if (argument instanceof MultiplyType)
+                {
+                    final MultiplyType arg = (MultiplyType)argument;
+                    return multiply(arg.getArgument(), arg.getMultiplier().product(multiplier));
+                }
+                else
+                {
+                    return new ZMultiplyType(argument, multiplier);
+                }
+            }
+        }
+    }
 
-	public static  SequenceType optional(final SequenceType argument)
-	{
-		return multiply(argument, Quantifier.OPTIONAL);
-	}
+    public static  SequenceType optional(final SequenceType argument)
+    {
+        return multiply(argument, Quantifier.OPTIONAL);
+    }
 
-	public static  SequenceType zeroOrMore(final SequenceType argument)
-	{
-		return multiply(argument, Quantifier.ZERO_OR_MORE);
-	}
+    public static  SequenceType zeroOrMore(final SequenceType argument)
+    {
+        return multiply(argument, Quantifier.ZERO_OR_MORE);
+    }
 
-	private final SequenceType m_argument;
+    private final SequenceType m_argument;
 
-	private final Quantifier m_multiplier;
+    private final Quantifier m_multiplier;
 
-	private ZMultiplyType(final SequenceType argument, final Quantifier multiplier)
-	{
-		this.m_argument = PreCondition.assertArgumentNotNull(argument, "argument");
-		this.m_multiplier = PreCondition.assertArgumentNotNull(multiplier, "multiplier");
-	}
+    private ZMultiplyType(final SequenceType argument, final Quantifier multiplier)
+    {
+        this.m_argument = PreCondition.assertArgumentNotNull(argument, "argument");
+        this.m_multiplier = PreCondition.assertArgumentNotNull(multiplier, "multiplier");
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public SequenceType getArgument()
-	{
-		return m_argument;
-	}
+    public SequenceType getArgument()
+    {
+        return m_argument;
+    }
 
-	public Quantifier getMultiplier()
-	{
-		return m_multiplier;
-	}
+    public Quantifier getMultiplier()
+    {
+        return m_multiplier;
+    }
 
-	public boolean isChoice()
-	{
-		return false;
-	}
+    public boolean isChoice()
+    {
+        return false;
+    }
 
-	public PrimeType prime()
-	{
-		// Formal Semantics...
-		// prime(Type?) = prime(Type)
-		// prime(Type*) = prime(Type)
-		// prime(Type+) = prime(Type)
-		return m_argument.prime();
-	}
+    public PrimeType prime()
+    {
+        // Formal Semantics...
+        // prime(Type?) = prime(Type)
+        // prime(Type*) = prime(Type)
+        // prime(Type+) = prime(Type)
+        return m_argument.prime();
+    }
 
-	public Quantifier quantifier()
-	{
-		// Formal Semantics...
-		// quantifier(Type?) = quantifier(Type).?
-		// quantifier(Type*) = quantifier(Type).*
-		// quantifier(Type+) = quantifier(Type).+
-		return m_argument.quantifier().product(m_multiplier);
-	}
+    public Quantifier quantifier()
+    {
+        // Formal Semantics...
+        // quantifier(Type?) = quantifier(Type).?
+        // quantifier(Type*) = quantifier(Type).*
+        // quantifier(Type+) = quantifier(Type).+
+        return m_argument.quantifier().product(m_multiplier);
+    }
 
-	public boolean subtype(final SequenceType type)
-	{
-		if (type.quantifier().contains(m_multiplier))
-		{
-			return m_argument.prime().subtype(type.prime());
-		}
-		else
-		{
-			return false;
-		}
-	}
+    public boolean subtype(final SequenceType type)
+    {
+        if (type.quantifier().contains(m_multiplier))
+        {
+            return m_argument.prime().subtype(type.prime());
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	@Override
-	public String toString()
-	{
-		final Quantifier card = quantifier();
-		if (card.isNone())
-		{
-			return "none";
-		}
-		if (card.isEmpty())
-		{
-			return "empty";
-		}
-		return "(".concat(m_argument.toString()).concat(")").concat(m_multiplier.toString());
-	}
+    @Override
+    public String toString()
+    {
+        final Quantifier card = quantifier();
+        if (card.isNone())
+        {
+            return "none";
+        }
+        if (card.isEmpty())
+        {
+            return "empty";
+        }
+        return "(".concat(m_argument.toString()).concat(")").concat(m_multiplier.toString());
+    }
 }

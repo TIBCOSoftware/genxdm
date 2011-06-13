@@ -26,8 +26,9 @@ import org.genxdm.bridgekit.atoms.XmlAtomBridge;
 import org.genxdm.bridgekit.tree.CoreModelDecoration;
 import org.genxdm.bridgekit.tree.CoreModelDecorator;
 import org.genxdm.bridgekit.tree.CursorOnTypedModel;
-import org.genxdm.bridgekit.xs.MetaBridgeOnSchemaTypeBridgeAdapter;
-import org.genxdm.bridgekit.xs.SchemaTypeBridgeFactory;
+import org.genxdm.bridgekit.xs.SchemaCache;
+import org.genxdm.bridgekit.xs.SchemaCacheFactory;
+import org.genxdm.bridgekit.xs.TypesBridgeImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.Resolver;
 import org.genxdm.processor.io.ValidatingDocumentHandler;
@@ -39,11 +40,10 @@ import org.genxdm.typed.Validator;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.TypedDocumentHandler;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.typed.types.MetaBridge;
+import org.genxdm.typed.types.TypesBridge;
 import org.genxdm.typed.variant.VariantBridge;
 import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.ComponentProvider;
-import org.genxdm.xs.SchemaTypeBridge;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
 import org.genxdm.xs.components.ElementDefinition;
@@ -60,9 +60,9 @@ public final class AxiomSAProcessingContext
 	{
 	    this.context = PreCondition.assertNotNull(context, "context");
 		this.atomBridge = new XmlAtomBridge(this);
-		final SchemaTypeBridgeFactory cacheFactory = new SchemaTypeBridgeFactory();
-		cache = cacheFactory.newMetaBridge();
-		this.metaBridge = new MetaBridgeOnSchemaTypeBridgeAdapter(cache);
+		final SchemaCacheFactory cacheFactory = new SchemaCacheFactory();
+		cache = cacheFactory.newSchemaCache();
+		this.metaBridge = new TypesBridgeImpl(cache);
 		EnumSet<CoreModelDecoration> delegations = EnumSet.noneOf(CoreModelDecoration.class);
 		delegations.add(CoreModelDecoration.CHILD_AXIS);
 		delegations.add(CoreModelDecoration.CHILD_ELEMENTS);
@@ -130,7 +130,7 @@ public final class AxiomSAProcessingContext
         return metaBridge.getComponents();
     }
 
-    public MetaBridge getMetaBridge()
+    public TypesBridge getMetaBridge()
 	{
 		return metaBridge;
 	}
@@ -205,10 +205,10 @@ public final class AxiomSAProcessingContext
     
     private final AxiomProcessingContext context;
 	private final AtomBridge<XmlAtom> atomBridge;
-	private final SchemaTypeBridge cache;
+	private final SchemaCache cache;
 	
 	@SuppressWarnings("unused")
 	private boolean locked;
-	private final MetaBridge metaBridge;
+	private final TypesBridge metaBridge;
 	private final TypedModel<Object, XmlAtom> model;
 }
