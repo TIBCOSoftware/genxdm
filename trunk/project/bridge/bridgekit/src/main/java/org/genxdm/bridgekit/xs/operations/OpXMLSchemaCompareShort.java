@@ -19,43 +19,43 @@ import org.genxdm.typed.types.AtomBridge;
 
 public final class OpXMLSchemaCompareShort<A> implements ValueComparator<A>
 {
-	private final OpXMLSchemaCompare opcode;
-	private final short operandRHS;
-	private final AtomBridge<A> atomBridge;
+    private final OpXMLSchemaCompare opcode;
+    private final short operandRHS;
+    private final AtomBridge<A> atomBridge;
 
-	public OpXMLSchemaCompareShort(final OpXMLSchemaCompare opcode, final A rhsAtom, final AtomBridge<A> atomBridge)
-	{
-		this.opcode = opcode;
-		this.operandRHS = atomBridge.getShort(rhsAtom);
-		this.atomBridge = atomBridge;
-	}
+    public OpXMLSchemaCompareShort(final OpXMLSchemaCompare opcode, final A rhsAtom, final AtomBridge<A> atomBridge)
+    {
+        this.opcode = opcode;
+        this.operandRHS = atomBridge.getShort(rhsAtom);
+        this.atomBridge = atomBridge;
+    }
 
-	public boolean compare(final A lhsAtom)
-	{
-		final short operandLHS = atomBridge.getShort(lhsAtom);
+    public boolean compare(final A lhsAtom)
+    {
+        final short operandLHS = atomBridge.getShort(lhsAtom);
 
-		switch (opcode)
-		{
-			case Gt:
-			{
-				return operandLHS > operandRHS;
-			}
-			case Ge:
-			{
-				return operandLHS >= operandRHS;
-			}
-			case Lt:
-			{
-				return operandLHS < operandRHS;
-			}
-			case Le:
-			{
-				return operandLHS <= operandRHS;
-			}
-			default:
-			{
-				throw new AssertionError(opcode);
-			}
-		}
-	}
+        switch (opcode)
+        {
+            case Gt:
+            {
+                return operandLHS > operandRHS;
+            }
+            case Ge:
+            {
+                return operandLHS >= operandRHS;
+            }
+            case Lt:
+            {
+                return operandLHS < operandRHS;
+            }
+            case Le:
+            {
+                return operandLHS <= operandRHS;
+            }
+            default:
+            {
+                throw new AssertionError(opcode);
+            }
+        }
+    }
 }

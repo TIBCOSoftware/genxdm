@@ -22,52 +22,52 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlFloat extends XmlAbstractAtom
 {
-	private final float floatValue;
+    private final float floatValue;
 
-	public XmlFloat(final float floatValue)
-	{
-		this.floatValue = floatValue;
-	}
+    public XmlFloat(final float floatValue)
+    {
+        this.floatValue = floatValue;
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof XmlFloat)
-		{
-			return floatValue == ((XmlFloat)obj).floatValue;
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof XmlFloat)
+        {
+            return floatValue == ((XmlFloat)obj).floatValue;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	/**
-	 * Returns this value as a <code>float</code>.
-	 */
-	public float getFloatValue()
-	{
-		return floatValue;
-	}
+    /**
+     * Returns this value as a <code>float</code>.
+     */
+    public float getFloatValue()
+    {
+        return floatValue;
+    }
 
-	public String getC14NForm()
-	{
-		return NumericSupport.formatFloatC14N(floatValue);
-	}
+    public String getC14NForm()
+    {
+        return NumericSupport.formatFloatC14N(floatValue);
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.FLOAT;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.FLOAT;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return Float.floatToIntBits(floatValue);
-	}
+    @Override
+    public int hashCode()
+    {
+        return Float.floatToIntBits(floatValue);
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 }

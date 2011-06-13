@@ -22,52 +22,52 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlByte extends XmlAbstractAtom
 {
-	private final byte byteValue;
+    private final byte byteValue;
 
-	public XmlByte(final byte byteValue)
-	{
-		this.byteValue = byteValue;
-	}
+    public XmlByte(final byte byteValue)
+    {
+        this.byteValue = byteValue;
+    }
 
-	/**
-	 * Returns this value as a <code>byte</code>.
-	 */
-	public byte getByteValue()
-	{
-		return byteValue;
-	}
+    /**
+     * Returns this value as a <code>byte</code>.
+     */
+    public byte getByteValue()
+    {
+        return byteValue;
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof XmlByte)
-		{
-			return byteValue == ((XmlByte)obj).getByteValue();
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof XmlByte)
+        {
+            return byteValue == ((XmlByte)obj).getByteValue();
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return Byte.toString(byteValue);
-	}
+    public String getC14NForm()
+    {
+        return Byte.toString(byteValue);
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.BYTE;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.BYTE;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return byteValue;
-	}
+    @Override
+    public int hashCode()
+    {
+        return byteValue;
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 }

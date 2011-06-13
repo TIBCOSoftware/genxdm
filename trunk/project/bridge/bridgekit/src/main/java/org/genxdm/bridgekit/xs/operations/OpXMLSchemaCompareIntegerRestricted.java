@@ -23,42 +23,42 @@ import org.genxdm.xs.types.NativeType;
 
 public final class OpXMLSchemaCompareIntegerRestricted<A> implements ValueComparator<A>
 {
-	private final OpXMLSchemaCompare opcode;
-	private final BigInteger operandRHS;
-	private final AtomBridge<A> atomBridge;
+    private final OpXMLSchemaCompare opcode;
+    private final BigInteger operandRHS;
+    private final AtomBridge<A> atomBridge;
 
-	public OpXMLSchemaCompareIntegerRestricted(final OpXMLSchemaCompare opcode, final A rhsAtom, final NativeType nativeType, final AtomBridge<A> atomBridge)
-	{
-		this.opcode = opcode;
-		this.atomBridge = atomBridge;
-		operandRHS = atomBridge.getInteger(rhsAtom);
-	}
+    public OpXMLSchemaCompareIntegerRestricted(final OpXMLSchemaCompare opcode, final A rhsAtom, final NativeType nativeType, final AtomBridge<A> atomBridge)
+    {
+        this.opcode = opcode;
+        this.atomBridge = atomBridge;
+        operandRHS = atomBridge.getInteger(rhsAtom);
+    }
 
-	public boolean compare(final A lhsAtom) throws AtomCastException
-	{
-		final BigInteger operandLHS = atomBridge.getInteger(lhsAtom);
-		switch (opcode)
-		{
-			case Gt:
-			{
-				return operandLHS.compareTo(operandRHS) > 0;
-			}
-			case Ge:
-			{
-				return operandLHS.compareTo(operandRHS) >= 0;
-			}
-			case Lt:
-			{
-				return operandLHS.compareTo(operandRHS) < 0;
-			}
-			case Le:
-			{
-				return operandLHS.compareTo(operandRHS) <= 0;
-			}
-			default:
-			{
-				throw new AssertionError(opcode);
-			}
-		}
-	}
+    public boolean compare(final A lhsAtom) throws AtomCastException
+    {
+        final BigInteger operandLHS = atomBridge.getInteger(lhsAtom);
+        switch (opcode)
+        {
+            case Gt:
+            {
+                return operandLHS.compareTo(operandRHS) > 0;
+            }
+            case Ge:
+            {
+                return operandLHS.compareTo(operandRHS) >= 0;
+            }
+            case Lt:
+            {
+                return operandLHS.compareTo(operandRHS) < 0;
+            }
+            case Le:
+            {
+                return operandLHS.compareTo(operandRHS) <= 0;
+            }
+            default:
+            {
+                throw new AssertionError(opcode);
+            }
+        }
+    }
 }

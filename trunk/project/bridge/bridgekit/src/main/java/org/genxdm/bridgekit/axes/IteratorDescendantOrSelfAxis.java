@@ -24,43 +24,43 @@ import org.genxdm.exceptions.PreCondition;
 
 final class IteratorDescendantOrSelfAxis<N> implements Iterator<N>
 {
-	private N m_pending;
-	private final Model<N> m_navigator;
+    private N m_pending;
+    private final Model<N> m_navigator;
 
-	// Take advantage of the fact that the tree implementation has a fast parent
-	// pointer to avoid a stack. We keep track of where we started so as to
-	// terminate the axis before going on to the origin's following siblings.
-	private final N m_origin;
+    // Take advantage of the fact that the tree implementation has a fast parent
+    // pointer to avoid a stack. We keep track of where we started so as to
+    // terminate the axis before going on to the origin's following siblings.
+    private final N m_origin;
 
-	public IteratorDescendantOrSelfAxis(final N origin, final Model<N> navigator)
-	{
-		this.m_navigator = PreCondition.assertArgumentNotNull(navigator);
-		this.m_origin = PreCondition.assertArgumentNotNull(origin);
-		this.m_pending = origin;
-	}
+    public IteratorDescendantOrSelfAxis(final N origin, final Model<N> navigator)
+    {
+        this.m_navigator = PreCondition.assertArgumentNotNull(navigator);
+        this.m_origin = PreCondition.assertArgumentNotNull(origin);
+        this.m_pending = origin;
+    }
 
-	public boolean hasNext()
-	{
-		return (null != m_pending);
-	}
+    public boolean hasNext()
+    {
+        return (null != m_pending);
+    }
 
-	public N next() throws NoSuchElementException
-	{
-		if (m_pending != null)
-		{
-			final N last = m_pending;
-			m_pending = IteratorDescendantAxis.jump(m_pending, m_origin, m_navigator);
-			return last;
-		}
-		else
-		{
-			// The iteration has no more elements.
-			throw new NoSuchElementException();
-		}
-	}
+    public N next() throws NoSuchElementException
+    {
+        if (m_pending != null)
+        {
+            final N last = m_pending;
+            m_pending = IteratorDescendantAxis.jump(m_pending, m_origin, m_navigator);
+            return last;
+        }
+        else
+        {
+            // The iteration has no more elements.
+            throw new NoSuchElementException();
+        }
+    }
 
-	public void remove()
-	{
-		throw new UnsupportedOperationException();
-	}
+    public void remove()
+    {
+        throw new UnsupportedOperationException();
+    }
 }

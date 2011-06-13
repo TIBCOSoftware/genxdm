@@ -31,95 +31,95 @@ import org.genxdm.xs.types.SimpleType;
  */
 abstract class FacetLengthCommonImpl extends FacetImpl
 {
-	private static <A> int length(final A atom, final AtomBridge<A> atomBridge)
-	{
-		final NativeType nativeType = atomBridge.getNativeType(atom);
-		if (nativeType.isString())
-		{
-			return atomBridge.getString(atom).length();
-		}
-		else if (nativeType == NativeType.ANY_URI)
-		{
-			return atomBridge.getURI(atom).toString().length();
-		}
-		else if (nativeType == NativeType.BASE64_BINARY)
-		{
-			return atomBridge.getBase64Binary(atom).length;
-		}
-		else if (nativeType == NativeType.HEX_BINARY)
-		{
-			return atomBridge.getHexBinary(atom).length;
-		}
-		else
-		{
-			throw new AssertionError(nativeType);
-		}
-	}
+    private static <A> int length(final A atom, final AtomBridge<A> atomBridge)
+    {
+        final NativeType nativeType = atomBridge.getNativeType(atom);
+        if (nativeType.isString())
+        {
+            return atomBridge.getString(atom).length();
+        }
+        else if (nativeType == NativeType.ANY_URI)
+        {
+            return atomBridge.getURI(atom).toString().length();
+        }
+        else if (nativeType == NativeType.BASE64_BINARY)
+        {
+            return atomBridge.getBase64Binary(atom).length;
+        }
+        else if (nativeType == NativeType.HEX_BINARY)
+        {
+            return atomBridge.getHexBinary(atom).length;
+        }
+        else
+        {
+            throw new AssertionError(nativeType);
+        }
+    }
 
-	private static <A> LengthFacetUOM uom(final A atom, final AtomBridge<A> atomBridge)
-	{
-		final NativeType nativeType = atomBridge.getNativeType(atom);
-		if (nativeType.isString())
-		{
-			return LengthFacetUOM.Characters;
-		}
-		else if (nativeType == NativeType.ANY_URI)
-		{
-			return LengthFacetUOM.Characters;
-		}
-		else if (nativeType == NativeType.BASE64_BINARY)
-		{
-			return LengthFacetUOM.Octets;
-		}
-		else if (nativeType == NativeType.HEX_BINARY)
-		{
-			return LengthFacetUOM.Octets;
-		}
-		else
-		{
-			throw new AssertionError(nativeType);
-		}
-	}
+    private static <A> LengthFacetUOM uom(final A atom, final AtomBridge<A> atomBridge)
+    {
+        final NativeType nativeType = atomBridge.getNativeType(atom);
+        if (nativeType.isString())
+        {
+            return LengthFacetUOM.Characters;
+        }
+        else if (nativeType == NativeType.ANY_URI)
+        {
+            return LengthFacetUOM.Characters;
+        }
+        else if (nativeType == NativeType.BASE64_BINARY)
+        {
+            return LengthFacetUOM.Octets;
+        }
+        else if (nativeType == NativeType.HEX_BINARY)
+        {
+            return LengthFacetUOM.Octets;
+        }
+        else
+        {
+            throw new AssertionError(nativeType);
+        }
+    }
 
-	private final FacetKind facetKind;
+    private final FacetKind facetKind;
 
-	public FacetLengthCommonImpl(final boolean isFixed, FacetKind facetKind)
-	{
-		super(isFixed);
-		this.facetKind = PreCondition.assertArgumentNotNull(facetKind, "facetKind");
-	}
+    public FacetLengthCommonImpl(final boolean isFixed, FacetKind facetKind)
+    {
+        super(isFixed);
+        this.facetKind = PreCondition.assertArgumentNotNull(facetKind, "facetKind");
+    }
 
-	protected abstract void checkLength(final int length, final LengthFacetUOM uom) throws FacetException;
+    protected abstract void checkLength(final int length, final LengthFacetUOM uom) throws FacetException;
 
-	public FacetKind getKind()
-	{
-		return facetKind;
-	}
+    public FacetKind getKind()
+    {
+        return facetKind;
+    }
 
-	public final <A> void validate(final List<? extends A> actualValue, final SimpleType simpleType, final AtomBridge<A> atomBridge) throws FacetException
-	{
-		if (simpleType instanceof ListSimpleType)
-		{
-			checkLength(actualValue.size(), LengthFacetUOM.ListItems);
-		}
-		else
-		{
-			for (final A atom : actualValue)
-			{
-				final LengthFacetUOM uom = uom(atom, atomBridge);
-				switch (uom)
-				{
-					case NotApplicable:
-					{
-						// Ignore e.g. xs:QName and xs:NOTATION are deprecated.
-					}
-					break;
-					default:
-					{
-						checkLength(length(atom, atomBridge), uom);
-					}
-				}
-			}
-		}
-	}
+    public final <A> void validate(final List<? extends A> actualValue, final SimpleType simpleType, final AtomBridge<A> atomBridge) throws FacetException
+    {
+        if (simpleType instanceof ListSimpleType)
+        {
+            checkLength(actualValue.size(), LengthFacetUOM.ListItems);
+        }
+        else
+        {
+            for (final A atom : actualValue)
+            {
+                final LengthFacetUOM uom = uom(atom, atomBridge);
+                switch (uom)
+                {
+                    case NotApplicable:
+                    {
+                        // Ignore e.g. xs:QName and xs:NOTATION are deprecated.
+                    }
+                    break;
+                    default:
+                    {
+                        checkLength(length(atom, atomBridge), uom);
+                    }
+                }
+            }
+        }
+    }
 }

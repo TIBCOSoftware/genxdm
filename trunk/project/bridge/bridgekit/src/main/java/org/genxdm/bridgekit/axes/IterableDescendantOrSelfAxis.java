@@ -23,17 +23,17 @@ import org.genxdm.exceptions.PreCondition;
 
 public final class IterableDescendantOrSelfAxis<N> implements Iterable<N>
 {
-	final N m_origin;
-	private final Model<N> m_navigator;
+    final N m_origin;
+    private final Model<N> m_navigator;
 
-	public IterableDescendantOrSelfAxis(final N origin, final Model<N> navigator)
-	{
-		this.m_navigator = PreCondition.assertArgumentNotNull(navigator, "navigator");
-		this.m_origin = PreCondition.assertArgumentNotNull(origin, "origin");
-	}
+    public IterableDescendantOrSelfAxis(final N origin, final Model<N> navigator)
+    {
+        this.m_navigator = PreCondition.assertArgumentNotNull(navigator, "navigator");
+        this.m_origin = PreCondition.assertArgumentNotNull(origin, "origin");
+    }
 
-	public Iterator<N> iterator()
-	{
-		return new IteratorDescendantOrSelfAxis<N>(m_origin, m_navigator);
-	}
+    public Iterator<N> iterator()
+    {
+        return new IteratorDescendantOrSelfAxis<N>(m_origin, m_navigator);
+    }
 }

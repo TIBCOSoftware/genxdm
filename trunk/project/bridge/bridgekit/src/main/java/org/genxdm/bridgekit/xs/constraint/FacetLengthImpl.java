@@ -24,25 +24,25 @@ import org.genxdm.xs.facets.LengthFacetUOM;
 
 public final class FacetLengthImpl extends FacetLengthCommonImpl implements Length
 {
-	private final int length;
+    private final int length;
 
-	public FacetLengthImpl(final int length, final boolean isFixed)
-	{
-		super(isFixed, FacetKind.Length);
-		PreCondition.assertTrue(length >= 0, "length >= 0");
-		this.length = length;
-	}
+    public FacetLengthImpl(final int length, final boolean isFixed)
+    {
+        super(isFixed, FacetKind.Length);
+        PreCondition.assertTrue(length >= 0, "length >= 0");
+        this.length = length;
+    }
 
-	protected void checkLength(final int length, final LengthFacetUOM uom) throws FacetException
-	{
-		if (length != this.length)
-		{
-			throw new FacetLengthException(this, length);
-		}
-	}
+    protected void checkLength(final int length, final LengthFacetUOM uom) throws FacetException
+    {
+        if (length != this.length)
+        {
+            throw new FacetLengthException(this, length);
+        }
+    }
 
-	public int getValue()
-	{
-		return length;
-	}
+    public int getValue()
+    {
+        return length;
+    }
 }

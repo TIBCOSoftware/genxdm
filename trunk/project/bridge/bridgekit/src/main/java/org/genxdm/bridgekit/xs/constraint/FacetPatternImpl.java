@@ -22,27 +22,27 @@ import org.genxdm.xs.facets.RegExPattern;
 
 public final class FacetPatternImpl implements Pattern
 {
-	private final RegExPattern pattern;
-	private final String regex;
+    private final RegExPattern pattern;
+    private final String regex;
 
-	public FacetPatternImpl(final RegExPattern pattern, final String regex)
-	{
-		this.pattern = PreCondition.assertArgumentNotNull(pattern, "pattern");
-		this.regex = PreCondition.assertArgumentNotNull(regex, "regex");
-	}
+    public FacetPatternImpl(final RegExPattern pattern, final String regex)
+    {
+        this.pattern = PreCondition.assertArgumentNotNull(pattern, "pattern");
+        this.regex = PreCondition.assertArgumentNotNull(regex, "regex");
+    }
 
-	public void validate(final String input) throws PatternException
-	{
-		PreCondition.assertArgumentNotNull(input, "input");
+    public void validate(final String input) throws PatternException
+    {
+        PreCondition.assertArgumentNotNull(input, "input");
 
-		if (!pattern.matches(input))
-		{
-			throw new PatternException(this, input);
-		}
-	}
+        if (!pattern.matches(input))
+        {
+            throw new PatternException(this, input);
+        }
+    }
 
-	public String getValue()
-	{
-		return regex;
-	}
+    public String getValue()
+    {
+        return regex;
+    }
 }

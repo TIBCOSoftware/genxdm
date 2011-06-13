@@ -23,48 +23,48 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlName extends XmlAbstractAtom
 {
-	private final String value;
+    private final String value;
 
-	public XmlName(final String value)
-	{
-		this.value = PreCondition.assertArgumentNotNull(value, "value");
-	}
+    public XmlName(final String value)
+    {
+        this.value = PreCondition.assertArgumentNotNull(value, "value");
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		else if (obj instanceof XmlName)
-		{
-			return value.equals(((XmlName)obj).value);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        else if (obj instanceof XmlName)
+        {
+            return value.equals(((XmlName)obj).value);
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return value;
-	}
+    public String getC14NForm()
+    {
+        return value;
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.NAME;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.NAME;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return value.hashCode();
-	}
+    @Override
+    public int hashCode()
+    {
+        return value.hashCode();
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 }

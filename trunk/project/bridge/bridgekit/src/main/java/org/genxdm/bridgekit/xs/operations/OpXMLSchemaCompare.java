@@ -17,5 +17,5 @@ package org.genxdm.bridgekit.xs.operations;
 
 public enum OpXMLSchemaCompare
 {
-	Ge, Gt, Le, Lt;
+    Ge, Gt, Le, Lt;
 }

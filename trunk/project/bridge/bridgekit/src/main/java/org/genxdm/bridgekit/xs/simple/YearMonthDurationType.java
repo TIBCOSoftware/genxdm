@@ -23,13 +23,13 @@ import org.genxdm.xs.types.SimpleType;
 public final class YearMonthDurationType extends AbstractDurationType
 {
 
-	public YearMonthDurationType(final QName name, final SimpleType baseType)
-	{
-		super(name, baseType);
-	}
+    public YearMonthDurationType(final QName name, final SimpleType baseType)
+    {
+        super(name, baseType);
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.DURATION_YEARMONTH;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.DURATION_YEARMONTH;
+    }
 }

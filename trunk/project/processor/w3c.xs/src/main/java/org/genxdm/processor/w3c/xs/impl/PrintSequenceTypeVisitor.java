@@ -18,7 +18,7 @@ package org.genxdm.processor.w3c.xs.impl;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.SchemaTypeBridge;
+import org.genxdm.typed.types.TypesBridge;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.types.AttributeNodeType;
@@ -48,11 +48,11 @@ import org.genxdm.xs.types.UnionSimpleType;
 final class PrintSequenceTypeVisitor implements SequenceTypeVisitor
 {
     private final StringBuilder m_sb = new StringBuilder();
-    private final SchemaTypeBridge m_metaBridge;
+    private final TypesBridge m_metaBridge;
     private final NamespaceResolver m_namespaces;
     private final String m_defaultElementAndTypeNamespace;
 
-    public PrintSequenceTypeVisitor(final SchemaTypeBridge metaBridge, final NamespaceResolver namespaces, final String defaultElementAndTypeNamespace)
+    public PrintSequenceTypeVisitor(final TypesBridge metaBridge, final NamespaceResolver namespaces, final String defaultElementAndTypeNamespace)
     {
         m_metaBridge = PreCondition.assertArgumentNotNull(metaBridge, "metaBridge");
         m_namespaces = PreCondition.assertArgumentNotNull(namespaces, "namespaces");

@@ -32,31 +32,31 @@ public final class CursorOnTypedModel<N, A>
     extends CursorOnModel<N> 
     implements TypedCursor<N, A>
 {
-	public CursorOnTypedModel(final N node, final TypedModel<N, A> model)
-	{
-	    super(node, model);
-		this.tmodel = (TypedModel<N, A>)model;
-	}
+    public CursorOnTypedModel(final N node, final TypedModel<N, A> model)
+    {
+        super(node, model);
+        this.tmodel = (TypedModel<N, A>)model;
+    }
 
-	public Iterable<? extends A> getValue()
-	{
-		return tmodel.getValue(node);
-	}
+    public Iterable<? extends A> getValue()
+    {
+        return tmodel.getValue(node);
+    }
 
-	public QName getTypeName()
-	{
-		return tmodel.getTypeName(node);
-	}
-	
-	public QName getAttributeTypeName(String namespaceURI, String localName)
-	{
-	    return tmodel.getAttributeTypeName(node, namespaceURI, localName);
-	}
-	
-	public Iterable<? extends A> getAttributeValue(final String namespaceURI, final String localName)
-	{
-	    return tmodel.getAttributeValue(node, namespaceURI, localName);
-	}
+    public QName getTypeName()
+    {
+        return tmodel.getTypeName(node);
+    }
+    
+    public QName getAttributeTypeName(String namespaceURI, String localName)
+    {
+        return tmodel.getAttributeTypeName(node, namespaceURI, localName);
+    }
+    
+    public Iterable<? extends A> getAttributeValue(final String namespaceURI, final String localName)
+    {
+        return tmodel.getAttributeValue(node, namespaceURI, localName);
+    }
 
     private final TypedModel<N, A> tmodel;
 }

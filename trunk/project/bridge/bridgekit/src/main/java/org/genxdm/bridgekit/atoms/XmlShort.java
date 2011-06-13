@@ -22,53 +22,53 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlShort extends XmlAbstractAtom
 {
-	private final short shortValue;
+    private final short shortValue;
 
-	public XmlShort(final short value)
-	{
-		this.shortValue = value;
-	}
+    public XmlShort(final short value)
+    {
+        this.shortValue = value;
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		else if (obj instanceof XmlShort)
-		{
-			return shortValue == ((XmlShort)obj).shortValue;
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        else if (obj instanceof XmlShort)
+        {
+            return shortValue == ((XmlShort)obj).shortValue;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return Short.toString(shortValue);
-	}
+    public String getC14NForm()
+    {
+        return Short.toString(shortValue);
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.SHORT;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.SHORT;
+    }
 
-	public short getShortValue()
-	{
-		return shortValue;
-	}
+    public short getShortValue()
+    {
+        return shortValue;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return shortValue;
-	}
+    @Override
+    public int hashCode()
+    {
+        return shortValue;
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 }

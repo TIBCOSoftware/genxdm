@@ -21,7 +21,7 @@ import org.genxdm.ProcessingContext;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.TypedDocumentHandlerFactory;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.typed.types.MetaBridge;
+import org.genxdm.typed.types.TypesBridge;
 import org.genxdm.typed.variant.VariantBridge;
 import org.genxdm.xs.Schema;
 
@@ -44,7 +44,7 @@ public interface TypedContext<N, A>
     /**
      * Returns the bridge used for meta-data interaction.
      */
-    MetaBridge getMetaBridge();
+    TypesBridge getMetaBridge();
 
     /**
      * Returns the {@link TypedModel} for navigating the document model. <br/>

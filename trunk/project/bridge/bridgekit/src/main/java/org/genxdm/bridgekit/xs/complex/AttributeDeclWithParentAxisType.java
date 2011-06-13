@@ -31,96 +31,96 @@ import org.genxdm.xs.types.SimpleMarkerType;
 
 public final class AttributeDeclWithParentAxisType implements AttributeDefinition
 {
-	private final AttributeDefinition m_attribute;
+    private final AttributeDefinition m_attribute;
 
-	public AttributeDeclWithParentAxisType(final AttributeDefinition element, final ElementDefinition parentAxis)
-	{
-		m_attribute = PreCondition.assertArgumentNotNull(element);
-	}
+    public AttributeDeclWithParentAxisType(final AttributeDefinition element, final ElementDefinition parentAxis)
+    {
+        m_attribute = PreCondition.assertArgumentNotNull(element);
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return m_attribute.getKind();
-	}
+    public PrimeTypeKind getKind()
+    {
+        return m_attribute.getKind();
+    }
 
-	public String getLocalName()
-	{
-		return m_attribute.getLocalName();
-	}
+    public String getLocalName()
+    {
+        return m_attribute.getLocalName();
+    }
 
-	public QName getName()
-	{
-		return m_attribute.getName();
-	}
+    public QName getName()
+    {
+        return m_attribute.getName();
+    }
 
-	public NodeKind getNodeKind()
-	{
-		return m_attribute.getNodeKind();
-	}
+    public NodeKind getNodeKind()
+    {
+        return m_attribute.getNodeKind();
+    }
 
-	public ScopeExtent getScopeExtent()
-	{
-		return m_attribute.getScopeExtent();
-	}
+    public ScopeExtent getScopeExtent()
+    {
+        return m_attribute.getScopeExtent();
+    }
 
-	public String getTargetNamespace()
-	{
-		return m_attribute.getTargetNamespace();
-	}
+    public String getTargetNamespace()
+    {
+        return m_attribute.getTargetNamespace();
+    }
 
-	public SimpleMarkerType getType()
-	{
-		return m_attribute.getType();
-	}
+    public SimpleMarkerType getType()
+    {
+        return m_attribute.getType();
+    }
 
-	public ValueConstraint getValueConstraint()
-	{
-		return m_attribute.getValueConstraint();
-	}
+    public ValueConstraint getValueConstraint()
+    {
+        return m_attribute.getValueConstraint();
+    }
 
-	public boolean isAnonymous()
-	{
-		return m_attribute.isAnonymous();
-	}
+    public boolean isAnonymous()
+    {
+        return m_attribute.isAnonymous();
+    }
 
-	public boolean isChoice()
-	{
-		return m_attribute.isChoice();
-	}
+    public boolean isChoice()
+    {
+        return m_attribute.isChoice();
+    }
 
-	public boolean isNative()
-	{
-		return m_attribute.isNative();
-	}
+    public boolean isNative()
+    {
+        return m_attribute.isNative();
+    }
 
-	public boolean isNone()
-	{
-		return m_attribute.isNone();
-	}
+    public boolean isNone()
+    {
+        return m_attribute.isNone();
+    }
 
-	public PrimeType prime()
-	{
-		return this;
-	}
+    public PrimeType prime()
+    {
+        return this;
+    }
 
-	public Quantifier quantifier()
-	{
-		return m_attribute.quantifier();
-	}
+    public Quantifier quantifier()
+    {
+        return m_attribute.quantifier();
+    }
 
-	public boolean subtype(final PrimeType rhs)
-	{
-		return m_attribute.subtype(rhs);
-	}
+    public boolean subtype(final PrimeType rhs)
+    {
+        return m_attribute.subtype(rhs);
+    }
 
-	@Override
-	public String toString()
-	{
-		return m_attribute.toString();
-	}
+    @Override
+    public String toString()
+    {
+        return m_attribute.toString();
+    }
 }

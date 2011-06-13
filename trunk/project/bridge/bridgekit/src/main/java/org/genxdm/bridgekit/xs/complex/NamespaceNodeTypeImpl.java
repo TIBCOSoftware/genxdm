@@ -16,7 +16,6 @@
 package org.genxdm.bridgekit.xs.complex;
 
 import org.genxdm.NodeKind;
-import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.types.NamespaceNodeType;
 import org.genxdm.xs.types.PrimeChoiceType;
 import org.genxdm.xs.types.PrimeType;
@@ -25,43 +24,43 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 public final class NamespaceNodeTypeImpl extends AbstractLeafNodeType implements NamespaceNodeType
 {
-	public NamespaceNodeTypeImpl(final ComponentProvider cache)
-	{
-		super(NodeKind.NAMESPACE, cache);
-	}
+    public NamespaceNodeTypeImpl()
+    {
+        super(NodeKind.NAMESPACE);
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return PrimeTypeKind.NAMESPACE;
-	}
+    public PrimeTypeKind getKind()
+    {
+        return PrimeTypeKind.NAMESPACE;
+    }
 
-	public NamespaceNodeType prime()
-	{
-		return this;
-	}
+    public NamespaceNodeType prime()
+    {
+        return this;
+    }
 
-	public boolean subtype(final PrimeType rhs)
-	{
-		switch (rhs.getKind())
-		{
-			case CHOICE:
-			{
-				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
-				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
-			}
-			case NAMESPACE:
-			{
-				return true;
-			}
-			default:
-			{
-				return false;
-			}
-		}
-	}
+    public boolean subtype(final PrimeType rhs)
+    {
+        switch (rhs.getKind())
+        {
+            case CHOICE:
+            {
+                final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
+                return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
+            }
+            case NAMESPACE:
+            {
+                return true;
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    }
 }

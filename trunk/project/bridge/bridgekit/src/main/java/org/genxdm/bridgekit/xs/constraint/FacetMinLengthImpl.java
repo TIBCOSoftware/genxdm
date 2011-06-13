@@ -24,25 +24,25 @@ import org.genxdm.xs.facets.MinLength;
 
 public final class FacetMinLengthImpl extends FacetLengthCommonImpl implements MinLength
 {
-	private final int minLength;
+    private final int minLength;
 
-	public FacetMinLengthImpl(final int minLength, final boolean isFixed)
-	{
-		super(isFixed, FacetKind.MinLength);
-		PreCondition.assertTrue(minLength >= 0, "minLength >= 0");
-		this.minLength = minLength;
-	}
+    public FacetMinLengthImpl(final int minLength, final boolean isFixed)
+    {
+        super(isFixed, FacetKind.MinLength);
+        PreCondition.assertTrue(minLength >= 0, "minLength >= 0");
+        this.minLength = minLength;
+    }
 
-	protected void checkLength(final int length, final LengthFacetUOM uom) throws FacetException
-	{
-		if (length < this.minLength)
-		{
-			throw new FacetMinLengthException(this, length, uom);
-		}
-	}
+    protected void checkLength(final int length, final LengthFacetUOM uom) throws FacetException
+    {
+        if (length < this.minLength)
+        {
+            throw new FacetMinLengthException(this, length, uom);
+        }
+    }
 
-	public int getMinLength()
-	{
-		return minLength;
-	}
+    public int getMinLength()
+    {
+        return minLength;
+    }
 }

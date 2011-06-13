@@ -24,65 +24,65 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 public final class ZConcatType implements ConcatType
 {
-	public static  SequenceType concat(final SequenceType lhs, final SequenceType rhs)
-	{
-		PreCondition.assertArgumentNotNull(lhs, "lhs");
-		PreCondition.assertArgumentNotNull(rhs, "rhs");
+    public static  SequenceType concat(final SequenceType lhs, final SequenceType rhs)
+    {
+        PreCondition.assertArgumentNotNull(lhs, "lhs");
+        PreCondition.assertArgumentNotNull(rhs, "rhs");
 
-		// Make an attempt to simplify, but not approximate the type expression by detecting
-		// empty types which are the identity element for concatenation. However we must use
-		// the prime() and quantifier() approximations to detect the empty type.
-		if (lhs.prime().isNone() && lhs.quantifier().isOptional())
-		{
-			return rhs;
-		}
-		else if (rhs.prime().isNone() && rhs.quantifier().isOptional())
-		{
-			return lhs;
-		}
-		else
-		{
-			return new ZConcatType(lhs, rhs);
-		}
-	}
-	private final SequenceType m_lhs;
+        // Make an attempt to simplify, but not approximate the type expression by detecting
+        // empty types which are the identity element for concatenation. However we must use
+        // the prime() and quantifier() approximations to detect the empty type.
+        if (lhs.prime().isNone() && lhs.quantifier().isOptional())
+        {
+            return rhs;
+        }
+        else if (rhs.prime().isNone() && rhs.quantifier().isOptional())
+        {
+            return lhs;
+        }
+        else
+        {
+            return new ZConcatType(lhs, rhs);
+        }
+    }
+    private final SequenceType m_lhs;
 
-	private final SequenceType m_rhs;
+    private final SequenceType m_rhs;
 
-	private ZConcatType(final SequenceType lhs, final SequenceType rhs)
-	{
-		m_lhs = PreCondition.assertArgumentNotNull(lhs);
-		m_rhs = PreCondition.assertArgumentNotNull(rhs);
-	}
+    private ZConcatType(final SequenceType lhs, final SequenceType rhs)
+    {
+        m_lhs = PreCondition.assertArgumentNotNull(lhs);
+        m_rhs = PreCondition.assertArgumentNotNull(rhs);
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public SequenceType getLHS()
-	{
-		return m_lhs;
-	}
+    public SequenceType getLHS()
+    {
+        return m_lhs;
+    }
 
-	public SequenceType getRHS()
-	{
-		return m_rhs;
-	}
+    public SequenceType getRHS()
+    {
+        return m_rhs;
+    }
 
-	public PrimeType prime()
-	{
-		return ZPrimeChoiceType.choice(m_lhs.prime(), m_rhs.prime());
-	}
+    public PrimeType prime()
+    {
+        return ZPrimeChoiceType.choice(m_lhs.prime(), m_rhs.prime());
+    }
 
-	public Quantifier quantifier()
-	{
-		return m_lhs.quantifier().sum(m_rhs.quantifier());
-	}
+    public Quantifier quantifier()
+    {
+        return m_lhs.quantifier().sum(m_rhs.quantifier());
+    }
 
-	@Override
-	public String toString()
-	{
-		return m_lhs + " , " + m_rhs;
-	}
+    @Override
+    public String toString()
+    {
+        return m_lhs + " , " + m_rhs;
+    }
 }

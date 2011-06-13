@@ -19,15 +19,24 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.GxmlException;
 import org.genxdm.names.NamespaceResolver;
-import org.genxdm.xs.SchemaTypeBridge;
+import org.genxdm.xs.Schema;
+import org.genxdm.xs.types.AttributeNodeType;
+import org.genxdm.xs.types.CommentNodeType;
+import org.genxdm.xs.types.DocumentNodeType;
+import org.genxdm.xs.types.ElementNodeType;
+import org.genxdm.xs.types.EmptyType;
+import org.genxdm.xs.types.NamespaceNodeType;
 import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.types.NoneType;
+import org.genxdm.xs.types.PrimeType;
+import org.genxdm.xs.types.ProcessingInstructionNodeType;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.TextNodeType;
 
 /**
  * A processing context parameterized by atom(s) and type(s).
  */
-public interface MetaBridge extends SchemaTypeBridge
+public interface TypesBridge extends Schema
 {
     /**
      * Implementation of the visitor pattern.
@@ -50,9 +59,51 @@ public interface MetaBridge extends SchemaTypeBridge
     SequenceType ancestorOrSelfAxis(SequenceType type);
 
     /**
+     * Returns a type denoting fn:data(arg).
+     */
+    SequenceType atomSet(SequenceType type);
+
+    /**
+     * Computes the type resulting from the application of the attribute axis.
+     */
+    SequenceType attributeAxis(SequenceType contextType);
+
+    /**
+     * Returns a type denoting an attribute of the specified name and type.
+     * 
+     * @param name
+     *            The name of the attribute. A value of <code>null</code> returns an attribute with a wildcard name.
+     * @param type
+     *            The type of the attribute. May be <code>null</code> for xs:anySimpleType.
+     */
+    AttributeNodeType attributeType(QName name, SequenceType type);
+
+    AttributeNodeType attributeWild(SequenceType type);
+
+    /**
+     * Computes the type resulting from the application of the child axis.
+     */
+    SequenceType childAxis(SequenceType contextType);
+
+    /**
+     * Returns a type denoting a choice of two types.
+     */
+    SequenceType choice(SequenceType one, SequenceType two);
+
+    /**
      * Applies the comment() test to the argument.
      */
     SequenceType commentTest(SequenceType arg);
+
+    /**
+     * Returns a type denoting a single comment node.
+     */
+    CommentNodeType commentType();
+
+    /**
+     * Returns a type denoting the combined sequence of two types.
+     */
+    SequenceType concat(SequenceType one, SequenceType two);
 
     /**
      * <table border="1">
@@ -79,9 +130,34 @@ public interface MetaBridge extends SchemaTypeBridge
     SequenceType descendantOrSelfAxis(SequenceType type);
 
     /**
+     * Returns a type denoting a single document node with the specified content.
+     */
+    DocumentNodeType documentType(SequenceType contextType);
+
+    /**
      * Applies an element() test to the argument.
      */
     SequenceType elementTest(SequenceType arg);
+
+    /**
+     * Returns a type denoting an element of the specified name, type and nillability.
+     * 
+     * @param name
+     *            The name of the element. A value of <code>null</code> return an element node type with a wildcard
+     *            name.
+     * @param type
+     *            The type of the element. May be <code>null</code> for xs:untyped.
+     * @param nillable
+     *            The nillable flag.
+     */
+    ElementNodeType elementType(QName name, SequenceType type, boolean nillable);
+
+    ElementNodeType elementWild(SequenceType type, boolean nillable);
+
+    /**
+     * Returns a type denoting "empty-sequence()".
+     */
+    EmptyType emptyType();
 
     /**
      * Computes the type resulting from the application of the following axis.
@@ -104,6 +180,23 @@ public interface MetaBridge extends SchemaTypeBridge
     SequenceType getBinaryRHS(SequenceType type);
 
     /**
+     * Returns the error code for a type which must be <code>none</code>.
+     * 
+     * @param noneType
+     *            The none type.
+     * @return The error code. May be <code>null</code>.
+     */
+    QName getErrorCode(SequenceType noneType);
+
+    /**
+     * Returns the name of the specified type definition.
+     * 
+     * @param type
+     *            The type definition.
+     */
+    QName getName(SequenceType type);
+
+    /**
      * Returns the specified type definition given a built in type.
      * 
      * @param nativeType
@@ -124,6 +217,11 @@ public interface MetaBridge extends SchemaTypeBridge
      * Converts the specified type into an opaque handle.
      */
     SequenceType handle(SequenceType sequenceType);
+
+    /**
+     * Returns a type denoting the interleave of two types.
+     */
+    SequenceType interleave(SequenceType one, SequenceType two);
 
     /**
      * Determines whether the specified type is an attribute node type.
@@ -166,15 +264,6 @@ public interface MetaBridge extends SchemaTypeBridge
     boolean isNone(SequenceType type);
 
     /**
-     * Returns the error code for a type which must be <code>none</code>.
-     * 
-     * @param noneType
-     *            The none type.
-     * @return The error code. May be <code>null</code>.
-     */
-    QName getErrorCode(SequenceType noneType);
-
-    /**
      * Determines whether the specified type is a processing-instruction node type.
      */
     boolean isProcessingInstructionNodeType(SequenceType type);
@@ -185,9 +274,24 @@ public interface MetaBridge extends SchemaTypeBridge
     boolean isTextNodeType(SequenceType type);
 
     /**
+     * Returns a type denoting a single item.
+     */
+    PrimeType itemType();
+
+    /**
+     * Multiplies the cardinality of the specified type by a specified cardinality.
+     */
+    SequenceType multiply(SequenceType argument, Quantifier multiplier);
+
+    /**
      * Computes the type resulting from the application of the namespace axis.
      */
     SequenceType namespaceAxis(SequenceType type);
+
+    /**
+     * Returns a type denoting a single namespace node.
+     */
+    NamespaceNodeType namespaceType();
 
     /**
      * Applies the namespace() test to the argument.
@@ -198,6 +302,34 @@ public interface MetaBridge extends SchemaTypeBridge
      * Applies the node() test to the argument.
      */
     SequenceType nodeTest(SequenceType arg);
+
+    /**
+     * Returns a type denoting a single node.
+     */
+    PrimeType nodeType();
+
+    /**
+     * Returns a type denoting an error.
+     */
+    NoneType noneType();
+
+    /**
+     * Returns a type denoting an error with an error code.
+     * 
+     * @param errorCode
+     *            The error code. May be <code>null</code>.
+     */
+    NoneType noneType(QName errorCode);
+
+    /**
+     * Multiply the cardinality of the specified type by optional (+).
+     */
+    SequenceType oneOrMore(SequenceType type);
+
+    /**
+     * Multiply the cardinality of the specified type by optional (?).
+     */
+    SequenceType optional(SequenceType type);
 
     /**
      * Computes the type resulting from the application of the parent axis.
@@ -225,9 +357,17 @@ public interface MetaBridge extends SchemaTypeBridge
     SequenceType processingInstructionTest(SequenceType arg, String name);
 
     /**
+     * Returns a type denoting a single processing-instruction node.
+     */
+    ProcessingInstructionNodeType processingInstructionType(String name);
+
+    /**
      * Approximates the possible number of items in the argument type.
      */
     Quantifier quantifier(SequenceType type);
+
+    // TODO: how is this different from "equals"?
+    boolean sameAs(SequenceType one, SequenceType two);
 
     /**
      * Returns a type denoting "schema-attribute(attributeName)".
@@ -250,10 +390,21 @@ public interface MetaBridge extends SchemaTypeBridge
     SequenceType selfAxis(SequenceType type);
 
     /**
+     * Determines whether the actual type is a sub-type of the expected type.
+     * 
+     * @param lhs
+     * @param rhs
+     */
+    boolean subtype(SequenceType lhs, SequenceType rhs);
+
+    /**
      * Applies the text() test to the argument.
      */
     SequenceType textTest(SequenceType arg);
 
+    /**
+     * Returns a type denoting a single text node.
+     */
     TextNodeType textType();
 
     /**

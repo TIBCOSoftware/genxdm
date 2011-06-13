@@ -22,22 +22,22 @@ import org.genxdm.xs.enums.ProcessContentsMode;
 
 public final class WildcardImpl implements SchemaWildcard
 {
-	private final ProcessContentsMode m_processContents;
-	private final NamespaceConstraint m_namespaceConstraint;
+    private final ProcessContentsMode m_processContents;
+    private final NamespaceConstraint m_namespaceConstraint;
 
-	public WildcardImpl(final ProcessContentsMode processContents, final NamespaceConstraint namespaceConstraint)
-	{
-		m_processContents = PreCondition.assertArgumentNotNull(processContents, "processContents");
-		m_namespaceConstraint = PreCondition.assertArgumentNotNull(namespaceConstraint, "namespaceConstraint");
-	}
+    public WildcardImpl(final ProcessContentsMode processContents, final NamespaceConstraint namespaceConstraint)
+    {
+        m_processContents = PreCondition.assertArgumentNotNull(processContents, "processContents");
+        m_namespaceConstraint = PreCondition.assertArgumentNotNull(namespaceConstraint, "namespaceConstraint");
+    }
 
-	public NamespaceConstraint getNamespaceConstraint()
-	{
-		return m_namespaceConstraint;
-	}
+    public NamespaceConstraint getNamespaceConstraint()
+    {
+        return m_namespaceConstraint;
+    }
 
-	public ProcessContentsMode getProcessContents()
-	{
-		return m_processContents;
-	}
+    public ProcessContentsMode getProcessContents()
+    {
+        return m_processContents;
+    }
 }

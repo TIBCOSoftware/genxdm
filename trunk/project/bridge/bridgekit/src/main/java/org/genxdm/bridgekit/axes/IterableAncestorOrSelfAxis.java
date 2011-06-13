@@ -30,17 +30,17 @@ import org.genxdm.exceptions.PreCondition;
  */
 public final class IterableAncestorOrSelfAxis<N> implements Iterable<N>
 {
-	private final N m_origin;
-	private final Model<N> m_model;
+    private final N m_origin;
+    private final Model<N> m_model;
 
-	public IterableAncestorOrSelfAxis(final N origin, final Model<N> model)
-	{
-		m_origin = origin;
-		m_model = PreCondition.assertArgumentNotNull(model, "navigator");
-	}
+    public IterableAncestorOrSelfAxis(final N origin, final Model<N> model)
+    {
+        m_origin = origin;
+        m_model = PreCondition.assertArgumentNotNull(model, "navigator");
+    }
 
-	public Iterator<N> iterator()
-	{
-		return new IteratorAncestorOrSelfAxis<N>(m_origin, m_model);
-	}
+    public Iterator<N> iterator()
+    {
+        return new IteratorAncestorOrSelfAxis<N>(m_origin, m_model);
+    }
 }

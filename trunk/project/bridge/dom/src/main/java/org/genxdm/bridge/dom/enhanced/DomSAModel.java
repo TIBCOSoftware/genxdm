@@ -35,7 +35,7 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.typed.types.MetaBridge;
+import org.genxdm.typed.types.TypesBridge;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.Type;
@@ -639,7 +639,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 
     protected final AtomBridge<XmlAtom> m_atomBridge;
 
-    protected final MetaBridge m_metaBridge;
+    protected final TypesBridge m_metaBridge;
     /**
      * The name bridge is important for ensuring that symbols obey the right semantics. Because the DOM may have been created elsewhere, we must be cautious and ensure that strings are converted to symbols.
      */

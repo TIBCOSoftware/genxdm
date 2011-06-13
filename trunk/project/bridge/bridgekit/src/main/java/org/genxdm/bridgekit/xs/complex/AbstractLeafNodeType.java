@@ -17,76 +17,73 @@ package org.genxdm.bridgekit.xs.complex;
 
 import org.genxdm.NodeKind;
 import org.genxdm.bridgekit.xs.simple.AbstractPrimeExcludingNoneType;
-import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.types.NodeType;
 
 abstract class AbstractLeafNodeType 
     extends AbstractPrimeExcludingNoneType 
     implements NodeType
 {
-	protected final ComponentProvider cache;
-	private final NodeKind nodeKind;
+    private final NodeKind nodeKind;
 
-	public AbstractLeafNodeType(final NodeKind nodeKind, final ComponentProvider cache)
-	{
-		switch (nodeKind)
-		{
-			case TEXT:
-			case COMMENT:
-			case PROCESSING_INSTRUCTION:
-			case NAMESPACE:
-			{
-				this.nodeKind = nodeKind;
-			}
-			break;
-			default:
-			{
-				throw new AssertionError(nodeKind);
-			}
-		}
-		this.cache = cache;
-	}
+    public AbstractLeafNodeType(final NodeKind nodeKind)
+    {
+        switch (nodeKind)
+        {
+            case TEXT:
+            case COMMENT:
+            case PROCESSING_INSTRUCTION:
+            case NAMESPACE:
+            {
+                this.nodeKind = nodeKind;
+            }
+            break;
+            default:
+            {
+                throw new AssertionError(nodeKind);
+            }
+        }
+    }
 
-	public final NodeKind getNodeKind()
-	{
-		return nodeKind;
-	}
+    public final NodeKind getNodeKind()
+    {
+        return nodeKind;
+    }
 
-	public boolean isNative()
-	{
-		return false;
-	}
+    public boolean isNative()
+    {
+        return false;
+    }
 
-	public final boolean isChoice()
-	{
-		return false;
-	}
+    public final boolean isChoice()
+    {
+        return false;
+    }
 
-	@Override
-	public final String toString()
-	{
-		switch (nodeKind)
-		{
-			case TEXT:
-			{
-				return "text()";
-			}
-			case COMMENT:
-			{
-				return "comment()";
-			}
-			case PROCESSING_INSTRUCTION:
-			{
-				return "processing-instruction()";
-			}
-			case NAMESPACE:
-			{
-				return "namespace()";
-			}
-			default:
-			{
-				throw new AssertionError(nodeKind.toString());
-			}
-		}
-	}
+    @Override
+    public final String toString()
+    {
+        switch (nodeKind)
+        {
+            case TEXT:
+            {
+                return "text()";
+            }
+            case COMMENT:
+            {
+                return "comment()";
+            }
+            case PROCESSING_INSTRUCTION:
+            {
+                return "processing-instruction()";
+            }
+            case NAMESPACE:
+            {
+                return "namespace()";
+            }
+            default:
+            {
+                throw new AssertionError(nodeKind.toString());
+            }
+        }
+    }
 }

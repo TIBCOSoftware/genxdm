@@ -28,23 +28,23 @@ import org.genxdm.xs.enums.ScopeExtent;
 
 public final class ModelGroupImpl extends NamedComponentImpl implements ModelGroup
 {
-	private final ModelGroup.SmCompositor compositor;
-	private final List<SchemaParticle> particles;
+    private final ModelGroup.SmCompositor compositor;
+    private final List<SchemaParticle> particles;
 
-	public ModelGroupImpl(final ModelGroup.SmCompositor compositor, final List<? extends SchemaParticle> particles, final QName name, final boolean isAnonymous, final ScopeExtent scope)
-	{
-		super(name, isAnonymous, scope);
-		this.compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
-		this.particles = Collections.unmodifiableList(new ArrayList<SchemaParticle>(particles));
-	}
+    public ModelGroupImpl(final ModelGroup.SmCompositor compositor, final List<? extends SchemaParticle> particles, final QName name, final boolean isAnonymous, final ScopeExtent scope)
+    {
+        super(name, isAnonymous, scope);
+        this.compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
+        this.particles = Collections.unmodifiableList(new ArrayList<SchemaParticle>(particles));
+    }
 
-	public SmCompositor getCompositor()
-	{
-		return compositor;
-	}
+    public SmCompositor getCompositor()
+    {
+        return compositor;
+    }
 
-	public List<SchemaParticle> getParticles()
-	{
-		return particles;
-	}
+    public List<SchemaParticle> getParticles()
+    {
+        return particles;
+    }
 }

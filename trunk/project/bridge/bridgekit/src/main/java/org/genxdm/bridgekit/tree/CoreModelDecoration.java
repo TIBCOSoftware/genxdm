@@ -17,6 +17,6 @@ package org.genxdm.bridgekit.tree;
 
 public enum CoreModelDecoration
 {
-	CHILD_AXIS,
-	CHILD_ELEMENTS;
+    CHILD_AXIS,
+    CHILD_ELEMENTS;
 }

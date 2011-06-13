@@ -25,76 +25,76 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 public final class NoneTypeImpl extends AbstractType implements NoneType
 {
-	private final QName errorCode;
+    private final QName errorCode;
 
-	public NoneTypeImpl()
-	{
-		errorCode = null;
-	}
+    public NoneTypeImpl()
+    {
+        errorCode = null;
+    }
 
-	public NoneTypeImpl(final QName errorCode)
-	{
-		this.errorCode = errorCode;
-	}
+    public NoneTypeImpl(final QName errorCode)
+    {
+        this.errorCode = errorCode;
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public QName getErrorCode()
-	{
-		return errorCode;
-	}
+    public QName getErrorCode()
+    {
+        return errorCode;
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return PrimeTypeKind.NONE;
-	}
+    public PrimeTypeKind getKind()
+    {
+        return PrimeTypeKind.NONE;
+    }
 
-	public boolean isChoice()
-	{
-		return false;
-	}
+    public boolean isChoice()
+    {
+        return false;
+    }
 
-	public boolean isNative()
-	{
-		return false;
-	}
+    public boolean isNative()
+    {
+        return false;
+    }
 
-	public boolean isNone()
-	{
-		return true;
-	}
+    public boolean isNone()
+    {
+        return true;
+    }
 
-	public final PrimeType prime()
-	{
-		return this;
-	}
+    public final PrimeType prime()
+    {
+        return this;
+    }
 
-	public Quantifier quantifier()
-	{
-		return Quantifier.EXACTLY_ONE;
-	}
+    public Quantifier quantifier()
+    {
+        return Quantifier.EXACTLY_ONE;
+    }
 
-	public boolean subtype(final PrimeType rhs)
-	{
-		switch (rhs.getKind())
-		{
-			case NONE:
-			{
-				return true;
-			}
-			default:
-			{
-				return false;
-			}
-		}
-	}
+    public boolean subtype(final PrimeType rhs)
+    {
+        switch (rhs.getKind())
+        {
+            case NONE:
+            {
+                return true;
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    }
 
-	@Override
-	public String toString()
-	{
-		return "none";
-	}
+    @Override
+    public String toString()
+    {
+        return "none";
+    }
 }

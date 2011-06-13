@@ -24,36 +24,36 @@ import org.genxdm.exceptions.PreCondition;
 
 final class IteratorAncestorOrSelfAxis<N> implements Iterator<N>
 {
-	private N m_pending;
-	private final Model<N> m_model;
+    private N m_pending;
+    private final Model<N> m_model;
 
-	public IteratorAncestorOrSelfAxis(final N origin, final Model<N> model)
-	{
-		m_pending = origin;
-		m_model = PreCondition.assertArgumentNotNull(model);
-	}
+    public IteratorAncestorOrSelfAxis(final N origin, final Model<N> model)
+    {
+        m_pending = origin;
+        m_model = PreCondition.assertArgumentNotNull(model);
+    }
 
-	public boolean hasNext()
-	{
-		return (null != m_pending);
-	}
+    public boolean hasNext()
+    {
+        return (null != m_pending);
+    }
 
-	public N next()
-	{
-		if (m_pending != null)
-		{
-			final N last = m_pending;
-			m_pending = m_model.getParent(m_pending);
-			return last;
-		}
-		else
-		{
-			throw new NoSuchElementException();
-		}
-	}
+    public N next()
+    {
+        if (m_pending != null)
+        {
+            final N last = m_pending;
+            m_pending = m_model.getParent(m_pending);
+            return last;
+        }
+        else
+        {
+            throw new NoSuchElementException();
+        }
+    }
 
-	public void remove()
-	{
-		throw new UnsupportedOperationException();
-	}
+    public void remove()
+    {
+        throw new UnsupportedOperationException();
+    }
 }

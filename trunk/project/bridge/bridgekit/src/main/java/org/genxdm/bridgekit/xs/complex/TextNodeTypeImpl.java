@@ -16,7 +16,6 @@
 package org.genxdm.bridgekit.xs.complex;
 
 import org.genxdm.NodeKind;
-import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.types.PrimeChoiceType;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
@@ -25,43 +24,43 @@ import org.genxdm.xs.types.TextNodeType;
 
 public final class TextNodeTypeImpl extends AbstractLeafNodeType implements TextNodeType
 {
-	public TextNodeTypeImpl(final ComponentProvider cache)
-	{
-		super(NodeKind.TEXT, cache);
-	}
+    public TextNodeTypeImpl()
+    {
+        super(NodeKind.TEXT);
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return PrimeTypeKind.TEXT;
-	}
+    public PrimeTypeKind getKind()
+    {
+        return PrimeTypeKind.TEXT;
+    }
 
-	public TextNodeType prime()
-	{
-		return this;
-	}
+    public TextNodeType prime()
+    {
+        return this;
+    }
 
-	public boolean subtype(final PrimeType rhs)
-	{
-		switch (rhs.getKind())
-		{
-			case CHOICE:
-			{
-				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
-				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
-			}
-			case TEXT:
-			{
-				return true;
-			}
-			default:
-			{
-				return false;
-			}
-		}
-	}
+    public boolean subtype(final PrimeType rhs)
+    {
+        switch (rhs.getKind())
+        {
+            case CHOICE:
+            {
+                final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
+                return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
+            }
+            case TEXT:
+            {
+                return true;
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    }
 }
