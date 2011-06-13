@@ -38,110 +38,110 @@ import org.genxdm.xs.types.SimpleType;
 
 public final class NotationType extends AbstractAtomType
 {
-	public NotationType(final QName name, final SimpleType baseType)
-	{
-		super(name, baseType);
-	}
+    public NotationType(final QName name, final SimpleType baseType)
+    {
+        super(name, baseType);
+    }
 
-	public void accept(SequenceTypeVisitor visitor)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public void accept(SequenceTypeVisitor visitor)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Iterable<EnumerationDefinition> getEnumerations()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Iterable<EnumerationDefinition> getEnumerations()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Facet getFacetOfKind(FacetKind facetKind)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Facet getFacetOfKind(FacetKind facetKind)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Iterable<Facet> getFacets()
-	{
-		return Collections.emptyList();
-	}
+    public Iterable<Facet> getFacets()
+    {
+        return Collections.emptyList();
+    }
 
-	public Set<DerivationMethod> getFinal()
-	{
-		return Collections.emptySet();
-	}
+    public Set<DerivationMethod> getFinal()
+    {
+        return Collections.emptySet();
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.NOTATION;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.NOTATION;
+    }
 
-	public Iterable<Pattern> getPatterns()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Iterable<Pattern> getPatterns()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public ScopeExtent getScopeExtent()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public ScopeExtent getScopeExtent()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public WhiteSpacePolicy getWhiteSpacePolicy()
-	{
-		return WhiteSpacePolicy.COLLAPSE;
-	}
+    public WhiteSpacePolicy getWhiteSpacePolicy()
+    {
+        return WhiteSpacePolicy.COLLAPSE;
+    }
 
-	public boolean hasEnumerations()
-	{
-		return false;
-	}
+    public boolean hasEnumerations()
+    {
+        return false;
+    }
 
-	public boolean hasFacetOfKind(final FacetKind facetKind)
-	{
-		return false;
-	}
+    public boolean hasFacetOfKind(final FacetKind facetKind)
+    {
+        return false;
+    }
 
-	public boolean hasFacets()
-	{
-		return false;
-	}
+    public boolean hasFacets()
+    {
+        return false;
+    }
 
-	public boolean hasPatterns()
-	{
-		return false;
-	}
+    public boolean hasPatterns()
+    {
+        return false;
+    }
 
-	public boolean isAbstract()
-	{
-		return true;
-	}
+    public boolean isAbstract()
+    {
+        return true;
+    }
 
-	public boolean isID()
-	{
-		return false;
-	}
+    public boolean isID()
+    {
+        return false;
+    }
 
-	public boolean isIDREF()
-	{
-		return false;
-	}
+    public boolean isIDREF()
+    {
+        return false;
+    }
 
-	public <A> List<A> validate(final String initialValue, AtomBridge<A> bridge) throws DatatypeException
-	{
-		throw new DatatypeException(initialValue, this);
-	}
+    public <A> List<A> validate(final String initialValue, AtomBridge<A> bridge) throws DatatypeException
+    {
+        throw new DatatypeException(initialValue, this);
+    }
 
-	public <A> List<A> validate(final String initialValue, final PrefixResolver resolver, AtomBridge<A> atomBridge) throws DatatypeException
-	{
-		// TODO: Parse and use the resolver.
-		return atomBridge.wrapAtom(atomBridge.createNOTATION(XMLConstants.NULL_NS_URI, initialValue, XMLConstants.DEFAULT_NS_PREFIX));
-	}
+    public <A> List<A> validate(final String initialValue, final PrefixResolver resolver, AtomBridge<A> atomBridge) throws DatatypeException
+    {
+        // TODO: Parse and use the resolver.
+        return atomBridge.wrapAtom(atomBridge.createNOTATION(XMLConstants.NULL_NS_URI, initialValue, XMLConstants.DEFAULT_NS_PREFIX));
+    }
 }

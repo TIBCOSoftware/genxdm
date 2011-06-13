@@ -29,129 +29,129 @@ import org.genxdm.xs.types.Type;
  */
 public final class SchemaSupport
 {
-	/**
-	 * Determines whether lhs is derived from rhs based upon walking up from lhs towards the complex Ur-type.
-	 */
-	public static boolean subtype(final Type lhs, final Type rhs)
-	{
-		PreCondition.assertArgumentNotNull(lhs, "lhs");
-		PreCondition.assertArgumentNotNull(rhs, "rhs");
-		if (!rhs.isComplexUrType())
-		{
-			Type currentType = lhs;
-			while (true)
-			{
-				if (currentType == rhs)
-				{
-					return true;
-				}
-				else
-				{
-					if (!currentType.isComplexUrType())
-					{
-						currentType = currentType.getBaseType();
-					}
-					else
-					{
-						return false;
-					}
-				}
-			}
-		}
-		else
-		{
-			// All item types are derived from the Complex Ur-type.
-			return true;
-		}
-	}
+    /**
+     * Determines whether lhs is derived from rhs based upon walking up from lhs towards the complex Ur-type.
+     */
+    public static boolean subtype(final Type lhs, final Type rhs)
+    {
+        PreCondition.assertArgumentNotNull(lhs, "lhs");
+        PreCondition.assertArgumentNotNull(rhs, "rhs");
+        if (!rhs.isComplexUrType())
+        {
+            Type currentType = lhs;
+            while (true)
+            {
+                if (currentType == rhs)
+                {
+                    return true;
+                }
+                else
+                {
+                    if (!currentType.isComplexUrType())
+                    {
+                        currentType = currentType.getBaseType();
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        else
+        {
+            // All item types are derived from the Complex Ur-type.
+            return true;
+        }
+    }
 
-	/**
-	 * Determines whether the candidateType is derived from the ancestorTYpe based upon walking up from lhs towards the complex Ur-type.
-	 */
-	public static  boolean derivedFromType(final Type candidateType, final Type ancestorType, final Set<DerivationMethod> derivationMethods)
-	{
-		PreCondition.assertArgumentNotNull(candidateType, "candidateType");
-		PreCondition.assertArgumentNotNull(ancestorType, "ancestorType");
-		PreCondition.assertArgumentNotNull(derivationMethods, "derivationMethods");
+    /**
+     * Determines whether the candidateType is derived from the ancestorTYpe based upon walking up from lhs towards the complex Ur-type.
+     */
+    public static  boolean derivedFromType(final Type candidateType, final Type ancestorType, final Set<DerivationMethod> derivationMethods)
+    {
+        PreCondition.assertArgumentNotNull(candidateType, "candidateType");
+        PreCondition.assertArgumentNotNull(ancestorType, "ancestorType");
+        PreCondition.assertArgumentNotNull(derivationMethods, "derivationMethods");
 
-		return derivedFrom(candidateType, ancestorType.getTargetNamespace(), ancestorType.getLocalName(), derivationMethods);
-	}
+        return derivedFrom(candidateType, ancestorType.getTargetNamespace(), ancestorType.getLocalName(), derivationMethods);
+    }
 
-	public static  boolean derivedFrom(final Type candidateType, final String namespace, final String localName, final Set<DerivationMethod> derivationMethods)
-	{
-		PreCondition.assertArgumentNotNull(candidateType, "candidateType");
-		PreCondition.assertArgumentNotNull(namespace, "namespace");
-		PreCondition.assertArgumentNotNull(localName, "localName");
-		PreCondition.assertArgumentNotNull(derivationMethods, "derivationMethods");
+    public static  boolean derivedFrom(final Type candidateType, final String namespace, final String localName, final Set<DerivationMethod> derivationMethods)
+    {
+        PreCondition.assertArgumentNotNull(candidateType, "candidateType");
+        PreCondition.assertArgumentNotNull(namespace, "namespace");
+        PreCondition.assertArgumentNotNull(localName, "localName");
+        PreCondition.assertArgumentNotNull(derivationMethods, "derivationMethods");
 
-		Type currentType = candidateType;
+        Type currentType = candidateType;
 
-		if (currentType.isComplexUrType())
-		{
-			return false;
-		}
-		else
-		{
-			if (derivationMethods.contains(currentType.getDerivationMethod()))
-			{
-				currentType = currentType.getBaseType();
-			}
-			else
-			{
-				return false;
-			}
-		}
+        if (currentType.isComplexUrType())
+        {
+            return false;
+        }
+        else
+        {
+            if (derivationMethods.contains(currentType.getDerivationMethod()))
+            {
+                currentType = currentType.getBaseType();
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-		while (true)
-		{
-			if (namespace == currentType.getTargetNamespace() && localName == currentType.getLocalName())
-			{
-				return true;
-			}
-			else
-			{
-				if (!currentType.isComplexUrType())
-				{
-					if (derivationMethods.contains(currentType.getDerivationMethod()))
-					{
-						currentType = currentType.getBaseType();
-					}
-					else
-					{
-						return false;
-					}
-				}
-				else
-				{
-					return false;
-				}
-			}
-		}
-	}
+        while (true)
+        {
+            if (namespace == currentType.getTargetNamespace() && localName == currentType.getLocalName())
+            {
+                return true;
+            }
+            else
+            {
+                if (!currentType.isComplexUrType())
+                {
+                    if (derivationMethods.contains(currentType.getDerivationMethod()))
+                    {
+                        currentType = currentType.getBaseType();
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+    }
 
-	public static  boolean subtype(final SequenceType lhs, final SequenceType rhs)
-	{
-		PreCondition.assertArgumentNotNull(lhs, "lhs");
-		PreCondition.assertArgumentNotNull(rhs, "rhs");
+    public static  boolean subtype(final SequenceType lhs, final SequenceType rhs)
+    {
+        PreCondition.assertArgumentNotNull(lhs, "lhs");
+        PreCondition.assertArgumentNotNull(rhs, "rhs");
 
-		final Quantifier qLHS = lhs.quantifier();
-		final Quantifier qRHS = rhs.quantifier();
-		if (qLHS.isOptional() && lhs.prime().isNone())
-		{
-			return qRHS.contains(qLHS);
-		}
-		else
-		{
-			if (qRHS.contains(qLHS))
-			{
-				final PrimeType pLHS = lhs.prime();
-				final PrimeType pRHS = rhs.prime();
-				return pLHS.subtype(pRHS);
-			}
-			else
-			{
-				return false;
-			}
-		}
-	}
+        final Quantifier qLHS = lhs.quantifier();
+        final Quantifier qRHS = rhs.quantifier();
+        if (qLHS.isOptional() && lhs.prime().isNone())
+        {
+            return qRHS.contains(qLHS);
+        }
+        else
+        {
+            if (qRHS.contains(qLHS))
+            {
+                final PrimeType pLHS = lhs.prime();
+                final PrimeType pRHS = rhs.prime();
+                return pLHS.subtype(pRHS);
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
 }

@@ -22,119 +22,119 @@ import java.util.ListIterator;
 
 public abstract class AbstractUnaryList<T> implements List<T>
 {
-	public final void add(final int arg0, final T arg1)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public final void add(final int arg0, final T arg1)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public final boolean add(final T arg0)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public final boolean add(final T arg0)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public final boolean addAll(final Collection<? extends T> arg0)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public final boolean addAll(final Collection<? extends T> arg0)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public final boolean addAll(final int arg0, final Collection<? extends T> arg1)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public final boolean addAll(final int arg0, final Collection<? extends T> arg1)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public final void clear()
-	{
-		throw new UnsupportedOperationException();
-	}
+    public final void clear()
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public final boolean contains(final Object object)
-	{
-		if (object == null)
-		{
-			return false;
-		}
-		else
-		{
-			return object.equals(this);
-		}
-	}
+    public final boolean contains(final Object object)
+    {
+        if (object == null)
+        {
+            return false;
+        }
+        else
+        {
+            return object.equals(this);
+        }
+    }
 
-	public final boolean containsAll(final Collection<?> c)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public final boolean containsAll(final Collection<?> c)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public final int indexOf(final Object object)
-	{
-		return contains(object) ? 0 : -1;
-	}
+    public final int indexOf(final Object object)
+    {
+        return contains(object) ? 0 : -1;
+    }
 
-	public final boolean isEmpty()
-	{
-		return false;
-	}
+    public final boolean isEmpty()
+    {
+        return false;
+    }
 
-	public final Iterator<T> iterator()
-	{
-		return new UnaryIterator<T>(this.get(0));
-	}
+    public final Iterator<T> iterator()
+    {
+        return new UnaryIterator<T>(this.get(0));
+    }
 
-	public final int lastIndexOf(final Object object)
-	{
-		return indexOf(object);
-	}
+    public final int lastIndexOf(final Object object)
+    {
+        return indexOf(object);
+    }
 
-	public final ListIterator<T> listIterator()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public final ListIterator<T> listIterator()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public final ListIterator<T> listIterator(final int index)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public final ListIterator<T> listIterator(final int index)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public final T remove(final int arg0)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public final T remove(final int arg0)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public final boolean remove(final Object arg0)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public final boolean remove(final Object arg0)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public final boolean removeAll(final Collection<?> arg0)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public final boolean removeAll(final Collection<?> arg0)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public final boolean retainAll(final Collection<?> arg0)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public final boolean retainAll(final Collection<?> arg0)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public final T set(final int arg0, final T arg1)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public final T set(final int arg0, final T arg1)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public final int size()
-	{
-		return 1;
-	}
+    public final int size()
+    {
+        return 1;
+    }
 
-	public final List<T> subList(final int fromIndex, final int toIndex)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public final List<T> subList(final int fromIndex, final int toIndex)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public final Object[] toArray()
-	{
-		return new Object[] { this };
-	}
+    public final Object[] toArray()
+    {
+        return new Object[] { this };
+    }
 }

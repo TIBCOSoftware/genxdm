@@ -22,53 +22,53 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlLong extends XmlAbstractAtom
 {
-	private final long longValue;
+    private final long longValue;
 
-	public XmlLong(final long longValue)
-	{
-		this.longValue = longValue;
-	}
+    public XmlLong(final long longValue)
+    {
+        this.longValue = longValue;
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		else if (obj instanceof XmlLong)
-		{
-			return longValue == ((XmlLong)obj).longValue;
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        else if (obj instanceof XmlLong)
+        {
+            return longValue == ((XmlLong)obj).longValue;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return Long.toString(longValue);
-	}
+    public String getC14NForm()
+    {
+        return Long.toString(longValue);
+    }
 
-	public long getLongValue()
-	{
-		return longValue;
-	}
+    public long getLongValue()
+    {
+        return longValue;
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.LONG;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.LONG;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return (int)(longValue ^ (longValue >>> 32));
-	}
+    @Override
+    public int hashCode()
+    {
+        return (int)(longValue ^ (longValue >>> 32));
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 }

@@ -49,26 +49,26 @@ import org.genxdm.xs.types.SimpleType;
 public final class FacetValueCompImpl extends FacetImpl implements Limit
 {
 
-	public FacetValueCompImpl(final String value, final FacetKind kind, final SimpleType type, final boolean isFixed)
-	{
-		super(isFixed);
+    public FacetValueCompImpl(final String value, final FacetKind kind, final SimpleType type, final boolean isFixed)
+    {
+        super(isFixed);
 
-		this.m_value = PreCondition.assertArgumentNotNull(value, "value");
-		this.m_kind = PreCondition.assertArgumentNotNull(kind, "kind");
-		this.baseType = PreCondition.assertArgumentNotNull(type, "type");
+        this.m_value = PreCondition.assertArgumentNotNull(value, "value");
+        this.m_kind = PreCondition.assertArgumentNotNull(kind, "kind");
+        this.baseType = PreCondition.assertArgumentNotNull(type, "type");
 
-	}
+    }
 
-	public FacetKind getKind()
-	{
-		return m_kind;
-	}
+    public FacetKind getKind()
+    {
+        return m_kind;
+    }
 
-	@Override
-	public <A> A getLimit(AtomBridge<A> bridge)
-	{
-		return calculateValue(bridge);
-	}
+    @Override
+    public <A> A getLimit(AtomBridge<A> bridge)
+    {
+        return calculateValue(bridge);
+    }
 
     @Override
     public <A> void validate(final List<? extends A> actualValue, final SimpleType simpleType, AtomBridge<A> bridge) throws FacetException
@@ -76,160 +76,160 @@ public final class FacetValueCompImpl extends FacetImpl implements Limit
         PreCondition.assertArgumentNotNull(simpleType, "simpleType");
         for (final A atom : actualValue)
         {
-//    		PreCondition.assertArgumentNotNull(atom, "atom");
+//          PreCondition.assertArgumentNotNull(atom, "atom");
     
-    		// TODO: If it is a list type we might have to work one way, union,
+            // TODO: If it is a list type we might have to work one way, union,
             // another
             SimpleType uberType = baseType.getNativeTypeDefinition();
     
             final A rhsAtom = castAsUberType(getLimit(bridge), uberType.getName(), bridge);
             ValueComparator<A> comparator = calculateComparator(rhsAtom, m_kind, uberType.getNativeType(), bridge);
-    		
+            
             try
-    		{
-    			final A lhsAtom = castAsUberType(atom, uberType.getName(), bridge);
+            {
+                final A lhsAtom = castAsUberType(atom, uberType.getName(), bridge);
     
-    			if (!comparator.compare(lhsAtom))
-    			{
-    				final String actual = bridge.getC14NForm(lhsAtom);
-    				throw new FacetMinMaxException(this, actual, bridge);
-    			}
-    		}
-    		catch (final AtomCastException e)
-    		{
-    			throw new FacetMinMaxException(this, e.getSourceValue(), bridge);
-    		}
+                if (!comparator.compare(lhsAtom))
+                {
+                    final String actual = bridge.getC14NForm(lhsAtom);
+                    throw new FacetMinMaxException(this, actual, bridge);
+                }
+            }
+            catch (final AtomCastException e)
+            {
+                throw new FacetMinMaxException(this, e.getSourceValue(), bridge);
+            }
         }
-	}
+    }
 
-	public static OpXMLSchemaCompare calculateOpCode(final FacetKind kind)
-	{
-		switch (kind)
-		{
-			case MaxExclusive:
-			{
-				return OpXMLSchemaCompare.Lt;
-			}
-			case MaxInclusive:
-			{
-				return OpXMLSchemaCompare.Le;
-			}
-			case MinExclusive:
-			{
-				return OpXMLSchemaCompare.Gt;
-			}
-			case MinInclusive:
-			{
-				return OpXMLSchemaCompare.Ge;
-			}
-			default:
-			{
-				throw new AssertionError(kind);
-			}
-		}
-	}
+    public static OpXMLSchemaCompare calculateOpCode(final FacetKind kind)
+    {
+        switch (kind)
+        {
+            case MaxExclusive:
+            {
+                return OpXMLSchemaCompare.Lt;
+            }
+            case MaxInclusive:
+            {
+                return OpXMLSchemaCompare.Le;
+            }
+            case MinExclusive:
+            {
+                return OpXMLSchemaCompare.Gt;
+            }
+            case MinInclusive:
+            {
+                return OpXMLSchemaCompare.Ge;
+            }
+            default:
+            {
+                throw new AssertionError(kind);
+            }
+        }
+    }
 
-	private static <A> ValueComparator<A> calculateComparator(final A rhsAtom, final FacetKind kind, final NativeType nativeType, final AtomBridge<A> atomBridge)
-	{
-		PreCondition.assertArgumentNotNull(nativeType, "uberType");
+    private static <A> ValueComparator<A> calculateComparator(final A rhsAtom, final FacetKind kind, final NativeType nativeType, final AtomBridge<A> atomBridge)
+    {
+        PreCondition.assertArgumentNotNull(nativeType, "uberType");
 
-		final OpXMLSchemaCompare opcode = calculateOpCode(kind);
+        final OpXMLSchemaCompare opcode = calculateOpCode(kind);
 
-		switch (nativeType)
-		{
-			case DOUBLE:
-			{
-				return new OpXMLSchemaCompareDouble<A>(opcode, rhsAtom, atomBridge);
-			}
-			case FLOAT:
-			{
-				return new OpXMLSchemaCompareFloat<A>(opcode, rhsAtom, atomBridge);
-			}
-			case DECIMAL:
-			{
-				return new OpXMLSchemaCompareDecimal<A>(opcode, rhsAtom, atomBridge);
-			}
-			case INTEGER:
-			{
-				return new OpXMLSchemaCompareInteger<A>(opcode, rhsAtom, atomBridge);
-			}
-			case DATE:
-			case DATETIME:
-			case TIME:
-			case GYEARMONTH:
-			case GYEAR:
-			case GMONTHDAY:
-			case GDAY:
-			case GMONTH:
-			{
-				return new OpXMLSchemaCompareGregorian<A>(opcode, rhsAtom, atomBridge);
-			}
-			case DURATION:
-			{
-				return new OpXMLSchemaCompareDuration<A>(opcode, rhsAtom, nativeType, atomBridge);
-			}
-			case LONG:
-			{
-				return new OpXMLSchemaCompareLong<A>(opcode, rhsAtom, atomBridge);
-			}
-			case INT:
-			{
-				return new OpXMLSchemaCompareInt<A>(opcode, rhsAtom, atomBridge);
-			}
-			case SHORT:
-			{
-				return new OpXMLSchemaCompareShort<A>(opcode, rhsAtom, atomBridge);
-			}
-			case BYTE:
-			{
-				return new OpXMLSchemaCompareByte<A>(opcode, rhsAtom, atomBridge);
-			}
-			case NON_POSITIVE_INTEGER:
-			case NEGATIVE_INTEGER:
-			case NON_NEGATIVE_INTEGER:
-			case UNSIGNED_LONG:
-			case UNSIGNED_INT:
-			case UNSIGNED_SHORT:
-			case UNSIGNED_BYTE:
-			case POSITIVE_INTEGER:
-			{
-				return new OpXMLSchemaCompareIntegerRestricted<A>(opcode, rhsAtom, nativeType, atomBridge);
-			}
-			default:
-			{
-				throw new AssertionError(nativeType);
-			}
-		}
-	}
+        switch (nativeType)
+        {
+            case DOUBLE:
+            {
+                return new OpXMLSchemaCompareDouble<A>(opcode, rhsAtom, atomBridge);
+            }
+            case FLOAT:
+            {
+                return new OpXMLSchemaCompareFloat<A>(opcode, rhsAtom, atomBridge);
+            }
+            case DECIMAL:
+            {
+                return new OpXMLSchemaCompareDecimal<A>(opcode, rhsAtom, atomBridge);
+            }
+            case INTEGER:
+            {
+                return new OpXMLSchemaCompareInteger<A>(opcode, rhsAtom, atomBridge);
+            }
+            case DATE:
+            case DATETIME:
+            case TIME:
+            case GYEARMONTH:
+            case GYEAR:
+            case GMONTHDAY:
+            case GDAY:
+            case GMONTH:
+            {
+                return new OpXMLSchemaCompareGregorian<A>(opcode, rhsAtom, atomBridge);
+            }
+            case DURATION:
+            {
+                return new OpXMLSchemaCompareDuration<A>(opcode, rhsAtom, nativeType, atomBridge);
+            }
+            case LONG:
+            {
+                return new OpXMLSchemaCompareLong<A>(opcode, rhsAtom, atomBridge);
+            }
+            case INT:
+            {
+                return new OpXMLSchemaCompareInt<A>(opcode, rhsAtom, atomBridge);
+            }
+            case SHORT:
+            {
+                return new OpXMLSchemaCompareShort<A>(opcode, rhsAtom, atomBridge);
+            }
+            case BYTE:
+            {
+                return new OpXMLSchemaCompareByte<A>(opcode, rhsAtom, atomBridge);
+            }
+            case NON_POSITIVE_INTEGER:
+            case NEGATIVE_INTEGER:
+            case NON_NEGATIVE_INTEGER:
+            case UNSIGNED_LONG:
+            case UNSIGNED_INT:
+            case UNSIGNED_SHORT:
+            case UNSIGNED_BYTE:
+            case POSITIVE_INTEGER:
+            {
+                return new OpXMLSchemaCompareIntegerRestricted<A>(opcode, rhsAtom, nativeType, atomBridge);
+            }
+            default:
+            {
+                throw new AssertionError(nativeType);
+            }
+        }
+    }
 
-	private <A> A castAsUberType(final A atom, final QName uberType, final AtomBridge<A> atomBridge)
-	{
-		try
-		{
-			return atomBridge.castAs(atom, uberType, castingContext);
-		}
-		catch (final GxmlAtomCastException e)
-		{
-			throw new AssertionError(e);
-		}
-	}
-	
-	// TODO: this is quick and dirty, just to make it compile.
-	// it's stolen from the parser, which produces problems of its own.
-	private <A> A calculateValue(AtomBridge<A> bridge)
-//	    throws DatatypeException
-	{
-	    // TODO: this fails to handle schema errors at parse time.  hmmm.
+    private <A> A castAsUberType(final A atom, final QName uberType, final AtomBridge<A> atomBridge)
+    {
+        try
+        {
+            return atomBridge.castAs(atom, uberType, castingContext);
+        }
+        catch (final GxmlAtomCastException e)
+        {
+            throw new AssertionError(e);
+        }
+    }
+    
+    // TODO: this is quick and dirty, just to make it compile.
+    // it's stolen from the parser, which produces problems of its own.
+    private <A> A calculateValue(AtomBridge<A> bridge)
+//      throws DatatypeException
+    {
+        // TODO: this fails to handle schema errors at parse time.  hmmm.
 //        final List<A> atomicValue;
 //        {
 //            try
 //            {
                 //atomicValue = baseType.validate(m_value, bridge);
-	    try {
-	    return baseType.validate(m_value, bridge).get(0);
-	    } catch (DatatypeException dte) {
-	        throw new RuntimeException(dte);
-	    }
+        try {
+        return baseType.validate(m_value, bridge).get(0);
+        } catch (DatatypeException dte) {
+            throw new RuntimeException(dte);
+        }
 //            }
 //            catch (final DatatypeException dte)
 //            {
@@ -240,7 +240,7 @@ public final class FacetValueCompImpl extends FacetImpl implements Limit
 //                throw new SmAttributeUseException(elementName, attributeName, location, ste);
 //            }
 //        }
-	}
+    }
     
     private final FacetKind m_kind;
     private final SimpleType baseType;

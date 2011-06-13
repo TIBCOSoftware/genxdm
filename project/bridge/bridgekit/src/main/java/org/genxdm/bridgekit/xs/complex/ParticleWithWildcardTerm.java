@@ -20,19 +20,19 @@ import org.genxdm.xs.constraints.WildcardUse;
 
 public final class ParticleWithWildcardTerm extends ParticleImpl implements WildcardUse
 {
-	public ParticleWithWildcardTerm(final int minOccurs, final int maxOccurs, final SchemaWildcard wildcard)
-	{
-		super(minOccurs, maxOccurs, false, wildcard);
-	}
+    public ParticleWithWildcardTerm(final int minOccurs, final int maxOccurs, final SchemaWildcard wildcard)
+    {
+        super(minOccurs, maxOccurs, false, wildcard);
+    }
 
-	public ParticleWithWildcardTerm(final int minOccurs, final SchemaWildcard wildcard)
-	{
-		super(minOccurs, -1, true, wildcard);
-	}
+    public ParticleWithWildcardTerm(final int minOccurs, final SchemaWildcard wildcard)
+    {
+        super(minOccurs, -1, true, wildcard);
+    }
 
-	public SchemaWildcard getTerm()
-	{
-		// We know this is safe by construction.
-		return (SchemaWildcard)m_term;
-	}
+    public SchemaWildcard getTerm()
+    {
+        // We know this is safe by construction.
+        return (SchemaWildcard)m_term;
+    }
 }

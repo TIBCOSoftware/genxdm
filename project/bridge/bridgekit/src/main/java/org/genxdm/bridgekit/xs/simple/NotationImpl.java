@@ -25,28 +25,28 @@ import org.genxdm.xs.enums.ScopeExtent;
 
 public final class NotationImpl extends NamedComponentImpl implements NotationDefinition
 {
-	private final String publicId;
-	private final URI systemId;
+    private final String publicId;
+    private final URI systemId;
 
-	public NotationImpl(final QName name, final String publicId, final URI systemId)
-	{
-		super(name, false, ScopeExtent.Global);
-		this.publicId = publicId;
-		this.systemId = systemId;
-	}
+    public NotationImpl(final QName name, final String publicId, final URI systemId)
+    {
+        super(name, false, ScopeExtent.Global);
+        this.publicId = publicId;
+        this.systemId = systemId;
+    }
 
-	public String getPublicId()
-	{
-		return publicId;
-	}
+    public String getPublicId()
+    {
+        return publicId;
+    }
 
-	public URI getSystemId()
-	{
-		return systemId;
-	}
+    public URI getSystemId()
+    {
+        return systemId;
+    }
 
-	public String toString()
-	{
-		return "notation name=" + getName() + " public=" + getPublicId() + " system=" + getSystemId();
-	}
+    public String toString()
+    {
+        return "notation name=" + getName() + " public=" + getPublicId() + " system=" + getSystemId();
+    }
 }

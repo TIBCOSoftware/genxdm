@@ -24,58 +24,58 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 
 public final class ZEmptyType implements EmptyType
 {
-	public ZEmptyType()
-	{
-	}
+    public ZEmptyType()
+    {
+    }
 
-	public PrimeType prime()
-	{
-		return new NoneTypeImpl();
-	}
+    public PrimeType prime()
+    {
+        return new NoneTypeImpl();
+    }
 
-	public Quantifier quantifier()
-	{
-		return Quantifier.OPTIONAL;
-	}
+    public Quantifier quantifier()
+    {
+        return Quantifier.OPTIONAL;
+    }
 
-	public boolean isNone()
-	{
-		return false;
-	}
+    public boolean isNone()
+    {
+        return false;
+    }
 
-	public boolean subtype(final PrimeType rhs)
-	{
-		return rhs.quantifier().contains(Quantifier.EMPTY);
-	}
+    public boolean subtype(final PrimeType rhs)
+    {
+        return rhs.quantifier().contains(Quantifier.EMPTY);
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return PrimeTypeKind.EMPTY;
-	}
+    public PrimeTypeKind getKind()
+    {
+        return PrimeTypeKind.EMPTY;
+    }
 
-	public boolean isNative()
-	{
-		return false;
-	}
+    public boolean isNative()
+    {
+        return false;
+    }
 
-	public boolean isChoice()
-	{
-		return false;
-	}
+    public boolean isChoice()
+    {
+        return false;
+    }
 
-	public SequenceType atomSet()
-	{
-		return this;
-	}
+    public SequenceType atomSet()
+    {
+        return this;
+    }
 
-	@Override
-	public String toString()
-	{
-		return "empty";
-	}
+    @Override
+    public String toString()
+    {
+        return "empty";
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 }

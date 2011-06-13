@@ -21,17 +21,17 @@ import org.genxdm.exceptions.PreCondition;
 
 final class IteratorPrecedingSiblingAxis<N> extends BaseImmutableIterator<N>
 {
-	private final Model<N> m_navigator;
+    private final Model<N> m_navigator;
 
-	public IteratorPrecedingSiblingAxis(final N origin, final Model<N> navigator)
-	{
-		super(navigator.getPreviousSibling(origin));
-		m_navigator = PreCondition.assertArgumentNotNull(navigator);
-	}
+    public IteratorPrecedingSiblingAxis(final N origin, final Model<N> navigator)
+    {
+        super(navigator.getPreviousSibling(origin));
+        m_navigator = PreCondition.assertArgumentNotNull(navigator);
+    }
 
-	@Override
-	protected N next(N current) {
-		// TODO Auto-generated method stub
-		return m_navigator.getPreviousSibling(current);
-	}
+    @Override
+    protected N next(N current) {
+        // TODO Auto-generated method stub
+        return m_navigator.getPreviousSibling(current);
+    }
 }

@@ -21,39 +21,39 @@ import org.genxdm.xs.components.ParticleTerm;
 
 abstract class ParticleImpl extends LockableImpl implements SchemaParticle
 {
-	private static void checkOccurs(final int minOccurs, final int maxOccurs, final boolean isMaxOccursUnbounded)
-	{
-		PreCondition.assertTrue(minOccurs >= 0, "minOccurs must be non-negative");
-	}
+    private static void checkOccurs(final int minOccurs, final int maxOccurs, final boolean isMaxOccursUnbounded)
+    {
+        PreCondition.assertTrue(minOccurs >= 0, "minOccurs must be non-negative");
+    }
 
-	private final int m_maxOccurs;
-	private final int m_minOccurs;
-	private final boolean isMaxOccursUnbounded;
+    private final int m_maxOccurs;
+    private final int m_minOccurs;
+    private final boolean isMaxOccursUnbounded;
 
-	protected final ParticleTerm m_term;
+    protected final ParticleTerm m_term;
 
-	public ParticleImpl(final int minOccurs, final int maxOccurs, final boolean isMaxOccursUnbounded, final ParticleTerm term)
-	{
-		checkOccurs(minOccurs, maxOccurs, isMaxOccursUnbounded);
-		m_minOccurs = minOccurs;
-		m_maxOccurs = maxOccurs;
-		this.isMaxOccursUnbounded = isMaxOccursUnbounded;
-		m_term = PreCondition.assertArgumentNotNull(term, "term");
-	}
+    public ParticleImpl(final int minOccurs, final int maxOccurs, final boolean isMaxOccursUnbounded, final ParticleTerm term)
+    {
+        checkOccurs(minOccurs, maxOccurs, isMaxOccursUnbounded);
+        m_minOccurs = minOccurs;
+        m_maxOccurs = maxOccurs;
+        this.isMaxOccursUnbounded = isMaxOccursUnbounded;
+        m_term = PreCondition.assertArgumentNotNull(term, "term");
+    }
 
-	public final int getMaxOccurs()
-	{
-		PreCondition.assertFalse(isMaxOccursUnbounded(), "isMaxOccursUnbounded()");
-		return m_maxOccurs;
-	}
+    public final int getMaxOccurs()
+    {
+        PreCondition.assertFalse(isMaxOccursUnbounded(), "isMaxOccursUnbounded()");
+        return m_maxOccurs;
+    }
 
-	public final int getMinOccurs()
-	{
-		return m_minOccurs;
-	}
+    public final int getMinOccurs()
+    {
+        return m_minOccurs;
+    }
 
-	public boolean isMaxOccursUnbounded()
-	{
-		return isMaxOccursUnbounded;
-	}
+    public boolean isMaxOccursUnbounded()
+    {
+        return isMaxOccursUnbounded;
+    }
 }

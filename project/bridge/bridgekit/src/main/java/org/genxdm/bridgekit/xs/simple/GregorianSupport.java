@@ -56,7 +56,7 @@ final class GregorianSupport
 
         final long time = calendar.getTime().getTime();
         
-		final BigDecimal baseline = BigDecimal.valueOf(time).movePointLeft(3);
+        final BigDecimal baseline = BigDecimal.valueOf(time).movePointLeft(3);
 
         return baseline.add(remainder);
     }
@@ -237,16 +237,16 @@ final class GregorianSupport
 
     private static void setYear(final int astronomicalYear, final Calendar calendar)
     {
-    	if (astronomicalYear > 0)
-    	{
+        if (astronomicalYear > 0)
+        {
             calendar.set(Calendar.ERA, GregorianCalendar.AD);
             calendar.set(Calendar.YEAR, astronomicalYear);
-    	}
-    	else
-    	{
+        }
+        else
+        {
             calendar.set(Calendar.ERA, GregorianCalendar.BC);
             calendar.set(Calendar.YEAR, 1 - astronomicalYear);
-    	}
+        }
     }
 
 }

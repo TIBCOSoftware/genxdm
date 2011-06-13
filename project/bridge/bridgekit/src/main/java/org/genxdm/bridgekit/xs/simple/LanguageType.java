@@ -37,172 +37,172 @@ import org.genxdm.xs.types.SimpleType;
 
 public final class LanguageType extends AbstractAtomType
 {
-	private static boolean isValidBlock(final String language, final int start, final int end, final boolean noNumbers)
-	{
-		final int len = end - start;
-		if (len > 8 || len == 0)
-		{
-			return false;// empty or longer than 8
-		}
-		for (int i = start; i < end; i++)
-		{
-			char c = language.charAt(i);
-			if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && (noNumbers || c >= '0' && c <= '9'))
-			{
-				return false;
-			}
-		}
-		return true;
-	}
+    private static boolean isValidBlock(final String language, final int start, final int end, final boolean noNumbers)
+    {
+        final int len = end - start;
+        if (len > 8 || len == 0)
+        {
+            return false;// empty or longer than 8
+        }
+        for (int i = start; i < end; i++)
+        {
+            char c = language.charAt(i);
+            if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && (noNumbers || c >= '0' && c <= '9'))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	/**
-	 * TODO: Redesign to give better description of errors.
-	 */
-	private static boolean isValidLanguage(final String language)
-	{
-		if (language.length() > 0)
-		{
-			if (language.charAt(0) == '-')
-			{
-				return false;
-			}
+    /**
+     * TODO: Redesign to give better description of errors.
+     */
+    private static boolean isValidLanguage(final String language)
+    {
+        if (language.length() > 0)
+        {
+            if (language.charAt(0) == '-')
+            {
+                return false;
+            }
 
-			int lastDashIdx = 0;
-			boolean noNumbers = true;
-			do
-			{
-				int dashIdx = language.indexOf('-', lastDashIdx);
-				if (dashIdx < 0)
-				{
-					return isValidBlock(language, lastDashIdx, language.length(), noNumbers);
-				}
-				if (!isValidBlock(language, lastDashIdx, dashIdx, noNumbers))
-				{
-					return false;
-				}
-				noNumbers = false;
-				lastDashIdx = dashIdx + 1;
-			}
-			while (true);
-		}
-		else
-		{
-			return false;
-		}
-	}
+            int lastDashIdx = 0;
+            boolean noNumbers = true;
+            do
+            {
+                int dashIdx = language.indexOf('-', lastDashIdx);
+                if (dashIdx < 0)
+                {
+                    return isValidBlock(language, lastDashIdx, language.length(), noNumbers);
+                }
+                if (!isValidBlock(language, lastDashIdx, dashIdx, noNumbers))
+                {
+                    return false;
+                }
+                noNumbers = false;
+                lastDashIdx = dashIdx + 1;
+            }
+            while (true);
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public LanguageType(final QName name, final SimpleType baseType)
-	{
-		super(name, baseType);
-	}
+    public LanguageType(final QName name, final SimpleType baseType)
+    {
+        super(name, baseType);
+    }
 
-	public void accept(SequenceTypeVisitor visitor)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public void accept(SequenceTypeVisitor visitor)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Iterable<EnumerationDefinition> getEnumerations()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Iterable<EnumerationDefinition> getEnumerations()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Facet getFacetOfKind(FacetKind facetKind)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Facet getFacetOfKind(FacetKind facetKind)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Iterable<Facet> getFacets()
-	{
-		return Collections.emptyList();
-	}
+    public Iterable<Facet> getFacets()
+    {
+        return Collections.emptyList();
+    }
 
-	public Set<DerivationMethod> getFinal()
-	{
-		return Collections.emptySet();
-	}
+    public Set<DerivationMethod> getFinal()
+    {
+        return Collections.emptySet();
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.LANGUAGE;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.LANGUAGE;
+    }
 
-	public Iterable<Pattern> getPatterns()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Iterable<Pattern> getPatterns()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public ScopeExtent getScopeExtent()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public ScopeExtent getScopeExtent()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public WhiteSpacePolicy getWhiteSpacePolicy()
-	{
-		return WhiteSpacePolicy.COLLAPSE;
-	}
+    public WhiteSpacePolicy getWhiteSpacePolicy()
+    {
+        return WhiteSpacePolicy.COLLAPSE;
+    }
 
-	public boolean hasEnumerations()
-	{
-		return false;
-	}
+    public boolean hasEnumerations()
+    {
+        return false;
+    }
 
-	public boolean hasFacetOfKind(final FacetKind facetKind)
-	{
-		return false;
-	}
+    public boolean hasFacetOfKind(final FacetKind facetKind)
+    {
+        return false;
+    }
 
-	public boolean hasFacets()
-	{
-		return false;
-	}
+    public boolean hasFacets()
+    {
+        return false;
+    }
 
-	public boolean hasPatterns()
-	{
-		return false;
-	}
+    public boolean hasPatterns()
+    {
+        return false;
+    }
 
-	public boolean isAbstract()
-	{
-		return false;
-	}
+    public boolean isAbstract()
+    {
+        return false;
+    }
 
-	public boolean isID()
-	{
-		return false;
-	}
+    public boolean isID()
+    {
+        return false;
+    }
 
-	public boolean isIDREF()
-	{
-		return false;
-	}
+    public boolean isIDREF()
+    {
+        return false;
+    }
 
-	public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
-	{
-		final String normalized = normalize(initialValue);
-		if (isValidLanguage(normalized))
-		{
-			return atomBridge.wrapAtom(atomBridge.createStringDerived(normalized, NativeType.LANGUAGE));
-		}
-		else
-		{
-			throw new DatatypeException(normalized, this);
-		}
-	}
+    public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
+    {
+        final String normalized = normalize(initialValue);
+        if (isValidLanguage(normalized))
+        {
+            return atomBridge.wrapAtom(atomBridge.createStringDerived(normalized, NativeType.LANGUAGE));
+        }
+        else
+        {
+            throw new DatatypeException(normalized, this);
+        }
+    }
 
-	public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 }

@@ -21,13 +21,13 @@ import org.genxdm.xs.types.PrimeType;
 
 public abstract class AbstractPrimeExcludingNoneType extends AbstractType implements PrimeType
 {
-	public final boolean isNone()
-	{
-		return false;
-	}
+    public final boolean isNone()
+    {
+        return false;
+    }
 
-	public final Quantifier quantifier()
-	{
-		return Quantifier.EXACTLY_ONE;
-	}
+    public final Quantifier quantifier()
+    {
+        return Quantifier.EXACTLY_ONE;
+    }
 }

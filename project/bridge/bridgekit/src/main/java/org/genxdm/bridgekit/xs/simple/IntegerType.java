@@ -41,152 +41,152 @@ import org.genxdm.xs.types.SimpleType;
 
 public final class IntegerType extends AbstractAtomType
 {
-	private final Facet FRACTION_DIGITS;
-	private final Iterable<Facet> FACETS;
+    private final Facet FRACTION_DIGITS;
+    private final Iterable<Facet> FACETS;
 
-	public IntegerType(final QName name, final SimpleType baseType)
-	{
-		super(name, baseType);
-		FRACTION_DIGITS = new FacetFractionDigitsImpl(0, true);
-		FACETS = new UnaryIterable<Facet>(FRACTION_DIGITS);
-	}
+    public IntegerType(final QName name, final SimpleType baseType)
+    {
+        super(name, baseType);
+        FRACTION_DIGITS = new FacetFractionDigitsImpl(0, true);
+        FACETS = new UnaryIterable<Facet>(FRACTION_DIGITS);
+    }
 
-	public void accept(SequenceTypeVisitor visitor)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public void accept(SequenceTypeVisitor visitor)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Iterable<EnumerationDefinition> getEnumerations()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Iterable<EnumerationDefinition> getEnumerations()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Facet getFacetOfKind(final FacetKind facetKind)
-	{
-		PreCondition.assertArgumentNotNull(facetKind, "facetKind");
-		switch (facetKind)
-		{
-			case MinInclusive:
-			case MaxInclusive:
-			case MinExclusive:
-			case MaxExclusive:
-			case TotalDigits:
-			{
-				return null;
-			}
-			case FractionDigits:
-			{
-				return FRACTION_DIGITS;
-			}
-			default:
-			{
-				throw new AssertionError("TODO: getFacetOfKind(" + facetKind + ")");
-			}
-		}
-	}
+    public Facet getFacetOfKind(final FacetKind facetKind)
+    {
+        PreCondition.assertArgumentNotNull(facetKind, "facetKind");
+        switch (facetKind)
+        {
+            case MinInclusive:
+            case MaxInclusive:
+            case MinExclusive:
+            case MaxExclusive:
+            case TotalDigits:
+            {
+                return null;
+            }
+            case FractionDigits:
+            {
+                return FRACTION_DIGITS;
+            }
+            default:
+            {
+                throw new AssertionError("TODO: getFacetOfKind(" + facetKind + ")");
+            }
+        }
+    }
 
-	public Iterable<Facet> getFacets()
-	{
-		return FACETS;
-	}
+    public Iterable<Facet> getFacets()
+    {
+        return FACETS;
+    }
 
-	public Set<DerivationMethod> getFinal()
-	{
-		return Collections.emptySet();
-	}
+    public Set<DerivationMethod> getFinal()
+    {
+        return Collections.emptySet();
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.INTEGER;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.INTEGER;
+    }
 
-	public Iterable<Pattern> getPatterns()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Iterable<Pattern> getPatterns()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public ScopeExtent getScopeExtent()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public ScopeExtent getScopeExtent()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public WhiteSpacePolicy getWhiteSpacePolicy()
-	{
-		return WhiteSpacePolicy.COLLAPSE;
-	}
+    public WhiteSpacePolicy getWhiteSpacePolicy()
+    {
+        return WhiteSpacePolicy.COLLAPSE;
+    }
 
-	public boolean hasEnumerations()
-	{
-		return false;
-	}
+    public boolean hasEnumerations()
+    {
+        return false;
+    }
 
-	public boolean hasFacetOfKind(final FacetKind facetKind)
-	{
-		switch (facetKind)
-		{
-			case FractionDigits:
-			{
-				return true;
-			}
-			default:
-			{
-				return false;
-			}
-		}
-	}
+    public boolean hasFacetOfKind(final FacetKind facetKind)
+    {
+        switch (facetKind)
+        {
+            case FractionDigits:
+            {
+                return true;
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    }
 
-	public boolean hasFacets()
-	{
-		return true;
-	}
+    public boolean hasFacets()
+    {
+        return true;
+    }
 
-	public boolean hasPatterns()
-	{
-		return false;
-	}
+    public boolean hasPatterns()
+    {
+        return false;
+    }
 
-	public boolean isAbstract()
-	{
-		return false;
-	}
+    public boolean isAbstract()
+    {
+        return false;
+    }
 
-	public boolean isID()
-	{
-		return false;
-	}
+    public boolean isID()
+    {
+        return false;
+    }
 
-	public boolean isIDREF()
-	{
-		return false;
-	}
+    public boolean isIDREF()
+    {
+        return false;
+    }
 
-	public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
-	{
-		try
-		{
-			// Note that trimming eliminates a leading plus-sign, but leaves leading minus-sign.
-			final String trimmed = trim(initialValue);
-			return atomBridge.wrapAtom(atomBridge.createInteger(new BigInteger(trimmed)));
-		}
-		catch (final NumberFormatException e)
-		{
-			throw new DatatypeException(initialValue, this);
-		}
-	}
+    public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
+    {
+        try
+        {
+            // Note that trimming eliminates a leading plus-sign, but leaves leading minus-sign.
+            final String trimmed = trim(initialValue);
+            return atomBridge.wrapAtom(atomBridge.createInteger(new BigInteger(trimmed)));
+        }
+        catch (final NumberFormatException e)
+        {
+            throw new DatatypeException(initialValue, this);
+        }
+    }
 
-	public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 }

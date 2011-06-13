@@ -37,119 +37,119 @@ import org.genxdm.xs.types.SimpleType;
 
 public final class IntType extends AbstractAtomType
 {
-	public IntType(final QName name, final SimpleType baseType)
-	{
-		super(name, baseType);
-	}
+    public IntType(final QName name, final SimpleType baseType)
+    {
+        super(name, baseType);
+    }
 
-	public void accept(SequenceTypeVisitor visitor)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public void accept(SequenceTypeVisitor visitor)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Iterable<EnumerationDefinition> getEnumerations()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Iterable<EnumerationDefinition> getEnumerations()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Facet getFacetOfKind(FacetKind facetKind)
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Facet getFacetOfKind(FacetKind facetKind)
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public Iterable<Facet> getFacets()
-	{
-		return Collections.emptyList();
-	}
+    public Iterable<Facet> getFacets()
+    {
+        return Collections.emptyList();
+    }
 
-	public Set<DerivationMethod> getFinal()
-	{
-		return Collections.emptySet();
-	}
+    public Set<DerivationMethod> getFinal()
+    {
+        return Collections.emptySet();
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.INT;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.INT;
+    }
 
-	public Iterable<Pattern> getPatterns()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public Iterable<Pattern> getPatterns()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public ScopeExtent getScopeExtent()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public ScopeExtent getScopeExtent()
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 
-	public WhiteSpacePolicy getWhiteSpacePolicy()
-	{
-		return WhiteSpacePolicy.COLLAPSE;
-	}
+    public WhiteSpacePolicy getWhiteSpacePolicy()
+    {
+        return WhiteSpacePolicy.COLLAPSE;
+    }
 
-	public boolean hasEnumerations()
-	{
-		return false;
-	}
+    public boolean hasEnumerations()
+    {
+        return false;
+    }
 
-	public boolean hasFacetOfKind(final FacetKind facetKind)
-	{
-		return false;
-	}
+    public boolean hasFacetOfKind(final FacetKind facetKind)
+    {
+        return false;
+    }
 
-	public boolean hasFacets()
-	{
-		return false;
-	}
+    public boolean hasFacets()
+    {
+        return false;
+    }
 
-	public boolean hasPatterns()
-	{
-		return false;
-	}
+    public boolean hasPatterns()
+    {
+        return false;
+    }
 
-	public boolean isAbstract()
-	{
-		return false;
-	}
+    public boolean isAbstract()
+    {
+        return false;
+    }
 
-	public boolean isID()
-	{
-		return false;
-	}
+    public boolean isID()
+    {
+        return false;
+    }
 
-	public boolean isIDREF()
-	{
-		return false;
-	}
+    public boolean isIDREF()
+    {
+        return false;
+    }
 
-	public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
-	{
-		try
-		{
-			// Note that trimming eliminates a leading plus-sign, but leaves leading minus-sign.
-			final String trimmed = trim(initialValue);
-			return atomBridge.wrapAtom(atomBridge.createInt(Integer.valueOf(trimmed)));
-		}
-		catch (final NumberFormatException e)
-		{
-			throw new DatatypeException(initialValue, this);
-		}
-	}
+    public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
+    {
+        try
+        {
+            // Note that trimming eliminates a leading plus-sign, but leaves leading minus-sign.
+            final String trimmed = trim(initialValue);
+            return atomBridge.wrapAtom(atomBridge.createInt(Integer.valueOf(trimmed)));
+        }
+        catch (final NumberFormatException e)
+        {
+            throw new DatatypeException(initialValue, this);
+        }
+    }
 
-	public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
+    public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
+    {
+        // TODO Auto-generated method stub
+        throw new AssertionError("TODO");
+    }
 }

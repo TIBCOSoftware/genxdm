@@ -20,46 +20,46 @@ import java.util.NoSuchElementException;
 
 public abstract class BaseImmutableIterator<T> implements Iterator<T> {
 
-	/**
-	 * Set up the iterator to return the first result.
-	 * 
-	 * @param firstResult The first result to return - subsequent results returned from this.
-	 */
-	protected BaseImmutableIterator(T firstResult) {
-		m_next = firstResult;
-	}
-	
-	protected BaseImmutableIterator() {
-		m_next = null;
-	}
-	
-	/**
-	 * Meant to be called by subclasses that want to set the first result after the base
-	 * class has been constructed.
-	 * 
-	 * @param firstResult
-	 */
-	protected void setFirstResult(T firstResult) {
-		m_next = firstResult;
-	}
-	
-	@Override
-	public boolean hasNext() {
+    /**
+     * Set up the iterator to return the first result.
+     * 
+     * @param firstResult The first result to return - subsequent results returned from this.
+     */
+    protected BaseImmutableIterator(T firstResult) {
+        m_next = firstResult;
+    }
+    
+    protected BaseImmutableIterator() {
+        m_next = null;
+    }
+    
+    /**
+     * Meant to be called by subclasses that want to set the first result after the base
+     * class has been constructed.
+     * 
+     * @param firstResult
+     */
+    protected void setFirstResult(T firstResult) {
+        m_next = firstResult;
+    }
+    
+    @Override
+    public boolean hasNext() {
         return (null != m_next);
-	}
+    }
 
-	/**
-	 * Subclasses override this method to get from the current result to the next
-	 * result.
-	 * 
-	 * @param current Whatever the current result is.
-	 * 
-	 * @return The next result .
-	 */
-	protected abstract T next(T current);
-	
-	@Override
-	public T next() {
+    /**
+     * Subclasses override this method to get from the current result to the next
+     * result.
+     * 
+     * @param current Whatever the current result is.
+     * 
+     * @return The next result .
+     */
+    protected abstract T next(T current);
+    
+    @Override
+    public T next() {
         if (m_next != null) {
             final T last = m_next;
 
@@ -71,12 +71,12 @@ public abstract class BaseImmutableIterator<T> implements Iterator<T> {
             // The iteration has no more elements.
             throw new NoSuchElementException();
         }
-	}
+    }
 
-	@Override
-	public void remove() {
+    @Override
+    public void remove() {
         throw new UnsupportedOperationException();
-	}
+    }
 
-	private T m_next;
+    private T m_next;
 }

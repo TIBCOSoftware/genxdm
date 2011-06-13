@@ -21,44 +21,44 @@ import org.genxdm.xs.constraints.ValueConstraint;
 
 public final class ParticleWithElementTerm extends ParticleImpl implements ElementUse
 {
-	private ValueConstraint m_valueConstraint = null;
+    private ValueConstraint m_valueConstraint = null;
 
-	public ParticleWithElementTerm(final int minOccurs, final int maxOccurs, final ElementDefinition element)
-	{
-		super(minOccurs, maxOccurs, false, element);
-	}
+    public ParticleWithElementTerm(final int minOccurs, final int maxOccurs, final ElementDefinition element)
+    {
+        super(minOccurs, maxOccurs, false, element);
+    }
 
-	public ParticleWithElementTerm(final int minOccurs, final ElementDefinition element)
-	{
-		super(minOccurs, -1, true, element);
-	}
+    public ParticleWithElementTerm(final int minOccurs, final ElementDefinition element)
+    {
+        super(minOccurs, -1, true, element);
+    }
 
-	public ValueConstraint getValueConstraint()
-	{
-		return m_valueConstraint;
-	}
+    public ValueConstraint getValueConstraint()
+    {
+        return m_valueConstraint;
+    }
 
-	public void setValueConstraint(final ValueConstraint valueConstraint)
-	{
-		assertNotLocked();
-		this.m_valueConstraint = valueConstraint;
-	}
+    public void setValueConstraint(final ValueConstraint valueConstraint)
+    {
+        assertNotLocked();
+        this.m_valueConstraint = valueConstraint;
+    }
 
-	public ElementDefinition getTerm()
-	{
-		// We know this is safe by construction.
-		return (ElementDefinition)m_term;
-	}
+    public ElementDefinition getTerm()
+    {
+        // We know this is safe by construction.
+        return (ElementDefinition)m_term;
+    }
 
-	public ValueConstraint getEffectiveValueConstraint()
-	{
-		if (null != m_valueConstraint)
-		{
-			return m_valueConstraint;
-		}
-		else
-		{
-			return getTerm().getValueConstraint();
-		}
-	}
+    public ValueConstraint getEffectiveValueConstraint()
+    {
+        if (null != m_valueConstraint)
+        {
+            return m_valueConstraint;
+        }
+        else
+        {
+            return getTerm().getValueConstraint();
+        }
+    }
 }

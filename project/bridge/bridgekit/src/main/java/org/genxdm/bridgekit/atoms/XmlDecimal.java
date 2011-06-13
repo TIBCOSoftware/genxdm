@@ -25,68 +25,68 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlDecimal extends XmlAbstractAtom
 {
-	// TODO: Caching of common values.
-	private final BigDecimal decimalValue;
+    // TODO: Caching of common values.
+    private final BigDecimal decimalValue;
 
-	public static XmlDecimal valueOf(final BigDecimal decimalValue)
-	{
-		return new XmlDecimal(decimalValue);
-	}
+    public static XmlDecimal valueOf(final BigDecimal decimalValue)
+    {
+        return new XmlDecimal(decimalValue);
+    }
 
-	public static XmlDecimal valueOf(final long decimalValue)
-	{
-		return new XmlDecimal(decimalValue);
-	}
+    public static XmlDecimal valueOf(final long decimalValue)
+    {
+        return new XmlDecimal(decimalValue);
+    }
 
-	private XmlDecimal(final BigDecimal decimalValue)
-	{
-		this.decimalValue = PreCondition.assertArgumentNotNull(decimalValue, "decimalValue");
-	}
+    private XmlDecimal(final BigDecimal decimalValue)
+    {
+        this.decimalValue = PreCondition.assertArgumentNotNull(decimalValue, "decimalValue");
+    }
 
-	private XmlDecimal(final long decimalValue)
-	{
-		this.decimalValue = BigDecimal.valueOf(decimalValue);
-	}
+    private XmlDecimal(final long decimalValue)
+    {
+        this.decimalValue = BigDecimal.valueOf(decimalValue);
+    }
 
-	/**
-	 * Returns this value as a {@link BigDecimal}.
-	 */
-	public BigDecimal getBigDecimalValue()
-	{
-		return decimalValue;
-	}
+    /**
+     * Returns this value as a {@link BigDecimal}.
+     */
+    public BigDecimal getBigDecimalValue()
+    {
+        return decimalValue;
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof XmlDecimal)
-		{
-			return decimalValue.equals(((XmlDecimal)obj).decimalValue);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof XmlDecimal)
+        {
+            return decimalValue.equals(((XmlDecimal)obj).decimalValue);
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return NumericSupport.formatDecimalC14N(decimalValue);
-	}
+    public String getC14NForm()
+    {
+        return NumericSupport.formatDecimalC14N(decimalValue);
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.DECIMAL;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.DECIMAL;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return decimalValue.hashCode();
-	}
+    @Override
+    public int hashCode()
+    {
+        return decimalValue.hashCode();
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 }

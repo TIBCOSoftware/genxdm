@@ -21,44 +21,44 @@ import org.genxdm.typed.types.AtomBridge;
 
 public final class OpXMLSchemaCompareDecimal<A> implements ValueComparator<A>
 {
-	private final OpXMLSchemaCompare m_opcode;
-	private final BigDecimal decimalR;
-	private final AtomBridge<A> atomBridge;
+    private final OpXMLSchemaCompare m_opcode;
+    private final BigDecimal decimalR;
+    private final AtomBridge<A> atomBridge;
 
-	public OpXMLSchemaCompareDecimal(final OpXMLSchemaCompare opcode, final A rhsAtom, final AtomBridge<A> atomBridge)
-	{
-		this.m_opcode = opcode;
-		this.decimalR = atomBridge.getDecimal(rhsAtom);
-		this.atomBridge = atomBridge;
+    public OpXMLSchemaCompareDecimal(final OpXMLSchemaCompare opcode, final A rhsAtom, final AtomBridge<A> atomBridge)
+    {
+        this.m_opcode = opcode;
+        this.decimalR = atomBridge.getDecimal(rhsAtom);
+        this.atomBridge = atomBridge;
 
-	}
+    }
 
-	public boolean compare(final A lhs)
-	{
-		final BigDecimal decimalL = atomBridge.getDecimal(lhs);
+    public boolean compare(final A lhs)
+    {
+        final BigDecimal decimalL = atomBridge.getDecimal(lhs);
 
-		switch (m_opcode)
-		{
-			case Gt:
-			{
-				return decimalL.compareTo(decimalR) > 0;
-			}
-			case Ge:
-			{
-				return decimalL.compareTo(decimalR) >= 0;
-			}
-			case Lt:
-			{
-				return decimalL.compareTo(decimalR) < 0;
-			}
-			case Le:
-			{
-				return decimalL.compareTo(decimalR) <= 0;
-			}
-			default:
-			{
-				throw new AssertionError(m_opcode);
-			}
-		}
-	}
+        switch (m_opcode)
+        {
+            case Gt:
+            {
+                return decimalL.compareTo(decimalR) > 0;
+            }
+            case Ge:
+            {
+                return decimalL.compareTo(decimalR) >= 0;
+            }
+            case Lt:
+            {
+                return decimalL.compareTo(decimalR) < 0;
+            }
+            case Le:
+            {
+                return decimalL.compareTo(decimalR) <= 0;
+            }
+            default:
+            {
+                throw new AssertionError(m_opcode);
+            }
+        }
+    }
 }

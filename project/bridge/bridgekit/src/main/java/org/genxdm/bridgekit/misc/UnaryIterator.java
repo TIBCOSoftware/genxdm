@@ -19,29 +19,29 @@ import java.util.Iterator;
 
 public final class UnaryIterator<E> implements Iterator<E>
 {
-	private E thing;
+    private E thing;
 
-	public UnaryIterator(final E thing)
-	{
-		this.thing = thing;
-	}
+    public UnaryIterator(final E thing)
+    {
+        this.thing = thing;
+    }
 
-	public boolean hasNext()
-	{
-		return (null != thing);
-	}
+    public boolean hasNext()
+    {
+        return (null != thing);
+    }
 
-	public E next()
-	{
-		final E pending = thing;
+    public E next()
+    {
+        final E pending = thing;
 
-		thing = null;
+        thing = null;
 
-		return pending;
-	}
+        return pending;
+    }
 
-	public void remove()
-	{
-		throw new UnsupportedOperationException();
-	}
+    public void remove()
+    {
+        throw new UnsupportedOperationException();
+    }
 }

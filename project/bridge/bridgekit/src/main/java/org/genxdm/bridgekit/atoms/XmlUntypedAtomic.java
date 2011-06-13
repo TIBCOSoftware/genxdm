@@ -23,48 +23,48 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlUntypedAtomic extends XmlAbstractAtom
 {
-	private final String value;
+    private final String value;
 
-	public XmlUntypedAtomic(final String strval)
-	{
-		this.value = PreCondition.assertArgumentNotNull(strval, "strval");
-	}
+    public XmlUntypedAtomic(final String strval)
+    {
+        this.value = PreCondition.assertArgumentNotNull(strval, "strval");
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		else if (obj instanceof XmlUntypedAtomic)
-		{
-			return value.equals(((XmlUntypedAtomic)obj).value);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        else if (obj instanceof XmlUntypedAtomic)
+        {
+            return value.equals(((XmlUntypedAtomic)obj).value);
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return value;
-	}
+    public String getC14NForm()
+    {
+        return value;
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.UNTYPED_ATOMIC;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.UNTYPED_ATOMIC;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return value.hashCode();
-	}
+    @Override
+    public int hashCode()
+    {
+        return value.hashCode();
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return value.trim().length() == 0;
-	}
+    public boolean isWhiteSpace()
+    {
+        return value.trim().length() == 0;
+    }
 }

@@ -53,425 +53,425 @@ import org.genxdm.xs.types.Type;
  */
 public abstract class SimpleTypeImpl extends TypeImpl implements SimpleType
 {
-	protected abstract <A> List<A> compile(String initialValue, AtomBridge<A> bridge) throws DatatypeException;
+    protected abstract <A> List<A> compile(String initialValue, AtomBridge<A> bridge) throws DatatypeException;
 
-	protected abstract <A> List<A> compile(String initialValue, final PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException;
+    protected abstract <A> List<A> compile(String initialValue, final PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException;
 
-	private static <A> void checkEnumerationFacets(final List<? extends A> actualValue, final SimpleType simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
-	{
-		// Quickee optimization; there are no enumerations for xs:anySimpleType and xs:anyAtomicType.
-		if (!simpleType.isSimpleUrType() && !simpleType.isAtomicUrType())
-		{
-			SimpleType currentType = simpleType;
-			while (true)
-			{
-				if (currentType.hasEnumerations())
-				{
-					boolean matched = false;
-					int enumCount = 0;
-					for (final EnumerationDefinition facet : currentType.getEnumerations())
-					{
-						enumCount++;
-						if (matchesValue(facet.getValue(atomBridge), actualValue, atomBridge))
-						{
-							matched = true;
-							break;
-						}
-						else
-						{
-							// Try the next enumeration facet.
-						}
-					}
-					if (enumCount > 0 && !matched)
-					{
-						final String literal = atomBridge.getC14NString(actualValue);
-						final FacetEnumerationException cause = new FacetEnumerationException(literal);
-						throw new DatatypeException(literal, currentType, cause);
-					}
-					// Once we've found and checked enumeration facets, we don't need to go further up the
-					// type hierarchy because enumerations in one step must be subsets of base enumerations.
-					return;
-				}
-				else
-				{
-					final Type baseType = currentType.getBaseType();
-					if (baseType.isAtomicUrType())
-					{
-						return;
-					}
-					else if (baseType.isSimpleUrType())
-					{
-						return;
-					}
-					else
-					{
-						// We shouldn't get to the complex Ur-Type, because of the optimization,
-						// but if that is changed, this cast will also act as an assertion.
-						currentType = (SimpleType)baseType;
-					}
-				}
-			}
-		}
-	}
+    private static <A> void checkEnumerationFacets(final List<? extends A> actualValue, final SimpleType simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
+    {
+        // Quickee optimization; there are no enumerations for xs:anySimpleType and xs:anyAtomicType.
+        if (!simpleType.isSimpleUrType() && !simpleType.isAtomicUrType())
+        {
+            SimpleType currentType = simpleType;
+            while (true)
+            {
+                if (currentType.hasEnumerations())
+                {
+                    boolean matched = false;
+                    int enumCount = 0;
+                    for (final EnumerationDefinition facet : currentType.getEnumerations())
+                    {
+                        enumCount++;
+                        if (matchesValue(facet.getValue(atomBridge), actualValue, atomBridge))
+                        {
+                            matched = true;
+                            break;
+                        }
+                        else
+                        {
+                            // Try the next enumeration facet.
+                        }
+                    }
+                    if (enumCount > 0 && !matched)
+                    {
+                        final String literal = atomBridge.getC14NString(actualValue);
+                        final FacetEnumerationException cause = new FacetEnumerationException(literal);
+                        throw new DatatypeException(literal, currentType, cause);
+                    }
+                    // Once we've found and checked enumeration facets, we don't need to go further up the
+                    // type hierarchy because enumerations in one step must be subsets of base enumerations.
+                    return;
+                }
+                else
+                {
+                    final Type baseType = currentType.getBaseType();
+                    if (baseType.isAtomicUrType())
+                    {
+                        return;
+                    }
+                    else if (baseType.isSimpleUrType())
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        // We shouldn't get to the complex Ur-Type, because of the optimization,
+                        // but if that is changed, this cast will also act as an assertion.
+                        currentType = (SimpleType)baseType;
+                    }
+                }
+            }
+        }
+    }
 
-	protected static <A> void checkNonEnumerationFacets(final List<? extends A> actualValue, final SimpleType simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
-	{
-		// check the value space facets, excluding enumeration (e.g. length, digits, bounds)
-		SimpleType currentType = simpleType;
-		while (!currentType.isNative())
-		{
-			if (currentType.hasFacets())
-			{
-				for (final Facet facet : currentType.getFacets())
-				{
-					try
-					{
-						facet.validate(actualValue, simpleType, atomBridge);
-					}
-					catch (final FacetException e)
-					{
-						final String literal = atomBridge.getC14NString(actualValue);
-						throw new DatatypeException(literal, currentType);
-					}
-				}
-			}
-			final Type baseType = currentType.getBaseType();
-			if (baseType instanceof SimpleType)
-			{
-				currentType = (SimpleType)baseType;
-			}
-			else if (baseType instanceof SimpleUrType)
-			{
-				return;
-			}
-			else
-			{
-				throw new AssertionError(baseType);
-			}
-		}
-	}
+    protected static <A> void checkNonEnumerationFacets(final List<? extends A> actualValue, final SimpleType simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
+    {
+        // check the value space facets, excluding enumeration (e.g. length, digits, bounds)
+        SimpleType currentType = simpleType;
+        while (!currentType.isNative())
+        {
+            if (currentType.hasFacets())
+            {
+                for (final Facet facet : currentType.getFacets())
+                {
+                    try
+                    {
+                        facet.validate(actualValue, simpleType, atomBridge);
+                    }
+                    catch (final FacetException e)
+                    {
+                        final String literal = atomBridge.getC14NString(actualValue);
+                        throw new DatatypeException(literal, currentType);
+                    }
+                }
+            }
+            final Type baseType = currentType.getBaseType();
+            if (baseType instanceof SimpleType)
+            {
+                currentType = (SimpleType)baseType;
+            }
+            else if (baseType instanceof SimpleUrType)
+            {
+                return;
+            }
+            else
+            {
+                throw new AssertionError(baseType);
+            }
+        }
+    }
 
-	/**
-	 * Checks pattern facets, walking up the type hierarchy and checking against each type.
-	 */
-	protected static <A> void checkPatternFacets(final SimpleType simpleType, final String normalizedValue, final NameSource nameBridge) throws DatatypeException
-	{
-		// Quickee optimization; there are no patterns for xs:anySimpleType and xs:anyAtomicType.
-		if (!simpleType.isSimpleUrType() && !simpleType.isAtomicUrType())
-		{
-			// check the lexical space facets (i.e. pattern)
-			// When multiple xs:pattern facets are defined in a single derivation step, a value
-			// is considered valid if it matches at least one of the patterns, meaning that a logical
-			// or is performed on all the patterns defined in the same derivation step.
+    /**
+     * Checks pattern facets, walking up the type hierarchy and checking against each type.
+     */
+    protected static <A> void checkPatternFacets(final SimpleType simpleType, final String normalizedValue, final NameSource nameBridge) throws DatatypeException
+    {
+        // Quickee optimization; there are no patterns for xs:anySimpleType and xs:anyAtomicType.
+        if (!simpleType.isSimpleUrType() && !simpleType.isAtomicUrType())
+        {
+            // check the lexical space facets (i.e. pattern)
+            // When multiple xs:pattern facets are defined in a single derivation step, a value
+            // is considered valid if it matches at least one of the patterns, meaning that a logical
+            // or is performed on all the patterns defined in the same derivation step.
 
-			SimpleType currentType = simpleType;
-			while (true)
-			{
-				if (currentType.hasPatterns())
-				{
-					int size = 0;
-					int pass = 0;
-					for (final Pattern pattern : currentType.getPatterns())
-					{
-						size++;
-						try
-						{
-							pattern.validate(normalizedValue);
-							pass++;
-						}
-						catch (final PatternException e)
-						{
-							// Ignore.
-						}
-					}
-					if (size > 0 && pass == 0)
-					{
-						throw new DatatypeException(normalizedValue, simpleType);
-					}
-				}
-				final Type baseType = currentType.getBaseType();
-				if (baseType.isAtomicUrType())
-				{
-					return;
-				}
-				else if (baseType.isSimpleUrType())
-				{
-					return;
-				}
-				else
-				{
-					// We shouldn't get to the complex Ur-Type, because of the optimization,
-					// but if that is changed, this cast will also act as an assertion.
-					currentType = (SimpleType)baseType;
-				}
-			}
-		}
-	}
+            SimpleType currentType = simpleType;
+            while (true)
+            {
+                if (currentType.hasPatterns())
+                {
+                    int size = 0;
+                    int pass = 0;
+                    for (final Pattern pattern : currentType.getPatterns())
+                    {
+                        size++;
+                        try
+                        {
+                            pattern.validate(normalizedValue);
+                            pass++;
+                        }
+                        catch (final PatternException e)
+                        {
+                            // Ignore.
+                        }
+                    }
+                    if (size > 0 && pass == 0)
+                    {
+                        throw new DatatypeException(normalizedValue, simpleType);
+                    }
+                }
+                final Type baseType = currentType.getBaseType();
+                if (baseType.isAtomicUrType())
+                {
+                    return;
+                }
+                else if (baseType.isSimpleUrType())
+                {
+                    return;
+                }
+                else
+                {
+                    // We shouldn't get to the complex Ur-Type, because of the optimization,
+                    // but if that is changed, this cast will also act as an assertion.
+                    currentType = (SimpleType)baseType;
+                }
+            }
+        }
+    }
 
-	protected static <A> void checkValueSpaceFacets(final List<? extends A> actualValue, final SimpleType simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
-	{
-		checkNonEnumerationFacets(actualValue, simpleType, atomBridge);
+    protected static <A> void checkValueSpaceFacets(final List<? extends A> actualValue, final SimpleType simpleType, final AtomBridge<A> atomBridge) throws DatatypeException
+    {
+        checkNonEnumerationFacets(actualValue, simpleType, atomBridge);
 
-		checkEnumerationFacets(actualValue, simpleType, atomBridge);
-	}
+        checkEnumerationFacets(actualValue, simpleType, atomBridge);
+    }
 
-	/**
-	 * The enumeration values are in the value space of the base type definition. The actual values may not be. In order to compare the values we have to do some upcasting. I don't like this and maybe there is a better way.
-	 */
-	private static <A> boolean matchesValue(final List<? extends A> expect, final List<? extends A> actual, final AtomBridge<A> atomBridge)
-	{
-		final int size = expect.size();
-		if (size == actual.size())
-		{
-			for (int index = 0; index < size; index++)
-			{
-				final A expectAtom = atomBridge.getNativeAtom(expect.get(index));
-				final A actualAtom = atomBridge.getNativeAtom(actual.get(index));
-				if (expectAtom.equals(actualAtom))
-				{
-					// Keep going
-				}
-				else
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
+    /**
+     * The enumeration values are in the value space of the base type definition. The actual values may not be. In order to compare the values we have to do some upcasting. I don't like this and maybe there is a better way.
+     */
+    private static <A> boolean matchesValue(final List<? extends A> expect, final List<? extends A> actual, final AtomBridge<A> atomBridge)
+    {
+        final int size = expect.size();
+        if (size == actual.size())
+        {
+            for (int index = 0; index < size; index++)
+            {
+                final A expectAtom = atomBridge.getNativeAtom(expect.get(index));
+                final A actualAtom = atomBridge.getNativeAtom(actual.get(index));
+                if (expectAtom.equals(actualAtom))
+                {
+                    // Keep going
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	private final HashSet<EnumerationDefinition> m_enumerationFacets = new HashSet<EnumerationDefinition>();
+    private final HashSet<EnumerationDefinition> m_enumerationFacets = new HashSet<EnumerationDefinition>();
 
-	@SuppressWarnings("unchecked")
-	private final Facet[] m_facetArray = (Facet[])(Array.newInstance(Facet.class, FacetKind.values().length));
+    @SuppressWarnings("unchecked")
+    private final Facet[] m_facetArray = (Facet[])(Array.newInstance(Facet.class, FacetKind.values().length));
 
-	private final HashSet<Facet> m_facets = new HashSet<Facet>();
-	/**
-	 * {final} is mutable.
-	 */
-	private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
+    private final HashSet<Facet> m_facets = new HashSet<Facet>();
+    /**
+     * {final} is mutable.
+     */
+    private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
 
-	private final Set<DerivationMethod> m_finalUnmodifiable = Collections.unmodifiableSet(m_final);
+    private final Set<DerivationMethod> m_finalUnmodifiable = Collections.unmodifiableSet(m_final);
 
-	private boolean m_isAbstract = false;
+    private boolean m_isAbstract = false;
 
-	private final HashSet<Pattern> m_patternFacets = new HashSet<Pattern>();
+    private final HashSet<Pattern> m_patternFacets = new HashSet<Pattern>();
 
-	protected final WhiteSpacePolicy m_whiteSpace;
+    protected final WhiteSpacePolicy m_whiteSpace;
 
-	public SimpleTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final DerivationMethod derivation, final WhiteSpacePolicy whiteSpace)
-	{
-		super(name, isAnonymous, scope, derivation);
-		this.m_whiteSpace = whiteSpace;
-	}
+    public SimpleTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final DerivationMethod derivation, final WhiteSpacePolicy whiteSpace)
+    {
+        super(name, isAnonymous, scope, derivation);
+        this.m_whiteSpace = whiteSpace;
+    }
 
-	public void accept(SequenceTypeVisitor visitor)
-	{
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("TODO");
-	}
+    public void accept(SequenceTypeVisitor visitor)
+    {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("TODO");
+    }
 
-	public void addEnumeration(final EnumerationDefinition enumeration)
-	{
-		assertNotLocked();
-		PreCondition.assertArgumentNotNull(enumeration, "enumeration");
-		m_enumerationFacets.add(enumeration);
-	}
+    public void addEnumeration(final EnumerationDefinition enumeration)
+    {
+        assertNotLocked();
+        PreCondition.assertArgumentNotNull(enumeration, "enumeration");
+        m_enumerationFacets.add(enumeration);
+    }
 
-	public void addFacet(final Facet facet)
-	{
-		assertNotLocked();
-		PreCondition.assertArgumentNotNull(facet, "facet");
-		m_facets.add(facet);
-		m_facetArray[facet.getKind().ordinal()] = facet;
-	}
+    public void addFacet(final Facet facet)
+    {
+        assertNotLocked();
+        PreCondition.assertArgumentNotNull(facet, "facet");
+        m_facets.add(facet);
+        m_facetArray[facet.getKind().ordinal()] = facet;
+    }
 
-	public void addPattern(final Pattern pattern)
-	{
-		assertNotLocked();
-		PreCondition.assertArgumentNotNull(pattern, "pattern");
-		m_patternFacets.add(pattern);
-	}
+    public void addPattern(final Pattern pattern)
+    {
+        assertNotLocked();
+        PreCondition.assertArgumentNotNull(pattern, "pattern");
+        m_patternFacets.add(pattern);
+    }
 
-	public SequenceType atomSet()
-	{
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("TODO");
-	}
+    public SequenceType atomSet()
+    {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("TODO");
+    }
 
-	public Type getBaseType()
-	{
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("TODO");
-	}
+    public Type getBaseType()
+    {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("TODO");
+    }
 
-	public final Iterable<EnumerationDefinition> getEnumerations()
-	{
-		return m_enumerationFacets;
-	}
+    public final Iterable<EnumerationDefinition> getEnumerations()
+    {
+        return m_enumerationFacets;
+    }
 
-	public Facet getFacetOfKind(final FacetKind facetKind)
-	{
-		return m_facetArray[facetKind.ordinal()];
-	}
+    public Facet getFacetOfKind(final FacetKind facetKind)
+    {
+        return m_facetArray[facetKind.ordinal()];
+    }
 
-	public final Iterable<Facet> getFacets()
-	{
-		return m_facets;
-	}
+    public final Iterable<Facet> getFacets()
+    {
+        return m_facets;
+    }
 
-	public final Set<DerivationMethod> getFinal()
-	{
-		return m_finalUnmodifiable;
-	}
+    public final Set<DerivationMethod> getFinal()
+    {
+        return m_finalUnmodifiable;
+    }
 
-	public final Iterable<Pattern> getPatterns()
-	{
-		return m_patternFacets;
-	}
+    public final Iterable<Pattern> getPatterns()
+    {
+        return m_patternFacets;
+    }
 
-	public SimpleType getNativeTypeDefinition()
-	{
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("TODO");
-	}
+    public SimpleType getNativeTypeDefinition()
+    {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("TODO");
+    }
 
-	public final boolean hasEnumerations()
-	{
-		return m_enumerationFacets.size() > 0;
-	}
+    public final boolean hasEnumerations()
+    {
+        return m_enumerationFacets.size() > 0;
+    }
 
-	public boolean hasFacetOfKind(FacetKind facetKind)
-	{
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("TODO");
-	}
+    public boolean hasFacetOfKind(FacetKind facetKind)
+    {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("TODO");
+    }
 
-	public final boolean hasFacets()
-	{
-		return m_facets.size() > 0;
-	}
+    public final boolean hasFacets()
+    {
+        return m_facets.size() > 0;
+    }
 
-	public final boolean hasPatterns()
-	{
-		return m_patternFacets.size() > 0;
-	}
+    public final boolean hasPatterns()
+    {
+        return m_patternFacets.size() > 0;
+    }
 
-	public final boolean isAbstract()
-	{
-		return m_isAbstract;
-	}
+    public final boolean isAbstract()
+    {
+        return m_isAbstract;
+    }
 
-	public final boolean isAtomicUrType()
-	{
-		return false;
-	}
+    public final boolean isAtomicUrType()
+    {
+        return false;
+    }
 
-	public final boolean isComplexUrType()
-	{
-		return false;
-	}
+    public final boolean isComplexUrType()
+    {
+        return false;
+    }
 
-	public final boolean isFinal(final DerivationMethod derivation)
-	{
-		PreCondition.assertArgumentNotNull(derivation, "derivation");
-		return m_final.contains(derivation);
-	}
+    public final boolean isFinal(final DerivationMethod derivation)
+    {
+        PreCondition.assertArgumentNotNull(derivation, "derivation");
+        return m_final.contains(derivation);
+    }
 
-	public final boolean isSimpleUrType()
-	{
-		return false;
-	}
+    public final boolean isSimpleUrType()
+    {
+        return false;
+    }
 
-	public PrimeType prime()
-	{
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("TODO");
-	}
+    public PrimeType prime()
+    {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("TODO");
+    }
 
-	public Quantifier quantifier()
-	{
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("TODO");
-	}
+    public Quantifier quantifier()
+    {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("TODO");
+    }
 
-	public final void setAbstract(final boolean isAbstract)
-	{
-		assertNotLocked();
-		m_isAbstract = isAbstract;
-	}
+    public final void setAbstract(final boolean isAbstract)
+    {
+        assertNotLocked();
+        m_isAbstract = isAbstract;
+    }
 
-	public final void setFinal(final DerivationMethod derivation, final boolean enabled)
-	{
-		assertNotLocked();
-		PreCondition.assertArgumentNotNull(derivation, "derivation");
-		PreCondition.assertTrue(derivation.isUnion() || derivation.isList() || derivation.isRestriction(), "derivation (" + derivation + ") must be union, list or restriction for a simple type");
-		if (enabled)
-		{
-			m_final.add(derivation);
-		}
-		else
-		{
-			m_final.remove(derivation);
-		}
-	}
+    public final void setFinal(final DerivationMethod derivation, final boolean enabled)
+    {
+        assertNotLocked();
+        PreCondition.assertArgumentNotNull(derivation, "derivation");
+        PreCondition.assertTrue(derivation.isUnion() || derivation.isList() || derivation.isRestriction(), "derivation (" + derivation + ") must be union, list or restriction for a simple type");
+        if (enabled)
+        {
+            m_final.add(derivation);
+        }
+        else
+        {
+            m_final.remove(derivation);
+        }
+    }
 
-	public <A> List<A> validate(final List<? extends A> value, AtomBridge<A> atomBridge) throws DatatypeException
-	{
-		// TODO: Can we attempt working in the value space and then fall back to the lexical space?
-		final String initialValue = atomBridge.getC14NString(value);
+    public <A> List<A> validate(final List<? extends A> value, AtomBridge<A> atomBridge) throws DatatypeException
+    {
+        // TODO: Can we attempt working in the value space and then fall back to the lexical space?
+        final String initialValue = atomBridge.getC14NString(value);
 
-		// normalize (handle whitespace pseudo-facet) first.
-		final String normalizedValue = normalize(initialValue);
+        // normalize (handle whitespace pseudo-facet) first.
+        final String normalizedValue = normalize(initialValue);
 
-		checkPatternFacets(this, normalizedValue, NameSource.SINGLETON);
+        checkPatternFacets(this, normalizedValue, NameSource.SINGLETON);
 
-		// compile - which will perform various forms of validation, for types w/o facets
-		final List<A> actualValue = compile(normalizedValue, atomBridge);
+        // compile - which will perform various forms of validation, for types w/o facets
+        final List<A> actualValue = compile(normalizedValue, atomBridge);
 
-		checkValueSpaceFacets(actualValue, this, atomBridge);
+        checkValueSpaceFacets(actualValue, this, atomBridge);
 
-		return actualValue;
-	}
+        return actualValue;
+    }
 
-	/**
-	 * This method can only be called on simple types.
-	 */
-	public final <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
-	{
-		PreCondition.assertArgumentNotNull(initialValue, "initialValue");
+    /**
+     * This method can only be called on simple types.
+     */
+    public final <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
+    {
+        PreCondition.assertArgumentNotNull(initialValue, "initialValue");
 
-		// normalize (handle whitespace pseudo-facet) first.
-		final String normalizedValue = normalize(initialValue);
+        // normalize (handle whitespace pseudo-facet) first.
+        final String normalizedValue = normalize(initialValue);
 
-		checkPatternFacets(this, normalizedValue, NameSource.SINGLETON);
+        checkPatternFacets(this, normalizedValue, NameSource.SINGLETON);
 
-		// compile - which will perform various forms of validation, for types w/o facets
-		final List<A> actualValue = compile(normalizedValue, atomBridge);
+        // compile - which will perform various forms of validation, for types w/o facets
+        final List<A> actualValue = compile(normalizedValue, atomBridge);
 
-		checkValueSpaceFacets(actualValue, this, atomBridge);
+        checkValueSpaceFacets(actualValue, this, atomBridge);
 
-		return actualValue;
-	}
+        return actualValue;
+    }
 
-	public <A> List<A> validate(final String initialValue, final PrefixResolver resolver, AtomBridge<A> atomBridge) throws DatatypeException
-	{
-		PreCondition.assertArgumentNotNull(initialValue, "initialValue");
+    public <A> List<A> validate(final String initialValue, final PrefixResolver resolver, AtomBridge<A> atomBridge) throws DatatypeException
+    {
+        PreCondition.assertArgumentNotNull(initialValue, "initialValue");
 
-		// normalize (handle whitespace pseudo-facet) first.
-		final String normalizedValue = normalize(initialValue);
+        // normalize (handle whitespace pseudo-facet) first.
+        final String normalizedValue = normalize(initialValue);
 
-		checkPatternFacets(this, normalizedValue, NameSource.SINGLETON);
+        checkPatternFacets(this, normalizedValue, NameSource.SINGLETON);
 
-		// compile - which will perform various forms of validation, for types w/o facets
-		final List<A> actualValue = compile(normalizedValue, resolver, atomBridge);
+        // compile - which will perform various forms of validation, for types w/o facets
+        final List<A> actualValue = compile(normalizedValue, resolver, atomBridge);
 
-		checkValueSpaceFacets(actualValue, this, atomBridge);
+        checkValueSpaceFacets(actualValue, this, atomBridge);
 
-		return actualValue;
-	}
+        return actualValue;
+    }
 }

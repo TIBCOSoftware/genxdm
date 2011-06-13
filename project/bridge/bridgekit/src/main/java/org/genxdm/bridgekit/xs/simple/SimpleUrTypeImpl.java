@@ -46,280 +46,280 @@ public final class SimpleUrTypeImpl
     extends AbstractPrimeExcludingNoneType 
     implements SimpleUrType
 {
-	private final QName m_name;
-	private final ComponentProvider cache;
+    private final QName m_name;
+    private final ComponentProvider cache;
 
-	public SimpleUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final ComponentProvider cache)
-	{
-		this.m_name = new QName(W3C_XML_SCHEMA_NS_URI, "anySimpleType");
-		this.cache = cache;
-	}
+    public SimpleUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final ComponentProvider cache)
+    {
+        this.m_name = new QName(W3C_XML_SCHEMA_NS_URI, "anySimpleType");
+        this.cache = cache;
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public void addEnumeration(final EnumerationDefinition enumeration)
-	{
-		throw new AssertionError(getName());
-	}
+    public void addEnumeration(final EnumerationDefinition enumeration)
+    {
+        throw new AssertionError(getName());
+    }
 
-	public void addFacet(final Facet facet)
-	{
-		throw new AssertionError(getName());
-	}
+    public void addFacet(final Facet facet)
+    {
+        throw new AssertionError(getName());
+    }
 
-	public void addPattern(final Pattern pattern)
-	{
-		throw new AssertionError(getName());
-	}
+    public void addPattern(final Pattern pattern)
+    {
+        throw new AssertionError(getName());
+    }
 
-	public boolean derivedFrom(final String namespace, final String name, final Set<DerivationMethod> derivationMethods)
-	{
-		return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods);
-	}
+    public boolean derivedFrom(final String namespace, final String name, final Set<DerivationMethod> derivationMethods)
+    {
+        return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods);
+    }
 
-	public boolean derivedFromType(final Type ancestorType, final Set<DerivationMethod> derivationMethods)
-	{
-		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods);
-	}
+    public boolean derivedFromType(final Type ancestorType, final Set<DerivationMethod> derivationMethods)
+    {
+        return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods);
+    }
 
-	public ComplexUrType getBaseType()
-	{
-		return cache.getComplexUrType();
-	}
+    public ComplexUrType getBaseType()
+    {
+        return cache.getComplexUrType();
+    }
 
-	public DerivationMethod getDerivationMethod()
-	{
-		return DerivationMethod.Restriction;
-	}
+    public DerivationMethod getDerivationMethod()
+    {
+        return DerivationMethod.Restriction;
+    }
 
-	public Iterable<EnumerationDefinition> getEnumerations()
-	{
-		throw new AssertionError(getName());
-	}
+    public Iterable<EnumerationDefinition> getEnumerations()
+    {
+        throw new AssertionError(getName());
+    }
 
-	public Facet getFacetOfKind(final FacetKind facetKind)
-	{
-		throw new AssertionError(getName());
-	}
+    public Facet getFacetOfKind(final FacetKind facetKind)
+    {
+        throw new AssertionError(getName());
+    }
 
-	public Iterable<Facet> getFacets()
-	{
-		throw new AssertionError(getName());
-	}
+    public Iterable<Facet> getFacets()
+    {
+        throw new AssertionError(getName());
+    }
 
-	public Set<DerivationMethod> getFinal()
-	{
-		return EnumSet.noneOf(DerivationMethod.class);
-	}
+    public Set<DerivationMethod> getFinal()
+    {
+        return EnumSet.noneOf(DerivationMethod.class);
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return PrimeTypeKind.ANY_SIMPLE_TYPE;
-	}
+    public PrimeTypeKind getKind()
+    {
+        return PrimeTypeKind.ANY_SIMPLE_TYPE;
+    }
 
-	public String getLocalName()
-	{
-		return m_name.getLocalPart();
-	}
+    public String getLocalName()
+    {
+        return m_name.getLocalPart();
+    }
 
-	public QName getName()
-	{
-		return m_name;
-	}
+    public QName getName()
+    {
+        return m_name;
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.ANY_SIMPLE_TYPE;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.ANY_SIMPLE_TYPE;
+    }
 
-	public SimpleType getNativeTypeDefinition()
-	{
-		return this;
-	}
+    public SimpleType getNativeTypeDefinition()
+    {
+        return this;
+    }
 
-	public Iterable<Pattern> getPatterns()
-	{
-		throw new AssertionError(getName());
-	}
+    public Iterable<Pattern> getPatterns()
+    {
+        throw new AssertionError(getName());
+    }
 
-	public ScopeExtent getScopeExtent()
-	{
-		return ScopeExtent.Global;
-	}
+    public ScopeExtent getScopeExtent()
+    {
+        return ScopeExtent.Global;
+    }
 
-	public String getTargetNamespace()
-	{
-		return m_name.getNamespaceURI();
-	}
+    public String getTargetNamespace()
+    {
+        return m_name.getNamespaceURI();
+    }
 
-	public WhiteSpacePolicy getWhiteSpacePolicy()
-	{
-		return WhiteSpacePolicy.PRESERVE;
-	}
+    public WhiteSpacePolicy getWhiteSpacePolicy()
+    {
+        return WhiteSpacePolicy.PRESERVE;
+    }
 
-	public boolean hasEnumerations()
-	{
-		return false;
-	}
+    public boolean hasEnumerations()
+    {
+        return false;
+    }
 
-	public boolean hasFacetOfKind(final FacetKind facetKind)
-	{
-		return false;
-	}
+    public boolean hasFacetOfKind(final FacetKind facetKind)
+    {
+        return false;
+    }
 
-	public boolean hasFacets()
-	{
-		return false;
-	}
+    public boolean hasFacets()
+    {
+        return false;
+    }
 
-	public boolean hasPatterns()
-	{
-		return false;
-	}
+    public boolean hasPatterns()
+    {
+        return false;
+    }
 
-	public boolean isAbstract()
-	{
-		return false;
-	}
+    public boolean isAbstract()
+    {
+        return false;
+    }
 
-	public boolean isAnonymous()
-	{
-		return false;
-	}
+    public boolean isAnonymous()
+    {
+        return false;
+    }
 
-	public boolean isAtomicType()
-	{
-		return false;
-	}
+    public boolean isAtomicType()
+    {
+        return false;
+    }
 
-	public boolean isAtomicUrType()
-	{
-		return false;
-	}
+    public boolean isAtomicUrType()
+    {
+        return false;
+    }
 
-	public boolean isChoice()
-	{
-		return false;
-	}
+    public boolean isChoice()
+    {
+        return false;
+    }
 
-	public boolean isComplexUrType()
-	{
-		return false;
-	}
+    public boolean isComplexUrType()
+    {
+        return false;
+    }
 
-	public boolean isFinal(final DerivationMethod derivation)
-	{
-		return false;
-	}
+    public boolean isFinal(final DerivationMethod derivation)
+    {
+        return false;
+    }
 
-	public boolean isID()
-	{
-		return false;
-	}
+    public boolean isID()
+    {
+        return false;
+    }
 
-	public boolean isIDREF()
-	{
-		return false;
-	}
+    public boolean isIDREF()
+    {
+        return false;
+    }
 
-	public boolean isIDREFS()
-	{
-		return false;
-	}
+    public boolean isIDREFS()
+    {
+        return false;
+    }
 
-	public boolean isListType()
-	{
-		return false;
-	}
+    public boolean isListType()
+    {
+        return false;
+    }
 
-	public boolean isLocked()
-	{
-		return true;
-	}
+    public boolean isLocked()
+    {
+        return true;
+    }
 
-	public boolean isNative()
-	{
-		return true;
-	}
+    public boolean isNative()
+    {
+        return true;
+    }
 
-	public boolean isSimpleUrType()
-	{
-		return true;
-	}
+    public boolean isSimpleUrType()
+    {
+        return true;
+    }
 
-	public boolean isUnionType()
-	{
-		return false;
-	}
+    public boolean isUnionType()
+    {
+        return false;
+    }
 
-	public void lock()
-	{
-		// Ignore
-	}
+    public void lock()
+    {
+        // Ignore
+    }
 
-	public String normalize(final String initialValue)
-	{
-		return initialValue;
-	}
+    public String normalize(final String initialValue)
+    {
+        return initialValue;
+    }
 
-	public SimpleUrType prime()
-	{
-		return this;
-	}
+    public SimpleUrType prime()
+    {
+        return this;
+    }
 
-	public void setAbstract(final boolean isAbstract)
-	{
-		throw new AssertionError(getName());
-	}
+    public void setAbstract(final boolean isAbstract)
+    {
+        throw new AssertionError(getName());
+    }
 
-	public void setFinal(final DerivationMethod derivation, final boolean enabled)
-	{
-		throw new AssertionError(getName());
-	}
+    public void setFinal(final DerivationMethod derivation, final boolean enabled)
+    {
+        throw new AssertionError(getName());
+    }
 
-	public boolean subtype(final PrimeType rhs)
-	{
-		switch (rhs.getKind())
-		{
-			case CHOICE:
-			{
-				final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
-				return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
-			}
-			case ANY_TYPE:
-			case ANY_SIMPLE_TYPE:
-			{
-				return true;
-			}
-			default:
-			{
-				return false;
-			}
-		}
-	}
+    public boolean subtype(final PrimeType rhs)
+    {
+        switch (rhs.getKind())
+        {
+            case CHOICE:
+            {
+                final PrimeChoiceType choiceType = (PrimeChoiceType)rhs;
+                return subtype(choiceType.getLHS()) || subtype(choiceType.getRHS());
+            }
+            case ANY_TYPE:
+            case ANY_SIMPLE_TYPE:
+            {
+                return true;
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    }
 
-	@Override
-	public String toString()
-	{
-		return "xs:anySimpleType";
-	}
+    @Override
+    public String toString()
+    {
+        return "xs:anySimpleType";
+    }
 
-	public <A> List<A> validate(final List<? extends A> value, AtomBridge<A> atomBridge)
-	{
-		final String strval = atomBridge.getC14NString(value);
-		return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(strval));
-	}
+    public <A> List<A> validate(final List<? extends A> value, AtomBridge<A> atomBridge)
+    {
+        final String strval = atomBridge.getC14NString(value);
+        return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(strval));
+    }
 
-	public <A> List<A> validate(final String value, AtomBridge<A> atomBridge)
-	{
-		return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(value));
-	}
+    public <A> List<A> validate(final String value, AtomBridge<A> atomBridge)
+    {
+        return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(value));
+    }
 
-	public <A> List<A> validate(final String value, final PrefixResolver resolver, AtomBridge<A> atomBridge)
-	{
-		return validate(value, atomBridge);
-	}
+    public <A> List<A> validate(final String value, final PrefixResolver resolver, AtomBridge<A> atomBridge)
+    {
+        return validate(value, atomBridge);
+    }
 }

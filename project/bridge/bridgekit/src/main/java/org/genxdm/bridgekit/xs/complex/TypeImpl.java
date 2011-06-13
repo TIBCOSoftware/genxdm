@@ -30,34 +30,34 @@ import org.genxdm.xs.types.Type;
  */
 public abstract class TypeImpl extends NamedComponentImpl implements Type
 {
-	private final DerivationMethod derivation;
-	private final QName name;
+    private final DerivationMethod derivation;
+    private final QName name;
 
-	public TypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final DerivationMethod derivation)
-	{
-		super(name, isAnonymous, scope);
-		this.name = PreCondition.assertArgumentNotNull(name, "name");
-		this.derivation = PreCondition.assertArgumentNotNull(derivation, "derivation");
-	}
+    public TypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final DerivationMethod derivation)
+    {
+        super(name, isAnonymous, scope);
+        this.name = PreCondition.assertArgumentNotNull(name, "name");
+        this.derivation = PreCondition.assertArgumentNotNull(derivation, "derivation");
+    }
 
-	public boolean derivedFrom(final String namespace, final String name, final Set<DerivationMethod> derivationMethods)
-	{
-		return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods);
-	}
+    public boolean derivedFrom(final String namespace, final String name, final Set<DerivationMethod> derivationMethods)
+    {
+        return SchemaSupport.derivedFrom(this, namespace, name, derivationMethods);
+    }
 
-	public boolean derivedFromType(final Type ancestorType, final Set<DerivationMethod> derivationMethods)
-	{
-		return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods);
-	}
+    public boolean derivedFromType(final Type ancestorType, final Set<DerivationMethod> derivationMethods)
+    {
+        return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods);
+    }
 
-	public final DerivationMethod getDerivationMethod()
-	{
-		return derivation;
-	}
+    public final DerivationMethod getDerivationMethod()
+    {
+        return derivation;
+    }
 
-	@Override
-	public String toString()
-	{
-		return name.toString();
-	}
+    @Override
+    public String toString()
+    {
+        return name.toString();
+    }
 }

@@ -22,56 +22,56 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlInt extends XmlAbstractAtom
 {
-	private final int intValue;
+    private final int intValue;
 
-	public XmlInt(final int intValue)
-	{
-		this.intValue = intValue;
-	}
+    public XmlInt(final int intValue)
+    {
+        this.intValue = intValue;
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		else if (obj instanceof XmlInt)
-		{
-			return intValue == ((XmlInt)obj).intValue;
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        else if (obj instanceof XmlInt)
+        {
+            return intValue == ((XmlInt)obj).intValue;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return Integer.toString(intValue);
-	}
+    public String getC14NForm()
+    {
+        return Integer.toString(intValue);
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.INT;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.INT;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return intValue;
-	}
+    @Override
+    public int hashCode()
+    {
+        return intValue;
+    }
 
-	/**
-	 * Returns this value as an <code>int</code>.
-	 */
-	public int getIntValue()
-	{
-		return intValue;
-	}
+    /**
+     * Returns this value as an <code>int</code>.
+     */
+    public int getIntValue()
+    {
+        return intValue;
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 }

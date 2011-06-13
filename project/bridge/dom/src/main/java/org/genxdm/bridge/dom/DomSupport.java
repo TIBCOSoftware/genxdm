@@ -30,7 +30,7 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.Emulation;
-import org.genxdm.typed.types.MetaBridge;
+import org.genxdm.typed.types.TypesBridge;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.Type;
@@ -218,7 +218,7 @@ public final class DomSupport implements DomConstants
         }
     }
 
-    public static QName getAnnotationType(final Node node, final MetaBridge metaBridge)
+    public static QName getAnnotationType(final Node node, final TypesBridge metaBridge)
     {
         PreCondition.assertArgumentNotNull(node, "node");
         if (supportsCoreLevel3(node))
@@ -824,7 +824,7 @@ public final class DomSupport implements DomConstants
 
     public static <A> List<? extends A> getTypedValue(final Node node, final String separator, final Emulation emulation, final TypedContext<Node, A> pcx)
     {
-        final MetaBridge metaBridge = pcx.getMetaBridge();
+        final TypesBridge metaBridge = pcx.getMetaBridge();
         final AtomBridge<A> atomBridge = pcx.getAtomBridge();
         switch (getNodeKind(node))
         {

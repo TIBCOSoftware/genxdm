@@ -23,51 +23,51 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlString extends XmlAbstractAtom
 {
-	private final int hashCode;
-	private final String value;
+    private final int hashCode;
+    private final String value;
 
-	public XmlString(final String value)
-	{
-		this.value = PreCondition.assertArgumentNotNull(value, "value");
-		this.hashCode = value.hashCode();
-	}
+    public XmlString(final String value)
+    {
+        this.value = PreCondition.assertArgumentNotNull(value, "value");
+        this.hashCode = value.hashCode();
+    }
 
-	@Override
-	public boolean equals(final Object object)
-	{
-		if (this == object)
-		{
-			return true;
-		}
-		else if (object == null || getClass() != object.getClass())
-		{
-			return false;
-		}
-		else
-		{
-			final XmlString other = (XmlString)object;
-			return value.equals(other.value);
-		}
-	}
+    @Override
+    public boolean equals(final Object object)
+    {
+        if (this == object)
+        {
+            return true;
+        }
+        else if (object == null || getClass() != object.getClass())
+        {
+            return false;
+        }
+        else
+        {
+            final XmlString other = (XmlString)object;
+            return value.equals(other.value);
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return value;
-	}
+    public String getC14NForm()
+    {
+        return value;
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.STRING;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.STRING;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return hashCode;
-	}
+    @Override
+    public int hashCode()
+    {
+        return hashCode;
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return value.trim().length() == 0;
-	}
+    public boolean isWhiteSpace()
+    {
+        return value.trim().length() == 0;
+    }
 }

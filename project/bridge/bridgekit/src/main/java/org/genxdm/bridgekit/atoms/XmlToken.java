@@ -23,48 +23,48 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlToken extends XmlAbstractAtom
 {
-	private final String value;
+    private final String value;
 
-	public XmlToken(final String value)
-	{
-		this.value = PreCondition.assertArgumentNotNull(value, "value");
-	}
+    public XmlToken(final String value)
+    {
+        this.value = PreCondition.assertArgumentNotNull(value, "value");
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		else if (obj instanceof XmlToken)
-		{
-			return value.equals(((XmlToken)obj).value);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        else if (obj instanceof XmlToken)
+        {
+            return value.equals(((XmlToken)obj).value);
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return value;
-	}
+    public String getC14NForm()
+    {
+        return value;
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.TOKEN;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.TOKEN;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return value.hashCode();
-	}
+    @Override
+    public int hashCode()
+    {
+        return value.hashCode();
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return value.trim().length() == 0;
-	}
+    public boolean isWhiteSpace()
+    {
+        return value.trim().length() == 0;
+    }
 }

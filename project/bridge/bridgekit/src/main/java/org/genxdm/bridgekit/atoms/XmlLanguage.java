@@ -23,53 +23,53 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlLanguage extends XmlAbstractAtom
 {
-	private final String value;
+    private final String value;
 
-	public XmlLanguage(final String value)
-	{
-		this.value = PreCondition.assertArgumentNotNull(value, "value");
-	}
+    public XmlLanguage(final String value)
+    {
+        this.value = PreCondition.assertArgumentNotNull(value, "value");
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		else if (obj instanceof XmlLanguage)
-		{
-			return value.equals(((XmlLanguage)obj).value);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        else if (obj instanceof XmlLanguage)
+        {
+            return value.equals(((XmlLanguage)obj).value);
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	public String getC14NForm()
-	{
-		return value;
-	}
+    public String getC14NForm()
+    {
+        return value;
+    }
 
-	public NativeType getNativeType()
-	{
-		return NativeType.LANGUAGE;
-	}
+    public NativeType getNativeType()
+    {
+        return NativeType.LANGUAGE;
+    }
 
-	public String getString()
-	{
-		return value;
-	}
+    public String getString()
+    {
+        return value;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return value.hashCode();
-	}
+    @Override
+    public int hashCode()
+    {
+        return value.hashCode();
+    }
 
-	public boolean isWhiteSpace()
-	{
-		return false;
-	}
+    public boolean isWhiteSpace()
+    {
+        return false;
+    }
 }

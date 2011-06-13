@@ -34,146 +34,146 @@ import org.genxdm.xs.types.Type;
 
 public final class ElementDeclWithParentAxisType implements ElementDefinition
 {
-	private final ElementDefinition m_element;
+    private final ElementDefinition m_element;
 
-	public ElementDeclWithParentAxisType(final ElementDefinition element, final ElementDefinition parentAxis)
-	{
-		m_element = PreCondition.assertArgumentNotNull(element);
-	}
+    public ElementDeclWithParentAxisType(final ElementDefinition element, final ElementDefinition parentAxis)
+    {
+        m_element = PreCondition.assertArgumentNotNull(element);
+    }
 
-	public void accept(final SequenceTypeVisitor visitor)
-	{
-		visitor.visit(this);
-	}
+    public void accept(final SequenceTypeVisitor visitor)
+    {
+        visitor.visit(this);
+    }
 
-	public Set<DerivationMethod> getDisallowedSubtitutions()
-	{
-		return m_element.getDisallowedSubtitutions();
-	}
+    public Set<DerivationMethod> getDisallowedSubtitutions()
+    {
+        return m_element.getDisallowedSubtitutions();
+    }
 
-	public Iterable<IdentityConstraint> getIdentityConstraints()
-	{
-		return m_element.getIdentityConstraints();
-	}
+    public Iterable<IdentityConstraint> getIdentityConstraints()
+    {
+        return m_element.getIdentityConstraints();
+    }
 
-	public PrimeTypeKind getKind()
-	{
-		return m_element.getKind();
-	}
+    public PrimeTypeKind getKind()
+    {
+        return m_element.getKind();
+    }
 
-	public String getLocalName()
-	{
-		return m_element.getLocalName();
-	}
+    public String getLocalName()
+    {
+        return m_element.getLocalName();
+    }
 
-	public QName getName()
-	{
-		return m_element.getName();
-	}
+    public QName getName()
+    {
+        return m_element.getName();
+    }
 
-	public NodeKind getNodeKind()
-	{
-		return m_element.getNodeKind();
-	}
+    public NodeKind getNodeKind()
+    {
+        return m_element.getNodeKind();
+    }
 
-	public ScopeExtent getScopeExtent()
-	{
-		return m_element.getScopeExtent();
-	}
+    public ScopeExtent getScopeExtent()
+    {
+        return m_element.getScopeExtent();
+    }
 
-	public ElementDefinition getSubstitutionGroup()
-	{
-		return m_element.getSubstitutionGroup();
-	}
+    public ElementDefinition getSubstitutionGroup()
+    {
+        return m_element.getSubstitutionGroup();
+    }
 
-	public Set<DerivationMethod> getSubstitutionGroupExclusions()
-	{
-		return m_element.getSubstitutionGroupExclusions();
-	}
+    public Set<DerivationMethod> getSubstitutionGroupExclusions()
+    {
+        return m_element.getSubstitutionGroupExclusions();
+    }
 
-	public Iterable<ElementDefinition> getSubstitutionGroupMembers()
-	{
-		return m_element.getSubstitutionGroupMembers();
-	}
+    public Iterable<ElementDefinition> getSubstitutionGroupMembers()
+    {
+        return m_element.getSubstitutionGroupMembers();
+    }
 
-	public String getTargetNamespace()
-	{
-		return m_element.getTargetNamespace();
-	}
+    public String getTargetNamespace()
+    {
+        return m_element.getTargetNamespace();
+    }
 
-	public Type getType()
-	{
-		return m_element.getType();
-	}
+    public Type getType()
+    {
+        return m_element.getType();
+    }
 
-	public ValueConstraint getValueConstraint()
-	{
-		return m_element.getValueConstraint();
-	}
+    public ValueConstraint getValueConstraint()
+    {
+        return m_element.getValueConstraint();
+    }
 
-	public boolean hasIdentityConstraints()
-	{
-		return m_element.hasIdentityConstraints();
-	}
+    public boolean hasIdentityConstraints()
+    {
+        return m_element.hasIdentityConstraints();
+    }
 
-	public boolean hasSubstitutionGroup()
-	{
-		return m_element.hasSubstitutionGroup();
-	}
+    public boolean hasSubstitutionGroup()
+    {
+        return m_element.hasSubstitutionGroup();
+    }
 
-	public boolean hasSubstitutionGroupMembers()
-	{
-		return m_element.hasSubstitutionGroupMembers();
-	}
+    public boolean hasSubstitutionGroupMembers()
+    {
+        return m_element.hasSubstitutionGroupMembers();
+    }
 
-	public boolean isAbstract()
-	{
-		return m_element.isAbstract();
-	}
+    public boolean isAbstract()
+    {
+        return m_element.isAbstract();
+    }
 
-	public boolean isAnonymous()
-	{
-		return m_element.isAnonymous();
-	}
+    public boolean isAnonymous()
+    {
+        return m_element.isAnonymous();
+    }
 
-	public boolean isChoice()
-	{
-		return m_element.isChoice();
-	}
+    public boolean isChoice()
+    {
+        return m_element.isChoice();
+    }
 
-	public boolean isNative()
-	{
-		return m_element.isNative();
-	}
+    public boolean isNative()
+    {
+        return m_element.isNative();
+    }
 
-	public boolean isNillable()
-	{
-		return m_element.isNillable();
-	}
+    public boolean isNillable()
+    {
+        return m_element.isNillable();
+    }
 
-	public boolean isNone()
-	{
-		return m_element.isNone();
-	}
+    public boolean isNone()
+    {
+        return m_element.isNone();
+    }
 
-	public PrimeType prime()
-	{
-		return this;
-	}
+    public PrimeType prime()
+    {
+        return this;
+    }
 
-	public Quantifier quantifier()
-	{
-		return m_element.quantifier();
-	}
+    public Quantifier quantifier()
+    {
+        return m_element.quantifier();
+    }
 
-	public boolean subtype(final PrimeType rhs)
-	{
-		return m_element.subtype(rhs);
-	}
+    public boolean subtype(final PrimeType rhs)
+    {
+        return m_element.subtype(rhs);
+    }
 
-	@Override
-	public String toString()
-	{
-		return m_element.toString();
-	}
+    @Override
+    public String toString()
+    {
+        return m_element.toString();
+    }
 }
