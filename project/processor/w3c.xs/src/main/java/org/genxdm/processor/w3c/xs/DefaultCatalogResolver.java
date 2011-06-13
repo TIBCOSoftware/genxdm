@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.impl;
+package org.genxdm.processor.w3c.xs;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,7 +25,7 @@ import java.net.URL;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.resolve.CatalogResolver;
 
-enum DefaultCatalogResolver implements CatalogResolver
+public enum DefaultCatalogResolver implements CatalogResolver
 {
     SINGLETON;
 
