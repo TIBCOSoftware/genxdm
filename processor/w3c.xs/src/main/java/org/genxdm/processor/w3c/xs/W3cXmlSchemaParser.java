@@ -28,6 +28,8 @@ import org.genxdm.xs.SchemaParser;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.facets.SchemaRegExCompiler;
+import org.genxdm.xs.resolve.CatalogResolver;
+import org.genxdm.xs.resolve.SchemaCatalog;
 
 public final class W3cXmlSchemaParser 
     implements SchemaParser
@@ -38,16 +40,13 @@ public final class W3cXmlSchemaParser
     }
 
     public ComponentBag parse(final URI schemaLocation, final InputStream istream,
-                                 final URI systemId, final SchemaExceptionHandler errors,
-                                 final SchemaLoadOptions args, final ComponentProvider components)
+                                 final URI systemId, final SchemaExceptionHandler errors)
         throws AbortException
     {
         PreCondition.assertArgumentNotNull(istream, "istream");
-        PreCondition.assertArgumentNotNull(components, "components");
         final XMLParserImpl parser = new XMLParserImpl(components);
 
-        parser.setCatalog(args.getCatalog());
-        parser.setResolver(args.getResolver());
+        parser.setCatalogResolver(resolver, catalog);
         parser.setRegExCompiler(regexc);
 
         return parser.parse(schemaLocation, istream, systemId, errors);
@@ -71,11 +70,34 @@ public final class W3cXmlSchemaParser
             this.regexc = DEFAULT_REGEX_COMPILER;
         }
     }
+    
+    public void setCatalogResolver(final CatalogResolver resolver, final SchemaCatalog catalog)
+    {
+        this.resolver = resolver;
+        this.catalog = catalog;
+    }
+    
+    public void setComponentProvider(final ComponentProvider provider)
+    {
+        this.components = provider;
+    }
+    
+    /**
+     * At present, these values are ignored by this parser implementation.
+     */
+    public void setSchemaLoadOptions(final SchemaLoadOptions options)
+    {
+        this.options = options;
+    }
 
     // The default Regular Expression compiler is backed by the JDK.
     private static final SchemaRegExCompiler DEFAULT_REGEX_COMPILER = new RegExCompilerJDK();
 
     // The actual Regular Expression compiler may be changed.
     private SchemaRegExCompiler regexc;
+    private SchemaCatalog catalog;
+    private CatalogResolver resolver;
+    private ComponentProvider components;
+    private SchemaLoadOptions options;
 
 }
