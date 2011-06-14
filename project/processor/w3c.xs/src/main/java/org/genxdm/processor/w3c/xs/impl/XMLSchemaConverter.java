@@ -1624,7 +1624,7 @@ public final class XMLSchemaConverter
             {
                 List<XmlAtom> val = simpleType.validate(initialValue, m_atoms);
                 if (val.size() > 0)
-                    return new ValueConstraint(xmlValueConstraint.kind, simpleType, m_atoms.getString(val.get(0)));
+                    return new ValueConstraint(xmlValueConstraint.kind, simpleType, m_atoms.getC14NForm(val.get(0)));
                 // TODO: throw a better exception
                 throw new AssertionError(); // no value in the value constraint
             }
@@ -1792,7 +1792,7 @@ public final class XMLSchemaConverter
         List<String> result = new ArrayList<String>();
         for (XmlAtom atom : initial)
         {
-            result.add(m_atoms.getString(atom));
+            result.add(m_atoms.getC14NForm(atom));
         }
         return result;
     }
@@ -1915,7 +1915,7 @@ public final class XMLSchemaConverter
         }
         if (value.size() > 0)
         {
-            return limit(m_atoms.getString(value.get(0)), baseType, xmlFacet.getOperator(), xmlFacet.fixed);
+            return limit(m_atoms.getC14NForm(value.get(0)), baseType, xmlFacet.getOperator(), xmlFacet.fixed);
         }
         return null;
     }
