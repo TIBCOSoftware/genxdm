@@ -4388,30 +4388,31 @@ final class XMLSchemaParser extends XMLRepresentation
             // TODO: note comments following:
             // if there's no schemaLocation hint, give up. /*try using the
             // namespace.*/
-            if (schemaLocation != null)
-            {
+//            if (schemaLocation != null)
+//            {
                 if (m_processRepeatedNamespaces || !cache.m_seenNamespaces.contains(namespace))
                 {
                     parseExternalModule(cache, module, reader.getLocation(), namespace, schemaLocation, ModuleKind.Import);
                 }
-            }
-            else
-            {
-                if (namespace != null)
-                {
-                    if (equalStrings(XMLConstants.XML_NS_URI, namespace.toString()))
-                    {
-                    }
-                    else
-                    {
-                        // Do nothing.
-                    }
-                }
-                else
-                {
-                    // Do nothing.
-                }
-            }
+//            }
+//            else
+//            {
+//                if (namespace != null)
+//                {
+//                    if (equalStrings(XMLConstants.XML_NS_URI, namespace.toString()))
+//                    {
+//                    }
+//                    else
+//                    {
+//                        // Do nothing.
+//                        parseExternalModule(cache, module, reader.getLocation(), namespace, namespace, ModuleKind.Import);
+//                    }
+//                }
+//                else
+//                {
+//                    // Do nothing.
+//                }
+//            }
         }
         catch (final SmAttributeUseException e)
         {
@@ -5569,7 +5570,7 @@ final class XMLSchemaParser extends XMLRepresentation
 
     private void parseExternalModule(final XMLSchemaCache cache, final XMLSchemaModule parent, final Location location, final URI namespace, final URI schemaLocation, final ModuleKind moduleKind) throws AbortException
     {
-        PreCondition.assertArgumentNotNull(schemaLocation, "schemaLocation");
+//        PreCondition.assertArgumentNotNull(schemaLocation, "schemaLocation");
 
         if (null == m_catalog)
         {

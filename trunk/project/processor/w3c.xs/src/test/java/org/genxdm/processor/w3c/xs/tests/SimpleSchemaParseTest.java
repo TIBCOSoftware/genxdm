@@ -15,9 +15,13 @@
  */
 package org.genxdm.processor.w3c.xs.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
 import org.genxdm.names.Catalog;
@@ -27,10 +31,18 @@ import org.genxdm.processor.w3c.xs.DefaultSchemaCatalog;
 import org.genxdm.processor.w3c.xs.W3cXmlSchemaParser;
 import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.ComponentProvider;
+import org.genxdm.xs.components.AttributeDefinition;
+import org.genxdm.xs.components.AttributeGroupDefinition;
+import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.NotationDefinition;
+import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionThrower;
 import org.genxdm.xs.resolve.CatalogResolver;
 import org.genxdm.xs.resolve.SchemaCatalog;
+import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.SimpleType;
 import org.junit.Test;
 
 public class SimpleSchemaParseTest
@@ -52,9 +64,53 @@ public class SimpleSchemaParseTest
         parser.setCatalogResolver(resolver, scat);
         parser.setComponentProvider(bootstrap);
         
+        // Note: this is a very simple schema, the first one presented in
+        // full in the schema primer.  It has no target namespace, so everything
+        // is in the default/global namespace.  It has no attribute definitions,
+        // no attribute groups, no model groups, no id constraints, no notations.
+        // it doesn't do imports.  very simple.  here, we just count the things
+        // that should be empty, and assert that they are empty.
+        // for the things that are more complex, we do a little more.
         InputStream stream = getClass().getClassLoader().getResourceAsStream("po.xsd");
         ComponentBag components = parser.parse(null, stream, null, SchemaExceptionThrower.SINGLETON);
         
+        Iterable<AttributeDefinition> atts = components.getAttributes();
+        Iterable<AttributeGroupDefinition> attGroups = components.getAttributeGroups();
+        Iterable<ElementDefinition> elems = components.getElements();
+        
+        Iterable<ModelGroup> models = components.getModelGroups();
+        Iterable<SimpleType> simps = components.getSimpleTypes();
+        Iterable<ComplexType> comps = components.getComplexTypes();
+
+        Iterable<IdentityConstraint> ids = components.getIdentityConstraints();
+        Iterable<NotationDefinition> nots = components.getNotations();
+
+        assertEquals(0, count(atts));
+        assertEquals(0, count(attGroups));
+        for (ElementDefinition e : elems)
+        {
+            String name = e.getLocalName();
+            assertNotNull(name);
+            assertTrue(name.equals("purchaseOrder") || name.equals("comment"));
+            if (name.equals("purchaseOrder"))
+                assertEquals("PurchaseOrderType", e.getType().getLocalName());
+            if (name.equals("comment"))
+                assertTrue(e.getType().isAtomicType());
+        }
+        
+        for (SimpleType type : simps)
+        {
+//System.out.println(type.getLocalName());
+        }
+        
+        for (ComplexType type: comps)
+        {
+//System.out.println(type.getLocalName());
+        }
+        
+        assertEquals(0, count(models));
+        assertEquals(0, count(ids));
+        assertEquals(0, count(nots));
         // okay.  now, in resources we have po.xsd, ipo.xsd + address.xsd, and report.xsd.
         // these are taken from the schema primer, so we can treat them as a basic
         // test suite.  might need to revisit the primer to adjust the various
@@ -65,6 +121,7 @@ public class SimpleSchemaParseTest
         assertTrue(true);
     }
     
+    @Test
     public void parsePrimerIPOSchema()
         throws AbortException
     {
@@ -72,7 +129,7 @@ public class SimpleSchemaParseTest
         
         Catalog cat = new DefaultCatalog();
         SchemaCatalog scat = new DefaultSchemaCatalog(cat);
-        CatalogResolver resolver = DefaultCatalogResolver.SINGLETON;
+        CatalogResolver resolver = new ResourceResolver();
         ComponentProvider bootstrap = new SchemaCacheFactory().newSchemaCache();
         
         // initialize the catalog for the schemas we want to read.
@@ -82,8 +139,20 @@ public class SimpleSchemaParseTest
         
         InputStream stream = getClass().getClassLoader().getResourceAsStream("ipo.xsd");
         ComponentBag components = parser.parse(null, stream, null, SchemaExceptionThrower.SINGLETON);
+        
+        Iterable<AttributeDefinition> atts = components.getAttributes();
+        Iterable<AttributeGroupDefinition> attGroups = components.getAttributeGroups();
+        Iterable<ElementDefinition> elems = components.getElements();
+        
+        Iterable<ModelGroup> models = components.getModelGroups();
+        Iterable<SimpleType> simps = components.getSimpleTypes();
+        Iterable<ComplexType> comps = components.getComplexTypes();
+
+        Iterable<IdentityConstraint> ids = components.getIdentityConstraints();
+        Iterable<NotationDefinition> nots = components.getNotations();
     }
     
+    @Test
     public void parsePrimerReportSchema()
         throws AbortException
     {
@@ -91,7 +160,7 @@ public class SimpleSchemaParseTest
         
         Catalog cat = new DefaultCatalog();
         SchemaCatalog scat = new DefaultSchemaCatalog(cat);
-        CatalogResolver resolver = DefaultCatalogResolver.SINGLETON;
+        CatalogResolver resolver = new ResourceResolver();
         ComponentProvider bootstrap = new SchemaCacheFactory().newSchemaCache();
         
         // initialize the catalog for the schemas we want to read.
@@ -101,5 +170,42 @@ public class SimpleSchemaParseTest
         
         InputStream stream = getClass().getClassLoader().getResourceAsStream("report.xsd");
         ComponentBag components = parser.parse(null, stream, null, SchemaExceptionThrower.SINGLETON);
+        
+        Iterable<AttributeDefinition> atts = components.getAttributes();
+        Iterable<AttributeGroupDefinition> attGroups = components.getAttributeGroups();
+        Iterable<ElementDefinition> elems = components.getElements();
+        
+        Iterable<ModelGroup> models = components.getModelGroups();
+        Iterable<SimpleType> simps = components.getSimpleTypes();
+        Iterable<ComplexType> comps = components.getComplexTypes();
+
+        Iterable<IdentityConstraint> ids = components.getIdentityConstraints();
+        Iterable<NotationDefinition> nots = components.getNotations();
     }
+    
+    private <E> int count(Iterable<E> it)
+    {
+        int i = 0;
+        for (E e : it) i++;
+        return i;
+    }
+    
+    // hack.
+    private class ResourceResolver implements CatalogResolver
+    {
+
+        @Override
+        public InputStream resolveInputStream(URI catalogURI)
+            throws IOException
+        {
+            if (catalogURI.toString().equals(IPO_URI))
+                return getClass().getClassLoader().getResourceAsStream("ipo.xsd");
+            if (catalogURI.toString().equals(ADDRESS_URI))
+                return getClass().getClassLoader().getResourceAsStream("address.xsd");
+            return DefaultCatalogResolver.SINGLETON.resolveInputStream(catalogURI);
+        }
+    }
+    
+    private static String IPO_URI = "http://www.example.com/IPO";
+    private static String ADDRESS_URI = "http://www.example.com/schemas/address.xsd";
 }
