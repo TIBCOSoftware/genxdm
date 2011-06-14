@@ -51,5 +51,10 @@
   </simpleType>
 
   <!-- simple type definition for UKPostcode -->
+  <simpleType name="UKPostcode">
+    <restriction base="string">
+      <pattern value="[A-Z,0-9, ]{6,8}"/>
+    </restriction>
+  </simpleType>
 
 </schema>

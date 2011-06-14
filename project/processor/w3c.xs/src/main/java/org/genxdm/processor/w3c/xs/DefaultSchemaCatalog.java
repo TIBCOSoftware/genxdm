@@ -40,9 +40,12 @@ public class DefaultSchemaCatalog implements SchemaCatalog
 
     public URI resolveNamespaceAndSchemaLocation(URI baseURI, URI namespace, URI schemaLocation)
     {
-        URI location = resolveLocation(baseURI, schemaLocation);
+        URI location = null;
+        if (schemaLocation != null)
+            location = resolveLocation(baseURI, schemaLocation);
         if (location == null)
         {
+            location = namespace;
             if ((baseURI != null) && !namespace.isAbsolute())
                 location = makeAbsolute(baseURI, namespace);
             if (catalog.isMappedURI(location))
