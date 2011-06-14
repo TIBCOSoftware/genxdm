@@ -28,8 +28,7 @@
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>proc-w3cxs</artifactId>
-    <version>0.5</version>
-    <!-- possibly out of date, this hasn't had much attention in 2010. -->
+    <version>0.7</version>
     <name>GenXDM W3C XML Schema Parser</name>
 
     <reporting>
