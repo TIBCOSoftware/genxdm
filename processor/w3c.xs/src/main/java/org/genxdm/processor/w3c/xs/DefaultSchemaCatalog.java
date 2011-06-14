@@ -17,20 +17,44 @@ package org.genxdm.processor.w3c.xs;
 
 import java.net.URI;
 
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.Catalog;
 import org.genxdm.xs.resolve.SchemaCatalog;
 
-public enum DefaultSchemaCatalog implements SchemaCatalog
+public class DefaultSchemaCatalog implements SchemaCatalog
 {
-    SINGLETON;
-
-    public URI resolveLocation(URI baseURI, URI schemaLocation)
+    public DefaultSchemaCatalog(Catalog catalog)
     {
-        return schemaLocation;
+        this.catalog = PreCondition.assertNotNull(catalog, "catalog");
+    }
+    
+    public URI resolveLocation(final URI baseURI, final URI schemaLocation)
+    {
+        URI location = PreCondition.assertNotNull(schemaLocation, "schemaLocation");
+        if ((baseURI != null) && !schemaLocation.isAbsolute())
+            location = makeAbsolute(baseURI, schemaLocation);
+        if (catalog.isMappedURI(location))
+            location = catalog.retrieveURI(location);
+        return location;
     }
 
     public URI resolveNamespaceAndSchemaLocation(URI baseURI, URI namespace, URI schemaLocation)
     {
-        return schemaLocation;
+        URI location = resolveLocation(baseURI, schemaLocation);
+        if (location == null)
+        {
+            if ((baseURI != null) && !namespace.isAbsolute())
+                location = makeAbsolute(baseURI, namespace);
+            if (catalog.isMappedURI(location))
+                location = catalog.retrieveURI(location);
+        }
+        return location;
+    }
+    
+    private URI makeAbsolute(final URI baseURI, final URI relativeURI)
+    {
+        return baseURI.resolve(relativeURI);
     }
 
+    private final Catalog catalog;
 }
