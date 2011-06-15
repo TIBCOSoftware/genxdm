@@ -142,7 +142,7 @@ public final class DomSAProcessingContext
         return m_metaBridge.getComponents();
     }
 
-	public TypesBridge getMetaBridge()
+	public TypesBridge getTypesBridge()
 	{
 		return m_metaBridge;
 	}

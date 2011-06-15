@@ -24,7 +24,7 @@ import java.net.URI;
 
 import javax.xml.stream.XMLReporter;
 
-import org.genxdm.exceptions.GxmlMarshalException;
+import org.genxdm.exceptions.XdmMarshalException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.Resolved;
 import org.genxdm.io.Resolver;
@@ -47,7 +47,7 @@ public class ValidatingDocumentHandler<N, A>
     
     @Override
     public N parse(InputStream byteStream, URI systemId)
-        throws IOException, GxmlMarshalException
+        throws IOException, XdmMarshalException
     {
         // TODO Auto-generated method stub
         return null;
@@ -55,7 +55,7 @@ public class ValidatingDocumentHandler<N, A>
 
     @Override
     public N parse(Reader characterStream, URI systemId)
-        throws IOException, GxmlMarshalException
+        throws IOException, XdmMarshalException
     {
         // TODO Auto-generated method stub
         return null;
@@ -63,7 +63,7 @@ public class ValidatingDocumentHandler<N, A>
 
     @Override
     public N parse(InputSource source, URI systemId)
-        throws IOException, GxmlMarshalException
+        throws IOException, XdmMarshalException
     {
         if (source.getCharacterStream() != null)
             return parse(source.getCharacterStream(), systemId);
@@ -81,7 +81,7 @@ public class ValidatingDocumentHandler<N, A>
 
     @Override
     public void write(OutputStream byteStream, N source, String encoding)
-        throws IOException, GxmlMarshalException
+        throws IOException, XdmMarshalException
     {
         // TODO Auto-generated method stub
 
@@ -89,7 +89,7 @@ public class ValidatingDocumentHandler<N, A>
 
     @Override
     public void write(Writer characterStream, N source)
-        throws IOException, GxmlMarshalException
+        throws IOException, XdmMarshalException
     {
         // TODO Auto-generated method stub
 

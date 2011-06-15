@@ -22,7 +22,7 @@ import java.util.List;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.genxdm.exceptions.GxmlAtomCastException;
+import org.genxdm.exceptions.AtomCastException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.exceptions.SpillagePolicy;
 import org.genxdm.names.NameSource;
@@ -76,39 +76,39 @@ public final class CastingSupport
     private static final BigInteger UNSIGNED_SHORT_MAX_VALUE = BigInteger.valueOf(65535);
     private static final QName XPTY0004 = new QName("http://www.w3.org/2005/xqt-errors/", "XPTY0004", "err");
 
-    private static void assertDoubleIsNumber(final double dblval, final NativeType target) throws GxmlAtomCastException
+    private static void assertDoubleIsNumber(final double dblval, final NativeType target) throws AtomCastException
     {
         if (Double.isNaN(dblval))
         {
-            throw new GxmlAtomCastException(NumericSupport.formatDoubleC14N(dblval), target.toQName(), FOCA0002);
+            throw new AtomCastException(NumericSupport.formatDoubleC14N(dblval), target.toQName(), FOCA0002);
         }
     }
 
-    private static void assertDoubleNotInfinite(final double dblval, final NativeType target) throws GxmlAtomCastException
+    private static void assertDoubleNotInfinite(final double dblval, final NativeType target) throws AtomCastException
     {
         if (Double.isInfinite(dblval))
         {
-            throw new GxmlAtomCastException(NumericSupport.formatDoubleC14N(dblval), target.toQName(), FOCA0002);
+            throw new AtomCastException(NumericSupport.formatDoubleC14N(dblval), target.toQName(), FOCA0002);
         }
     }
 
-    private static void assertFloatIsNumber(final float dblval, final NativeType target) throws GxmlAtomCastException
+    private static void assertFloatIsNumber(final float dblval, final NativeType target) throws AtomCastException
     {
         if (Float.isNaN(dblval))
         {
-            throw new GxmlAtomCastException(NumericSupport.formatFloatC14N(dblval), target.toQName(), FOCA0002);
+            throw new AtomCastException(NumericSupport.formatFloatC14N(dblval), target.toQName(), FOCA0002);
         }
     }
 
-    private static void assertFloatNotInfinite(final float fltval, final NativeType target) throws GxmlAtomCastException
+    private static void assertFloatNotInfinite(final float fltval, final NativeType target) throws AtomCastException
     {
         if (Float.isInfinite(fltval))
         {
-            throw new GxmlAtomCastException(NumericSupport.formatFloatC14N(fltval), target.toQName(), FOCA0002);
+            throw new AtomCastException(NumericSupport.formatFloatC14N(fltval), target.toQName(), FOCA0002);
         }
     }
 
-    public static <A> A castAs(final A sourceAtom, final QName targetType, final CastingContext castingContext, final ComponentProvider pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+    public static <A> A castAs(final A sourceAtom, final QName targetType, final CastingContext castingContext, final ComponentProvider pcx, final AtomBridge<A> atomBridge) throws AtomCastException
     {
         PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
         PreCondition.assertArgumentNotNull(targetType, "targetType");
@@ -151,7 +151,7 @@ public final class CastingSupport
                 }
                 catch (final DatatypeException e)
                 {
-                    throw new GxmlAtomCastException(atomBridge.getC14NForm(sourceAtom), e.getType().getName(), FORG0001, e);
+                    throw new AtomCastException(atomBridge.getC14NForm(sourceAtom), e.getType().getName(), FORG0001, e);
                 }
             }
             else
@@ -166,7 +166,7 @@ public final class CastingSupport
     }
 
     public static <A> A castAsOrErrors(final A sourceAtom, final NativeType sourceType, final NativeType targetType, final ComponentProvider pcx, final AtomBridge<A> atomBridge, final NameSource nameBridge)
-            throws GxmlAtomCastException
+            throws AtomCastException
     {
         if (sourceType.isString() || sourceType == NativeType.UNTYPED_ATOMIC)
         {
@@ -174,12 +174,12 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(atomBridge.getC14NForm(sourceAtom), sourceType.toQName(), nameBridge.nativeType(targetType), XPTY0004);
+            throw new AtomCastException(atomBridge.getC14NForm(sourceAtom), sourceType.toQName(), nameBridge.nativeType(targetType), XPTY0004);
         }
 
     }
 
-    public static <A> A castAs(final A sourceAtom, final NativeType targetType, final CastingContext castingContext, final ComponentProvider pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+    public static <A> A castAs(final A sourceAtom, final NativeType targetType, final CastingContext castingContext, final ComponentProvider pcx, final AtomBridge<A> atomBridge) throws AtomCastException
     {
         PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
         PreCondition.assertArgumentNotNull(targetType, "targetType");
@@ -299,7 +299,7 @@ public final class CastingSupport
                     case QNAME:
                     case NOTATION:
                     {
-                        throw new GxmlAtomCastException(atomBridge.getC14NForm(sourceAtom), sourceType.toQName(), nameBridge.nativeType(targetType), XPTY0004);
+                        throw new AtomCastException(atomBridge.getC14NForm(sourceAtom), sourceType.toQName(), nameBridge.nativeType(targetType), XPTY0004);
                     }
                     default:
                     {
@@ -983,7 +983,7 @@ public final class CastingSupport
                     }
                     default:
                     {
-                        throw new GxmlAtomCastException(atomBridge.getC14NForm(sourceAtom), sourceType.toQName(), nameBridge.nativeType(targetType), XPTY0004);
+                        throw new AtomCastException(atomBridge.getC14NForm(sourceAtom), sourceType.toQName(), nameBridge.nativeType(targetType), XPTY0004);
                     }
                 }
             }
@@ -1494,7 +1494,7 @@ public final class CastingSupport
                     }
                     default:
                     {
-                        throw new GxmlAtomCastException(atomBridge.getC14NForm(sourceAtom), sourceType.toQName(), nameBridge.nativeType(targetType), XPTY0004);
+                        throw new AtomCastException(atomBridge.getC14NForm(sourceAtom), sourceType.toQName(), nameBridge.nativeType(targetType), XPTY0004);
                     }
                 }
             }
@@ -1517,7 +1517,7 @@ public final class CastingSupport
                     }
                     default:
                     {
-                        throw new GxmlAtomCastException(atomBridge.getC14NForm(sourceAtom), sourceType.toQName(), nameBridge.nativeType(targetType), XPTY0004);
+                        throw new AtomCastException(atomBridge.getC14NForm(sourceAtom), sourceType.toQName(), nameBridge.nativeType(targetType), XPTY0004);
                     }
                 }
             }
@@ -1540,7 +1540,7 @@ public final class CastingSupport
                     }
                     default:
                     {
-                        throw new GxmlAtomCastException(atomBridge.getC14NForm(sourceAtom), sourceType.toQName(), nameBridge.nativeType(targetType), XPTY0004);
+                        throw new AtomCastException(atomBridge.getC14NForm(sourceAtom), sourceType.toQName(), nameBridge.nativeType(targetType), XPTY0004);
                     }
                 }
             }
@@ -1775,7 +1775,7 @@ public final class CastingSupport
                         }
                         else
                         {
-                            throw new GxmlAtomCastException(atomBridge.getC14NForm(sourceAtom), sourceType.toQName(), nameBridge.nativeType(targetType), XPTY0004);
+                            throw new AtomCastException(atomBridge.getC14NForm(sourceAtom), sourceType.toQName(), nameBridge.nativeType(targetType), XPTY0004);
                         }
                     }
                 }
@@ -1789,7 +1789,7 @@ public final class CastingSupport
             case NMTOKENS:
             case ENTITIES:
             {
-                throw new GxmlAtomCastException(atomBridge.getC14NForm(sourceAtom), sourceType.toQName(), nameBridge.nativeType(targetType), XPTY0004);
+                throw new AtomCastException(atomBridge.getC14NForm(sourceAtom), sourceType.toQName(), nameBridge.nativeType(targetType), XPTY0004);
             }
             default:
             {
@@ -1798,7 +1798,7 @@ public final class CastingSupport
         }
     }
 
-    private static byte castByteAsNonNegativeInteger(final byte value) throws GxmlAtomCastException
+    private static byte castByteAsNonNegativeInteger(final byte value) throws AtomCastException
     {
         if (value >= 0)
         {
@@ -1806,11 +1806,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
+            throw new AtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
         }
     }
 
-    private static byte castByteAsNonPositiveInteger(final byte value) throws GxmlAtomCastException
+    private static byte castByteAsNonPositiveInteger(final byte value) throws AtomCastException
     {
         if (value <= 0)
         {
@@ -1818,11 +1818,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
+            throw new AtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
         }
     }
 
-    private static byte castByteAsUnsignedByte(final byte value, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static byte castByteAsUnsignedByte(final byte value, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (value >= 0)
         {
@@ -1830,11 +1830,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.UNSIGNED_BYTE.toQName(), FORG0001);
+            throw new AtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.UNSIGNED_BYTE.toQName(), FORG0001);
         }
     }
 
-    private static byte castByteAsUnsignedInt(final byte value, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static byte castByteAsUnsignedInt(final byte value, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (value >= 0)
         {
@@ -1842,11 +1842,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.UNSIGNED_INT.toQName(), FORG0001);
+            throw new AtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.UNSIGNED_INT.toQName(), FORG0001);
         }
     }
 
-    private static byte castByteAsUnsignedLong(final byte value) throws GxmlAtomCastException
+    private static byte castByteAsUnsignedLong(final byte value) throws AtomCastException
     {
         if (value >= 0)
         {
@@ -1854,11 +1854,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.UNSIGNED_LONG.toQName(), FORG0001);
+            throw new AtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.UNSIGNED_LONG.toQName(), FORG0001);
         }
     }
 
-    private static byte castByteAsUnsignedShort(final byte value, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static byte castByteAsUnsignedShort(final byte value, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (value >= 0)
         {
@@ -1866,16 +1866,16 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.UNSIGNED_SHORT.toQName(), FORG0001);
+            throw new AtomCastException(Byte.toString(value), NativeType.BYTE.toQName(), NativeType.UNSIGNED_SHORT.toQName(), FORG0001);
         }
     }
 
-    private static byte castDecimalAsByte(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static byte castDecimalAsByte(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         return castIntegerAsByte(castDecimalAsInteger(decval), checkCapacity, raiseError);
     }
 
-    private static double castDecimalAsDouble(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static double castDecimalAsDouble(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (checkCapacity)
         {
@@ -1884,7 +1884,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(constructionString(decval), NativeType.DOUBLE.toQName(), FOAR0002);
+                    throw new AtomCastException(constructionString(decval), NativeType.DOUBLE.toQName(), FOAR0002);
                 }
                 return Double.MAX_VALUE;
             }
@@ -1892,7 +1892,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(constructionString(decval), NativeType.DOUBLE.toQName(), FOAR0002);
+                    throw new AtomCastException(constructionString(decval), NativeType.DOUBLE.toQName(), FOAR0002);
                 }
                 return Double.MIN_VALUE;
             }
@@ -1900,7 +1900,7 @@ public final class CastingSupport
         return decval.doubleValue();
     }
 
-    private static float castDecimalAsFloat(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static float castDecimalAsFloat(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (checkCapacity)
         {
@@ -1909,7 +1909,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(constructionString(decval), NativeType.FLOAT.toQName(), FOAR0002);
+                    throw new AtomCastException(constructionString(decval), NativeType.FLOAT.toQName(), FOAR0002);
                 }
                 return Float.MAX_VALUE;
             }
@@ -1917,7 +1917,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(constructionString(decval), NativeType.FLOAT.toQName(), FOAR0002);
+                    throw new AtomCastException(constructionString(decval), NativeType.FLOAT.toQName(), FOAR0002);
                 }
                 return Float.MIN_VALUE;
             }
@@ -1925,7 +1925,7 @@ public final class CastingSupport
         return decval.floatValue();
     }
 
-    private static int castDecimalAsInt(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static int castDecimalAsInt(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         return castIntegerAsInt(castDecimalAsInteger(decval), checkCapacity, raiseError);
     }
@@ -1935,57 +1935,57 @@ public final class CastingSupport
         return decval.toBigInteger();
     }
 
-    private static long castDecimalAsLong(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static long castDecimalAsLong(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         return castIntegerAsLong(castDecimalAsInteger(decval), checkCapacity, raiseError);
     }
 
-    private static BigInteger castDecimalAsNegativeInteger(final BigDecimal decval) throws GxmlAtomCastException
+    private static BigInteger castDecimalAsNegativeInteger(final BigDecimal decval) throws AtomCastException
     {
         return castIntegerAsNegativeInteger(castDecimalAsInteger(decval));
     }
 
-    private static BigInteger castDecimalAsNonNegativeInteger(final BigDecimal decval) throws GxmlAtomCastException
+    private static BigInteger castDecimalAsNonNegativeInteger(final BigDecimal decval) throws AtomCastException
     {
         return castIntegerAsNonNegativeInteger(castDecimalAsInteger(decval));
     }
 
-    private static BigInteger castDecimalAsNonPositiveInteger(final BigDecimal decval) throws GxmlAtomCastException
+    private static BigInteger castDecimalAsNonPositiveInteger(final BigDecimal decval) throws AtomCastException
     {
         return castIntegerAsNonPositiveInteger(castDecimalAsInteger(decval));
     }
 
-    private static BigInteger castDecimalAsPositiveInteger(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static BigInteger castDecimalAsPositiveInteger(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         return castIntegerAsPositiveInteger(castDecimalAsInteger(decval), checkCapacity, raiseError);
     }
 
-    private static short castDecimalAsShort(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static short castDecimalAsShort(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         return castIntegerAsShort(castDecimalAsInteger(decval), checkCapacity, raiseError);
     }
 
-    private static short castDecimalAsUnsignedByte(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static short castDecimalAsUnsignedByte(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         return castIntegerAsUnsignedByte(castDecimalAsInteger(decval), checkCapacity, raiseError);
     }
 
-    private static long castDecimalAsUnsignedInt(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static long castDecimalAsUnsignedInt(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         return castIntegerAsUnsignedInt(castDecimalAsInteger(decval), checkCapacity, raiseError);
     }
 
-    private static BigInteger castDecimalAsUnsignedLong(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static BigInteger castDecimalAsUnsignedLong(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         return castIntegerAsUnsignedLong(castDecimalAsInteger(decval), checkCapacity, raiseError);
     }
 
-    private static int castDecimalAsUnsignedShort(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static int castDecimalAsUnsignedShort(final BigDecimal decval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         return castIntegerAsUnsignedShort(castDecimalAsInteger(decval), checkCapacity, raiseError);
     }
 
-    private static byte castDoubleAsByte(final double dblval) throws GxmlAtomCastException
+    private static byte castDoubleAsByte(final double dblval) throws AtomCastException
     {
         assertDoubleIsNumber(dblval, NativeType.BYTE);
         assertDoubleNotInfinite(dblval, NativeType.BYTE);
@@ -1996,18 +1996,18 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(NumericSupport.formatDoubleC14N(dblval), NativeType.BYTE.toQName(), FORG0001);
+            throw new AtomCastException(NumericSupport.formatDoubleC14N(dblval), NativeType.BYTE.toQName(), FORG0001);
         }
     }
 
-    private static BigDecimal castDoubleAsDecimal(final double dblval) throws GxmlAtomCastException
+    private static BigDecimal castDoubleAsDecimal(final double dblval) throws AtomCastException
     {
         assertDoubleIsNumber(dblval, NativeType.DECIMAL);
         assertDoubleNotInfinite(dblval, NativeType.DECIMAL);
         return BigDecimal.valueOf(dblval);
     }
 
-    private static float castDoubleAsFloat(final double dblval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static float castDoubleAsFloat(final double dblval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (Double.isNaN(dblval))
         {
@@ -2022,18 +2022,18 @@ public final class CastingSupport
             // Overflow
             if (raiseError && Math.abs(dblval) > Float.MAX_VALUE)
             {
-                throw new GxmlAtomCastException(Double.toString(dblval), NativeType.FLOAT.toQName(), FOAR0002);
+                throw new AtomCastException(Double.toString(dblval), NativeType.FLOAT.toQName(), FOAR0002);
             }
             // Underflow
             if (raiseError && (dblval != 0.0) && Math.abs(dblval) < Float.MIN_VALUE)
             {
-                throw new GxmlAtomCastException(Double.toString(dblval), NativeType.FLOAT.toQName(), FOAR0002);
+                throw new AtomCastException(Double.toString(dblval), NativeType.FLOAT.toQName(), FOAR0002);
             }
         }
         return (float)dblval;
     }
 
-    private static int castDoubleAsInt(final double dblval) throws GxmlAtomCastException
+    private static int castDoubleAsInt(final double dblval) throws AtomCastException
     {
         assertDoubleIsNumber(dblval, NativeType.INT);
         assertDoubleNotInfinite(dblval, NativeType.INT);
@@ -2044,60 +2044,60 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(NumericSupport.formatDoubleC14N(dblval), NativeType.INT.toQName(), FORG0001);
+            throw new AtomCastException(NumericSupport.formatDoubleC14N(dblval), NativeType.INT.toQName(), FORG0001);
         }
     }
 
-    private static BigInteger castDoubleAsInteger(final double dblval) throws GxmlAtomCastException
+    private static BigInteger castDoubleAsInteger(final double dblval) throws AtomCastException
     {
         assertDoubleIsNumber(dblval, NativeType.INTEGER);
         assertDoubleNotInfinite(dblval, NativeType.INTEGER);
         return BigDecimal.valueOf(dblval).toBigInteger();
     }
 
-    private static long castDoubleAsLong(final double dblval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static long castDoubleAsLong(final double dblval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         final BigInteger ival;
         try
         {
             ival = castDoubleAsInteger(dblval);
         }
-        catch (final GxmlAtomCastException e)
+        catch (final AtomCastException e)
         {
-            throw new GxmlAtomCastException(e.getSourceValue(), NativeType.LONG.toQName(), e.getErrorCode(), e.getCause());
+            throw new AtomCastException(e.getSourceValue(), NativeType.LONG.toQName(), e.getErrorCode(), e.getCause());
         }
         return castIntegerAsLong(ival, checkCapacity, raiseError);
     }
 
-    private static BigInteger castDoubleAsNegativeInteger(final double dblval) throws GxmlAtomCastException
+    private static BigInteger castDoubleAsNegativeInteger(final double dblval) throws AtomCastException
     {
         assertDoubleIsNumber(dblval, NativeType.NEGATIVE_INTEGER);
         assertDoubleNotInfinite(dblval, NativeType.NEGATIVE_INTEGER);
         return castIntegerAsNegativeInteger(BigInteger.valueOf((long)dblval));
     }
 
-    private static BigInteger castDoubleAsNonNegativeInteger(final double dblval) throws GxmlAtomCastException
+    private static BigInteger castDoubleAsNonNegativeInteger(final double dblval) throws AtomCastException
     {
         assertDoubleIsNumber(dblval, NativeType.NON_NEGATIVE_INTEGER);
         assertDoubleNotInfinite(dblval, NativeType.NON_NEGATIVE_INTEGER);
         return castIntegerAsNonNegativeInteger(BigInteger.valueOf((long)dblval));
     }
 
-    private static BigInteger castDoubleAsNonPositiveInteger(final double dblval) throws GxmlAtomCastException
+    private static BigInteger castDoubleAsNonPositiveInteger(final double dblval) throws AtomCastException
     {
         assertDoubleIsNumber(dblval, NativeType.NON_POSITIVE_INTEGER);
         assertDoubleNotInfinite(dblval, NativeType.NON_POSITIVE_INTEGER);
         return castIntegerAsNonPositiveInteger(BigDecimal.valueOf(dblval).toBigInteger());
     }
 
-    private static BigInteger castDoubleAsPositiveInteger(final double dblval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static BigInteger castDoubleAsPositiveInteger(final double dblval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         assertDoubleIsNumber(dblval, NativeType.POSITIVE_INTEGER);
         assertDoubleNotInfinite(dblval, NativeType.POSITIVE_INTEGER);
         return castIntegerAsPositiveInteger(BigInteger.valueOf((long)dblval), checkCapacity, raiseError);
     }
 
-    private static short castDoubleAsShort(final double dblval) throws GxmlAtomCastException
+    private static short castDoubleAsShort(final double dblval) throws AtomCastException
     {
         assertDoubleIsNumber(dblval, NativeType.SHORT);
         assertDoubleNotInfinite(dblval, NativeType.SHORT);
@@ -2108,39 +2108,39 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(NumericSupport.formatDoubleC14N(dblval), NativeType.SHORT.toQName(), FORG0001);
+            throw new AtomCastException(NumericSupport.formatDoubleC14N(dblval), NativeType.SHORT.toQName(), FORG0001);
         }
     }
 
-    private static short castDoubleAsUnsignedByte(final double dblval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static short castDoubleAsUnsignedByte(final double dblval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         assertDoubleIsNumber(dblval, NativeType.UNSIGNED_BYTE);
         assertDoubleNotInfinite(dblval, NativeType.UNSIGNED_BYTE);
         return castIntegerAsUnsignedByte(BigInteger.valueOf((long)dblval), checkCapacity, raiseError);
     }
 
-    private static long castDoubleAsUnsignedInt(final double dblval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static long castDoubleAsUnsignedInt(final double dblval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         assertDoubleIsNumber(dblval, NativeType.UNSIGNED_INT);
         assertDoubleNotInfinite(dblval, NativeType.UNSIGNED_INT);
         return castIntegerAsUnsignedInt(BigInteger.valueOf((long)dblval), checkCapacity, raiseError);
     }
 
-    private static BigInteger castDoubleAsUnsignedLong(final double dblval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static BigInteger castDoubleAsUnsignedLong(final double dblval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         assertDoubleIsNumber(dblval, NativeType.UNSIGNED_LONG);
         assertDoubleNotInfinite(dblval, NativeType.UNSIGNED_LONG);
         return castIntegerAsUnsignedLong(BigInteger.valueOf((long)dblval), checkCapacity, raiseError);
     }
 
-    private static int castDoubleAsUnsignedShort(final double dblval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static int castDoubleAsUnsignedShort(final double dblval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         assertDoubleIsNumber(dblval, NativeType.UNSIGNED_SHORT);
         assertDoubleNotInfinite(dblval, NativeType.UNSIGNED_SHORT);
         return castIntegerAsUnsignedShort(BigInteger.valueOf((long)dblval), checkCapacity, raiseError);
     }
 
-    private static byte castFloatAsByte(final float fltval) throws GxmlAtomCastException
+    private static byte castFloatAsByte(final float fltval) throws AtomCastException
     {
         assertFloatIsNumber(fltval, NativeType.BYTE);
         assertFloatNotInfinite(fltval, NativeType.BYTE);
@@ -2151,18 +2151,18 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(NumericSupport.formatFloatC14N(fltval), NativeType.BYTE.toQName(), FORG0001);
+            throw new AtomCastException(NumericSupport.formatFloatC14N(fltval), NativeType.BYTE.toQName(), FORG0001);
         }
     }
 
-    private static BigDecimal castFloatAsDecimal(final float fltval) throws GxmlAtomCastException
+    private static BigDecimal castFloatAsDecimal(final float fltval) throws AtomCastException
     {
         assertFloatIsNumber(fltval, NativeType.DECIMAL);
         assertFloatNotInfinite(fltval, NativeType.DECIMAL);
         return BigDecimal.valueOf(fltval);
     }
 
-    private static int castFloatAsInt(final float fltval) throws GxmlAtomCastException
+    private static int castFloatAsInt(final float fltval) throws AtomCastException
     {
         assertFloatIsNumber(fltval, NativeType.INT);
         assertFloatNotInfinite(fltval, NativeType.INT);
@@ -2173,60 +2173,60 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(NumericSupport.formatFloatC14N(fltval), NativeType.INT.toQName(), FORG0001);
+            throw new AtomCastException(NumericSupport.formatFloatC14N(fltval), NativeType.INT.toQName(), FORG0001);
         }
     }
 
-    private static BigInteger castFloatAsInteger(final float fltval) throws GxmlAtomCastException
+    private static BigInteger castFloatAsInteger(final float fltval) throws AtomCastException
     {
         assertFloatIsNumber(fltval, NativeType.INTEGER);
         assertFloatNotInfinite(fltval, NativeType.INTEGER);
         return BigInteger.valueOf((long)fltval);
     }
 
-    private static long castFloatAsLong(final float fltval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static long castFloatAsLong(final float fltval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         final BigInteger ival;
         try
         {
             ival = castFloatAsInteger(fltval);
         }
-        catch (final GxmlAtomCastException e)
+        catch (final AtomCastException e)
         {
-            throw new GxmlAtomCastException(e.getSourceValue(), NativeType.LONG.toQName(), e.getErrorCode(), e.getCause());
+            throw new AtomCastException(e.getSourceValue(), NativeType.LONG.toQName(), e.getErrorCode(), e.getCause());
         }
         return castIntegerAsInt(ival, checkCapacity, raiseError);
     }
 
-    private static BigInteger castFloatAsNegativeInteger(final float fltval) throws GxmlAtomCastException
+    private static BigInteger castFloatAsNegativeInteger(final float fltval) throws AtomCastException
     {
         assertFloatIsNumber(fltval, NativeType.NEGATIVE_INTEGER);
         assertFloatNotInfinite(fltval, NativeType.NEGATIVE_INTEGER);
         return castIntegerAsNegativeInteger(BigInteger.valueOf((long)fltval));
     }
 
-    private static BigInteger castFloatAsNonNegativeInteger(final float fltval) throws GxmlAtomCastException
+    private static BigInteger castFloatAsNonNegativeInteger(final float fltval) throws AtomCastException
     {
         assertFloatIsNumber(fltval, NativeType.NON_NEGATIVE_INTEGER);
         assertFloatNotInfinite(fltval, NativeType.NON_NEGATIVE_INTEGER);
         return castIntegerAsNonNegativeInteger(BigInteger.valueOf((long)fltval));
     }
 
-    private static BigInteger castFloatAsNonPositiveInteger(final float fltval) throws GxmlAtomCastException
+    private static BigInteger castFloatAsNonPositiveInteger(final float fltval) throws AtomCastException
     {
         assertFloatIsNumber(fltval, NativeType.NON_POSITIVE_INTEGER);
         assertFloatNotInfinite(fltval, NativeType.NON_POSITIVE_INTEGER);
         return castIntegerAsNonPositiveInteger(BigInteger.valueOf((long)fltval));
     }
 
-    private static BigInteger castFloatAsPositiveInteger(final float fltval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static BigInteger castFloatAsPositiveInteger(final float fltval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         assertFloatIsNumber(fltval, NativeType.POSITIVE_INTEGER);
         assertFloatNotInfinite(fltval, NativeType.POSITIVE_INTEGER);
         return castIntegerAsPositiveInteger(BigInteger.valueOf((long)fltval), checkCapacity, raiseError);
     }
 
-    private static short castFloatAsShort(final float fltval) throws GxmlAtomCastException
+    private static short castFloatAsShort(final float fltval) throws AtomCastException
     {
         assertFloatIsNumber(fltval, NativeType.SHORT);
         assertFloatNotInfinite(fltval, NativeType.SHORT);
@@ -2237,39 +2237,39 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(NumericSupport.formatFloatC14N(fltval), NativeType.SHORT.toQName(), FORG0001);
+            throw new AtomCastException(NumericSupport.formatFloatC14N(fltval), NativeType.SHORT.toQName(), FORG0001);
         }
     }
 
-    private static short castFloatAsUnsignedByte(final float fltval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static short castFloatAsUnsignedByte(final float fltval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         assertFloatIsNumber(fltval, NativeType.UNSIGNED_BYTE);
         assertFloatNotInfinite(fltval, NativeType.UNSIGNED_BYTE);
         return castIntegerAsUnsignedByte(BigInteger.valueOf((long)fltval), checkCapacity, raiseError);
     }
 
-    private static long castFloatAsUnsignedInt(final float fltval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static long castFloatAsUnsignedInt(final float fltval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         assertFloatIsNumber(fltval, NativeType.UNSIGNED_INT);
         assertFloatNotInfinite(fltval, NativeType.UNSIGNED_INT);
         return castIntegerAsUnsignedInt(BigInteger.valueOf((long)fltval), checkCapacity, raiseError);
     }
 
-    private static BigInteger castFloatAsUnsignedLong(final float fltval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static BigInteger castFloatAsUnsignedLong(final float fltval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         assertFloatIsNumber(fltval, NativeType.UNSIGNED_LONG);
         assertFloatNotInfinite(fltval, NativeType.UNSIGNED_LONG);
         return castIntegerAsUnsignedLong(BigInteger.valueOf((long)fltval), checkCapacity, raiseError);
     }
 
-    private static int castFloatAsUnsignedShort(final float fltval, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static int castFloatAsUnsignedShort(final float fltval, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         assertFloatIsNumber(fltval, NativeType.UNSIGNED_SHORT);
         assertFloatNotInfinite(fltval, NativeType.UNSIGNED_SHORT);
         return castIntegerAsUnsignedShort(BigInteger.valueOf((long)fltval), checkCapacity, raiseError);
     }
 
-    private static <A> A castFromStringOrUntypedAtomic(final String sourceAtom, final NativeType targetType, final ComponentProvider pcx, AtomBridge<A> bridge) throws GxmlAtomCastException
+    private static <A> A castFromStringOrUntypedAtomic(final String sourceAtom, final NativeType targetType, final ComponentProvider pcx, AtomBridge<A> bridge) throws AtomCastException
     {
         PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
         PreCondition.assertArgumentNotNull(targetType, "targetType");
@@ -2300,7 +2300,7 @@ public final class CastingSupport
                 }
                 catch (final DatatypeException e)
                 {
-                    throw new GxmlAtomCastException(sourceAtom, e.getType().getName(), FORG0001, e);
+                    throw new AtomCastException(sourceAtom, e.getType().getName(), FORG0001, e);
                 }
             }
             else
@@ -2314,7 +2314,7 @@ public final class CastingSupport
         }
     }
 
-    private static byte castIntAsByte(final int ival, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static byte castIntAsByte(final int ival, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (checkCapacity)
         {
@@ -2322,7 +2322,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(Integer.toString(ival), NativeType.BYTE.toQName(), FORG0001);
+                    throw new AtomCastException(Integer.toString(ival), NativeType.BYTE.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2333,7 +2333,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(Integer.toString(ival), NativeType.BYTE.toQName(), FORG0001);
+                    throw new AtomCastException(Integer.toString(ival), NativeType.BYTE.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2344,7 +2344,7 @@ public final class CastingSupport
         return (byte)ival;
     }
 
-    private static int castIntAsNegativeInteger(final int ival) throws GxmlAtomCastException
+    private static int castIntAsNegativeInteger(final int ival) throws AtomCastException
     {
         if (ival < 0)
         {
@@ -2352,11 +2352,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Integer.toString(ival), NativeType.INT.toQName(), NativeType.NEGATIVE_INTEGER.toQName(), FORG0001);
+            throw new AtomCastException(Integer.toString(ival), NativeType.INT.toQName(), NativeType.NEGATIVE_INTEGER.toQName(), FORG0001);
         }
     }
 
-    private static int castIntAsNonNegativeInteger(final int value) throws GxmlAtomCastException
+    private static int castIntAsNonNegativeInteger(final int value) throws AtomCastException
     {
         if (value >= 0)
         {
@@ -2364,11 +2364,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Integer.toString(value), NativeType.INT.toQName(), NativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
+            throw new AtomCastException(Integer.toString(value), NativeType.INT.toQName(), NativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
         }
     }
 
-    private static int castIntAsNonPositiveInteger(final int ival) throws GxmlAtomCastException
+    private static int castIntAsNonPositiveInteger(final int ival) throws AtomCastException
     {
         if (ival <= 0)
         {
@@ -2376,11 +2376,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Integer.toString(ival), NativeType.INT.toQName(), NativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
+            throw new AtomCastException(Integer.toString(ival), NativeType.INT.toQName(), NativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
         }
     }
 
-    private static short castIntAsShort(final int ival, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static short castIntAsShort(final int ival, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (checkCapacity)
         {
@@ -2388,7 +2388,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(Integer.toString(ival), NativeType.SHORT.toQName(), FORG0001);
+                    throw new AtomCastException(Integer.toString(ival), NativeType.SHORT.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2399,7 +2399,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(Integer.toString(ival), NativeType.SHORT.toQName(), FORG0001);
+                    throw new AtomCastException(Integer.toString(ival), NativeType.SHORT.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2410,7 +2410,7 @@ public final class CastingSupport
         return (short)ival;
     }
 
-    private static short castIntAsUnsignedByte(final int value, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static short castIntAsUnsignedByte(final int value, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         // TODO: Bounds checking
         if (value >= 0)
@@ -2419,11 +2419,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Integer.toString(value), NativeType.INT.toQName(), NativeType.UNSIGNED_BYTE.toQName(), FORG0001);
+            throw new AtomCastException(Integer.toString(value), NativeType.INT.toQName(), NativeType.UNSIGNED_BYTE.toQName(), FORG0001);
         }
     }
 
-    private static int castIntAsUnsignedInt(final int value, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static int castIntAsUnsignedInt(final int value, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (value >= 0)
         {
@@ -2431,11 +2431,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Integer.toString(value), NativeType.INT.toQName(), NativeType.UNSIGNED_INT.toQName(), FORG0001);
+            throw new AtomCastException(Integer.toString(value), NativeType.INT.toQName(), NativeType.UNSIGNED_INT.toQName(), FORG0001);
         }
     }
 
-    private static int castIntAsUnsignedLong(final int ival) throws GxmlAtomCastException
+    private static int castIntAsUnsignedLong(final int ival) throws AtomCastException
     {
         if (ival >= 0)
         {
@@ -2443,11 +2443,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Integer.toString(ival), NativeType.INT.toQName(), NativeType.UNSIGNED_LONG.toQName(), FORG0001);
+            throw new AtomCastException(Integer.toString(ival), NativeType.INT.toQName(), NativeType.UNSIGNED_LONG.toQName(), FORG0001);
         }
     }
 
-    private static int castIntAsUnsignedShort(final int value, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static int castIntAsUnsignedShort(final int value, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (value >= 0)
         {
@@ -2455,11 +2455,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Integer.toString(value), NativeType.INT.toQName(), NativeType.UNSIGNED_SHORT.toQName(), FORG0001);
+            throw new AtomCastException(Integer.toString(value), NativeType.INT.toQName(), NativeType.UNSIGNED_SHORT.toQName(), FORG0001);
         }
     }
 
-    private static byte castIntegerAsByte(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static byte castIntegerAsByte(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (checkCapacity)
         {
@@ -2467,7 +2467,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.BYTE.toQName(), FORG0001);
+                    throw new AtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.BYTE.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2478,7 +2478,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.BYTE.toQName(), FORG0001);
+                    throw new AtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.BYTE.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2489,7 +2489,7 @@ public final class CastingSupport
         return ival.byteValue();
     }
 
-    private static double castIntegerAsDouble(final BigInteger integer, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static double castIntegerAsDouble(final BigInteger integer, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (checkCapacity)
         {
@@ -2497,7 +2497,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(integer.toString(), NativeType.DOUBLE.toQName(), FOAR0002);
+                    throw new AtomCastException(integer.toString(), NativeType.DOUBLE.toQName(), FOAR0002);
                 }
                 return Double.MAX_VALUE;
             }
@@ -2505,7 +2505,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(integer.toString(), NativeType.DOUBLE.toQName(), FOAR0002);
+                    throw new AtomCastException(integer.toString(), NativeType.DOUBLE.toQName(), FOAR0002);
                 }
                 return Double.MIN_VALUE;
             }
@@ -2513,7 +2513,7 @@ public final class CastingSupport
         return integer.doubleValue();
     }
 
-    private static float castIntegerAsFloat(final BigInteger integer, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static float castIntegerAsFloat(final BigInteger integer, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (checkCapacity)
         {
@@ -2521,7 +2521,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(integer.toString(), NativeType.FLOAT.toQName(), FOAR0002);
+                    throw new AtomCastException(integer.toString(), NativeType.FLOAT.toQName(), FOAR0002);
                 }
                 return Float.MAX_VALUE;
             }
@@ -2529,7 +2529,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(integer.toString(), NativeType.FLOAT.toQName(), FOAR0002);
+                    throw new AtomCastException(integer.toString(), NativeType.FLOAT.toQName(), FOAR0002);
                 }
                 return Float.MIN_VALUE;
             }
@@ -2537,7 +2537,7 @@ public final class CastingSupport
         return integer.floatValue();
     }
 
-    private static int castIntegerAsInt(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static int castIntegerAsInt(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (checkCapacity)
         {
@@ -2545,7 +2545,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.INT.toQName(), FORG0001);
+                    throw new AtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.INT.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2556,7 +2556,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.INT.toQName(), FORG0001);
+                    throw new AtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.INT.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2568,7 +2568,7 @@ public final class CastingSupport
 
     }
 
-    private static long castIntegerAsLong(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static long castIntegerAsLong(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (checkCapacity)
         {
@@ -2576,7 +2576,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.LONG.toQName(), FOCA0003);
+                    throw new AtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.LONG.toQName(), FOCA0003);
                 }
                 else
                 {
@@ -2587,7 +2587,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.LONG.toQName(), FOCA0003);
+                    throw new AtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.LONG.toQName(), FOCA0003);
                 }
                 else
                 {
@@ -2602,7 +2602,7 @@ public final class CastingSupport
         }
     }
 
-    private static BigInteger castIntegerAsNegativeInteger(final BigInteger ival) throws GxmlAtomCastException
+    private static BigInteger castIntegerAsNegativeInteger(final BigInteger ival) throws AtomCastException
     {
         if (ival.signum() < 0)
         {
@@ -2610,11 +2610,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.NEGATIVE_INTEGER.toQName(), FORG0001);
+            throw new AtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.NEGATIVE_INTEGER.toQName(), FORG0001);
         }
     }
 
-    private static BigInteger castIntegerAsNonNegativeInteger(final BigInteger ival) throws GxmlAtomCastException
+    private static BigInteger castIntegerAsNonNegativeInteger(final BigInteger ival) throws AtomCastException
     {
         if (ival.signum() >= 0)
         {
@@ -2622,11 +2622,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
+            throw new AtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
         }
     }
 
-    private static BigInteger castIntegerAsNonPositiveInteger(final BigInteger ival) throws GxmlAtomCastException
+    private static BigInteger castIntegerAsNonPositiveInteger(final BigInteger ival) throws AtomCastException
     {
         if (ival.signum() <= 0)
         {
@@ -2634,11 +2634,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
+            throw new AtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
         }
     }
 
-    private static BigInteger castIntegerAsPositiveInteger(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static BigInteger castIntegerAsPositiveInteger(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (ival.signum() > 0)
         {
@@ -2646,11 +2646,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.POSITIVE_INTEGER.toQName(), FORG0001);
+            throw new AtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.POSITIVE_INTEGER.toQName(), FORG0001);
         }
     }
 
-    private static short castIntegerAsShort(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static short castIntegerAsShort(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (checkCapacity)
         {
@@ -2658,7 +2658,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.SHORT.toQName(), FORG0001);
+                    throw new AtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.SHORT.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2669,7 +2669,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.SHORT.toQName(), FORG0001);
+                    throw new AtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.SHORT.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2680,7 +2680,7 @@ public final class CastingSupport
         return ival.shortValue();
     }
 
-    private static short castIntegerAsUnsignedByte(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static short castIntegerAsUnsignedByte(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (ival.signum() >= 0 && ival.compareTo(UNSIGNED_BYTE_MAX_VALUE) <= 0)
         {
@@ -2688,11 +2688,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.UNSIGNED_BYTE.toQName(), FORG0001);
+            throw new AtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.UNSIGNED_BYTE.toQName(), FORG0001);
         }
     }
 
-    private static long castIntegerAsUnsignedInt(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static long castIntegerAsUnsignedInt(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (ival.signum() >= 0 && ival.compareTo(UNSIGNED_INT_MAX_VALUE) <= 0)
         {
@@ -2700,11 +2700,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.UNSIGNED_INT.toQName(), FORG0001);
+            throw new AtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.UNSIGNED_INT.toQName(), FORG0001);
         }
     }
 
-    private static BigInteger castIntegerAsUnsignedLong(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static BigInteger castIntegerAsUnsignedLong(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (ival.signum() >= 0 && ival.compareTo(UNSIGNED_LONG_MAX_VALUE) <= 0)
         {
@@ -2712,11 +2712,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.UNSIGNED_LONG.toQName(), FORG0001);
+            throw new AtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.UNSIGNED_LONG.toQName(), FORG0001);
         }
     }
 
-    private static int castIntegerAsUnsignedShort(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static int castIntegerAsUnsignedShort(final BigInteger ival, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (ival.signum() >= 0 && ival.compareTo(UNSIGNED_SHORT_MAX_VALUE) <= 0)
         {
@@ -2724,11 +2724,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.UNSIGNED_SHORT.toQName(), FORG0001);
+            throw new AtomCastException(ival.toString(), NativeType.INTEGER.toQName(), NativeType.UNSIGNED_SHORT.toQName(), FORG0001);
         }
     }
 
-    private static byte castLongAsByte(final long val, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static byte castLongAsByte(final long val, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (checkCapacity)
         {
@@ -2736,7 +2736,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(Long.toString(val), NativeType.BYTE.toQName(), FORG0001);
+                    throw new AtomCastException(Long.toString(val), NativeType.BYTE.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2747,7 +2747,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(Long.toString(val), NativeType.BYTE.toQName(), FORG0001);
+                    throw new AtomCastException(Long.toString(val), NativeType.BYTE.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2758,7 +2758,7 @@ public final class CastingSupport
         return (byte)val;
     }
 
-    private static int castLongAsInt(final long val, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static int castLongAsInt(final long val, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (checkCapacity)
         {
@@ -2766,7 +2766,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(Long.toString(val), NativeType.INT.toQName(), FORG0001);
+                    throw new AtomCastException(Long.toString(val), NativeType.INT.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2777,7 +2777,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(Long.toString(val), NativeType.INT.toQName(), FORG0001);
+                    throw new AtomCastException(Long.toString(val), NativeType.INT.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2788,7 +2788,7 @@ public final class CastingSupport
         return (int)val;
     }
 
-    private static long castLongAsNegativeInteger(final long value) throws GxmlAtomCastException
+    private static long castLongAsNegativeInteger(final long value) throws AtomCastException
     {
         if (value < 0)
         {
@@ -2796,11 +2796,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.NEGATIVE_INTEGER.toQName(), FORG0001);
+            throw new AtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.NEGATIVE_INTEGER.toQName(), FORG0001);
         }
     }
 
-    private static long castLongAsNonNegativeInteger(final long value) throws GxmlAtomCastException
+    private static long castLongAsNonNegativeInteger(final long value) throws AtomCastException
     {
         if (value >= 0)
         {
@@ -2808,11 +2808,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
+            throw new AtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
         }
     }
 
-    private static long castLongAsNonPositiveInteger(final long value) throws GxmlAtomCastException
+    private static long castLongAsNonPositiveInteger(final long value) throws AtomCastException
     {
         if (value <= 0)
         {
@@ -2820,11 +2820,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
+            throw new AtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
         }
     }
 
-    private static long castLongAsPositiveInteger(final long value, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static long castLongAsPositiveInteger(final long value, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (value > 0)
         {
@@ -2832,11 +2832,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.POSITIVE_INTEGER.toQName(), FORG0001);
+            throw new AtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.POSITIVE_INTEGER.toQName(), FORG0001);
         }
     }
 
-    private static short castLongAsShort(final long val, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static short castLongAsShort(final long val, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (checkCapacity)
         {
@@ -2844,7 +2844,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(Long.toString(val), NativeType.SHORT.toQName(), FORG0001);
+                    throw new AtomCastException(Long.toString(val), NativeType.SHORT.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2855,7 +2855,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(Long.toString(val), NativeType.SHORT.toQName(), FORG0001);
+                    throw new AtomCastException(Long.toString(val), NativeType.SHORT.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2866,7 +2866,7 @@ public final class CastingSupport
         return (short)val;
     }
 
-    private static short castLongAsUnsignedByte(final long value, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static short castLongAsUnsignedByte(final long value, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         // TODO: Bounds checking
         if (value >= 0)
@@ -2875,11 +2875,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.UNSIGNED_BYTE.toQName(), FORG0001);
+            throw new AtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.UNSIGNED_BYTE.toQName(), FORG0001);
         }
     }
 
-    private static long castLongAsUnsignedInt(final long value, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static long castLongAsUnsignedInt(final long value, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (value >= 0 && value <= UNSIGNED_INT_MAX_VALUE_AS_LONG)
         {
@@ -2887,11 +2887,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.UNSIGNED_INT.toQName(), FORG0001);
+            throw new AtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.UNSIGNED_INT.toQName(), FORG0001);
         }
     }
 
-    private static long castLongAsUnsignedLong(final long value) throws GxmlAtomCastException
+    private static long castLongAsUnsignedLong(final long value) throws AtomCastException
     {
         if (value >= 0)
         {
@@ -2899,11 +2899,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.UNSIGNED_LONG.toQName(), FORG0001);
+            throw new AtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.UNSIGNED_LONG.toQName(), FORG0001);
         }
     }
 
-    private static int castLongAsUnsignedShort(final long value, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static int castLongAsUnsignedShort(final long value, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         // TODO: Bounds checking
         if (value >= 0)
@@ -2912,11 +2912,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.UNSIGNED_SHORT.toQName(), FORG0001);
+            throw new AtomCastException(Long.toString(value), NativeType.LONG.toQName(), NativeType.UNSIGNED_SHORT.toQName(), FORG0001);
         }
     }
 
-    private static byte castShortAsByte(final short val, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static byte castShortAsByte(final short val, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (checkCapacity)
         {
@@ -2924,7 +2924,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(Short.toString(val), NativeType.BYTE.toQName(), FORG0001);
+                    throw new AtomCastException(Short.toString(val), NativeType.BYTE.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2935,7 +2935,7 @@ public final class CastingSupport
             {
                 if (raiseError)
                 {
-                    throw new GxmlAtomCastException(Short.toString(val), NativeType.BYTE.toQName(), FORG0001);
+                    throw new AtomCastException(Short.toString(val), NativeType.BYTE.toQName(), FORG0001);
                 }
                 else
                 {
@@ -2946,7 +2946,7 @@ public final class CastingSupport
         return (byte)val;
     }
 
-    private static short castShortAsNonNegativeInteger(final short value) throws GxmlAtomCastException
+    private static short castShortAsNonNegativeInteger(final short value) throws AtomCastException
     {
         if (value >= 0)
         {
@@ -2954,11 +2954,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
+            throw new AtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.NON_NEGATIVE_INTEGER.toQName(), FORG0001);
         }
     }
 
-    private static short castShortAsNonPositiveInteger(final short value) throws GxmlAtomCastException
+    private static short castShortAsNonPositiveInteger(final short value) throws AtomCastException
     {
         if (value <= 0)
         {
@@ -2966,11 +2966,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
+            throw new AtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.NON_POSITIVE_INTEGER.toQName(), FORG0001);
         }
     }
 
-    private static short castShortAsUnsignedByte(final short value, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static short castShortAsUnsignedByte(final short value, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (value >= 0)
         {
@@ -2978,11 +2978,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.UNSIGNED_BYTE.toQName(), FORG0001);
+            throw new AtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.UNSIGNED_BYTE.toQName(), FORG0001);
         }
     }
 
-    private static short castShortAsUnsignedInt(final short value, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static short castShortAsUnsignedInt(final short value, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (value >= 0)
         {
@@ -2990,11 +2990,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.UNSIGNED_INT.toQName(), FORG0001);
+            throw new AtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.UNSIGNED_INT.toQName(), FORG0001);
         }
     }
 
-    private static short castShortAsUnsignedLong(final short value) throws GxmlAtomCastException
+    private static short castShortAsUnsignedLong(final short value) throws AtomCastException
     {
         if (value >= 0)
         {
@@ -3002,11 +3002,11 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.UNSIGNED_LONG.toQName(), FORG0001);
+            throw new AtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.UNSIGNED_LONG.toQName(), FORG0001);
         }
     }
 
-    private static short castShortAsUnsignedShort(final short value, final boolean checkCapacity, final boolean raiseError) throws GxmlAtomCastException
+    private static short castShortAsUnsignedShort(final short value, final boolean checkCapacity, final boolean raiseError) throws AtomCastException
     {
         if (value >= 0)
         {
@@ -3014,27 +3014,27 @@ public final class CastingSupport
         }
         else
         {
-            throw new GxmlAtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.UNSIGNED_SHORT.toQName(), FORG0001);
+            throw new AtomCastException(Short.toString(value), NativeType.SHORT.toQName(), NativeType.UNSIGNED_SHORT.toQName(), FORG0001);
         }
     }
 
     /**
      * First cast to xs:string then cast to the target type.
      */
-    private static <A> A castThroughString(final A sourceAtom, final NativeType targetType, final CastingContext castingContext, final ComponentProvider pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+    private static <A> A castThroughString(final A sourceAtom, final NativeType targetType, final CastingContext castingContext, final ComponentProvider pcx, final AtomBridge<A> atomBridge) throws AtomCastException
     {
         try
         {
             return castAs(castAs(sourceAtom, NativeType.STRING, castingContext, pcx, atomBridge), targetType, castingContext, pcx, atomBridge);
         }
-        catch (final GxmlAtomCastException e)
+        catch (final AtomCastException e)
         {
             final QName sourceType = atomBridge.getDataType(sourceAtom);
-            throw new GxmlAtomCastException(e.getSourceValue(), sourceType, targetType.toQName(), FORG0001, e);
+            throw new AtomCastException(e.getSourceValue(), sourceType, targetType.toQName(), FORG0001, e);
         }
     }
 
-    private static <A> A castWithinBranchAs(final A sourceAtom, final NativeType targetType, final ComponentProvider pcx, final AtomBridge<A> atomBridge) throws GxmlAtomCastException
+    private static <A> A castWithinBranchAs(final A sourceAtom, final NativeType targetType, final ComponentProvider pcx, final AtomBridge<A> atomBridge) throws AtomCastException
     {
         PreCondition.assertArgumentNotNull(sourceAtom, "sourceAtom");
         PreCondition.assertArgumentNotNull(targetType, "targetType");
@@ -3065,7 +3065,7 @@ public final class CastingSupport
                 }
                 catch (final DatatypeException e)
                 {
-                    throw new GxmlAtomCastException(atomBridge.getC14NForm(sourceAtom), atomBridge.getDataType(sourceAtom), e.getType().getName(), FORG0001, e);
+                    throw new AtomCastException(atomBridge.getC14NForm(sourceAtom), atomBridge.getDataType(sourceAtom), e.getType().getName(), FORG0001, e);
                 }
             }
             else

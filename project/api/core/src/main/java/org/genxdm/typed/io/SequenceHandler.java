@@ -19,7 +19,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.ContentHandler;
 
 /**
@@ -43,7 +43,7 @@ public interface SequenceHandler<A> extends ContentHandler
      * @param type
      *            The type annotation for the attribute supplied by validation. May be <code>null</code> if not validated.
      */
-    void attribute(String namespaceURI, String localName, String prefix, List<? extends A> data, QName type) throws GxmlException;
+    void attribute(String namespaceURI, String localName, String prefix, List<? extends A> data, QName type) throws GenXDMException;
 
     /**
      * Receive notification of the beginning of an element.
@@ -61,9 +61,9 @@ public interface SequenceHandler<A> extends ContentHandler
      * @param type
      *            The type annotation of the element provided by validation. May be <code>null</code> if not validated.
      */
-    void startElement(String namespaceURI, String localName, String prefix, QName type) throws GxmlException;
+    void startElement(String namespaceURI, String localName, String prefix, QName type) throws GenXDMException;
 
-    void text(List<? extends A> data) throws GxmlException;
+    void text(List<? extends A> data) throws GenXDMException;
 
     /**
      * Receive notification of an atomic value as an item in the sequence.
@@ -73,15 +73,15 @@ public interface SequenceHandler<A> extends ContentHandler
      * @param atom
      *            The atomic value.
      */
-    void atom(A atom) throws GxmlException;
+    void atom(A atom) throws GenXDMException;
 
     /**
      * Receive notification of the end of a sequence.
      */
-    void endSequence() throws GxmlException;
+    void endSequence() throws GenXDMException;
 
     /**
      * Receive notification of the start of a sequence.
      */
-    void startSequence() throws GxmlException;
+    void startSequence() throws GenXDMException;
 }

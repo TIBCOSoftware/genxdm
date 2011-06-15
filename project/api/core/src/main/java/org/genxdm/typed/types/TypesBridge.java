@@ -17,7 +17,7 @@ package org.genxdm.typed.types;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.names.NamespaceResolver;
 import org.genxdm.xs.Schema;
 import org.genxdm.xs.types.AttributeNodeType;
@@ -417,7 +417,7 @@ public interface TypesBridge extends Schema
      * @param defaultElementAndTypeNamespace
      *            The default namespace for element names.
      */
-    String toString(SequenceType type, NamespaceResolver mappings, String defaultElementAndTypeNamespace) throws GxmlException;
+    String toString(SequenceType type, NamespaceResolver mappings, String defaultElementAndTypeNamespace) throws GenXDMException;
 
     /**
      * Allocates an empty array of types.

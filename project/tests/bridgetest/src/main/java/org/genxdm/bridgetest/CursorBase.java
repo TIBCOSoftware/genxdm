@@ -21,7 +21,7 @@ import org.genxdm.Cursor;
 import org.genxdm.Feature;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridgetest.utilities.Events;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.FragmentBuilder;
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ public abstract class CursorBase<N>
 {
     @Test
     public void writes()
-        throws GxmlException
+        throws GenXDMException
     {
         ProcessingContext<N> context = newProcessingContext();
         

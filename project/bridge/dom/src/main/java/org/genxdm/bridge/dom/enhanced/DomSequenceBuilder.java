@@ -22,7 +22,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.genxdm.bridge.dom.DomFragmentBuilder;
 import org.genxdm.bridge.dom.DomSupport;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.io.SequenceBuilder;
@@ -44,7 +44,7 @@ final class DomSequenceBuilder<A>
 		this.m_atomBridge = PreCondition.assertArgumentNotNull(pcx).getAtomBridge();
 	}
 
-	public void attribute(final String namespaceURI, final String localName, final String prefix, final List<? extends A> data, final QName type) throws GxmlException
+	public void attribute(final String namespaceURI, final String localName, final String prefix, final List<? extends A> data, final QName type) throws GenXDMException
 	{
 		if (m_depth > 0)
 		{
@@ -60,33 +60,33 @@ final class DomSequenceBuilder<A>
 		}
 	}
 
-	public void startElement(final String namespaceURI, final String localName, final String prefix, final QName type) throws GxmlException
+	public void startElement(final String namespaceURI, final String localName, final String prefix, final QName type) throws GenXDMException
 	{
 	    startElement(namespaceURI, localName, prefix);
 		DomSupport.setAnnotationType(m_current, type);
 	}
 
-	public void text(final List<? extends A> value) throws GxmlException
+	public void text(final List<? extends A> value) throws GenXDMException
 	{
 		text(m_atomBridge.getC14NString(value));
 	}
 
     public void atom(A atom)
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO Auto-generated method stub
         
     }
 
     public void endSequence()
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO Auto-generated method stub
         
     }
 
     public void startSequence()
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO Auto-generated method stub
         

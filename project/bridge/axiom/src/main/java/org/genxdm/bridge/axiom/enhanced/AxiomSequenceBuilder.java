@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMFactory;
 import org.genxdm.bridge.axiom.AxiomFragmentBuilder;
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
@@ -43,7 +43,7 @@ final class AxiomSequenceBuilder
 	    attribute(namespaceURI, localName, prefix, atomBridge.getC14NString(value), /*map from schema to dtd?*/ DtdAttributeKind.CDATA);
 	}
 	
-	public void attribute(final String namespaceURI, final String localName, final String prefix, final String value, DtdAttributeKind type) throws GxmlException
+	public void attribute(final String namespaceURI, final String localName, final String prefix, final String value, DtdAttributeKind type) throws GenXDMException
 	{
 	    base.attribute(namespaceURI, localName, prefix, value, type); 
 	}
@@ -118,27 +118,27 @@ final class AxiomSequenceBuilder
 	    base.text(pcx.getAtomBridge().getC14NString(value));
 	}
 
-	public void text(final String value) throws GxmlException
+	public void text(final String value) throws GenXDMException
 	{
 	    base.text(value);
 	}
 
 	public void atom(XmlAtom atom)
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO Auto-generated method stub
         
     }
 
     public void endSequence()
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO Auto-generated method stub
         
     }
 
     public void startSequence()
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO Auto-generated method stub
         

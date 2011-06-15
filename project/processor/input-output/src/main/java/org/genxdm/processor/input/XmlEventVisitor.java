@@ -39,7 +39,7 @@ import javax.xml.stream.events.StartDocument;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.genxdm.exceptions.GxmlMarshalException;
+import org.genxdm.exceptions.XdmMarshalException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.io.DtdAttributeKind;
@@ -63,7 +63,7 @@ public class XmlEventVisitor
      * 
      */
     public void parse()
-        throws IOException, GxmlMarshalException
+        throws IOException, XdmMarshalException
     {
         // TODO: this probably makes it impossible to read an external parsed entity (fragment).
         // that needs some consideration.
@@ -81,7 +81,7 @@ public class XmlEventVisitor
         }
         catch (XMLStreamException xse)
         {
-            throw new GxmlMarshalException(xse);
+            throw new XdmMarshalException(xse);
         }
         boolean endedDocument = parseFragment();
         if (manualStart && !endedDocument)
@@ -92,7 +92,7 @@ public class XmlEventVisitor
      * 
      */
     public boolean parseFragment()
-        throws IOException, GxmlMarshalException
+        throws IOException, XdmMarshalException
     {
         // TODO: you can't actually call this, right now.
         // figure out a good way to enable fragment parsing.
@@ -124,7 +124,7 @@ public class XmlEventVisitor
             }
             catch (XMLStreamException xse)
             {
-                throw new GxmlMarshalException(xse);
+                throw new XdmMarshalException(xse);
             }
         }
         return ended;

@@ -126,7 +126,7 @@ class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 //		final SchemaLoadOptions args = new SchemaLoadOptions();
 		final W3cXmlSchemaParser parser = new W3cXmlSchemaParser();
 		
-		parser.setComponentProvider(tpcx.getMetaBridge().getComponentProvider());
+		parser.setComponentProvider(tpcx.getTypesBridge().getComponentProvider());
 		parser.setCatalogResolver(new MyResolver(), new MyCatalog());
 
 		for (final Resolved<InputStream> resource : resources)

@@ -19,7 +19,7 @@ import java.io.Closeable;
 import java.io.Flushable;
 import java.net.URI;
 
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 
 /**
  * Receive notification of the logical content of an XML tree. In this context, logical content applies principally to
@@ -45,7 +45,7 @@ public interface ContentHandler
      * @param type
      *            The type of the attribute; if null, then type is "NONE", not "UNKNOWN".
      */
-    void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type) throws GxmlException;
+    void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type) throws GenXDMException;
 
     /**
      * Receive notification of a comment information item.
@@ -53,17 +53,17 @@ public interface ContentHandler
      * @param value
      *            The content of the comment. Cannot be <code>null</code>.
      */
-    void comment(String value) throws GxmlException;
+    void comment(String value) throws GenXDMException;
 
     /**
      * Receive notification of the end of a document.
      */
-    void endDocument() throws GxmlException;
+    void endDocument() throws GenXDMException;
 
     /**
      * Receive notification of the end of an element.
      */
-    void endElement() throws GxmlException;
+    void endElement() throws GenXDMException;
 
     /**
      * Receive notification of an namespace in the style of a lexical attribute. <br/>
@@ -74,7 +74,7 @@ public interface ContentHandler
      * @param namespaceURI
      *            The string value of the namespace node. Cannot be <code>null</code>.
      */
-    void namespace(String prefix, String namespaceURI) throws GxmlException;
+    void namespace(String prefix, String namespaceURI) throws GenXDMException;
 
     /**
      * Receive notification of a processing instruction.
@@ -85,7 +85,7 @@ public interface ContentHandler
      *            The processing instruction data, or null if none was supplied. The data does not include any
      *            whitespace separating it from the target.
      */
-    void processingInstruction(String target, String data) throws GxmlException;
+    void processingInstruction(String target, String data) throws GenXDMException;
 
     /**
      * Receive notification of the beginning of a document.
@@ -96,7 +96,7 @@ public interface ContentHandler
      * @param documentURI
      *            The dm:document-uri.
      */
-    void startDocument(URI documentURI, String docTypeDecl) throws GxmlException;
+    void startDocument(URI documentURI, String docTypeDecl) throws GenXDMException;
 
     /**
      * Receive notification of the beginning of an element.
@@ -108,7 +108,7 @@ public interface ContentHandler
      * @param prefix
      *            The prefix-hint part of the element name.
      */
-    void startElement(String namespaceURI, String localName, String prefix) throws GxmlException;
+    void startElement(String namespaceURI, String localName, String prefix) throws GenXDMException;
 
     /**
      * Receive notification of character data.
@@ -117,5 +117,5 @@ public interface ContentHandler
      * @param data
      *            The data associated with the text node.
      */
-    void text(String data) throws GxmlException;
+    void text(String data) throws GenXDMException;
 }

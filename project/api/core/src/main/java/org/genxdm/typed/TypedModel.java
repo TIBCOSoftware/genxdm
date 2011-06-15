@@ -16,7 +16,7 @@
 package org.genxdm.typed;
 
 import org.genxdm.Model;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.nodes.TypedNodeInformer;
 import org.genxdm.typed.io.SequenceHandler;
 
@@ -43,5 +43,5 @@ public interface TypedModel<N, A>
      * @param handler
      *            The handler for events generated.
      */
-    void stream(N node, boolean copyNamespaces, boolean copyTypeAnnotations, SequenceHandler<A> handler) throws GxmlException;
+    void stream(N node, boolean copyNamespaces, boolean copyTypeAnnotations, SequenceHandler<A> handler) throws GenXDMException;
 }

@@ -23,15 +23,14 @@
     <parent>
         <groupId>org.genxdm</groupId>
         <artifactId>apis</artifactId>
-        <version>0.7</version>
+        <version>0.8</version>
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>genxdm-api</artifactId>
-    <version>0.7</version>
-    <!-- version set to 0.7: while this is mostly solid, we should consider
-         the questions raised about naming of the schema model and about the
-         structure of parse/serialize -->
+    <version>0.8</version>
+    <!-- version set to 0.8: while this is mostly solid, we should consider
+         the question  about the structure of parse/serialize -->
 
     <name>GenXDM API</name>
     <description>The GenXDM API module defines the core interfaces and abstractions
