@@ -26,7 +26,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.genxdm.NodeKind;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.io.FragmentBuilder;
 import org.w3c.dom.Attr;
@@ -44,7 +44,7 @@ public class DomFragmentBuilder
     }
     
     public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
-        throws GxmlException
+        throws GenXDMException
     {
         DtdAttributeKind kind = (type == null) ? DtdAttributeKind.CDATA : type;
         if (m_depth > 0)
@@ -65,12 +65,12 @@ public class DomFragmentBuilder
         }
     }
 
-    public void comment(final String value) throws GxmlException
+    public void comment(final String value) throws GenXDMException
     {
         push(value, NodeKind.COMMENT);
     }
 
-    public void endDocument() throws GxmlException
+    public void endDocument() throws GenXDMException
     {
         flush();
         endNodeProcessing();
@@ -78,7 +78,7 @@ public class DomFragmentBuilder
             throw new IllegalStateException("Document ended with unclosed elements.");
     }
 
-    public void endElement() throws GxmlException
+    public void endElement() throws GenXDMException
     {
         flush();
         endNodeProcessing();
@@ -143,7 +143,7 @@ public class DomFragmentBuilder
     }
 
     public void namespace(final String prefix, final String namespaceURI) 
-        throws GxmlException
+        throws GenXDMException
     {
         if (m_depth > 0)
         {
@@ -158,7 +158,7 @@ public class DomFragmentBuilder
     }
 
     public void processingInstruction(final String target, final String data) 
-        throws GxmlException
+        throws GenXDMException
     {
         flush();
         if (m_depth > 0)
@@ -175,7 +175,7 @@ public class DomFragmentBuilder
     }
 
     public void startDocument(final URI baseURI, final String docTypeDecl) 
-        throws GxmlException
+        throws GenXDMException
     {
         if (m_current == null)
         {
@@ -189,7 +189,7 @@ public class DomFragmentBuilder
     }
 
     public void startElement(final String namespaceURI, final String localName, final String prefix) 
-        throws GxmlException
+        throws GenXDMException
     {
         flush();
         startNodeProcessing();
@@ -209,7 +209,7 @@ public class DomFragmentBuilder
     }
 
     public void text(final String strval) 
-        throws GxmlException
+        throws GenXDMException
     {
         push(strval, NodeKind.TEXT);
         if ( (m_current != null) && (m_current instanceof Document) && (m_chBuffer.toString().trim().length() > 0))

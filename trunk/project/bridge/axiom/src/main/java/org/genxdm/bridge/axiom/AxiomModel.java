@@ -50,7 +50,7 @@ import org.genxdm.bridgekit.axes.IterablePrecedingAxis;
 import org.genxdm.bridgekit.axes.IterablePrecedingSiblingAxis;
 import org.genxdm.bridgekit.names.QNameComparator;
 import org.genxdm.bridgekit.tree.Ordering;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.io.DtdAttributeKind;
@@ -1289,7 +1289,7 @@ public class AxiomModel
 
     @SuppressWarnings("rawtypes")
     public void stream(Object node, boolean copyNamespaces, ContentHandler handler)
-        throws GxmlException
+        throws GenXDMException
     {
         switch (getNodeKind(node))
         {

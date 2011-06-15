@@ -24,7 +24,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.genxdm.exceptions.GxmlMarshalException;
+import org.genxdm.exceptions.XdmMarshalException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.io.DefaultDocumentHandler;
 import org.w3c.dom.Document;
@@ -60,21 +60,21 @@ public class DomDocumentHandler extends DefaultDocumentHandler<Node> {
 	
 	@Override
 	public Node parse(InputStream byteStream, URI systemId) throws IOException,
-			GxmlMarshalException {
+			XdmMarshalException {
 		return parse(new InputSource(byteStream), systemId);
 	}
 
 
 	@Override
 	public Node parse(Reader characterStream, URI systemId) throws IOException,
-			GxmlMarshalException {
+			XdmMarshalException {
 		return parse(new InputSource(characterStream), systemId);
 	}
 
 
 	@Override
 	public Node parse(InputSource source, URI systemId) throws IOException,
-			GxmlMarshalException {
+			XdmMarshalException {
 		
         PreCondition.assertArgumentNotNull(source, "source");
         Document result = null;
@@ -91,11 +91,11 @@ public class DomDocumentHandler extends DefaultDocumentHandler<Node> {
         }
         catch (ParserConfigurationException pce)
         {
-            throw new GxmlMarshalException(pce);
+            throw new XdmMarshalException(pce);
         }
         catch (final SAXException e)
         {
-            throw new GxmlMarshalException(e);
+            throw new XdmMarshalException(e);
         }
         return result;
 	}

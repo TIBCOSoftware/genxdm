@@ -15,15 +15,28 @@
  */
 package org.genxdm.exceptions;
 
-
-/**
- * A wrapper class over implementation exceptions relating to well-formedness during parsing.
+@SuppressWarnings("serial")
+/*
+ * * A wrapper and marker exception for tunneling checked exceptions though gXML APIs.
  */
-public final class GxmlMarshalException extends GxmlException
+public class GenXDMException extends RuntimeException
 {
-    private static final long serialVersionUID = 1L;
+    public GenXDMException()
+    {
+        super();
+    }
 
-    public GxmlMarshalException(final Throwable cause)
+    public GenXDMException(final String message)
+    {
+        super(message);
+    }
+
+    public GenXDMException(final String message, final Throwable cause)
+    {
+        super(message, cause);
+    }
+
+    public GenXDMException(final Throwable cause)
     {
         super(cause);
     }

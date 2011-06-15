@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.exceptions.GxmlAtomCastException;
+import org.genxdm.exceptions.AtomCastException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
@@ -86,18 +86,18 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
         }
     }
 
-    public XmlAtom castAs(final XmlAtom sourceAtom, final QName targetType, final CastingContext castingContext) throws GxmlAtomCastException
+    public XmlAtom castAs(final XmlAtom sourceAtom, final QName targetType, final CastingContext castingContext) throws AtomCastException
     {
         return CastingSupport.castAs(sourceAtom, targetType, castingContext, schema.getComponentProvider(), this);
     }
 
-    public XmlAtom castAs(final XmlAtom sourceAtom, final NativeType targetType, final CastingContext castingContext) throws GxmlAtomCastException
+    public XmlAtom castAs(final XmlAtom sourceAtom, final NativeType targetType, final CastingContext castingContext) throws AtomCastException
     {
         PreCondition.assertArgumentNotNull(castingContext, "castingContext");
         return CastingSupport.castAs(getNativeAtom(sourceAtom), targetType, castingContext, schema.getComponentProvider(), this);
     }
 
-    public XmlAtom compile(final String sourceValue, final NativeType targetType) throws GxmlAtomCastException
+    public XmlAtom compile(final String sourceValue, final NativeType targetType) throws AtomCastException
     {
         PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
         PreCondition.assertArgumentNotNull(targetType, "targetType");
@@ -127,7 +127,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
                 }
                 catch (final DatatypeException e)
                 {
-                    throw new GxmlAtomCastException(sourceValue, e.getType().getName(), FORG0001, e);
+                    throw new AtomCastException(sourceValue, e.getType().getName(), FORG0001, e);
                 }
             }
             else
@@ -141,7 +141,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
         }
     }
 
-    public XmlAtom compile(final String sourceValue, final NativeType targetType, final PrefixResolver resolver) throws GxmlAtomCastException
+    public XmlAtom compile(final String sourceValue, final NativeType targetType, final PrefixResolver resolver) throws AtomCastException
     {
         // TODO Auto-generated method stub
         throw new AssertionError("TODO: compile");

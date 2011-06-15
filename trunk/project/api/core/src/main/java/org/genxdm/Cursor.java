@@ -16,7 +16,7 @@
 package org.genxdm;
 
 import org.genxdm.axes.Repositioner;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.nodes.Informer;
@@ -42,7 +42,7 @@ public interface Cursor<N>
      * @param writer
      *            The handler for events generated.
      * 
-     * @throws GxmlException
+     * @throws GenXDMException
      */
-    void write(ContentHandler writer) throws GxmlException;
+    void write(ContentHandler writer) throws GenXDMException;
 }

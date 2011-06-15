@@ -44,7 +44,7 @@ public interface TypedContext<N, A>
     /**
      * Returns the bridge used for meta-data interaction.
      */
-    TypesBridge getMetaBridge();
+    TypesBridge getTypesBridge();
 
     /**
      * Returns the {@link TypedModel} for navigating the document model. <br/>

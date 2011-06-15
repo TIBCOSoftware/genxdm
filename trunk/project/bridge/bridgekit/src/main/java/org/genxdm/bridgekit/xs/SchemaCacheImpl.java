@@ -198,7 +198,7 @@ final class SchemaCacheImpl implements SchemaCache
     public synchronized QName generateUniqueName()
     {
         assertNotLocked();
-        return new QName("http://www.tibco.com/gXML-SA/local-types", "type-".concat(Integer.toString(m_nextType++)));
+        return new QName("http://genxdm.org/typed/local-types", "type-".concat(Integer.toString(m_nextType++)));
     }
 
     public AtomicType getAtomicType(final QName name)

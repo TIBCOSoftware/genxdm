@@ -21,13 +21,13 @@
     <parent>
         <groupId>org.genxdm</groupId>
         <artifactId>project</artifactId>
-        <version>0.5</version>
+        <version>0.7</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>apis</artifactId>
     <packaging>pom</packaging>
-    <version>0.7</version>
+    <version>0.8</version>
     <!-- version matches main project version; no other reason -->
     <name>GenXDM API modules</name>
 

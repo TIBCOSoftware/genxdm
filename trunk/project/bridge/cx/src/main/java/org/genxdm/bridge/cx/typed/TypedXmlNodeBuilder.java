@@ -25,7 +25,7 @@ import org.genxdm.bridge.cx.tree.XmlElementNode;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridge.cx.tree.XmlTextNode;
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.xs.types.Type;
@@ -41,14 +41,14 @@ public class TypedXmlNodeBuilder
     }
 
     public void atom(XmlAtom atom)
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO Auto-generated method stub
 
     }
 
     public void attribute(String namespaceURI, String localName, String prefix, List<? extends XmlAtom> data, QName type)
-        throws GxmlException
+        throws GenXDMException
     {
         flushCatch();
         depth++;
@@ -67,7 +67,7 @@ public class TypedXmlNodeBuilder
     }
 
     public void endSequence()
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO Auto-generated method stub
 
@@ -80,7 +80,7 @@ public class TypedXmlNodeBuilder
     }
 
     public void startElement(String namespaceURI, String localName, String prefix, QName type)
-        throws GxmlException
+        throws GenXDMException
     {
         flushCatch();
         depth++;
@@ -98,14 +98,14 @@ public class TypedXmlNodeBuilder
     }
 
     public void startSequence()
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO Auto-generated method stub
 
     }
 
     public void text(List<? extends XmlAtom> data)
-        throws GxmlException
+        throws GenXDMException
     {
         flushCatch();
         depth++;

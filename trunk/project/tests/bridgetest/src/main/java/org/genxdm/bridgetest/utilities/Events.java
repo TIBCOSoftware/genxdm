@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.io.EventKind;
 import org.genxdm.io.FragmentBuilder;
@@ -112,7 +112,7 @@ public class Events<N> implements FragmentBuilder<N>
 
     @Override
     public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
-        throws GxmlException
+        throws GenXDMException
     {
         switch (mode) {
             case RECORD:
@@ -143,7 +143,7 @@ public class Events<N> implements FragmentBuilder<N>
 
     @Override
     public void comment(String value)
-        throws GxmlException
+        throws GenXDMException
     {
         switch (mode) {
             case RECORD:
@@ -160,14 +160,14 @@ public class Events<N> implements FragmentBuilder<N>
                 closeStartTag();
                 Event e = recorded.remove();
                 if ( (e.kind != EventKind.COMMENT) || !e.value.equals(value) )
-                    throw new GxmlException("Mismatch. Expected: " + e.toString()  + " ; Found: COMMENT{}{" + value + "}");
+                    throw new GenXDMException("Mismatch. Expected: " + e.toString()  + " ; Found: COMMENT{}{" + value + "}");
             }
         }
     }
 
     @Override
     public void endDocument()
-        throws GxmlException
+        throws GenXDMException
     {
         switch (mode) {
             case RECORD:
@@ -183,14 +183,14 @@ public class Events<N> implements FragmentBuilder<N>
 //System.out.println("match end document");
                 Event e = recorded.remove();
                 if (e.kind != EventKind.END_DOCUMENT)
-                    throw new GxmlException("Mismatch. Expected: " + e.toString() + " ; Found: END_DOCUMENT{}{}");
+                    throw new GenXDMException("Mismatch. Expected: " + e.toString() + " ; Found: END_DOCUMENT{}{}");
             }
         }
     }
 
     @Override
     public void endElement()
-        throws GxmlException
+        throws GenXDMException
     {
         switch (mode) {
             case RECORD:
@@ -207,14 +207,14 @@ public class Events<N> implements FragmentBuilder<N>
                 closeStartTag();
                 Event e = recorded.remove();
                 if (e.kind != EventKind.END_ELEMENT)
-                    throw new GxmlException("Mismatch. Expected: " + e.toString() + " ; Found: END_ELEMENT{}{}");
+                    throw new GenXDMException("Mismatch. Expected: " + e.toString() + " ; Found: END_ELEMENT{}{}");
             }
         }
     }
 
     @Override
     public void namespace(String prefix, String namespaceURI)
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO: if namespaces and attributes are (incorrectly)
         // mixed, as might happen if one calls the contenthandler api
@@ -244,7 +244,7 @@ public class Events<N> implements FragmentBuilder<N>
 
     @Override
     public void processingInstruction(String target, String data)
-        throws GxmlException
+        throws GenXDMException
     {
         switch (mode) {
             case RECORD:
@@ -261,14 +261,14 @@ public class Events<N> implements FragmentBuilder<N>
                 closeStartTag();
                 Event e = recorded.remove();
                 if ( (e.kind != EventKind.PROCESSING_INSTRUCTION) || !e.name.equals(target) || !e.value.equals(data) )
-                    throw new GxmlException("Mismatch. Expected: " + e.toString() + " ; Found: PROCESSING_INSTRUCTION{}" + target + "{" + data + "}");
+                    throw new GenXDMException("Mismatch. Expected: " + e.toString() + " ; Found: PROCESSING_INSTRUCTION{}" + target + "{" + data + "}");
             }
         }
     }
 
     @Override
     public void startDocument(URI documentURI, String docTypeDecl)
-        throws GxmlException
+        throws GenXDMException
     {
         switch (mode) {
             case RECORD:
@@ -288,14 +288,14 @@ public class Events<N> implements FragmentBuilder<N>
                 Event e = recorded.remove();
                 if ( (e.kind != EventKind.START_DOCUMENT) || !e.value.equals(dtd) 
                      || ( !ignoreDocURI && !e.namespace.equals(uri) ) )
-                    throw new GxmlException("Mismatch. Expected: " + e.toString() + " ; Found: START_DOCUMENT{" + uri + "}" + "{" + dtd + "}");
+                    throw new GenXDMException("Mismatch. Expected: " + e.toString() + " ; Found: START_DOCUMENT{" + uri + "}" + "{" + dtd + "}");
             }
         }
     }
 
     @Override
     public void startElement(String namespaceURI, String localName, String prefix)
-        throws GxmlException
+        throws GenXDMException
     {
         switch (mode) {
             case RECORD:
@@ -312,7 +312,7 @@ public class Events<N> implements FragmentBuilder<N>
                 closeStartTag();
                 Event e = recorded.remove();
                 if ( (e.kind != EventKind.START_ELEMENT) || !e.namespace.equals(namespaceURI) || !e.name.equals(localName) )
-                    throw new GxmlException("Mismatch. Expected: " + e.toString() + " ; Found: START_ELEMENT{" + namespaceURI + "}" + localName + "{}");
+                    throw new GenXDMException("Mismatch. Expected: " + e.toString() + " ; Found: START_ELEMENT{" + namespaceURI + "}" + localName + "{}");
                 namespacesComplete = true;
                 attributesComplete = true;
             }
@@ -321,7 +321,7 @@ public class Events<N> implements FragmentBuilder<N>
 
     @Override
     public void text(String data)
-        throws GxmlException
+        throws GenXDMException
     {
         switch (mode) {
             case RECORD:
@@ -338,13 +338,13 @@ public class Events<N> implements FragmentBuilder<N>
                 closeStartTag();
                 Event e = recorded.remove();
                 if ( (e.kind != EventKind.CHARACTERS) || !e.value.equals(data) )
-                    throw new GxmlException("Mismatch. Expected: " + e.toString() + " ; Found: CHARACTERS{}{" + data + "}");
+                    throw new GenXDMException("Mismatch. Expected: " + e.toString() + " ; Found: CHARACTERS{}{" + data + "}");
             }
         }
     }
     
     private void closeStartTag()
-        throws GxmlException
+        throws GenXDMException
     {
 //System.out.println("close start tag");
         if (!namespacesComplete)
@@ -354,15 +354,15 @@ public class Events<N> implements FragmentBuilder<N>
     }
     
     private void checkNamespaces()
-        throws GxmlException
+        throws GenXDMException
     {
 //System.out.println("check namespaces");
         for (Event e : toMatch)
         {
             if (!matches.keySet().contains(e))
-                throw new GxmlException("Namespace missing. No match for " + e.toString());
+                throw new GenXDMException("Namespace missing. No match for " + e.toString());
             if (!e.value.equals(matches.get(e)))
-                throw new GxmlException("Namespace value mismatch for " + e.toString() + " :: " + matches.get(e));
+                throw new GenXDMException("Namespace value mismatch for " + e.toString() + " :: " + matches.get(e));
 //System.out.println("Removing namespace " + e.toString());
             matches.remove(e);
         }
@@ -371,7 +371,7 @@ public class Events<N> implements FragmentBuilder<N>
             String message = "Extra namespace(s):";
             for (Event e : matches.keySet())
                 message += " " + e.toString();
-            throw new GxmlException(message);
+            throw new GenXDMException(message);
         }
         toMatch.clear();
         matches.clear();
@@ -379,16 +379,16 @@ public class Events<N> implements FragmentBuilder<N>
     }
     
     private void checkAttributes()
-        throws GxmlException
+        throws GenXDMException
     {
 //System.out.println("check attributes");
         for (Event e : toMatch)
         {
 //System.out.println("Matching: " + e.toString());
             if (!matches.keySet().contains(e))
-                throw new GxmlException("Attribute missing. No match for " + e.toString());
+                throw new GenXDMException("Attribute missing. No match for " + e.toString());
             if (!e.value.equals(matches.get(e)))
-                throw new GxmlException("Attribute value mismatch for " + e.toString() + " :: " + matches.get(e));
+                throw new GenXDMException("Attribute value mismatch for " + e.toString() + " :: " + matches.get(e));
             matches.remove(e);
         }
         if (!matches.isEmpty())
@@ -397,7 +397,7 @@ public class Events<N> implements FragmentBuilder<N>
             String message = "Extra attribute(s):";
             for (Event e : matches.keySet())
                 message += " " + e.toString();
-            throw new GxmlException(message);
+            throw new GenXDMException(message);
         }
         toMatch.clear();
         matches.clear();

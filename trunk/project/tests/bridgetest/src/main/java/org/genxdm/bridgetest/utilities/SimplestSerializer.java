@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
 
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.io.DtdAttributeKind;
@@ -31,7 +31,7 @@ public final class SimplestSerializer implements ContentHandler
         this.writer = PreCondition.assertArgumentNotNull(writer, "writer");
     }
 
-    public void attribute(final String namespaceURI, final String localName, final String prefix, final String value, DtdAttributeKind type) throws GxmlException
+    public void attribute(final String namespaceURI, final String localName, final String prefix, final String value, DtdAttributeKind type) throws GenXDMException
     {
         try
         {
@@ -43,11 +43,11 @@ public final class SimplestSerializer implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlException(e);
+            throw new GenXDMException(e);
         }
     }
     
-    public void comment(final String value) throws GxmlException
+    public void comment(final String value) throws GenXDMException
     {
         try
         {
@@ -55,11 +55,11 @@ public final class SimplestSerializer implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlException(e);
+            throw new GenXDMException(e);
         }
     }
 
-    public void endDocument() throws GxmlException
+    public void endDocument() throws GenXDMException
     {
         try
         {
@@ -67,11 +67,11 @@ public final class SimplestSerializer implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlException(e);
+            throw new GenXDMException(e);
         }
     }
 
-    public void endElement() throws GxmlException
+    public void endElement() throws GenXDMException
     {
         try
         {
@@ -79,11 +79,11 @@ public final class SimplestSerializer implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlException(e);
+            throw new GenXDMException(e);
         }
     }
 
-    public void namespace(final String prefix, final String namespaceURI) throws GxmlException
+    public void namespace(final String prefix, final String namespaceURI) throws GenXDMException
     {
         try
         {
@@ -91,11 +91,11 @@ public final class SimplestSerializer implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlException(e);
+            throw new GenXDMException(e);
         }
     }
 
-    public void processingInstruction(final String target, final String data) throws GxmlException
+    public void processingInstruction(final String target, final String data) throws GenXDMException
     {
         try
         {
@@ -103,11 +103,11 @@ public final class SimplestSerializer implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlException(e);
+            throw new GenXDMException(e);
         }
     }
 
-    public void startDocument(final URI documentURI, final String docTypeDecl) throws GxmlException
+    public void startDocument(final URI documentURI, final String docTypeDecl) throws GenXDMException
     {
         try
         {
@@ -115,11 +115,11 @@ public final class SimplestSerializer implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlException(e);
+            throw new GenXDMException(e);
         }
     }
 
-    public void startElement(final String namespaceURI, final String localName, final String prefix) throws GxmlException
+    public void startElement(final String namespaceURI, final String localName, final String prefix) throws GenXDMException
     {
         try
         {
@@ -133,11 +133,11 @@ public final class SimplestSerializer implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlException(e);
+            throw new GenXDMException(e);
         }
     }
 
-    public void text(final String value) throws GxmlException
+    public void text(final String value) throws GenXDMException
     {
         try
         {
@@ -148,7 +148,7 @@ public final class SimplestSerializer implements ContentHandler
         }
         catch (final IOException e)
         {
-            throw new GxmlException(e);
+            throw new GenXDMException(e);
         }
     }
     

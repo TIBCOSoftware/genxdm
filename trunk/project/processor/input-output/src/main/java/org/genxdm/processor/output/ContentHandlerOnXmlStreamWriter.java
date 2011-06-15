@@ -30,7 +30,7 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.io.DtdAttributeKind;
@@ -74,7 +74,7 @@ public class ContentHandlerOnXmlStreamWriter
     }
 
     public void attribute(final String namespaceURI, final String localName, final String prefix, final String value, DtdAttributeKind type)
-        throws GxmlException
+        throws GenXDMException
     {
         PreCondition.assertNotNull(namespaceURI, "namespaceURI");
         PreCondition.assertNotNull(localName, "localName");
@@ -84,7 +84,7 @@ public class ContentHandlerOnXmlStreamWriter
     }
 
     public void comment(String value)
-        throws GxmlException
+        throws GenXDMException
     {
         try
         {
@@ -93,12 +93,12 @@ public class ContentHandlerOnXmlStreamWriter
         }
         catch (XMLStreamException xse)
         {
-            throw new GxmlException(xse);
+            throw new GenXDMException(xse);
         }
     }
 
     public void endDocument()
-        throws GxmlException
+        throws GenXDMException
     {
         try
         {
@@ -107,12 +107,12 @@ public class ContentHandlerOnXmlStreamWriter
         }
         catch (XMLStreamException xse)
         {
-            throw new GxmlException(xse);
+            throw new GenXDMException(xse);
         }
     }
 
     public void endElement()
-        throws GxmlException
+        throws GenXDMException
     {
         try
         {
@@ -121,7 +121,7 @@ public class ContentHandlerOnXmlStreamWriter
         }
         catch (XMLStreamException xse)
         {
-            throw new GxmlException(xse);
+            throw new GenXDMException(xse);
         }
         finally
         {
@@ -130,7 +130,7 @@ public class ContentHandlerOnXmlStreamWriter
     }
 
     public void namespace(final String prefix, final String namespaceURI)
-        throws GxmlException
+        throws GenXDMException
     {
         PreCondition.assertNotNull(prefix, "prefix");
         PreCondition.assertNotNull(namespaceURI, "namespaceURI");
@@ -138,7 +138,7 @@ public class ContentHandlerOnXmlStreamWriter
     }
 
     public void processingInstruction(final String target, final String data)
-        throws GxmlException
+        throws GenXDMException
     {
         try
         {
@@ -147,12 +147,12 @@ public class ContentHandlerOnXmlStreamWriter
         }
         catch (XMLStreamException xse)
         {
-            throw new GxmlException(xse);
+            throw new GenXDMException(xse);
         }
     }
 
     public void startDocument(final URI documentURI, final String docTypeDecl)
-        throws GxmlException
+        throws GenXDMException
     {
         try
         {
@@ -164,12 +164,12 @@ public class ContentHandlerOnXmlStreamWriter
         }
         catch (XMLStreamException xse)
         {
-            throw new GxmlException(xse);
+            throw new GenXDMException(xse);
         }
     }
 
     public void startElement(final String namespaceURI, final String localName, final String prefix)
-        throws GxmlException
+        throws GenXDMException
     {
         PreCondition.assertNotNull(namespaceURI, "namespaceURI");
         PreCondition.assertNotNull(localName, "localName");
@@ -194,7 +194,7 @@ public class ContentHandlerOnXmlStreamWriter
     }
 
     public void text(final String data)
-        throws GxmlException
+        throws GenXDMException
     {
         try
         {
@@ -203,12 +203,12 @@ public class ContentHandlerOnXmlStreamWriter
         }
         catch (XMLStreamException xse)
         {
-            throw new GxmlException(xse);
+            throw new GenXDMException(xse);
         }
     }
     
     private void flushPending()
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO: we might consider variations on a theme, with writeEmptyElement
         // when that's appropriate.  Or not.
@@ -231,7 +231,7 @@ public class ContentHandlerOnXmlStreamWriter
             }
             catch (XMLStreamException xse)
             {
-                throw new GxmlException(xse);
+                throw new GenXDMException(xse);
             }
             finally
             {
@@ -244,7 +244,7 @@ public class ContentHandlerOnXmlStreamWriter
     }
     
     private void fixupNamespaces()
-        throws GxmlException
+        throws GenXDMException
     {
         try
         {
@@ -270,7 +270,7 @@ public class ContentHandlerOnXmlStreamWriter
         }
         catch (XMLStreamException xse)
         {
-            throw new GxmlException(xse);
+            throw new GenXDMException(xse);
         }
     }
     
@@ -416,10 +416,10 @@ public class ContentHandlerOnXmlStreamWriter
         }
         
         void declare(final String prefix, final String uri)
-            throws GxmlException
+            throws GenXDMException
         {
             if (content.containsKey(prefix))
-                throw new GxmlException("Prefix bound to multiple URIs in a single scope.");
+                throw new GenXDMException("Prefix bound to multiple URIs in a single scope.");
             content.put(prefix, uri);
         }
         

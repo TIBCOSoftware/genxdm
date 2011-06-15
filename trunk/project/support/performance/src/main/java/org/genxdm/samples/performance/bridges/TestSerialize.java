@@ -3,7 +3,7 @@ package org.genxdm.samples.performance.bridges;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import org.genxdm.exceptions.GxmlMarshalException;
+import org.genxdm.exceptions.XdmMarshalException;
 
 public class TestSerialize<N,A> extends BaseBridgePerfTest<N,A> {
 
@@ -23,7 +23,7 @@ public class TestSerialize<N,A> extends BaseBridgePerfTest<N,A> {
         try {
 			getDocHandler().write(m_writer, getTestNode());
 		} 
-        catch (GxmlMarshalException e) 
+        catch (XdmMarshalException e) 
 		{
 			throw new RuntimeException(e);
 		} 

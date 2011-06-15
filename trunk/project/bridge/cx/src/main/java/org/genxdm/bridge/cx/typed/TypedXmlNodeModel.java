@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 import org.genxdm.bridge.cx.base.XmlNodeModel;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.io.SequenceHandler;
@@ -84,7 +84,7 @@ public class TypedXmlNodeModel
     }
 
     public void stream(XmlNode node, boolean copyNamespaces, boolean copyTypeAnnotations, SequenceHandler<XmlAtom> handler)
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO Auto-generated method stub
         

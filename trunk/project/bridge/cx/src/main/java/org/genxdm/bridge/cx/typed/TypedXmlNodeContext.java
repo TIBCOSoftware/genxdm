@@ -143,7 +143,7 @@ public class TypedXmlNodeContext
         return types.getComponents();
     }
 
-    public TypesBridge getMetaBridge()
+    public TypesBridge getTypesBridge()
     {
         return types;
     }

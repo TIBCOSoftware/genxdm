@@ -33,7 +33,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.genxdm.Model;
 import org.genxdm.ProcessingContext;
-import org.genxdm.exceptions.GxmlMarshalException;
+import org.genxdm.exceptions.XdmMarshalException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.FragmentBuilder;
@@ -95,7 +95,7 @@ public class DefaultDocumentHandler<N>
     }
 
     public N parse(InputStream byteStream, URI systemId)
-        throws IOException, GxmlMarshalException
+        throws IOException, XdmMarshalException
     {
         PreCondition.assertNotNull(byteStream, "byteStream");
         try
@@ -113,12 +113,12 @@ public class DefaultDocumentHandler<N>
         }
         catch (XMLStreamException xse)
         {
-            throw new GxmlMarshalException(xse);
+            throw new XdmMarshalException(xse);
         }
     }
 
     public N parse(Reader characterStream, URI systemId)
-        throws IOException, GxmlMarshalException
+        throws IOException, XdmMarshalException
     {
         PreCondition.assertNotNull(characterStream, "characterStream");
         try
@@ -136,12 +136,12 @@ public class DefaultDocumentHandler<N>
         }
         catch (XMLStreamException xse)
         {
-            throw new GxmlMarshalException(xse);
+            throw new XdmMarshalException(xse);
         }
     }
     
     public N parse(InputSource source, URI systemId)
-        throws IOException, GxmlMarshalException
+        throws IOException, XdmMarshalException
     {
         if (source.getCharacterStream() != null)
             return parse(source.getCharacterStream(), systemId);
@@ -158,7 +158,7 @@ public class DefaultDocumentHandler<N>
     }
 
     public void write(final OutputStream byteStream, final N source, String encoding)
-        throws IOException, GxmlMarshalException
+        throws IOException, XdmMarshalException
     {
         PreCondition.assertNotNull(byteStream, "byteStream");
         PreCondition.assertNotNull(source, "source");
@@ -180,7 +180,7 @@ public class DefaultDocumentHandler<N>
     }
 
     public void write(Writer characterStream, N source)
-        throws IOException, GxmlMarshalException
+        throws IOException, XdmMarshalException
     {
         PreCondition.assertNotNull(characterStream, "characterStream");
         PreCondition.assertNotNull(source, "source");
@@ -194,12 +194,12 @@ public class DefaultDocumentHandler<N>
         }
         catch (XMLStreamException xse)
         {
-            throw new GxmlMarshalException(xse);
+            throw new XdmMarshalException(xse);
         }
     }
     
     protected N parseEventReader(XMLEventReader reader, URI systemId)
-        throws IOException, GxmlMarshalException
+        throws IOException, XdmMarshalException
     {
         // this is probably working now.
         PreCondition.assertNotNull(reader, "reader");
