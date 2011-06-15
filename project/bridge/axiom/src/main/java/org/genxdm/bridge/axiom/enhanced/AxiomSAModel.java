@@ -27,7 +27,7 @@ import org.apache.axiom.om.OMNode;
 import org.genxdm.NodeKind;
 import org.genxdm.bridge.axiom.AxiomModel;
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.names.NamespaceBinding;
 import org.genxdm.typed.TypedModel;
@@ -338,13 +338,13 @@ final class AxiomSAModel implements TypedModel<Object, XmlAtom>
         return delegate.matches(node, namespaceArg, localNameArg);
     }
 
-    public void stream(Object node, boolean copyNamespaces, boolean copyTypeAnnotations, SequenceHandler<XmlAtom> handler) throws GxmlException
+    public void stream(Object node, boolean copyNamespaces, boolean copyTypeAnnotations, SequenceHandler<XmlAtom> handler) throws GenXDMException
     {
         // TODO Auto-generated method stub
         throw new AssertionError("TODO");
     }
 
-    public void stream(Object node, boolean copyNamespaces, ContentHandler handler) throws GxmlException
+    public void stream(Object node, boolean copyNamespaces, ContentHandler handler) throws GenXDMException
     {
         delegate.stream(node, copyNamespaces, handler); 
     }

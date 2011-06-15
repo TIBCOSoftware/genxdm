@@ -18,7 +18,7 @@ package org.genxdm.bridgekit.xs.operations;
 import java.math.BigInteger;
 
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.exceptions.AtomCastException;
+import org.genxdm.exceptions.AtomCastException;
 import org.genxdm.xs.types.NativeType;
 
 public final class OpXMLSchemaCompareIntegerRestricted<A> implements ValueComparator<A>

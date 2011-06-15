@@ -26,7 +26,7 @@ import org.genxdm.bridge.dom.DomModel;
 import org.genxdm.bridge.dom.DomNID;
 import org.genxdm.bridge.dom.DomSupport;
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.names.NameSource;
@@ -51,7 +51,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 	{
 		this.pcx = PreCondition.assertArgumentNotNull(pcx, "pcx");
 		this.baseModel = new org.genxdm.bridge.dom.DomModel();
-		this.m_metaBridge = PreCondition.assertArgumentNotNull(pcx.getMetaBridge(), "metaBridge");
+		this.m_metaBridge = PreCondition.assertArgumentNotNull(pcx.getTypesBridge(), "metaBridge");
 		this.m_atomBridge = pcx.getAtomBridge();
 		this.nameBridge = NameSource.SINGLETON;
 	}
@@ -285,7 +285,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 						}
 						catch (final DatatypeException e)
 						{
-							throw new GxmlException(e);
+							throw new GenXDMException(e);
 						}
 					}
 					else
@@ -467,12 +467,12 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 //        }
 //	}
 
-	public final void stream(final Node origin, final boolean copyNamespaces, final ContentHandler handler) throws GxmlException
+	public final void stream(final Node origin, final boolean copyNamespaces, final ContentHandler handler) throws GenXDMException
 	{
 	    baseModel.stream(origin, copyNamespaces, handler);
 	}
 
-	public final void stream(final Node origin, boolean copyNamespaces, boolean copyTypeAnnotations, final SequenceHandler<XmlAtom> handler) throws GxmlException
+	public final void stream(final Node origin, boolean copyNamespaces, boolean copyTypeAnnotations, final SequenceHandler<XmlAtom> handler) throws GenXDMException
 	{
 		switch (getNodeKind(origin))
 		{
@@ -588,7 +588,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 //        }
 //    }
 
-    private void deepCopyAttribute(final Node attribute, final boolean copyNamespaces, final boolean copyTypeAnnotations, final SequenceHandler<XmlAtom> handler) throws GxmlException
+    private void deepCopyAttribute(final Node attribute, final boolean copyNamespaces, final boolean copyTypeAnnotations, final SequenceHandler<XmlAtom> handler) throws GenXDMException
     {
         final String prefix = copyNamespaces ? baseModel.getAttributePrefix(attribute) : "";
         handler.attribute(getNamespaceURI(attribute), getLocalName(attribute), prefix, attribute.getNodeValue(), null);
@@ -597,7 +597,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
     /**
      * An optimized child axis traversal for that avoids intermediate {@link Iterable} creation.
      */
-    private void deepCopyChildren(final Node origin, final boolean copyNamespaces, final boolean copyTypeAnnotations, final SequenceHandler<XmlAtom> handler) throws GxmlException
+    private void deepCopyChildren(final Node origin, final boolean copyNamespaces, final boolean copyTypeAnnotations, final SequenceHandler<XmlAtom> handler) throws GenXDMException
     {
         Node child = origin.getFirstChild();
         while (null != child)
@@ -630,7 +630,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
         }
     }
 
-    private static void deepCopyNamespace(final Node namespace, final SequenceHandler<XmlAtom> handler, final NameSource nameBridge) throws GxmlException
+    private static void deepCopyNamespace(final Node namespace, final SequenceHandler<XmlAtom> handler, final NameSource nameBridge) throws GenXDMException
     {
         final String prefix = DomSupport.getLocalNameAsString(namespace);
         final String uri = namespace.getNodeValue();

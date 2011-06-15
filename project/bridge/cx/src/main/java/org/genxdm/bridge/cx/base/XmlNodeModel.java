@@ -47,7 +47,7 @@ import org.genxdm.bridgekit.axes.IterablePrecedingAxis;
 import org.genxdm.bridgekit.axes.IterablePrecedingSiblingAxis;
 import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.bridgekit.tree.Ordering;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.names.NamespaceBinding;
 
@@ -56,7 +56,7 @@ public class XmlNodeModel
 {
 
     public void stream(final XmlNode node, final boolean copyNamespaces, final ContentHandler handler)
-        throws GxmlException
+        throws GenXDMException
     {
         Walker.walk(node, copyNamespaces, handler);
     }

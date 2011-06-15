@@ -22,8 +22,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.exceptions.GxmlAtomCastException;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.AtomCastException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.typed.io.SequenceHandler;
@@ -40,93 +40,93 @@ public class SequenceConversionFilter<Asrc, Atrg>
     }
 
     public void atom(Asrc atom)
-        throws GxmlException
+        throws GenXDMException
     {
         target.atom(convertAtom(atom));
     }
 
     public void attribute(String namespaceURI, String localName, String prefix, List<? extends Asrc> data, QName type)
-        throws GxmlException
+        throws GenXDMException
     {
         List<Atrg> atoms = convertAtomList(data);
         target.attribute(namespaceURI, localName, prefix, atoms, type);
     }
 
     public void endSequence()
-        throws GxmlException
+        throws GenXDMException
     {
         target.endSequence();
     }
 
     public void startElement(String namespaceURI, String localName, String prefix, QName type)
-        throws GxmlException
+        throws GenXDMException
     {
         target.startElement(namespaceURI, localName, prefix, type);
     }
 
     public void startSequence()
-        throws GxmlException
+        throws GenXDMException
     {
         target.startSequence();
     }
 
     public void text(List<? extends Asrc> data)
-        throws GxmlException
+        throws GenXDMException
     {
         List<Atrg> atoms = convertAtomList(data);
         target.text(atoms);
     }
 
     public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
-        throws GxmlException
+        throws GenXDMException
     {
         target.attribute(namespaceURI, localName, prefix, value, type);
     }
 
     public void comment(String value)
-        throws GxmlException
+        throws GenXDMException
     {
         target.comment(value);
     }
 
     public void endDocument()
-        throws GxmlException
+        throws GenXDMException
     {
         target.endDocument();
     }
 
     public void endElement()
-        throws GxmlException
+        throws GenXDMException
     {
         target.endElement();
     }
 
     public void namespace(String prefix, String namespaceURI)
-        throws GxmlException
+        throws GenXDMException
     {
         target.namespace(prefix, namespaceURI);
     }
 
     public void processingInstruction(String pi, String data)
-        throws GxmlException
+        throws GenXDMException
     {
         target.processingInstruction(pi, data);
     }
 
     public void startDocument(final URI documentURI, final String docTypeDecl)
-        throws GxmlException
+        throws GenXDMException
     {
         target.startDocument(documentURI, docTypeDecl);
     }
 
     public void startElement(String namespaceURI, String localName, String prefix)
-        throws GxmlException
+        throws GenXDMException
     {
         target.startElement(namespaceURI, localName, prefix);
     }
 
     public void text(String data)
-        throws GxmlException
+        throws GenXDMException
     {
         target.text(data);
     }
@@ -144,15 +144,15 @@ public class SequenceConversionFilter<Asrc, Atrg>
     }
     
     private Atrg convertAtom(final Asrc atom)
-        throws GxmlException
+        throws GenXDMException
     {
         try
         {
             return trgBridge.compile(srcBridge.getC14NForm(atom), srcBridge.getNativeType(atom));
         }
-        catch (GxmlAtomCastException gace)
+        catch (AtomCastException gace)
         {
-            throw new GxmlException(gace);
+            throw new GenXDMException(gace);
         }
     }
     

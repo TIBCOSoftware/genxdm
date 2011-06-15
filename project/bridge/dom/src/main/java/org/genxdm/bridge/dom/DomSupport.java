@@ -25,7 +25,7 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.types.AtomBridge;
@@ -824,7 +824,7 @@ public final class DomSupport implements DomConstants
 
     public static <A> List<? extends A> getTypedValue(final Node node, final String separator, final Emulation emulation, final TypedContext<Node, A> pcx)
     {
-        final TypesBridge metaBridge = pcx.getMetaBridge();
+        final TypesBridge metaBridge = pcx.getTypesBridge();
         final AtomBridge<A> atomBridge = pcx.getAtomBridge();
         switch (getNodeKind(node))
         {
@@ -842,7 +842,7 @@ public final class DomSupport implements DomConstants
                     }
                     catch (final DatatypeException e)
                     {
-                        throw new GxmlException(e);
+                        throw new GenXDMException(e);
                     }
                 }
                 else

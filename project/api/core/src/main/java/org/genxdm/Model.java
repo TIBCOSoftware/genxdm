@@ -19,7 +19,7 @@ import java.util.Comparator;
 
 import org.genxdm.axes.AxisNodeNavigator;
 import org.genxdm.axes.NodeNavigator;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.nodes.NodeInformer;
 
@@ -45,5 +45,5 @@ public interface Model<N>
      * @param handler
      *            The handler for events generated.
      */
-    void stream(N node, boolean copyNamespaces, ContentHandler handler) throws GxmlException;
+    void stream(N node, boolean copyNamespaces, ContentHandler handler) throws GenXDMException;
 }

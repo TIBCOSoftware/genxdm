@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2010 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.xs.simple.Gregorian;
-import org.genxdm.exceptions.GxmlAtomCastException;
+import org.genxdm.exceptions.AtomCastException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.exception.scc.SccAllGroupAppearsException;
@@ -652,7 +652,7 @@ final class SchemaConstraintChecker
                             errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
                         }
                     }
-                    catch (final GxmlAtomCastException e)
+                    catch (final AtomCastException e)
                     {
                         errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
                     }
@@ -668,7 +668,7 @@ final class SchemaConstraintChecker
                             errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
                         }
                     }
-                    catch (final GxmlAtomCastException e)
+                    catch (final AtomCastException e)
                     {
                         errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
                     }
@@ -684,7 +684,7 @@ final class SchemaConstraintChecker
                             errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
                         }
                     }
-                    catch (final GxmlAtomCastException e)
+                    catch (final AtomCastException e)
                     {
                         errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
                     }
@@ -700,7 +700,7 @@ final class SchemaConstraintChecker
                             errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
                         }
                     }
-                    catch (final GxmlAtomCastException e)
+                    catch (final AtomCastException e)
                     {
                         errors.error(simpleType, new SccMinInclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
                     }
@@ -720,7 +720,7 @@ final class SchemaConstraintChecker
                             errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
                         }
                     }
-                    catch (final GxmlAtomCastException e)
+                    catch (final AtomCastException e)
                     {
                         errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
                     }
@@ -736,7 +736,7 @@ final class SchemaConstraintChecker
                             errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
                         }
                     }
-                    catch (final GxmlAtomCastException e)
+                    catch (final AtomCastException e)
                     {
                         errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
                     }
@@ -752,7 +752,7 @@ final class SchemaConstraintChecker
                             errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
                         }
                     }
-                    catch (final GxmlAtomCastException e)
+                    catch (final AtomCastException e)
                     {
                         errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
                     }
@@ -768,7 +768,7 @@ final class SchemaConstraintChecker
                             errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
                         }
                     }
-                    catch (final GxmlAtomCastException e)
+                    catch (final AtomCastException e)
                     {
                         errors.error(simpleType, new SccMaxInclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
                     }
@@ -788,7 +788,7 @@ final class SchemaConstraintChecker
                             errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
                         }
                     }
-                    catch (final GxmlAtomCastException e)
+                    catch (final AtomCastException e)
                     {
                         errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
                     }
@@ -804,7 +804,7 @@ final class SchemaConstraintChecker
                             errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
                         }
                     }
-                    catch (final GxmlAtomCastException e)
+                    catch (final AtomCastException e)
                     {
                         errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxExclusive));
                     }
@@ -820,7 +820,7 @@ final class SchemaConstraintChecker
                             errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
                         }
                     }
-                    catch (final GxmlAtomCastException e)
+                    catch (final AtomCastException e)
                     {
                         errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinInclusive));
                     }
@@ -836,7 +836,7 @@ final class SchemaConstraintChecker
                             errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
                         }
                     }
-                    catch (final GxmlAtomCastException e)
+                    catch (final AtomCastException e)
                     {
                         errors.error(simpleType, new SccMinExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
                     }
@@ -856,7 +856,7 @@ final class SchemaConstraintChecker
                             errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
                         }
                     }
-                    catch (final GxmlAtomCastException e)
+                    catch (final AtomCastException e)
                     {
                         errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MaxExclusive, restrictingLimit, parentMaxExclusive));
                     }
@@ -872,7 +872,7 @@ final class SchemaConstraintChecker
                             errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
                         }
                     }
-                    catch (final GxmlAtomCastException e)
+                    catch (final AtomCastException e)
                     {
                         errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MaxInclusive, restrictingLimit, parentMaxInclusive));
                     }
@@ -888,7 +888,7 @@ final class SchemaConstraintChecker
                             errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MinInclusive, restrictingLimit, parentMinInclusive));
                         }
                     }
-                    catch (final GxmlAtomCastException e)
+                    catch (final AtomCastException e)
                     {
                         errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
                     }
@@ -904,7 +904,7 @@ final class SchemaConstraintChecker
                             errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
                         }
                     }
-                    catch (final GxmlAtomCastException e)
+                    catch (final AtomCastException e)
                     {
                         errors.error(simpleType, new SccMaxExclusionRestrictionException(FacetKind.MinExclusive, restrictingLimit, parentMinExclusive));
                     }
@@ -2420,7 +2420,7 @@ final class SchemaConstraintChecker
     }
 
     private XmlAtom upcast(final XmlAtom sourceAtom, final XmlAtom baseAtom)
-        throws GxmlAtomCastException
+        throws AtomCastException
     {
         final QName baseType = atomBridge.getDataType(baseAtom);
         final XmlAtom atom = atomBridge.upCast(sourceAtom);

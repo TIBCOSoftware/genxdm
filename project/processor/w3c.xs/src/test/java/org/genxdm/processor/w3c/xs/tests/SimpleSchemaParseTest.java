@@ -98,14 +98,17 @@ public class SimpleSchemaParseTest
                 assertTrue(e.getType().isAtomicType());
         }
         
+        // only one global simple type is defined,
+        // but there's a second one.  that one has a generated name.
+        // fun.
         for (SimpleType type : simps)
         {
-//System.out.println(type.getLocalName());
+System.out.println(type.getLocalName());
         }
         
         for (ComplexType type: comps)
         {
-//System.out.println(type.getLocalName());
+System.out.println(type.getLocalName());
         }
         
         assertEquals(0, count(models));

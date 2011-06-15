@@ -42,7 +42,7 @@ import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.bridgekit.names.DefaultNamespaceBinding;
 import org.genxdm.bridgekit.names.QNameComparator;
 import org.genxdm.bridgekit.tree.Ordering;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.names.NamespaceBinding;
@@ -838,7 +838,7 @@ public class DomModel
     }
 
     public void stream(Node node, boolean copyNamespaces, ContentHandler handler)
-        throws GxmlException
+        throws GenXDMException
     {
         switch (getNodeKind(node))
         {

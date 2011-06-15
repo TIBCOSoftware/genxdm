@@ -37,7 +37,7 @@ import org.genxdm.bridgekit.xs.complex.ZEmptyType;
 import org.genxdm.bridgekit.xs.complex.ZInterleaveType;
 import org.genxdm.bridgekit.xs.complex.ZMultiplyType;
 import org.genxdm.bridgekit.xs.complex.ZPrimeChoiceType;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NamespaceResolver;
 import org.genxdm.typed.types.MetaVisitor;
@@ -1121,7 +1121,7 @@ public final class TypesBridgeImpl implements TypesBridge
         return TEXT;
     }
 
-    public String toString(final SequenceType type, final NamespaceResolver mappings, final String defaultElementAndTypeNamespace) throws GxmlException
+    public String toString(final SequenceType type, final NamespaceResolver mappings, final String defaultElementAndTypeNamespace) throws GenXDMException
     {
         return type.toString();
     }

@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.xs.operations;
 
-import org.genxdm.xs.exceptions.AtomCastException;
+import org.genxdm.exceptions.AtomCastException;
 
 /**
  * Internal implementation interface for organizing value comparisons.
