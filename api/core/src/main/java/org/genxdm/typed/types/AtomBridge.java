@@ -22,7 +22,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.exceptions.GxmlAtomCastException;
+import org.genxdm.exceptions.AtomCastException;
 import org.genxdm.names.NameSource;
 import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.NativeType;
@@ -80,10 +80,10 @@ public interface AtomBridge<A>
      * @param castingContext
      *            The context that provides defaults for casting operations.
      * @return The cast atom or <code>null</code> if the input was <code>null</code>.
-     * @throws GxmlAtomCastException
+     * @throws AtomCastException
      *             if a cast does not exist between the two types or fails because of incompatible data.
      */
-    A castAs(A sourceAtom, QName targetType, CastingContext castingContext) throws GxmlAtomCastException;
+    A castAs(A sourceAtom, QName targetType, CastingContext castingContext) throws AtomCastException;
 
     /**
      * Performs the casting of one atomic value to another.
@@ -95,10 +95,10 @@ public interface AtomBridge<A>
      * @param castingContext
      *            The context that provides defaults for casting operations.
      * @return The cast atom or <code>null</code> if the input was <code>null</code>.
-     * @throws GxmlAtomCastException
+     * @throws AtomCastException
      *             if a cast does not exist between the two types or fails because of incompatible data.
      */
-    A castAs(A sourceAtom, NativeType targetType, CastingContext castingContext) throws GxmlAtomCastException;
+    A castAs(A sourceAtom, NativeType targetType, CastingContext castingContext) throws AtomCastException;
 
     /**
      * Compile the atomic value from the lexical representation. This method is typically used for validation.
@@ -107,12 +107,12 @@ public interface AtomBridge<A>
      *            The lexical representation of the atomic value.
      * @param dataType
      *            The native data type
-     * @throws GxmlAtomCastException
+     * @throws AtomCastException
      *             If the lexical representation is not valid for the atomic value type.
      */
-    A compile(String srcval, NativeType dataType) throws GxmlAtomCastException;
+    A compile(String srcval, NativeType dataType) throws AtomCastException;
 
-    A compile(String srcval, NativeType dataType, PrefixResolver resolver) throws GxmlAtomCastException;
+    A compile(String srcval, NativeType dataType, PrefixResolver resolver) throws AtomCastException;
 
     A createBase64Binary(byte[] base64BinaryValue);
 

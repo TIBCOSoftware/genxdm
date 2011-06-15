@@ -31,7 +31,7 @@ import org.genxdm.bridge.cx.tree.XmlNodeMutator;
 import org.genxdm.bridge.cx.tree.XmlPINode;
 import org.genxdm.bridge.cx.tree.XmlRootNode;
 import org.genxdm.bridge.cx.tree.XmlTextNode;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.io.FragmentBuilder;
 
@@ -40,7 +40,7 @@ public class XmlNodeBuilder
 {
     
     public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
-        throws GxmlException
+        throws GenXDMException
     {
         flushCatch();
         depth++;
@@ -64,7 +64,7 @@ public class XmlNodeBuilder
     }
 
     public void comment(String value)
-        throws GxmlException
+        throws GenXDMException
     {
         flushCatch();
         depth++;
@@ -82,7 +82,7 @@ public class XmlNodeBuilder
     }
 
     public void endDocument()
-        throws GxmlException
+        throws GenXDMException
     {
         flushCatch();
         endNodeProcessing();
@@ -91,7 +91,7 @@ public class XmlNodeBuilder
     }
 
     public void endElement()
-        throws GxmlException
+        throws GenXDMException
     {
         flushCatch();
         endNodeProcessing();
@@ -118,7 +118,7 @@ public class XmlNodeBuilder
     }
 
     public void namespace(String prefix, String namespaceURI)
-        throws GxmlException
+        throws GenXDMException
     {
         flushCatch();
         depth++;
@@ -132,7 +132,7 @@ public class XmlNodeBuilder
     }
 
     public void processingInstruction(String target, String data)
-        throws GxmlException
+        throws GenXDMException
     {
         flushCatch();
         depth++;
@@ -157,7 +157,7 @@ public class XmlNodeBuilder
     }
 
     public void startDocument(URI documentURI, String docTypeDecl)
-        throws GxmlException
+        throws GenXDMException
     {
         if (current == null)
         {
@@ -169,7 +169,7 @@ public class XmlNodeBuilder
     }
 
     public void startElement(String namespaceURI, String localName, String prefix)
-        throws GxmlException
+        throws GenXDMException
     {
         flushCatch();
         depth++;
@@ -186,7 +186,7 @@ public class XmlNodeBuilder
     }
 
     public void text(String data)
-        throws GxmlException
+        throws GenXDMException
     {
         flushCatch();
         depth++;
@@ -230,7 +230,7 @@ public class XmlNodeBuilder
         }
         catch (IOException ioe)
         {
-            throw new GxmlException(ioe);
+            throw new GenXDMException(ioe);
         }
     }
 

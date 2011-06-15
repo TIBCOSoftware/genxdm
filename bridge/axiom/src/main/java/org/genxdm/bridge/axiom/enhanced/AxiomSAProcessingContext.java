@@ -130,7 +130,7 @@ public final class AxiomSAProcessingContext
         return metaBridge.getComponents();
     }
 
-    public TypesBridge getMetaBridge()
+    public TypesBridge getTypesBridge()
 	{
 		return metaBridge;
 	}

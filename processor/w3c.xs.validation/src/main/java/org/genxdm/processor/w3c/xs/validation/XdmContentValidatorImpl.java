@@ -22,7 +22,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
@@ -45,14 +45,14 @@ final class XdmContentValidatorImpl<A> implements XdmContentValidator<A>
 		this.atomBridge = atomBridge;
 	}
 
-	public void attribute(final String namespaceURI, final String localName, final String prefix, final List<? extends A> data, final QName ignoreMe) throws GxmlException
+	public void attribute(final String namespaceURI, final String localName, final String prefix, final List<? extends A> data, final QName ignoreMe) throws GenXDMException
 	{
 		// TODO: We don't want to throw the value away.
 		final String strval = Emulation.C14N.atomsToString(data, atomBridge);
 		m_attributes.add(new VxMapping<QName, String>(new QName(namespaceURI, localName, prefix), strval));
 	}
 	
-	public void attribute(final String namespaceURI, final String localName, final String prefix, final String untypedAtomic, final DtdAttributeKind type) throws GxmlException
+	public void attribute(final String namespaceURI, final String localName, final String prefix, final String untypedAtomic, final DtdAttributeKind type) throws GenXDMException
 	{
 		m_attributes.add(new VxMapping<QName, String>(new QName(namespaceURI, localName, prefix), untypedAtomic));
 	}
@@ -61,12 +61,12 @@ final class XdmContentValidatorImpl<A> implements XdmContentValidator<A>
 	{
 	}
 
-	public void comment(final String value) throws GxmlException
+	public void comment(final String value) throws GenXDMException
 	{
 		// Ignore. Comments must not interfere with validation.
 	}
 
-	public void endDocument() throws GxmlException
+	public void endDocument() throws GenXDMException
 	{
 		try
 		{
@@ -74,11 +74,11 @@ final class XdmContentValidatorImpl<A> implements XdmContentValidator<A>
 		}
 		catch (final Exception e)
 		{
-			throw new GxmlException(e);
+			throw new GenXDMException(e);
 		}
 	}
 
-	public void endElement() throws GxmlException
+	public void endElement() throws GenXDMException
 	{
 		flush();
 		try
@@ -87,7 +87,7 @@ final class XdmContentValidatorImpl<A> implements XdmContentValidator<A>
 		}
 		catch (final Exception e)
 		{
-			throw new GxmlException(e);
+			throw new GenXDMException(e);
 		}
 	}
 
@@ -101,7 +101,7 @@ final class XdmContentValidatorImpl<A> implements XdmContentValidator<A>
 			}
 			catch (final Exception e)
 			{
-				throw new GxmlException(e);
+				throw new GenXDMException(e);
 			}
 			m_elementName = null;
 			m_namespaces.clear();
@@ -109,12 +109,12 @@ final class XdmContentValidatorImpl<A> implements XdmContentValidator<A>
 		}
 	}
 
-	public void namespace(final String prefix, final String namespaceURI) throws GxmlException
+	public void namespace(final String prefix, final String namespaceURI) throws GenXDMException
 	{
 		m_namespaces.add(new VxMapping<String, String>(prefix, namespaceURI));
 	}
 
-	public void processingInstruction(final String target, final String data) throws GxmlException
+	public void processingInstruction(final String target, final String data) throws GenXDMException
 	{
 		// Ignore. Processing instructions must not interfere with validation.
 	}
@@ -125,7 +125,7 @@ final class XdmContentValidatorImpl<A> implements XdmContentValidator<A>
 	}
 
 	public void startDocument(final URI documentURI, final String docTypeDecl) 
-	    throws GxmlException
+	    throws GenXDMException
 	{
 		try
 		{
@@ -133,22 +133,22 @@ final class XdmContentValidatorImpl<A> implements XdmContentValidator<A>
 		}
 		catch (final Exception e)
 		{
-			throw new GxmlException(e);
+			throw new GenXDMException(e);
 		}
 	}
 
-	public void startElement(final String namespaceURI, final String localName, final String prefix, final QName ignoreMe) throws GxmlException
+	public void startElement(final String namespaceURI, final String localName, final String prefix, final QName ignoreMe) throws GenXDMException
 	{
 	    startElement(namespaceURI, localName, prefix);
 	}
 
-    public void startElement(final String namespaceURI, final String localName, final String prefix) throws GxmlException
+    public void startElement(final String namespaceURI, final String localName, final String prefix) throws GenXDMException
     {
         flush();
         m_elementName = new QName(namespaceURI, localName, prefix);
     }
 
-	public void text(final List<? extends A> value) throws GxmlException
+	public void text(final List<? extends A> value) throws GenXDMException
 	{
 		flush();
 		try
@@ -157,15 +157,15 @@ final class XdmContentValidatorImpl<A> implements XdmContentValidator<A>
 		}
 		catch (final IOException e)
 		{
-			throw new GxmlException(e);
+			throw new GenXDMException(e);
 		}
 		catch (final AbortException e)
 		{
-			throw new GxmlException(e);
+			throw new GenXDMException(e);
 		}
 	}
 
-	public void text(final String untypedAtomic) throws GxmlException
+	public void text(final String untypedAtomic) throws GenXDMException
 	{
 		flush();
 		try
@@ -174,30 +174,30 @@ final class XdmContentValidatorImpl<A> implements XdmContentValidator<A>
 		}
 		catch (final IOException e)
 		{
-			throw new GxmlException(e);
+			throw new GenXDMException(e);
 		}
 		catch (final AbortException e)
 		{
-			throw new GxmlException(e);
+			throw new GenXDMException(e);
 		}
 	}
 
     public void atom(A atom)
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO Auto-generated method stub
         
     }
 
     public void endSequence()
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO Auto-generated method stub
         
     }
 
     public void startSequence()
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO Auto-generated method stub
         

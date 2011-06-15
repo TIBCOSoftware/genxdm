@@ -32,7 +32,7 @@ import org.genxdm.bridgekit.axes.IterableFollowingAxis;
 import org.genxdm.bridgekit.axes.IterableFollowingSiblingAxis;
 import org.genxdm.bridgekit.axes.IterablePrecedingAxis;
 import org.genxdm.bridgekit.axes.IterablePrecedingSiblingAxis;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.names.NamespaceBinding;
 import org.genxdm.typed.TypedModel;
@@ -520,11 +520,11 @@ public final class CoreModelDecorator<N, A>
         return model.matches(node, namespaceURI, localName);
     }
 
-    public void stream(final N node, final boolean copyNamespaces, final ContentHandler handler) throws GxmlException
+    public void stream(final N node, final boolean copyNamespaces, final ContentHandler handler) throws GenXDMException
     {
     }
 
-    public void stream(final N node, final boolean copyNamespaces, final boolean copyTypeAnnotations, final SequenceHandler<A> handler) throws GxmlException
+    public void stream(final N node, final boolean copyNamespaces, final boolean copyTypeAnnotations, final SequenceHandler<A> handler) throws GenXDMException
     {
         // TODO Auto-generated method stub
         throw new AssertionError();

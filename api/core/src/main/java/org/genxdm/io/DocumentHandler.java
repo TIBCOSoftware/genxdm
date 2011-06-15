@@ -22,7 +22,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.net.URI;
 
-import org.genxdm.exceptions.GxmlMarshalException;
+import org.genxdm.exceptions.XdmMarshalException;
 import org.xml.sax.InputSource;
 
 /** Provides an interface for reading and writing XML.
@@ -45,7 +45,7 @@ public interface DocumentHandler<N>
      * @param systemId the URI of the document, if available; may be null
      * @return a document node resulting from the parse
      */
-    N parse(final InputStream byteStream, final URI systemId) throws IOException, GxmlMarshalException;
+    N parse(final InputStream byteStream, final URI systemId) throws IOException, XdmMarshalException;
     
     /** Parse a reader (characters) as a document node.
      * 
@@ -55,7 +55,7 @@ public interface DocumentHandler<N>
      * @param systemId the URI of the document, if available; may be null
      * @return a document node resulting from the parse
      */
-    N parse(final Reader characterStream, final URI systemId) throws IOException, GxmlMarshalException;
+    N parse(final Reader characterStream, final URI systemId) throws IOException, XdmMarshalException;
     
     /** Parse a SAX InputSource to a document node.
      * 
@@ -68,7 +68,7 @@ public interface DocumentHandler<N>
      * @return a document node resulting from the parse.
      * 
      */
-    N parse(final InputSource source, final URI systemId) throws IOException, GxmlMarshalException;
+    N parse(final InputSource source, final URI systemId) throws IOException, XdmMarshalException;
 
     /** Write XML, as bytes in a specified character encoding, to an output stream, unformatted.
      *
@@ -81,7 +81,7 @@ public interface DocumentHandler<N>
      * @param encoding the encoding in which to write characters as bytes; if null, or an unsupported encoding
      *   for the JVM, "UTF-8" will be used.
      */
-    void write(final OutputStream byteStream, final N source, String encoding) throws IOException, GxmlMarshalException;
+    void write(final OutputStream byteStream, final N source, String encoding) throws IOException, XdmMarshalException;
     
     /** Write XML, as characters, to a Writer, unformatted.
      * 
@@ -92,5 +92,5 @@ public interface DocumentHandler<N>
      * @param characterStream the target Writer; may not be null
      * @param source the starting node from which to traverse (usually a document node); may not be null
      */
-    void write(final Writer characterStream, final N source) throws IOException, GxmlMarshalException;
+    void write(final Writer characterStream, final N source) throws IOException, XdmMarshalException;
 }

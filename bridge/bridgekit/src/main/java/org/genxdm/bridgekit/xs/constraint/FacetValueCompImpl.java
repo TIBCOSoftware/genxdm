@@ -33,11 +33,10 @@ import org.genxdm.bridgekit.xs.operations.OpXMLSchemaCompareIntegerRestricted;
 import org.genxdm.bridgekit.xs.operations.OpXMLSchemaCompareLong;
 import org.genxdm.bridgekit.xs.operations.OpXMLSchemaCompareShort;
 import org.genxdm.bridgekit.xs.operations.ValueComparator;
-import org.genxdm.exceptions.GxmlAtomCastException;
+import org.genxdm.exceptions.AtomCastException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
-import org.genxdm.xs.exceptions.AtomCastException;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.exceptions.FacetException;
 import org.genxdm.xs.exceptions.FacetMinMaxException;
@@ -208,7 +207,7 @@ public final class FacetValueCompImpl extends FacetImpl implements Limit
         {
             return atomBridge.castAs(atom, uberType, castingContext);
         }
-        catch (final GxmlAtomCastException e)
+        catch (final AtomCastException e)
         {
             throw new AssertionError(e);
         }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2010 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,7 @@ package org.genxdm.xs;
 import javax.xml.namespace.QName;
 
 /**
- * For deterimining whether a schema component exists.
+ * For determining whether a schema component exists.
  */
 public interface ComponentDetector
 {

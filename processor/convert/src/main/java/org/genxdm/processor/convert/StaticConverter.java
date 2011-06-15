@@ -16,13 +16,13 @@
 package org.genxdm.processor.convert;
 
 import org.genxdm.Cursor;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.FragmentBuilder;
 
 public class StaticConverter
 {
     public static <Nsrc, Ntrg> Ntrg convert(Cursor<Nsrc> cursor, FragmentBuilder<Ntrg> builder)
-        throws GxmlException
+        throws GenXDMException
     {
         builder.reset();
         cursor.write(builder);

@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2011 TIBCO Software Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.genxdm.processor.w3c.xs.impl;
 
 import java.math.BigDecimal;
@@ -42,7 +57,7 @@ import org.genxdm.bridgekit.atoms.XmlString;
 import org.genxdm.bridgekit.atoms.XmlToken;
 import org.genxdm.bridgekit.atoms.XmlUntypedAtomic;
 import org.genxdm.bridgekit.atoms.XmlYearMonthDuration;
-import org.genxdm.exceptions.GxmlAtomCastException;
+import org.genxdm.exceptions.AtomCastException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
@@ -88,7 +103,7 @@ public class CanonicalAtomBridge
 
     @Override
     public XmlAtom castAs(XmlAtom sourceAtom, QName targetType, CastingContext castingContext)
-        throws GxmlAtomCastException
+        throws AtomCastException
     {
         PreCondition.assertArgumentNotNull(castingContext, "castingContext");
         return CastingSupport.castAs(sourceAtom, targetType, castingContext, components, this);
@@ -96,7 +111,7 @@ public class CanonicalAtomBridge
 
     @Override
     public XmlAtom castAs(XmlAtom sourceAtom, NativeType targetType, CastingContext castingContext)
-        throws GxmlAtomCastException
+        throws AtomCastException
     {
         PreCondition.assertArgumentNotNull(castingContext, "castingContext");
         return CastingSupport.castAs(getNativeAtom(sourceAtom), targetType, castingContext, components, this);
@@ -104,7 +119,7 @@ public class CanonicalAtomBridge
 
     @Override
     public XmlAtom compile(String srcval, NativeType dataType)
-        throws GxmlAtomCastException
+        throws AtomCastException
     {
         PreCondition.assertNotNull(srcval, "srcval");
         PreCondition.assertNotNull(dataType, "dataType");
@@ -126,7 +141,7 @@ public class CanonicalAtomBridge
                 }
                 catch (DatatypeException dte)
                 {
-                    throw new GxmlAtomCastException(srcval, dte.getType().getName(), FORG0001, dte);
+                    throw new AtomCastException(srcval, dte.getType().getName(), FORG0001, dte);
                 }
             }
             throw new IllegalArgumentException("Datatype '" + dataType + "' is not an atomic type");
@@ -136,7 +151,7 @@ public class CanonicalAtomBridge
 
     @Override
     public XmlAtom compile(String srcval, NativeType dataType, PrefixResolver resolver)
-        throws GxmlAtomCastException
+        throws AtomCastException
     {
         // TODO Auto-generated method stub
         // note: when this is fixed here, go fix it in bridgekit.atoms.XmlAtomBridge too, 'kay?

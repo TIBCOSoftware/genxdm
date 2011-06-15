@@ -20,7 +20,7 @@ import java.io.Writer;
 import java.net.URI;
 import java.util.Stack;
 
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.io.DtdAttributeKind;
@@ -36,7 +36,7 @@ public class ContentWriter
     }
 
     public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
-        throws GxmlException
+        throws GenXDMException
     {
         try
         {
@@ -44,12 +44,12 @@ public class ContentWriter
         }
         catch (IOException ioe)
         {
-            throw new GxmlException(ioe);
+            throw new GenXDMException(ioe);
         }
     }
 
     public void comment(String value)
-        throws GxmlException
+        throws GenXDMException
     {
         try
         {
@@ -59,18 +59,18 @@ public class ContentWriter
         }
         catch (IOException ioe)
         {
-            throw new GxmlException(ioe);
+            throw new GenXDMException(ioe);
         }
     }
 
     public void endDocument()
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO : ??
     }
 
     public void endElement()
-        throws GxmlException
+        throws GenXDMException
     {
         try
         {
@@ -82,12 +82,12 @@ public class ContentWriter
         }
         catch (IOException ioe)
         {
-            throw new GxmlException(ioe);
+            throw new GenXDMException(ioe);
         }
     }
 
     public void namespace(String prefix, String namespaceURI)
-        throws GxmlException
+        throws GenXDMException
     {
         try
         {
@@ -95,7 +95,7 @@ public class ContentWriter
         }
         catch (IOException ioe)
         {
-            throw new GxmlException(ioe);
+            throw new GenXDMException(ioe);
         }
     }
     
@@ -108,12 +108,12 @@ public class ContentWriter
         }
         catch (IOException ioe)
         {
-            throw new GxmlException(ioe);
+            throw new GenXDMException(ioe);
         }
     }
 
     public void processingInstruction(String target, String data)
-        throws GxmlException
+        throws GenXDMException
     {
         try
         {
@@ -123,19 +123,19 @@ public class ContentWriter
         }
         catch (IOException ioe)
         {
-            throw new GxmlException(ioe);
+            throw new GenXDMException(ioe);
         }
     }
 
     public void startDocument(final URI documentURI, final String docTypeDecl)
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO Auto-generated method stub
 
     }
 
     public void startElement(String namespaceURI, String localName, String prefix)
-        throws GxmlException
+        throws GenXDMException
     {
         // TODO Auto-generated method stub
         tags.push(getQName(prefix, localName));
@@ -143,7 +143,7 @@ public class ContentWriter
     }
 
     public void text(String data)
-        throws GxmlException
+        throws GenXDMException
     {
         try
         {
@@ -152,7 +152,7 @@ public class ContentWriter
         }
         catch (IOException ioe)
         {
-            throw new GxmlException(ioe);
+            throw new GenXDMException(ioe);
         }
     }
 
@@ -176,7 +176,7 @@ public class ContentWriter
         }
         catch (IOException ioe)
         {
-            throw new GxmlException(ioe);
+            throw new GenXDMException(ioe);
         }
     }
     

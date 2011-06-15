@@ -31,7 +31,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.IllegalNullArgumentException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.DtdAttributeKind;
@@ -48,7 +48,7 @@ public class AxiomFragmentBuilder
     }
 
     public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
-        throws GxmlException
+        throws GenXDMException
     {
         PreCondition.assertNotNull(namespaceURI, "namespaceURI");
         PreCondition.assertNotNull(localName, "localName");
@@ -83,7 +83,7 @@ public class AxiomFragmentBuilder
     }
 
     public void comment(String value)
-        throws GxmlException
+        throws GenXDMException
     {
         prolog();
         if (!ignoreComments)
@@ -114,7 +114,7 @@ public class AxiomFragmentBuilder
     }
 
     public void endDocument()
-        throws GxmlException
+        throws GenXDMException
     {
         epilog();
         documentNode = null;
@@ -123,13 +123,13 @@ public class AxiomFragmentBuilder
     }
 
     public void endElement()
-        throws GxmlException
+        throws GenXDMException
     {
         epilog();
     }
 
     public void namespace(String prefix, String namespaceURI)
-        throws GxmlException
+        throws GenXDMException
     {
         if (currentNode != null)
         {
@@ -149,7 +149,7 @@ public class AxiomFragmentBuilder
     }
 
     public void processingInstruction(String target, String data)
-        throws GxmlException
+        throws GenXDMException
     {
         prolog();
         if (null != currentNode)
@@ -176,7 +176,7 @@ public class AxiomFragmentBuilder
     }
 
     public void startDocument(final URI documentURI, final String docTypeDecl)
-        throws GxmlException
+        throws GenXDMException
     {
         prolog();
         if (null == currentNode)
@@ -191,7 +191,7 @@ public class AxiomFragmentBuilder
     }
 
     public void startElement(String namespaceURI, String localName, String prefix)
-        throws GxmlException
+        throws GenXDMException
     {
         prolog();
         IllegalNullArgumentException.check(namespaceURI, "namespaceURI");
@@ -220,7 +220,7 @@ public class AxiomFragmentBuilder
     }
 
     public void text(String data)
-        throws GxmlException
+        throws GenXDMException
     {
         prolog();
         if (currentNode != null)

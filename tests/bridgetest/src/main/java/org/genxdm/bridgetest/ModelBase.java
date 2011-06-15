@@ -19,7 +19,7 @@ import org.genxdm.Feature;
 import org.genxdm.Model;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridgetest.utilities.Events;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.FragmentBuilder;
 
 import org.junit.Test;
@@ -31,7 +31,7 @@ public abstract class ModelBase<N>
 {
     @Test
     public void streaming()
-        throws GxmlException
+        throws GenXDMException
     {
         ProcessingContext<N> context = newProcessingContext();
         

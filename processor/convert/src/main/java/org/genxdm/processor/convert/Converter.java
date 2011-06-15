@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.genxdm.Cursor;
 import org.genxdm.ProcessingContext;
-import org.genxdm.exceptions.GxmlException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.typed.TypedContext;
@@ -50,10 +50,10 @@ public class Converter<N, A>
      * @param source the source node (root of a tree/subtree) to convert
      * @param targetContext context associated with the target bridge
      * @return a node handle for the new tree
-     * @throws GxmlException if a problem in conversion is encountered
+     * @throws GenXDMException if a problem in conversion is encountered
      */
     public <Ntrg, Atrg> Ntrg convert(N source, ProcessingContext<Ntrg> targetContext)
-        throws GxmlException
+        throws GenXDMException
     {
         // if both contexts are typed, then do a typed-typed conversion.
         TypedContext<N, A> sourceTypedContext = context.getTypedContext();
@@ -75,10 +75,10 @@ public class Converter<N, A>
      * @param source the source node (root of a tree/subtree)
      * @param builder a FragmentBuilder supplied by the target bridge
      * @return a target node corresponding to the source
-     * @throws GxmlException if a problem in conversion is encountered
+     * @throws GenXDMException if a problem in conversion is encountered
      */
     public <Ntrg> Ntrg convert(N source, FragmentBuilder<Ntrg> builder)
-        throws GxmlException
+        throws GenXDMException
     {
         builder.reset();
         // I like cursor.  :-)  besides, we use the model below.
@@ -88,7 +88,7 @@ public class Converter<N, A>
         if (nodeList.size() != 1)
         {
             // never happen?  one in should mean one out ...
-            throw new GxmlException("Not a tree.");
+            throw new GenXDMException("Not a tree.");
         }
         return nodeList.get(0);
     }
@@ -106,11 +106,11 @@ public class Converter<N, A>
      * @param builder a SequenceBuilder supplied by the target bridge
      * @param targetBridge an AtomBridge supplied by the target bridge
      * @return a target node corresponding to the source node
-     * @throws GxmlException if a problem in conversion or casting is encountered
+     * @throws GenXDMException if a problem in conversion or casting is encountered
      */
     public <Ntrg, Atrg> Ntrg convert(final N source, SequenceBuilder<Ntrg, Atrg> builder,
                                      final AtomBridge<Atrg> targetBridge)
-        throws GxmlException
+        throws GenXDMException
     {
         PreCondition.assertNotNull(context.getTypedContext(), "context is typed");
         TypedContext<N, A> tc = context.getTypedContext();
@@ -124,7 +124,7 @@ public class Converter<N, A>
         if (nodeList.size() != 1)
         {
             // never happen?  one in should mean one out ...
-            throw new GxmlException("Not a tree.");
+            throw new GenXDMException("Not a tree.");
         }
         return nodeList.get(0);
     }
