@@ -34,7 +34,7 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.ValidationHandler;
-import org.genxdm.typed.Validator;
+import org.genxdm.typed.io.SAXValidator;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.TypesBridge;
@@ -194,7 +194,7 @@ public final class DomSAProcessingContext
 	}
 	
 	@Override
-	public ValidatingDocumentHandler<Node, XmlAtom> newDocumentHandler(final Validator<XmlAtom> validator, final XMLReporter reporter, final Resolver resolver)
+	public ValidatingDocumentHandler<Node, XmlAtom> newDocumentHandler(final SAXValidator<XmlAtom> validator, final XMLReporter reporter, final Resolver resolver)
 	{
 	    return new ValidatingDocumentHandler<Node, XmlAtom>(this, validator, reporter, resolver);
 	}
