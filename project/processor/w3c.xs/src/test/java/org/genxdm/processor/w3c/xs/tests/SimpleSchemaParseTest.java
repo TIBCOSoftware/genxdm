@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
+import org.genxdm.bridgekit.xs.BagComponentProvider;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
 import org.genxdm.names.Catalog;
 import org.genxdm.processor.w3c.xs.DefaultCatalog;
@@ -101,14 +102,14 @@ public class SimpleSchemaParseTest
         // only one global simple type is defined,
         // but there's a second one.  that one has a generated name.
         // fun.
+        assertEquals(2, count(simps));
         for (SimpleType type : simps)
-        {
-System.out.println(type.getLocalName());
+        {// SKU, type-1
         }
         
+        assertEquals(4, count(comps));
         for (ComplexType type: comps)
-        {
-System.out.println(type.getLocalName());
+        {// Items, PurchaseOrderType, USAddress, type-0
         }
         
         assertEquals(0, count(models));
@@ -142,6 +143,10 @@ System.out.println(type.getLocalName());
         
         InputStream stream = getClass().getClassLoader().getResourceAsStream("ipo.xsd");
         ComponentBag components = parser.parse(null, stream, null, SchemaExceptionThrower.SINGLETON);
+        
+        // here, instead of iterating over everything, we're going to check
+        // a few things, using the bag to provider utility in the bridgekit.
+        BagComponentProvider provider = new BagComponentProvider(components);
         
         Iterable<AttributeDefinition> atts = components.getAttributes();
         Iterable<AttributeGroupDefinition> attGroups = components.getAttributeGroups();

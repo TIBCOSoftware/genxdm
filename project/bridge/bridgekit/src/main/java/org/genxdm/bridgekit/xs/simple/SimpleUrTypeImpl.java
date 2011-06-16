@@ -22,8 +22,8 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.xs.SchemaSupport;
+import org.genxdm.bridgekit.xs.complex.ComplexUrTypeImpl;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.components.EnumerationDefinition;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
@@ -47,12 +47,12 @@ public final class SimpleUrTypeImpl
     implements SimpleUrType
 {
     private final QName m_name;
-    private final ComponentProvider cache;
+    private final ComplexUrType base;
 
-    public SimpleUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final ComponentProvider cache)
+    public SimpleUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final ComplexUrType base)
     {
         this.m_name = new QName(W3C_XML_SCHEMA_NS_URI, "anySimpleType");
-        this.cache = cache;
+        this.base = base;
     }
 
     public void accept(final SequenceTypeVisitor visitor)
@@ -87,7 +87,7 @@ public final class SimpleUrTypeImpl
 
     public ComplexUrType getBaseType()
     {
-        return cache.getComplexUrType();
+        return base;
     }
 
     public DerivationMethod getDerivationMethod()
