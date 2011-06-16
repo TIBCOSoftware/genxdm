@@ -36,7 +36,7 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.ValidationHandler;
-import org.genxdm.typed.Validator;
+import org.genxdm.typed.io.SAXValidator;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.TypedDocumentHandler;
 import org.genxdm.typed.types.AtomBridge;
@@ -184,7 +184,7 @@ public final class AxiomSAProcessingContext
     }
     
     @Override
-    public TypedDocumentHandler<Object, XmlAtom> newDocumentHandler(Validator<XmlAtom> validator, XMLReporter reporter, Resolver resolver)
+    public TypedDocumentHandler<Object, XmlAtom> newDocumentHandler(SAXValidator<XmlAtom> validator, XMLReporter reporter, Resolver resolver)
     {
         // TODO Auto-generated method stub
         return new ValidatingDocumentHandler<Object, XmlAtom>(this, validator, reporter, resolver);

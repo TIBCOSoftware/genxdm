@@ -24,11 +24,11 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;
-import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCacheFactory;
 import org.genxdm.processor.w3c.xs.validation.impl.ValidationFactoryImpl;
+import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.Emulation;
@@ -37,9 +37,9 @@ import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
 
-final class XdmContentValidatorImpl<A> implements XdmContentValidator<A>
+final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 {
-    public XdmContentValidatorImpl(final VxValidator<A> kernel, final AtomBridge<A> atomBridge, final NameSource nameBridge)
+    public XdmContentValidatorImpl(final VxValidator<A> kernel, final AtomBridge<A> atomBridge)
     {
 		this.kernel = kernel;
 		this.atomBridge = atomBridge;

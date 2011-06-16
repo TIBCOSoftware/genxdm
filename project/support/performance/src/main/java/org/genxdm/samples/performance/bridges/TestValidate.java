@@ -14,8 +14,8 @@ import org.genxdm.Feature;
 import org.genxdm.io.Resolved;
 import org.genxdm.processor.w3c.xs.W3cXmlSchemaParser;
 import org.genxdm.processor.w3c.xs.validation.ValidatorFactory;
-import org.genxdm.processor.w3c.xs.validation.XdmContentValidator;
 import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.ValidationHandler;
 import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.exceptions.SchemaExceptionCatcher;
@@ -33,7 +33,7 @@ class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 	}
 	String m_schemaFile;
 	SchemaExceptionCatcher m_errors;
-    XdmContentValidator<A> m_validator;
+    ValidationHandler<A> m_validator;
     boolean m_copyTypeAnnotations = false;
     
     @Override
