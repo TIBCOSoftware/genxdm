@@ -39,14 +39,15 @@ import org.genxdm.xs.types.PrimeChoiceType;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceTypeVisitor;
+import org.genxdm.xs.types.SimpleUrType;
 import org.genxdm.xs.types.Type;
 
 public final class AtomicUrTypeImpl extends AbstractPrimeExcludingNoneType implements AtomicUrType
 {
-    private final SimpleUrTypeImpl m_baseType;
+    private final SimpleUrType m_baseType;
     private final QName m_name;
 
-    public AtomicUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final SimpleUrTypeImpl baseType)
+    public AtomicUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final SimpleUrType baseType)
     {
         this.m_name = new QName(W3C_XML_SCHEMA_NS_URI, "anyAtomicType");
         this.m_baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");
@@ -67,7 +68,7 @@ public final class AtomicUrTypeImpl extends AbstractPrimeExcludingNoneType imple
         return SchemaSupport.derivedFromType(this, ancestorType, derivationMethods);
     }
 
-    public SimpleUrTypeImpl getBaseType()
+    public SimpleUrType getBaseType()
     {
         return m_baseType;
     }
