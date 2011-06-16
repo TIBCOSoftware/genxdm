@@ -46,24 +46,6 @@ import org.genxdm.xs.types.Type;
 
 final class SchemaCacheImpl implements SchemaCache
 {
-    private final BuiltInSchema BUILT_IN;
-    private final NodeType COMMENT;
-    final ConcurrentHashMap<QName, AttributeGroupDefinition> m_attributeGroups = new ConcurrentHashMap<QName, AttributeGroupDefinition>();
-    final ConcurrentHashMap<QName, AttributeDefinition> m_attributes = new ConcurrentHashMap<QName, AttributeDefinition>();
-
-    final ConcurrentHashMap<QName, ComplexType> m_complexTypes = new ConcurrentHashMap<QName, ComplexType>();
-    final ConcurrentHashMap<QName, ElementDefinition> m_elements = new ConcurrentHashMap<QName, ElementDefinition>();
-    final ConcurrentHashMap<QName, IdentityConstraint> m_identityConstraints = new ConcurrentHashMap<QName, IdentityConstraint>();
-    private boolean m_isLocked = false;
-    final ConcurrentHashMap<QName, ModelGroup> m_modelGroups = new ConcurrentHashMap<QName, ModelGroup>();
-    private int m_nextType = 0;
-    final ConcurrentHashMap<QName, NotationDefinition> m_notations = new ConcurrentHashMap<QName, NotationDefinition>();
-    private final ConcurrentHashMap<QName, SimpleType> m_simpleTypes = new ConcurrentHashMap<QName, SimpleType>();
-    /**
-     * The set of namespaces of all components. We build this during registration, which acts as the gateway.
-     */
-    private final Set<String> namespaces = new HashSet<String>();
-
     public SchemaCacheImpl()
     {
         assertNotLocked();
@@ -225,25 +207,10 @@ final class SchemaCacheImpl implements SchemaCache
         return m_attributeGroups.get(name);
     }
 
-    public Iterable<AttributeGroupDefinition> getAttributeGroups()
-    {
-        return m_attributeGroups.values();
-    }
-
-    public Iterable<AttributeDefinition> getAttributes()
-    {
-        return m_attributes.values();
-    }
-
     public ComplexType getComplexType(final QName name)
     {
         PreCondition.assertArgumentNotNull(name, "name");
         return m_complexTypes.get(name);
-    }
-
-    public Iterable<ComplexType> getComplexTypes()
-    {
-        return m_complexTypes.values();
     }
 
     public ComplexUrType getComplexUrType()
@@ -257,31 +224,16 @@ final class SchemaCacheImpl implements SchemaCache
         return m_elements.get(name);
     }
 
-    public Iterable<ElementDefinition> getElements()
-    {
-        return m_elements.values();
-    }
-
     public IdentityConstraint getIdentityConstraint(final QName name)
     {
         PreCondition.assertArgumentNotNull(name, "name");
         return m_identityConstraints.get(name);
     }
 
-    public Iterable<IdentityConstraint> getIdentityConstraints()
-    {
-        return m_identityConstraints.values();
-    }
-
     public ModelGroup getModelGroup(final QName name)
     {
         PreCondition.assertArgumentNotNull(name, "name");
         return m_modelGroups.get(name);
-    }
-
-    public Iterable<ModelGroup> getModelGroups()
-    {
-        return m_modelGroups.values();
     }
 
     public Iterable<String> getNamespaces()
@@ -293,11 +245,6 @@ final class SchemaCacheImpl implements SchemaCache
     {
         PreCondition.assertArgumentNotNull(name, "name");
         return m_notations.get(name);
-    }
-
-    public Iterable<NotationDefinition> getNotations()
-    {
-        return m_notations.values();
     }
 
     public SimpleType getSimpleType(final QName name)
@@ -317,11 +264,6 @@ final class SchemaCacheImpl implements SchemaCache
         {
             return null;
         }
-    }
-
-    public Iterable<SimpleType> getSimpleTypes()
-    {
-        return m_simpleTypes.values();
     }
 
     public SimpleUrType getSimpleUrType()
@@ -702,7 +644,70 @@ final class SchemaCacheImpl implements SchemaCache
     @Override
     public ComponentBag getComponents()
     {
-        return this;
+        return components;
     }
+    
+    private class BagImpl implements ComponentBag
+    {
+        public Iterable<AttributeGroupDefinition> getAttributeGroups()
+        {
+            return m_attributeGroups.values();
+        }
+
+        public Iterable<AttributeDefinition> getAttributes()
+        {
+            return m_attributes.values();
+        }
+
+        public Iterable<ComplexType> getComplexTypes()
+        {
+            return m_complexTypes.values();
+        }
+
+        public Iterable<ElementDefinition> getElements()
+        {
+            return m_elements.values();
+        }
+
+        public Iterable<IdentityConstraint> getIdentityConstraints()
+        {
+            return m_identityConstraints.values();
+        }
+
+        public Iterable<ModelGroup> getModelGroups()
+        {
+            return m_modelGroups.values();
+        }
+
+        public Iterable<NotationDefinition> getNotations()
+        {
+            return m_notations.values();
+        }
+
+        public Iterable<SimpleType> getSimpleTypes()
+        {
+            return m_simpleTypes.values();
+        }
+
+    }
+
+    private final ComponentBag components = new BagImpl();
+    private final BuiltInSchema BUILT_IN;
+    private final NodeType COMMENT;
+    final ConcurrentHashMap<QName, AttributeGroupDefinition> m_attributeGroups = new ConcurrentHashMap<QName, AttributeGroupDefinition>();
+    final ConcurrentHashMap<QName, AttributeDefinition> m_attributes = new ConcurrentHashMap<QName, AttributeDefinition>();
+
+    final ConcurrentHashMap<QName, ComplexType> m_complexTypes = new ConcurrentHashMap<QName, ComplexType>();
+    final ConcurrentHashMap<QName, ElementDefinition> m_elements = new ConcurrentHashMap<QName, ElementDefinition>();
+    final ConcurrentHashMap<QName, IdentityConstraint> m_identityConstraints = new ConcurrentHashMap<QName, IdentityConstraint>();
+    private boolean m_isLocked = false;
+    final ConcurrentHashMap<QName, ModelGroup> m_modelGroups = new ConcurrentHashMap<QName, ModelGroup>();
+    private int m_nextType = 0;
+    final ConcurrentHashMap<QName, NotationDefinition> m_notations = new ConcurrentHashMap<QName, NotationDefinition>();
+    private final ConcurrentHashMap<QName, SimpleType> m_simpleTypes = new ConcurrentHashMap<QName, SimpleType>();
+    /**
+     * The set of namespaces of all components. We build this during registration, which acts as the gateway.
+     */
+    private final Set<String> namespaces = new HashSet<String>();
 
 }

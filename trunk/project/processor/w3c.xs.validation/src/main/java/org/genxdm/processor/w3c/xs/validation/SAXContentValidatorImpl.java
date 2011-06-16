@@ -23,9 +23,9 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
+import org.genxdm.typed.io.SAXValidator;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.xs.Schema;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
@@ -34,9 +34,9 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 
-public final class SAXContentValidatorImpl<A> implements SAXContentValidator<A>
+public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 {
-	public SAXContentValidatorImpl(final VxValidator<A> kernel, final NameSource nameBridge)
+	public SAXContentValidatorImpl(final VxValidator<A> kernel)
 	{
 		m_kernel = kernel;
 	}

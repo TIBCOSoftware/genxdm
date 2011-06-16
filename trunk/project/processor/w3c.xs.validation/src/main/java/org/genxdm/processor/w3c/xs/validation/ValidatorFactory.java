@@ -20,6 +20,8 @@ import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCacheFactory;
 import org.genxdm.processor.w3c.xs.validation.impl.ValidationFactoryImpl;
 import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.ValidationHandler;
+import org.genxdm.typed.io.SAXValidator;
 import org.genxdm.typed.types.AtomBridge;
 
 public final class ValidatorFactory<N, A>
@@ -31,16 +33,16 @@ public final class ValidatorFactory<N, A>
         this.atomBridge = pcx.getAtomBridge();
     }
 
-    public XdmContentValidator<A> newXdmContentValidator()
+    public ValidationHandler<A> newXdmContentValidator()
     {
         final VxValidator<A> kernel = factory.newValidatorCache().newValidator(atomBridge);
-        return new XdmContentValidatorImpl<A>(kernel, atomBridge, nameBridge);
+        return new XdmContentValidatorImpl<A>(kernel, atomBridge);
     }
 
-    public SAXContentValidator<A> newSAXContentValidator()
+    public SAXValidator<A> newSAXContentValidator()
     {
         final VxValidator<A> kernel = factory.newValidatorCache().newValidator(atomBridge);
-        return new SAXContentValidatorImpl<A>(kernel, nameBridge);
+        return new SAXContentValidatorImpl<A>(kernel);
     }
 
     public ValidatorFactory<N, A> schemaDocumentLocationStrategy(final SchemaDocumentLocationStrategy schemaDocumentLocationStrategy)

@@ -17,84 +17,86 @@ package org.genxdm.processor.io;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Reader;
-import java.io.Writer;
 import java.net.URI;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLReporter;
 
-import org.genxdm.exceptions.XdmMarshalException;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.io.Resolved;
+import org.genxdm.exceptions.XdmMarshalException;
 import org.genxdm.io.Resolver;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.Validator;
+import org.genxdm.typed.io.SAXValidator;
+import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.TypedDocumentHandler;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 public class ValidatingDocumentHandler<N, A>
+    extends DefaultSerializer<N>
     implements TypedDocumentHandler<N, A>
 {
 
-    public ValidatingDocumentHandler(final TypedContext<N, A> context, final Validator<A> validator, final XMLReporter reporter, final Resolver resolver)
+    public ValidatingDocumentHandler(final TypedContext<N, A> context, final SAXValidator<A> validator, final XMLReporter reporter, final Resolver resolver)
     {
-        this.context = PreCondition.assertNotNull(context, "context");
+        super(PreCondition.assertNotNull(context, "context").getModel());
+        this.context = context;
         this.validator = PreCondition.assertNotNull(validator, "validator");
+        this.validator.setSchema(this.context);
         this.resolver = resolver;
         this.reporter = reporter;
+        this.spf = SAXParserFactory.newInstance();
     }
     
     @Override
     public N parse(InputStream byteStream, URI systemId)
         throws IOException, XdmMarshalException
     {
-        // TODO Auto-generated method stub
-        return null;
+        final InputSource source = new InputSource(PreCondition.assertNotNull(byteStream, "byteStream"));
+        if (systemId != null)
+            source.setSystemId(systemId.toString());
+        return parse(source, systemId);
     }
 
     @Override
     public N parse(Reader characterStream, URI systemId)
         throws IOException, XdmMarshalException
     {
-        // TODO Auto-generated method stub
-        return null;
+        final InputSource source = new InputSource(PreCondition.assertNotNull(characterStream, "characterStream"));
+        if (systemId != null)
+            source.setSystemId(systemId.toString());
+        return parse(source, systemId);
     }
 
     @Override
     public N parse(InputSource source, URI systemId)
         throws IOException, XdmMarshalException
     {
-        if (source.getCharacterStream() != null)
-            return parse(source.getCharacterStream(), systemId);
-        if (source.getByteStream() != null)
-            return parse(source.getByteStream(), systemId);
-        if (resolver != null)
+        try
         {
-            // TODO: this might break, actually.
-            // also, this indicates that we're being lame with the resolver.
-            Resolved<Reader> rdr = resolver.resolveReader(URI.create(source.getSystemId())); 
-            return parse(rdr.getResource(), systemId);
+            XMLReader reader = spf.newSAXParser().getXMLReader();
+            SequenceBuilder<N, A> builder = context.newSequenceBuilder();
+            validator.setSequenceHandler(builder);
+            // TODO: query lexical handler?
+            reader.setContentHandler(validator);
+            // TODO
+//            reader.setErrorHandler(new ErrorHandlerToXMLReporterAdapter(reporter));
+            return builder.getNode();
+        } 
+        catch (SAXException saxy)
+        {
+            throw new XdmMarshalException(saxy);
+        } 
+        catch (ParserConfigurationException pce)
+        {
+            throw new XdmMarshalException(pce);
         }
-        return null;
     }
 
-    @Override
-    public void write(OutputStream byteStream, N source, String encoding)
-        throws IOException, XdmMarshalException
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void write(Writer characterStream, N source)
-        throws IOException, XdmMarshalException
-    {
-        // TODO Auto-generated method stub
-
-    }
-    
     @Override
     public Validator<A> getValidator()
     {
@@ -102,7 +104,8 @@ public class ValidatingDocumentHandler<N, A>
     }
     
     private final TypedContext<N, A> context;
-    private final Validator<A> validator;
+    private final SAXValidator<A> validator;
     private Resolver resolver;
     private XMLReporter reporter;
+    private SAXParserFactory spf;
 }
