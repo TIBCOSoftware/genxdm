@@ -777,11 +777,11 @@ public final class XMLSchemaConverter
             final ComplexTypeImpl complexType;
             if (null != attributeUses)
             {
-                complexType = new ComplexTypeImpl(outName, false, isAnonymous, scope, baseType, xmlComplexType.getDerivationMethod(), attributeUses, EMPTY_CONTENT, xmlComplexType.getBlock(), m_existingCache);
+                complexType = new ComplexTypeImpl(outName, false, isAnonymous, scope, baseType, xmlComplexType.getDerivationMethod(), attributeUses, EMPTY_CONTENT, xmlComplexType.getBlock(), m_existingCache.getAtomicType(NativeType.UNTYPED_ATOMIC));
             }
             else
             {
-                complexType = new ComplexTypeImpl(outName, false, isAnonymous, scope, baseType, xmlComplexType.getDerivationMethod(), null, EMPTY_CONTENT, xmlComplexType.getBlock(), m_existingCache);
+                complexType = new ComplexTypeImpl(outName, false, isAnonymous, scope, baseType, xmlComplexType.getDerivationMethod(), null, EMPTY_CONTENT, xmlComplexType.getBlock(), m_existingCache.getAtomicType(NativeType.UNTYPED_ATOMIC));
             }
             m_outBag.add(complexType);
             m_locations.m_complexTypeLocations.put(complexType, xmlComplexType.getLocation());

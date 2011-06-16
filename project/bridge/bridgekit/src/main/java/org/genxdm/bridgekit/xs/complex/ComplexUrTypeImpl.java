@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2010 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,6 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.xs.simple.AbstractPrimeExcludingNoneType;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.names.NameSource;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.components.SchemaWildcard;
@@ -51,7 +50,7 @@ public final class ComplexUrTypeImpl extends AbstractPrimeExcludingNoneType impl
     private final ContentType contentType;
     private final QName name;
 
-    public ComplexUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI, final NameSource nameBridge)
+    public ComplexUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI)
     {
         this.name = new QName(W3C_XML_SCHEMA_NS_URI, "anyType");
 

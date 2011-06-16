@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2010 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,15 +19,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.xs.complex.CommentNodeTypeImpl;
-import org.genxdm.bridgekit.xs.complex.ComplexUrTypeImpl;
-import org.genxdm.bridgekit.xs.simple.AtomicUrTypeImpl;
-import org.genxdm.bridgekit.xs.simple.SimpleUrTypeImpl;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.names.NameSource;
 import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.components.AttributeDefinition;
@@ -51,10 +46,6 @@ import org.genxdm.xs.types.Type;
 
 final class SchemaCacheImpl implements SchemaCache
 {
-    private final AtomicUrTypeImpl ANY_ATOMIC_TYPE;
-    private final ComplexUrTypeImpl ANY_COMPLEX_TYPE;
-    private final SimpleUrTypeImpl ANY_SIMPLE_TYPE;
-
     private final BuiltInSchema BUILT_IN;
     private final NodeType COMMENT;
     final ConcurrentHashMap<QName, AttributeGroupDefinition> m_attributeGroups = new ConcurrentHashMap<QName, AttributeGroupDefinition>();
@@ -68,7 +59,6 @@ final class SchemaCacheImpl implements SchemaCache
     private int m_nextType = 0;
     final ConcurrentHashMap<QName, NotationDefinition> m_notations = new ConcurrentHashMap<QName, NotationDefinition>();
     private final ConcurrentHashMap<QName, SimpleType> m_simpleTypes = new ConcurrentHashMap<QName, SimpleType>();
-    private final NameSource nameBridge = NameSource.SINGLETON;
     /**
      * The set of namespaces of all components. We build this during registration, which acts as the gateway.
      */
@@ -78,19 +68,10 @@ final class SchemaCacheImpl implements SchemaCache
     {
         assertNotLocked();
 
-        final String W3C_XML_SCHEMA_NS_URI = XMLConstants.W3C_XML_SCHEMA_NS_URI;
-        this.ANY_COMPLEX_TYPE = new ComplexUrTypeImpl(W3C_XML_SCHEMA_NS_URI, nameBridge);
-        this.ANY_SIMPLE_TYPE = new SimpleUrTypeImpl(W3C_XML_SCHEMA_NS_URI, this);
-        this.ANY_ATOMIC_TYPE = new AtomicUrTypeImpl(W3C_XML_SCHEMA_NS_URI, ANY_SIMPLE_TYPE);
-
-        defineComplexType(ANY_COMPLEX_TYPE);
-        defineSimpleType(ANY_SIMPLE_TYPE);
-        defineSimpleType(ANY_ATOMIC_TYPE);
-
-        BUILT_IN = new BuiltInSchema(W3C_XML_SCHEMA_NS_URI, this);
+        BUILT_IN = BuiltInSchema.SINGLETON;
         register(BUILT_IN);
-        register(new XmlSchema(this));
-        register(new XsiSchema(this));
+        register(new XmlSchema());
+        register(new XsiSchema());
 
         COMMENT = new CommentNodeTypeImpl();
     }
@@ -229,7 +210,7 @@ final class SchemaCacheImpl implements SchemaCache
 
     public AtomicUrType getAtomicUrType()
     {
-        return ANY_ATOMIC_TYPE;
+        return BUILT_IN.ANY_ATOMIC_TYPE;
     }
 
     public AttributeDefinition getAttributeDeclaration(final QName name)
@@ -267,7 +248,7 @@ final class SchemaCacheImpl implements SchemaCache
 
     public ComplexUrType getComplexUrType()
     {
-        return ANY_COMPLEX_TYPE;
+        return BUILT_IN.ANY_COMPLEX_TYPE;
     }
 
     public ElementDefinition getElementDeclaration(final QName name)
@@ -345,7 +326,7 @@ final class SchemaCacheImpl implements SchemaCache
 
     public SimpleUrType getSimpleUrType()
     {
-        return ANY_SIMPLE_TYPE;
+        return BUILT_IN.ANY_SIMPLE_TYPE;
     }
 
     public Type getTypeDefinition(final QName name)
@@ -359,17 +340,17 @@ final class SchemaCacheImpl implements SchemaCache
         {
             return m_simpleTypes.get(name);
         }
-        else if (name.equals(ANY_ATOMIC_TYPE.getName()))
+        else if (name.equals(BUILT_IN.ANY_ATOMIC_TYPE.getName()))
         {
-            return ANY_ATOMIC_TYPE;
+            return BUILT_IN.ANY_ATOMIC_TYPE;
         }
-        else if (name.equals(ANY_SIMPLE_TYPE.getName()))
+        else if (name.equals(BUILT_IN.ANY_SIMPLE_TYPE.getName()))
         {
-            return ANY_SIMPLE_TYPE;
+            return BUILT_IN.ANY_SIMPLE_TYPE;
         }
-        else if (name.equals(ANY_COMPLEX_TYPE.getName()))
+        else if (name.equals(BUILT_IN.ANY_COMPLEX_TYPE.getName()))
         {
-            return ANY_COMPLEX_TYPE;
+            return BUILT_IN.ANY_COMPLEX_TYPE;
         }
         else
         {
@@ -527,15 +508,15 @@ final class SchemaCacheImpl implements SchemaCache
             }
             case ANY_TYPE:
             {
-                return ANY_COMPLEX_TYPE;
+                return BUILT_IN.ANY_COMPLEX_TYPE;
             }
             case ANY_SIMPLE_TYPE:
             {
-                return ANY_SIMPLE_TYPE;
+                return BUILT_IN.ANY_SIMPLE_TYPE;
             }
             case ANY_ATOMIC_TYPE:
             {
-                return ANY_ATOMIC_TYPE;
+                return BUILT_IN.ANY_ATOMIC_TYPE;
             }
             case NORMALIZED_STRING:
             {

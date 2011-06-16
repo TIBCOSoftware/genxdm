@@ -24,15 +24,14 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.Quantifier;
-import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.AttributeUse;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
+import org.genxdm.xs.types.AtomicType;
 import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.ContentType;
 import org.genxdm.xs.types.ElementNodeType;
-import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.PrimeChoiceType;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
@@ -80,7 +79,7 @@ public final class ComplexTypeImpl extends TypeImpl implements ComplexType, Prim
 
     private final Set<DerivationMethod> m_blockUnmodifiable;
 
-    private final ComponentProvider m_cache;
+    private final AtomicType m_atoms;
 
     /**
      * {content type} is mutable.
@@ -98,11 +97,11 @@ public final class ComplexTypeImpl extends TypeImpl implements ComplexType, Prim
     private boolean m_isAbstract = false;
 
     public ComplexTypeImpl(final QName name, final boolean isNative, final boolean isAnonymous, final ScopeExtent scope, final Type baseType, final DerivationMethod derivation, final Map<QName, AttributeUse> attributeUses,
-            final ContentType contentType, final Set<DerivationMethod> block, final ComponentProvider cache)
+            final ContentType contentType, final Set<DerivationMethod> block, final AtomicType atoms)
     {
         super(PreCondition.assertArgumentNotNull(name, "name"), isAnonymous, scope, derivation);
         this.isNative = isNative;
-        this.m_cache = PreCondition.assertArgumentNotNull(cache, "cache");
+        this.m_atoms = PreCondition.assertArgumentNotNull(atoms, "atoms");
         m_baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");
         m_contentType = PreCondition.assertArgumentNotNull(contentType, "contentType");
         m_block = PreCondition.assertArgumentNotNull(block, "block");
@@ -118,7 +117,7 @@ public final class ComplexTypeImpl extends TypeImpl implements ComplexType, Prim
 
     public SequenceType atomSet()
     {
-        return m_cache.getAtomicType(NativeType.UNTYPED_ATOMIC);
+        return m_atoms;
     }
 
     public Map<QName, AttributeUse> getAttributeUses()
