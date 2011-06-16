@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2010 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.validation;
+package org.genxdm.typed.io;
 
 import org.genxdm.typed.Validator;
 import org.xml.sax.ContentHandler;
@@ -21,6 +21,6 @@ import org.xml.sax.ContentHandler;
 /**
  * A "push" style streaming validator that consumes SAX events and emits typed values and annotated content.
  */
-public interface SAXContentValidator<A> extends ContentHandler, Validator<A>
+public interface SAXValidator<A> extends ContentHandler, Validator<A>
 {
 }

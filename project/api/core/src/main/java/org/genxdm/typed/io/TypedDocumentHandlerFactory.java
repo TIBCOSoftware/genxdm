@@ -18,9 +18,11 @@ package org.genxdm.typed.io;
 import javax.xml.stream.XMLReporter;
 
 import org.genxdm.io.Resolver;
-import org.genxdm.typed.Validator;
 
 public interface TypedDocumentHandlerFactory<N, A>
 {
-    TypedDocumentHandler<N, A> newDocumentHandler(final Validator<A> validator, final XMLReporter reporter, final Resolver resolver);
+    TypedDocumentHandler<N, A> newDocumentHandler(final SAXValidator<A> validator, final XMLReporter reporter, final Resolver resolver);
+  
+    // TODO: add the stax variant for document validation
+//    TypedDocumentHandler<N, A> newDocumentHandler(final StAXValidator<A> validator, final XMLReporter reporter, final Resolver resolver);
 }
