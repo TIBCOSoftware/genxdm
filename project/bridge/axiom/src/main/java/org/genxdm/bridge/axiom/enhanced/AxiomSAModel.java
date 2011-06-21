@@ -338,7 +338,7 @@ final class AxiomSAModel implements TypedModel<Object, XmlAtom>
         return delegate.matches(node, namespaceArg, localNameArg);
     }
 
-    public void stream(Object node, boolean copyNamespaces, boolean copyTypeAnnotations, SequenceHandler<XmlAtom> handler) throws GenXDMException
+    public void stream(Object node, boolean copyNamespaces, SequenceHandler<XmlAtom> handler) throws GenXDMException
     {
         // TODO Auto-generated method stub
         throw new AssertionError("TODO");

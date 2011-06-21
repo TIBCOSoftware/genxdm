@@ -472,13 +472,13 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 	    baseModel.stream(origin, copyNamespaces, handler);
 	}
 
-	public final void stream(final Node origin, boolean copyNamespaces, boolean copyTypeAnnotations, final SequenceHandler<XmlAtom> handler) throws GenXDMException
+	public final void stream(final Node origin, boolean copyNamespaces, final SequenceHandler<XmlAtom> handler) throws GenXDMException
 	{
 		switch (getNodeKind(origin))
 		{
 			case ELEMENT:
 			{
-				final QName type = copyTypeAnnotations ? getTypeName(origin) : null;
+				final QName type = getTypeName(origin);
 
 				handler.startElement(getNamespaceURI(origin), getLocalName(origin), baseModel.getElementPrefix(origin), type);
 				try
@@ -509,12 +509,12 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 								final Node attribute = mixed.item(i);
 								if (!XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attribute.getNamespaceURI()))
 								{
-									deepCopyAttribute(attribute, copyNamespaces, copyTypeAnnotations, handler);
+									deepCopyAttribute(attribute, copyNamespaces, true, handler);
 								}
 							}
 						}
 					}
-					deepCopyChildren(origin, copyNamespaces, copyTypeAnnotations, handler);
+					deepCopyChildren(origin, copyNamespaces, true, handler);
 				}
 				finally
 				{
@@ -524,7 +524,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 			break;
 			case ATTRIBUTE:
 			{
-				deepCopyAttribute(origin, copyNamespaces, copyTypeAnnotations, handler);
+				deepCopyAttribute(origin, copyNamespaces, true, handler);
 			}
 			break;
 			case TEXT:
@@ -537,7 +537,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 				handler.startDocument(getDocumentURI(origin), null);
 				try
 				{
-					deepCopyChildren(origin, copyNamespaces, copyTypeAnnotations, handler);
+					deepCopyChildren(origin, copyNamespaces, true, handler);
 				}
 				finally
 				{
@@ -602,7 +602,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
         Node child = origin.getFirstChild();
         while (null != child)
         {
-            stream(child, copyNamespaces, copyTypeAnnotations, handler);
+            stream(child, copyNamespaces, handler);
             child = child.getNextSibling();
         }
     }
