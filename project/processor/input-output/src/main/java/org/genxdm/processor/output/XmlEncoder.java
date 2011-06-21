@@ -98,6 +98,7 @@ public final class XmlEncoder
         while (index >= 0)
         {
             builder.replace(index, index + 1, "&apos;");
+            index = builder.indexOf("'", index);
         }
     }
     
