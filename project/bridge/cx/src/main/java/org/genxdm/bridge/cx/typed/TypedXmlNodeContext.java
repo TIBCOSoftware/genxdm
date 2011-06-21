@@ -15,6 +15,7 @@
  */
 package org.genxdm.bridge.cx.typed;
 
+import java.io.IOException;
 import java.net.URI;
 
 import javax.xml.stream.XMLReporter;
@@ -214,12 +215,15 @@ public class TypedXmlNodeContext
         // can we instead provide a tool that walks the existing tree and modifies it?
         validator.setSequenceHandler(builder);
         model.stream(source, true, true, validator);
-//        SchemaExceptionHandler errors = validator.getSchemaExceptionHandler();
-        // TODO: check the errors?
-//        for (SchemaException error : errors)
-//        {
-//            // ???
-//        }
+        try 
+        {
+            validator.flush();
+        }
+        catch (IOException ioe)
+        {
+            // oh, get real
+            throw new RuntimeException(ioe);
+        }
 
         return builder.getNode();
     }
