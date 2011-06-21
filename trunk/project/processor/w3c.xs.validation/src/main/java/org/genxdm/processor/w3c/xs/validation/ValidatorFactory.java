@@ -53,5 +53,4 @@ public final class ValidatorFactory<N, A>
 
     private final AtomBridge<A> atomBridge;
     private final VxValidatorCacheFactory factory;
-    private final NameSource nameBridge = NameSource.SINGLETON;
 }
