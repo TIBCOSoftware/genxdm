@@ -118,7 +118,7 @@ public class Converter<N, A>
 
         TypedModel<N, A> model = tc.getModel();
         SequenceConversionFilter<A, Atrg> filter = new SequenceConversionFilter<A, Atrg>(builder, tc.getAtomBridge(), targetBridge);
-        model.stream(source, true, true, filter);
+        model.stream(source, true, filter);
 
         List<Ntrg> nodeList = builder.getNodes();
         if (nodeList.size() != 1)

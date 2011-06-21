@@ -524,7 +524,7 @@ public final class CoreModelDecorator<N, A>
     {
     }
 
-    public void stream(final N node, final boolean copyNamespaces, final boolean copyTypeAnnotations, final SequenceHandler<A> handler) throws GenXDMException
+    public void stream(final N node, final boolean copyNamespaces, final SequenceHandler<A> handler) throws GenXDMException
     {
         // TODO Auto-generated method stub
         throw new AssertionError();

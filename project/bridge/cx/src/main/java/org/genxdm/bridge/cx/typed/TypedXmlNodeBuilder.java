@@ -50,6 +50,7 @@ public class TypedXmlNodeBuilder
     public void attribute(String namespaceURI, String localName, String prefix, List<? extends XmlAtom> data, QName type)
         throws GenXDMException
     {
+//System.out.println("got an attribute " + localName);
         flushCatch();
         depth++;
         Type stype = context.getComponentProvider().getTypeDefinition(type);
@@ -82,6 +83,7 @@ public class TypedXmlNodeBuilder
     public void startElement(String namespaceURI, String localName, String prefix, QName type)
         throws GenXDMException
     {
+//System.out.println("got an element " + localName);
         flushCatch();
         depth++;
         Type stype = context.getComponentProvider().getTypeDefinition(type);
@@ -107,6 +109,7 @@ public class TypedXmlNodeBuilder
     public void text(List<? extends XmlAtom> data)
         throws GenXDMException
     {
+//System.out.println("got a text node");
         flushCatch();
         depth++;
         if (current != null)
