@@ -82,6 +82,7 @@ public class ValidatingDocumentHandler<N, A>
             SequenceBuilder<N, A> builder = context.newSequenceBuilder();
             validator.setSequenceHandler(builder);
             // TODO: query lexical handler?
+            // if we want a lexical handler, then SAXValidator should do it.
             reader.setContentHandler(validator);
             // TODO
 //            reader.setErrorHandler(new ErrorHandlerToXMLReporterAdapter(reporter));
