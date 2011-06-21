@@ -220,8 +220,10 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
     {
         VxValidatorCacheFactory factory = new ValidationFactoryImpl(cache.getComponentProvider());
         kernel = factory.newValidatorCache().newValidator(atomBridge);
-        kernel.setExceptionHandler(errors);
-        kernel.setOutputHandler(new OutputAdapter<A>(handler));
+        if (errors != null)
+            kernel.setExceptionHandler(errors);
+        if (handler != null)
+            kernel.setOutputHandler(new OutputAdapter<A>(handler));
     }
 
     @Override
