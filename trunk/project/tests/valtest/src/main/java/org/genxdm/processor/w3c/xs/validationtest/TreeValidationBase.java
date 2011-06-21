@@ -76,7 +76,7 @@ public abstract class TreeValidationBase<N, A>
         validator.setSchemaExceptionHandler(catcher);
 
         N typed = cache.validate(untyped, validator, URI.create(""));
-        //assertNotNull(typed);
+        assertNotNull(typed);
         assertEquals(0, catcher.size());
         
         verifyTyped(typed);

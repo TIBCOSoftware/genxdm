@@ -214,7 +214,7 @@ public class TypedXmlNodeContext
         // TODO: this assumes building a new tree and returning it.
         // can we instead provide a tool that walks the existing tree and modifies it?
         validator.setSequenceHandler(builder);
-        model.stream(source, true, true, validator);
+        model.stream(source, true, validator);
         try 
         {
             validator.flush();
