@@ -1,6 +1,7 @@
 package org.genxdm.processor.w3c.xs.validationtest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,6 +63,7 @@ public abstract class TreeValidationBase<N, A>
     {
         ProcessingContext<N> context = newProcessingContext();
         N untyped = parseInstance(context.newDocumentHandler());
+        assertNotNull(untyped);
         verifyUntypedTree(untyped);
 
         TypedContext<N, A> cache = context.getTypedContext();
@@ -74,6 +76,7 @@ public abstract class TreeValidationBase<N, A>
         validator.setSchemaExceptionHandler(catcher);
 
         N typed = cache.validate(untyped, validator, URI.create(""));
+        //assertNotNull(typed);
         assertEquals(0, catcher.size());
         
         verifyTyped(typed);
