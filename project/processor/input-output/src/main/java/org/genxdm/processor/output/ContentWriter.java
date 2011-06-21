@@ -137,7 +137,6 @@ public class ContentWriter
     public void startElement(String namespaceURI, String localName, String prefix)
         throws GenXDMException
     {
-        // TODO Auto-generated method stub
         tags.push(getQName(prefix, localName));
         openedTag = true;
     }
