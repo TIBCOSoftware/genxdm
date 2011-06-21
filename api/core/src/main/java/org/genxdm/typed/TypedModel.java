@@ -31,6 +31,8 @@ import org.genxdm.typed.io.SequenceHandler;
 public interface TypedModel<N, A> 
     extends Model<N>, TypedNodeInformer<N, A>
 {
+    // TODO: change the signature of this so it can't be mistaken
+    // for the base interface's stream.
     /**
      * Support for streaming a node to a {@link SequenceHandler}.
      * 
@@ -38,10 +40,8 @@ public interface TypedModel<N, A>
      *            The node to be streamed.
      * @param copyNamespaces
      *            Determines whether namespaces nodes are streamed.
-     * @param copyTypeAnnotations
-     *            Determines whether type annotations are streamed.
      * @param handler
      *            The handler for events generated.
      */
-    void stream(N node, boolean copyNamespaces, boolean copyTypeAnnotations, SequenceHandler<A> handler) throws GenXDMException;
+    void stream(N node, boolean copyNamespaces, SequenceHandler<A> handler) throws GenXDMException;
 }

@@ -212,7 +212,7 @@ public final class DomSAProcessingContext
 	    // TODO: can we instead modify the existing tree and return it?
 	    validator.setSequenceHandler(builder);
 	    validator.reset();
-	    m_model.stream(source, true, true, validator);
+	    m_model.stream(source, true, validator);
 	    // TODO: check for errors?
 	    
 	    return builder.getNode();
