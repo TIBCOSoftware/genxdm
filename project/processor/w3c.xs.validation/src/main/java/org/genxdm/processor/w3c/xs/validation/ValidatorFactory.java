@@ -15,7 +15,6 @@
  */
 package org.genxdm.processor.w3c.xs.validation;
 
-import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCacheFactory;
 import org.genxdm.processor.w3c.xs.validation.impl.ValidationFactoryImpl;
