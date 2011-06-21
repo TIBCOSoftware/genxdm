@@ -86,35 +86,6 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		return true;
 	}
 
-	private final AtomBridge<A> m_atomBridge;
-	private final AttributeManager<A> m_attributes;
-	private ValidationItem m_currentItem;
-	private ModelPSVI m_currentPSVI;
-
-	private final ValidationItem m_documentItem;
-	private final ModelPSVI m_documentPSVI;
-	// Set by reset method. Preconditions guarantee that it is never null.
-	private VxOutputHandler<A> m_downstream;
-	// private Location m_location;
-	private SchemaExceptionHandler m_errors = SmExceptionThrower.SINGLETON;
-	private final VxSchemaDocumentLocationStrategy sdl;
-
-	private final IdentityConstraintManager m_icm = new IdentityConstraintManager();
-
-	private final IdManager m_idm = new IdManager();
-
-	// Maintain state for each element.
-	// private URI m_baseURI;
-	private final ModelAnalyzerImpl m_mac; // Model Analyzer Component
-	private final ValidationPrefixResolver m_namespaces;
-
-	// Index of node within document is used to determine node identity.
-	private int m_nodeIndex = -1;
-
-	// We must normalize character events into a single text node.
-	private final StringBuilder m_text = new StringBuilder();
-	private URI documentURI;
-
 	public ValidationKernel(final ComponentProvider definitions, final AtomBridge<A> atomBridge, final ValidationCache cache, final VxSchemaDocumentLocationStrategy sdl)
 	{
 		m_atomBridge = PreCondition.assertNotNull(atomBridge);
@@ -746,4 +717,33 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 			}
 		}
 	}
+    private final AtomBridge<A> m_atomBridge;
+    private final AttributeManager<A> m_attributes;
+    private ValidationItem m_currentItem;
+    private ModelPSVI m_currentPSVI;
+
+    private final ValidationItem m_documentItem;
+    private final ModelPSVI m_documentPSVI;
+    // Set by reset method. Preconditions guarantee that it is never null.
+    private VxOutputHandler<A> m_downstream;
+    // private Location m_location;
+    private SchemaExceptionHandler m_errors = SmExceptionThrower.SINGLETON;
+    private final VxSchemaDocumentLocationStrategy sdl;
+
+    private final IdentityConstraintManager m_icm = new IdentityConstraintManager();
+
+    private final IdManager m_idm = new IdManager();
+
+    // Maintain state for each element.
+    // private URI m_baseURI;
+    private final ModelAnalyzerImpl m_mac; // Model Analyzer Component
+    private final ValidationPrefixResolver m_namespaces;
+
+    // Index of node within document is used to determine node identity.
+    private int m_nodeIndex = -1;
+
+    // We must normalize character events into a single text node.
+    private final StringBuilder m_text = new StringBuilder();
+    private URI documentURI;
+
 }
