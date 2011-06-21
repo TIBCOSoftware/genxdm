@@ -41,6 +41,7 @@
         <module>bridgetest</module>
         <module>xpathtest</module>
         <module>iotest</module>
+        <module>valtest</module>
     </modules>
 
 </project>

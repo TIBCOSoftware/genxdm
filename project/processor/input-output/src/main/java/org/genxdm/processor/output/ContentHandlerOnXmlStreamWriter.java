@@ -52,9 +52,7 @@ public class ContentHandlerOnXmlStreamWriter
         }
         catch (XMLStreamException xse)
         {
-            //throw new IOException(xse);
-            // Note - JDK 1.5 compatibility - doesn't take "throwable" as an argument.
-            throw new IOException(xse.toString());
+            throw new IOException(xse);
         }
     }
 
@@ -67,9 +65,7 @@ public class ContentHandlerOnXmlStreamWriter
         }
         catch (XMLStreamException xse)
         {
-            //throw new IOException(xse);
-            // Note - JDK 1.5 compatibility - doesn't take "throwable" as an argument.
-            throw new IOException(xse.toString());
+            throw new IOException(xse);
         }
     }
 
@@ -433,7 +429,7 @@ public class ContentHandlerOnXmlStreamWriter
     private final XMLStreamWriter output;
 
     /**
-     * State variables for the cached element, it's namespaces and attributes.
+     * State variables for the cached element, its namespaces and attributes.
      */
     private boolean elementPending = false; // the element has not been flushed.
     private String elementNamespace;
