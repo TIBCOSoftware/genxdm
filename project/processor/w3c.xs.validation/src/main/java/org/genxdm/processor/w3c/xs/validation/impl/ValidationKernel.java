@@ -86,18 +86,14 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		return true;
 	}
 
-	public ValidationKernel(final ComponentProvider definitions, final AtomBridge<A> atomBridge, final ValidationCache cache, final VxSchemaDocumentLocationStrategy sdl)
+	public ValidationKernel(final AtomBridge<A> atomBridge, final VxSchemaDocumentLocationStrategy sdl)
 	{
 		m_atomBridge = PreCondition.assertNotNull(atomBridge);
 		NameSource names = NameSource.SINGLETON;
 		m_namespaces = new ValidationPrefixResolver(names);
-		m_attributes = new AttributeManager<A>(definitions, m_atomBridge, names);
 		m_currentItem = m_documentItem = new ValidationItem();
 		// A strict start is necessary to ensure that the root element has a declaration.
 		// However, the specification does not seem very clear on what should be the starting mode.
-		m_currentPSVI = m_documentPSVI = new ModelPSVI(ProcessContentsMode.Strict, definitions, cache);
-
-		m_mac = new ModelAnalyzerImpl(definitions, cache);
 		this.sdl = sdl;
 	}
 
@@ -496,10 +492,22 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		m_icm.reset();
 	}
 	
+	public void setComponentProvider(ComponentProvider provider)
+	{
+	    ValidationCache cache = new ValidationCache();
+        m_attributes = new AttributeManager<A>(provider, m_atomBridge);
+        m_currentPSVI = m_documentPSVI = new ModelPSVI(ProcessContentsMode.Strict, provider, cache);
+
+        m_mac = new ModelAnalyzerImpl(provider, cache);
+        if (m_errors != null)
+            m_mac.setExceptionHandler(m_errors);
+	}
+	
 	public void setExceptionHandler(final SchemaExceptionHandler handler)
 	{
 		m_errors = PreCondition.assertArgumentNotNull(handler, "handler");
-		m_mac.setExceptionHandler(handler);
+		if (m_mac != null)
+		    m_mac.setExceptionHandler(handler);
 	}
 
 	public void setOutputHandler(final VxOutputHandler<A> handler)
@@ -552,7 +560,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 
 		m_icm.startElement(m_currentPSVI, m_currentItem, m_errors);
 
-		if (null != m_downstream)
+		if (m_downstream != null)
 		{
 			m_downstream.startElement(elementName, m_currentPSVI.getType());
 
@@ -718,12 +726,12 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		}
 	}
     private final AtomBridge<A> m_atomBridge;
-    private final AttributeManager<A> m_attributes;
+    private AttributeManager<A> m_attributes;
     private ValidationItem m_currentItem;
     private ModelPSVI m_currentPSVI;
 
     private final ValidationItem m_documentItem;
-    private final ModelPSVI m_documentPSVI;
+    private ModelPSVI m_documentPSVI;
     // Set by reset method. Preconditions guarantee that it is never null.
     private VxOutputHandler<A> m_downstream;
     // private Location m_location;
@@ -736,7 +744,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 
     // Maintain state for each element.
     // private URI m_baseURI;
-    private final ModelAnalyzerImpl m_mac; // Model Analyzer Component
+    private ModelAnalyzerImpl m_mac; // Model Analyzer Component
     private final ValidationPrefixResolver m_namespaces;
 
     // Index of node within document is used to determine node identity.

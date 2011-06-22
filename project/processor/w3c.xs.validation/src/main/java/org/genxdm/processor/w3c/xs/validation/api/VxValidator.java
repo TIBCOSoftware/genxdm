@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
@@ -36,6 +37,8 @@ public interface VxValidator<A>
     void reset();
 
     void setExceptionHandler(final SchemaExceptionHandler handler);
+    
+    void setComponentProvider(final ComponentProvider provider);
 
     void setOutputHandler(VxOutputHandler<A> handler);
 

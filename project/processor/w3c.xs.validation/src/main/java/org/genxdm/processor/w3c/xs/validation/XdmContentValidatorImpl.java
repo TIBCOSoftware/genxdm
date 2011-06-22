@@ -26,7 +26,7 @@ import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
-import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCacheFactory;
+import org.genxdm.processor.w3c.xs.validation.api.VxValidatorFactory;
 import org.genxdm.processor.w3c.xs.validation.impl.ValidationFactoryImpl;
 import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.io.SequenceHandler;
@@ -218,12 +218,7 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
     @Override
     public void setSchema(Schema cache)
     {
-        VxValidatorCacheFactory factory = new ValidationFactoryImpl(cache.getComponentProvider());
-        kernel = factory.newValidatorCache().newValidator(atomBridge);
-        if (errors != null)
-            kernel.setExceptionHandler(errors);
-        if (handler != null)
-            kernel.setOutputHandler(new OutputAdapter<A>(handler));
+        kernel.setComponentProvider(cache.getComponentProvider());
     }
 
     @Override
