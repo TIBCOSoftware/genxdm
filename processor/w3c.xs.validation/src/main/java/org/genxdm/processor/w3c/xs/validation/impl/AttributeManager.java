@@ -70,18 +70,16 @@ final class AttributeManager<A>
 	private final HashMap<QName, Pair<A, SimpleType>> m_xsiAtoms = new HashMap<QName, Pair<A, SimpleType>>();
 	private final HashMap<QName, Pair<List<? extends A>, SimpleType>> m_xsiLists = new HashMap<QName, Pair<List<? extends A>, SimpleType>>();
 	private final ComponentProvider metaBridge;
-	private final NameSource nameBridge;
 	private final String W3C_XML_SCHEMA_INSTANCE_NS_URI;
 	private final String XSI_NIL;
 	private final String XSI_NO_NAMESPACE_SCHEMA_LOCATION;
 	private final String XSI_SCHEMA_LOCATION;
 	private final String XSI_TYPE;
 
-	AttributeManager(final ComponentProvider metaBridge, final AtomBridge<A> atomBridge, final NameSource nameBridge)
+	AttributeManager(final ComponentProvider metaBridge, final AtomBridge<A> atomBridge)
 	{
 		this.metaBridge = PreCondition.assertArgumentNotNull(metaBridge, "metaBridge");
 		this.atomBridge = PreCondition.assertArgumentNotNull(atomBridge, "atomBridge");
-		this.nameBridge = PreCondition.assertArgumentNotNull(nameBridge, "nameBridge");
 		this.W3C_XML_SCHEMA_INSTANCE_NS_URI = XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI;
 		this.XSI_NIL = "nil";
 		this.XSI_NO_NAMESPACE_SCHEMA_LOCATION = "noNamespaceSchemaLocation";
@@ -552,7 +550,7 @@ final class AttributeManager<A>
 			}
 			else
 			{
-				return new QName(nameBridge.empty(), localName, prefix);
+				return new QName("", localName, prefix);
 			}
 		}
 	}

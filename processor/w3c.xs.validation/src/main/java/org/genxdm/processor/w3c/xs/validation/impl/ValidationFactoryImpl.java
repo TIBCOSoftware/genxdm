@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2010 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,36 +16,29 @@
 package org.genxdm.processor.w3c.xs.validation.impl;
 
 import org.genxdm.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrategy;
-import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCache;
-import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCacheFactory;
-import org.genxdm.xs.ComponentProvider;
+import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
+import org.genxdm.processor.w3c.xs.validation.api.VxValidatorFactory;
+import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.ElementDefinition;
 
 
-public final class ValidationFactoryImpl implements VxValidatorCacheFactory
+public final class ValidationFactoryImpl implements VxValidatorFactory
 {
-    private final ComponentProvider components;
     private VxSchemaDocumentLocationStrategy sdl;
 
-	public ValidationFactoryImpl(final ComponentProvider cp)
+	public <A> VxValidator<A> newValidator(final AtomBridge<A> atoms)
 	{
-		this.components = PreCondition.assertArgumentNotNull(cp, "ComponentProvider");
+        return new ValidationKernel<A>(atoms, sdl);
 	}
 
-	public VxValidatorCache newValidatorCache()
+	public <A> VxValidator<A> newValidator(final AtomBridge<A> atoms, final ElementDefinition elementDeclaration)
 	{
-		return new ValidationCache(null, components, sdl);
+	    // TODO: why is there an override with ElementDeclaration?
+        return new ValidationKernel<A>(atoms, sdl);
 	}
 
-	public VxValidatorCache newValidatorCache(final ElementDefinition elementDeclaration)
-	{
-		PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration");
-		return new ValidationCache(elementDeclaration, components, sdl);
-	}
-
-	public VxValidatorCacheFactory setSchemaDocumentLocationStrategy(final VxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy)
+	public void setSchemaDocumentLocationStrategy(final VxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy)
 	{
 		this.sdl = schemaDocumentLocationStrategy;
-		return this;
 	}
 }

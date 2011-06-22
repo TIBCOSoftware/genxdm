@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2010 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +15,14 @@
  */
 package org.genxdm.processor.w3c.xs.validation.api;
 
+import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.ElementDefinition;
 
-public interface VxValidatorCacheFactory
+public interface VxValidatorFactory
 {
-	VxValidatorCache newValidatorCache();
+	<A> VxValidator<A> newValidator(AtomBridge<A> atoms);
 
-	VxValidatorCache newValidatorCache(ElementDefinition elementDeclaration);
+	<A> VxValidator<A> newValidator(AtomBridge<A> atoms, ElementDefinition elementDeclaration);
 
-	VxValidatorCacheFactory setSchemaDocumentLocationStrategy(final VxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy);
+	void setSchemaDocumentLocationStrategy(final VxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy);
 }

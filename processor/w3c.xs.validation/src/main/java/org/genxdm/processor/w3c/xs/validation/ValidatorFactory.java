@@ -16,7 +16,7 @@
 package org.genxdm.processor.w3c.xs.validation;
 
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
-import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCacheFactory;
+import org.genxdm.processor.w3c.xs.validation.api.VxValidatorFactory;
 import org.genxdm.processor.w3c.xs.validation.impl.ValidationFactoryImpl;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.ValidationHandler;
@@ -28,19 +28,19 @@ public final class ValidatorFactory<N, A>
 
     public ValidatorFactory(final TypedContext<N, A> pcx)
     {
-        this.factory = new ValidationFactoryImpl(pcx.getTypesBridge().getComponentProvider());
+        this.factory = new ValidationFactoryImpl();
         this.atomBridge = pcx.getAtomBridge();
     }
 
     public ValidationHandler<A> newXdmContentValidator()
     {
-        final VxValidator<A> kernel = factory.newValidatorCache().newValidator(atomBridge);
+        final VxValidator<A> kernel = factory.newValidator(atomBridge);
         return new XdmContentValidatorImpl<A>(kernel, atomBridge);
     }
 
     public SAXValidator<A> newSAXContentValidator()
     {
-        final VxValidator<A> kernel = factory.newValidatorCache().newValidator(atomBridge);
+        final VxValidator<A> kernel = factory.newValidator(atomBridge);
         return new SAXContentValidatorImpl<A>(kernel);
     }
 
@@ -51,5 +51,5 @@ public final class ValidatorFactory<N, A>
     }
 
     private final AtomBridge<A> atomBridge;
-    private final VxValidatorCacheFactory factory;
+    private final VxValidatorFactory factory;
 }
