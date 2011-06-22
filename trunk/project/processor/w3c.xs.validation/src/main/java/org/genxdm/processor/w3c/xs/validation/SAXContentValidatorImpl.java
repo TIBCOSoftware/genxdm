@@ -108,7 +108,7 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 
 	public void startDocument() throws SAXException
 	{
-System.out.println("Here's a document.");
+//System.out.println("Here's a document.");
 		final URI documentURI;
 		try
 		{
