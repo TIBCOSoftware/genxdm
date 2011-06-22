@@ -68,6 +68,8 @@ public class OutputAdapter<A> implements VxOutputHandler<A>
 
 	public void startElement(final QName name, final Type type) throws IOException
 	{
+//System.out.println("QName is " + name);
+//System.out.println("Type is " + type);
 		handler.startElement(name.getNamespaceURI(), name.getLocalPart(), name.getPrefix(), type.getName());
 	}
 
