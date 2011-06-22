@@ -111,7 +111,7 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 		final URI documentURI;
 		try
 		{
-			documentURI = (null != m_locator) ? new URI(m_locator.getSystemId()) : null;
+			documentURI = (m_locator != null) ? ((m_locator.getSystemId() != null) ? new URI(m_locator.getSystemId()) : null) : null;
 		}
 		catch (final URISyntaxException e)
 		{
@@ -132,7 +132,7 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 	{
 		m_attributes.clear();
 
-		if ((null != attributes) && (attributes.getLength() > 0))
+		if ((attributes != null ) && (attributes.getLength() > 0))
 		{
 			for (int i = 0; i < attributes.getLength(); i++)
 			{
@@ -161,7 +161,7 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 		}
 		catch (final Exception e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw new SAXException(e);
 		}
 		finally
