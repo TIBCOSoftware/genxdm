@@ -108,6 +108,7 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 
 	public void startDocument() throws SAXException
 	{
+System.out.println("Here's a document.");
 		final URI documentURI;
 		try
 		{
@@ -130,6 +131,13 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 
 	public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) throws SAXException
 	{
+        // here's an interesting factoid:
+	    // if you're dealing with something in the default (global) namespace,
+	    // such as the po.xml instance document from the schema primer,
+	    // SAX returns empty string for uri and localName, and puts the
+	    // name in qName.  this sort of needs to be handled, eh?
+	    final String ns = (uri == null) ? "" : uri;
+	    final String name = ( (localName == null) || (localName.length() == 0)) ? getLocalPart(qName) : localName;
 		m_attributes.clear();
 
 		if ((attributes != null ) && (attributes.getLength() > 0))
@@ -149,15 +157,15 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 					final String attributePH = getPrefix(attributeQN);
 					final String attributeSV = attributes.getValue(i);
 
-					final QName name = new QName(attributeNS, attributeLN, attributePH);
+					final QName aqName = new QName(attributeNS, attributeLN, attributePH);
 
-					m_attributes.add(new VxMapping<QName, String>(name, attributeSV));
+					m_attributes.add(new VxMapping<QName, String>(aqName, attributeSV));
 				}
 			}
 		}
 		try
 		{
-			m_kernel.startElement(new QName(uri, localName, getPrefix(qName)), m_namespaces, m_attributes);
+			m_kernel.startElement(new QName(ns, name, getPrefix(qName)), m_namespaces, m_attributes);
 		}
 		catch (final Exception e)
 		{
@@ -168,19 +176,6 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 		{
 			m_namespaces.clear();
 			m_attributes.clear();
-		}
-	}
-
-	private static String getPrefix(final String qualifiedName)
-	{
-		final int index = qualifiedName.indexOf(':');
-		if (index == -1)
-		{
-			return XMLConstants.DEFAULT_NS_PREFIX;
-		}
-		else
-		{
-			return qualifiedName.substring(0, index);
 		}
 	}
 
@@ -206,8 +201,7 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
     @Override
     public void setSchema(Schema cache)
     {
-        // TODO Auto-generated method stub
-        
+        m_kernel.setComponentProvider(cache.getComponentProvider());
     }
 
     @Override
@@ -244,6 +238,22 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
         {
             return (qname.startsWith(XMLNS_COLON));
         }
+    }
+
+    private static String getPrefix(final String qualifiedName)
+    {
+        final int index = qualifiedName.indexOf(':');
+        if (index == -1)
+            return XMLConstants.DEFAULT_NS_PREFIX;
+        return qualifiedName.substring(0, index);
+    }
+    
+    private static String getLocalPart(final String qualifiedName)
+    {
+        final int index = qualifiedName.indexOf(':');
+        if (index == -1)
+            return qualifiedName;
+        return qualifiedName.substring(index+1);
     }
 
     /**
