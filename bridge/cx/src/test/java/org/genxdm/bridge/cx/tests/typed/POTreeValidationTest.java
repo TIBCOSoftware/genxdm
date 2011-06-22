@@ -8,7 +8,7 @@ import org.genxdm.processor.w3c.xs.validationtest.TreeValidationBase;
 import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.io.SAXValidator;
 
-public class TreeValidationTest
+public class POTreeValidationTest
     extends TreeValidationBase<XmlNode, XmlAtom>
 {
 

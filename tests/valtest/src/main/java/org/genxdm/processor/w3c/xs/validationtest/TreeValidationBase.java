@@ -9,6 +9,7 @@ import java.net.URI;
 
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
+import org.genxdm.exceptions.XdmMarshalException;
 import org.genxdm.io.DocumentHandler;
 import org.genxdm.names.Catalog;
 import org.genxdm.processor.w3c.xs.DefaultCatalog;
@@ -58,20 +59,19 @@ public abstract class TreeValidationBase<N, A>
     }
     
     @Test
-    public void validate()
-        throws AbortException, IOException
+    public void validatePO()
+        throws AbortException, IOException, XdmMarshalException
     {
         ProcessingContext<N> context = newProcessingContext();
         N untyped = parseInstance(context.newDocumentHandler());
         assertNotNull(untyped);
-        verifyUntypedTree(untyped);
+        POVerifier.verifyUntypedTree(untyped, context.getModel());
 
         TypedContext<N, A> cache = context.getTypedContext();
         loadSchema(cache);
 
         ValidationHandler<A> validator = getValidationHandler();
-        validator.setSchema(cache);
-        // the validate method *should* set the sequence handler
+        // the validate method *should* set the sequence handler and schema.
         SchemaExceptionCatcher catcher = new SchemaExceptionCatcher();
         validator.setSchemaExceptionHandler(catcher);
 
@@ -79,32 +79,7 @@ public abstract class TreeValidationBase<N, A>
         assertNotNull(typed);
         assertEquals(0, catcher.size());
         
-        verifyTyped(typed);
+        POVerifier.verifyTyped(typed, cache.getModel());
     }
     
-    private void verifyUntypedTree(N untyped)
-    {
-        // TODO: make sure that the tree exists, and hasn't gone weird.
-    }
-    
-    private void verifyTyped(N typed)
-    {
-        // document element is named purchaseOrder, of type PurchaseOrderType
-        // document element has an attribute orderDate of type date
-        // shipTo @country [NMTOKEN] {fixed == US}
-        // // name
-        // // street
-        // // city
-        // // state
-        // // zip [decimal] // snicker
-        // billTo (same as shipTo)
-        // comment ?
-        // items
-        // // item @partNum * [SKU : \d{3}-[A-Z]{2} ]
-        // // // productName
-        // // // quantity [positiveInteger maxexclusive 100]
-        // // // comment ?
-        // // // USPrice [decimal]
-        // // // shipDate [date]
-    }
 }
