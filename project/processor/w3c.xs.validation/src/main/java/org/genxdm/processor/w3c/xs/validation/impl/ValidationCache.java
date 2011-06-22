@@ -21,18 +21,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.names.NameSource;
-import org.genxdm.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrategy;
-import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
-import org.genxdm.processor.w3c.xs.validation.api.VxValidatorCache;
 import org.genxdm.processor.w3c.xs.validation.regex.api.RegExBridge;
 import org.genxdm.processor.w3c.xs.validation.regex.api.RegExFactory;
 import org.genxdm.processor.w3c.xs.validation.regex.api.RegExMachine;
 import org.genxdm.processor.w3c.xs.validation.regex.api.RegExPattern;
 import org.genxdm.processor.w3c.xs.validation.regex.impl.nfa.NfaFactory;
-import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.ComponentProvider;
-import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.ParticleTerm;
 import org.genxdm.xs.components.SchemaParticle;
@@ -40,29 +33,11 @@ import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.ContentType;
 
 
-final class ValidationCache implements VxValidatorCache
+final class ValidationCache
 {
-	@SuppressWarnings("unused")
-	private final ElementDefinition elementDeclaration;
-	private final ComponentProvider provider;
-	private final VxSchemaDocumentLocationStrategy sdl;
-
-	private final ConcurrentHashMap<ComplexType, RegExPattern<ValidationExpr, QName>> m_patterns = new ConcurrentHashMap<ComplexType, RegExPattern<ValidationExpr, QName>>();
-
-	private final RegExBridge<ValidationExpr, QName> m_regexb;
-
-	ValidationCache(final ElementDefinition elementDeclaration, final ComponentProvider provider, final VxSchemaDocumentLocationStrategy sdl)
+	ValidationCache()
 	{
-		this.elementDeclaration = elementDeclaration;
-		this.provider = provider;
 		m_regexb = new ValidationRegExBridge();
-		this.sdl = sdl;
-	}
-
-	@Override
-	public <A> VxValidator<A> newValidator(AtomBridge<A> bridge)
-	{
-		return new ValidationKernel<A>(provider, bridge, this, sdl);
 	}
 
 	SmContentFiniteStateMachine getMachine(final ComplexType complexType)
@@ -109,4 +84,8 @@ final class ValidationCache implements VxValidatorCache
 			return new ContentModelExpression(particle);
 		}
 	}
+    private final ConcurrentHashMap<ComplexType, RegExPattern<ValidationExpr, QName>> m_patterns = new ConcurrentHashMap<ComplexType, RegExPattern<ValidationExpr, QName>>();
+
+    private final RegExBridge<ValidationExpr, QName> m_regexb;
+
 }
