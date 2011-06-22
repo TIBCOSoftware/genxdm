@@ -9,7 +9,6 @@ import java.net.URI;
 
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
-import org.genxdm.exceptions.XdmMarshalException;
 import org.genxdm.io.DocumentHandler;
 import org.genxdm.names.Catalog;
 import org.genxdm.processor.w3c.xs.DefaultCatalog;
@@ -60,7 +59,7 @@ public abstract class TreeValidationBase<N, A>
     
     @Test
     public void validatePO()
-        throws AbortException, IOException, XdmMarshalException
+        throws AbortException, IOException
     {
         ProcessingContext<N> context = newProcessingContext();
         N untyped = parseInstance(context.newDocumentHandler());

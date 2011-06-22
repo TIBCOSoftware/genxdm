@@ -8,8 +8,6 @@ import java.io.InputStream;
 
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
-import org.genxdm.exceptions.XdmMarshalException;
-import org.genxdm.io.DocumentHandler;
 import org.genxdm.names.Catalog;
 import org.genxdm.processor.w3c.xs.DefaultCatalog;
 import org.genxdm.processor.w3c.xs.DefaultCatalogResolver;
@@ -52,7 +50,7 @@ public abstract class SAXValidationBase<N, A>
 
     @Test
     public void validatePOWhileParsing()
-        throws AbortException, IOException, XdmMarshalException
+        throws AbortException, IOException
     {
         ProcessingContext<N> context = newProcessingContext();
         TypedContext<N, A> cache = context.getTypedContext();
