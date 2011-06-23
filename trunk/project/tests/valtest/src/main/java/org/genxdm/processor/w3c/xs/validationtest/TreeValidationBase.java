@@ -64,7 +64,7 @@ public abstract class TreeValidationBase<N, A>
         ProcessingContext<N> context = newProcessingContext();
         N untyped = parseInstance(context.newDocumentHandler());
         assertNotNull(untyped);
-        POVerifier.verifyUntypedTree(untyped, context.getModel());
+        POVerifier.verifyUntyped(untyped, context.getModel());
 
         TypedContext<N, A> cache = context.getTypedContext();
         loadSchema(cache);
