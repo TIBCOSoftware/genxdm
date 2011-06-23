@@ -31,7 +31,6 @@ public abstract class SAXValidationBase<N, A>
     public void loadSchema(Schema cache)
         throws AbortException
     {
-        // TODO: load po.xsd
         W3cXmlSchemaParser parser = new W3cXmlSchemaParser();
         
         Catalog cat = new DefaultCatalog();
@@ -66,6 +65,7 @@ public abstract class SAXValidationBase<N, A>
         assertNotNull(typed);
         assertEquals(0, catcher.size());
         
+        POVerifier.verifyUntyped(typed, context.getModel());
         POVerifier.verifyTyped(typed, cache.getModel());
     }
 }
