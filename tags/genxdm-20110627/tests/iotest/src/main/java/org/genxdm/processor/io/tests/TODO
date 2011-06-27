@@ -1,0 +1,13 @@
+Okay, we want to do full contract-based testing.
+
+We probably ought to delay until we have the XQuery Serialization
+questions worked through.
+
+Test the contract for parsing.
+
+Test the contract for writing.
+
+Test the contracts for setting up one's own preferred resolver
+and reporter, and for setting up any other configuration information.
+
+Stuff like that.
