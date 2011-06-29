@@ -116,15 +116,12 @@ public class CursorOnModel<N>
 
     protected boolean moveToNode(final N position)
     {
-        if (null != position)
+        if (position != null)
         {
             setCurrentNode(position);
             return true;
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     /**
