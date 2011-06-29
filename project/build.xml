@@ -26,6 +26,9 @@
         <move todir="${tests-target}/iotest">
             <fileset dir="tests/iotest/target/site" />
         </move>
+        <move todir="${tests-target}/valtest">
+            <fileset dir="tests/valtest/target/site" />
+        </move>
         <move todir="${tests-target}/xpathtest">
             <fileset dir="tests/xpathtest/target/site" />
         </move>
