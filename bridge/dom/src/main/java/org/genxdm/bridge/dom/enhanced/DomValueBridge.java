@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.typed.variant.Item;
+import org.genxdm.typed.variant.ItemIterable;
 import org.genxdm.typed.variant.VariantBridge;
 import org.genxdm.typed.variant.VariantKind;
 import org.genxdm.typed.variant.XmlVariant;
@@ -109,10 +110,9 @@ final class DomValueBridge implements VariantBridge<Node, XmlAtom>
 		return (Item<Node, XmlAtom>)value.getObject();
 	}
 
-	@SuppressWarnings("unchecked")
-    public Iterable<Item<Node, XmlAtom>> getItemSet(final XmlVariant value)
+	public ItemIterable<Node, XmlAtom> getItemSet(final XmlVariant value)
 	{
-		return (Iterable<Item<Node, XmlAtom>>)value.getObject();
+		return (ItemIterable<Node, XmlAtom>)value.getObject();
 	}
 
 	public VariantKind getNature(final XmlVariant value)
@@ -153,7 +153,7 @@ final class DomValueBridge implements VariantBridge<Node, XmlAtom>
 		return XmlVariant.item(item);
 	}
 
-	public XmlVariant itemSet(final Iterable<Item<Node, XmlAtom>> items)
+	public XmlVariant itemSet(final ItemIterable<Node, XmlAtom> items)
 	{
 		return XmlVariant.itemSet(items);
 	}
