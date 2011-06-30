@@ -55,7 +55,7 @@ public final class XmlVariant
         return new XmlVariant(value, VariantKind.STRING);
     }
 
-    public static <N, A> XmlVariant itemSet(final Iterable<Item<N, A>> items)
+    public static <N, A> XmlVariant itemSet(final ItemIterable<N, A> items)
     {
         return new XmlVariant(items, VariantKind.ITEMS);
     }

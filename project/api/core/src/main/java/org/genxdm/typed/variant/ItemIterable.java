@@ -8,14 +8,14 @@ public class ItemIterable<N, A>
 {
     private ItemIterable() {}
     
-    public Iterator<A> atomIterator()
+    public Iterable<A> atomIterable()
     {
-        return new EmptyIterator<A>();
+        return null;
     }
     
-    public Iterator<N> nodeIterator()
+    public Iterable<N> nodeIterable()
     {
-        return new EmptyIterator<N>();
+        return null;
     }
     
     public boolean isAtomIterable()
@@ -43,9 +43,9 @@ public class ItemIterable<N, A>
         }
         
         @Override
-        public Iterator<A> atomIterator()
+        public Iterable<A> atomIterable()
         {
-            return iterable.iterator();
+            return iterable;
         }
         
         private final Iterable<A> iterable;
@@ -66,31 +66,11 @@ public class ItemIterable<N, A>
         }
         
         @Override
-        public Iterator<N> nodeIterator()
+        public Iterable<N> nodeIterable()
         {
-            return iterable.iterator();
+            return iterable;
         }
         
         private final Iterable<N> iterable;
-    }
-
-    private class EmptyIterator<E>
-        implements Iterator<E>
-    {
-        @Override
-        public boolean hasNext()
-        {
-            return false;
-        }
-        @Override
-        public E next()
-        {
-            return null;
-        }
-
-        @Override
-        public void remove()
-        {
-        }
     }
 }
