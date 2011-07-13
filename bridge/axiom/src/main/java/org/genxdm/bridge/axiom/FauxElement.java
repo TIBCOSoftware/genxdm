@@ -148,6 +148,12 @@ public class FauxElement
     {
         return null;
     }
+    
+    public String getNamespaceURI()
+        throws OMException
+    {
+        return null;
+    }
 
     public QName getQName()
     {
