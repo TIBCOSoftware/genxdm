@@ -15,6 +15,7 @@
  */
 package org.genxdm.bridge.dom.enhanced;
 
+import java.io.IOException;
 import java.net.URI;
 
 import javax.xml.stream.XMLReporter;
@@ -209,11 +210,18 @@ public final class DomSAProcessingContext
 	public Node validate(Node source, ValidationHandler<XmlAtom> validator, URI namespace)
 	{
 	    SequenceBuilder<Node, XmlAtom> builder = newSequenceBuilder();
-	    // TODO: can we instead modify the existing tree and return it?
+        validator.setSchema(this);
 	    validator.setSequenceHandler(builder);
-	    validator.reset();
 	    m_model.stream(source, true, validator);
-	    // TODO: check for errors?
+        try 
+        {
+            validator.flush();
+        }
+        catch (IOException ioe)
+        {
+            // oh, get real
+            throw new RuntimeException(ioe);
+        }
 	    
 	    return builder.getNode();
 	}
