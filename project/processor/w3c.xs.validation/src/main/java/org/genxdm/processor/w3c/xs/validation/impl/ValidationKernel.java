@@ -486,10 +486,13 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 
 	public void reset()
 	{
-		m_namespaces.reset();
-		m_attributes.reset();
+	    if (m_namespaces != null)
+	        m_namespaces.reset();
+	    if (m_attributes != null)
+	        m_attributes.reset();
 		m_nodeIndex = -1;
-		m_icm.reset();
+		if (m_icm != null)
+		    m_icm.reset();
 	}
 	
 	public void setComponentProvider(ComponentProvider provider)
