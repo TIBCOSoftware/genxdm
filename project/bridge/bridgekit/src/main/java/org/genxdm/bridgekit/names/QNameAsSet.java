@@ -19,7 +19,8 @@ import javax.xml.namespace.QName;
 
 public class QNameAsSet
 {
-
+    public static final String ESCAPE = "\u001B";
+    
     private QNameAsSet() {}
     
     private static boolean subset(final String lhs, final String rhs)
@@ -30,15 +31,9 @@ public class QNameAsSet
             {
                 return lhs.equals(rhs);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
-        else
-        {
-            return true;
-        }
+        return true;
     }
 
     /**
@@ -46,28 +41,31 @@ public class QNameAsSet
      */
     public static boolean subset(final QName lhs, final QName rhs)
     {
-        if (null != lhs)
+        if (lhs != null)
         {
-            if (null != rhs)
+            if (rhs != null)
             {
-                return subset(lhs.getNamespaceURI(), rhs.getNamespaceURI()) && subset(lhs.getLocalPart(), rhs.getLocalPart());
+                // first, call the necessary methods just once, replacing ESCAPE with null
+                final String lhns = escapeToNull(lhs.getNamespaceURI());
+                final String rhns = escapeToNull(rhs.getNamespaceURI());
+                final String lhn = escapeToNull(lhs.getLocalPart());
+                final String rhn = escapeToNull(rhs.getLocalPart());
+                // then the return value is simple
+                return subset(lhns, rhns) && subset(lhn, rhn);
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
-        else
+        if (rhs != null)
         {
-            if (null != rhs)
-            {
-                return subset(null, rhs.getNamespaceURI()) && subset(null, rhs.getLocalPart());
-            }
-            else
-            {
-                return true;
-            }
+            return subset(null, rhs.getNamespaceURI()) 
+                   && subset(null, rhs.getLocalPart());
         }
+        return true;
     }
 
+    static private String escapeToNull(String input)
+    {
+        // if given the single character \u001B, return null, otherwise return input.
+        return (input.equals(ESCAPE) ? null : input);
+    }
 }
