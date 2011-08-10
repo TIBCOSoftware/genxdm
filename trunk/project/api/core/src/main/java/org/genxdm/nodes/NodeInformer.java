@@ -326,7 +326,7 @@ public interface NodeInformer<N>
     boolean isText(N node);
 
     /**
-     * Deterimines whether the specified node matches the arguments.
+     * Determines whether the specified node matches the arguments.
      * 
      * @param node
      *            The XML node.
