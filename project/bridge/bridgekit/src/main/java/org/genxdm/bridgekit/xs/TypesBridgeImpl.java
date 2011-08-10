@@ -20,6 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
+import static org.genxdm.bridgekit.names.QNameAsSet.ESCAPE;
+
 import org.genxdm.bridgekit.xs.complex.AttributeDeclWithParentAxisType;
 import org.genxdm.bridgekit.xs.complex.AttributeNodeTypeImpl;
 import org.genxdm.bridgekit.xs.complex.CommentNodeTypeImpl;
@@ -1393,6 +1395,5 @@ public final class TypesBridgeImpl implements TypesBridge
 
     private final SchemaCache m_cache;
 
-    private static final String ESCAPE = "\u001B";
     private final QName WILDNAME = new QName(ESCAPE, ESCAPE);
 }
