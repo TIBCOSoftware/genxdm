@@ -1,0 +1,11 @@
+This directory contains eclipse-specific helpers of various sorts.
+
+genxdm-formatter.xml : standard style for the current code base.
+
+You're not required to use this, but it would be nice if you did.  If you
+don't use it, please make every attempt to match the style of existing code
+as you modify it.
+
+To install:
+
+In Preferences, select Java | Code Style | Formatter; import the file.
