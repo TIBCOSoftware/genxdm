@@ -39,12 +39,6 @@ public class SequenceConversionFilter<Asrc, Atrg>
         this.trgBridge = PreCondition.assertNotNull(tb, "trgBridge");
     }
 
-    public void atom(Asrc atom)
-        throws GenXDMException
-    {
-        target.atom(convertAtom(atom));
-    }
-
     public void attribute(String namespaceURI, String localName, String prefix, List<? extends Asrc> data, QName type)
         throws GenXDMException
     {
@@ -52,22 +46,10 @@ public class SequenceConversionFilter<Asrc, Atrg>
         target.attribute(namespaceURI, localName, prefix, atoms, type);
     }
 
-    public void endSequence()
-        throws GenXDMException
-    {
-        target.endSequence();
-    }
-
     public void startElement(String namespaceURI, String localName, String prefix, QName type)
         throws GenXDMException
     {
         target.startElement(namespaceURI, localName, prefix, type);
-    }
-
-    public void startSequence()
-        throws GenXDMException
-    {
-        target.startSequence();
     }
 
     public void text(List<? extends Asrc> data)
