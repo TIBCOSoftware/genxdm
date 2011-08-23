@@ -32,9 +32,9 @@ public interface Validator<A>
      */
     SchemaExceptionHandler getSchemaExceptionHandler();
     
-    /** Generally called by the user after validation in order to retrieve
-     * the validated tree of nodes.  That assumes that it is-a NodeSource
-     * as well, which the API does not guarantee.
+    /** Generally not called.  May be called by the user after validation 
+     * in order to retrieve the validated tree of nodes.  But that assumes 
+     * that it is-a NodeSource as well, which the API does not guarantee.
      * 
      * @return the SequenceHandler used to create or modify the tree
      * during validation.  Never null.
@@ -58,7 +58,9 @@ public interface Validator<A>
      */
     void setSchema(Schema cache);
     
-    /** Provide the schema exception handler.
+    /** Provide the schema exception handler.  As a rule, the user
+     * supplies this handler before passing the validator to a validation
+     * API.
      * 
      * @param errors the schema exception handler.  May not be null.
      */

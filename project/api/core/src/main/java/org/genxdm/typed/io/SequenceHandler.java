@@ -41,15 +41,18 @@ public interface SequenceHandler<A> extends ContentHandler
      * @param data
      *            The value of the attribute.
      * @param type
-     *            The type annotation for the attribute supplied by validation. May be <code>null</code> if not validated.
+     *            The type annotation for the attribute supplied by validation. 
+     *            May be <code>null</code> if not validated.
      */
     void attribute(String namespaceURI, String localName, String prefix, List<? extends A> data, QName type) throws GenXDMException;
 
     /**
      * Receive notification of the beginning of an element.
-     * <p>
-     * <p/>
-     * A callee will invoke this method at the beginning of every element in the XML document; there will be a corresponding endElement core for every startElement core (even when the element is empty). All of the element's content will be reported, in order, before the
+     *
+     * A callee will invoke this method at the beginning of every element in the 
+     * XML document; there will be a corresponding endElement core for every 
+     * startElement core (even when the element is empty). All of the element's 
+     * content will be reported, in order, before the
      * corresponding endElement core.
      * 
      * @param namespaceURI
@@ -63,25 +66,15 @@ public interface SequenceHandler<A> extends ContentHandler
      */
     void startElement(String namespaceURI, String localName, String prefix, QName type) throws GenXDMException;
 
+    /** Receive notification of all or part of a text node's content.
+     * 
+     * This method may be called repeatedly, but implementations must insure
+     * that two adjacent text nodes are never created.  That is, implementations
+     * must accumulate the data from multiple adjacent calls of this method, and
+     * create a single text node.
+     *
+     * @param data the content, as a list of atoms
+     */
     void text(List<? extends A> data) throws GenXDMException;
 
-    /**
-     * Receive notification of an atomic value as an item in the sequence.
-     * <p/>
-     * The callee will call this method to report each atom in the sequence.
-     * 
-     * @param atom
-     *            The atomic value.
-     */
-    void atom(A atom) throws GenXDMException;
-
-    /**
-     * Receive notification of the end of a sequence.
-     */
-    void endSequence() throws GenXDMException;
-
-    /**
-     * Receive notification of the start of a sequence.
-     */
-    void startSequence() throws GenXDMException;
 }

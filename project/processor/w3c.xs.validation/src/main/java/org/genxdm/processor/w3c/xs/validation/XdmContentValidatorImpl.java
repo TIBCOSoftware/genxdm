@@ -26,8 +26,6 @@ import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
-import org.genxdm.processor.w3c.xs.validation.api.VxValidatorFactory;
-import org.genxdm.processor.w3c.xs.validation.impl.ValidationFactoryImpl;
 import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
@@ -181,27 +179,6 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 			throw new GenXDMException(e);
 		}
 	}
-
-    public void atom(A atom)
-        throws GenXDMException
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void endSequence()
-        throws GenXDMException
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void startSequence()
-        throws GenXDMException
-    {
-        // TODO Auto-generated method stub
-        
-    }
 
     @Override
     public SchemaExceptionHandler getSchemaExceptionHandler()

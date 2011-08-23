@@ -40,13 +40,6 @@ public class TypedXmlNodeBuilder
         this.context = PreCondition.assertNotNull(context, "context");
     }
 
-    public void atom(XmlAtom atom)
-        throws GenXDMException
-    {
-        // TODO Auto-generated method stub
-
-    }
-
     public void attribute(String namespaceURI, String localName, String prefix, List<? extends XmlAtom> data, QName type)
         throws GenXDMException
     {
@@ -67,19 +60,6 @@ public class TypedXmlNodeBuilder
         endNodeProcessing();
     }
 
-    public void endSequence()
-        throws GenXDMException
-    {
-        // TODO Auto-generated method stub
-
-    }
-    
-    public Iterable<XmlAtom> getSequence()
-    {
-        // TODO generated method stub
-        return null;
-    }
-
     public void startElement(String namespaceURI, String localName, String prefix, QName type)
         throws GenXDMException
     {
@@ -97,13 +77,6 @@ public class TypedXmlNodeBuilder
         {
             current = factory.createElement(namespaceURI, localName, prefix, stype);
         }
-    }
-
-    public void startSequence()
-        throws GenXDMException
-    {
-        // TODO Auto-generated method stub
-
     }
 
     public void text(List<? extends XmlAtom> data)
