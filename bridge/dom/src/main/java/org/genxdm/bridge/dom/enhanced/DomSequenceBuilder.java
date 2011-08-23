@@ -71,32 +71,5 @@ final class DomSequenceBuilder<A>
 		text(m_atomBridge.getC14NString(value));
 	}
 
-    public void atom(A atom)
-        throws GenXDMException
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void endSequence()
-        throws GenXDMException
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void startSequence()
-        throws GenXDMException
-    {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    public Iterable<A> getSequence()
-    {
-        // TODO generated method stub
-        return null;
-    }
-
     private final AtomBridge<A> m_atomBridge;
 }

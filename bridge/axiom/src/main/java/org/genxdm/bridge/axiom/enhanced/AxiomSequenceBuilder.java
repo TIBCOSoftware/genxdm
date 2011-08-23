@@ -123,33 +123,6 @@ final class AxiomSequenceBuilder
 	    base.text(value);
 	}
 
-	public void atom(XmlAtom atom)
-        throws GenXDMException
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void endSequence()
-        throws GenXDMException
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void startSequence()
-        throws GenXDMException
-    {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    public Iterable<XmlAtom> getSequence()
-    {
-        // TODO generated method stub
-        return null;
-    }
-
     private final AxiomSAProcessingContext pcx;
 	private final AxiomFragmentBuilder base;
 }

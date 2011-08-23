@@ -15,6 +15,8 @@
  */
 package org.genxdm.typed.io;
 
+import org.genxdm.NodeSource;
+
 
 /**
  * An instance of this interface assembles the events into an XML tree representation.
@@ -24,7 +26,7 @@ package org.genxdm.typed.io;
  * is schema aware.
  */
 public interface SequenceBuilder<N, A>
-    extends SequenceHandler<A>, SequenceSource<N, A>
+    extends SequenceHandler<A>, NodeSource<N>
 {
     /**
      * Resets the builder by clearing the list of nodes that have been constructed in earlier executions.

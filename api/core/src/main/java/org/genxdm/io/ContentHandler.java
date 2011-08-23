@@ -112,7 +112,11 @@ public interface ContentHandler
 
     /**
      * Receive notification of character data.
-     * <p>
+     * 
+     * This method may be called repeatedly, but implementations must insure
+     * that two adjacent text nodes are never created.  That is, implementations
+     * must accumulate the data from multiple adjacent calls of this method, and
+     * create a single text node.
      * 
      * @param data
      *            The data associated with the text node.
