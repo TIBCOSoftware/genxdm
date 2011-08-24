@@ -40,7 +40,7 @@ public class DomFragmentBuilder
 {
 
     public DomFragmentBuilder(DocumentBuilderFactory dbf) {
-        m_dbf = dbf;
+        m_dbf = ( dbf == null ? DomProcessingContext.sm_dbf : dbf );
     }
     
     public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
@@ -54,13 +54,13 @@ public class DomFragmentBuilder
                     (namespaceURI.equals(XMLConstants.XML_NS_URI) &&
                      localName.equals("id")) )
                 ((Element)m_current).setIdAttributeNode(attribute, true);
-            DomSupport.setAnnotationType(attribute, new QName("http://www.w3.org/TR/REC-xml", kind.toString()));
+            setAnnotationType(attribute, new QName("http://www.w3.org/TR/REC-xml", kind.toString()));
         }
         else
         {
             startNodeProcessing();
             m_current = DomSupport.createAttributeUntyped(getOwner(), namespaceURI, localName, prefix, value);
-            DomSupport.setAnnotationType(m_current, new QName("http://www.w3.org/TR/REC-xml", kind.toString()));
+            setAnnotationType(m_current, new QName("http://www.w3.org/TR/REC-xml", kind.toString()));
             endNodeProcessing();
         }
     }
@@ -300,6 +300,25 @@ public class DomFragmentBuilder
         }
 
         return document;
+    }
+
+    private void setAnnotationType(final Node node, final QName type)
+    {
+        // TODO: we could, potentially, store DTD types even in untyped API
+        // to do so, though, we have to figure out how to define a QName for the DtdAttributeKind enumeration.
+        if (DomSupport.supportsCoreLevel3(node))
+        {
+            try
+            {
+                node.setUserData(DomConstants.UD_ANNOTATION_TYPE, type, null);
+            }
+            catch (final AbstractMethodError e)
+            {
+                // LOG.warn("setAnnotationType", e);
+            }
+        }
+        // TODO: Log something for DOM w/o Level 3 support?
+        // LOG.warn("DOM does not support DOM CORE version 3.0: setUserData");
     }
 
     private final DocumentBuilderFactory m_dbf;

@@ -240,7 +240,7 @@ public final class DomModelMutable
         PreCondition.assertArgumentNotNull(element, "element");
         //PreCondition.assertArgumentNotNull(prefix, "prefix");
         if (prefix == null)
-        	prefix = "";
+            prefix = "";
         PreCondition.assertArgumentNotNull(uri, "uri");
         return DomSupport.setNamespace(element, prefix, uri);
     }
@@ -248,18 +248,18 @@ public final class DomModelMutable
     private Node ensureOwnership(Document d, Node n)
     {
         if (n.getOwnerDocument() != d) {
-        	// Following doesn't work
-        	// d.adoptNode(n);
-        	// This is diabolical.  It looks like, from the DOM API, that you could use adoptNode.
-        	// UNFORTUNATELY, the Xerces implementation bundled into the JRE appears to have serious
-        	// bugs, wherein "adoptNode" appears to incorrectly migrate "deferred" text data - it
-        	// preserves text locations as pointed to in the original document, rather than "undeferring"
-        	// said values, but apparently only keeps a positional reference, not the underlying data itself.
-        	// Consequence is that nested text and attribute values, when used, are taken from a random
-        	// position in the new document being imported into.
-        	//
-        	// attempts to work around the issue by traversing the descendant axis, or "normalize()" the
-        	// source document both failed.
+            // Following doesn't work
+            // d.adoptNode(n);
+            // This is diabolical.  It looks like, from the DOM API, that you could use adoptNode.
+            // UNFORTUNATELY, the Xerces implementation bundled into the JRE appears to have serious
+            // bugs, wherein "adoptNode" appears to incorrectly migrate "deferred" text data - it
+            // preserves text locations as pointed to in the original document, rather than "undeferring"
+            // said values, but apparently only keeps a positional reference, not the underlying data itself.
+            // Consequence is that nested text and attribute values, when used, are taken from a random
+            // position in the new document being imported into.
+            //
+            // attempts to work around the issue by traversing the descendant axis, or "normalize()" the
+            // source document both failed.
             return d.importNode(n, true);
         }
         return n;

@@ -15,27 +15,23 @@
  */
 package org.genxdm.bridge.dom.enhanced;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.genxdm.NodeKind;
+import org.genxdm.bridge.dom.DomConstants;
 import org.genxdm.bridge.dom.DomModel;
-import org.genxdm.bridge.dom.DomNID;
 import org.genxdm.bridge.dom.DomSupport;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.io.ContentHandler;
-import org.genxdm.names.NameSource;
-import org.genxdm.names.NamespaceBinding;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.TypesBridge;
+import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.Type;
@@ -45,531 +41,267 @@ import org.w3c.dom.Node;
 /**
  * {@link TypedModel} implementation for W3C Document Object Model.
  */
-class DomSAModel implements TypedModel<Node, XmlAtom>
+class DomSAModel
+    extends DomModel
+    implements TypedModel<Node, XmlAtom>
 {
-	public DomSAModel(final TypedContext<Node, XmlAtom> pcx)
-	{
-		this.pcx = PreCondition.assertArgumentNotNull(pcx, "pcx");
-		this.baseModel = new org.genxdm.bridge.dom.DomModel();
-		this.m_metaBridge = PreCondition.assertArgumentNotNull(pcx.getTypesBridge(), "metaBridge");
-		this.m_atomBridge = pcx.getAtomBridge();
-		this.nameBridge = NameSource.SINGLETON;
-	}
+    public DomSAModel(final TypedContext<Node, XmlAtom> pcx)
+    {
+        PreCondition.assertArgumentNotNull(pcx, "pcx");
+        this.typesBridge = pcx.getTypesBridge();
+        this.atomBridge = pcx.getAtomBridge();
+        this.provider = pcx.getComponentProvider();
+    }
 
-	public int compare(final Node one, final Node two)
-	{
-	    return baseModel.compare(one, two);
-	}
-
-	public final Iterable<Node> getAncestorAxis(final Node node)
-	{
-	    return baseModel.getAncestorAxis(node);
-	}
-
-	public final Iterable<Node> getAncestorOrSelfAxis(final Node node)
-	{
-	    return baseModel.getAncestorOrSelfAxis(node);
-	}
-
-	public final Node getAttribute(final Node node, final String namespaceURI, final String localName)
-	{
-	    return baseModel.getAttribute(node, namespaceURI, localName);
-	}
-
-	public final Iterable<Node> getAttributeAxis(final Node origin, final boolean inherit)
-	{
-	    return baseModel.getAttributeAxis(origin, inherit);
-	}
-
-	public Iterable<QName> getAttributeNames(final Node node, final boolean orderCanonical)
-	{
-	    return baseModel.getAttributeNames(node, orderCanonical);
-	}
-
-	public String getAttributeStringValue(final Node parent, final String namespaceURI, final String localName)
-	{
-	    return baseModel.getAttributeStringValue(parent, namespaceURI, localName);
-	}
-
-	public List<XmlAtom> getAttributeValue(final Node parent, final String namespaceURI, final String localName)
-	{
+    public List<XmlAtom> getAttributeValue(final Node parent, final String namespaceURI, final String localName)
+    {
         return getValue(getAttribute(parent, namespaceURI, localName));
-	}
+    }
 
-	public QName getAttributeTypeName(final Node parent, final String namespaceURI, final String localName)
-	{
-		return getTypeName(getAttribute(parent, namespaceURI, localName));
-	}
-	
-	public URI getBaseURI(final Node node)
-	{
-	    return baseModel.getBaseURI(node);
-	}
+    public QName getAttributeTypeName(final Node parent, final String namespaceURI, final String localName)
+    {
+        return getTypeName(getAttribute(parent, namespaceURI, localName));
+    }
+    
+    public final List<XmlAtom> getValue(final Node node)
+    {
+        if (null != node)
+        {
+            switch (getNodeKind(node))
+            {
+                case TEXT:
+                {
+                    // TODO: pretty sure that this is wrong.
+                    // we ought to return typed values if they're available.
+                    final String stringValue = getStringValue(node);
+                    return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
+                }
+                case ELEMENT:
+                case ATTRIBUTE:
+                {
+                    final QName typeName = getAnnotationType(node, typesBridge);
+                    final Type type = provider.getTypeDefinition(typeName);
+                    if (type instanceof SimpleType)
+                    {
+                        final SimpleType simpleType = (SimpleType)type;
+                        final String stringValue = getStringValue(node);
+                        try
+                        {
+                            return simpleType.validate(stringValue, atomBridge);
+                        }
+                        catch (final DatatypeException e)
+                        {
+                            throw new GenXDMException(e);
+                        }
+                    }
+                    else
+                    {
+                        final String stringValue = getStringValue(node);
+                        return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
+                    }
+                }
+                case DOCUMENT:
+                {
+                    return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(getStringValue(node)));
+                }
+                case NAMESPACE:
+                case COMMENT:
+                case PROCESSING_INSTRUCTION:
+                {
+                    return atomBridge.wrapAtom(atomBridge.createString(getStringValue(node)));
+                }
+                default:
+                {
+                    throw new AssertionError(node.getNodeType());
+                }
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	public final Iterable<Node> getChildAxis(final Node node)
-	{
-	    return baseModel.getChildAxis(node);
-	}
+    public final QName getTypeName(final Node node)
+    {
+        if (null != node)
+        {
+            return getAnnotationType(node, typesBridge);
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	public final Iterable<Node> getChildElements(final Node origin)
-	{
-	    return baseModel.getChildElements(origin);
-	}
+//  public List<XmlAtom> getValue(final Node node)
+//  {
+//      switch (getNodeKind(node))
+//      {
+//          case ATTRIBUTE:
+//          case ELEMENT:
+//          {
+//              final AtomBridge<XmlAtom> atomBridge = m_metaBridge.getAtomBridge();
+//              final QName typeName = DomSupport.getAnnotationType(node, m_metaBridge);
+//              final Type<XmlAtom> type = pcx.getTypeDefinition(typeName);
+//              if (type instanceof SimpleType<?>)
+//              {
+//                  final SimpleType<XmlAtom> simpleType = (SimpleType<XmlAtom>)type;
+//                  final String stringValue = getStringValue(node);
+//                  try
+//                  {
+//                      return simpleType.validate(stringValue);
+//                  }
+//                  catch (final DatatypeException e)
+//                  {
+//                      throw new GxmlException(e);
+//                  }
+//              }
+//              else
+//              {
+//                  final String stringValue = getStringValue(node);
+//                  return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
+//              }
+//          }
+//          case DOCUMENT:
+//          case TEXT:
+//          {
+//              final AtomBridge<XmlAtom> atomBridge = m_metaBridge.getAtomBridge();
+//              final String stringValue = getStringValue(node);
+//              return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
+//          }
+//          case NAMESPACE:
+//          case COMMENT:
+//          case PROCESSING_INSTRUCTION:
+//          {
+//              final AtomBridge<XmlAtom> atomBridge = m_metaBridge.getAtomBridge();
+//              return atomBridge.wrapAtom(atomBridge.createString(getStringValue(node)));
+//          }
+//          default:
+//          {
+//              throw new AssertionError(getNodeKind(node));
+//          }
+//      }
+//  }
 
-	public final Iterable<Node> getChildElementsByName(final Node origin, final String namespaceURI, final String localName)
-	{
-	    return baseModel.getChildElementsByName(origin, namespaceURI, localName);
-	}
+    public final void stream(final Node origin, boolean copyNamespaces, final SequenceHandler<XmlAtom> handler) throws GenXDMException
+    {
+        switch (getNodeKind(origin))
+        {
+            case ELEMENT:
+            {
+                final QName type = getTypeName(origin);
 
-	public final Iterable<Node> getDescendantAxis(final Node node)
-	{
-	    return baseModel.getDescendantAxis(node);
-	}
+                handler.startElement(getNamespaceURI(origin), getLocalName(origin), getElementPrefix(origin), type);
+                try
+                {
+                    if (origin.hasAttributes())
+                    {
+                        final NamedNodeMap mixed = origin.getAttributes();
+                        if (null != mixed)
+                        {
+                            final int length = mixed.getLength();
 
-	public final Iterable<Node> getDescendantOrSelfAxis(final Node node)
-	{
-	    return baseModel.getDescendantOrSelfAxis(node);
-	}
+                            if (copyNamespaces)
+                            {
+                                // The namespace "attributes" come before the real attributes.
+                                for (int i = 0; i < length; i++)
+                                {
+                                    final Node namespace = mixed.item(i);
+                                    if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespace.getNamespaceURI()))
+                                    {
+                                        deepCopyNamespace(namespace, handler);
+                                    }
+                                }
+                            }
 
-	public final URI getDocumentURI(final Node node)
-	{
-	    return baseModel.getDocumentURI(node);
-	}
-	
-	public final Node getElementById(final Node context, final String id)
-	{
-	    return baseModel.getElementById(context, id);
-	}
+                            // The real attributes.
+                            for (int i = 0; i < length; i++)
+                            {
+                                final Node attribute = mixed.item(i);
+                                if (!XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attribute.getNamespaceURI()))
+                                {
+                                    deepCopyAttribute(attribute, copyNamespaces, true, handler);
+                                }
+                            }
+                        }
+                    }
+                    deepCopyChildren(origin, copyNamespaces, true, handler);
+                }
+                finally
+                {
+                    handler.endElement();
+                }
+            }
+            break;
+            case ATTRIBUTE:
+            {
+                deepCopyAttribute(origin, copyNamespaces, true, handler);
+            }
+            break;
+            case TEXT:
+            {
+                handler.text(origin.getNodeValue());
+            }
+            break;
+            case DOCUMENT:
+            {
+                handler.startDocument(getDocumentURI(origin), null);
+                try
+                {
+                    deepCopyChildren(origin, copyNamespaces, true, handler);
+                }
+                finally
+                {
+                    handler.endDocument();
+                }
+            }
+            break;
+            case NAMESPACE:
+            {
+                if (copyNamespaces)
+                {
+                    deepCopyNamespace(origin, handler);
+                }
+            }
+            break;
+            case COMMENT:
+            {
+                handler.comment(origin.getNodeValue());
+            }
+            break;
+            case PROCESSING_INSTRUCTION:
+            {
+                handler.processingInstruction(origin.getNodeName(), origin.getNodeValue());
+            }
+            break;
+            default:
+            {
+                throw new AssertionError(getNodeKind(origin));
+            }
+        }
+    }
 
-	public final Node getFirstChild(final Node origin)
-	{
-	    return baseModel.getFirstChild(origin);
-	}
+    private QName getAnnotationType(final Node node, final TypesBridge metaBridge)
+    {
+        PreCondition.assertArgumentNotNull(node, "node");
+        if (DomSupport.supportsCoreLevel3(node))
+        {
+            try
+            {
+                return (QName)node.getUserData(DomConstants.UD_ANNOTATION_TYPE);
+            }
+            catch (final AbstractMethodError e)
+            {
+                // LOG.warn("getAnnotationType", e);
+                return null;
+            }
+        }
+        // TODO: Log something for DOM w/o Level 3 support?
+        // LOG.warn("DOM does not support DOM CORE version 3.0: Node.getUserData");
+        return null;
+    }
 
-	public final Node getFirstChildElement(final Node origin)
-	{
-	    return baseModel.getFirstChildElement(origin);
-	}
-
-	public final Node getFirstChildElementByName(final Node origin, final String namespaceURI, final String localName)
-	{
-	    return baseModel.getFirstChildElementByName(origin, namespaceURI, localName);
-	}
-
-	public final Iterable<Node> getFollowingAxis(final Node node)
-	{
-	    return baseModel.getFollowingAxis(node);
-	}
-
-	public final Iterable<Node> getFollowingSiblingAxis(final Node node)
-	{
-	    return baseModel.getFollowingSiblingAxis(node);
-	}
-
-	public final Node getLastChild(final Node origin)
-	{
-	    return baseModel.getLastChild(origin);
-	}
-
-	public final String getLocalName(final Node node)
-	{
-	    return baseModel.getLocalName(node);
-	}
-
-	public final Iterable<Node> getNamespaceAxis(final Node node, final boolean inherit)
-	{
-	    return baseModel.getNamespaceAxis(node, inherit);
-	}
-
-	public final Iterable<NamespaceBinding> getNamespaceBindings(final Node origin)
-	{
-	    return baseModel.getNamespaceBindings(origin);
-	}
-	
-	public final String getNamespaceForPrefix(final Node node, final String prefix)
-	{
-	    return baseModel.getNamespaceForPrefix(node, prefix);
-	}
-
-	public Iterable<String> getNamespaceNames(final Node node, final boolean orderCanonical)
-	{
-	    return baseModel.getNamespaceNames(node, orderCanonical);
-	}
-
-	public final String getNamespaceURI(final Node node)
-	{
-	    return baseModel.getNamespaceURI(node);
-	}
-
-	public final Node getNextSibling(final Node origin)
-	{
-	    return baseModel.getNextSibling(origin);
-	}
-
-	public Node getNextSiblingElement(final Node node)
-	{
-	    return baseModel.getNextSiblingElement(node);
-	}
-
-	public Node getNextSiblingElementByName(final Node node, final String namespaceURI, final String localName)
-	{
-	    return baseModel.getNextSiblingElementByName(node, namespaceURI, localName);
-	}
-
-	public final NodeKind getNodeKind(final Node node)
-	{
-	    return baseModel.getNodeKind(node);
-	}
-
-	public final Node getParent(final Node node)
-	{
-	    return baseModel.getParent(node);
-	}
-
-	public final Iterable<Node> getPrecedingAxis(final Node node)
-	{
-	    return baseModel.getPrecedingAxis(node);
-	}
-
-	public final Iterable<Node> getPrecedingSiblingAxis(final Node node)
-	{
-	    return baseModel.getPrecedingSiblingAxis(node);
-	}
-
-	public final String getPrefix(final Node node)
-	{
-	    return baseModel.getPrefix(node);
-	}
-
-	public final Node getPreviousSibling(final Node origin)
-	{
-	    return baseModel.getPreviousSibling(origin);
-	}
-
-	public final Node getRoot(final Node node)
-	{
-	    return baseModel.getRoot(node);
-	}
-
-	public final String getStringValue(final Node node)
-	{
-	    return baseModel.getStringValue(node);
-	}
-
-	public final List<XmlAtom> getValue(final Node node)
-	{
-		if (null != node)
-		{
-			final AtomBridge<XmlAtom> atomBridge = pcx.getAtomBridge();
-			switch (getNodeKind(node))
-			{
-				case TEXT:
-				{
-					final String stringValue = getStringValue(node);
-					return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
-				}
-				case ELEMENT:
-				case ATTRIBUTE:
-				{
-					final QName typeName = DomSupport.getAnnotationType(node, m_metaBridge);
-					final Type type = pcx.getComponentProvider().getTypeDefinition(typeName);
-					if (type instanceof SimpleType)
-					{
-						final SimpleType simpleType = (SimpleType)type;
-						final String stringValue = getStringValue(node);
-						try
-						{
-							// return type.validate(stringValue, new PrefixResolverOnNode<Node, A, String>(node, this,
-							// m_nameBridge));
-							return simpleType.validate(stringValue, atomBridge);
-						}
-						catch (final DatatypeException e)
-						{
-							throw new GenXDMException(e);
-						}
-					}
-					else
-					{
-						final String stringValue = getStringValue(node);
-						return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
-					}
-				}
-				case DOCUMENT:
-				{
-					return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(getStringValue(node)));
-				}
-				case NAMESPACE:
-				case COMMENT:
-				case PROCESSING_INSTRUCTION:
-				{
-					return atomBridge.wrapAtom(atomBridge.createString(getStringValue(node)));
-				}
-				default:
-				{
-					throw new AssertionError(node.getNodeType());
-				}
-			}
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	public final QName getTypeName(final Node node)
-	{
-		if (null != node)
-		{
-			return DomSupport.getAnnotationType(node, m_metaBridge);
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-//	public List<XmlAtom> getValue(final Node node)
-//	{
-//		switch (getNodeKind(node))
-//		{
-//			case ATTRIBUTE:
-//			case ELEMENT:
-//			{
-//				final AtomBridge<XmlAtom> atomBridge = m_metaBridge.getAtomBridge();
-//				final QName typeName = DomSupport.getAnnotationType(node, m_metaBridge);
-//				final Type<XmlAtom> type = pcx.getTypeDefinition(typeName);
-//				if (type instanceof SimpleType<?>)
-//				{
-//					final SimpleType<XmlAtom> simpleType = (SimpleType<XmlAtom>)type;
-//					final String stringValue = getStringValue(node);
-//					try
-//					{
-//						// return simpleType.validate(stringValue, new PrefixResolverOnNode<Node, A, String>(node, this,
-//						// m_nameBridge));
-//						return simpleType.validate(stringValue);
-//					}
-//					catch (final DatatypeException e)
-//					{
-//						throw new GxmlException(e);
-//					}
-//				}
-//				else
-//				{
-//					final String stringValue = getStringValue(node);
-//					return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
-//				}
-//			}
-//			case DOCUMENT:
-//			case TEXT:
-//			{
-//				final AtomBridge<XmlAtom> atomBridge = m_metaBridge.getAtomBridge();
-//				final String stringValue = getStringValue(node);
-//				return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
-//			}
-//			case NAMESPACE:
-//			case COMMENT:
-//			case PROCESSING_INSTRUCTION:
-//			{
-//				final AtomBridge<XmlAtom> atomBridge = m_metaBridge.getAtomBridge();
-//				return atomBridge.wrapAtom(atomBridge.createString(getStringValue(node)));
-//			}
-//			default:
-//			{
-//				throw new AssertionError(getNodeKind(node));
-//			}
-//		}
-//	}
-
-	public boolean hasAttributes(final Node node)
-	{
-	    return baseModel.hasAttributes(node);
-	}
-
-	public boolean hasChildren(final Node node)
-	{
-	    return baseModel.hasChildren(node);
-	}
-
-	public boolean hasNamespaces(final Node origin)
-	{
-	    return baseModel.hasNamespaces(origin);
-	}
-
-	public boolean hasNextSibling(final Node node)
-	{
-	    return baseModel.hasNextSibling(node);
-	}
-
-	public boolean hasParent(final Node node)
-	{
-	    return baseModel.hasParent(node);
-	}
-
-	public boolean hasPreviousSibling(final Node node)
-	{
-	    return baseModel.hasPreviousSibling(node);
-	}
-
-	public boolean isAttribute(final Node node)
-	{
-	    return baseModel.isAttribute(node);
-	}
-
-	public boolean isElement(final Node node)
-	{
-	    return baseModel.isElement(node);
-	}
-	
-	public boolean isId(final Node node)
-	{
-	    return baseModel.isId(node);
-	}
-	
-	public boolean isIdRefs(final Node node)
-	{
-	    return baseModel.isIdRefs(node);
-	}
-
-	public boolean isNamespace(final Node node)
-	{
-	    return baseModel.isNamespace(node);
-	}
-
-	public final DomNID getNodeId(final Node node)
-	{
-	    return baseModel.getNodeId(node);
-	}
-
-	public boolean isText(final Node node)
-	{
-	    return baseModel.isText(node);
-	}
-
-	public boolean matches(final Node node, final NodeKind kindArg, final String namespaceArg, final String localNameArg)
-	{
-	    return baseModel.matches(node, kindArg, namespaceArg, localNameArg);
-	}
-
-	public boolean matches(final Node node, final String namespaceArg, final String localNameArg)
-	{
-	    return baseModel.matches(node, namespaceArg, localNameArg);
-	}
-
-//	public Node node(Object object)
-//	{
-//        if (object instanceof Node)
-//        {
-//            return (Node)object;
-//        }
-//        else
-//        {
-//            return null;
-//        }
-//	}
-
-	public final void stream(final Node origin, final boolean copyNamespaces, final ContentHandler handler) throws GenXDMException
-	{
-	    baseModel.stream(origin, copyNamespaces, handler);
-	}
-
-	public final void stream(final Node origin, boolean copyNamespaces, final SequenceHandler<XmlAtom> handler) throws GenXDMException
-	{
-		switch (getNodeKind(origin))
-		{
-			case ELEMENT:
-			{
-				final QName type = getTypeName(origin);
-
-				handler.startElement(getNamespaceURI(origin), getLocalName(origin), baseModel.getElementPrefix(origin), type);
-				try
-				{
-					if (origin.hasAttributes())
-					{
-						final NamedNodeMap mixed = origin.getAttributes();
-						if (null != mixed)
-						{
-							final int length = mixed.getLength();
-
-							if (copyNamespaces)
-							{
-								// The namespace "attributes" come before the real attributes.
-								for (int i = 0; i < length; i++)
-								{
-									final Node namespace = mixed.item(i);
-									if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespace.getNamespaceURI()))
-									{
-										deepCopyNamespace(namespace, handler, nameBridge);
-									}
-								}
-							}
-
-							// The real attributes.
-							for (int i = 0; i < length; i++)
-							{
-								final Node attribute = mixed.item(i);
-								if (!XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attribute.getNamespaceURI()))
-								{
-									deepCopyAttribute(attribute, copyNamespaces, true, handler);
-								}
-							}
-						}
-					}
-					deepCopyChildren(origin, copyNamespaces, true, handler);
-				}
-				finally
-				{
-					handler.endElement();
-				}
-			}
-			break;
-			case ATTRIBUTE:
-			{
-				deepCopyAttribute(origin, copyNamespaces, true, handler);
-			}
-			break;
-			case TEXT:
-			{
-				handler.text(origin.getNodeValue());
-			}
-			break;
-			case DOCUMENT:
-			{
-				handler.startDocument(getDocumentURI(origin), null);
-				try
-				{
-					deepCopyChildren(origin, copyNamespaces, true, handler);
-				}
-				finally
-				{
-					handler.endDocument();
-				}
-			}
-			break;
-			case NAMESPACE:
-			{
-				if (copyNamespaces)
-				{
-					deepCopyNamespace(origin, handler, nameBridge);
-				}
-			}
-			break;
-			case COMMENT:
-			{
-				handler.comment(origin.getNodeValue());
-			}
-			break;
-			case PROCESSING_INSTRUCTION:
-			{
-				handler.processingInstruction(origin.getNodeName(), origin.getNodeValue());
-			}
-			break;
-			default:
-			{
-				throw new AssertionError(getNodeKind(origin));
-			}
-		}
-	}
-	
 //    private String correctBaseURI(final Node node, final TypedModel<Node, XmlAtom> model)
 //    {
 //        final Node attribute = model.getAttribute(node, XMLConstants.XML_NS_URI, "base");
@@ -590,7 +322,7 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
 
     private void deepCopyAttribute(final Node attribute, final boolean copyNamespaces, final boolean copyTypeAnnotations, final SequenceHandler<XmlAtom> handler) throws GenXDMException
     {
-        final String prefix = copyNamespaces ? baseModel.getAttributePrefix(attribute) : "";
+        final String prefix = copyNamespaces ? getAttributePrefix(attribute) : "";
         handler.attribute(getNamespaceURI(attribute), getLocalName(attribute), prefix, attribute.getNodeValue(), null);
     }
 
@@ -630,23 +362,17 @@ class DomSAModel implements TypedModel<Node, XmlAtom>
         }
     }
 
-    private static void deepCopyNamespace(final Node namespace, final SequenceHandler<XmlAtom> handler, final NameSource nameBridge) throws GenXDMException
+    private void deepCopyNamespace(final Node namespace, final SequenceHandler<XmlAtom> handler) throws GenXDMException
     {
         final String prefix = DomSupport.getLocalNameAsString(namespace);
         final String uri = namespace.getNodeValue();
         handler.namespace(prefix, uri);
     }
 
-    protected final AtomBridge<XmlAtom> m_atomBridge;
+    private final AtomBridge<XmlAtom> atomBridge;
 
-    protected final TypesBridge m_metaBridge;
-    /**
-     * The name bridge is important for ensuring that symbols obey the right semantics. Because the DOM may have been created elsewhere, we must be cautious and ensure that strings are converted to symbols.
-     */
-    protected final NameSource nameBridge;
-
-    protected final TypedContext<Node, XmlAtom> pcx;
+    private final TypesBridge typesBridge;
     
-    private DomModel baseModel;
+    private final ComponentProvider provider;
 
 }
