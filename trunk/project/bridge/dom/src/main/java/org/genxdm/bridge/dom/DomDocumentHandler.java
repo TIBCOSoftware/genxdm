@@ -39,43 +39,43 @@ import org.xml.sax.SAXException;
  */
 public class DomDocumentHandler extends DefaultDocumentHandler<Node> {
 
-	/**
-	 * Constructor takes a {@link DocumentBuilderFactory} so that clients
-	 * can choose what sort of schema support they want to load into the
-	 * document builder.
-	 * 
-	 * @param dbf	The document builder factory to use.
-	 */
-	public DomDocumentHandler(DocumentBuilderFactory dbf) {
-		super( new DomFragmentBuilder(dbf), new DomModel());
-		
-		m_dbf = dbf;
-	}
-	
-	DomDocumentHandler(DomProcessingContext context) {
-	    super(context);
-	    m_dbf = context.m_dbf;
-	}
+    /**
+     * Constructor takes a {@link DocumentBuilderFactory} so that clients
+     * can choose what sort of schema support they want to load into the
+     * document builder.
+     * 
+     * @param dbf   The document builder factory to use.
+     */
+    public DomDocumentHandler(DocumentBuilderFactory dbf) {
+        super( new DomFragmentBuilder(PreCondition.assertNotNull(dbf)), new DomModel());
+        
+        m_dbf = dbf;
+    }
+    
+    DomDocumentHandler(DomProcessingContext context) {
+        super(context);
+        m_dbf = context.m_dbf;
+    }
 
-	
-	@Override
-	public Node parse(InputStream byteStream, URI systemId) throws IOException,
-			XdmMarshalException {
-		return parse(new InputSource(byteStream), systemId);
-	}
-
-
-	@Override
-	public Node parse(Reader characterStream, URI systemId) throws IOException,
-			XdmMarshalException {
-		return parse(new InputSource(characterStream), systemId);
-	}
+    
+    @Override
+    public Node parse(InputStream byteStream, URI systemId) throws IOException,
+            XdmMarshalException {
+        return parse(new InputSource(byteStream), systemId);
+    }
 
 
-	@Override
-	public Node parse(InputSource source, URI systemId) throws IOException,
-			XdmMarshalException {
-		
+    @Override
+    public Node parse(Reader characterStream, URI systemId) throws IOException,
+            XdmMarshalException {
+        return parse(new InputSource(characterStream), systemId);
+    }
+
+
+    @Override
+    public Node parse(InputSource source, URI systemId) throws IOException,
+            XdmMarshalException {
+        
         PreCondition.assertArgumentNotNull(source, "source");
         Document result = null;
         
@@ -85,7 +85,7 @@ public class DomDocumentHandler extends DefaultDocumentHandler<Node> {
         }
         try
         {
-        	PreCondition.assertTrue(m_dbf.isNamespaceAware(), "Document Builder factory must be namespace aware.");
+            PreCondition.assertTrue(m_dbf.isNamespaceAware(), "Document Builder factory must be namespace aware.");
             DocumentBuilder db = getDocumentBuilder();
             result = db.parse(source);
         }
@@ -98,26 +98,26 @@ public class DomDocumentHandler extends DefaultDocumentHandler<Node> {
             throw new XdmMarshalException(e);
         }
         return result;
-	}
+    }
 
-	/**
-	 * This method lets us reuse the document builder over and over again
-	 * 
-	 * @return A new or recycled DocumentBuilder.
-	 * @throws ParserConfigurationException
-	 */
-	private DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
-		if (m_db == null) {
-			m_db = m_dbf.newDocumentBuilder();
-		}
-		else {
-			m_db.reset();
-		}
-		
+    /**
+     * This method lets us reuse the document builder over and over again
+     * 
+     * @return A new or recycled DocumentBuilder.
+     * @throws ParserConfigurationException
+     */
+    private DocumentBuilder getDocumentBuilder() throws ParserConfigurationException {
+        if (m_db == null) {
+            m_db = m_dbf.newDocumentBuilder();
+        }
+        else {
+            m_db.reset();
+        }
+        
         return m_db;
-	}
-	
-	private DocumentBuilder m_db;
-	
-	private DocumentBuilderFactory m_dbf;
+    }
+    
+    private DocumentBuilder m_db;
+    
+    private DocumentBuilderFactory m_dbf;
 }

@@ -28,17 +28,17 @@ import org.w3c.dom.Node;
  */
 public class DomDocumentHandlerFactory implements DocumentHandlerFactory<Node> {
 
-	public DomDocumentHandlerFactory(DocumentBuilderFactory dbf) {
-		m_dbf = dbf;
-	}
-	
-    public DocumentBuilderFactory getDocumentBuilderFactory() {
-    	return m_dbf;
+    public DomDocumentHandlerFactory(DocumentBuilderFactory dbf) {
+        m_dbf = ( dbf == null ? DomProcessingContext.sm_dbf : dbf );
     }
     
-	public DocumentHandler<Node> newDocumentHandler() {
+    public DocumentBuilderFactory getDocumentBuilderFactory() {
+        return m_dbf;
+    }
+    
+    public DocumentHandler<Node> newDocumentHandler() {
         return new DomDocumentHandler(m_dbf);
-	}
+    }
 
     public DocumentHandler<Node> newDocumentHandler(XMLReporter reporter, Resolver resolver)
     {
