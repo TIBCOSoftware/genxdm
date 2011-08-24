@@ -15,7 +15,13 @@
  */
 package org.genxdm.bridge.dom;
 
-interface DomConstants {
+import org.genxdm.typed.types.Emulation;
+
+public interface DomConstants {
     final static String CORE = "CORE";
     final static String LEVEL_3 = "3.0";
+    final static String DEFAULT_ATOM_SEPARATOR = " ";
+    final static Emulation DEFAULT_EMULATION = Emulation.MODERN;
+    final static String UD_ANNOTATION_TYPE = "{http://org.genxdm.bridge.dom}annotation-type";
+
 }

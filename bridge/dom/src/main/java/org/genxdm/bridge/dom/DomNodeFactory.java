@@ -56,7 +56,7 @@ public class DomNodeFactory
     public Node createComment(String data)
     {
         insureDocumentExists();
-        return DomSupport.createComment(m_doc, (data == null) ? "" : data);
+        return m_doc.createComment((data == null) ? "" : data);
     }
 
     public Node createDocument(final URI uri, final String docTypeDecl)
@@ -82,13 +82,13 @@ public class DomNodeFactory
     public Node createProcessingInstruction(String target, String data)
     {
         insureDocumentExists();
-        return DomSupport.createProcessingInstruction(m_doc, target, (data == null) ? "" : data);
+        return m_doc.createProcessingInstruction(target, (data == null) ? "" : data);
     }
 
     public Node createText(String value)
     {
         insureDocumentExists();
-        return DomSupport.createText(m_doc, (value == null) ? "" : value);
+        return m_doc.createTextNode((value == null) ? "" : value);
     }
     
     private void insureDocumentExists()

@@ -16,6 +16,7 @@
 package org.genxdm.bridge.dom;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,16 +29,17 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
-import org.genxdm.bridge.dom.axes.AxisAncestorIterable;
-import org.genxdm.bridge.dom.axes.AxisAncestorOrSelfIterable;
-import org.genxdm.bridge.dom.axes.AxisChildElementIterable;
-import org.genxdm.bridge.dom.axes.AxisChildIterable;
-import org.genxdm.bridge.dom.axes.AxisDescendantOrSelfIterable;
-import org.genxdm.bridge.dom.axes.AxisFollowingSiblingIterable;
-import org.genxdm.bridge.dom.axes.AxisPrecedingSiblingIterable;
+import org.genxdm.bridgekit.axes.IterableAncestorAxis;
+import org.genxdm.bridgekit.axes.IterableAncestorOrSelfAxis;
+import org.genxdm.bridgekit.axes.IterableChildAxis;
+import org.genxdm.bridgekit.axes.IterableChildAxisElements;
+import org.genxdm.bridgekit.axes.IterableChildAxisElementsByName;
 import org.genxdm.bridgekit.axes.IterableDescendantAxis;
+import org.genxdm.bridgekit.axes.IterableDescendantOrSelfAxis;
 import org.genxdm.bridgekit.axes.IterableFollowingAxis;
+import org.genxdm.bridgekit.axes.IterableFollowingSiblingAxis;
 import org.genxdm.bridgekit.axes.IterablePrecedingAxis;
+import org.genxdm.bridgekit.axes.IterablePrecedingSiblingAxis;
 import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.bridgekit.names.DefaultNamespaceBinding;
 import org.genxdm.bridgekit.names.QNameComparator;
@@ -68,7 +70,7 @@ public class DomModel
         {
             if (null != DomSupport.getParentNode(node))
             {
-                return new AxisAncestorIterable(node);
+                return new IterableAncestorAxis<Node>(node, this);
             }
             else
             {
@@ -85,7 +87,7 @@ public class DomModel
     {
         if (null != node)
         {
-            return new AxisAncestorOrSelfIterable(node);
+            return new IterableAncestorOrSelfAxis<Node>(node, this);
         }
         else
         {
@@ -272,7 +274,7 @@ public class DomModel
                 case Node.DOCUMENT_FRAGMENT_NODE:
                 case Node.DOCUMENT_NODE:
                 {
-                    return new AxisChildIterable(node);
+                    return new IterableChildAxis<Node>(node, this);
                 }
                 default:
                 {
@@ -292,7 +294,7 @@ public class DomModel
         {
             if (null != DomSupport.getFirstChild(origin))
             {
-                return new AxisChildElementIterable(origin);
+                return new IterableChildAxisElements<Node>(origin, this);
             }
             else
             {
@@ -309,7 +311,7 @@ public class DomModel
     {
         if (origin != null)
         {
-        	return new NamedChildIterable(origin, namespaceURI, localName);
+            return new IterableChildAxisElementsByName<Node>(origin, namespaceURI, localName, this);
         }
         else
         {
@@ -333,7 +335,7 @@ public class DomModel
     {
         if (null != node)
         {
-            return new AxisDescendantOrSelfIterable(node);
+            return new IterableDescendantOrSelfAxis<Node>(node, this);
         }
         else
         {
@@ -343,7 +345,42 @@ public class DomModel
 
     public URI getDocumentURI(Node node)
     {
-        return DomSupport.getDocumentURI(node);
+        final Document owner = DomSupport.getOwner(node);
+        if ( (node == owner) || node.isSameNode(owner) )
+        {
+            final String documentURI;
+            try
+            {
+                if (DomSupport.supportsCoreLevel3(owner))
+                {
+                    documentURI = owner.getDocumentURI();
+                }
+                else
+                {
+                    // TODO: Log something for DOM w/o Level 3 support?
+                    // LOG.warn("DOM does not support DOM CORE version 3.0: Document.getDocumentURI");
+                    return null;
+                }
+            }
+            catch (final AbstractMethodError e)
+            {
+                // Thrown by org.apache.xerces.dom.DocumentImpl
+                // TODO: Logging
+                return null;
+            }
+            if (documentURI != null)
+            {
+                try
+                {
+                    return new URI(documentURI);
+                }
+                catch (final URISyntaxException e)
+                {
+                    throw new AssertionError(e);
+                }
+            }
+        }
+        return null;
     }
 
     public Node getFirstChild(Node origin)
@@ -353,7 +390,18 @@ public class DomModel
 
     public Node getFirstChildElement(Node origin)
     {
-        return DomSupport.getFirstChildElement(origin);
+        if (origin != null)
+        {
+            Node child = DomSupport.getFirstChild(origin);
+            while (child != null)
+            {
+                if (Node.ELEMENT_NODE == child.getNodeType())
+                    return child;
+                child = child.getNextSibling();
+            }
+            return null;
+        }
+        return null;
     }
 
     public Node getFirstChildElementByName(Node origin, String namespaceURI, String localName)
@@ -362,7 +410,7 @@ public class DomModel
 
         if (nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE)
         {
-        	return NamedSiblingIterator.findNextMatch(origin.getFirstChild(), namespaceURI, localName);
+            return NamedSiblingIterator.findNextMatch(origin.getFirstChild(), namespaceURI, localName);
         }
         else
         {
@@ -388,7 +436,7 @@ public class DomModel
         {
             if (null != node.getNextSibling())
             {
-                return new AxisFollowingSiblingIterable(node);
+                return new IterableFollowingSiblingAxis<Node>(node, this);
             }
             else
             {
@@ -526,7 +574,15 @@ public class DomModel
 
     public Node getNextSibling(Node origin)
     {
-        return DomSupport.getNextSibling(origin);
+        Node candidate = origin.getNextSibling();
+
+        while (candidate != null)
+        {
+            if (DomSupport.getNodeKind(candidate) != null)
+                return candidate;
+            candidate = candidate.getNextSibling();
+        }
+        return null;
     }
 
     public Node getNextSiblingElement(Node node)
@@ -584,7 +640,7 @@ public class DomModel
         {
             if (null != node.getPreviousSibling())
             {
-                return new AxisPrecedingSiblingIterable(node);
+                return new IterablePrecedingSiblingAxis<Node>(node, this);
             }
             else
             {
@@ -721,14 +777,9 @@ public class DomModel
 
     public boolean isElement(Node node)
     {
-        if (null != node)
-        {
-            return DomSupport.isElement(node);
-        }
-        else
-        {
-            return false;
-        }
+        if (node != null)
+            return node.getNodeType() == Node.ELEMENT_NODE;
+        return false;
     }
     
     public boolean isId(Node node)
@@ -791,14 +842,12 @@ public class DomModel
 
     public boolean isText(Node node)
     {
-        if (null != node)
+        if (node != null)
         {
-            return DomSupport.isText(node);
+            final short nodeType = node.getNodeType();
+            return nodeType == Node.TEXT_NODE || nodeType == Node.CDATA_SECTION_NODE;
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public boolean matches(Node node, NodeKind nodeKind, String namespaceURI, String localName)
@@ -971,8 +1020,8 @@ public class DomModel
     
     public Node getElementById(final Node context, final String id)
     {
-    	Document doc = DomSupport.getOwner(context);
-    	return doc.getElementById(id);
+        Document doc = DomSupport.getOwner(context);
+        return doc.getElementById(id);
     }
 
     public String getElementPrefix(final Node node)
@@ -1122,6 +1171,4 @@ public class DomModel
             return null;
         }
     }
-
-    //private final NameSource nameBridge = new NameSource();
 }
