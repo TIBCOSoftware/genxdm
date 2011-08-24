@@ -20,8 +20,10 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.genxdm.bridge.dom.DomConstants;
 import org.genxdm.bridge.dom.DomFragmentBuilder;
 import org.genxdm.bridge.dom.DomSupport;
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.TypedContext;
@@ -30,46 +32,61 @@ import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.Emulation;
 import org.w3c.dom.Node;
 
-// TODO: how the f^&* did we manage to leave an unspecialized parameter in here?
-// fix it.  It should be XmlAtom.  If someone wants a different A for a typed
-// DOM, they need to be defining the bridge for it (since you couldn't get it
-// from this bridge, and so the remaining genericity is pointless and stupid)
-final class DomSequenceBuilder<A>
+final class DomSequenceBuilder
     extends DomFragmentBuilder
-    implements SequenceBuilder<Node, A>
+    implements SequenceBuilder<Node, XmlAtom>
 {
-	public DomSequenceBuilder(DocumentBuilderFactory dbf, final TypedContext<Node, A> pcx)
-	{
-		super(dbf);
-		this.m_atomBridge = PreCondition.assertArgumentNotNull(pcx).getAtomBridge();
-	}
+    public DomSequenceBuilder(DocumentBuilderFactory dbf, final TypedContext<Node, XmlAtom> pcx)
+    {
+        super(dbf);
+        this.atomBridge = PreCondition.assertArgumentNotNull(pcx).getAtomBridge();
+    }
 
-	public void attribute(final String namespaceURI, final String localName, final String prefix, final List<? extends A> data, final QName type) throws GenXDMException
-	{
-		if (m_depth > 0)
-		{
-			final Node attribute = DomSupport.setAttribute(m_current, namespaceURI, localName, prefix, data, Emulation.C14N, m_atomBridge);
-			DomSupport.setAnnotationType(attribute, type);
-		}
-		else
-		{
-			startNodeProcessing();
-			m_current = DomSupport.createAttribute(getOwner(), namespaceURI, localName, prefix, data, Emulation.C14N, m_atomBridge);
-			DomSupport.setAnnotationType(m_current, type);
-			endNodeProcessing();
-		}
-	}
+    public void attribute(final String namespaceURI, final String localName, final String prefix, final List<? extends XmlAtom> data, final QName type) throws GenXDMException
+    {
+        if (m_depth > 0)
+        {
+            final Node attribute = DomSupport.setAttribute(m_current, namespaceURI, localName, prefix, data, Emulation.C14N, atomBridge);
+            setAnnotationType(attribute, type);
+        }
+        else
+        {
+            startNodeProcessing();
+            m_current = DomSupport.createAttribute(getOwner(), namespaceURI, localName, prefix, data, Emulation.C14N, atomBridge);
+            setAnnotationType(m_current, type);
+            endNodeProcessing();
+        }
+    }
 
-	public void startElement(final String namespaceURI, final String localName, final String prefix, final QName type) throws GenXDMException
-	{
-	    startElement(namespaceURI, localName, prefix);
-		DomSupport.setAnnotationType(m_current, type);
-	}
+    public void startElement(final String namespaceURI, final String localName, final String prefix, final QName type) throws GenXDMException
+    {
+        startElement(namespaceURI, localName, prefix);
+        setAnnotationType(m_current, type);
+    }
 
-	public void text(final List<? extends A> value) throws GenXDMException
-	{
-		text(m_atomBridge.getC14NString(value));
-	}
+    public void text(final List<? extends XmlAtom> value) throws GenXDMException
+    {
+        text(atomBridge.getC14NString(value));
+    }
 
-    private final AtomBridge<A> m_atomBridge;
+    private void setAnnotationType(final Node node, final QName type)
+    {
+        // TODO: we could, potentially, store DTD types even in untyped API
+        // to do so, though, we have to figure out how to define a QName for the DtdAttributeKind enumeration.
+        if (DomSupport.supportsCoreLevel3(node))
+        {
+            try
+            {
+                node.setUserData(DomConstants.UD_ANNOTATION_TYPE, type, null);
+            }
+            catch (final AbstractMethodError e)
+            {
+                // LOG.warn("setAnnotationType", e);
+            }
+        }
+        // TODO: Log something for DOM w/o Level 3 support?
+        // LOG.warn("DOM does not support DOM CORE version 3.0: setUserData");
+    }
+
+    private final AtomBridge<XmlAtom> atomBridge;
 }

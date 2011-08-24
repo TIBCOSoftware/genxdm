@@ -289,7 +289,8 @@ public interface NodeInformer<N>
      * @param node the node under consideration
      * @return true if the node is an attribute named xml:id, if it has a PSVI
      * type derived from xs:ID, or if it is an attribute with a DTD-defined type of ID,
-     * otherwise false.
+     * otherwise false.  Elements that contain attributes that return true also
+     * return true.
      * 
      * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-is-id
      */

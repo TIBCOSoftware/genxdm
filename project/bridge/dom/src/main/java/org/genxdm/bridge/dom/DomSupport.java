@@ -15,47 +15,27 @@
  */
 package org.genxdm.bridge.dom;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
-import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.Emulation;
-import org.genxdm.typed.types.TypesBridge;
-import org.genxdm.xs.exceptions.DatatypeException;
-import org.genxdm.xs.types.SimpleType;
-import org.genxdm.xs.types.Type;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * Conversion functions for integration DOM with other technologies.
  */
 public final class DomSupport implements DomConstants
 {
-    public static final String DEFAULT_ATOM_SEPARATOR = " ";
-    public static final Emulation DEFAULT_EMULATION = Emulation.MODERN;
-    private static final String UD_ANNOTATION_TYPE = "{http://com.tibco.gxmlsa.xdm.dom}annotation-type";
-    // private static final String UD_DYNAMIC_TYPE = "{http://com.tibco.gxmlsa.xdm.dom}dynamic-type";
-
-    /**
-     * The standard "prefix" for xmlns attributes followed by a colon.
-     */
-    private static final String XMLNS_COLON = XMLConstants.XMLNS_ATTRIBUTE + ":";
+    // private static final String UD_DYNAMIC_TYPE = "{http://org.genxdm.bridge.dom}dynamic-type";
 
     public static Node appendText(final Node parent, final String strval)
     {
@@ -93,11 +73,6 @@ public final class DomSupport implements DomConstants
         }
     }
 
-    public static <A> Attr createAttribute(final Document owner, final String attributeNS, final String attributeLN, final String attributePH, final A data, final Emulation emulation, final AtomBridge<A> atomBridge)
-    {
-        return createAttributeUntyped(owner, attributeNS, attributeLN, attributePH, emulation.atomToString(data, atomBridge));
-    }
-
     public static <A> Attr createAttribute(final Document owner, final String attributeNS, final String attributeLN, final String attributePH, final List<? extends A> data, final Emulation emulation, final AtomBridge<A> atomBridge)
     {
         return createAttributeUntyped(owner, attributeNS, attributeLN, attributePH, emulation.atomsToString(data, atomBridge));
@@ -117,11 +92,6 @@ public final class DomSupport implements DomConstants
         }
         attribute.setValue(data);
         return attribute;
-    }
-
-    public static Node createComment(final Document owner, final String data)
-    {
-        return owner.createComment(data);
     }
 
     /**
@@ -160,170 +130,6 @@ public final class DomSupport implements DomConstants
         return namespace;
     }
 
-    public static Node createProcessingInstruction(final Document owner, final String target, final String data)
-    {
-        return owner.createProcessingInstruction(target, data);
-    }
-
-    public static <A> Node createText(final Document owner, final A data, final Emulation emulation, final AtomBridge<A> atomBridge)
-    {
-        final String strval = emulation.atomToString(data, atomBridge);
-        return owner.createTextNode(strval);
-    }
-
-    public static <A> Node createText(final Document owner, final List<String> data, final Emulation emulation, final AtomBridge<A> atomBridge)
-    {
-        return owner.createTextNode(emulation.listToString(data));
-    }
-
-    public static Node createText(final Document owner, final String strval)
-    {
-        return owner.createTextNode(strval);
-    }
-
-    public static String domConventionNS(final String namespaceURI)
-    {
-        PreCondition.assertArgumentNotNull(namespaceURI, "namespaceURI");
-        if (namespaceURI.length() == 0)
-        {
-            return null;
-        }
-        else
-        {
-            return namespaceURI;
-        }
-    }
-
-    /**
-     * Converts a standard (SAX) namespace-uri to the DOM convention for searching.
-     */
-    public static String domSearchName(final String name)
-    {
-        if (null != name)
-        {
-            if (name.length() > 0)
-            {
-                return name;
-            }
-            else
-            {
-                // empty string SAX is null DOM.
-                return null;
-            }
-        }
-        else
-        {
-            // null SAX is wildcard DOM.
-            return "*";
-        }
-    }
-
-    public static QName getAnnotationType(final Node node, final TypesBridge metaBridge)
-    {
-        PreCondition.assertArgumentNotNull(node, "node");
-        if (supportsCoreLevel3(node))
-        {
-            try
-            {
-                return (QName)node.getUserData(UD_ANNOTATION_TYPE);
-            }
-            catch (final AbstractMethodError e)
-            {
-                // LOG.warn("getAnnotationType", e);
-                return null;
-            }
-        }
-        // TODO: Log something for DOM w/o Level 3 support?
-        // LOG.warn("DOM does not support DOM CORE version 3.0: Node.getUserData");
-        return null;
-    }
-
-    public static Iterable<Node> getChildElementsByName(final Node origin, final String namespaceURI, final String localName)
-    {
-        if (origin.getNodeType() == Node.ELEMENT_NODE)
-        {
-            final Element element = (Element)origin;
-
-            final NodeList elements = element.getElementsByTagNameNS(domSearchName(namespaceURI), domSearchName(localName));
-
-            final int length = elements.getLength();
-
-            final ArrayList<Node> axis = new ArrayList<Node>(length);
-
-            for (int i = 0; i < length; i++)
-            {
-                final Node node = elements.item(i);
-
-                axis.add(node);
-            }
-
-            return axis;
-        }
-        else if (origin.getNodeType() == Node.DOCUMENT_NODE)
-        {
-            final Document document = (Document)origin;
-
-            final NodeList elements = document.getElementsByTagNameNS(domSearchName(namespaceURI), domSearchName(localName));
-
-            final int length = elements.getLength();
-
-            final ArrayList<Node> axis = new ArrayList<Node>(length);
-
-            for (int i = 0; i < length; i++)
-            {
-                final Node node = elements.item(i);
-
-                axis.add(node);
-            }
-
-            return axis;
-        }
-        else
-        {
-            return Collections.emptyList();
-        }
-    }
-
-    public static URI getDocumentURI(final Node node)
-    {
-        final Document owner = DomSupport.getOwner(node);
-        if ( (node == owner) || node.isSameNode(owner) )
-        {
-            final String documentURI;
-            try
-            {
-                if (supportsCoreLevel3(owner))
-                {
-                    documentURI = owner.getDocumentURI();
-                }
-                else
-                {
-                    // TODO: Log something for DOM w/o Level 3 support?
-                    // LOG.warn("DOM does not support DOM CORE version 3.0: Document.getDocumentURI");
-                    return null;
-                }
-            }
-            catch (final AbstractMethodError e)
-            {
-                // Thrown by org.apache.xerces.dom.DocumentImpl
-                // TODO: Logging
-                return null;
-            }
-            if (null != documentURI)
-            {
-                try
-                {
-                    return new URI(documentURI);
-                }
-                catch (final URISyntaxException e)
-                {
-                    throw new AssertionError(e);
-                }
-            }
-        }
-            return null;
-    }
-
     /**
      * XPath-correct implementation for child axis navigation.
      */
@@ -356,51 +162,6 @@ public final class DomSupport implements DomConstants
         {
             return null;
         }
-    }
-
-    public static final Node getFirstChildElement(final Node origin)
-    {
-        if (null != origin)
-        {
-            Node child = DomSupport.getFirstChild(origin);
-            while (null != child)
-            {
-                if (Node.ELEMENT_NODE == child.getNodeType())
-                {
-                    return child;
-                }
-                else
-                {
-                    child = child.getNextSibling();
-                }
-            }
-            return null;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public static Node getLastChild(Node origin)
-    {
-        if (isParentNode(origin.getNodeType()))
-        {
-            Node candidate = origin.getLastChild();
-            while (null != candidate)
-            {
-                if (null != DomSupport.getNodeKind(candidate))
-                {
-                    return candidate;
-                }
-                else
-                {
-                    candidate = candidate.getPreviousSibling();
-                }
-            }
-        }
-
-        return null;
     }
 
     public static String getLocalNameAsString(final Node node)
@@ -510,25 +271,6 @@ public final class DomSupport implements DomConstants
         }
     }
 
-    public static Node getNextSibling(final Node origin)
-    {
-        Node candidate = origin.getNextSibling();
-
-        while (null != candidate)
-        {
-            if (null != DomSupport.getNodeKind(candidate))
-            {
-                return candidate;
-            }
-            else
-            {
-                candidate = candidate.getNextSibling();
-            }
-        }
-
-        return null;
-    }
-
     /**
      * Helper function to convert a w3c DOM node type to a Data Model node-kind. Unrecognized node types return null. The DOM {@link Node#ATTRIBUTE_NODE} maps to {@link org.genxdm.NodeKind#ATTRIBUTE} regardless of whether the attribute actually represents a
      * namespace node.
@@ -611,13 +353,8 @@ public final class DomSupport implements DomConstants
     public static Document getOwner(final Node node)
     {
         if (node.getNodeType() == Node.DOCUMENT_NODE)
-        {
             return (Document)node;
-        }
-        else
-        {
-            return node.getOwnerDocument();
-        }
+        return node.getOwnerDocument();
     }
 
     /**
@@ -625,7 +362,7 @@ public final class DomSupport implements DomConstants
      */
     public static Node getParentNode(final Node origin)
     {
-        if (null != origin)
+        if (origin != null)
         {
             // Faster to call getNodeType() than to do instanceof; that's what it's for!
             if (origin.getNodeType() == Node.ATTRIBUTE_NODE)
@@ -635,26 +372,9 @@ public final class DomSupport implements DomConstants
 
                 return attribute.getOwnerElement();
             }
-            else
-            {
-                return origin.getParentNode();
-            }
+            return origin.getParentNode();
         }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Computes the lexical qualified name from an {@link javax.xml.namespace.QName}.
-     * 
-     * @param name
-     *            The expanded-QName.
-     */
-    public static String getQualifiedName(final QName name)
-    {
-        return getQualifiedName(name.getLocalPart(), name.getPrefix());
+        return null;
     }
 
     /**
@@ -665,7 +385,7 @@ public final class DomSupport implements DomConstants
         // Try to make this as efficient as possible because StAX does not retain the
         // qualified name, and DOM needs it. This could make StAX -> DOM slower than
         // SAX -> DOM.
-    	int prefixLength;
+        int prefixLength;
         if (prefix != null && (prefixLength = prefix.length()) > 0)
         {
             final int capacity = prefixLength + 1 + localName.length();
@@ -719,8 +439,10 @@ public final class DomSupport implements DomConstants
         }
     }
 
-    // TODO - Argh! - The documentation on this method should at least document why it isn't good
-    // enough to call the standard DOM method getNodeValue()?
+    // we don't use Node.getNodeValue() because that's a stupid and worthless
+    // method; it returns null for both document and element, rather than the
+    // concatenation of the values of all descendants (which is what this method
+    // does)
     private static String getStringValueOfBranchNode(final Node node, final String separator, final Emulation emulation)
     {
         final Node firstChild = node.getFirstChild();
@@ -797,90 +519,6 @@ public final class DomSupport implements DomConstants
         }
     }
 
-    /**
-     * XPath-correct implementation for child axis navigation.
-     */
-    public static Node getTailChild(final Node origin)
-    {
-        if (null != origin)
-        {
-            switch (origin.getNodeType())
-            {
-                case Node.ATTRIBUTE_NODE:
-                {
-                    return null;
-                }
-                default:
-                {
-                    return origin.getLastChild();
-                }
-            }
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public static <A> List<? extends A> getTypedValue(final Node node, final String separator, final Emulation emulation, final TypedContext<Node, A> pcx)
-    {
-        final TypesBridge metaBridge = pcx.getTypesBridge();
-        final AtomBridge<A> atomBridge = pcx.getAtomBridge();
-        switch (getNodeKind(node))
-        {
-            case ELEMENT:
-            {
-                final QName typeName = getAnnotationType(node, metaBridge);
-                final Type type = metaBridge.getComponentProvider().getTypeDefinition(typeName);
-                if (type instanceof SimpleType)
-                {
-                    final SimpleType simpleType = (SimpleType)type;
-                    final String stringValue = getStringValue(node, separator, emulation);
-                    try
-                    {
-                        return simpleType.validate(stringValue, pcx.getAtomBridge());
-                    }
-                    catch (final DatatypeException e)
-                    {
-                        throw new GenXDMException(e);
-                    }
-                }
-                else
-                {
-                    final String stringValue = getStringValue(node, separator, emulation);
-                    return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
-                }
-            }
-            case TEXT:
-            {
-                final String stringValue = getStringValue(node, separator, emulation);
-                return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
-            }
-            case ATTRIBUTE:
-            {
-                final String strval = getStringValue(node, separator, emulation);
-                return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(strval));
-            }
-            case NAMESPACE:
-            {
-                return atomBridge.wrapAtom(atomBridge.createString(getStringValue(node, separator, emulation)));
-            }
-            case DOCUMENT:
-            {
-                return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(getStringValue(node, separator, emulation)));
-            }
-            case PROCESSING_INSTRUCTION:
-            case COMMENT:
-            {
-                return atomBridge.wrapAtom(atomBridge.createString(getStringValue(node, separator, emulation)));
-            }
-            default:
-            {
-                throw new AssertionError(node.getNodeType());
-            }
-        }
-    }
-
     public static boolean hasNamespaces(final Node origin)
     {
         PreCondition.assertArgumentNotNull(origin, "origin");
@@ -909,11 +547,6 @@ public final class DomSupport implements DomConstants
         }
     }
 
-    public static boolean isElement(final Node node)
-    {
-        return node.getNodeType() == Node.ELEMENT_NODE;
-    }
-
     public static boolean isNamespace(final Node node)
     {
         final short nodeType = node.getNodeType();
@@ -925,29 +558,6 @@ public final class DomSupport implements DomConstants
         else
         {
             return false;
-        }
-    }
-
-    /**
-     * Determines if the attribute is in the "http://www.w3.org/2000/xmlns/" namespace. This is determined by seeing if the attribute qualified name string identically matches "xmlns" or whether it starts with "xmlns" and is followed by a colon. A null attribute
-     * qualified name string is defined to be an illegal argument.
-     * 
-     * @param qname
-     *            The qualified name string of the attribute.
-     * @return <CODE>true</CODE> if the attribute is in this namespace, otherwise <CODE>false</CODE>.
-     * @throws IllegalArgumentException
-     *             If the qname is null.
-     */
-    public static boolean isNamespaceAttribute(final String qname) throws IllegalArgumentException
-    {
-        PreCondition.assertArgumentNotNull(qname, "qname");
-        if (XMLConstants.XMLNS_ATTRIBUTE.equals(qname))
-        {
-            return true;
-        }
-        else
-        {
-            return (qname.startsWith(XMLNS_COLON));
         }
     }
 
@@ -969,12 +579,6 @@ public final class DomSupport implements DomConstants
         }
     }
 
-    public static boolean isText(final Node node)
-    {
-        final short nodeType = node.getNodeType();
-        return nodeType == Node.TEXT_NODE || nodeType == Node.CDATA_SECTION_NODE;
-    }
-
     public static int namespaceCount(final NamedNodeMap mixed)
     {
         final int length = mixed.getLength();
@@ -994,82 +598,6 @@ public final class DomSupport implements DomConstants
         }
 
         return realLength;
-    }
-
-    public static void removeAttribute(final Node parent, final String namespaceURI, final String localName)
-    {
-        final Element e = (Element)parent;
-        e.removeAttributeNS(domConventionNS(namespaceURI), localName);
-    }
-
-    public static void removeNamespace(final Node parent, final String prefix)
-    {
-        final Element e = (Element)parent;
-        final String localName;
-        if (prefix.length() > 0)
-        {
-            localName = prefix;
-        }
-        else
-        {
-            localName = "xmlns";
-        }
-        e.removeAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, localName);
-    }
-
-    /**
-     * Converts a standard (DOM) namespace-uri to the SAX convention.
-     */
-    public static String saxName(final String namespaceURI)
-    {
-        if (null != namespaceURI)
-        {
-            if (namespaceURI.length() > 0)
-            {
-                if (namespaceURI.equals("*"))
-                {
-                    // "*" DOM is null SAX.
-                    return null;
-                }
-                else
-                {
-                    return namespaceURI;
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
-        else
-        {
-            // null DOM is empty string SAX.
-            return XMLConstants.NULL_NS_URI;
-        }
-    }
-
-    public static void setAnnotationType(final Node node, final QName type)
-    {
-        // TODO: we could, potentially, store DTD types even in untyped API
-        // to do so, though, we have to figure out how to define a QName for the DtdAttributeKind enumeration.
-        if (supportsCoreLevel3(node))
-        {
-            try
-            {
-                node.setUserData(UD_ANNOTATION_TYPE, type, null);
-            }
-            catch (final AbstractMethodError e)
-            {
-                // LOG.warn("setAnnotationType", e);
-            }
-        }
-        // TODO: Log something for DOM w/o Level 3 support?
-        // LOG.warn("DOM does not support DOM CORE version 3.0: setUserData");
-    }
-
-    public static <A> Attr setAttribute(final Node parent, final String namespaceURI, final String localName, final String prefixHint, final A data, final Emulation emulation, final AtomBridge<A> atomBridge)
-    {
-        return setAttributeUntyped(parent, namespaceURI, localName, prefixHint, emulation.atomToString(data, atomBridge));
     }
 
     public static <A> Attr setAttribute(final Node parent, final String namespaceURI, final String localName, final String prefixHint, final List<? extends A> data, final Emulation emulation, final AtomBridge<A> atomBridge)
@@ -1118,75 +646,6 @@ public final class DomSupport implements DomConstants
             final Attr namespace = createNamespace(getOwner(parent), prefix, uri);
             e.setAttributeNodeNS(namespace);
             return namespace;
-        }
-    }
-
-    // not used, and no longer working (atom bridge not available from metabridge)
-//    public static <A> void setTypedValue(final Node node, final List<? extends A> value, final Emulation emulation, final MetaBridge metaBridge)
-//    {
-//        if (null != value)
-//        {
-//            if (supportsCoreLevel3(node))
-//            {
-//                switch (node.getNodeType())
-//                {
-//                    case Node.ATTRIBUTE_NODE:
-//                    case Node.DOCUMENT_NODE:
-//                    case Node.ELEMENT_NODE:
-//                    {
-//                        final AtomBridge<A> atomBridge = metaBridge.getAtomBridge();
-//                        node.setTextContent(emulation.atomsToString(value, atomBridge));
-//                    }
-//                    break;
-//                    case Node.CDATA_SECTION_NODE:
-//                    case Node.COMMENT_NODE:
-//                    case Node.PROCESSING_INSTRUCTION_NODE:
-//                    case Node.TEXT_NODE:
-//                    {
-//                        final AtomBridge<A> atomBridge = metaBridge.getAtomBridge();
-//                        node.setTextContent(emulation.atomsToString(value, atomBridge));
-//                    }
-//                    break;
-//                    default:
-//                    {
-//                        throw new UnsupportedOperationException(Short.toString(node.getNodeType()));
-//                    }
-//                }
-//            }
-//            else
-//            {
-//                // TODO: Log something to indicate lack of DOM Level 3 support.
-//                // LOG.warn("DOM does not support DOM CORE, version 3.0: Node.setTextContent()");
-//            }
-//        }
-//        else
-//        {
-//            throw new IllegalArgumentException();
-//        }
-//    }
-
-    /**
-     * Deterimines whether the first namespace is a subset of the second. <br/>
-     * The convention in use for this API is SAX (nulls are not allowed, exept for two to indicate wildcard).
-     */
-    public static boolean subsetName(final String one, final String two)
-    {
-        PreCondition.assertArgumentNotNull(one, "one");
-        if (one != null)
-        {
-            if (two != null)
-            {
-                return one.equals(two);
-            }
-            else
-            {
-                // null is the wildcard.
-                return true;
-            }
-        }
-        else
-        {
-            throw new AssertionError();
         }
     }
 

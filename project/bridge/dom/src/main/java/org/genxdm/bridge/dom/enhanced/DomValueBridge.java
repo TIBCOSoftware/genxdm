@@ -29,152 +29,153 @@ import org.w3c.dom.Node;
 
 final class DomValueBridge implements VariantBridge<Node, XmlAtom>
 {
-	public XmlVariant atom(final XmlAtom atom)
-	{
-		if (null != atom)
-		{
-			return XmlVariant.atom(atom);
-		}
-		else
-		{
-			return XmlVariant.empty();
-		}
-	}
+    public XmlVariant atom(final XmlAtom atom)
+    {
+        if (null != atom)
+        {
+            return XmlVariant.atom(atom);
+        }
+        else
+        {
+            return XmlVariant.empty();
+        }
+    }
 
-	public XmlVariant atomSet(final List<? extends XmlAtom> atoms)
-	{
-		return XmlVariant.atomSet(atoms);
-	}
+    public XmlVariant atomSet(final List<? extends XmlAtom> atoms)
+    {
+        return XmlVariant.atomSet(atoms);
+    }
 
-	public XmlVariant booleanValue(final Boolean booval)
-	{
-		return XmlVariant.booleanValue(booval);
-	}
+    public XmlVariant booleanValue(final Boolean booval)
+    {
+        return XmlVariant.booleanValue(booval);
+    }
 
-	public XmlVariant decimalValue(final BigDecimal decval)
-	{
-		return XmlVariant.decimalValue(decval);
-	}
+    public XmlVariant decimalValue(final BigDecimal decval)
+    {
+        return XmlVariant.decimalValue(decval);
+    }
 
-	public XmlVariant doubleValue(final Double dblval)
-	{
-		return XmlVariant.doubleValue(dblval);
-	}
+    public XmlVariant doubleValue(final Double dblval)
+    {
+        return XmlVariant.doubleValue(dblval);
+    }
 
-	public XmlVariant empty()
-	{
-		return XmlVariant.empty();
-	}
+    public XmlVariant empty()
+    {
+        return XmlVariant.empty();
+    }
 
-	public XmlAtom getAtom(final XmlVariant value)
-	{
-		return (XmlAtom)value.getObject();
-	}
+    public XmlAtom getAtom(final XmlVariant value)
+    {
+        return (XmlAtom)value.getObject();
+    }
 
-	@SuppressWarnings("unchecked")
-	public List<XmlAtom> getAtomSet(final XmlVariant value)
-	{
-		return (List<XmlAtom>)value.getObject();
-	}
+    @SuppressWarnings("unchecked")
+    public List<XmlAtom> getAtomSet(final XmlVariant value)
+    {
+        return (List<XmlAtom>)value.getObject();
+    }
 
-	public Boolean getBoolean(final XmlVariant value)
-	{
-		if (null != value)
-		{
-			return (Boolean)value.getObject();
-		}
-		else
-		{
-			return null;
-		}
-	}
+    public Boolean getBoolean(final XmlVariant value)
+    {
+        if (null != value)
+        {
+            return (Boolean)value.getObject();
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	public BigDecimal getDecimal(final XmlVariant value)
-	{
-		return (BigDecimal)value.getObject();
-	}
+    public BigDecimal getDecimal(final XmlVariant value)
+    {
+        return (BigDecimal)value.getObject();
+    }
 
-	public Double getDouble(final XmlVariant value)
-	{
-		return (Double)value.getObject();
-	}
+    public Double getDouble(final XmlVariant value)
+    {
+        return (Double)value.getObject();
+    }
 
-	public BigInteger getInteger(XmlVariant value)
-	{
-		return (BigInteger)value.getObject();
-	}
+    public BigInteger getInteger(XmlVariant value)
+    {
+        return (BigInteger)value.getObject();
+    }
 
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     public Item<Node, XmlAtom> getItem(final XmlVariant value)
-	{
-		return (Item<Node, XmlAtom>)value.getObject();
-	}
+    {
+        return (Item<Node, XmlAtom>)value.getObject();
+    }
 
-	public ItemIterable<Node, XmlAtom> getItemSet(final XmlVariant value)
-	{
-		return (ItemIterable<Node, XmlAtom>)value.getObject();
-	}
+    @SuppressWarnings("unchecked")
+    public ItemIterable<Node, XmlAtom> getItemSet(final XmlVariant value)
+    {
+        return (ItemIterable<Node, XmlAtom>)value.getObject();
+    }
 
-	public VariantKind getNature(final XmlVariant value)
-	{
-		return value.getNature();
-	}
+    public VariantKind getNature(final XmlVariant value)
+    {
+        return value.getNature();
+    }
 
-	public Node getNode(final XmlVariant value)
-	{
-		return (Node)value.getObject();
-	}
+    public Node getNode(final XmlVariant value)
+    {
+        return (Node)value.getObject();
+    }
 
-	@SuppressWarnings("unchecked")
-	public Iterable<Node> getNodeSet(final XmlVariant value)
-	{
-		return (Iterable<Node>)value.getObject();
-	}
+    @SuppressWarnings("unchecked")
+    public Iterable<Node> getNodeSet(final XmlVariant value)
+    {
+        return (Iterable<Node>)value.getObject();
+    }
 
-	public String getString(final XmlVariant value)
-	{
-		if (null != value)
-		{
-			return (String)value.getObject();
-		}
-		else
-		{
-			return null;
-		}
-	}
+    public String getString(final XmlVariant value)
+    {
+        if (null != value)
+        {
+            return (String)value.getObject();
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-	public XmlVariant integerValue(final BigInteger intval)
-	{
-		return XmlVariant.integerValue(intval);
-	}
+    public XmlVariant integerValue(final BigInteger intval)
+    {
+        return XmlVariant.integerValue(intval);
+    }
 
-	public XmlVariant item(final Item<Node, XmlAtom> item)
-	{
-		return XmlVariant.item(item);
-	}
+    public XmlVariant item(final Item<Node, XmlAtom> item)
+    {
+        return XmlVariant.item(item);
+    }
 
-	public XmlVariant itemSet(final ItemIterable<Node, XmlAtom> items)
-	{
-		return XmlVariant.itemSet(items);
-	}
+    public XmlVariant itemSet(final ItemIterable<Node, XmlAtom> items)
+    {
+        return XmlVariant.itemSet(items);
+    }
 
-	public XmlVariant node(final Node node)
-	{
-		return XmlVariant.node(node);
-	}
+    public XmlVariant node(final Node node)
+    {
+        return XmlVariant.node(node);
+    }
 
-	public XmlVariant nodeSet(final Iterable<? extends Node> nodes)
-	{
-		return XmlVariant.nodeSet(nodes);
-	}
+    public XmlVariant nodeSet(final Iterable<? extends Node> nodes)
+    {
+        return XmlVariant.nodeSet(nodes);
+    }
 
-	public XmlVariant stringValue(final String strval)
-	{
-		return XmlVariant.stringValue(strval);
-	}
+    public XmlVariant stringValue(final String strval)
+    {
+        return XmlVariant.stringValue(strval);
+    }
 
-	public XmlVariant[] valueArray(final int size)
-	{
-		return new XmlVariant[size];
-	}
+    public XmlVariant[] valueArray(final int size)
+    {
+        return new XmlVariant[size];
+    }
 }
