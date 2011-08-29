@@ -26,9 +26,10 @@ import org.genxdm.nodes.NodeInformer;
 /**
  * The model provides the tree API.
  *
- * <p/>
- * 
  * End users will normally consume, rather than implement, this interface.
+ * 
+ * Model is stateless.  Neither equals() nor hashCode() should be considered
+ * meaningful for model or any of its subinterfaces.
  * 
  * @param <N> Corresponds to the base type for all members of the underlying tree API.
  */

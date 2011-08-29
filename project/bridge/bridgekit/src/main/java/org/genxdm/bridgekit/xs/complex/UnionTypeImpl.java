@@ -21,13 +21,13 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.xs.simple.SimpleTypeImpl;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.PrefixResolver;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
 import org.genxdm.xs.exceptions.DatatypeException;
-import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.SequenceTypeVisitor;

@@ -15,9 +15,9 @@
  */
 package org.genxdm.processor.w3c.xs.impl;
 
+import org.genxdm.names.PrefixResolver;
 import org.genxdm.xs.constraints.RestrictedXPath;
 import org.genxdm.xs.exceptions.SimpleTypeException;
-import org.genxdm.xs.resolve.PrefixResolver;
 
 /**
  * A parser of restricted XPath expressions.
