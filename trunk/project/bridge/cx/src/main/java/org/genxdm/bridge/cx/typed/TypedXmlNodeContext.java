@@ -64,13 +64,6 @@ public class TypedXmlNodeContext
         this.model = new TypedXmlNodeModel(atoms);
     }
     
-    public XmlAtom atom(Object item)
-    {
-        if (isAtom(item))
-            return (XmlAtom)item;
-        return null;
-    }
-
     public void declareAttribute(AttributeDefinition attribute)
     {
         PreCondition.assertArgumentNotNull(attribute, "attribute");
@@ -167,11 +160,6 @@ public class TypedXmlNodeContext
     public VariantBridge<XmlNode, XmlAtom> getVariantBridge()
     {
         return new XmlVariantBridge();
-    }
-
-    public boolean isAtom(Object item)
-    {
-        return (item instanceof XmlAtom);
     }
 
     public boolean isLocked()

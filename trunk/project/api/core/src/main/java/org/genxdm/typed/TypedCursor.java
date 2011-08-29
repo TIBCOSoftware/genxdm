@@ -20,9 +20,7 @@ import org.genxdm.nodes.TypeInformer;
 
 /**
  * A cursor paradigm for navigating an XML tree.
- * <p>
- * A single cursor moves over a tree allowing the underlying tree to be accessed. using a cursor provides maximum opportunity for the underlying representation to avoid object creation.
- * </p>
+ * A single cursor moves over a tree allowing the underlying tree to be accessed. 
  * 
  * @param <N>
  *            The node handle.
@@ -32,4 +30,5 @@ import org.genxdm.nodes.TypeInformer;
 public interface TypedCursor<N, A> 
     extends Cursor<N>, TypeInformer<A>
 {
+    // TODO: overload write()?
 }
