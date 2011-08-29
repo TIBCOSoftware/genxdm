@@ -40,18 +40,6 @@ public class NameSource
     }
 
     /**
-     * Returns a symbol equivalent to the empty string.
-     */
-    public final String empty()
-    {
-        // TODO: this method needs to be removed, but we currently have
-        // over one hundred references to it.  We should instead be using
-        // direct comparison with javax.xml.XMLConstants.NULL_NS_URI and
-        // avoiding the extra method call.
-        return XMLConstants.NULL_NS_URI;
-    }
-
-    /**
      * Given a name, return a corresponding {@link NativeType}. <br/>
      * If the name is not a built-in type, returns <code>null</code>.
      */

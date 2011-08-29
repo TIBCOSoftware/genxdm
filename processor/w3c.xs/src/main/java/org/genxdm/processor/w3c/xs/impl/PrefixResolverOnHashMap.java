@@ -18,7 +18,7 @@ package org.genxdm.processor.w3c.xs.impl;
 import java.util.HashMap;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.resolve.PrefixResolver;
+import org.genxdm.names.PrefixResolver;
 
 final class PrefixResolverOnHashMap implements PrefixResolver
 {
@@ -29,7 +29,7 @@ final class PrefixResolverOnHashMap implements PrefixResolver
         this.m_map = PreCondition.assertArgumentNotNull(map, "map");
     }
 
-    public String getNamespaceURI(final String prefix)
+    public String getNamespace(final String prefix)
     {
         return m_map.get(PreCondition.assertArgumentNotNull(prefix, "prefix"));
     }

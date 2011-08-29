@@ -21,7 +21,7 @@ import java.util.HashMap;
 import javax.xml.XMLConstants;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.resolve.PrefixResolver;
+import org.genxdm.names.PrefixResolver;
 
 final class PrefixMappingSupport implements PrefixResolver
 {
@@ -160,7 +160,7 @@ final class PrefixMappingSupport implements PrefixResolver
         m_numMappings++;
     }
 
-    public String getNamespaceURI(final String prefix)
+    public String getNamespace(final String prefix)
     {
         PreCondition.assertArgumentNotNull(prefix);
 
@@ -310,7 +310,7 @@ final class PrefixMappingSupport implements PrefixResolver
         for (int i = m_numMappings - 1; i >= 0; i--)
         {
             final String prefix = m_prefixes[i];
-            map.put(prefix, getNamespaceURI(prefix));
+            map.put(prefix, getNamespace(prefix));
         }
         return new PrefixResolverOnHashMap(map);
     }

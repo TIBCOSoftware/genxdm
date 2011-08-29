@@ -23,7 +23,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.AtomCastException;
-import org.genxdm.xs.resolve.PrefixResolver;
+import org.genxdm.names.PrefixResolver;
 import org.genxdm.xs.types.NativeType;
 
 /**
