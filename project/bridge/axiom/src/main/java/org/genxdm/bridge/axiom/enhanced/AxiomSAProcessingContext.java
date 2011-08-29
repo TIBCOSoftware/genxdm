@@ -69,11 +69,6 @@ public final class AxiomSAProcessingContext
 		this.model = new CoreModelDecorator<Object, XmlAtom>(delegations, new AxiomSAModel(new org.genxdm.bridge.axiom.AxiomModel(), atomBridge), atomBridge);
 	}
 	
-	public XmlAtom atom(final Object item)
-	{
-		return atomBridge.atom(item);
-	}
-	
 	public void declareAttribute(final AttributeDefinition attribute)
 	{
 	    metaBridge.declareAttribute(attribute);
@@ -155,11 +150,6 @@ public final class AxiomSAProcessingContext
 	{
 	    // TODO
 	    return null;
-	}
-
-	public boolean isAtom(final Object item)
-	{
-		return item instanceof XmlAtom;
 	}
 
 	public boolean isLocked()

@@ -37,6 +37,9 @@ public interface Reader
      *            The dm:namespace-uri of the attribute. Cannot be <code>null</code>.
      * @param localName
      *            The dm:local-name of the attribute. Cannot be <code>null</code>.
+     * 
+     * @return the string value of the designated node, if it exists; null if
+     * it does not.
      */
     String getAttributeStringValue(String namespaceURI, String localName);
 

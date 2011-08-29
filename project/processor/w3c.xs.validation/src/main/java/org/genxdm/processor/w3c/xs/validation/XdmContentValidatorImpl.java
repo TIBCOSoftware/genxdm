@@ -187,12 +187,6 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
     }
 
     @Override
-    public SequenceHandler<A> getSequenceHandler()
-    {
-        return handler;
-    }
-
-    @Override
     public void setSchema(Schema cache)
     {
         kernel.setComponentProvider(cache.getComponentProvider());

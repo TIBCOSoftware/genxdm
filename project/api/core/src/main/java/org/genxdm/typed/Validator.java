@@ -32,15 +32,6 @@ public interface Validator<A>
      */
     SchemaExceptionHandler getSchemaExceptionHandler();
     
-    /** Generally not called.  May be called by the user after validation 
-     * in order to retrieve the validated tree of nodes.  But that assumes 
-     * that it is-a NodeSource as well, which the API does not guarantee.
-     * 
-     * @return the SequenceHandler used to create or modify the tree
-     * during validation.  Never null.
-     */
-    SequenceHandler<A> getSequenceHandler();
-    
     /** Resets any internal state in the validator.  Also passes the reset
      * to the SequenceHandler, if it happens to be a SequenceBuilder,
      * and may clear the contents of the SchemaExceptionHandler as
