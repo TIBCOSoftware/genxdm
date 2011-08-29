@@ -21,12 +21,12 @@ import javax.xml.XMLConstants;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
+import org.genxdm.names.PrefixResolver;
 import org.genxdm.processor.w3c.xs.exception.src.SrcPrefixNotFoundException;
 import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.constraints.RestrictedXPath;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.exceptions.SimpleTypeException;
-import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
 
@@ -186,7 +186,7 @@ final class DefaultRestrictedXPathParser implements RestrictedXPathParser
                         ensureNCName(prefix, bootstrap);
                         localPart = getLocalPart(nodeTest, original, bootstrap);
 
-                        namespace = prefixes.getNamespaceURI(prefix);
+                        namespace = prefixes.getNamespace(prefix);
                         if (null == namespace)
                         {
                             final SrcPrefixNotFoundException cause = new SrcPrefixNotFoundException(prefix);
