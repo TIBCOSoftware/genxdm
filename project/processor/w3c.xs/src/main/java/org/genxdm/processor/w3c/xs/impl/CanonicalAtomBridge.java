@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -1331,6 +1332,22 @@ public class CanonicalAtomBridge
     public XmlAtom makeForeignAtom(QName atomType, XmlAtom baseAtom)
     {
         return new XmlForeignAtom(atomType, baseAtom);
+    }
+
+    @Override
+    public XmlAtom unwrapAtom(final Iterable<? extends XmlAtom> sequence)
+        throws AtomCastException
+    {
+        Iterator<? extends XmlAtom> it = sequence.iterator();
+        if (it.hasNext())
+        {
+            XmlAtom first = it.next();
+            if (!it.hasNext())
+                return first;
+        }
+        // TODO: throw an atom cast exception if we have zero or >1 atoms.
+        //throw new AtomCastException();
+        throw new RuntimeException("invalid unwrap");
     }
 
     @Override

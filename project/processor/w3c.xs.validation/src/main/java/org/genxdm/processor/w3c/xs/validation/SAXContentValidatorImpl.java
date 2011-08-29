@@ -192,13 +192,6 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
     }
 
     @Override
-    public SequenceHandler<A> getSequenceHandler()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public void setSchema(Schema cache)
     {
         m_kernel.setComponentProvider(cache.getComponentProvider());

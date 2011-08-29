@@ -64,19 +64,6 @@
                 </listitem>
             </itemizedlist>
         </sidebar>
-        <itemizedlist>
-            <title>Related links</title>
-            <listitem>
-                <para>
-                    <ulink url="c_Design.xml"/>
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    <ulink url="c_Solutions.xml"/>
-                </para>
-            </listitem>
-        </itemizedlist>
 
         <section id="concept_design">
             <title id="ttlN7000D"><phrase id="phrsN70011">GenXDM</phrase> Design</title>
@@ -129,34 +116,6 @@
             design rests on four pillars: the Handle/Body design pattern, Java generics,
             the XQuery Data Model, and immutability for XML processing as a paradigm. 
             </para>
-            <itemizedlist>
-                <title>Related links</title>
-                <listitem>
-                    <para>
-                        <ulink url="c_Introduction.xml"/>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <ulink url="c_Handle-Body.xml"/>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <ulink url="c_Java_Generics.xml"/>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <ulink url="c_XQuery_Data_Model.xml"/>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <ulink url="c_Immutable_Paradigm.xml"/>
-                    </para>
-                </listitem>
-            </itemizedlist>
 
             <section id="concept_handle-body">
                 <title id="ttlN8000D">Handle/Body Pattern</title>
@@ -219,14 +178,6 @@
                     all supported tree model APIs.
                     </para>
                 </note>
-                <itemizedlist>
-                    <title>Related links</title>
-                    <listitem>
-                        <para>
-                            <ulink url="c_Design.xml"/>
-                        </para>
-                    </listitem>
-                </itemizedlist>
             </section>
 
             <section id="concept_generics">
@@ -265,14 +216,6 @@
                 added increases the network effect. However, note that conversion from model to
                 model remains expensive so single document conversion is not efficient.
                 </para>
-                <itemizedlist>
-                    <title>Related links</title>
-                    <listitem>
-                        <para>
-                            <ulink url="c_Design.xml"/>
-                        </para>
-                    </listitem>
-                </itemizedlist>
             </section>
 
             <section id="concept_xdm">
@@ -308,14 +251,6 @@
                 on XPath 2.0, XSLT 2.0, and XQuery 1.0 (including the new generation of
                 XQuery-conformant databases). 
                 </para>
-                <itemizedlist>
-                    <title>Related links</title>
-                    <listitem>
-                        <para>
-                            <ulink url="c_Design.xml"/>
-                        </para>
-                    </listitem>
-                </itemizedlist>
             </section>
 
             <section id="concept_immutability">
@@ -339,14 +274,6 @@
                         </para>
                     </note>
                 </para>
-                <itemizedlist>
-                    <title>Related links</title>
-                    <listitem>
-                        <para>
-                            <ulink url="c_Design.xml"/>
-                        </para>
-                    </listitem>
-                </itemizedlist>
             </section>
         </section>
 
@@ -407,14 +334,6 @@
                     </para>
                 </listitem>
             </itemizedlist>
-            <itemizedlist>
-                <title>Related links</title>
-                <listitem>
-                    <para>
-                        <ulink url="c_Introduction.xml"/>
-                    </para>
-                </listitem>
-            </itemizedlist>
         </section>
     </section>
 
@@ -429,137 +348,6 @@
         <literal id="cdphND001E">ProcessingContextFactories</literal> are instantiated at the
         application level. 
         </para>
-        <para id="paraND0025">
-        </para>
-        <itemizedlist>
-            <title>Related links</title>
-            <listitem>
-                <para>
-                    <ulink url="t_Building_Applications.xml"/>
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    <ulink url="c_Extensions.xml"/>
-                </para>
-            </listitem>
-        </itemizedlist>
-        <section id="task_building_apps">
-            <title id="ttlNE000D">Building Applications</title>
-            <itemizedlist>
-                <title>Related links</title>
-                <listitem>
-                    <para>
-                        <ulink url="c_Applications.xml"/>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <ulink url="t_Injecting_a_Bridge.xml"/>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <ulink url="t_Parsing_a_Tree.xml"/>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <ulink url="t_Constructing_a_Tree.xml"/>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <ulink url="t_Navigating_a_Tree.xml"/>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <ulink url="t_Interrogating_a_Tree.xml"/>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <ulink url="t_Writing_to_a_Tree.xml"/>
-                    </para>
-                </listitem>
-            </itemizedlist>
-            <section id="task_injecting_bridge">
-                <sectioninfo id="prlgNF0013"></sectioninfo>
-                <itemizedlist>
-                    <title>Related links</title>
-                    <listitem>
-                        <para>
-                            <ulink url="t_Building_Applications.xml"/>
-                        </para>
-                    </listitem>
-                </itemizedlist>
-            </section>
-            <section id="task_parsing_tree">
-                <sectioninfo id="prlgN100013"></sectioninfo>
-                <title id="ttlN10000D">Parsing a Tree</title>
-                <itemizedlist>
-                    <title>Related links</title>
-                    <listitem>
-                        <para>
-                            <ulink url="t_Building_Applications.xml"/>
-                        </para>
-                    </listitem>
-                </itemizedlist>
-            </section>
-            <section id="task_constructing_tree">
-                <sectioninfo id="prlgN110013">
-                </sectioninfo>
-                <title id="ttlN11000D">Constructing a Tree</title>
-                <itemizedlist>
-                    <title>Related links</title>
-                    <listitem>
-                        <para>
-                            <ulink url="t_Building_Applications.xml"/>
-                        </para>
-                    </listitem>
-                </itemizedlist>
-            </section>
-            <section id="task_navigating_tree">
-                <sectioninfo id="prlgN120013">
-                </sectioninfo>
-                <title id="ttlN12000D">Navigating a Tree</title>
-                <itemizedlist>
-                    <title>Related links</title>
-                    <listitem>
-                        <para>
-                            <ulink url="t_Building_Applications.xml"/>
-                        </para>
-                    </listitem>
-                </itemizedlist>
-            </section>
-            <section id="task_interrogating_tree">
-                <sectioninfo id="prlgN130013">
-                </sectioninfo>
-                <title id="ttlN13000D">Interrogating a Tree</title>
-                <itemizedlist>
-                    <title>Related links</title>
-                    <listitem>
-                        <para>
-                            <ulink url="t_Building_Applications.xml"/>
-                        </para>
-                    </listitem>
-                </itemizedlist>
-            </section>
-            <section id="task_writing_tree">
-                <sectioninfo id="prlgN140013">
-                </sectioninfo>
-                <title id="ttlN14000D">Writing to a Tree</title>
-                <itemizedlist>
-                    <title>Related links</title>
-                    <listitem>
-                        <para>
-                            <ulink url="t_Building_Applications.xml"/>
-                        </para>
-                    </listitem>
-                </itemizedlist>
-            </section>
-        </section>
 
         <section id="concept_extensions">
             <title id="ttlN15000D">Extensions</title>
@@ -573,24 +361,6 @@
             base interfaces, or by adding new interfaces; the typed extension also
             introduces the "atom" parameter.
             </para>
-            <itemizedlist>
-                <title>Related links</title>
-                <listitem>
-                    <para>
-                        <ulink url="c_Applications.xml"/>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <ulink url="c_Mutable.xml"/>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <ulink url="c_Typed.xml"/>
-                    </para>
-                </listitem>
-            </itemizedlist>
             <section id="concept_mutable_extensions">
                 <title id="ttlN16000D">Mutable Extensions</title>
                 <para id="paraN160018"><literal id="cdphN16001C">MutableContext</literal> permits mutability. Although
@@ -602,32 +372,6 @@
                 that it supports mutability, by returning an implementation of the 
                 <literal id="cdphN16002E">MutableContext</literal> extension. 
                 </para>
-                <itemizedlist>
-                    <title>Related links</title>
-                    <listitem>
-                        <para>
-                            <ulink url="c_Extensions.xml"/>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            <ulink url="t_Modifying_a_Tree.xml"/>
-                        </para>
-                    </listitem>
-                </itemizedlist>
-                <section id="task_modifying_tree">
-                    <sectioninfo id="prlgN170013">
-                    </sectioninfo>
-                    <title id="ttlN17000D">Modifying a Tree</title>
-                    <itemizedlist>
-                        <title>Related links</title>
-                        <listitem>
-                            <para>
-                                <ulink url="c_Mutable.xml"/>
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </section>
             </section>
             <section id="concept_typed_extensions">
                 <title id="ttlN18000D">Typed Extensions</title>
@@ -641,71 +385,6 @@
                 is also introduced in the schema-aware API, but unlike atom, is not represented
                 by an independent common parameter. 
                 </para>
-                <sidebar id="section_B5CC639FFC37401688E0443117A66C27">
-                    <title id="ttlN180029">Validation</title>
-                    <para id="paraN18002F">
-                    </para>
-                </sidebar>
-                <itemizedlist>
-                    <title>Related links</title>
-                    <listitem>
-                        <para>
-                            <ulink url="c_Extensions.xml"/>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            <ulink url="t_Integrating_Typed_Extensions.xml"/>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            <ulink url="t_Parsing_Schemas.xml"/>
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            <ulink url="t_Modeling.xml"/>
-                        </para>
-                    </listitem>
-                </itemizedlist>
-                <section id="task_integrating_typed_extensions">
-                    <sectioninfo id="prlgN190013">
-                    </sectioninfo>
-                    <title id="ttlN19000D">Integrating Typed Extensions</title>
-                    <itemizedlist>
-                        <title>Related links</title>
-                        <listitem>
-                            <para>
-                                <ulink url="c_Typed.xml"/>
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </section>
-                <section id="task_parsing_schemas">
-                    <sectioninfo id="prlgN1A0013">
-                    </sectioninfo>
-                    <title id="ttlN1A000D">Parsing Schemas</title>
-                    <itemizedlist>
-                        <title>Related links</title>
-                        <listitem>
-                            <para>
-                                <ulink url="c_Typed.xml"/>
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </section>
-                <section id="task_modeling">
-                    <title id="ttlN1B000D">Modeling</title>
-                    <itemizedlist>
-                        <title>Related links</title>
-                        <listitem>
-                            <para>
-                                <ulink url="c_Typed.xml"/>
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </section>
             </section>
         </section>
     </section>
@@ -738,19 +417,6 @@
         or "enhance", or otherwise mark their processing by its specific name, not the
         more general one. 
         </para>
-        <itemizedlist>
-            <title>Related links</title>
-            <listitem>
-                <para>
-                    <ulink url="c_State.xml"/>
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    <ulink url="t_Building_Processors.xml"/>
-                </para>
-            </listitem>
-        </itemizedlist>
         <section id="concept_EB038B3705124EACBE52D26A151D2A26">
             <title id="ttlN1D000D">State</title>
             <para id="paraN1D0018"><phrase id="phrsN1D001C">GenXDM</phrase>
@@ -844,14 +510,6 @@
                 <literal id="cdphN1D011B">Model</literal>. 
                 </para>
             </sidebar>
-            <itemizedlist>
-                <title>Related links</title>
-                <listitem>
-                    <para>
-                        <ulink url="c_Processors.xml"/>
-                    </para>
-                </listitem>
-            </itemizedlist>
         </section>
     </section>
 
@@ -890,14 +548,6 @@
         challenges when adapted to the XQuery Data Model. Development time may be
         primarily consumed in handling these impedance mismatches. 
         </para>
-        <itemizedlist>
-            <title>Related links</title>
-            <listitem>
-                <para>
-                    <ulink url="t_Building_Bridges.xml"/>
-                </para>
-            </listitem>
-        </itemizedlist>
         <section id="task_bridges">
             <title id="ttlN20000D">Building Bridges</title>
             <para id="paraN20001E">Before creating a new bridge, review the existing bridges,
@@ -975,34 +625,6 @@
                     </para>
                 </listitem>
             </orderedlist>
-            <itemizedlist>
-                <title>Related links</title>
-                <listitem>
-                    <para>
-                        <ulink url="c_Bridges.xml"/>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <ulink url="t_Mutability.xml"/>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <ulink url="t_Adding_Schema_Awareness.xml"/>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <ulink url="t_bridgekit.xml"/>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        <ulink url="t_bridgetest.xml"/>
-                    </para>
-                </listitem>
-            </itemizedlist>
             <section id="task_mutability">
                 <title id="ttlN21000D">Adding Mutability</title>
                 <note id="noteN21001E">
@@ -1065,14 +687,6 @@
                         </para>
                     </listitem>
                 </orderedlist>
-                <itemizedlist>
-                    <title>Related links</title>
-                    <listitem>
-                        <para>
-                            <ulink url="t_Building_Bridges.xml"/>
-                        </para>
-                    </listitem>
-                </itemizedlist>
             </section>
             <section id="task_schema-awareness">
                 <title id="ttlN22000D">Adding Schema Awareness</title>
@@ -1153,54 +767,44 @@
                         </para>
                     </listitem>
                 </orderedlist>
-                <itemizedlist>
-                    <title>Related links</title>
-                    <listitem>
-                        <para>
-                            <ulink url="t_Building_Bridges.xml"/>
-                        </para>
-                    </listitem>
-                </itemizedlist>
             </section>
         </section>
     </section>
-    <!-- MARK MARK MARK -->
 
     <section id="concept_model">
         <title id="ttlN25000D">Model</title>
-        <para id="paraN250018">The core of the 
-        <phrase id="phrsN25001D">GenXDM</phrase>
+        <para id="paraN250018">The core of the <phrase id="phrsN25001D">GenXDM</phrase>
         paradigm is an abstraction called 
         <literal id="cdphN250023">Model</literal>. Because this is an example of the Handle/Body
         design pattern (and is stateless), only one instance of 
         <literal id="cdphN250029">Model</literal> is needed for navigation and investigation for any
         and all instances of the XML tree model for which the particular 
         <literal id="cdphN25002F">Model</literal> is specialized. 
-     </para>
+        </para>
         <para id="paraN250036"><literal id="cdphN25003A">Model</literal> is composed from three interfaces, reflecting
         three different forms of information that might be obtained from an XQuery Data
         Model:
-     </para>
+        </para>
         <itemizedlist id="ul_690BEFD36B78404ABAC0FD26F25285A0">
             <listitem id="li_7AE071EDA14C46BABED003179A7E4D29">
                 <para><literal id="cdphN25004D">NodeInformer</literal> reports information about the
-          content/state of a particular node in context.
-        </para>
+                content/state of a particular node in context.
+                </para>
             </listitem>
             <listitem id="li_BEDE1A0D94FC44529445361609802363">
                 <para><literal id="cdphN250059">NodeNavigator</literal> permits
-          one to obtain a different node given a particular starting node.
-        </para>
+                one to obtain a different node given a particular starting node.
+                </para>
             </listitem>
             <listitem id="li_7D980DC5532944D3BED28F359CC688F7">
                 <para><literal id="cdphN250065">AxisNavigator</literal>
-          supplies iteration over the standard XPath/XQuery axes, starting from a
-          particular origin node.
-        </para>
+                supplies iteration over the standard XPath/XQuery axes, starting from a
+                particular origin node.
+                </para>
             </listitem>
         </itemizedlist>
         <para id="paraN25006D">
-            <programlisting id="cdblkN250072">public interface Model&lt;N&gt;
+<programlisting id="cdblkN250072">public interface Model&lt;N&gt;
     extends Comparator&lt;N&gt;, NodeInformer&lt;N&gt;, NodeNavigator&lt;N&gt;, AxisNavigator&lt;N&gt; {
     void stream(N node, boolean copyNamespaces, ContentHandler handler) throws GxmlException;
 }
