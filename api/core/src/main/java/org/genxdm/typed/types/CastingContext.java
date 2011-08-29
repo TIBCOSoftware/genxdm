@@ -20,10 +20,11 @@ import org.genxdm.exceptions.SpillagePolicy;
 
 /**
  * Defines the role of a context that provides default information for casting of atomic values.
- * <p>
- * While casting is usually defined for XPath and XQuery, this interface allows generic casting utilities to be defined
- * and used for any XML-based language without having to define adapters.
- * </p>
+ * 
+ * While casting is usually defined for XPath and XQuery, this interface allows generic 
+ * casting utilities to be defined and used for any XML-based language without 
+ * having to define adapters.
+ * 
  * 
  * @param <A>
  *            The atom handle.
@@ -31,12 +32,14 @@ import org.genxdm.exceptions.SpillagePolicy;
 public interface CastingContext
 {
     /**
-     * Return the emulation mode which principally determines how numeric values are parsed and serialized.
+     * Return the emulation mode which principally determines how numeric values 
+     * are parsed and serialized.
      */
     Emulation getEmulation();
 
     /**
-     * Return a policy indicating the action to take for numeric operations resulting in overflow or underflow.
+     * Return a policy indicating the action to take for numeric operations 
+     * resulting in overflow or underflow.
      */
     SpillagePolicy getSpillagePolicy();
 }

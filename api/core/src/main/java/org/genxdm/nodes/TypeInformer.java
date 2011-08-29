@@ -22,29 +22,66 @@ public interface TypeInformer<A>
 
     /**
      * Returns the type name of the attribute node with the specified expanded-QName.
-     * <p>
-     * This is equivalent to retrieving the attribute node and then its type name.
-     * </p>
+     * This is equivalent to moving to the attribute node and then retrieving its type name.
+     * This method only works if the cursor is positioned over an element that
+     * has an attribute of the appropriate name.
      * 
      * @param namespaceURI
-     *            The namespace-uri part of the attribute name.
+     *            The namespace-uri part of the attribute name.  Must not be null,
+     *            but may be the empty string (and typically is).
      * @param localName
-     *            The local-name part of the attribute name.
+     *            The local-name part of the attribute name.  Must not be null.
+     * @return the QName representing the type name for the designated attribute,
+     * if that attribute exists in this location.  Null if the attribute does not
+     * exist.  untyped-atomic if the attribute exists, but has no type annotation.
+     * null if the cursor is not positioned over an element node.
      */
     QName getAttributeTypeName(String namespaceURI, String localName);
 
+    /**
+     * Returns the dm:typed-value of the attribute node with the specified expanded-QName.
+     * This is equivalent to moving to the attribute node and then retrieving its typed value.
+     * This method only works if the cursor is positioned over an element that
+     * has an attribute of the appropriate name.
+     * 
+     * @param namespaceURI
+     *            The namespace-uri part of the attribute name.  Must not be null,
+     *            but may be the empty string (and typically is).
+     * @param localName
+     *            The local-name part of the attribute name.
+     *            Must not be null.
+     * @return a sequence of atoms, representing the typed value of the designated
+     * attribute, if that attribute exists in this location.  Null if the attribute
+     * does not exist.  untyped-atomic if the attribute exists, but is not validated.
+     * null if the cursor is not positioned over an element node.
+     */
     Iterable<? extends A> getAttributeValue(String namespaceURI, String localName);
 
     /**
-     * Gets the type name of an element or attribute node. <br/>
-     * Returns <code>null</code> for all other node kinds. <br/>
-     * Corresponds to the dm:type-name accessor in the XDM.
+     * Gets the type name of an element or attribute node.
+     * Returns <code>null</code> for all other node kinds.
+     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-type-name">
+     * dm:type-name</a> accessor in the XDM.
      * 
+     * @return the type name, if the current node context is an element or attribute;
+     * otherwise null.  If the context node is an element or attribute, but is
+     * not validated, returns an xs:untyped or xs:untyped-atomic.
+     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-type-name
      */
     QName getTypeName();
 
     /**
-     * @return the dm:typed-value property of the XDM.
+     * Returns the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-typed-value">
+     * dm:typed-value</a> property of the node.
+     * 
+     * Applies to all node kinds.
+     * 
+     * @return a sequence of atoms representing the typed-value of the supplied
+     * node.  The typed-value of a node may be
+     * rather complex (for documents and elements particularly), or very simple.
+     * returns an xs:untyped-atomic (or string) if the node is not validated (or
+     * for comment and processing instruction nodes).
+     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-typed-value
      */
     Iterable<? extends A> getValue();
 

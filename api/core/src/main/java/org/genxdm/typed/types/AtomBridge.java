@@ -23,12 +23,11 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.AtomCastException;
-import org.genxdm.names.NameSource;
 import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.NativeType;
 
 /**
- * A part of the bridge that provides access to the system of atomic values. <br/>
+ * A part of the bridge that provides access to the system of atomic values.
  * This interface consists of several parts.
  * <ul>
  * <li>Functions that are independent of any particular type.</li>
@@ -40,14 +39,15 @@ public interface AtomBridge<A>
 {
     public static final int TIMEZONE_UNDEFINED = Integer.MIN_VALUE;
 
-    /**
-     * Applies a hypothetical atom() test to the object.
-     * <p/>
-     * If the object is an atom, the atom is returned. Otherwise, returns <code>null</code>.
-     * </p>
+    /** Safely cast an object to an atom.
      * 
-     * @param object
-     *            The candidate object.
+     * If the argument returns true to isAtom(), returns the object cast
+     * to the appropriate type.
+     * 
+     * @param object the object to be tested.
+     * @return the supplied object, cast to the AtomBridge's A parameter,
+     * if the supplied object is not null and is of the appropriate type;
+     * otherwise null.
      */
     A atom(Object object);
 
@@ -55,18 +55,20 @@ public interface AtomBridge<A>
      * Allocates an empty array of atoms.
      * 
      * @param size
-     *            The size of the array of atoms.
+     *            The size of the array of atoms. Must be non-negative.
+     * @return a container of the specified size for atoms.
      */
     A[] atomArray(int size);
 
     /**
      * Performs a cast of the atom one level up the type hierarchy.
-     * <p>
+     * 
      * For primitive atoms, the argument atom is returned.
-     * </p>
+     * 
      * 
      * @param sourceAtom
      *            The atom to be cast
+     * @return the 'parent' atom of the supplied atom; null if null is supplied.
      */
     A upCast(A sourceAtom);
 
@@ -74,12 +76,12 @@ public interface AtomBridge<A>
      * Performs the casting of one atomic value to another.
      * 
      * @param sourceAtom
-     *            The source atomic value for the cast.
+     *            The source atomic value for the cast. Must not be null.
      * @param targetType
-     *            The target type.
+     *            The target type. Must not be null.
      * @param castingContext
-     *            The context that provides defaults for casting operations.
-     * @return The cast atom or <code>null</code> if the input was <code>null</code>.
+     *            The context that provides defaults for casting operations. Must not be null.
+     * @return The cast atom; never null.
      * @throws AtomCastException
      *             if a cast does not exist between the two types or fails because of incompatible data.
      */
@@ -89,58 +91,99 @@ public interface AtomBridge<A>
      * Performs the casting of one atomic value to another.
      * 
      * @param sourceAtom
-     *            The source atomic value for the cast.
+     *            The source atomic value for the cast. Must not be null.
      * @param targetType
-     *            The target type.
+     *            The target type. Must not be null.
      * @param castingContext
      *            The context that provides defaults for casting operations.
-     * @return The cast atom or <code>null</code> if the input was <code>null</code>.
+     *            Must not be null.
+     * @return The cast atom; never null.
      * @throws AtomCastException
      *             if a cast does not exist between the two types or fails because of incompatible data.
      */
     A castAs(A sourceAtom, NativeType targetType, CastingContext castingContext) throws AtomCastException;
 
     /**
-     * Compile the atomic value from the lexical representation. This method is typically used for validation.
+     * Compile the atomic value from the lexical representation. 
+     * This method is typically used for validation.
      * 
      * @param srcval
-     *            The lexical representation of the atomic value.
+     *            The lexical representation of the atomic value;
+     *            must not be null, but may be the empty string.
      * @param dataType
-     *            The native data type
+     *            The target native data type; must not be null.
      * @throws AtomCastException
      *             If the lexical representation is not valid for the atomic value type.
      */
     A compile(String srcval, NativeType dataType) throws AtomCastException;
 
+    /**
+     * Compile the atomic value from the lexical representation. 
+     * This method is typically used for validation.
+     * 
+     * @param srcval
+     *            The lexical representation of the atomic value;
+     *            must not be null, but may be the empty string.
+     * @param dataType
+     *            The target native data type; must not be null.
+     * @param PrefixResolver the resolver used when turning lexical representations
+     * of QNames into their atomic values; if null, then QName resolution will fail
+     * with an exception (equivalent to the overload of this method with no
+     * resolver).
+     * @throws AtomCastException
+     *             If the lexical representation is not valid for the atomic value type.
+     */
     A compile(String srcval, NativeType dataType, PrefixResolver resolver) throws AtomCastException;
 
+    /** Create an xs:base64Binary based on the supplied value.
+     * 
+     * @param base64BinaryValue an array of bytes to be represented by the
+     * return value; must not be null but may be zero-length.
+     * @return an atom representing the supplied bytes as a base64Binary value.
+     */
     A createBase64Binary(byte[] base64BinaryValue);
 
     /**
      * Returns an xs:boolean based upon the value.
+     * 
+     * @param the value to be represented.
+     * @return an atom representing the supplied boolean as a boolean value.
      */
     A createBoolean(boolean booleanValue);
 
     /**
      * Returns an xs:byte based upon the value.
+     * 
+     * @param byteValue the byte to be represented
+     * @return an atom representing the supplied byte as a byte value.
      */
     A createByte(byte byteValue);
 
+    // TODO: document based on implementation contract
     /**
      * Returns an xs:date atomic value.
+     * 
+     * @param year
+     * @param month
+     * @param dayOfMonth
+     * @param timezone
+     * @return
      */
     A createDate(int year, int month, int dayOfMonth, int timezone);
 
+    // TODO: document based on implementation contract
     /**
      * Returns an xs:dateTime atomic value.
      */
     A createDateTime(int year, int month, int dayOfMonth, int hour, int minute, int second, int millis, BigDecimal remainderSecond, int offsetInMinutes);
 
+    // TODO: document based on implementation contract
     /**
      * Returns an xs:gDay based upon the value.
      */
     A createDay(int dayOfMonth, int timezone);
 
+    // TODO: document based on implementation contract
     /**
      * Returns an xs:dayTimeDuration based upon the seconds value.
      * 
@@ -149,6 +192,7 @@ public interface AtomBridge<A>
      */
     A createDayTimeDuration(BigDecimal seconds);
 
+    // TODO: document based on implementation contract
     /**
      * Returns an xs:decimal based upon the value.
      */
@@ -156,14 +200,21 @@ public interface AtomBridge<A>
 
     /**
      * Returns an xs:decimal based upon the value.
+     * 
+     * @param decimalValue a long representing the desired value.
+     * @return an atom representing the long as a decimal value.
      */
     A createDecimal(long decimalValue);
 
     /**
      * Returns an xs:double based upon the value.
+     * 
+     * @param value a double representing the desired value.
+     * @return an atom represneting the double as a double value.
      */
     A createDouble(double value);
 
+    // TODO: document based on implementation contract
     /**
      * Returns an xs:duration based upon the total months and seconds.
      * 
@@ -254,11 +305,13 @@ public interface AtomBridge<A>
      */
     A createLong(long longValue);
 
+    // TODO: document based on implementation contract
     /**
      * Returns an xs:gMonth based upon the value.
      */
     A createMonth(int month, int timezone);
 
+    // TODO: document based on implementation contract
     /**
      * Returns an xs:gMonthDay based upon the value.
      */
@@ -334,6 +387,7 @@ public interface AtomBridge<A>
      */
     A createStringDerived(String strval, NativeType nativeType);
 
+    // TODO: document based on implementation contract
     /**
      * Creates an xs:time atomic value.
      */
@@ -353,16 +407,19 @@ public interface AtomBridge<A>
      */
     A createURI(URI uri);
 
+    // TODO: document based on implementation contract
     /**
      * Returns an xs:gYear based upon the value.
      */
     A createYear(int year, int timezone);
 
+    // TODO: document based on implementation contract
     /**
      * Returns an xs:gYearMonth based upon the value.
      */
     A createYearMonth(int year, int month, int timezone);
 
+    // TODO: document based on implementation contract
     /**
      * Creates an xs:yearMonthDuration atom based upon the number of calendar months.
      * 
@@ -692,6 +749,9 @@ public interface AtomBridge<A>
 
     A makeForeignAtom(QName atomType, A baseAtom);
 
+    // get an atom from an iterable<atom>, but only if there's only one.
+    A unwrapAtom(Iterable<? extends A> sequence) throws AtomCastException;
+    
     /**
      * Promotes a single atom into an {@link Iterable} sequence containing the same single atom. <br/>
      * Note this method is provided for performance reasons. Some implementations may implement {@link Iterable} on their atoms to avoid physically wrapping the atom.

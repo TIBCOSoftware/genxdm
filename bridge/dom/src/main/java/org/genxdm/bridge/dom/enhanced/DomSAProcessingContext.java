@@ -64,12 +64,6 @@ public final class DomSAProcessingContext
         this.parent = PreCondition.assertNotNull(parent);
     }
 
-    public XmlAtom atom(final Object item)
-    {
-        // Delegate to the atom bridge because we are generic wrt atoms.
-        return atomBridge.atom(item);
-    }
-    
     public void declareAttribute(final AttributeDefinition attribute)
     {
         PreCondition.assertArgumentNotNull(attribute, "attribute");
@@ -166,11 +160,6 @@ public final class DomSAProcessingContext
     public VariantBridge<Node, XmlAtom> getVariantBridge()
     {
         return new DomValueBridge();
-    }
-
-    public boolean isAtom(final Object item)
-    {
-        return atomBridge.isAtom(item);
     }
 
     public boolean isLocked()

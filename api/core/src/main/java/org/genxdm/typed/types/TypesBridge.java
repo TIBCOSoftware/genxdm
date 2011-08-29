@@ -38,6 +38,8 @@ import org.genxdm.xs.types.TextNodeType;
  */
 public interface TypesBridge extends Schema
 {
+    // TODO: push down accept to SequenceType (removing the first param).
+    // see impl in TypesBridgeImpl
     /**
      * Implementation of the visitor pattern.
      * 

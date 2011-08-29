@@ -17,6 +17,10 @@ package org.genxdm.typed;
 
 import org.genxdm.typed.io.SequenceHandler;
 
+/** Standard interface for validating or re-validating trees in memory.
+ * 
+ * @param <A> the Atom handle
+ */
 public interface ValidationHandler<A>
     extends SequenceHandler<A>, Validator<A>
 {

@@ -51,6 +51,8 @@ public interface NodeInformer<N>
      *            The namespace-uri part of the attribute name.
      * @param localName
      *            The local-name part of the attribute name.
+     * @return the string value of the designated attribute, if it exists;
+     * null if it does not.
      */
     String getAttributeStringValue(N parent, String namespaceURI, String localName);
 
