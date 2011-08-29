@@ -21,7 +21,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.names.NameSource;
+import org.genxdm.names.PrefixResolver;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.EnumerationDefinition;
 import org.genxdm.xs.enums.DerivationMethod;
@@ -31,7 +31,6 @@ import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.facets.Facet;
 import org.genxdm.xs.facets.FacetKind;
 import org.genxdm.xs.facets.Pattern;
-import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.SimpleType;
@@ -138,18 +137,17 @@ public final class QNameType extends AbstractAtomType
     {
         final String qualifiedName = normalize(initialValue);
         final int index = qualifiedName.indexOf(':');
-        final NameSource nameBridge = NameSource.SINGLETON;
         if (index == -1)
         {
             final String localName = NCNameType.castAsNCName(qualifiedName, this);
-            return atomBridge.wrapAtom(atomBridge.createQName(nameBridge.empty(), localName, ""));
+            return atomBridge.wrapAtom(atomBridge.createQName("", localName, ""));
         }
         else
         {
             final String prefix = NCNameType.castAsNCName(qualifiedName.substring(0, index), this);
             final String localName = NCNameType.castAsNCName(qualifiedName.substring(index + 1), this);
             // We don't have a resolver so we just leave the namespace-uri empty.
-            return atomBridge.wrapAtom(atomBridge.createQName(nameBridge.empty(), localName, prefix));
+            return atomBridge.wrapAtom(atomBridge.createQName("", localName, prefix));
         }
     }
 

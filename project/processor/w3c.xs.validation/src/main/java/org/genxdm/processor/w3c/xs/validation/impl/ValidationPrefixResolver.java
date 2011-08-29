@@ -22,7 +22,7 @@ import java.util.Enumeration;
 import javax.xml.XMLConstants;
 
 import org.genxdm.names.NameSource;
-import org.genxdm.xs.resolve.PrefixResolver;
+import org.genxdm.names.PrefixResolver;
 
 final class ValidationPrefixResolver implements PrefixResolver
 {
@@ -149,7 +149,7 @@ final class ValidationPrefixResolver implements PrefixResolver
 		m_numMappings++;
 	}
 
-	public String getNamespaceURI(final String prefix)
+	public String getNamespace(final String prefix)
 	{
 		PreCondition.assertArgumentNotNull(prefix);
 

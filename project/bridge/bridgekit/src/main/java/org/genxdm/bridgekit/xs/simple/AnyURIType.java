@@ -23,6 +23,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.names.PrefixResolver;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.EnumerationDefinition;
 import org.genxdm.xs.enums.DerivationMethod;
@@ -32,7 +33,6 @@ import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.facets.Facet;
 import org.genxdm.xs.facets.FacetKind;
 import org.genxdm.xs.facets.Pattern;
-import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.SimpleType;

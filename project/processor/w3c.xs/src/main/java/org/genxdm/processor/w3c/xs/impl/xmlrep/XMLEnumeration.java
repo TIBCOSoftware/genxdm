@@ -16,8 +16,8 @@
 package org.genxdm.processor.w3c.xs.impl.xmlrep;
 
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.names.PrefixResolver;
 import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
-import org.genxdm.xs.resolve.PrefixResolver;
 
 public final class XMLEnumeration extends XMLFacet
 {

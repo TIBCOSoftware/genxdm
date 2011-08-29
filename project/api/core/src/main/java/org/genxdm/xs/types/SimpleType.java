@@ -17,6 +17,7 @@ package org.genxdm.xs.types;
 
 import java.util.List;
 
+import org.genxdm.names.PrefixResolver;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.EnumerationDefinition;
 import org.genxdm.xs.enums.WhiteSpacePolicy;
@@ -24,7 +25,6 @@ import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.facets.Facet;
 import org.genxdm.xs.facets.FacetKind;
 import org.genxdm.xs.facets.Pattern;
-import org.genxdm.xs.resolve.PrefixResolver;
 
 /**
  * A Simple Type definition.

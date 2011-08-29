@@ -28,6 +28,7 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.genxdm.names.NameSource;
+import org.genxdm.names.PrefixResolver;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcAttributeFixedValueOverriddenException;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcAttributeNormalizedValueException;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcAttributeOnSimpleTypeException;
@@ -51,7 +52,6 @@ import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.exceptions.SimpleTypeException;
-import org.genxdm.xs.resolve.PrefixResolver;
 import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.Type;
@@ -531,7 +531,7 @@ final class AttributeManager<A>
 	{
 		if (prefix.length() > 0)
 		{
-			final String namespaceURI = p2n.getNamespaceURI(prefix);
+			final String namespaceURI = p2n.getNamespace(prefix);
 			if (null != namespaceURI)
 			{
 				return new QName(namespaceURI, localName, prefix);
@@ -543,7 +543,7 @@ final class AttributeManager<A>
 		}
 		else
 		{
-			final String namespaceURI = p2n.getNamespaceURI(prefix);
+			final String namespaceURI = p2n.getNamespace(prefix);
 			if (null != namespaceURI)
 			{
 				return new QName(namespaceURI, localName, prefix);

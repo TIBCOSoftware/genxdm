@@ -15,30 +15,17 @@
  */
 package org.genxdm.apitest;
 
-import javax.xml.XMLConstants;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import javax.xml.namespace.QName;
 
 import org.genxdm.names.NameSource;
 import org.genxdm.xs.types.NativeType;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 public class NameSourceTestCase
 {
-    
-    @Test
-    public void constantNames()
-    {
-        NameSource source = NameSource.SINGLETON;
-        // contract: each of these silly methods introduce method call overhead
-        // to what should be a simple constant comparison.  *sigh*
-        // empty() should be equal to XMLConstants.NULL_NS_URI.
-        assertEquals(source.empty(), XMLConstants.NULL_NS_URI); // 103 references
-        // all the rest of them that were there before were relatively easy to remove,
-        // each was replaced with direct reference to javax.xml.XMLConstants.
-    }
     
     @Test
     public void nativesAndNames()
