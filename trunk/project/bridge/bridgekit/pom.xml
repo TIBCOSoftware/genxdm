@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.genxdm</groupId>
         <artifactId>bridge</artifactId>
-        <version>0.3</version>
+        <version>0.5</version>
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bridgekit</artifactId>
-    <version>0.5</version>
+    <version>0.8</version>
     <!-- Probably needs to be revisited at some point, but seems okay at the
          moment. -->
     <name>GenXDM Bridge Kit</name>

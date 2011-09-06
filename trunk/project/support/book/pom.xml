@@ -23,14 +23,12 @@
     <parent>
         <groupId>org.genxdm</groupId>
         <artifactId>support</artifactId>
-        <version>0.2</version>
+        <version>0.5</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>genxdm-book</artifactId>
-    <version>0.1</version>
-    <!-- little more than an outline of what we *should* be creating.  Not
-         to be included in the initial release. -->
+    <version>0.5</version>
     <name>GenXDM Book</name>
 
     <scm>
