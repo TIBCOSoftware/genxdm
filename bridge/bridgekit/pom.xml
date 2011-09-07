@@ -32,6 +32,7 @@
     <!-- Probably needs to be revisited at some point, but seems okay at the
          moment. -->
     <name>GenXDM Bridge Kit</name>
+    <url>http://www.genxdm.org/bridge/bridgekit/</url>
     
     <reporting>
         <plugins>

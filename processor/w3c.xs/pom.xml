@@ -30,6 +30,7 @@
     <artifactId>proc-w3cxs</artifactId>
     <version>0.8</version>
     <name>GenXDM W3C XML Schema Parser</name>
+    <url>http://www.genxdm.org/processor/proc-w3cxs/</url>
 
     <reporting>
         <plugins>
