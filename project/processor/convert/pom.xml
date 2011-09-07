@@ -32,6 +32,7 @@
     <!-- Not necessarily "mature", but it's so simple that it's hard to imagine
          significant change unless underlying APIs change -->
     <name>GenXDM Conversion Processor</name>
+    <url>http://www.genxdm.org/processor/proc-convert/</url>
 
     <reporting>
         <plugins>

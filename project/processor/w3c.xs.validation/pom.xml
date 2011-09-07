@@ -30,6 +30,7 @@
     <artifactId>proc-w3cxs-val</artifactId>
     <version>0.7</version>
     <name>GenXDM W3C XML Schema Validator</name>
+    <url>http://www.genxdm.org/processor/proc-w3cxs-val/</url>
 
     <scm>
         <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/processor/w3c.xs.validation</connection>

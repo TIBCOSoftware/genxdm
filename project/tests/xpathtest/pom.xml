@@ -34,6 +34,7 @@
     <!-- The version specified may be lower than it needs to be.  We need
          a code review here to determine actual maturity level, I think. -->
     <name>GenXDM XPath 1.0 Conformance tests</name>
+    <url>http://www.genxdm.org/tests/xpathtest/</url>
 
     <reporting>
         <plugins>

@@ -30,6 +30,7 @@
     <artifactId>genxdm-book</artifactId>
     <version>0.5</version>
     <name>GenXDM Book</name>
+    <url>http://www.genxdm.org/support/genxdm-book/</url>
 
     <scm>
         <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/support/book</connection>

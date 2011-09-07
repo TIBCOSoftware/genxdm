@@ -30,6 +30,7 @@
     <version>0.5</version>
     <!-- version matches main project version; no other reason -->
     <name>GenXDM Bridges</name>
+    <url>http://www.genxdm.org/bridge/</url>
 
     <scm>
         <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/bridge</connection>

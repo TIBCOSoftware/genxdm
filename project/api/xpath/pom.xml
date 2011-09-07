@@ -32,6 +32,7 @@
     <!-- considered very stable; API mostly derived from preexisting XT
          XPath code. -->
     <name>GenXDM XPath 1.0 API</name>
+    <url>http://www.genxdm.org/apis/genxdm-xpath-api/</url>
     <description>The GenXDM XPath 1.0 API module is based on an abstraction of
         the XPath processing developed by James Clark and Bill Lindsey for
         XT (with their permission; see copying.txt and copyingjc.txt for their

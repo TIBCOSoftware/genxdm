@@ -30,6 +30,7 @@
     <artifactId>bridgetest</artifactId>
     <version>0.3</version>
     <name>GenXDM Bridge Test Kit</name>
+    <url>http://www.genxdm.org/tests/bridgetest/</url>
 
     <reporting>
         <plugins>
