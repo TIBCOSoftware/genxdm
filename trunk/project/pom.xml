@@ -45,6 +45,13 @@
       </license>
       <!-- do we need to also mention the jc and bl licenses here? -->
     </licenses>
+    
+    <distributionManagement>
+        <site>
+          <id>genxdm-server</id>
+          <url>dav:http://172.16.164.131/</url>
+        </site>
+    </distributionManagement>
 
     <issueManagement>
         <system>Google Code</system>
@@ -118,5 +125,12 @@
                 </configuration>
             </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav-jackrabbit</artifactId>
+                <version>1.0</version>
+            </extension>
+        </extensions>
     </build>
 </project>
