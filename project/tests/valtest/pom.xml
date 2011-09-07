@@ -30,6 +30,7 @@
     <artifactId>validationtest</artifactId>
     <version>0.1</version>
     <name>GenXDM Validation Test Kit</name>
+    <url>http://www.genxdm.org/tests/validationtest/</url>
 
     <reporting>
         <plugins>

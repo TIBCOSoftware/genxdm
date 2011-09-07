@@ -33,6 +33,7 @@
          the question  about the structure of parse/serialize -->
 
     <name>GenXDM API</name>
+    <url>http://www.genxdm.org/apis/genxdm-api/</url>
     <description>The GenXDM API module defines the core interfaces and abstractions
         for GenXDM bridges and processors.  The untyped immutable API is focused
         in the 'base' package; the mutable extension in base.mutable.  The

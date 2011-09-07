@@ -29,6 +29,7 @@
     <packaging>pom</packaging>
     <version>0.9</version>
     <name>GenXDM API modules</name>
+    <url>http://www.genxdm.org/apis/</url>
 
     <scm>
         <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/api</connection>

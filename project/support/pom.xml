@@ -29,6 +29,7 @@
     <packaging>pom</packaging>
     <version>0.5</version>
     <name>GenXDM Support</name>
+    <url>http://www.genxdm.org/support/</url>
 
     <scm>
         <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/support</connection>

@@ -33,6 +33,7 @@
          and most tested in practice, but the API has changed and the changes
          that have happened here have not always been thoughtful and well-chosen -->
     <name>GenXDM Document Object Model Bridge</name>
+    <url>http://www.genxdm.org/bridge/bridge-dom/</url>
 
     <reporting>
         <plugins>
