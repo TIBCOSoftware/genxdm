@@ -62,6 +62,12 @@
                 </dependencies>
                 <configuration>
                     <highlightSource>true</highlightSource>
+                    <postProcess>
+                        <copy todir="target/site">
+                            <fileset dir="target/docbkx/html" />
+                            <!--fileset dir="target/docbkx/pdf" /-->
+                        </copy>
+                    </postProcess>
                 </configuration>
             </plugin>
         </plugins>
