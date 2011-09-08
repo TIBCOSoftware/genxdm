@@ -71,15 +71,13 @@ class DomSAModel
             {
                 case TEXT:
                 {
-                    // TODO: pretty sure that this is wrong.
-                    // we ought to return typed values if they're available.
                     final String stringValue = getStringValue(node);
                     return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
                 }
                 case ELEMENT:
                 case ATTRIBUTE:
                 {
-                    final QName typeName = getAnnotationType(node, typesBridge);
+                    final QName typeName = getTypeName(node);
                     final Type type = provider.getTypeDefinition(typeName);
                     if (type instanceof SimpleType)
                     {
@@ -94,11 +92,8 @@ class DomSAModel
                             throw new GenXDMException(e);
                         }
                     }
-                    else
-                    {
-                        final String stringValue = getStringValue(node);
-                        return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
-                    }
+                    final String stringValue = getStringValue(node);
+                    return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
                 }
                 case DOCUMENT:
                 {
@@ -124,14 +119,27 @@ class DomSAModel
 
     public final QName getTypeName(final Node node)
     {
-        if (null != node)
+        if (node != null)
         {
-            return getAnnotationType(node, typesBridge);
+            final QName annotation = getAnnotationType(node, typesBridge); 
+            switch (getNodeKind(node))
+            {
+                case ATTRIBUTE:
+                    if (annotation == null)
+                        return xsUntypedAtomic;
+                    return annotation;
+                case ELEMENT:
+                    if (annotation == null)
+                        return xsUntyped;
+                    return annotation;
+                case TEXT:
+                    return xsUntypedAtomic;
+                // for document, namespace, comment, and pi, fall through
+//                default : 
+//                    return null;
+            }
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
 //  public List<XmlAtom> getValue(final Node node)
@@ -375,4 +383,6 @@ class DomSAModel
     
     private final ComponentProvider provider;
 
+    private static final QName xsUntyped = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "untyped");
+    private static final QName xsUntypedAtomic = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "untypedAtomic");
 }

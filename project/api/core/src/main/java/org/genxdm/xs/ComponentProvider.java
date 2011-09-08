@@ -44,13 +44,22 @@ public interface ComponentProvider extends ComponentDetector
      * implementation-defined unchecked exception will be thrown.
      * 
      * @param name
-     *            The name of the Atomic type definition to be retrieved.
+     *            The name of the Atomic type definition to be retrieved; must not be null.
      * @return The atomic type identified by the name, or <code>null</code> if it does not exist.
      */
     AtomicType getAtomicType(QName name);
 
+    /**
+     * 
+     * @param name the native type definition for the atomic type to be retrieved; must not be null.
+     * @return the atomic type identified by the name, or null if it does not exist.
+     */
     AtomicType getAtomicType(NativeType name);
 
+    /**
+     * 
+     * @return the atomic ur-type; never null.
+     */
     AtomicUrType getAtomicUrType();
 
     /**
@@ -58,7 +67,7 @@ public interface ComponentProvider extends ComponentDetector
      * error occurs, an implementation-defined unchecked exception will be thrown.
      * 
      * @param name
-     *            The name of the attribute declaration to be retrieved.
+     *            The name of the attribute declaration to be retrieved; must not be null.
      * @return The {@link org.genxdm.xs.components.AttributeDefinition} identified by the name, or <code>null</code> if it does not exist.
      */
     AttributeDefinition getAttributeDeclaration(QName name);
@@ -68,7 +77,7 @@ public interface ComponentProvider extends ComponentDetector
      * occurs, an implementation-defined unchecked exception will be thrown.
      * 
      * @param name
-     *            The name of the Attribute Group Definition to be retrieved.
+     *            The name of the Attribute Group Definition to be retrieved; must not be null.
      * @return The {@link org.genxdm.xs.components.AttributeGroupDefinition} identified by the name, or <code>null</code> if it does not
      *         exist.
      */
@@ -79,7 +88,7 @@ public interface ComponentProvider extends ComponentDetector
      * occurs, an implementation-defined unchecked exception will be thrown.
      * 
      * @param name
-     *            The name of the Complex type definition to be retrieved.
+     *            The name of the Complex type definition to be retrieved; must not be null.
      * @return The {@link org.genxdm.xs.types.ComplexType} identified by the name, or <code>null</code> if it does not exist.
      */
     ComplexType getComplexType(QName name);
@@ -91,7 +100,7 @@ public interface ComponentProvider extends ComponentDetector
      * error occurs, an implementation-defined unchecked exception will be thrown.
      * 
      * @param name
-     *            The name of the element declaration to be retrieved.
+     *            The name of the element declaration to be retrieved; must not be null.
      * @return The {@link org.genxdm.xs.components.ElementDefinition} identified by the name, or <code>null</code> if it does not exist.
      */
     ElementDefinition getElementDeclaration(QName name);
@@ -101,7 +110,7 @@ public interface ComponentProvider extends ComponentDetector
      * occurs, an implementation-defined unchecked exception will be thrown.
      * 
      * @param name
-     *            The name of the Identity-constraint definition to be retrieved.
+     *            The name of the Identity-constraint definition to be retrieved; must not be null.
      * @return The {@link IdentityConstraint} identified by the name, or <code>null</code> if it does not exist.
      */
     IdentityConstraint getIdentityConstraint(QName name);
@@ -111,7 +120,7 @@ public interface ComponentProvider extends ComponentDetector
      * error occurs, an implementation-defined unchecked exception will be thrown.
      * 
      * @param name
-     *            The name of the Model Group Definition to be retrieved.
+     *            The name of the Model Group Definition to be retrieved; must not be null.
      * @return The {@link org.genxdm.xs.components.ModelGroup} identified by the name, or <code>null</code> if it does not exist.
      */
     ModelGroup getModelGroup(QName name);
@@ -121,7 +130,7 @@ public interface ComponentProvider extends ComponentDetector
      * error occurs, an implementation-defined unchecked exception will be thrown.
      * 
      * @param name
-     *            The name of the Notation declaration to be retrieved.
+     *            The name of the Notation declaration to be retrieved; must not be null.
      * @return The {@link org.genxdm.xs.components.NotationDefinition} identified by the name, or <code>null</code> if it does not exist.
      */
     NotationDefinition getNotationDeclaration(QName name);
@@ -131,7 +140,7 @@ public interface ComponentProvider extends ComponentDetector
      * error occurs, an implementation-defined unchecked exception will be thrown.
      * 
      * @param name
-     *            The name of the Simple type definition to be retrieved.
+     *            The name of the Simple type definition to be retrieved; must not be null.
      * @return The {@link org.genxdm.xs.types.SimpleType} identified by the name, or <code>null</code> if it does not exist.
      */
     SimpleType getSimpleType(QName name);
@@ -145,7 +154,7 @@ public interface ComponentProvider extends ComponentDetector
      * occurs, an implementation-defined unchecked exception will be thrown.
      * 
      * @param name
-     *            The name of the type to be retrieved.
+     *            The name of the type to be retrieved; must not be null.
      * @return The {@link org.genxdm.xs.types.Type} identified by the name, or <code>null</code> if it does not exist.
      */
     Type getTypeDefinition(QName name);
@@ -154,7 +163,7 @@ public interface ComponentProvider extends ComponentDetector
      * Returns the specified type definition.
      * 
      * @param nativeType
-     *            The name of the native type definition.
+     *            The name of the native type definition; must not be null.
      */
     Type getTypeDefinition(NativeType nativeType);
 }
