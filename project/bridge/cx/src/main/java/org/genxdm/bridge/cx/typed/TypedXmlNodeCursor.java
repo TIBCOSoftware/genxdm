@@ -54,11 +54,11 @@ public class TypedXmlNodeCursor
         AtomBridge<XmlAtom> bridge = context.getAtomBridge();
         switch (node.getNodeKind())
         {
-            case TEXT :
             case ATTRIBUTE :
             {
                 return node.getValue();
             }
+            case TEXT :
             case NAMESPACE :
             case COMMENT :
             case PROCESSING_INSTRUCTION :
