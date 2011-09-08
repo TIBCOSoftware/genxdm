@@ -38,9 +38,8 @@ public interface TypedNodeInformer<N, A>
      *            but may be the empty string (and typically is).
      * @param localName
      *            The local-name part of the attribute name.  Must not be null.
-     * @return the QName representing the type name for the designated attribute,
-     * if that attribute exists in this location.  Null if the attribute does not
-     * exist.  untyped-atomic if the attribute exists, but has no type annotation.
+     * @return the equivalent of invoking getTypeName on the designated attribute
+     * node, if that node exists; otherwise null. 
      */
     QName getAttributeTypeName(N parent, String namespaceURI, String localName);
 
@@ -57,32 +56,31 @@ public interface TypedNodeInformer<N, A>
      * @param localName
      *            The local-name part of the attribute name.
      *            Must not be null.
-     * @return a sequence of atoms, representing the typed value of the designated
-     * attribute, if that attribute exists in this location.  Null if the attribute
-     * does not exist.  untyped-atomic if the attribute exists, but is not validated.
+     * @return the equivalent of invoking getValue on the attribute node designated,
+     * if that node exists; otherwise null.
      */
     Iterable<? extends A> getAttributeValue(N parent, String namespaceURI, String localName);
 
     /**
-     * Gets the type name of an element or attribute node.
+     * Return the dm:type-name of an element or attribute node.
      * Returns <code>null</code> for all other node kinds.
-     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-type-name">
-     * dm:type-name</a> accessor in the XDM.
      * 
      * @param node
      *            The node for which the type name is required.  If null is
      *            supplied, null is returned.
-     *            
-     * @return the type name, if the context node is an element or attribute;
-     * otherwise null.  If the context node is an element or attribute, but is
-     * not validated, returns an xs:untyped or xs:untyped-atomic.
+     * 
+     * @return the type name for the node, if it is valid and is an element
+     * or attribute. An invalid or partially-validated node should return
+     * xs:anyType (element) or xs:anySimpleType (attribute). An unvalidated
+     * node should return xs:untyped (element) or xs:untypedAtomic (attribute).
+     * Text nodes return xs:untypedAtomic.  Document, namespace, comment,
+     * and processing instruction nodes return null.
      * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-type-name
      */
     QName getTypeName(N node);
 
     /**
-     * Returns the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-typed-value">
-     * dm:typed-value</a> property of the node.
+     * Returns the dm:typed-value of the node.
      * 
      * Applies to all node kinds.
      * 
@@ -91,14 +89,17 @@ public interface TypedNodeInformer<N, A>
      * @param node
      *            The node for which dm:typed-value is required.  If null is supplied,
      *            null is returned.
-     * 
+     *
      * @return a sequence of atoms representing the typed-value of the supplied
-     * node; null if null has been supplied.  The typed-value of a node may be
-     * rather complex (for documents and elements particularly), or very simple.
-     * returns an xs:untyped-atomic (or string) if the node is not validated (or
-     * for comment and processing instruction nodes).
+     * node, for document, element, and attribute nodes. For namespace, comment,
+     * and processing instruction nodes, returns the string value of the content.
+     * For text nodes, returns the value as an xs:untypedAtomic. Invalid, unvalidated,
+     * and partially-validated nodes tend to return string values variously
+     * typed. null (the empty sequence) is possible in some circumstances.
      * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-typed-value
+     * @see http://www.w3.org/TR/xpath-datamodel/#TypedValueDetermination
      */
-    Iterable<? extends A> getValue(N node);
+    Iterable<? extends A> getValue(N node); // TODO: should throw exception if
+    // called on an element with element-only content; required to 'raise an error'
 
 }
