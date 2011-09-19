@@ -38,7 +38,7 @@ public final class ExprContextStaticImpl
 		return variables.contains(name);
 	}
 
-	public String getNamespaceForPrefix(final String prefix)
+	public String getNamespace(final String prefix)
 	{
 		return namespaces.get(prefix);
 	}
