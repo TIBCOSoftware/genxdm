@@ -79,7 +79,7 @@ final class ExprParser
 		final String localName = currentTokenValue.substring(index + 1);
 		if (prefix.length() > 0)
 		{
-			final String ns = statEnv.getNamespaceForPrefix(prefix); // returns null if not bound.
+			final String ns = statEnv.getNamespace(prefix); // returns null if not bound.
 
 			if (ns != null)
 			{
@@ -105,7 +105,7 @@ final class ExprParser
 	//
 	private String expandPrefix() throws ExprParseException
 	{
-		String ns = statEnv.getNamespaceForPrefix(currentTokenValue);
+		String ns = statEnv.getNamespace(currentTokenValue);
 		if (ns == null)
 		{
 			throw new ExprParseException("undefined prefix");
