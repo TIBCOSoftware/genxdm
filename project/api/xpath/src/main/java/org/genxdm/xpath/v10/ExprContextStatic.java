@@ -17,14 +17,14 @@ package org.genxdm.xpath.v10;
 
 import javax.xml.namespace.QName;
 
-public interface ExprContextStatic 
+import org.genxdm.names.PrefixResolver;
+
+public interface ExprContextStatic extends PrefixResolver
 {
-	boolean containsVariable(final QName name);
+    boolean containsVariable(final QName name);
 
-	String getNamespaceForPrefix(String prefix);
+    void declareNamespace(String prefix, String namespace);
 
-	void declareNamespace(String prefix, String namespace);
-
-	void declareVariable(QName name);
+    void declareVariable(QName name);
 
 }
