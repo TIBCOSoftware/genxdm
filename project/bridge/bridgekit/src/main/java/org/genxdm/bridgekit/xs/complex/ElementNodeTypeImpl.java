@@ -19,8 +19,8 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
 import org.genxdm.bridgekit.names.QNameAsSet;
+import org.genxdm.bridgekit.xs.BuiltInSchema;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.ElementNodeType;
 import org.genxdm.xs.types.NativeType;
@@ -36,9 +36,9 @@ public final class ElementNodeTypeImpl extends AbstractBranchNodeType implements
     private final boolean m_nillable;
     private final QName name;
 
-    public ElementNodeTypeImpl(final QName name, final SequenceType dataType, final boolean nillable, final ComponentProvider cache)
+    public ElementNodeTypeImpl(final QName name, final SequenceType dataType, final boolean nillable)
     {
-        super(NodeKind.ELEMENT, cache);
+        super(NodeKind.ELEMENT);
         this.name = PreCondition.assertArgumentNotNull(name, "name");
         if (null != dataType)
         {
@@ -48,7 +48,7 @@ public final class ElementNodeTypeImpl extends AbstractBranchNodeType implements
         else
         {
             // Normalization as per formal semantics.
-            m_dataType = cache.getTypeDefinition(NativeType.ANY_TYPE);
+            m_dataType = BuiltInSchema.SINGLETON.ANY_COMPLEX_TYPE;
             m_nillable = (null != name);
         }
     }
