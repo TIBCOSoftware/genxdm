@@ -31,7 +31,7 @@ public final class DocumentNodeTypeImpl extends AbstractBranchNodeType implement
 
     public DocumentNodeTypeImpl(final SequenceType contentType, final ComponentProvider cache)
     {
-        super(NodeKind.DOCUMENT, cache);
+        super(NodeKind.DOCUMENT);
         m_contentType = PreCondition.assertArgumentNotNull(contentType, "contentType");
     }
 
