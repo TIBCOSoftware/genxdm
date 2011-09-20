@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2010 TIBCO Software Inc.
+ * Copyright (c) 2009-2011 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.SimpleUrType;
 
-final class BuiltInSchema implements ComponentBag
+public final class BuiltInSchema implements ComponentBag
 {
     public static final BuiltInSchema SINGLETON = new BuiltInSchema();
     
@@ -248,59 +248,59 @@ final class BuiltInSchema implements ComponentBag
         m_simpleTypes.put(simpleType.getName(), simpleType);
     }
 
-    final AtomicUrType ANY_ATOMIC_TYPE;
-    final SimpleUrType ANY_SIMPLE_TYPE;
-    final ComplexUrType ANY_COMPLEX_TYPE;
-    final SimpleType ANY_URI;
-    final SimpleType BASE64_BINARY;
-    final AtomicType BOOLEAN;
-    final SimpleType BYTE;
-    final SimpleType DATE;
-    final SimpleType DATETIME;
-    final SimpleType DECIMAL;
-    final SimpleType DOUBLE;
-    final SimpleType DURATION;
-    final SimpleType DURATION_DAYTIME;
-    final SimpleType DURATION_YEARMONTH;
-    final SimpleType ENTITIES;
-    final SimpleType ENTITY;
-    final SimpleType FLOAT;
-    final SimpleType GDAY;
-    final SimpleType GMONTH;
-    final SimpleType GMONTHDAY;
-    final SimpleType GYEAR;
-    final SimpleType GYEARMONTH;
-    final SimpleType HEX_BINARY;
-    final SimpleType ID;
-    final SimpleType IDREF;
-    final SimpleType IDREFS;
-    final SimpleType INT;
-    final SimpleType INTEGER;
-    final SimpleType LANGUAGE;
-    final SimpleType LONG;
+    public final AtomicUrType ANY_ATOMIC_TYPE;
+    public final SimpleUrType ANY_SIMPLE_TYPE;
+    public final ComplexUrType ANY_COMPLEX_TYPE;
+    public final SimpleType ANY_URI;
+    public final SimpleType BASE64_BINARY;
+    public final AtomicType BOOLEAN;
+    public final SimpleType BYTE;
+    public final SimpleType DATE;
+    public final SimpleType DATETIME;
+    public final SimpleType DECIMAL;
+    public final SimpleType DOUBLE;
+    public final SimpleType DURATION;
+    public final SimpleType DURATION_DAYTIME;
+    public final SimpleType DURATION_YEARMONTH;
+    public final SimpleType ENTITIES;
+    public final SimpleType ENTITY;
+    public final SimpleType FLOAT;
+    public final SimpleType GDAY;
+    public final SimpleType GMONTH;
+    public final SimpleType GMONTHDAY;
+    public final SimpleType GYEAR;
+    public final SimpleType GYEARMONTH;
+    public final SimpleType HEX_BINARY;
+    public final SimpleType ID;
+    public final SimpleType IDREF;
+    public final SimpleType IDREFS;
+    public final SimpleType INT;
+    public final SimpleType INTEGER;
+    public final SimpleType LANGUAGE;
+    public final SimpleType LONG;
     private final HashMap<QName, ComplexType> m_complexTypes = new HashMap<QName, ComplexType>();
     private final HashMap<QName, SimpleType> m_simpleTypes = new HashMap<QName, SimpleType>();
-    final SimpleType NAME;
-    final SimpleType NCNAME;
-    final SimpleType NEGATIVE_INTEGER;
-    final SimpleType NMTOKEN;
-    final SimpleType NMTOKENS;
-    final SimpleType NON_NEGATIVE_INTEGER;
-    final SimpleType NON_POSITIVE_INTEGER;
-    final SimpleType NORMALIZED_STRING;
-    final SimpleType NOTATION;
-    final SimpleType POSITIVE_INTEGER;
-    final SimpleType QNAME;
-    final SimpleType SHORT;
-    final SimpleType STRING;
-    final SimpleType TIME;
-    final SimpleType TOKEN;
-    final SimpleType UNSIGNED_BYTE;
-    final SimpleType UNSIGNED_INT;
+    public final SimpleType NAME;
+    public final SimpleType NCNAME;
+    public final SimpleType NEGATIVE_INTEGER;
+    public final SimpleType NMTOKEN;
+    public final SimpleType NMTOKENS;
+    public final SimpleType NON_NEGATIVE_INTEGER;
+    public final SimpleType NON_POSITIVE_INTEGER;
+    public final SimpleType NORMALIZED_STRING;
+    public final SimpleType NOTATION;
+    public final SimpleType POSITIVE_INTEGER;
+    public final SimpleType QNAME;
+    public final SimpleType SHORT;
+    public final SimpleType STRING;
+    public final SimpleType TIME;
+    public final SimpleType TOKEN;
+    public final SimpleType UNSIGNED_BYTE;
+    public final SimpleType UNSIGNED_INT;
 
-    final SimpleType UNSIGNED_LONG;
-    final SimpleType UNSIGNED_SHORT;
-    final ComplexTypeImpl UNTYPED;
+    public final SimpleType UNSIGNED_LONG;
+    public final SimpleType UNSIGNED_SHORT;
+    public final ComplexTypeImpl UNTYPED;
 
-    final AtomicType UNTYPED_ATOMIC;
+    public final AtomicType UNTYPED_ATOMIC;
 }

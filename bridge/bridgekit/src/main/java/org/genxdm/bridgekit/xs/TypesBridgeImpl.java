@@ -89,7 +89,7 @@ public final class TypesBridgeImpl implements TypesBridge
 
         ANY_ATOMIC_TYPE = m_cache.getAtomicUrType();
 
-        ELEMENT = new ElementNodeTypeImpl(WILDNAME, null, false, m_cache);
+        ELEMENT = new ElementNodeTypeImpl(WILDNAME, null, false);
         NAMESPACE = new NamespaceNodeTypeImpl();
         ATTRIBUTE = new AttributeNodeTypeImpl(WILDNAME, null, m_cache);
         COMMENT = new CommentNodeTypeImpl();
@@ -593,14 +593,14 @@ public final class TypesBridgeImpl implements TypesBridge
     public ElementNodeType elementType(final QName name, final SequenceType type, final boolean nillable)
     {
         if (name != null)
-            return new ElementNodeTypeImpl(name, type, nillable, m_cache);
+            return new ElementNodeTypeImpl(name, type, nillable);
         return elementWild(type, nillable);
     }
 
     @Override
     public ElementNodeType elementWild(SequenceType type, boolean nillable)
     {
-        return new ElementNodeTypeImpl(WILDNAME, type, nillable, m_cache);
+        return new ElementNodeTypeImpl(WILDNAME, type, nillable);
     }
 
     public EmptyType emptyType()
@@ -1351,7 +1351,7 @@ public final class TypesBridgeImpl implements TypesBridge
             for (final String namespace : namespaceConstraint.getNamespaces())
             {
                 final ElementNodeWithParentAxisType append = 
-                    new ElementNodeWithParentAxisType(new ElementNodeTypeImpl(new QName(namespace, null), null, true, m_cache), parentDecl);
+                    new ElementNodeWithParentAxisType(new ElementNodeTypeImpl(new QName(namespace, null), null, true), parentDecl);
                 if (null != type)
                 {
                     type = choice(type, append);
@@ -1367,7 +1367,7 @@ public final class TypesBridgeImpl implements TypesBridge
         {
             // TODO: How do we define a regular expression type that excludes certain namespaces?
             // TODO: We don't even have the concept of AND.
-            return multiply(new ElementNodeWithParentAxisType(new ElementNodeTypeImpl(WILDNAME, null, true, m_cache), parentDecl), Quantifier.approximate(minOccurs,
+            return multiply(new ElementNodeWithParentAxisType(new ElementNodeTypeImpl(WILDNAME, null, true), parentDecl), Quantifier.approximate(minOccurs,
                     maxOccurs));
         }
         default:
