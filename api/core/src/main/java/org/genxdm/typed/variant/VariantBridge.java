@@ -17,7 +17,6 @@ package org.genxdm.typed.variant;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.List;
 
 /**
  * A bridge used for converting between (N,A) and the uniform (X) representation.
@@ -40,7 +39,7 @@ public interface VariantBridge<N, A>
     /**
      * Converts a list of atomic values to a variant value (X).
      */
-    XmlVariant atomSet(List<? extends A> atoms);
+    XmlVariant atomSet(Iterable<? extends A> atoms);
 
     /**
      * Converts the Java primitive for xs:boolean to a variant value (X).
@@ -70,7 +69,7 @@ public interface VariantBridge<N, A>
     /**
      * Converts a variant value (X) known to be {@link VariantKind#ATOMS} to a list of atoms.
      */
-    List<A> getAtomSet(XmlVariant value);
+    Iterable<? extends A> getAtomSet(XmlVariant value);
 
     /**
      * Converts a variant value (X) known to be {@link VariantKind#BOOLEAN} to a {@link Boolean}.
