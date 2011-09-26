@@ -17,7 +17,6 @@ package org.genxdm.bridge.dom.enhanced;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.List;
 
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.typed.variant.Item;
@@ -41,7 +40,7 @@ final class DomValueBridge implements VariantBridge<Node, XmlAtom>
         }
     }
 
-    public XmlVariant atomSet(final List<? extends XmlAtom> atoms)
+    public XmlVariant atomSet(final Iterable<? extends XmlAtom> atoms)
     {
         return XmlVariant.atomSet(atoms);
     }
@@ -72,9 +71,9 @@ final class DomValueBridge implements VariantBridge<Node, XmlAtom>
     }
 
     @SuppressWarnings("unchecked")
-    public List<XmlAtom> getAtomSet(final XmlVariant value)
+    public Iterable<XmlAtom> getAtomSet(final XmlVariant value)
     {
-        return (List<XmlAtom>)value.getObject();
+        return (Iterable<XmlAtom>)value.getObject();
     }
 
     public Boolean getBoolean(final XmlVariant value)
