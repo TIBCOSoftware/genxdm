@@ -19,7 +19,7 @@ import java.io.InputStream;
 import java.net.URI;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.processor.w3c.xs.impl.RegExCompilerJDK;
+import org.genxdm.processor.w3c.xs.impl.RegExCompilerXSDL;
 import org.genxdm.processor.w3c.xs.impl.XMLParserImpl;
 import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.ComponentProvider;
@@ -91,7 +91,7 @@ public final class W3cXmlSchemaParser
     }
 
     // The default Regular Expression compiler is backed by the JDK.
-    private static final SchemaRegExCompiler DEFAULT_REGEX_COMPILER = new RegExCompilerJDK();
+    private static final SchemaRegExCompiler DEFAULT_REGEX_COMPILER = new RegExCompilerXSDL();
 
     // The actual Regular Expression compiler may be changed.
     private SchemaRegExCompiler regexc;
