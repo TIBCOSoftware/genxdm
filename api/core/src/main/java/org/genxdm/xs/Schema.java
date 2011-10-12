@@ -62,5 +62,22 @@ public interface Schema
 
     Iterable<String> getNamespaces();
     
+    /**
+     * Determines whether this component collection is currently in a locked state.
+     * 
+     * @return true if lock() has been called; false otherwise.
+     */
+    boolean isLocked();
+
+    /** Lock this schema component collection, preventing registry of additional
+     * schema components.
+     * 
+     * The component collection is in an unlocked state after it has been created. 
+     * While in this state an implementation is not required to provide safe 
+     * multi-threaded access. Locking guarantees that 
+     * the component collection is safe for access by different threads. 
+     */
+    void lock();
+
     void register(ComponentBag components);
 }

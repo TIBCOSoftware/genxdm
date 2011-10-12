@@ -38,7 +38,7 @@ import org.genxdm.xs.Schema;
  *            The atom handle.
  */
 public interface TypedContext<N, A> 
-    extends Schema, TypedDocumentHandlerFactory<N, A>
+    extends TypedDocumentHandlerFactory<N, A>
 {
     /**
      * Returns the bridge used for atom interaction.  Atoms are typed values.
@@ -78,23 +78,6 @@ public interface TypedContext<N, A>
      * @return the VariantBridge associated with this typed context; never null.
      */
     VariantBridge<N, A> getVariantBridge();
-
-    /**
-     * Determines whether this processing context is currently in a locked state.
-     * 
-     * @return true if lock() has been called; false otherwise.
-     */
-    boolean isLocked();
-
-    /** Lock this processing context, preventing registry of additional
-     * schema components.
-     * 
-     * The processing context is in an unlocked state after it has been created. 
-     * While in this state an implementation is not required to provide safe 
-     * multi-threaded access. Locking the processing context guarantees that 
-     * the processing context is safe for access by different threads. 
-     */
-    void lock();
 
     /**
      * Returns a cursor for navigating the data model.

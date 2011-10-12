@@ -59,71 +59,20 @@ public final class AxiomSAProcessingContext
 	public AxiomSAProcessingContext(final AxiomProcessingContext context)
 	{
 	    this.context = PreCondition.assertNotNull(context, "context");
-		this.atomBridge = new XmlAtomBridge(this);
 		final SchemaCacheFactory cacheFactory = new SchemaCacheFactory();
 		cache = cacheFactory.newSchemaCache();
 		this.metaBridge = new TypesBridgeImpl(cache);
+        this.atomBridge = new XmlAtomBridge(this.metaBridge);
 		EnumSet<CoreModelDecoration> delegations = EnumSet.noneOf(CoreModelDecoration.class);
 		delegations.add(CoreModelDecoration.CHILD_AXIS);
 		delegations.add(CoreModelDecoration.CHILD_ELEMENTS);
 		this.model = new CoreModelDecorator<Object, XmlAtom>(delegations, new AxiomSAModel(new org.genxdm.bridge.axiom.AxiomModel(), atomBridge), atomBridge);
 	}
 	
-	public void declareAttribute(final AttributeDefinition attribute)
-	{
-	    metaBridge.declareAttribute(attribute);
-	}
-	
-	public void declareElement(final ElementDefinition element)
-	{
-	    metaBridge.declareElement(element);
-	}
-	
-	public void declareNotation(NotationDefinition notation)
-	{
-	    metaBridge.declareNotation(notation);
-	}
-	
-	public void defineAttributeGroup(AttributeGroupDefinition attributeGroup)
-	{
-	    metaBridge.defineAttributeGroup(attributeGroup);
-	}
-	
-	public void defineComplexType(final ComplexType complexType)
-	{
-	    metaBridge.defineComplexType(complexType);
-	}
-	
-	public void defineIdentityConstraint(IdentityConstraint identityConstraint)
-	{
-	    metaBridge.defineIdentityConstraint(identityConstraint);
-	}
-
-	public void defineModelGroup(ModelGroup modelGroup)
-	{
-	    metaBridge.defineModelGroup(modelGroup);
-	}
-
-	public void defineSimpleType(final SimpleType simpleType)
-	{
-	    metaBridge.defineSimpleType(simpleType);
-	}
-
 	public AtomBridge<XmlAtom> getAtomBridge()
 	{
 		return atomBridge;
 	}
-
-    public ComponentProvider getComponentProvider()
-    {
-        return metaBridge.getComponentProvider();
-    }
-
-    @Override
-    public ComponentBag getComponents()
-    {
-        return metaBridge.getComponents();
-    }
 
     public TypesBridge getTypesBridge()
 	{
@@ -135,12 +84,6 @@ public final class AxiomSAProcessingContext
 		return model;
 	}
 
-	public Iterable<String> getNamespaces()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
-
 	public AxiomProcessingContext getProcessingContext()
 	{
 	    return context;
@@ -150,17 +93,6 @@ public final class AxiomSAProcessingContext
 	{
 	    // TODO
 	    return null;
-	}
-
-	public boolean isLocked()
-	{
-		// TODO Auto-generated method stub
-		throw new AssertionError("TODO");
-	}
-
-	public void lock()
-	{
-		locked = true;
 	}
 
 	public TypedCursor<Object, XmlAtom> newCursor(Object node)
@@ -180,12 +112,6 @@ public final class AxiomSAProcessingContext
         return new ValidatingDocumentHandler<Object, XmlAtom>(this, validator, reporter, resolver);
     }
 
-    public void register(final ComponentBag components)
-	{
-		// TODO implement
-		throw new UnsupportedOperationException();
-	}
-    
     @Override
     public Object validate(Object source, ValidationHandler<XmlAtom> validator, URI namespace)
     {

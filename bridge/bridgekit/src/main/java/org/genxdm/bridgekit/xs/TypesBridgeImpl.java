@@ -808,6 +808,18 @@ public final class TypesBridgeImpl implements TypesBridge
         return ANY_ITEM;
     }
 
+    @Override
+    public boolean isLocked()
+    {
+        return m_cache.isLocked();
+    }
+
+    @Override
+    public void lock()
+    {
+        m_cache.lock();
+    }
+
     public SequenceType multiply(final SequenceType argument, final Quantifier multiplier)
     {
         PreCondition.assertArgumentNotNull(argument, "argument");
@@ -1396,4 +1408,5 @@ public final class TypesBridgeImpl implements TypesBridge
     private final SchemaCache m_cache;
 
     private final QName WILDNAME = new QName(ESCAPE, ESCAPE);
+
 }
