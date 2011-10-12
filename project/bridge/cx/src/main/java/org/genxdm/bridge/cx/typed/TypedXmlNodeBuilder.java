@@ -28,6 +28,7 @@ import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.io.SequenceBuilder;
+import org.genxdm.typed.types.TypesBridge;
 import org.genxdm.xs.types.Type;
 
 public class TypedXmlNodeBuilder
@@ -37,7 +38,7 @@ public class TypedXmlNodeBuilder
     
     TypedXmlNodeBuilder(TypedXmlNodeContext context)
     {
-        this.context = PreCondition.assertNotNull(context, "context");
+        this.cache = PreCondition.assertNotNull(context.getTypesBridge(), "schema");
     }
 
     public void attribute(String namespaceURI, String localName, String prefix, List<? extends XmlAtom> data, QName type)
@@ -46,7 +47,7 @@ public class TypedXmlNodeBuilder
 //System.out.println("got an attribute " + localName);
         flushCatch();
         depth++;
-        Type stype = context.getComponentProvider().getTypeDefinition(type);
+        Type stype = cache.getComponentProvider().getTypeDefinition(type);
         if (current != null)
         {
             final XmlAttributeNode attribute = factory.createAttribute(namespaceURI, localName, prefix, data, stype);
@@ -66,7 +67,7 @@ public class TypedXmlNodeBuilder
 //System.out.println("got an element " + localName);
         flushCatch();
         depth++;
-        Type stype = context.getComponentProvider().getTypeDefinition(type);
+        Type stype = cache.getComponentProvider().getTypeDefinition(type);
         if (current != null)
         {
             final XmlElementNode element = factory.createElement(namespaceURI, localName, prefix, stype);
@@ -98,5 +99,5 @@ public class TypedXmlNodeBuilder
         endNodeProcessing();
     }
     
-    private final TypedXmlNodeContext context;
+    private final TypesBridge cache;
 }

@@ -50,7 +50,7 @@ class DomSAModel
         PreCondition.assertArgumentNotNull(pcx, "pcx");
         this.typesBridge = pcx.getTypesBridge();
         this.atomBridge = pcx.getAtomBridge();
-        this.provider = pcx.getComponentProvider();
+        this.provider = typesBridge.getComponentProvider();
     }
 
     public List<XmlAtom> getAttributeValue(final Node parent, final String namespaceURI, final String localName)
