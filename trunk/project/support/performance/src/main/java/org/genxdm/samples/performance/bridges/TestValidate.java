@@ -139,7 +139,7 @@ class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 					System.out.println("      " + error.getLocalizedMessage());
 				}
 			}
-			tpcx.register(scBag);
+			tpcx.getTypesBridge().register(scBag);
 		}
 		return errors;
 	}
