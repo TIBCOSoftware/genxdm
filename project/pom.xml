@@ -45,6 +45,10 @@
       </license>
       <!-- do we need to also mention the jc and bl licenses here? -->
     </licenses>
+    <organization>
+        <name>TIBCO Software Inc.</name>
+        <url>http://www.tibco.com/</url>
+    </organization>
     
     <distributionManagement>
         <site>

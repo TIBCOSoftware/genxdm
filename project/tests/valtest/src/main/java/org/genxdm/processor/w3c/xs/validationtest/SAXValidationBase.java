@@ -53,7 +53,7 @@ public abstract class SAXValidationBase<N, A>
     {
         ProcessingContext<N> context = newProcessingContext();
         TypedContext<N, A> cache = context.getTypedContext();
-        loadSchema(cache);
+        loadSchema(cache.getTypesBridge());
         
         SAXValidator<A> validator = getSAXValidator();
         SchemaExceptionCatcher catcher = new SchemaExceptionCatcher();

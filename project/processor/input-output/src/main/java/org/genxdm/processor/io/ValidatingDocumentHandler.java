@@ -46,7 +46,7 @@ public class ValidatingDocumentHandler<N, A>
         super(PreCondition.assertNotNull(context, "context").getModel());
         this.context = context;
         this.validator = PreCondition.assertNotNull(validator, "validator");
-        this.validator.setSchema(this.context);
+        this.validator.setSchema(this.context.getTypesBridge());
         this.resolver = resolver;
         this.reporter = reporter;
         this.spf = SAXParserFactory.newInstance();
