@@ -50,6 +50,7 @@ public class ValidatingDocumentHandler<N, A>
         this.resolver = resolver;
         this.reporter = reporter;
         this.spf = SAXParserFactory.newInstance();
+        this.spf.setNamespaceAware(true);
     }
     
     @Override
