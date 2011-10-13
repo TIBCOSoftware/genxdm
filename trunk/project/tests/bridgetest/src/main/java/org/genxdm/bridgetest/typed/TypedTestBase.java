@@ -16,6 +16,7 @@ public abstract class TypedTestBase<N, A>
     {
         TypedContext<N, A> schemaContext = getTypedContext();
         // create/register the schema components
+        initializeSchema(schemaContext.getTypesBridge());
         // build the (untyped) document
         // validate it
         // return it
