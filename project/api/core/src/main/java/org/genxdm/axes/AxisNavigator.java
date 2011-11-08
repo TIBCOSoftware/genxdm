@@ -20,98 +20,115 @@ import org.genxdm.nodes.Informer;
 /**
  * Provides the various "axes" by which nodes can be traversed, as defined by
  * XPath 2.0.
+ *
+ * <p>Differs from {@link AxisNodeNavigator} in that it presumes positional
+ * state; in this way it corresponds to AxisNodeNavigator as {@link Navigator}
+ * corresponds to {@NodeNavigator} and {@link Informer} corresponds to
+ * {@link NodeInformer}, or more generally, as {@link Cursor} corresponds to
+ * {@link Model}.</p> 
+ *
+ * <p>Note that this interface is not currently implemented, and should be
+ * regarded as experimental.  In theory, it could add axis navigation to the
+ * {@link Cursor} abstraction, but it would do so by (conceptually) wrapping
+ * each returned node in an {@link Informer} wrapper. It is left here so that
+ * it can be implemented, but no bridge currently implements it.</p>
  * 
  * @see http://www.w3.org/TR/xpath20/#axes
  */
 public interface AxisNavigator
 {
     /**
-     * Returns the nodes along the ancestor axis using the specified node as the origin.
+     * Returns the nodes along the ancestor axis using this node as the origin.
      * 
+     * @return an iterable of Informer-s for the axis.
      */
     Iterable<Informer> getAncestorAxis();
 
     /**
-     * Returns the nodes along the ancestor-or-self axis using the specified node as the origin.
+     * Returns the nodes along the ancestor-or-self axis using this node as the origin.
      * 
+     * @return an iterable of Informer-s for the axis.
      */
     Iterable<Informer> getAncestorOrSelfAxis();
 
     /**
-     * Returns the nodes along the attribute axis using the specified node as the origin.
+     * Returns the nodes along the attribute axis using this node as the origin.
      * 
-     * <br/>
-     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-attributes">
-     * dm:attributes</a> accessor in the XDM.
+     * <p>Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-attributes">
+     * dm:attributes</a> accessor in the XDM.</p>
      * 
      * @param inherit
      *            Determines whether attributes in the XML namespace will be inherited. The standard value for this
      *            parameter is <code>false</code>.
      * 
      * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-attributes
+     * @return an iterable of Informer-s for the axis.
      */
     Iterable<Informer> getAttributeAxis(boolean inherit);
 
     /**
-     * Returns the nodes along the child axis using the specified node as the origin.
-     * 
-     * <br/>
-     * 
-     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-children">
-     * dm:children</a> accessor in the XDM.
+     * Returns the nodes along the child axis using this node as the origin.
+     *  
+     * <p>Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-children">
+     * dm:children</a> accessor in the XDM.</p>
      * 
      * 
      * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-children
+     * @return an iterable of Informer-s for the axis.
      */
     Iterable<Informer> getChildAxis();
 
     /**
-     * Returns all the child element along the child axis.
+     * Returns all the elements along the child axis.
      * 
+     * @return an iterable of Informer-s for the axis.
      */
     Iterable<Informer> getChildElements();
 
     /**
-     * Returns all the child element along the child axis whose names match the arguments supplied.
+     * Returns all the elements along the child axis whose names match the arguments supplied.
      * 
      * @param namespaceURI
      *            The namespace-uri to be matched.
      * @param localName
      *            The local-name to be matched.
+     * @return an iterable of Informer-s for the axis.
      */
     Iterable<Informer> getChildElementsByName(String namespaceURI, String localName);
 
     /**
-     * Returns the nodes along the descendant axis using the specified node as the origin.
+     * Returns the nodes along the descendant axis using this node as the origin.
      * 
+     * @return an iterable of Informer-s for the axis.
      */
     Iterable<Informer> getDescendantAxis();
 
     /**
-     * Returns the nodes along the descendant-or-self axis using the specified node as the origin.
+     * Returns the nodes along the descendant-or-self axis using this node as the origin.
      * 
+     * @return an iterable of Informer-s for the axis.
      */
     Iterable<Informer> getDescendantOrSelfAxis();
 
     /**
-     * Returns the nodes along the following axis using the specified node as the origin.
+     * Returns the nodes along the following axis using this node as the origin.
      * 
+     * @return an iterable of Informer-s for the axis.
      */
     Iterable<Informer> getFollowingAxis();
 
     /**
-     * Returns the nodes along the following-sibling axis using the specified node as the origin.
+     * Returns the nodes along the following-sibling axis using this node as the origin.
      * 
+     * @return an iterable of Informer-s for the axis.
      */
     Iterable<Informer> getFollowingSiblingAxis();
 
     /**
-     * Returns the nodes along the namespace axis using the specified node as the origin.
+     * Returns the nodes along the namespace axis using this node as the origin.
      * 
-     * <p>
-     * The namespace axis contains the namespace nodes of the context node; the axis will be empty unless the context
-     * node is an element.
-     * </p>
+     * <p>The namespace axis contains the namespace nodes of the context node; the axis will be empty unless the context
+     * node is an element.</p>
      * 
      * <p>Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-nodes">
      * dm:namespace-nodes</a> of XDM.</p>
@@ -121,18 +138,21 @@ public interface AxisNavigator
      *            this parameter is <code>true</code>.
      * 
      * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-nodes
+     * @return an iterable of Informer-s for the axis.
      */
     Iterable<Informer> getNamespaceAxis(boolean inherit);
 
     /**
-     * Returns the nodes along the preceding axis using the specified node as the origin.
+     * Returns the nodes along the preceding axis using this node as the origin.
      * 
+     * @return an iterable of Informer-s for the axis.
      */
     Iterable<Informer> getPrecedingAxis();
 
     /**
-     * Returns the nodes along the preceding-sibling axis using the specified node as the origin.
+     * Returns the nodes along the preceding-sibling axis using this node as the origin.
      * 
+     * @return an iterable of Informer-s for the axis.
      */
     Iterable<Informer> getPrecedingSiblingAxis();
 

@@ -17,14 +17,18 @@ package org.genxdm.nodes;
 
 import javax.xml.namespace.QName;
 
+/**
+ * A stateful abstraction positioned over a &lt;N>ode (its state), and potentially
+ * annotated with type information and &lt;A>tomic values. 
+ */
 public interface TypeInformer<A>
 {
 
     /**
      * Returns the type name of the attribute node with the specified expanded-QName.
-     * This is equivalent to moving to the attribute node and then retrieving its type name.
-     * This method only works if the cursor is positioned over an element that
-     * has an attribute of the appropriate name.
+     * <p>This is equivalent to moving to the attribute node and then retrieving its type name.
+     * This method only works if the current state is an element that
+     * has an attribute of the appropriate name.</p>
      * 
      * @param namespaceURI
      *            The namespace-uri part of the attribute name.  Must not be null,
@@ -40,9 +44,9 @@ public interface TypeInformer<A>
 
     /**
      * Returns the dm:typed-value of the attribute node with the specified expanded-QName.
-     * This is equivalent to moving to the attribute node and then retrieving its typed value.
-     * This method only works if the cursor is positioned over an element that
-     * has an attribute of the appropriate name.
+     * <p>This is equivalent to moving to the attribute node and then retrieving its typed value.
+     * This method only works if the current state is an element that
+     * has an attribute of the appropriate name.</p>
      * 
      * @param namespaceURI
      *            The namespace-uri part of the attribute name.  Must not be null,
@@ -59,9 +63,9 @@ public interface TypeInformer<A>
 
     /**
      * Gets the type name of an element or attribute node.
-     * Returns <code>null</code> for all other node kinds.
-     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-type-name">
-     * dm:type-name</a> accessor in the XDM.
+     * <p>Returns <code>null</code> for all other node kinds.</p>
+     * <p>Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-type-name">
+     * dm:type-name</a> accessor in the XDM.</p>
      * 
      * @return the type name, if the current node context is an element or attribute;
      * otherwise null.  If the context node is an element or attribute, but is
@@ -74,7 +78,7 @@ public interface TypeInformer<A>
      * Returns the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-typed-value">
      * dm:typed-value</a> property of the node.
      * 
-     * Applies to all node kinds.
+     * <p>Applies to all node kinds.</p>
      * 
      * @return a sequence of atoms representing the typed-value of the supplied
      * node.  The typed-value of a node may be
@@ -83,6 +87,7 @@ public interface TypeInformer<A>
      * for comment and processing instruction nodes).
      * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-typed-value
      */
-    Iterable<? extends A> getValue();
+    Iterable<? extends A> getValue();// TODO: should throw exception if
+    // called on an element with element-only content; required to 'raise an error'
 
 }

@@ -22,28 +22,31 @@ import javax.xml.namespace.QName;
 import org.genxdm.NodeKind;
 import org.genxdm.names.NamespaceBinding;
 
+/**
+ * A stateless abstraction for investigating the properties of a &lt;N>ode, which
+ * is supplied as the argument to each method. 
+ */
 public interface NodeInformer<N>
 {
     /**
      * Returns the set of attribute names for the node.
      * 
-     * <p>
-     * This method does not inherit attribute names in the reserved XML namespace.
-     * </p>
+     * <p>This method does not inherit attribute names in the reserved XML namespace.</p>
      * 
      * @param node
      *            The node for which the attribute names are required.
      * @param orderCanonical
      *            Determines whether the names will be returned in canonical order (lexicographically by namespace
      *            URI,local name).
+     * @return an iterable of attribute names as QNames, if called on an element
+     * node (may be empty), or null if called on a non-element node.
      */
     Iterable<QName> getAttributeNames(N node, boolean orderCanonical);
     
     /**
      * Returns the dm:string-value of the attribute node with the specified expanded-QName.
-     * <p>
-     * This is equivalent to retrieving the attribute node and then its string value.
-     * </p>
+     * 
+     * <p>This is equivalent to retrieving the attribute node and then its string value.</p>
      * 
      * @param parent
      *            The node that is the parent of the attribute node.
@@ -59,9 +62,9 @@ public interface NodeInformer<N>
     /**
      * Returns the base URI of the supplied context node, per the XML:Base
      * specification.
-     * <br />Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-base-uri">
+     * <p>Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-base-uri">
      * dm:base-uri</a> accessor in the XDM.  Defined
-     * for all node types except namespace.
+     * for all node types except namespace.</p>
      * 
      * @return the absolute value of the base-uri property, if it is available,
      * or null if it is not.
@@ -72,9 +75,9 @@ public interface NodeInformer<N>
 
     /**
      * Returns the absolute URI of the resource from which the Document Node was
-     * constructed. <br/>
-     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-document-uri">
-     * dm:document-uri</a> accessor in the XDM.
+     * constructed.
+     * <p>Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-document-uri">
+     * dm:document-uri</a> accessor in the XDM.</p>
      * 
      * @return the absolute URI of the resource from which the Document Node was
      *         constructed, if the absolute URI is available; f there is no URI
@@ -90,11 +93,7 @@ public interface NodeInformer<N>
      * Returns the local-name property of the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name">
      * dm:node-name</a>.
      * 
-     * <br/>
-     * 
-     * <p>
-     * TEXT, COMMENT, and DOCUMENT nodes return <code>null</code>; they have no name.
-     * </p>
+     * <p>TEXT, COMMENT, and DOCUMENT nodes return <code>null</code>; they have no name.</p>
      * 
      * <p>Other node types should never return <code>null</code>.  Note that in the
      * case of namespace nodes, the <code>dm:node-name</code> accessor indicates that
@@ -104,6 +103,8 @@ public interface NodeInformer<N>
      *  
      * @param node
      *            The node for which the node local-name is required.
+     * 
+     * @return the name of the node.
      *            
      * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name
      */
@@ -114,10 +115,13 @@ public interface NodeInformer<N>
      * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-bindings">
      * dm:namespace-bindings</a> accessor.
      * 
-     * Only includes prefix mappings which are explicit and local to the node.
+     * <p>Only includes prefix mappings which are explicit and local to the node.</p>
      * 
      * @param node
      *            The node under consideration.
+     * 
+     * @return an iterable of {@link NamespaceBinding}s for namespaces declared
+     * in this element node (which may be empty); null for non-element nodes
      * 
      * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-bindings
      */
@@ -137,12 +141,12 @@ public interface NodeInformer<N>
     /**
      * Returns the set of namespace names (prefixes) for a given node.
      * 
-     * <br/>
-     * 
-     * This refers to the prefix mappings which are explicit and local to the node.
+     * <p>This refers to the prefix mappings which are explicit and local to the node.</p>
      * 
      * @param orderCanonical
      *            Determines whether the names will be returned in canonical order (lexicographically by local name).
+     * @return an iterable of namespace prefixes declared on this element node (which
+     * may be empty; if called for a non-element node, returns null.
      */
     Iterable<String> getNamespaceNames(N node, boolean orderCanonical);
 
@@ -150,13 +154,13 @@ public interface NodeInformer<N>
      * Returns the namespace-uri part of the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name">
      * dm:node-name</a>.
      * 
-     * <br/>
+     * <p>DOCUMENT, COMMENT, and TEXT nodes return <code>null</code>; they have no name.</p>
      * 
-     * DOCUMENT, COMMENT, and TEXT nodes return <code>null</code>; they have no name.
-     * 
-     * Other node types should never return <code>null</code>.
+     * <p>Other node types should never return <code>null</code>.</p>
      * @param node
      *            The node for which the node namespace-uri is required.
+     * 
+     * @return the namespace-uri associated with this node.
      * 
      * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name
      */
@@ -170,24 +174,27 @@ public interface NodeInformer<N>
      * to obey the equals()/hashCode() contract even when the node the object identifies
      * does not.
      * 
-     * Conforms to the contract specified in section 2.3 of the XDM specification
+     * <p>Conforms to the contract specified in section 2.3 of the XDM specification
      * for node identity.  Nodes in an instance are equal to themselves and to no
-     * other node; they are never equal across instances.
+     * other node; they are never equal across instances.</p>
      * 
      * @param node the node for which an ID object is required.
+     * 
+     * @return a bridge-defined object which obeys the constraints specified.
      */
     Object getNodeId(N node);
 
     /**
      * Returns the node-kind of the node as an enumeration in {@link NodeKind}.
      * 
-     * Applies to all node kinds and never returns <code>null</code>. <br/>
+     * <p>Applies to all node kinds and never returns <code>null</code>. <br/>
      * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-kind">
-     * dm:node-kind</a> accessor in the XDM.
+     * dm:node-kind</a> accessor in the XDM.</p>
      * 
      * @param node
      *            The node for which the node-kind is required.
      *            
+     * @return a {@link NodeKind}; if node is null, returns null.
      * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-kind
      */
     NodeKind getNodeKind(N node);
@@ -195,15 +202,15 @@ public interface NodeInformer<N>
     /**
      * Returns the prefix part of the dm:node-name.
      * 
-     * <br/>
+     * <p>DOCUMENT, COMMENT, and TEXT nodes return <code>null</code>; they have no name.</p>
      * 
-     * DOCUMENT, COMMENT, and TEXT nodes return <code>null</code>; they have no name.
-     * 
-     * Other node types should never return <code>null</code>.
-     * This is just a hint because it usually contains the prefix of the original document. The prefix will not be
-     * updated to reflect in scope namespaces.
+     * <p>Other node types should never return <code>null</code>.</p>
+     * <p>This is just a hint because it usually contains the prefix of the original document. The prefix will not be
+     * updated to reflect in scope namespaces.</p>
      * @param node
      *            The node for which the node prefix hint is required.
+     * @return the prefix associated with the namespace of this node, if there
+     * is one.
      */
     String getPrefix(N node);
 
@@ -214,6 +221,7 @@ public interface NodeInformer<N>
      * @param node
      *            The node for which the dm:string-value is required.
      * 
+     * @return the string value of this node.
      * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-string-value
      */
     String getStringValue(N node);
@@ -223,6 +231,8 @@ public interface NodeInformer<N>
      * 
      * @param node
      *            The node under consideration.
+     * @return true if this is an element node and it does contain attributes,
+     * false otherwise.
      */
     boolean hasAttributes(N node);
 
@@ -231,6 +241,8 @@ public interface NodeInformer<N>
      * 
      * @param node
      *            The node under consideration.
+     * @return true if the node is a document or element node which contains
+     * one or more child nodes; false otherwise.
      */
     boolean hasChildren(N node);
 
@@ -239,6 +251,8 @@ public interface NodeInformer<N>
      * 
      * @param node
      *            The node under consideration.
+     * @return true if this is an element node that contains namespace declarations;
+     * false otherwise.
      */
     boolean hasNamespaces(N node);
 
@@ -247,6 +261,8 @@ public interface NodeInformer<N>
      * 
      * @param node
      *            The node under consideration.
+     * @return true if this is a child node which has a (parent and a) following
+     * sibling; false otherwise.
      */
     boolean hasNextSibling(N node);
 
@@ -255,6 +271,7 @@ public interface NodeInformer<N>
      * 
      * @param node
      *            The node under consideration.
+     * @return true if this is a child node which has a parent; false otherwise.
      */
     boolean hasParent(N node);
 
@@ -263,6 +280,8 @@ public interface NodeInformer<N>
      * 
      * @param node
      *            The node under consideration.
+     * @return true if this is a child node which has a (parent and a) previous
+     * sibling; false otherwise.
      */
     boolean hasPreviousSibling(N node);
     
@@ -271,6 +290,7 @@ public interface NodeInformer<N>
      * 
      * @param node
      *            The node under consideration.
+     * @return true if this is an attribute node; false otherwise.
      */
     boolean isAttribute(N node);
 
@@ -279,6 +299,7 @@ public interface NodeInformer<N>
      * 
      * @param node
      *            The node under consideration.
+     * @return true if this is an element node; false otherwise.
      */
     boolean isElement(N node);
 
@@ -317,6 +338,7 @@ public interface NodeInformer<N>
      * 
      * @param node
      *            The node under consideration.
+     * @return true if this is a namespace node; false otherwise.
      */
     boolean isNamespace(N node);
 
@@ -325,6 +347,7 @@ public interface NodeInformer<N>
      * 
      * @param node
      *            The node under consideration.
+     * @return true if this is a text node; otherwise false.
      */
     boolean isText(N node);
 
@@ -332,7 +355,7 @@ public interface NodeInformer<N>
      * Determines whether the specified node matches the arguments.
      * 
      * @param node
-     *            The XML node.
+     *            The node to test.
      * @param nodeKind
      *            The node kind to match; if null, match regardless of node kind
      * @param namespaceURI
@@ -340,12 +363,15 @@ public interface NodeInformer<N>
      * @param localName
      *            The local-name to match; if null, ignore local name matching
      * 
-     * @return true if the node matches the arguments specified, ignoring nulls
+     * @return true if the node matches the arguments specified.
      */
     boolean matches(N node, NodeKind nodeKind, String namespaceURI, String localName);
 
     /**
      * Determines whether the specified node matches in name.
+     * 
+     * <p>Equivalent to {link matches(N, NodeKind, String, String)} with a null
+     * second argument.</p>
      * 
      * @param node
      *            The node being tested.

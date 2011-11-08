@@ -18,8 +18,11 @@ package org.genxdm.exceptions;
 /**
  * Thrown to indicate that an argument which was <code>null</code> is illegal.
  * 
- * @author David Holmes
  */
+// TODO: this is really just a pair of bloody static methods to create an
+// illegal argument exception with a particular message, for a common
+// sort of illegal argument (a null).  It probably needs to be turned into
+// an illegal null argument *factory*, but not a subclass of illegalargumentexception.
 @SuppressWarnings("serial")
 public class IllegalNullArgumentException extends IllegalArgumentException
 {
@@ -58,7 +61,7 @@ public class IllegalNullArgumentException extends IllegalArgumentException
     private static String messageArgumentCannotBeNull(final String argName)
     {
         assert (argName != null);
-        return ((argName == null ? "Argument" : argName) + " cannot be null.");
+        return (argName + " cannot be null.");
     }
 
     /**

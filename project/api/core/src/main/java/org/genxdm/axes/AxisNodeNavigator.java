@@ -76,7 +76,7 @@ unless the context node is an element node.</li>
 
 </ul>
 
- * @param <N> Corresponds to the base type for all members of the underlying tree API.
+ * @param <N> the 'node' abstraction.
  * @see http://www.w3.org/TR/xpath20/#axes
  */
 public interface AxisNodeNavigator<N>

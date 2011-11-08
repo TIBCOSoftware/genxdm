@@ -15,18 +15,27 @@
  */
 package org.genxdm.axes;
 
+/** A stateful abstraction that provides navigation from node to node in
+ * a tree of connected nodes.
+ * 
+ * <p>Note that Navigator, by design, does not actually require a specialization
+ * of the common &lt;N>ode parameter.  In theory, like the {@link Informer} with
+ * which it is commonly paired, it can be used over a tree which does not have
+ * a "node" abstraction easily conformant to the design of GenXDM.</p>
+ */
 public interface Navigator
 {
 
     /**
      * Moves to the attribute node with the specified expanded-QName.
      * 
-     * Assumes that the cursor is initially positioned on an element with the required attribute.
+     * <p>Assumes that the cursor is initially positioned on an element with the required attribute.</p>
      * 
      * @param namespaceURI
      *            The namespace-uri part of the attribute name.
      * @param localName
      *            The local-name part of the attribute name.
+     * @return true if the move is successful, false if not (and position will be unchanged)
      */
     boolean moveToAttribute(String namespaceURI, String localName);
     
@@ -107,6 +116,9 @@ public interface Navigator
 
     /**
      * Moves the cursor to the farthest node along the ancestor axis.
+     * <p>This is an unconditional, untested move; the state is expected
+     * to have changed upon completion. If the cursor is already at the
+     * root, it will not change.</p>
      */
     void moveToRoot();
 

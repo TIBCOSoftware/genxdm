@@ -15,6 +15,11 @@
  */
 package org.genxdm.axes;
 
+/** Methods for acquiring a &lt;N>ode that stands in a particular relationship
+ * to another (supplied) &lt;N>ode.
+ *
+ * @param <N> the node abstraction.
+ */
 public interface NodeNavigator<N> 
 {
 
@@ -75,8 +80,8 @@ public interface NodeNavigator<N>
     /**
      * Returns the first child element of the node provided, whose name matches the arguments supplied.
      * 
-     * Note that this is equivalent to getFirstChildElement when the second and
-     * third arguments are both null.
+     * <p>Note that this is equivalent to getFirstChildElement when the second and
+     * third arguments are both null.</p>
      * 
      * @param node
      *            The node for which the first child element node of specified
@@ -98,7 +103,7 @@ public interface NodeNavigator<N>
      * @param node
      *            The node for which the last child node is required;
      *            may not be null.
-     * @return the last child element of the supplied parent node, if that
+     * @return the last child of the supplied parent node, if that
      *         parent is a container (document or element) that actually
      *         contains at least one child node, otherwise null.
      */
@@ -149,14 +154,14 @@ public interface NodeNavigator<N>
 
     /**
      * Returns the parent node of the node provided.
-     * May return <code>null</code> for top-most or orphaned nodes.
-     * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-parent">
-     * dm:parent</a> accessor in the XDM.
+     * <p>May return <code>null</code> for top-most or orphaned nodes.</p>
+     * <p>Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-parent">
+     * dm:parent</a> accessor in the XDM.</p>
      * 
-     * Note that it may not return null for attribute or namespace nodes unless
+     * <p>Note that it may not return null for attribute or namespace nodes unless
      * those nodes are <em>orphaned</em>, regardless of whether the tree model
      * underlying the bridge uses the term 'parent' for the elements which contain
-     * these node types.
+     * these node types.</p>
      * 
      * @param node
      *            The node for which the parent is required; may not be null.
@@ -181,8 +186,8 @@ public interface NodeNavigator<N>
     /**
      * Returns the top-most node along the ancestor-or-self axis from this node.
      * 
-     * Note that this may be conceptually implemented as a recursive getParent(),
-     * returning the last non-null result.
+     * <p>Note that this may be conceptually implemented as a recursive getParent(),
+     * returning the last non-null result.</p>
      * 
      * @param node
      *            The node from which to begin the search for the top-most node;

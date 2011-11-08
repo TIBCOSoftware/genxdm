@@ -15,7 +15,6 @@
  */
 package org.genxdm;
 
-import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.DocumentHandlerFactory;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.mutable.MutableContext;
@@ -25,13 +24,9 @@ import org.genxdm.typed.TypedContext;
 /**
  * The processing context is a factory for new XML documents and adapters.
  * 
- * <p/>
+ * <p>The processing context may also represent an appropriate level for caching.</p>
  * 
- * The processing context may also represent an appropriate level for caching.
- * 
- * <p/>
- * 
- * End users will normally consume, rather than implement, this interface.
+ * <p>End users will normally consume, rather than implement, this interface.</p>
  */
 public interface ProcessingContext<N> extends DocumentHandlerFactory<N> 
 {
@@ -73,7 +68,7 @@ public interface ProcessingContext<N> extends DocumentHandlerFactory<N>
      * 
      * @param item
      *            The candidate item.
-     * @return <code>true</code> if the I is-a N, false otherwise.  If item
+     * @return <code>true</code> if the item is-a N, false otherwise.  If item
      * is <code>null</code>, returns <code>false</code>.
      */
     boolean isNode(Object item);
@@ -88,7 +83,7 @@ public interface ProcessingContext<N> extends DocumentHandlerFactory<N>
     boolean isSupported(String feature);
     
     /**
-     * Returns a new {@link Cursor} for navigating the XDM model.
+     * Returns a new {@link Cursor} for navigating the XQuery Data Model.
      * 
      * @param node
      *            The node over which the cursor is initially positioned. Cannot be <code>null</code>.
@@ -97,15 +92,14 @@ public interface ProcessingContext<N> extends DocumentHandlerFactory<N>
 
 
     /**
-     * Returns a new {@link DocumentHandler} for constructing and writing data models.
+     * Returns a new {@link FragmentBuilder} for constructing data models.
      */
     FragmentBuilder<N> newFragmentBuilder();
 
     /**
      * Applies the node() test to the item.
-     * <p/>
-     * If the item is a node, the node is returned. Otherwise, returns <code>null</code>.
-     * </p>
+     * 
+     * <p>If the item is a node, the node is returned. Otherwise, returns <code>null</code>.</p>
      * 
      * @param item
      *            The candidate item.
