@@ -31,8 +31,6 @@ import org.genxdm.NodeSource;
  * 
  * The Bookmark can supply either a {@link Model} or {@link Cursor} (the latter initialized
  * to its own position) to permit further investigation.
- * 
- * @author alewis@tibco.com
  *
  * @param <N> the node handle
  */
@@ -48,8 +46,8 @@ public interface Bookmark<N>
     /** Supply a model which may be used to investigate the tree in which
      * this bookmark is positioned.
      * 
-     * In typical use, the Model will be queried starting from the result
-     * of {@link getNode()}
+     * <p>In typical use, the Model will be queried starting from the result
+     * of {@link getNode()}</p>
      * 
      * @return a Model for the owning processing context.
      */

@@ -26,186 +26,208 @@ import org.genxdm.typed.variant.VariantBridge;
 import org.genxdm.typed.variant.VariantKind;
 import org.genxdm.typed.variant.XmlVariant;
 
-public final class XmlVariantBridge implements VariantBridge<XmlNode, XmlAtom>
+public final class XmlVariantBridge
+    implements VariantBridge<XmlNode, XmlAtom>
 {
-	public XmlVariant atom(final XmlAtom atom)
-	{
-		if (null != atom)
-		{
-			return XmlVariant.atom(atom);
-		}
-		else
-		{
-			return XmlVariant.empty();
-		}
-	}
+    @Override
+    public XmlVariant atom(final XmlAtom atom)
+    {
+        if (null != atom)
+        {
+            return XmlVariant.atom(atom);
+        } else
+        {
+            return XmlVariant.empty();
+        }
+    }
 
-	public XmlVariant atomSet(final Iterable<? extends XmlAtom> atoms)
-	{
-		return XmlVariant.atomSet(atoms);
-	}
+    @Override
+    public XmlVariant atomSet(final Iterable<? extends XmlAtom> atoms)
+    {
+        return XmlVariant.atomSet(atoms);
+    }
 
-	public XmlVariant booleanValue(final Boolean booval)
-	{
-		return XmlVariant.booleanValue(booval);
-	}
+    @Override
+    public XmlVariant booleanValue(final Boolean booval)
+    {
+        return XmlVariant.booleanValue(booval);
+    }
 
-	public XmlVariant decimalValue(final BigDecimal decval)
-	{
-		return XmlVariant.decimalValue(decval);
-	}
+    @Override
+    public XmlVariant decimalValue(final BigDecimal decval)
+    {
+        return XmlVariant.decimalValue(decval);
+    }
 
-	public XmlVariant doubleValue(final Double dblval)
-	{
-		return XmlVariant.doubleValue(dblval);
-	}
+    @Override
+    public XmlVariant doubleValue(final Double dblval)
+    {
+        return XmlVariant.doubleValue(dblval);
+    }
 
-	public XmlVariant empty()
-	{
-		return XmlVariant.empty();
-	}
+    @Override
+    public XmlVariant empty()
+    {
+        return XmlVariant.empty();
+    }
 
-	public XmlAtom getAtom(final XmlVariant value)
-	{
-		return (XmlAtom)value.getObject();
-	}
+    @Override
+    public XmlAtom getAtom(final XmlVariant value)
+    {
+        return (XmlAtom) value.getObject();
+    }
 
-	@SuppressWarnings("unchecked")
-	public Iterable<XmlAtom> getAtomSet(final XmlVariant value)
-	{
-		return (Iterable<XmlAtom>)value.getObject();
-	}
+    @Override
+    @SuppressWarnings("unchecked")
+    public Iterable<XmlAtom> getAtomSet(final XmlVariant value)
+    {
+        return (Iterable<XmlAtom>) value.getObject();
+    }
 
-	public Boolean getBoolean(final XmlVariant value)
-	{
-		if (null != value)
-		{
-			switch (value.getNature())
-			{
-				case BOOLEAN:
-				{
-					return (Boolean)value.getObject();
-				}
-				default:
-				{
-					throw new AssertionError(value.getNature());
-				}
-			}
-		}
-		else
-		{
-			return null;
-		}
-	}
+    @Override
+    public Boolean getBoolean(final XmlVariant value)
+    {
+        if (null != value)
+        {
+            switch (value.getNature())
+            {
+                case BOOLEAN:
+                {
+                    return (Boolean) value.getObject();
+                }
+                default:
+                {
+                    throw new AssertionError(value.getNature());
+                }
+            }
+        } else
+        {
+            return null;
+        }
+    }
 
-	public BigDecimal getDecimal(final XmlVariant value)
-	{
-		return (BigDecimal)value.getObject();
-	}
+    @Override
+    public BigDecimal getDecimal(final XmlVariant value)
+    {
+        return (BigDecimal) value.getObject();
+    }
 
-	public Double getDouble(final XmlVariant value)
-	{
-		return (Double)value.getObject();
-	}
+    @Override
+    public Double getDouble(final XmlVariant value)
+    {
+        return (Double) value.getObject();
+    }
 
-	public BigInteger getInteger(XmlVariant value)
-	{
-		return (BigInteger)value.getObject();
-	}
+    @Override
+    public BigInteger getInteger(XmlVariant value)
+    {
+        return (BigInteger) value.getObject();
+    }
 
-	@SuppressWarnings("unchecked")
+    @Override
+    @SuppressWarnings("unchecked")
     public Item<XmlNode, XmlAtom> getItem(final XmlVariant value)
-	{
-		return (Item<XmlNode, XmlAtom>)value.getObject();
-	}
+    {
+        return (Item<XmlNode, XmlAtom>) value.getObject();
+    }
 
-	@SuppressWarnings("unchecked")
-	public ItemIterable<XmlNode, XmlAtom> getItemSet(final XmlVariant value)
-	{
-		return (ItemIterable<XmlNode, XmlAtom>)value.getObject();
-	}
+    @Override
+    @SuppressWarnings("unchecked")
+    public ItemIterable<XmlNode, XmlAtom> getItemSet(final XmlVariant value)
+    {
+        return (ItemIterable<XmlNode, XmlAtom>) value.getObject();
+    }
 
-	public VariantKind getNature(final XmlVariant value)
-	{
-		return value.getNature();
-	}
+    @Override
+    public VariantKind getNature(final XmlVariant value)
+    {
+        return value.getNature();
+    }
 
-	public XmlNode getNode(final XmlVariant value)
-	{
-		return (XmlNode)value.getObject();
-	}
+    @Override
+    public XmlNode getNode(final XmlVariant value)
+    {
+        return (XmlNode) value.getObject();
+    }
 
-	@SuppressWarnings("unchecked")
+    @Override
+    @SuppressWarnings("unchecked")
     public Iterable<XmlNode> getNodeSet(final XmlVariant value)
-	{
-		return (Iterable<XmlNode>)value.getObject();
-	}
+    {
+        return (Iterable<XmlNode>) value.getObject();
+    }
 
-	public String getString(final XmlVariant value)
-	{
-		if (null != value)
-		{
-			switch (value.getNature())
-			{
-				case STRING:
-				{
-					return (String)value.getObject();
-				}
-				case EMPTY:
-				{
-					return null;
-				}
-				default:
-				{
-					throw new AssertionError(value.getNature());
-				}
-			}
-		}
-		else
-		{
-			return null;
-		}
-	}
+    @Override
+    public String getString(final XmlVariant value)
+    {
+        if (null != value)
+        {
+            switch (value.getNature())
+            {
+                case STRING:
+                {
+                    return (String) value.getObject();
+                }
+                case EMPTY:
+                {
+                    return null;
+                }
+                default:
+                {
+                    throw new AssertionError(value.getNature());
+                }
+            }
+        } else
+        {
+            return null;
+        }
+    }
 
-	public XmlVariant integerValue(final BigInteger intval)
-	{
-		return XmlVariant.integerValue(intval);
-	}
+    @Override
+    public XmlVariant integerValue(final BigInteger intval)
+    {
+        return XmlVariant.integerValue(intval);
+    }
 
-	public XmlVariant item(final Item<XmlNode, XmlAtom> item)
-	{
-		return XmlVariant.item(item);
-	}
+    @Override
+    public XmlVariant item(final Item<XmlNode, XmlAtom> item)
+    {
+        return XmlVariant.item(item);
+    }
 
-	public XmlVariant itemSet(final ItemIterable<XmlNode, XmlAtom> items)
-	{
-		return XmlVariant.itemSet(items);
-	}
+    @Override
+    public XmlVariant itemSet(final ItemIterable<XmlNode, XmlAtom> items)
+    {
+        return XmlVariant.itemSet(items);
+    }
 
-	public XmlVariant node(final XmlNode node)
-	{
-		return XmlVariant.node(node);
-	}
+    @Override
+    public XmlVariant node(final XmlNode node)
+    {
+        return XmlVariant.node(node);
+    }
 
-	public XmlVariant nodeSet(final Iterable<? extends XmlNode> nodes)
-	{
-		return XmlVariant.nodeSet(nodes);
-	}
+    @Override
+    public XmlVariant nodeSet(final Iterable<? extends XmlNode> nodes)
+    {
+        return XmlVariant.nodeSet(nodes);
+    }
 
-	public XmlVariant stringValue(final String strval)
-	{
-		if (null != strval)
-		{
-			return XmlVariant.stringValue(strval);
-		}
-		else
-		{
-			return XmlVariant.empty();
-		}
-	}
+    @Override
+    public XmlVariant stringValue(final String strval)
+    {
+        if (null != strval)
+        {
+            return XmlVariant.stringValue(strval);
+        } else
+        {
+            return XmlVariant.empty();
+        }
+    }
 
-	public XmlVariant[] valueArray(final int size)
-	{
-		return new XmlVariant[size];
-	}
+    @Override
+    public XmlVariant[] valueArray(final int size)
+    {
+        return new XmlVariant[size];
+    }
 }

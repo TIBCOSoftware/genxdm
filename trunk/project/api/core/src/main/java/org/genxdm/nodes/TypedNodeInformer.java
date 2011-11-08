@@ -28,7 +28,7 @@ public interface TypedNodeInformer<N, A>
 
     /**
      * Returns the type name of the attribute node with the specified expanded-QName.
-     * This is equivalent to retrieving the attribute node and then its type name.
+     * <p>This is equivalent to retrieving the attribute node and then its type name.</p>
      * 
      * @param parent
      *            The node that is the parent of the attribute node. Must not
@@ -45,7 +45,7 @@ public interface TypedNodeInformer<N, A>
 
     /**
      * Returns the dm:typed-value of the attribute node with the specified expanded-QName.
-     * This is equivalent to retrieving the attribute node and then its typed value.
+     * <p>This is equivalent to retrieving the attribute node and then its typed value.</p>
      * 
      * @param parent
      *            The node that is the parent of the attribute node.
@@ -63,7 +63,7 @@ public interface TypedNodeInformer<N, A>
 
     /**
      * Return the dm:type-name of an element or attribute node.
-     * Returns <code>null</code> for all other node kinds.
+     * <p>Returns <code>null</code> for all other node kinds.</p>
      * 
      * @param node
      *            The node for which the type name is required.  If null is
@@ -82,9 +82,9 @@ public interface TypedNodeInformer<N, A>
     /**
      * Returns the dm:typed-value of the node.
      * 
-     * Applies to all node kinds.
+     * <p>Applies to all node kinds.</p>
      * 
-     * If the node argument is <code>null</code>, then <code>null</code> is returned.
+     * <p>If the node argument is <code>null</code>, then <code>null</code> is returned.</p>
      * 
      * @param node
      *            The node for which dm:typed-value is required.  If null is supplied,

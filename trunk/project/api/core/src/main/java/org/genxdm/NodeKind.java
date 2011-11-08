@@ -202,12 +202,29 @@ public enum NodeKind
         }
     };
 
+    /**
+     * Are nodes of this kind attributes?
+     * @return true for attribute nodes, false for all other kinds.
+     */
     public abstract boolean isAttribute();
 
+    /**
+     * Are nodes of this kind able to be children of container nodes?
+     * @return true for comment, element, processing instruction, and text nodes,
+     * false for document, attribute, and namespace nodes.
+     */
     public abstract boolean isChild();
 
+    /**
+     * Are nodes of this kind namespaces?
+     * @return true for namespace nodes, false for all other kinds.
+     */
     public abstract boolean isNamespace();
     
+    /**
+     * Are nodes of this kind able to contain child nodes?
+     * @return true for document and element nodes, false for all other kinds.
+     */
     public abstract boolean isContainer();
     
 }
