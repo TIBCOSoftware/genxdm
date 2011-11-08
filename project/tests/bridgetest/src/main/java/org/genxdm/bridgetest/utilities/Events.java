@@ -27,8 +27,8 @@ import java.util.Set;
 
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;
-import org.genxdm.io.EventKind;
 import org.genxdm.io.FragmentBuilder;
+import org.genxdm.io.pull.EventKind;
 
 /** Abstraction of the events that occur inside a content handler.
  * 
