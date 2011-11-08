@@ -18,6 +18,9 @@ package org.genxdm.exceptions;
 
 /**
  * Assertions and Checks that generate consistent messages.
+ * 
+ * <p>These preconditions all generate assertion errors; they are not
+ * catchable.</p>
  */
 public final class PreCondition
 {
