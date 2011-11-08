@@ -19,6 +19,6 @@ import org.genxdm.xpath.v10.XPathToolkitFactory;
 
 public interface XPathExtendToolkitFactory extends XPathToolkitFactory {
 
-	XPathExtendToolkit newXPathToolkit();
+    XPathExtendToolkit newXPathToolkit();
 
 }
