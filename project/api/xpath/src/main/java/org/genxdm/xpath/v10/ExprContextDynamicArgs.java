@@ -20,17 +20,17 @@ import javax.xml.namespace.QName;
 
 public interface ExprContextDynamicArgs<N> 
 {
-	void bindVariableValue(QName name, Variant<N> value);
+    void bindVariableValue(QName name, Variant<N> value);
 
-	ExprContextDynamic<N> build();
+    ExprContextDynamic<N> build();
 
-	void reset();
+    void reset();
 
-	void setContextPosition(int position);
+    void setContextPosition(int position);
 
-	void setContextSize(int size);
+    void setContextSize(int size);
 
-	void setInheritAttributes(boolean inheritAttributes);
+    void setInheritAttributes(boolean inheritAttributes);
 
-	void setInheritNamespaces(boolean inheritNamespaces);
+    void setInheritNamespaces(boolean inheritNamespaces);
 }

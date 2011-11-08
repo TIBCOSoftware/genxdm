@@ -18,10 +18,10 @@ package org.genxdm.xpath.v10;
 
 public interface XPathToolkit
 {
-	XPathCompiler newXPathCompiler();
+    XPathCompiler newXPathCompiler();
 
-	ExprContextStatic newExprContextStaticArgs();
+    ExprContextStatic newExprContextStaticArgs();
 
-	<N> ExprContextDynamicArgs<N> newExprContextDynamicArgs();
-	
+    <N> ExprContextDynamicArgs<N> newExprContextDynamicArgs();
+    
 }
