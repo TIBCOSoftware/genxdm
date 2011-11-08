@@ -18,13 +18,13 @@ package org.genxdm.xpath.v10;
 @SuppressWarnings("serial")
 public class ExprException extends Exception
 {
-	public ExprException(final String message)
-	{
-		super(message);
-	}
+    public ExprException(final String message)
+    {
+        super(message);
+    }
 
-	public ExprException(final Throwable cause)
-	{
-		super(cause);
-	}
+    public ExprException(final Throwable cause)
+    {
+        super(cause);
+    }
 }

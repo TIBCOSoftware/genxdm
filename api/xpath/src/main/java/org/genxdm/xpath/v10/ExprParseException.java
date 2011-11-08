@@ -18,8 +18,8 @@ package org.genxdm.xpath.v10;
 @SuppressWarnings("serial")
 public final class ExprParseException extends Exception
 {
-	public ExprParseException(final String message)
-	{
-		super(message);
-	}
+    public ExprParseException(final String message)
+    {
+        super(message);
+    }
 }

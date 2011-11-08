@@ -18,7 +18,7 @@ package org.genxdm.xpath.v10;
 
 public interface ExtensionContext<N>
 {
-	boolean available(String name);
+    boolean available(String name);
 
-	Variant<N> call(String name, N contextItem, Variant<N>[] args) throws ExprException;
+    Variant<N> call(String name, N contextItem, Variant<N>[] args) throws ExprException;
 }

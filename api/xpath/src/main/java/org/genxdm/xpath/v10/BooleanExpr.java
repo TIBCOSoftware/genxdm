@@ -24,5 +24,5 @@ import org.genxdm.Model;
 
 public interface BooleanExpr
 {
-	<N> boolean booleanFunction(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv) throws ExprException;
+    <N> boolean booleanFunction(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv) throws ExprException;
 }

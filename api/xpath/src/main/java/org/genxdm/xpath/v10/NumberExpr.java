@@ -24,5 +24,5 @@ import org.genxdm.Model;
 
 public interface NumberExpr
 {
-	<N> double numberFunction(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv) throws ExprException;
+    <N> double numberFunction(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv) throws ExprException;
 }
