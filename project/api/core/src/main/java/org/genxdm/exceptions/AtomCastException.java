@@ -21,8 +21,7 @@ import org.genxdm.xs.types.NativeType;
 
 /**
  * Exception arising during the casting or parsing of atomic values.
- * <p/>
- * Parsing is to be regarded as a cast from xs:untypedAtomic.
+ * <p/>Parsing is to be regarded as a cast from xs:untypedAtomic.</p>
  * 
  */
 @SuppressWarnings("serial")

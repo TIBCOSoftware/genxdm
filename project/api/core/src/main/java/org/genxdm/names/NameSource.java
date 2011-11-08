@@ -26,17 +26,16 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Provides lookups for certain well-known names.
  * 
- * Primary remaining utility: map from the schema model NativeType
+ * <p>Primary remaining utility: map from the schema model NativeType
  * abstraction to QName, and from QName to NativeType.  This is really
  * something that belongs in with types, but so it goes.  See the notes
  * on the "empty" method before moving and renaming this to something
- * more rational.
+ * more rational.</p>
  */
 public class NameSource
 {
     private NameSource()
     {
-        initialize();
     }
 
     /**
@@ -59,7 +58,10 @@ public class NameSource
         return name;
     }
 
-    private void initialize()
+    private static final HashMap<QName, NativeType> nameToNative = new HashMap<QName, NativeType>();
+    private static final HashMap<NativeType, QName> nativeToName = new HashMap<NativeType, QName>();
+
+    static
     {
         for (final NativeType nativeType : NativeType.values())
         {
@@ -70,8 +72,5 @@ public class NameSource
     }
     
     public static final NameSource SINGLETON = new NameSource();
-
-    private final HashMap<QName, NativeType> nameToNative = new HashMap<QName, NativeType>();
-    private final HashMap<NativeType, QName> nativeToName = new HashMap<NativeType, QName>();
 
 }

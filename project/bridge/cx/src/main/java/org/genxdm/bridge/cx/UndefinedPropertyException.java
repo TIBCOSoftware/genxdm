@@ -27,8 +27,8 @@ import org.genxdm.NodeKind;
 @SuppressWarnings("serial")
 final class UndefinedPropertyException extends AssertionError
 {
-	public UndefinedPropertyException(final String method, final NodeKind nodeKind)
-	{
-		super("Method [" + method + "] is not defined for the node type \"" + nodeKind + "\".");
-	}
+    public UndefinedPropertyException(final String method, final NodeKind nodeKind)
+    {
+            super("Method [" + method + "] is not defined for the node type \"" + nodeKind + "\".");
+    }
 }

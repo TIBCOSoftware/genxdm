@@ -22,11 +22,11 @@ import org.genxdm.nodes.Bookmark;
 import org.genxdm.nodes.Informer;
 
 /**
- * A cursor is a random-access representation of an XML tree with the unique property that it moves over the underlying
- * data model without forcing the implementation to provide object handles for each node visited.
- * <p>
- * A cursor may be moved over the underlying data model and provides access to the properties of its underlying node.
- * </p>
+ * A cursor provides the XQuery Data Model interface with the addition of the
+ * notion of positional state.
+ * 
+ * <p>A cursor may be moved over the underlying data model and provides access 
+ * to the properties of its underlying node.</p>
  */
 public interface Cursor<N>
     extends Informer, Repositioner<N>, Comparable<Cursor<N>>

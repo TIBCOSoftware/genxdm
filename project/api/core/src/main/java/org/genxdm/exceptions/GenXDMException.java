@@ -15,10 +15,11 @@
  */
 package org.genxdm.exceptions;
 
-@SuppressWarnings("serial")
-/*
- * * A wrapper and marker exception for tunneling checked exceptions though gXML APIs.
+/** A wrapper and marker exception for tunneling checked exceptions though 
+ * GenXDM APIs.
  */
+// TODO: this extends *runtime* exception?  oh ... dear.
+@SuppressWarnings("serial")
 public class GenXDMException extends RuntimeException
 {
     public GenXDMException()

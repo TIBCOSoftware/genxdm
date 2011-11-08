@@ -17,12 +17,15 @@ package org.genxdm.exceptions;
 
 
 /**
- * A wrapper class over implementation exceptions relating to well-formedness during parsing.
+ * A wrapper class over implementation exceptions relating to well-formedness 
+ * during parsing.
  */
+// TODO: this is a marker class for particular kinds of GenXDMExceptions, so
+// that they can be caught independently.  Query, query, query: do we want this;
+// do we even want GenXDMException?  *Both* are runtime exceptions!
+@SuppressWarnings("serial")
 public final class XdmMarshalException extends GenXDMException
 {
-    private static final long serialVersionUID = 1L;
-
     public XdmMarshalException(final Throwable cause)
     {
         super(cause);

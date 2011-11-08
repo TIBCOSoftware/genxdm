@@ -49,8 +49,9 @@ public class XmlNodeMutator
         }
     }
 
-    public XmlNode copyNode(XmlNode source, boolean deep) {
-    	return cloneNodeInto(source, deep);
+    public XmlNode copyNode(XmlNode source, boolean deep) 
+    {
+        return cloneNodeInto(source, deep);
     }
     
     public XmlNode cloneNodeInto(XmlNode source, boolean deep)
