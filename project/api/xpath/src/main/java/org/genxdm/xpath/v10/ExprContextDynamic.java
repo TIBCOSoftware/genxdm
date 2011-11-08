@@ -23,16 +23,16 @@ import javax.xml.namespace.QName;
  */
 public interface ExprContextDynamic<N> 
 {
-	int getContextPosition() throws ExprException;
+    int getContextPosition() throws ExprException;
 
-	int getContextSize() throws ExprException;
+    int getContextSize() throws ExprException;
 
-	Variant<N> getVariableValue(QName name) throws ExprException;
+    Variant<N> getVariableValue(QName name) throws ExprException;
 
-	ExtensionContext<N> getExtensionContext(String namespace) throws ExprException;
+    ExtensionContext<N> getExtensionContext(String namespace) throws ExprException;
 
-	boolean getInheritAttributes();
+    boolean getInheritAttributes();
 
-	boolean getInheritNamespaces();
+    boolean getInheritNamespaces();
 
 }

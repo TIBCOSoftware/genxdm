@@ -27,7 +27,7 @@ import org.genxdm.Model;
  */
 public interface StringExpr
 {
-	<N> String stringFunction(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv) throws ExprException;
+    <N> String stringFunction(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv) throws ExprException;
 
-	String constantValue();
+    String constantValue();
 }

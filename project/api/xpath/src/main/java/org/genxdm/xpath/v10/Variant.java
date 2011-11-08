@@ -23,23 +23,23 @@ package org.genxdm.xpath.v10;
 
 public interface Variant<N>
 {
-	boolean convertToBoolean() throws ExprException;
+    boolean convertToBoolean() throws ExprException;
 
-	NodeIterator<N> convertToNodeSet() throws ExprException;
+    NodeIterator<N> convertToNodeSet() throws ExprException;
 
-	double convertToNumber() throws ExprException;
+    double convertToNumber() throws ExprException;
 
-	boolean convertToPredicate(ExprContextDynamic<N> context) throws ExprException;
+    boolean convertToPredicate(ExprContextDynamic<N> context) throws ExprException;
 
-	String convertToString() throws ExprException;
+    String convertToString() throws ExprException;
 
-	boolean isBoolean();
+    boolean isBoolean();
 
-	boolean isNodeSet();
+    boolean isNodeSet();
 
-	boolean isNumber();
+    boolean isNumber();
 
-	boolean isString();
+    boolean isString();
 
-	Variant<N> makePermanent() throws ExprException;
+    Variant<N> makePermanent() throws ExprException;
 }

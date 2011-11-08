@@ -18,5 +18,5 @@ package org.genxdm.xpath.v10;
 // TODO: this entire module needs *some* bloody javadoc.
 public interface XPathToolkitFactory
 {
-	XPathToolkit newXPathToolkit();
+    XPathToolkit newXPathToolkit();
 }

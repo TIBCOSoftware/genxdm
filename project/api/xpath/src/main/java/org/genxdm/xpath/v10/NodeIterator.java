@@ -26,8 +26,8 @@ package org.genxdm.xpath.v10;
  */
 public interface NodeIterator<N>
 {
-	/**
-	 * return the next Node in the list
-	 */
-	N next() throws ExprException;
+    /**
+     * return the next Node in the list
+     */
+    N next() throws ExprException;
 }
