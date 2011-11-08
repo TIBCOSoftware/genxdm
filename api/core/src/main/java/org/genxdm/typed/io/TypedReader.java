@@ -15,11 +15,13 @@
  */
 package org.genxdm.typed.io;
 
-import org.genxdm.io.EventReader;
+import org.genxdm.io.pull.EventReader;
 import org.genxdm.nodes.TypeInformer;
 
 /**
  * Allows data model events to be pulled sequentially.
+ * @deprecated This interface has never been implemented; it is at risk of
+ * removal for lack of interest.
  */
 public interface TypedReader<A> 
     extends EventReader, TypeInformer<A>

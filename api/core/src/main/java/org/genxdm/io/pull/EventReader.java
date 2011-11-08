@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2011 TIBCO Software Inc.
+ * Copyright (c) 2010-2011 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.io;
+package org.genxdm.io.pull;
+
+import java.util.Iterator;
+
+import org.genxdm.io.Reader;
 
 /**
- * Enumeration representing possible types of events in the XQuery Data Model.
+ * @deprecated This interface has never been implemented; it is at risk for
+ * removal as it seems to be of no interest to implementors. 
  */
-public enum EventKind
+public interface EventReader
+    extends Reader, Iterator<EventKind>
 {
-    START_SEQUENCE,
-    END_SEQUENCE,
 
-    START_DOCUMENT,
-    END_DOCUMENT,
-
-    START_ELEMENT,
-    END_ELEMENT,
-
-    ATTRIBUTE,
-    CHARACTERS,
-    SPACE,
-    NAMESPACE,
-    PROCESSING_INSTRUCTION,
-    COMMENT,
-    ATOM
 }
