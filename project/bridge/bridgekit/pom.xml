@@ -28,7 +28,7 @@
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bridgekit</artifactId>
-    <version>0.8</version>
+    <version>0.9</version>
     <!-- Probably needs to be revisited at some point, but seems okay at the
          moment. -->
     <name>GenXDM Bridge Kit</name>
