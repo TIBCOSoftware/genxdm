@@ -28,7 +28,7 @@
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>proc-w3cxs-val</artifactId>
-    <version>0.7</version>
+    <version>0.8</version>
     <name>GenXDM W3C XML Schema Validator</name>
     <url>http://www.genxdm.org/processor/proc-w3cxs-val/</url>
 
