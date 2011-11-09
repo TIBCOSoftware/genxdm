@@ -28,7 +28,7 @@
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bridge-axiom</artifactId>
-    <version>0.5</version>
+    <version>0.6</version>
     <!-- about as good as dom, at this point. -->
     <name>GenXDM Axiom Bridge</name>
     <url>http://www.genxdm.org/bridge/bridge-axiom/</url>
