@@ -10,8 +10,35 @@ chronological order, probably with detail increasing as the project matures.
 Only the latest two releases will be generally available for download, prior
 to the 1.0 release.
 
- * 20101111 : Initial release
- * 20110415 : Tax Day release
+ * 20101111 : Initial release (no longer available)
+ * 20110415 : Tax Day release (deprecated)
+ * 20110627 : Independence Day release (deprecated)
+ * 20110906 : Labor Day release
+ * 20111111 : "Turn it up to eleven!" release
+
+== "Turn it up to eleven!" Release ==
+
+One year after our initial release, we released again, on Armistice Day 2011: the 11/11/11 release is, naturally, the "Turn it up to eleven!" release.
+
+This is an incremental release, incorporating fewer significant changes than past releases, and working toward a more frequent release schedule.  Several packages have been marked (by the creation of package javadoc in package-info.java files) as 'mature', meaning that we do not expect significant further changes prior to the 1.0 release.
+
+A problem with XML Schema regular expressions in the parser was resolved (code moved from the validator to make it available to both).
+
+A problem with namespaces during typed parsing was addressed.
+
+A number of new test skeletons were added.
+
+Some of the schema-related abstractions in bridge kit gained increased visibility.
+
+Some core APIs were cleaned up, others deprecated.
+
+Revision 289, tag genxdm-20111111.
+
+== Labor Day Release ==
+
+Someone has failed utterly to keep this up to date, hasn't she?  We'll come back to this to see if we can add the information, belatedly.  Sorry about that.
+
+== Independence Day Release ==
 
 == Tax Day Release ==
 
@@ -39,4 +66,3 @@ DOM and Cx bridges, and the input-output and conversion processors were
 most mature.
 
 Revision 60, tag genxdm-20101111.
-
