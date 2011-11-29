@@ -51,12 +51,7 @@ discussion.
 New committer proposals should provide forty-eight to seventy-two hour response
 blocks.  The proposal should include a pointer to a repository commit (or to
 more than one) which represent the candidate's contributions (revision numbers
-are adequate information).  At least three fifths of existing committers must
-approve positively (+1), with no vetoes (-1).  Approval (+1) and abstention
-(0) votes require no explanation.  Vetoes (-1) votes *must* be accompanied by
-an explanation, and that explanation *should* indicate how the candidate might
-work to avoid a future veto (however, a veto ends the vote; a new vote must
-be proposed).
+are adequate information).  See [Governance Governance] for details on voting.
 
 Not all committers need be developers, although it is expected that most will
 be.  Proposals for candidates who are not developers must supply information
