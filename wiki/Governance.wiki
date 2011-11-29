@@ -7,10 +7,12 @@ Captures important details of how the project is governed.
 
 = Voting =
 
-We follow Apache rules for voting. For any given topic, you can vote +1, 0, or -1. At least three fifths of existing committers must approve positively (+1), with no vetoes (-1). Approval (+1) and abstention (0) votes require no explanation. Vetoes (-1) votes must be accompanied by an explanation, and that explanation should indicate how the candidate might work to avoid a future veto (however, a veto ends the vote; a new vote must be proposed). 
+We follow Apache rules for voting. See [http://www.apache.org/foundation/voting.html Apache Voting Process].
 
-= Voting Summary =
+To summarize: For any given topic, you can vote +1, 0, or -1. There are three categories: procedural, for which majority rules are in force (more +1 than -1); code modification, for which any -1 is a veto; and release, for which there must be three binding +1 votes (releases may not be vetoed). For our purposes, releases must also have a majority (Apache rules are somewhat different, but work out to about that).  Only binding votes need be counted, but attention should be given to advisory votes.
 
- * 2011-02-01 - [http://groups.google.com/group/genxdm/browse_thread/thread/449ddabb61051941 Ashutosh as committer]
- * 2010-11-11 - [http://groups.google.com/group/genxdm/browse_thread/thread/de7ba8555b86ff9d Initial release]
- * 2010-10-08 - [http://tech.groups.yahoo.com/group/gxml-dev/message/134 Name change to GenXDM]
+Approval (+1) and abstention (0) require no explanation.  Negative votes *must* include a reason; that reason ought to provide enough information for others to address the issue raised.
+
+Committers have binding votes.  All other votes (contributors, as well as anyone else who cares to express an opinion on the official mailing list) are considered advisory.  In some circumstances, a vote may be called with the franchise extended to those who are not normally considered to have binding votes.
+
+Note that, in Apache terms, committers use C-T-R; contributors R-T-C.
