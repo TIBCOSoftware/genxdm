@@ -47,7 +47,7 @@ public class TypedXmlNodeBuilder
 //System.out.println("got an attribute " + localName);
         flushCatch();
         depth++;
-        Type stype = cache.getComponentProvider().getTypeDefinition(type);
+        Type stype = (type == null) ? null : cache.getComponentProvider().getTypeDefinition(type);
         if (current != null)
         {
             final XmlAttributeNode attribute = factory.createAttribute(namespaceURI, localName, prefix, data, stype);
@@ -67,7 +67,7 @@ public class TypedXmlNodeBuilder
 //System.out.println("got an element " + localName);
         flushCatch();
         depth++;
-        Type stype = cache.getComponentProvider().getTypeDefinition(type);
+        Type stype = (type == null) ? null : cache.getComponentProvider().getTypeDefinition(type);
         if (current != null)
         {
             final XmlElementNode element = factory.createElement(namespaceURI, localName, prefix, stype);
