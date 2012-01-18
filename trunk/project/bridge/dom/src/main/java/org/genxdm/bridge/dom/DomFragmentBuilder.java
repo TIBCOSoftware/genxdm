@@ -94,7 +94,7 @@ public class DomFragmentBuilder
                 {
                     if (m_depth > 0)
                     {
-                        DomSupport.appendText(m_current, m_chBuffer.toString());
+                        appendText(m_current, m_chBuffer.toString());
                     }
                     else
                     {
@@ -259,12 +259,9 @@ public class DomFragmentBuilder
         {
             return DomSupport.getOwner(m_current);
         }
-        else
-        {
-            return newDocument(null);
-        }
+        return newDocument(null);
     }
-
+    
     private void push(final String strval, final NodeKind nodeKind)
     {
         if (null != m_chNodeKind && m_chNodeKind != nodeKind)
@@ -319,6 +316,30 @@ public class DomFragmentBuilder
         }
         // TODO: Log something for DOM w/o Level 3 support?
         // LOG.warn("DOM does not support DOM CORE version 3.0: setUserData");
+    }
+
+    private Node appendText(final Node parent, final String strval)
+    {
+        final Node lastChild = parent.getLastChild();
+        if (null != lastChild && (lastChild.getNodeType() == Node.TEXT_NODE || lastChild.getNodeType() == Node.CDATA_SECTION_NODE))
+        {
+            final String existing = lastChild.getNodeValue();
+            lastChild.setNodeValue(existing.concat(strval));
+            return lastChild;
+        }
+        else
+        {
+            final Node text = DomSupport.getOwner(parent).createTextNode(strval);
+            try
+            {
+                parent.appendChild(text);
+            }
+            catch (final DOMException e)
+            {
+                throw new UnsupportedOperationException(e);
+            }
+            return text;
+        }
     }
 
     private final DocumentBuilderFactory m_dbf;
