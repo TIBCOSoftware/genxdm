@@ -31,6 +31,7 @@ import org.genxdm.Feature;
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
 import org.genxdm.ProcessingContext;
+import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
 import org.genxdm.bridgetest.TestBase;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.names.NamespaceBinding;
@@ -44,7 +45,7 @@ public abstract class NodeInformerBase<N>
     public void nodeKinds()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
@@ -87,7 +88,7 @@ public abstract class NodeInformerBase<N>
     public void nodeIdentity()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
@@ -138,7 +139,7 @@ public abstract class NodeInformerBase<N>
     public void idsAndRefs()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
         N doc = createIdsAndRefsTestDocument(builder);
         
         assertNotNull(doc);
@@ -176,7 +177,7 @@ public abstract class NodeInformerBase<N>
     public void attributes()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
@@ -231,7 +232,7 @@ public abstract class NodeInformerBase<N>
     public void namespaces()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
@@ -256,7 +257,7 @@ public abstract class NodeInformerBase<N>
     public void relationships()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
@@ -329,7 +330,7 @@ public abstract class NodeInformerBase<N>
     public void names()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
@@ -386,7 +387,7 @@ public abstract class NodeInformerBase<N>
     public void values()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
@@ -420,7 +421,7 @@ public abstract class NodeInformerBase<N>
     public void uris()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
@@ -472,7 +473,7 @@ public abstract class NodeInformerBase<N>
     public void matching()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);

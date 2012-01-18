@@ -19,7 +19,7 @@ public class TestMutateWithBuilder <N,A> extends BaseBridgePerfTest<N,A> impleme
 	
 	@Override
 	public void iterativeSetup() {
-		m_fragBuilder = getPcx().newFragmentBuilder();
+		m_fragBuilder = getPcx().newFragmentBuilder(null);
 	}
 	@Override
 	public void execute() {
