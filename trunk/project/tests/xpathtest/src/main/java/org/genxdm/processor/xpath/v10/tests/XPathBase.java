@@ -303,7 +303,7 @@ public abstract class XPathBase<N>
     {
         final ProcessingContext<N> pcx = newProcessingContext();
         final Model<N> model = pcx.getModel();
-        final FragmentBuilder<N> builder = pcx.newFragmentBuilder();
+        final FragmentBuilder<N> builder = pcx.newFragmentBuilder(null);
 
         builder.startDocument(null, null);
         try

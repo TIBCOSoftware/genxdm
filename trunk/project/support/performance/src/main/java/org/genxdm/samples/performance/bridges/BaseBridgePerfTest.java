@@ -36,7 +36,7 @@ abstract public class BaseBridgePerfTest<N, A> implements BridgePerfTest<N, A> {
 	public void setContext(ProcessingContext<N> pcx) {
 		// Ensure that context supports the features we need.
 		m_pcx = pcx;
-		m_docBuilder = m_pcx.newFragmentBuilder();
+		m_docBuilder = m_pcx.newFragmentBuilder(null);
 		m_model = m_pcx.getModel();
 		m_docHandler = m_pcx.newDocumentHandler();
 	}

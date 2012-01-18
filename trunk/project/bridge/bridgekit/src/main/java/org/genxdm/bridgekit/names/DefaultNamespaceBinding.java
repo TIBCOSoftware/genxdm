@@ -15,7 +15,7 @@
  */
 package org.genxdm.bridgekit.names;
 
-import org.genxdm.exceptions.IllegalNullArgumentException;
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NamespaceBinding;
 
 public final class DefaultNamespaceBinding implements NamespaceBinding 
@@ -25,15 +25,17 @@ public final class DefaultNamespaceBinding implements NamespaceBinding
 
     public DefaultNamespaceBinding(final String prefix, final String uri)
     {
-        this.prefix = IllegalNullArgumentException.check(prefix, "prefix");
-        this.uri = IllegalNullArgumentException.check(uri, "uri");
+        this.prefix = PreCondition.assertNotNull(prefix, "prefix");
+        this.uri = PreCondition.assertNotNull(uri, "uri");
     }
 
+    @Override
     public String getNamespaceURI()
     {
         return uri;
     }
 
+    @Override
     public String getPrefix()
     {
         return prefix;
@@ -42,6 +44,20 @@ public final class DefaultNamespaceBinding implements NamespaceBinding
     @Override
     public String toString()
     {
-        return prefix + " => " + uri.toString();
+        return prefix + "{" + uri +"}";
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        return toString().hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object other)
+    {
+        if (other instanceof NamespaceBinding)
+            return hashCode() == other.hashCode();
+        return false;
     }
 }

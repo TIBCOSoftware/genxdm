@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.genxdm.ProcessingContext;
+import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
 import org.genxdm.bridgetest.TestBase;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.mutable.MutableContext;
@@ -37,7 +38,7 @@ public abstract class MutableContextBase<N>
         // there are only four methods, three of them accessors, one a factory.
         ProcessingContext<N> context = newProcessingContext();
         assertNotNull(context);
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
         N doc = createSimpleAllKindsDocument(builder);
         
         // this does *not* check the feature. do *not* enable

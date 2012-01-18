@@ -27,6 +27,7 @@ import org.genxdm.Cursor;
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
 import org.genxdm.ProcessingContext;
+import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
 import org.genxdm.bridgetest.TestBase;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.nodes.Bookmark;
@@ -46,7 +47,7 @@ public abstract class BookmarkBase<N>
     {
         ProcessingContext<N> context = newProcessingContext();
         
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
         N doc = createComplexTestDocument(builder);        
         assertNotNull(doc);
         
@@ -120,7 +121,7 @@ public abstract class BookmarkBase<N>
     {
         ProcessingContext<N> context = newProcessingContext();
         
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
         N doc = createComplexTestDocument(builder);        
         assertNotNull(doc);
         

@@ -18,6 +18,7 @@ package org.genxdm.bridgetest;
 import org.genxdm.Feature;
 import org.genxdm.Model;
 import org.genxdm.ProcessingContext;
+import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
 import org.genxdm.bridgetest.utilities.Events;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.FragmentBuilder;
@@ -35,7 +36,7 @@ public abstract class ModelBase<N>
     {
         ProcessingContext<N> context = newProcessingContext();
         
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
         assertNotNull(builder);
         // the events recorder/matcher does the hard work here, in case you were wondering.
         Events<N> matcher = new Events<N>(builder);

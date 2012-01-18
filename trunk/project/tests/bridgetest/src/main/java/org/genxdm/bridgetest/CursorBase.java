@@ -20,6 +20,7 @@ import static org.junit.Assert.assertNotNull;
 import org.genxdm.Cursor;
 import org.genxdm.Feature;
 import org.genxdm.ProcessingContext;
+import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
 import org.genxdm.bridgetest.utilities.Events;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.FragmentBuilder;
@@ -34,7 +35,7 @@ public abstract class CursorBase<N>
     {
         ProcessingContext<N> context = newProcessingContext();
         
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
         assertNotNull(builder);
         Events<N> matcher = new Events<N>(builder);
         if (!context.isSupported(Feature.DOCUMENT_URI))
