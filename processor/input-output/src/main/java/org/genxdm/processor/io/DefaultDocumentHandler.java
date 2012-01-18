@@ -55,7 +55,7 @@ public class DefaultDocumentHandler<N>
     
     public DefaultDocumentHandler(ProcessingContext<N> context)
     {
-        this(PreCondition.assertNotNull(context, "context").newFragmentBuilder(), context.getModel());
+        this(PreCondition.assertNotNull(context, "context").newFragmentBuilder(null), context.getModel());
     }
     
     public DefaultDocumentHandler(final FragmentBuilder<N> builder, final Model<N> model)

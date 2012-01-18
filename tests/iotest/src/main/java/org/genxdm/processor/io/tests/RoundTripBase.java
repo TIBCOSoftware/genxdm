@@ -107,7 +107,7 @@ abstract public class RoundTripBase<N>
  
  'cept all one line, or something.
  */
-        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        FragmentBuilder<N> builder = context.newFragmentBuilder(null);
         builder.startDocument(null, null);
         builder.processingInstruction("pi", "3.1415926535");
         builder.startElement("http://www.example.com/ns/a", "a", "a");

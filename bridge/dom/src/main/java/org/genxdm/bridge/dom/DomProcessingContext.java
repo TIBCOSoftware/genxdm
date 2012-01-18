@@ -23,10 +23,12 @@ import org.genxdm.Model;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.dom.enhanced.DomSAProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.bridgekit.filters.FilteredFragmentBuilder;
 import org.genxdm.bridgekit.tree.BookmarkOnModel;
 import org.genxdm.bridgekit.tree.CursorOnModel;
 import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.ContentFilter;
 import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.mutable.MutableContext;
@@ -119,9 +121,12 @@ public class DomProcessingContext
         return new DomDocumentHandler(this);
     }
 
-    public FragmentBuilder<Node> newFragmentBuilder()
+    public FragmentBuilder<Node> newFragmentBuilder(ContentFilter filter)
     {
-        return new DomFragmentBuilder(m_dbf);
+        FragmentBuilder<Node> b = new DomFragmentBuilder(m_dbf);
+        if (filter != null)
+            return new FilteredFragmentBuilder<Node>(filter, b);
+        return b;
     }
 
     public Node node(Object item)

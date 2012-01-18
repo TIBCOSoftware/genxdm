@@ -22,17 +22,15 @@ import org.genxdm.Cursor;
 import org.genxdm.Feature;
 import org.genxdm.Model;
 import org.genxdm.ProcessingContext;
-//import org.genxdm.base.mutable.MutableCursor;
-//import org.genxdm.base.mutable.MutableModel;
-//import org.genxdm.base.mutable.NodeFactory;
-//import org.genxdm.bridge.axiom.enhanced.AxiomSAProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.bridgekit.filters.FilteredFragmentBuilder;
 import org.genxdm.bridgekit.tree.BookmarkOnModel;
 import org.genxdm.bridgekit.tree.CursorOnModel;
 import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
-//import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.ContentFilter;
 import org.genxdm.io.DocumentHandler;
+import org.genxdm.io.FragmentBuilder;
 import org.genxdm.io.Resolver;
 import org.genxdm.mutable.MutableContext;
 import org.genxdm.mutable.MutableCursor;
@@ -190,9 +188,12 @@ public class AxiomProcessingContext
         return new CursorOnModel<Object>(node, model);
     }
 
-    public AxiomFragmentBuilder newFragmentBuilder()
+    public FragmentBuilder<Object> newFragmentBuilder(ContentFilter filter)
     {
-        return new AxiomFragmentBuilder(omfactory, false);
+        FragmentBuilder<Object> b = new AxiomFragmentBuilder(omfactory, false);
+        if (filter != null)
+            return new FilteredFragmentBuilder<Object>(filter, b);
+        return b;
     }
 
     public Object node(Object item)
