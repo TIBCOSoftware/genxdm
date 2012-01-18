@@ -15,19 +15,14 @@
  */
 package org.genxdm.bridge.dom;
 
-import java.util.List;
-
 import javax.xml.XMLConstants;
 
 import org.genxdm.NodeKind;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.Emulation;
 import org.w3c.dom.Attr;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
@@ -35,49 +30,6 @@ import org.w3c.dom.Node;
  */
 public final class DomSupport implements DomConstants
 {
-    // private static final String UD_DYNAMIC_TYPE = "{http://org.genxdm.bridge.dom}dynamic-type";
-
-    public static Node appendText(final Node parent, final String strval)
-    {
-        final Node lastChild = parent.getLastChild();
-        if (null != lastChild && (lastChild.getNodeType() == Node.TEXT_NODE || lastChild.getNodeType() == Node.CDATA_SECTION_NODE))
-        {
-            final String existing = lastChild.getNodeValue();
-            lastChild.setNodeValue(existing.concat(strval));
-            return lastChild;
-        }
-        else
-        {
-            final Node text = getOwner(parent).createTextNode(strval);
-            try
-            {
-                parent.appendChild(text);
-            }
-            catch (final DOMException e)
-            {
-                throw new UnsupportedOperationException(e);
-            }
-            return text;
-        }
-    }
-
-    private static String correctNamespaceURI(final String namespaceURI)
-    {
-        if (null != namespaceURI)
-        {
-            return namespaceURI;
-        }
-        else
-        {
-            return XMLConstants.NULL_NS_URI;
-        }
-    }
-
-    public static <A> Attr createAttribute(final Document owner, final String attributeNS, final String attributeLN, final String attributePH, final List<? extends A> data, final Emulation emulation, final AtomBridge<A> atomBridge)
-    {
-        return createAttributeUntyped(owner, attributeNS, attributeLN, attributePH, emulation.atomsToString(data, atomBridge));
-    }
-
     public static Attr createAttributeUntyped(final Document owner, final String attributeNS, final String attributeLN, final String attributePH, final String data)
     {
         final Attr attribute;
@@ -130,47 +82,14 @@ public final class DomSupport implements DomConstants
         return namespace;
     }
 
-    /**
-     * XPath-correct implementation for child axis navigation.
-     */
-    public static Node getFirstChild(final Node origin)
-    {
-        if (null != origin)
-        {
-            if (isParentNode(origin.getNodeType()))
-            {
-                Node candidate = origin.getFirstChild();
-                while (null != candidate)
-                {
-                    if (null != DomSupport.getNodeKind(candidate))
-                    {
-                        return candidate;
-                    }
-                    else
-                    {
-                        candidate = candidate.getNextSibling();
-                    }
-                }
-                return null;
-            }
-            else
-            {
-                return null;
-            }
-        }
-        else
-        {
-            return null;
-        }
-    }
-
     public static String getLocalNameAsString(final Node node)
     {
         switch (node.getNodeType())
         {
             case Node.ELEMENT_NODE:
             {
-                return PreCondition.assertArgumentNotNull(getLocalNameRegardlessOfNamespaceAwareness(node));
+                final String localName = node.getLocalName();
+                return PreCondition.assertArgumentNotNull((localName != null) ? localName : node.getNodeName());
             }
             case Node.ATTRIBUTE_NODE:
             {
@@ -189,7 +108,9 @@ public final class DomSupport implements DomConstants
                 }
                 else
                 {
-                    return getLocalNameRegardlessOfNamespaceAwareness(node);
+                    // handle namespace non-aware DOM stuff.
+                    final String localName = node.getLocalName();
+                    return (localName != null) ? localName : node.getNodeName();
                 }
             }
             case Node.PROCESSING_INSTRUCTION_NODE:
@@ -206,67 +127,6 @@ public final class DomSupport implements DomConstants
             default:
             {
                 throw new AssertionError(Short.toString(node.getNodeType()));
-            }
-        }
-    }
-
-    /**
-     * An amusing method that demonstrates the inventiveness of the DOM designers.
-     * <p>
-     * Prevents untold pain when nobody told you that they created namespace-unware nodes.
-     * </p>
-     * 
-     * @param node
-     *            The node for which you want to get the local-name.
-     */
-    private static String getLocalNameRegardlessOfNamespaceAwareness(final Node node)
-    {
-        final String localName = node.getLocalName();
-        if (null != localName)
-        {
-            return localName;
-        }
-        else
-        {
-            return node.getNodeName();
-        }
-    }
-
-    public static String getNamespaceURIAsString(final Node node)
-    {
-        switch (node.getNodeType())
-        {
-            case Node.ELEMENT_NODE:
-            {
-                return correctNamespaceURI(node.getNamespaceURI());
-            }
-            case Node.ATTRIBUTE_NODE:
-            {
-                final String namespaceURI = node.getNamespaceURI();
-
-                if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI))
-                {
-                    return XMLConstants.NULL_NS_URI;
-                }
-                else
-                {
-                    return correctNamespaceURI(namespaceURI);
-                }
-            }
-            case Node.PROCESSING_INSTRUCTION_NODE:
-            {
-                return XMLConstants.NULL_NS_URI;
-            }
-            case Node.CDATA_SECTION_NODE:
-            case Node.TEXT_NODE:
-            case Node.COMMENT_NODE:
-            case Node.DOCUMENT_NODE:
-            {
-                return null;
-            }
-            default:
-            {
-                throw new UnsupportedOperationException(Short.toString(node.getNodeType()));
             }
         }
     }
@@ -380,7 +240,7 @@ public final class DomSupport implements DomConstants
     /**
      * Computes the lexical qualified name from a local-name and a prefix.
      */
-    public static String getQualifiedName(final String localName, final String prefix)
+    private static String getQualifiedName(final String localName, final String prefix)
     {
         // Try to make this as efficient as possible because StAX does not retain the
         // qualified name, and DOM needs it. This could make StAX -> DOM slower than
@@ -517,92 +377,6 @@ public final class DomSupport implements DomConstants
                 return "";
             }
         }
-    }
-
-    public static boolean hasNamespaces(final Node origin)
-    {
-        PreCondition.assertArgumentNotNull(origin, "origin");
-        if (origin.hasAttributes())
-        {
-            final NamedNodeMap mixed = origin.getAttributes();
-            if (null != mixed)
-            {
-                return namespaceCount(mixed) > 0;
-            }
-        }
-        return false;
-    }
-
-    public static boolean isAttribute(final Node node)
-    {
-        final short nodeType = node.getNodeType();
-        if (nodeType == Node.ATTRIBUTE_NODE)
-        {
-            final String namespaceURI = node.getNamespaceURI();
-            return XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI) ? false : true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public static boolean isNamespace(final Node node)
-    {
-        final short nodeType = node.getNodeType();
-        if (nodeType == Node.ATTRIBUTE_NODE)
-        {
-            final String namespaceURI = node.getNamespaceURI();
-            return XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI) ? true : false;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    private static boolean isParentNode(final short nodeType)
-    {
-        switch (nodeType)
-        {
-            case Node.DOCUMENT_NODE:
-            case Node.ELEMENT_NODE:
-            case Node.DOCUMENT_FRAGMENT_NODE:
-            {
-                return true;
-            }
-
-            default:
-            {
-                return false;
-            }
-        }
-    }
-
-    public static int namespaceCount(final NamedNodeMap mixed)
-    {
-        final int length = mixed.getLength();
-
-        int realLength = 0;
-
-        for (int i = 0; i < length; i++)
-        {
-            final Node node = mixed.item(i);
-
-            final String namespaceURI = node.getNamespaceURI();
-
-            if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI))
-            {
-                realLength++;
-            }
-        }
-
-        return realLength;
-    }
-
-    public static <A> Attr setAttribute(final Node parent, final String namespaceURI, final String localName, final String prefixHint, final List<? extends A> data, final Emulation emulation, final AtomBridge<A> atomBridge)
-    {
-        return setAttributeUntyped(parent, namespaceURI, localName, prefixHint, emulation.atomsToString(data, atomBridge));
     }
 
     public static Attr setAttributeUntyped(final Node parent, final String namespaceURI, final String localName, final String prefixHint, final String data)

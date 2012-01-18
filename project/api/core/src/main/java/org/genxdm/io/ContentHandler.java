@@ -40,6 +40,7 @@ public interface ContentHandler
      *            The namespace-uri part of the attribute name. Cannot be <code>null</code>.
      * @param localName
      *            The local-name part of the attribute name. Cannot be <code>null</code>.
+     * @param prefix The prefix hint; may not be null but may be the empty string.
      * @param value
      *            The dm:string-value property of the attribute.
      * @param type
@@ -68,6 +69,9 @@ public interface ContentHandler
     /**
      * Receive notification of an namespace in the style of a lexical attribute. <br/>
      * Note that the timing of the namespace event is immediately after a start element.
+     * 
+     * An attempt to bind a reserved namespace prefix (xml, xmlns) incorrectly
+     * <em>must</em> throw a GenXDMException.
      * 
      * @param prefix
      *            The name of the namespace node. Cannot be <code>null</code>.

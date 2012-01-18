@@ -46,13 +46,13 @@ final class DomSequenceBuilder
     {
         if (m_depth > 0)
         {
-            final Node attribute = DomSupport.setAttribute(m_current, namespaceURI, localName, prefix, data, Emulation.C14N, atomBridge);
+            final Node attribute = DomSupport.setAttributeUntyped(m_current, namespaceURI, localName, prefix, Emulation.C14N.atomsToString(data, atomBridge));
             setAnnotationType(attribute, type);
         }
         else
         {
             startNodeProcessing();
-            m_current = DomSupport.createAttribute(getOwner(), namespaceURI, localName, prefix, data, Emulation.C14N, atomBridge);
+            m_current = DomSupport.createAttributeUntyped(getOwner(), namespaceURI, localName, prefix, Emulation.C14N.atomsToString(data, atomBridge));
             setAnnotationType(m_current, type);
             endNodeProcessing();
         }

@@ -292,7 +292,7 @@ public class DomModel
     {
         if (null != origin)
         {
-            if (null != DomSupport.getFirstChild(origin))
+            if (null != getFirstChild(origin))
             {
                 return new IterableChildAxisElements<Node>(origin, this);
             }
@@ -385,14 +385,32 @@ public class DomModel
 
     public Node getFirstChild(Node origin)
     {
-        return DomSupport.getFirstChild(origin);
+        if (origin != null)
+        {
+            if (isParentNode(origin.getNodeType()))
+            {
+                Node candidate = origin.getFirstChild();
+                while (null != candidate)
+                {
+                    if (null != DomSupport.getNodeKind(candidate))
+                    {
+                        return candidate;
+                    }
+                    else
+                    {
+                        candidate = candidate.getNextSibling();
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public Node getFirstChildElement(Node origin)
     {
         if (origin != null)
         {
-            Node child = DomSupport.getFirstChild(origin);
+            Node child = getFirstChild(origin);
             while (child != null)
             {
                 if (Node.ELEMENT_NODE == child.getNodeType())
@@ -492,7 +510,7 @@ public class DomModel
             {
                 final int length = mixed.getLength();
 
-                final int realLength = DomSupport.namespaceCount(mixed);
+                final int realLength = namespaceCount(mixed);
 
                 if (realLength > 0)
                 {
@@ -538,7 +556,7 @@ public class DomModel
             {
                 final int length = mixed.getLength();
 
-                final int realLength = DomSupport.namespaceCount(mixed);
+                final int realLength = namespaceCount(mixed);
 
                 if (realLength > 0)
                 {
@@ -569,7 +587,7 @@ public class DomModel
 
     public String getNamespaceURI(Node node)
     {
-        return DomSupport.getNamespaceURIAsString(node);
+        return getNamespaceURIAsString(node);
     }
 
     public Node getNextSibling(Node origin)
@@ -719,7 +737,7 @@ public class DomModel
             final NamedNodeMap namespacesAndAttributes = node.getAttributes();
             final int length = namespacesAndAttributes.getLength();
 
-            final int nsLength = DomSupport.namespaceCount(namespacesAndAttributes);
+            final int nsLength = namespaceCount(namespacesAndAttributes);
             
             if (length > nsLength)
                 return true;
@@ -745,7 +763,16 @@ public class DomModel
 
     public boolean hasNamespaces(Node origin)
     {
-        return DomSupport.hasNamespaces(origin);
+        PreCondition.assertArgumentNotNull(origin, "origin");
+        if (origin.hasAttributes())
+        {
+            final NamedNodeMap mixed = origin.getAttributes();
+            if (null != mixed)
+            {
+                return namespaceCount(mixed) > 0;
+            }
+        }
+        return false;
     }
 
     public boolean hasNextSibling(Node node)
@@ -767,12 +794,14 @@ public class DomModel
     {
         if (null != node)
         {
-            return DomSupport.isAttribute(node);
+            final short nodeType = node.getNodeType();
+            if (nodeType == Node.ATTRIBUTE_NODE)
+            {
+                final String namespaceURI = node.getNamespaceURI();
+                return XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI) ? false : true;
+            }
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public boolean isElement(Node node)
@@ -827,12 +856,14 @@ public class DomModel
     {
         if (null != node)
         {
-            return DomSupport.isNamespace(node);
+            final short nodeType = node.getNodeType();
+            if (nodeType == Node.ATTRIBUTE_NODE)
+            {
+                final String namespaceURI = node.getNamespaceURI();
+                return XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI) ? true : false;
+            }
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public DomNID getNodeId(Node node)
@@ -1007,14 +1038,7 @@ public class DomModel
         else
         {
             final String prefix = node.getPrefix();
-            if (null != prefix)
-            {
-                return prefix;
-            }
-            else
-            {
-                return XMLConstants.DEFAULT_NS_PREFIX;
-            }
+            return (prefix != null) ? prefix : XMLConstants.DEFAULT_NS_PREFIX;
         }
     }
     
@@ -1037,7 +1061,7 @@ public class DomModel
         }
     }
 
-    private static Iterable<Node> getNamespaces(final Node node)
+    private Iterable<Node> getNamespaces(final Node node)
     {
         if (node instanceof Element)
         {
@@ -1050,7 +1074,7 @@ public class DomModel
                 {
                     final int length = mixed.getLength();
 
-                    final int realLength = DomSupport.namespaceCount(mixed);
+                    final int realLength = namespaceCount(mixed);
 
                     if (realLength > 0)
                     {
@@ -1090,7 +1114,7 @@ public class DomModel
         }
     }
 
-    private static Iterable<Node> getNamespacesInScope(final Node node)
+    private Iterable<Node> getNamespacesInScope(final Node node)
     {
         if (node instanceof Element)
         {
@@ -1099,7 +1123,7 @@ public class DomModel
             Node currentNode = DomSupport.getParentNode(element);
             while (null != currentNode)
             {
-                if (DomSupport.hasNamespaces(currentNode))
+                if (hasNamespaces(currentNode))
                 {
                     scopes.addFirst(currentNode);
                 }
@@ -1170,5 +1194,83 @@ public class DomModel
         {
             return null;
         }
+    }
+
+    private boolean isParentNode(final short nodeType)
+    {
+        switch (nodeType)
+        {
+            case Node.DOCUMENT_NODE:
+            case Node.ELEMENT_NODE:
+            case Node.DOCUMENT_FRAGMENT_NODE:
+            {
+                return true;
+            }
+
+            default:
+            {
+                return false;
+            }
+        }
+    }
+
+    private String getNamespaceURIAsString(final Node node)
+    {
+        switch (node.getNodeType())
+        {
+            case Node.ELEMENT_NODE:
+            {
+                String ns = node.getNamespaceURI();
+                return (ns != null) ? ns : XMLConstants.NULL_NS_URI;
+            }
+            case Node.ATTRIBUTE_NODE:
+            {
+                final String namespaceURI = node.getNamespaceURI();
+
+                if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI))
+                {
+                    return XMLConstants.NULL_NS_URI;
+                }
+                else
+                {
+                    return (namespaceURI != null) ? namespaceURI : XMLConstants.NULL_NS_URI;                }
+            }
+            case Node.PROCESSING_INSTRUCTION_NODE:
+            {
+                return XMLConstants.NULL_NS_URI;
+            }
+            case Node.CDATA_SECTION_NODE:
+            case Node.TEXT_NODE:
+            case Node.COMMENT_NODE:
+            case Node.DOCUMENT_NODE:
+            {
+                return null;
+            }
+            default:
+            {
+                throw new UnsupportedOperationException(Short.toString(node.getNodeType()));
+            }
+        }
+    }
+
+    private int namespaceCount(final NamedNodeMap mixed)
+    {
+        final int length = mixed.getLength();
+
+        int realLength = 0;
+
+        for (int i = 0; i < length; i++)
+        {
+            final Node node = mixed.item(i);
+
+            final String namespaceURI = node.getNamespaceURI();
+
+            if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI))
+            {
+                realLength++;
+            }
+        }
+
+        return realLength;
     }
 }
