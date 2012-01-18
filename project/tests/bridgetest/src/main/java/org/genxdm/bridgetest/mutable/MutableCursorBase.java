@@ -28,6 +28,7 @@ import java.util.List;
 import org.genxdm.Feature;
 import org.genxdm.NodeKind;
 import org.genxdm.ProcessingContext;
+import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
 import org.genxdm.bridgetest.TestBase;
 import org.genxdm.mutable.MutableCursor;
 import org.genxdm.mutable.MutableModel;
@@ -42,7 +43,7 @@ public abstract class MutableCursorBase<N>
     public void factory()
     {
         ProcessingContext<N> context = newProcessingContext();
-        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
+        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
         NodeFactory<N> factory = newProcessingContext().getMutableContext().newCursor(doc).getFactory();
         assertNotNull(factory);
     }
@@ -51,7 +52,7 @@ public abstract class MutableCursorBase<N>
     public void children()
     {
         ProcessingContext<N> context = newProcessingContext();
-        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
+        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
         MutableCursor<N> cursor = context.getMutableContext().newCursor(doc);
         MutableCursor<N> cursor2 = context.getMutableContext().newCursor(doc);
         cursor.moveToFirstChild();
@@ -141,7 +142,7 @@ public abstract class MutableCursorBase<N>
     public void attributes()
     {
         ProcessingContext<N> context = newProcessingContext();
-        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
+        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
         MutableCursor<N> cursor = context.getMutableContext().newCursor(doc);
         cursor.moveToFirstChild();
         MutableModel<N> model = context.getMutableContext().getModel();
@@ -175,7 +176,7 @@ public abstract class MutableCursorBase<N>
     public void namespace()
     {
         ProcessingContext<N> context = newProcessingContext();
-        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
+        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
         MutableCursor<N> cursor = context.getMutableContext().newCursor(doc);
         cursor.moveToFirstChild();
         MutableModel<N> model = context.getMutableContext().getModel();
@@ -210,7 +211,7 @@ public abstract class MutableCursorBase<N>
     public void siblings()
     {
         ProcessingContext<N> context = newProcessingContext();
-        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
+        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
         MutableModel<N> model = context.getMutableContext().getModel();
         MutableCursor<N> cursor = context.getMutableContext().newCursor(doc);
         NodeFactory<N> factory = cursor.getFactory();
@@ -430,7 +431,7 @@ public abstract class MutableCursorBase<N>
     public void delete()
     {
         ProcessingContext<N> context = newProcessingContext();
-        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
+        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
         MutableModel<N> model = context.getMutableContext().getModel();
         MutableCursor<N> cursor = context.getMutableContext().newCursor(doc);
         cursor.moveToFirstChild();
@@ -477,7 +478,7 @@ public abstract class MutableCursorBase<N>
         assertEquals(target, result);
         assertEquals(model.getNodeId(doc),cursor.getNodeId());
         
-        doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
+        doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
         docElem = model.getFirstChild(doc);
         cursor = context.getMutableContext().newCursor(doc);
         cursor.moveToFirstChild();
@@ -495,7 +496,7 @@ public abstract class MutableCursorBase<N>
     public void replace()
     {
         ProcessingContext<N> context = newProcessingContext();
-        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
+        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
         MutableModel<N> model = context.getMutableContext().getModel();
         MutableCursor<N> cursor = context.getMutableContext().newCursor(doc);
         cursor.moveToFirstChild();
@@ -653,7 +654,7 @@ public abstract class MutableCursorBase<N>
        
         
         // restoring old document node
-        doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
+        doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
         cursor = context.getMutableContext().newCursor(doc);
         docElem = model.getFirstChild(doc);
         old = null;

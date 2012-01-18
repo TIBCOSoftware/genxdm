@@ -15,16 +15,17 @@
  */
 package org.genxdm.bridge.axiom.enhanced;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMFactory;
-import org.genxdm.bridge.axiom.AxiomFragmentBuilder;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;
+import org.genxdm.io.FragmentBuilder;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 
@@ -34,7 +35,7 @@ final class AxiomSequenceBuilder
     public AxiomSequenceBuilder(final AxiomSAProcessingContext pcx, final OMFactory factory, final boolean ignoreComments)
     {
 		this.pcx = pcx;
-		this.base = pcx.getProcessingContext().newFragmentBuilder();
+		this.base = pcx.getProcessingContext().newFragmentBuilder(null);
 	}
 	
 	public void attribute(final String namespaceURI, final String localName, final String prefix, final List<? extends XmlAtom> value, final QName type)
@@ -49,6 +50,7 @@ final class AxiomSequenceBuilder
 	}
 	
 	public void close()
+	    throws IOException
 	{
 	    base.close();
 	}
@@ -69,6 +71,7 @@ final class AxiomSequenceBuilder
 	}
 
 	public void flush()
+	    throws IOException
 	{
 	    base.flush();
 	}
@@ -124,5 +127,5 @@ final class AxiomSequenceBuilder
 	}
 
     private final AxiomSAProcessingContext pcx;
-	private final AxiomFragmentBuilder base;
+	private final FragmentBuilder<Object> base;
 }
