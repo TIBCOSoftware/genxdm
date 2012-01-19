@@ -27,7 +27,6 @@ import org.genxdm.Feature;
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
 import org.genxdm.ProcessingContext;
-import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
 import org.genxdm.bridgetest.TestBase;
 import org.genxdm.bridgetest.utilities.Events;
 import org.genxdm.io.FragmentBuilder;
@@ -43,7 +42,7 @@ public abstract class MutableModelBase<N>
     public void factory()
     {
         ProcessingContext<N> context = newProcessingContext();
-        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
+        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
         NodeFactory<N> factory = newProcessingContext().getMutableContext().getModel().getFactory(doc);
         assertNotNull(factory);
     }
@@ -53,7 +52,7 @@ public abstract class MutableModelBase<N>
     {
         ProcessingContext<N> context = newProcessingContext();
         MutableModel<N> mutant = context.getMutableContext().getModel();
-        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
+        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
         NodeFactory<N> factory = mutant.getFactory(doc);
         Model<N> model = context.getModel();
         N element = model.getFirstChildElement(doc);
@@ -81,7 +80,7 @@ public abstract class MutableModelBase<N>
         for (@SuppressWarnings("unused")N n : sids) { i++; }
         assertEquals(6, i);
         
-        doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
+        doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
         element = model.getFirstChildElement(doc);
         
         N last = model.getLastChild(element);
@@ -106,7 +105,7 @@ public abstract class MutableModelBase<N>
     public void attributes()
     {
         ProcessingContext<N> context = newProcessingContext();
-        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
+        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
         MutableModel<N> model = context.getMutableContext().getModel();
         NodeFactory<N> factory = model.getFactory(doc);
         
@@ -137,7 +136,7 @@ public abstract class MutableModelBase<N>
     public void namespace()
     {
         ProcessingContext<N> context = newProcessingContext();
-        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
+        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
         MutableModel<N> model = context. getMutableContext().getModel();
         
         // note: not having a namespace axis isn't an excuse
@@ -169,7 +168,7 @@ public abstract class MutableModelBase<N>
     public void siblings()
     {
         ProcessingContext<N> context = newProcessingContext();
-        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
+        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
         MutableModel<N> model = context.getMutableContext().getModel();
         NodeFactory<N> factory = model.getFactory(doc);
         
@@ -293,7 +292,7 @@ public abstract class MutableModelBase<N>
     public void delete()
     {
         ProcessingContext<N> context = newProcessingContext();
-        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
+        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
         MutableModel<N> model = context.getMutableContext().getModel();
         
         N docElem = model.getFirstChildElement(doc);
@@ -332,7 +331,7 @@ public abstract class MutableModelBase<N>
     public void replace()
     {
         ProcessingContext<N> context = newProcessingContext();
-        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
+        N doc = createSimpleAllKindsDocument(context.newFragmentBuilder());
         MutableModel<N> model = context.getMutableContext().getModel();
         NodeFactory<N> factory = model.getFactory(doc);
         
@@ -406,7 +405,7 @@ public abstract class MutableModelBase<N>
         assertEquals("none", model.getAttributeStringValue(doc, "", "att"));
         
         // reset the document; it got confused up there
-        doc = model.getFirstChildElement(createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter())));
+        doc = model.getFirstChildElement(createSimpleAllKindsDocument(context.newFragmentBuilder()));
         factory = model.getFactory(doc);
         // replace node: attribute, child-node (text, element, comment, pi)
         // replacement nodes
@@ -459,7 +458,7 @@ public abstract class MutableModelBase<N>
     public void copy()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         assertNotNull(builder);
         
         // first, use the events matcher to copy a doc as it's constructed.

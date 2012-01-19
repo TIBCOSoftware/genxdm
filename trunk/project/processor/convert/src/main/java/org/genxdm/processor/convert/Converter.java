@@ -66,7 +66,7 @@ public class Converter<N, A>
             }
         }
         // otherwise, do a text-only conversion.
-        return convert(source, targetContext.newFragmentBuilder(null));
+        return convert(source, targetContext.newFragmentBuilder());
     }
     
     /** Do a simple conversion, tree model to tree model.

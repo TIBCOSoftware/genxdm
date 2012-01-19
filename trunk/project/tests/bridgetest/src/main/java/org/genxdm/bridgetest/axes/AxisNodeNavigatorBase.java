@@ -25,7 +25,6 @@ import javax.xml.XMLConstants;
 import org.genxdm.Feature;
 import org.genxdm.Model;
 import org.genxdm.ProcessingContext;
-import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
 import org.genxdm.bridgetest.TestBase;
 import org.genxdm.io.FragmentBuilder;
 import org.junit.Test;
@@ -41,7 +40,7 @@ public abstract class AxisNodeNavigatorBase<N>
         
         boolean doInheritedAttributeTests = context.isSupported(Feature.ATTRIBUTE_AXIS_INHERIT);
         
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
         
         assertNotNull(doc);
@@ -190,7 +189,7 @@ public abstract class AxisNodeNavigatorBase<N>
         ProcessingContext<N> context = newProcessingContext();
         if (context.isSupported(Feature.NAMESPACE_AXIS))
         {
-            FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+            FragmentBuilder<N> builder = context.newFragmentBuilder();
             N doc = createComplexTestDocument(builder);
             
             assertNotNull(doc);
@@ -327,7 +326,7 @@ public abstract class AxisNodeNavigatorBase<N>
     public void ancestors()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
@@ -419,7 +418,7 @@ public abstract class AxisNodeNavigatorBase<N>
     public void descendants()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
         
         assertNotNull(doc);
@@ -533,7 +532,7 @@ public abstract class AxisNodeNavigatorBase<N>
     public void children()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
         
         assertNotNull(doc);
@@ -604,7 +603,7 @@ public abstract class AxisNodeNavigatorBase<N>
     public void childElements()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
         
         assertNotNull(doc);
@@ -715,7 +714,7 @@ public abstract class AxisNodeNavigatorBase<N>
     public void followingSiblings()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
         
         assertNotNull(doc);
@@ -791,7 +790,7 @@ public abstract class AxisNodeNavigatorBase<N>
     public void precedingSiblings()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
         
         assertNotNull(doc);
@@ -867,7 +866,7 @@ public abstract class AxisNodeNavigatorBase<N>
     public void following()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
         
         assertNotNull(doc);
@@ -946,7 +945,7 @@ public abstract class AxisNodeNavigatorBase<N>
     public void preceding()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
         
         assertNotNull(doc);

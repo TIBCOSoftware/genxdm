@@ -15,7 +15,6 @@
  */
 package org.genxdm;
 
-import org.genxdm.io.ContentFilter;
 import org.genxdm.io.DocumentHandlerFactory;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.mutable.MutableContext;
@@ -95,10 +94,8 @@ public interface ProcessingContext<N> extends DocumentHandlerFactory<N>
     /**
      * Returns a new {@link FragmentBuilder} for constructing data models.
      * 
-     * @param filter A ContentFilter which is to be used to modify the input;
-     * may be null.
      */
-    FragmentBuilder<N> newFragmentBuilder(ContentFilter filter);
+    FragmentBuilder<N> newFragmentBuilder();
 
     /**
      * Applies the node() test to the item.
