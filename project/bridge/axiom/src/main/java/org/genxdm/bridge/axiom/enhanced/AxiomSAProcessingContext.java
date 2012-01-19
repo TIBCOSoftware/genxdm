@@ -23,6 +23,8 @@ import javax.xml.stream.XMLReporter;
 import org.genxdm.bridge.axiom.AxiomProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XmlAtomBridge;
+import org.genxdm.bridgekit.filters.FilteredSequenceBuilder;
+import org.genxdm.bridgekit.filters.NamespaceFixupSequenceFilter;
 import org.genxdm.bridgekit.tree.CoreModelDecoration;
 import org.genxdm.bridgekit.tree.CoreModelDecorator;
 import org.genxdm.bridgekit.tree.CursorOnTypedModel;
@@ -38,6 +40,7 @@ import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.io.SAXValidator;
 import org.genxdm.typed.io.SequenceBuilder;
+import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.io.TypedDocumentHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.TypesBridge;
@@ -102,7 +105,14 @@ public final class AxiomSAProcessingContext
 
     public SequenceBuilder<Object, XmlAtom> newSequenceBuilder()
     {
-	    return new AxiomSequenceBuilder(this, context.getOMFactory(), true);
+        // TODO: this is temporary; it enables namespace fixup that we
+        // need, but does so by piling on the virtual calls.  fix is
+        // either combining the filter and the wrapper, or pulling the
+        // implementation into here.
+        SequenceFilter<XmlAtom> filter = new NamespaceFixupSequenceFilter<XmlAtom>();
+        filter.setTypesBridge(metaBridge);
+        filter.setAtomBridge(atomBridge);
+	    return new FilteredSequenceBuilder<Object, XmlAtom>(filter, new AxiomSequenceBuilder(this, context.getOMFactory(), true));
     }
     
     @Override

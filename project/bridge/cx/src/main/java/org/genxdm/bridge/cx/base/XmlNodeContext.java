@@ -24,8 +24,8 @@ import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridge.cx.typed.TypedXmlNodeContext;
 import org.genxdm.bridgekit.filters.FilteredFragmentBuilder;
+import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.io.ContentFilter;
 import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.io.Resolver;
@@ -85,12 +85,9 @@ public final class XmlNodeContext
         return new XmlNodeCursor(node);
     }
 
-    public FragmentBuilder<XmlNode> newFragmentBuilder(ContentFilter filter)
+    public FragmentBuilder<XmlNode> newFragmentBuilder()
     {
-        FragmentBuilder<XmlNode> b = new XmlNodeBuilder();
-        if (filter != null)
-            return new FilteredFragmentBuilder<XmlNode>(filter, b);
-        return b;
+        return new FilteredFragmentBuilder<XmlNode>(new NamespaceFixupFilter(), new XmlNodeBuilder());
     }
 
     public XmlNode node(Object item)

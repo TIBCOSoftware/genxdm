@@ -27,11 +27,8 @@ import java.util.List;
 import javax.xml.XMLConstants;
 
 import org.genxdm.ProcessingContext;
-
-import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
 import org.genxdm.bridgetest.TestBase;
 import org.genxdm.io.FragmentBuilder;
-
 import org.junit.Test;
 
 // Note: this *also* handles the testing of ContentHandler and NodeSource,
@@ -45,7 +42,7 @@ public abstract class BuilderBase<N>
         // verify we can construct things well-formed
         ProcessingContext<N> context = newProcessingContext();
         
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         
         assertNotNull(builder); // never null
         assertNull(builder.getNode()); // should be null if list is empty
@@ -109,7 +106,7 @@ public abstract class BuilderBase<N>
         // event stream, even if we use the same builder
         ProcessingContext<N> context = newProcessingContext();
         
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         
         assertNotNull(builder); // never null
         assertNull(builder.getNode()); // should be null if list is empty
@@ -133,7 +130,7 @@ public abstract class BuilderBase<N>
         // test various ways of supplying bad data
         ProcessingContext<N> context = newProcessingContext();
         
-        FragmentBuilder<N> builder = context.newFragmentBuilder(null);
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         
         assertNotNull(builder); // never null
 
