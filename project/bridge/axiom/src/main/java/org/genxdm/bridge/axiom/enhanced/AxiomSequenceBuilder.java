@@ -35,7 +35,7 @@ final class AxiomSequenceBuilder
     public AxiomSequenceBuilder(final AxiomSAProcessingContext pcx, final OMFactory factory, final boolean ignoreComments)
     {
 		this.pcx = pcx;
-		this.base = pcx.getProcessingContext().newFragmentBuilder(null);
+		this.base = pcx.getProcessingContext().newFragmentBuilder();
 	}
 	
 	public void attribute(final String namespaceURI, final String localName, final String prefix, final List<? extends XmlAtom> value, final QName type)

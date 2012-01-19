@@ -15,24 +15,22 @@
  */
 package org.genxdm.bridgetest;
 
-import org.genxdm.Cursor;
-import org.genxdm.Feature;
-import org.genxdm.Model;
-import org.genxdm.ProcessingContext;
-import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
-import org.genxdm.io.DocumentHandler;
-import org.genxdm.io.FragmentBuilder;
-import org.genxdm.mutable.MutableContext;
-import org.genxdm.typed.TypedContext;
-
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import org.genxdm.Cursor;
+import org.genxdm.Feature;
+import org.genxdm.Model;
+import org.genxdm.ProcessingContext;
+import org.genxdm.io.DocumentHandler;
+import org.genxdm.io.FragmentBuilder;
+import org.genxdm.mutable.MutableContext;
+import org.genxdm.typed.TypedContext;
+import org.junit.Test;
 
 /** Abstract base tests for the contract of ProcessingContext.
  * 
@@ -50,7 +48,7 @@ public abstract class ContextBase<N>
         // further testing of the bookmark is up to the bookmark test.
         ProcessingContext<N> context = newProcessingContext();
         
-        N testDoc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter())); 
+        N testDoc = createSimpleAllKindsDocument(context.newFragmentBuilder()); 
         assertNotNull(testDoc);
         
         assertNotNull(context.bookmark(testDoc));
@@ -86,7 +84,7 @@ public abstract class ContextBase<N>
         // must assert if node is null.
         ProcessingContext<N> context = newProcessingContext();
         
-        N testDoc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
+        N testDoc = createSimpleAllKindsDocument(context.newFragmentBuilder());
         assertNotNull(testDoc);
         
         Cursor<N> cursor = context.newCursor(testDoc);
@@ -104,8 +102,8 @@ public abstract class ContextBase<N>
         // called twice, should return two different objects.
        ProcessingContext<N> context = newProcessingContext();
        
-       FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
-       FragmentBuilder<N> slacker = context.newFragmentBuilder(new NamespaceFixupFilter());
+       FragmentBuilder<N> builder = context.newFragmentBuilder();
+       FragmentBuilder<N> slacker = context.newFragmentBuilder();
        
        assertNotNull(builder); // never null
        assertNotNull(slacker);
@@ -166,7 +164,7 @@ public abstract class ContextBase<N>
         assertFalse(context.isNode(this)); // this test case is nobody's node
         assertNull(context.node(this)); // so can't be cast.
         
-        N testDoc = createSimpleAllKindsDocument(context.newFragmentBuilder(new NamespaceFixupFilter()));
+        N testDoc = createSimpleAllKindsDocument(context.newFragmentBuilder());
         
         assertNotNull(testDoc); // don't crash.  :-)
         

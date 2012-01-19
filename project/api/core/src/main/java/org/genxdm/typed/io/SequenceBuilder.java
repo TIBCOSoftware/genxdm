@@ -15,7 +15,7 @@
  */
 package org.genxdm.typed.io;
 
-import org.genxdm.NodeSource;
+import org.genxdm.io.FragmentBuilder;
 
 
 /**
@@ -26,12 +26,11 @@ import org.genxdm.NodeSource;
  * is schema aware.
  */
 public interface SequenceBuilder<N, A>
-    extends SequenceHandler<A>, NodeSource<N>
+    extends SequenceHandler<A>, FragmentBuilder<N>
 {
     /**
      * Resets the builder by clearing the list of nodes that have been constructed in earlier executions.
      */
     void reset();
-
 
 }

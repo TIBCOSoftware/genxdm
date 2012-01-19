@@ -24,11 +24,11 @@ import org.genxdm.Model;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.filters.FilteredFragmentBuilder;
+import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
 import org.genxdm.bridgekit.tree.BookmarkOnModel;
 import org.genxdm.bridgekit.tree.CursorOnModel;
 import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.io.ContentFilter;
 import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.io.Resolver;
@@ -188,12 +188,9 @@ public class AxiomProcessingContext
         return new CursorOnModel<Object>(node, model);
     }
 
-    public FragmentBuilder<Object> newFragmentBuilder(ContentFilter filter)
+    public FragmentBuilder<Object> newFragmentBuilder()
     {
-        FragmentBuilder<Object> b = new AxiomFragmentBuilder(omfactory, false);
-        if (filter != null)
-            return new FilteredFragmentBuilder<Object>(filter, b);
-        return b;
+        return new FilteredFragmentBuilder<Object>(new NamespaceFixupFilter(), new AxiomFragmentBuilder(omfactory, false));
     }
 
     public Object node(Object item)

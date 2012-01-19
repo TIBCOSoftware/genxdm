@@ -15,6 +15,11 @@
  */
 package org.genxdm.processor.io.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -31,13 +36,7 @@ import org.genxdm.ProcessingContext;
 import org.genxdm.bridgekit.ProcessingContextFactory;
 import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.FragmentBuilder;
-
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 // TODO: this should be testing that we can read and write the
 // same thing, every time.  Can we re-use the Events filter in
@@ -107,7 +106,7 @@ abstract public class RoundTripBase<N>
  
  'cept all one line, or something.
  */
-        FragmentBuilder<N> builder = context.newFragmentBuilder(null);
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         builder.startDocument(null, null);
         builder.processingInstruction("pi", "3.1415926535");
         builder.startElement("http://www.example.com/ns/a", "a", "a");

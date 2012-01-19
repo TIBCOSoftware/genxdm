@@ -16,9 +16,9 @@
 package org.genxdm.bridgetest.axes;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 
 import javax.xml.XMLConstants;
 
@@ -26,7 +26,6 @@ import org.genxdm.Cursor;
 import org.genxdm.Feature;
 import org.genxdm.NodeKind;
 import org.genxdm.ProcessingContext;
-import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
 import org.genxdm.bridgetest.TestBase;
 import org.genxdm.io.FragmentBuilder;
 import org.junit.Test;
@@ -45,7 +44,7 @@ public abstract class NavigatorBase<N>
     public void attributes()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
 
         assertNotNull(doc);
@@ -93,7 +92,7 @@ public abstract class NavigatorBase<N>
     public void ids()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
         
         assertNotNull(doc);
@@ -126,7 +125,7 @@ public abstract class NavigatorBase<N>
     public void children()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
         
         assertNotNull(doc);
@@ -171,7 +170,7 @@ public abstract class NavigatorBase<N>
     public void siblings()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
         
         assertNotNull(doc);
@@ -261,7 +260,7 @@ public abstract class NavigatorBase<N>
     public void ancestors()
     {
         ProcessingContext<N> context = newProcessingContext();
-        FragmentBuilder<N> builder = context.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
         N doc = createComplexTestDocument(builder);
         
         assertNotNull(doc);
