@@ -6,7 +6,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
 
-import org.genxdm.Feature;
 import org.genxdm.Model;
 import org.genxdm.ProcessingContext;
 import org.genxdm.io.DocumentHandler;
@@ -36,7 +35,7 @@ abstract public class BaseBridgePerfTest<N, A> implements BridgePerfTest<N, A> {
 	public void setContext(ProcessingContext<N> pcx) {
 		// Ensure that context supports the features we need.
 		m_pcx = pcx;
-		m_docBuilder = m_pcx.newFragmentBuilder(null);
+		m_docBuilder = m_pcx.newFragmentBuilder();
 		m_model = m_pcx.getModel();
 		m_docHandler = m_pcx.newDocumentHandler();
 	}

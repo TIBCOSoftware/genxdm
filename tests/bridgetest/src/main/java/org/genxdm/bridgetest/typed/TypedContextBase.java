@@ -3,7 +3,6 @@ package org.genxdm.bridgetest.typed;
 import static org.junit.Assert.assertNotNull;
 
 import org.genxdm.ProcessingContext;
-import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.typed.TypedContext;
 import org.junit.Test;
@@ -29,7 +28,7 @@ public abstract class TypedContextBase<N, A>
         ProcessingContext<N> parent = context.getProcessingContext();
         assertNotNull(parent);
         assertNotNull(context.getModel());
-        FragmentBuilder<N> builder = parent.newFragmentBuilder(new NamespaceFixupFilter());
+        FragmentBuilder<N> builder = parent.newFragmentBuilder();
         N node = createSimpleAllKindsDocument(builder);
         assertNotNull(node);
         assertNotNull(context.newCursor(node));

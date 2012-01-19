@@ -97,7 +97,7 @@ public class SampleConverter<Nsrc, Ntrgt>
 	{
 		// Convert by writing a source cursor to a target builder.
 		final Cursor<Nsrc> srcCursor = srcPcx.newCursor(srcNode);
-		final FragmentBuilder<Ntrgt> trgtBuilder = trgtPcx.newFragmentBuilder(null);
+		final FragmentBuilder<Ntrgt> trgtBuilder = trgtPcx.newFragmentBuilder();
         srcCursor.write(trgtBuilder);
         return trgtBuilder.getNode();
 	}

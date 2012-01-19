@@ -23,7 +23,6 @@ import org.genxdm.typed.io.TypedDocumentHandlerFactory;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.TypesBridge;
 import org.genxdm.typed.variant.VariantBridge;
-import org.genxdm.xs.Schema;
 
 /**
  * A context for schema-related processing and state.
