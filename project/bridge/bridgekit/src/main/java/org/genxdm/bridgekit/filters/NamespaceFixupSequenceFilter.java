@@ -59,7 +59,7 @@ public class NamespaceFixupSequenceFilter<A>
             }
             required.add(new DefaultNamespaceBinding(p, ns));
         }
-        Type t = types.getComponentProvider().getTypeDefinition(type);
+        Type t = (type == null) ? BuiltInSchema.SINGLETON.UNTYPED_ATOMIC : types.getComponentProvider().getTypeDefinition(type);
         // i'm not sure about this test
         if ( (type != null) && t.derivedFromType(BuiltInSchema.SINGLETON.QNAME, methods) )
         {
@@ -146,6 +146,10 @@ public class NamespaceFixupSequenceFilter<A>
         throws GenXDMException
     {
         PreCondition.assertNotNull(output);
+        if (prefix == null)
+            prefix = XMLConstants.DEFAULT_NS_PREFIX;
+        if (namespaceURI == null)
+            namespaceURI = XMLConstants.NULL_NS_URI;
         // check reserved namespaces
         if (prefix.equals(XMLConstants.XML_NS_PREFIX) &&
             !namespaceURI.equals(XMLConstants.XML_NS_URI) )
@@ -286,7 +290,7 @@ public class NamespaceFixupSequenceFilter<A>
         // attributes in namespaces have prefixes, and that the bindings are in scope
         for (Attr a : attributes)
         {
-            if (a.typeName != null)
+            if (a.data != null)
                 output.attribute(a.namespace, a.name, a.prefix, a.data, a.typeName);
             else
                 output.attribute(a.namespace, a.name, a.prefix, a.value, a.type);

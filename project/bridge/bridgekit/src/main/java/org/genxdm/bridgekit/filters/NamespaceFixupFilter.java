@@ -84,6 +84,10 @@ public class NamespaceFixupFilter
         throws GenXDMException
     {
         PreCondition.assertNotNull(output);
+        if (prefix == null)
+            prefix = XMLConstants.DEFAULT_NS_PREFIX;
+        if (namespaceURI == null)
+            namespaceURI = XMLConstants.NULL_NS_URI;
         // check reserved namespaces
         if (prefix.equals(XMLConstants.XML_NS_PREFIX) &&
             !namespaceURI.equals(XMLConstants.XML_NS_URI) )
