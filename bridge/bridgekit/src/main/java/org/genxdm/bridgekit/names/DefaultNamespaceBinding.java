@@ -44,7 +44,7 @@ public final class DefaultNamespaceBinding implements NamespaceBinding
     @Override
     public String toString()
     {
-        return prefix + "{" + uri +"}";
+        return prefix + "=>" + uri;
     }
     
     @Override
