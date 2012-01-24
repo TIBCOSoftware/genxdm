@@ -9,8 +9,8 @@ public class TestSerialize<N,A> extends BaseBridgePerfTest<N,A> {
 
 	StringWriter m_writer;
 	@Override
-	public String getName() {
-		return "Serialize";
+	public String getTestName() {
+		return getDocFilename();
 	}
 	
 	@Override
@@ -36,5 +36,10 @@ public class TestSerialize<N,A> extends BaseBridgePerfTest<N,A> {
 	public Iterable<String> iterativeTeardown() {
 		m_writer = null;
 		return null; 
+	}
+	@Override
+	public void finalTeardown()	{
+		m_writer = null;
+		super.finalTeardown();
 	}
 }
