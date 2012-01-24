@@ -1,16 +1,18 @@
 package org.genxdm.samples.performance.bridges;
 
 import java.util.ArrayList;
-import java.util.Properties;
+import java.util.Map;
 
 import org.genxdm.Feature;
 import org.genxdm.mutable.MutableContext;
 import org.genxdm.mutable.MutableModel;
 import org.genxdm.mutable.NodeFactory;
 
-public class TestMutateWithModel <N,A> extends BaseBridgePerfTest<N,A>
+public class TestDocumentCreationWithModel <N,A> extends BaseBridgePerfTest<N,A>
 implements MutationPerfTestConstants
 {
+	private int m_depth;
+	private int m_width;
 	private MutableContext<N> m_mutablePcx;
 	private MutableModel<N> m_mutableModel;
 	private NodeFactory<N> m_nodeFactory;
@@ -26,39 +28,56 @@ implements MutationPerfTestConstants
     	return REQUIRED_FEATURES;
     }
 	@Override
-	public String getName() {
-		return "Mutate via model";
+	public String getTestName() {
+		long size = 1;
+		for(int icnt = 1; icnt <= m_depth; icnt++)
+		{
+			size += Math.pow(m_width, icnt);
+		}
+		return "Document creation via model: " + size + " elements";
 	}
 	@Override
-	public void initialSetup(Properties props)	{
+	public void initialSetup(Map<String,Object> props)	{
+		super.initialSetup(props);
+		String depth = (String)props.get(DOC_CREATE_DEPTH_NAME);
+		if(depth == null)
+			m_depth = DOC_CREATE_DEPTH_DEFAULT;
+		else
+			m_depth = Integer.parseInt(depth);
+
+		String width = (String)props.get(DOC_CREATE_WIDTH_NAME);
+		if(width == null)
+			m_width = DOC_CREATE_WIDTH_DEFAULT;
+		else
+			m_width = Integer.parseInt(width);
 		m_mutablePcx = getPcx().getMutableContext();
 		m_mutableModel = m_mutablePcx.getModel();
 		m_nodeFactory = m_mutablePcx.getNodeFactory();
 	}
 	
 	@Override
-	public void iterativeSetup() {
-	}
+	public void iterativeSetup() {}
+	
 	@Override
 	public void execute() {
+//System.out.println("depth x width = " + m_depth + " x " + m_width);		
 		/* // Create a new document. */
 		final N documentNode = m_nodeFactory.createDocument(null, null);
 
-		final N documentElement = m_nodeFactory.createElement(MUTATE_NS, MUTATE_ROOT_NAME, MUTATE_PREFIX);
+		final N documentElement = m_nodeFactory.createElement(DOC_CREATE_NS, DOC_CREATE_ROOT_NAME, DOC_CREATE_PREFIX);
 
 		// Append the document element to the documentNode.
 		m_mutableModel.appendChild(documentNode, documentElement);
-
-		appendChildren(documentElement, MUTATE_NS, MUTATE_PREFIX, MUTATE_CHILD_NAMES, MUTATE_ATTS, MUTATE_TEXT_VALUES, MUTATATION_LEVELS);
+		appendChildren(documentElement, DOC_CREATE_NS, DOC_CREATE_PREFIX, DOC_CREATE_CHILD_NAME, DOC_CREATE_ATTS, DOC_CREATE_TEXT_VALUES, m_depth, m_width);
 	}
-	private void appendChildren(N parent, String ns, String prefix, String[] childNames, 
-			String[][] atts, String textValues[], int levels)
+	private void appendChildren(N parent, String ns, String prefix, String childName, String[][] atts, String textValues[], int depth, int width)
 	{
 		// Add children
-		for(String childName : childNames)
+		for(int icnt = 0; icnt < width; icnt++)
 		{
 			final N childElement = m_nodeFactory.createElement(ns, childName, prefix);
-			m_mutableModel.insertNamespace(childElement, MUTATE_PREFIX, ns);
+			m_mutableModel.appendChild(parent, childElement);
+			m_mutableModel.insertNamespace(childElement, DOC_CREATE_PREFIX, ns);
 			
 			// Add attributes
 			for(String[] att : atts)
@@ -67,9 +86,9 @@ implements MutationPerfTestConstants
 				m_mutableModel.insertAttribute(childElement, attribute);
 			}
 			// If not leaf node, add children
-			if(levels > 0)
+			if(depth > 1)
 			{
-				appendChildren(childElement, ns, prefix, childNames, atts, textValues, levels - 1);
+				appendChildren(childElement, ns, prefix, childName, atts, textValues, depth - 1, width);
 			}
 			// Else if leaf node, add text values
 			else

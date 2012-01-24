@@ -1,11 +1,13 @@
 package org.genxdm.samples.performance;
 
-import java.util.Properties;
+import java.util.Map;
 
 public interface PerfTest {
-	String getName();
+	String getBridgeName();
+	String getBridgeVersion();
+	String getTestName();
 	void execute();
-	void initialSetup(Properties props);
+	void initialSetup(Map<String,Object> props);
 	void iterativeSetup();
 	Iterable<String> iterativeTeardown();
 	void finalTeardown();
