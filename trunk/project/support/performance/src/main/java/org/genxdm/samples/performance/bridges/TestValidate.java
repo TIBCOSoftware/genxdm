@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Properties;
+import java.util.Map;
 
 import org.genxdm.Feature;
 import org.genxdm.io.Resolved;
@@ -22,16 +22,16 @@ import org.genxdm.xs.exceptions.SchemaExceptionCatcher;
 import org.genxdm.xs.resolve.CatalogResolver;
 import org.genxdm.xs.resolve.SchemaCatalog;
 
-class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
+public class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 {
-	public static final String SCHEMA_FILE_PROP_NAME = "bridge.validate.schema";
-	public static final String COPY_TYPE_ANNOTATION_NAME = "bridge.validate.copyTypeAnnotations";
+	public static final String SCHEMA_FILE_PROP_NAME = "schema";
+	public static final String COPY_TYPE_ANNOTATION_NAME = "copyTypeAnnotations";
 	private static final ArrayList<String> REQUIRED_FEATURES = new ArrayList<String>();
 	static 
 	{
 		REQUIRED_FEATURES.add(Feature.TYPED);
 	}
-	String m_schemaFile;
+	List<String> m_schemaFiles;
 	SchemaExceptionCatcher m_errors;
     ValidationHandler<A> m_validator;
     boolean m_copyTypeAnnotations = false;
@@ -42,41 +42,55 @@ class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
     	return REQUIRED_FEATURES;
     }
 	@Override
-	public String getName() {
-		return "Validate";
+	public String getTestName() {
+		return getDocFilename();
 	}
 	@Override
-	public void initialSetup(Properties props)	{
+	public void initialSetup(Map<String,Object> props)	{
 		super.initialSetup(props);
 		
-		m_schemaFile = props.getProperty(SCHEMA_FILE_PROP_NAME);
-		if(m_schemaFile == null)
+		Object schemaFiles = props.get(SCHEMA_FILE_PROP_NAME);
+		if(schemaFiles == null)
 		{
 			throw new IllegalStateException("Validation testing requires schema file location.");
 		}
-		String baseURI = props.getProperty(BridgePerfModule.BASE_URI_PROP_NAME);
+		if(schemaFiles instanceof List)
+		{
+			m_schemaFiles = (List<String>)schemaFiles;
+		}
+		else
+		{
+			m_schemaFiles = new ArrayList<String>();
+			m_schemaFiles.add((String)schemaFiles);
+		}
+		
+		String baseURI = (String)props.get(BASE_URI_PROP_NAME);
 		if(baseURI == null)
 		{
 			throw new IllegalStateException("Base URI must be specified.");
 		}
-		m_copyTypeAnnotations = Boolean.parseBoolean(props.getProperty(COPY_TYPE_ANNOTATION_NAME, "false"));
+		m_copyTypeAnnotations = Boolean.parseBoolean((String)props.get(COPY_TYPE_ANNOTATION_NAME));
 
 		// Load a schema...
 		final TypedContext<N,A> typedContext = getPcx().getTypedContext();
-        final String schemaFilePath = baseURI + "/" + m_schemaFile;
-        try {
-			addSchema(typedContext, new URI(schemaFilePath));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} catch (URISyntaxException e) {
-			throw new RuntimeException(e);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		} 
+		for(String schemaFile : m_schemaFiles)
+		{
+	        final String schemaFilePath = getBaseURI() + "/" + schemaFile;
+	        try {
+				addSchema(typedContext, new URI(schemaFilePath));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			} catch (URISyntaxException e) {
+				throw new RuntimeException(e);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			} 
+		}
         
 		// Create a validator...
 		final ValidatorFactory<N, A> vcf = new ValidatorFactory<N, A>(typedContext);
 		m_validator = vcf.newXdmContentValidator();
+		m_validator.setSchema(typedContext.getTypesBridge());
 	}
 	
 	@Override
@@ -116,6 +130,13 @@ class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 		return null; 
 	}
 	
+	@Override
+	public void finalTeardown()	{
+		m_schemaFiles = null;
+		m_errors = null;
+		m_validator = null;
+		super.finalTeardown();
+	}
 	protected LinkedList<SchemaException> addSchema(TypedContext<N, A> tpcx, URI uri) throws Exception
 	{
 		// Load a top-level schema into the processing context.
@@ -128,7 +149,7 @@ class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 		
 		parser.setComponentProvider(tpcx.getTypesBridge().getComponentProvider());
 		parser.setCatalogResolver(new MyResolver(), new MyCatalog());
-
+		
 		for (final Resolved<InputStream> resource : resources)
 		{
 			ComponentBag scBag = parser.parse(resource.getLocation(), resource.getResource(), resource.getSystemId(), errors);

@@ -12,10 +12,11 @@ public class TestNavigate<N,A> extends BaseBridgePerfTest<N,A>
 	long m_processingInstructions = 0;
 	long m_texts = 0;
 	long m_other = 0;
+	long m_all = 0;
 	
 	@Override
-	public String getName() {
-		return "Navigate";
+	public String getTestName() {
+		return getDocFilename();
 	}
 	
 	@Override
@@ -28,11 +29,13 @@ public class TestNavigate<N,A> extends BaseBridgePerfTest<N,A>
 		m_processingInstructions = 0;
 		m_texts = 0;
 		m_other = 0;
+		m_all = 0;
 	}
 	@Override
 	public void execute() {
 		N node = getTestNode();
 	    while (node!=null) {
+/*	    	
 	        switch(getModel().getNodeKind(node))
 	        {
 			case ATTRIBUTE:
@@ -60,6 +63,8 @@ public class TestNavigate<N,A> extends BaseBridgePerfTest<N,A>
 	        	m_other++;
 	        	break;
 	        }
+*/
+	    	m_all++;
 	        if(getModel().hasChildren(node))
 	        {
 		        node = getModel().getFirstChild(node);
@@ -76,6 +81,7 @@ public class TestNavigate<N,A> extends BaseBridgePerfTest<N,A>
 	@Override
 	public Iterable<String> iterativeTeardown() {
 		ArrayList<String> retval = new ArrayList<String>();
+/*		
        	if(m_attributes > 0)             retval.add("att      count = " + Long.toString(m_attributes));
        	if(m_comments > 0)               retval.add("comment  count = " + Long.toString(m_comments));
        	if(m_documents > 0)              retval.add("document count = " + Long.toString(m_documents));
@@ -84,6 +90,8 @@ public class TestNavigate<N,A> extends BaseBridgePerfTest<N,A>
        	if(m_processingInstructions > 0) retval.add("pi       count = " + Long.toString(m_processingInstructions));
        	if(m_texts > 0)                  retval.add("text     count = " + Long.toString(m_texts));
        	if(m_other > 0)                  retval.add("other    count = " + Long.toString(m_other));
+*/       	
+       	if(m_all > 0)                  retval.add("node count = " + Long.toString(m_all));
 		return retval; 
 	}
 }
