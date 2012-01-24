@@ -15,141 +15,489 @@
  */
 package org.genxdm.samples.performance;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Properties;
-import java.util.StringTokenizer;
+import java.util.HashMap;
+import java.util.List;
+
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.samples.performance.bridges.BaseBridgePerfTest;
+import org.xml.sax.Attributes;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 public class Performance {
+	private static final String CSV_OUTPUT = "-csv";
+	
 	public static void main(String[] args)
 	{
 		if(args.length < 1)
 		{
-			System.out.println("No performance properties file specified.");
+			System.out.println("No performance input file specified.");
 			System.exit(0);
 		}
 		// Let each test variation execute setup, so that we don't have a failure
 		// on the last run & waste time.
 		ArrayList<Performance> pList = new ArrayList<Performance>();
-		for(String propFile : args)
+		
+		boolean csvOut = false;
+		try
 		{
-			pList.add(new Performance(propFile));
-		}
-		for(Performance p : pList)
-		{
-			try {
-				p.runPerfTest();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			for(String arg : args)
+			{
+				if(CSV_OUTPUT.equalsIgnoreCase(arg))
+				{
+					csvOut = true;
+				}
+				else
+				{
+					pList.add(new Performance(arg));
+				}
 			}
+			for(Performance p : pList)
+			{
+				p.runTests(csvOut);
+			}
+		}
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
 	public static final Boolean DEBUG = false;
-	public static final String TEST_CNT_PROP_NAME = "base.testCnt";
-	public static final String TEST_MEMORY_PROP_NAME = "base.testMemoryUsage";
-	public static final String EXCLUDE_FIRST_RUN_NAME = "base.excludeOneRun";
-	public static final String INCLUDE_SUBTASK_LEVELS = "base.includeSubtaskLevels";
-	protected long m_testCnt;
-	protected boolean m_testMemoryUsage = false;
-	protected boolean m_excludeFirstRun = false;
-	protected int m_includeSubtaskLevels = 0;
-	private final ArrayList<PerfModule> m_modules = new ArrayList<PerfModule>();
-	private final Properties m_props;
-	private final String m_propFilename;
+	private String m_name;
+	private int m_reportSubtaskLevels = 2;
+	private boolean m_reportMemoryUsage = false;
+	private final String m_inputFilename;
+	private final Iterable<Module> m_modules;
+	private final ArrayList<String> m_bridges = new ArrayList<String>();
 
-	public Performance(String propFile) {
-		m_propFilename = propFile;
-		m_props = new Properties();
-		try {
-			m_props.load(new FileInputStream(propFile));
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		m_testCnt = Long.parseLong(m_props.getProperty(TEST_CNT_PROP_NAME, "1"));
-		if(m_testCnt <= 0)
-		{
-			m_testCnt = 1;
-		}
-		m_testMemoryUsage = Boolean.parseBoolean(m_props.getProperty(TEST_MEMORY_PROP_NAME, "false"));
-		m_excludeFirstRun = Boolean.parseBoolean(m_props.getProperty(EXCLUDE_FIRST_RUN_NAME, "false"));
-		String value = m_props.getProperty(INCLUDE_SUBTASK_LEVELS);
-		if(value != null && value.length() > 0)
-		{
-			m_includeSubtaskLevels = Integer.parseInt(value);
-		}
-		String moduleList = m_props.getProperty("modules");
-		if(moduleList != null)
-		{
-			StringTokenizer st = new StringTokenizer(moduleList, ",");
-			while(st.hasMoreTokens())
-			{
-				String moduleClass = st.nextToken();
-				try {
-					Class<?> clazz = Performance.class.getClassLoader().loadClass(moduleClass);
-					PerfModule module = (PerfModule)clazz.newInstance();
-					m_modules.add(module);
-				} catch (ClassNotFoundException e) {
-					throw new RuntimeException(e);
-				} catch (InstantiationException e) {
-					throw new RuntimeException(e);
-				} catch (IllegalAccessException e) {
-					throw new RuntimeException(e);
-				}
-			}
-		}
+	public Performance(String inputFile) throws SAXException, IOException {
+		m_inputFilename = inputFile;
+		m_modules = configure(inputFile, m_bridges);
 	}
 	/**
 	 * Performs the tests.
 	 * 
 	 * @throws Exception because any uncaught exception should stop the test
 	 */
-	public final void runPerfTest() throws Exception {
+	public final void runTests(boolean csvOut) throws Exception {
 		
-	    TaskTimer ttTotal = new TaskTimer("BridgePerf: number of test runs = " + m_testCnt);
-	    ttTotal.addNote("property file = " + m_propFilename);
+	    TaskTimer ttTotal = new TaskTimer(m_name, m_reportMemoryUsage);
+	    ttTotal.addNote("property file = " + m_inputFilename);
 	    ttTotal.addNote("timestamp = " + new Timestamp(System.currentTimeMillis()).toString());
 	    
-		for(PerfModule module : m_modules)
-		{
-		    ttTotal.addNote("module: " + module.getClass().getName());
-			module.setup(m_props);
-		    TaskTimer ttModule = ttTotal.newChild(module.getName());
-			for(PerfTest test : module.getTests())
+	    for(String bridgeFactoryClassName : m_bridges)
+	    {
+			for(Module module : m_modules)
 			{
-			    TaskTimer ttTest = ttModule.newChild(test.getName());
-			    if(m_excludeFirstRun)
-			    {
-			    	test.iterativeSetup();
-			    	test.execute();
-			    	test.iterativeTeardown();
-			    }
-			    for(int icnt = 0; icnt < m_testCnt; icnt++)
-			    {
-			    	TaskTimer ttRun = ttTest.newChild("run[" + icnt + "]");
-			    	test.iterativeSetup();
-			        ttRun.startTimer();
-			        test.execute();
-			        ttRun.stopTimer();
-			    	Iterable<String> notes = test.iterativeTeardown();
-			    	if(notes != null)
-			    	{
-			    		for(String note : notes)
-			    		{
-			    			ttRun.addNote(note);
-			    		}
-			    	}
-			    }
+				//System.out.println("Module: " + module.getName() + ": cnt = " + module.getTestConfig().mi_cnt);
+			    //ttTotal.addNote("module: " + module.getName());
+			    TaskTimer ttModule = ttTotal.newChild(module.getName());
+			    
+				for(PerfTestWrapper testWrapper : module.getTestWrappers())
+				{
+					PerfTest test = testWrapper.getTest();
+					//System.out.println("   test: " + test.getName() + ": input = " + testWrapper.mi_props.get("document"));
+					
+					try 
+					{
+						// Provide the specific bridge factory here.
+						testWrapper.getProperties().put(BaseBridgePerfTest.BRIDGE_FACTORY_CLASS, bridgeFactoryClassName);
+					    test.initialSetup(testWrapper.getProperties());
+					    
+					    TaskTimer ttBridge = ttModule.newChild(test.getBridgeName() + "." + test.getBridgeVersion());
+					    TaskTimer ttTest = ttBridge.newChild(test.getTestName());
+					    if(testWrapper.getTestConfig().mi_excludeOneRun)
+					    {
+					    	test.iterativeSetup();
+					    	test.execute();
+					    	test.iterativeTeardown();
+					    }
+					    for(int icnt = 0; icnt < module.getTestConfig().mi_cnt; icnt++)
+					    {
+					    	TaskTimer ttRun = ttTest.newChild("run[" + icnt + "]");
+					    	test.iterativeSetup();
+					        ttRun.startTimer();
+					        test.execute();
+					        ttRun.stopTimer();
+					    	Iterable<String> notes = test.iterativeTeardown();
+					    	if(notes != null)
+					    	{
+					    		for(String note : notes)
+					    		{
+					    			ttRun.addNote(note);
+					    		}
+					    	}
+					    }
+					}
+					catch (UnsupportedOperationException ex)
+					{
+						System.out.println(ex.getMessage());
+					}
+					finally
+					{
+					    test.finalTeardown();
+					}
+				}
+			}
+	    }
+		if(csvOut)
+		{
+			ttTotal.setPrintTimeUnits(false);
+			System.out.println(ttTotal.toCsvMillis(m_reportSubtaskLevels));
+		}
+		else
+		{
+			System.out.println("----------------------------------------------------");
+			System.out.println(ttTotal.toPrettyStringMillis("", m_reportSubtaskLevels));
+			System.out.println("----------------------------------------------------");
+		}
+	}
+	protected Iterable<Module> configure(String inputFile, List<String> bridges) throws SAXException, IOException
+	{
+		XMLReader parser = XMLReaderFactory.createXMLReader();
+		ConfigParser cp = new ConfigParser(bridges);
+		parser.setContentHandler(cp);
+		parser.parse(new InputSource(inputFile));
+		return cp.getModules();
+	}
+	class ConfigParser implements ContentHandler
+	{
+		public static final String PERFORMANCE_ELEM_NAME = "Performance";
+		public static final String COUNT_ATT_NAME = "cnt";
+		public static final String EXCLUDE_ONE_RUN_ATT_NAME = "excludeOneRun";
+		public static final String REPORT_SUBTASK_LEVELS_ATT_NAME = "reportSubtaskLevels";
+		public static final String REPORT_MEM_USAGE_ATT_NAME = "reportMemoryUsage";
+		
+		public static final String MODULE_ELEM_NAME = "Module";
+		public static final String BRIDGES_ELEM_NAME = "Bridges";
+		public static final String BRIDGE_ELEM_NAME = "Bridge";
+		public static final String BRIDGE_FACTORY_ATT_NAME = "factory";
+		public static final String TEST_ELEM_NAME = "Test";
+		public static final String PROP_ELEM_NAME = "Prop";
+		public static final String CLASS_NAME_ATT_NAME = "className";
+		public static final String NAME_ATT_NAME = "name";
+		public static final String VALUE_ATT_NAME = "value";
+		
+		final ArrayList<Module> mi_modules = new ArrayList<Module>();
+		private boolean isPerf = false;
+		private boolean isModule = false;
+		private boolean isBridges = false;
+		private boolean isTest = false;
+		private TestConfig mi_perfTestConfig;
+		private final List<String> mi_bridges;
+		
+		public ConfigParser(List<String> bridges) {
+			mi_bridges = bridges;
+		}
+		
+		public Iterable<Module> getModules() 
+		{
+			return mi_modules;
+		}
+		private TestConfig createTestConfig(TestConfig backer, Attributes atts)
+		{
+			TestConfig tc = new TestConfig();
+			
+			String value = atts.getValue(COUNT_ATT_NAME);
+			tc.mi_cnt = value != null ? Integer.parseInt(value) : backer.mi_cnt;
+
+			value = atts.getValue(EXCLUDE_ONE_RUN_ATT_NAME);
+			tc.mi_excludeOneRun = value != null ? Boolean.parseBoolean(value) : backer.mi_excludeOneRun;
+			
+			return tc;
+		}
+		@SuppressWarnings("unchecked") // for cast of object to List<Object>
+		@Override
+		public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
+			if(isPerf)
+			{
+				if(isBridges)
+				{
+					if(BRIDGE_ELEM_NAME.equals(localName))
+					{
+						String factoryName = atts.getValue(BRIDGE_FACTORY_ATT_NAME);
+						if(factoryName == null)
+						{
+							throw new SAXException("Invalid input: missing " + BRIDGE_FACTORY_ATT_NAME + " attribute.");
+						}
+						mi_bridges.add(factoryName);
+						
+					}
+					else
+					{
+						throw new SAXException("Invalid input: missing " + BRIDGE_ELEM_NAME + " element.");
+					}
+				}
+				else if(isModule)
+				{
+					if(isTest)
+					{
+						if(PROP_ELEM_NAME.equals(localName))
+						{
+							String propName = atts.getValue(NAME_ATT_NAME);
+							String propValue = atts.getValue(VALUE_ATT_NAME);
+							if(propName != null && propValue != null)
+							{
+								Module module = mi_modules.get(mi_modules.size() - 1);
+								HashMap<String, Object> props = module.getLastPerfTestWrapper().getProperties();
+								
+								if(props.get(propName) instanceof String)
+								{
+									ArrayList<Object> list = new ArrayList<Object>();
+									list.add(props.get(propName));
+									list.add(propValue);
+									props.put(propName, list);
+								}
+								else if(props.get(propName) instanceof List)
+								{
+									((List<Object>)props.get(propName)).add(propValue);
+								}
+								else
+								{
+									props.put(propName, propValue);
+								}
+							}
+							else
+							{
+								throw new SAXException("Prop specification requires both name and value.");
+							}
+						}
+						else
+						{
+							throw new SAXException("Invalid element: " + localName);
+						}
+					}
+					else if(PROP_ELEM_NAME.equals(localName))
+					{
+						String propName = atts.getValue(NAME_ATT_NAME);
+						String propValue = atts.getValue(VALUE_ATT_NAME);
+						if(propName != null && propValue != null)
+						{
+							HashMap<String, Object> props = mi_modules.get(mi_modules.size() - 1).getProperties();
+							if(props.get(propName) instanceof String)
+							{
+								ArrayList<Object> list = new ArrayList<Object>();
+								list.add(props.get(propName));
+								list.add(propValue);
+								props.put(propName, list);
+							}
+							else if(props.get(propName) instanceof List)
+							{
+								((List<Object>)props.get(propName)).add(propValue);
+							}
+							else
+							{
+								props.put(propName, propValue);
+							}
+						}
+						else
+						{
+							throw new SAXException("Prop specification requires both name and value.");
+						}
+					}
+					else
+					{
+						if(TEST_ELEM_NAME.equals(localName))
+						{
+							isTest = true;
+							Module mod = mi_modules.get(mi_modules.size() - 1);
+							
+							String testClassName = atts.getValue(CLASS_NAME_ATT_NAME);
+							TestConfig tc = createTestConfig(mod.getTestConfig(), atts);
+							
+							try {
+								Class<?> clazz = Performance.class.getClassLoader().loadClass(testClassName);
+								PerfTest perfTest = (PerfTest)clazz.newInstance();
+								PerfTestWrapper wrapper = new PerfTestWrapper(perfTest, tc);
+								
+								// Add the properties from the module to the PerfTestWrapper...
+								HashMap<String,Object> modProps = mod.getProperties();
+								HashMap<String,Object> props = wrapper.getProperties();
+								
+								for(String key : modProps.keySet())
+								{
+									props.put(key, modProps.get(key));
+								}
+								
+								mod.addTestWrapper(wrapper);
+							} catch (ClassNotFoundException e) {
+								throw new RuntimeException(e);
+							} catch (InstantiationException e) {
+								throw new RuntimeException(e);
+							} catch (IllegalAccessException e) {
+								throw new RuntimeException(e);
+							}
+						}
+						else
+						{
+							throw new SAXException("Invalid input: missing " + TEST_ELEM_NAME + " element.");
+						}
+					}
+				}
+				else
+				{
+					if(BRIDGES_ELEM_NAME.equals(localName))
+					{
+						isBridges = true;
+					}
+					else if(MODULE_ELEM_NAME.equals(localName))
+					{
+						isModule = true;
+						isBridges = false;
+						String modName = atts.getValue(NAME_ATT_NAME);
+						TestConfig tc = createTestConfig(mi_perfTestConfig, atts);
+						Module mod = new Module(modName, tc);
+						mi_modules.add(mod);
+					}
+					else
+					{
+						throw new SAXException("Invalid input: missing " + MODULE_ELEM_NAME + " element.");
+					}
+				}
+			}
+			else
+			{
+				if(PERFORMANCE_ELEM_NAME.equals(localName))
+				{
+					isPerf = true;
+					m_name = atts.getValue(NAME_ATT_NAME);
+					
+					String value = atts.getValue(REPORT_SUBTASK_LEVELS_ATT_NAME);
+					if(value != null)
+					{
+						m_reportSubtaskLevels = Integer.parseInt(value);
+					}
+
+					value = atts.getValue(REPORT_MEM_USAGE_ATT_NAME);
+					if(value != null)
+					{
+						m_reportMemoryUsage = Boolean.parseBoolean(value);
+					}
+					
+					
+					mi_perfTestConfig = createTestConfig(new TestConfig(), atts);
+				}
+				else
+				{
+					throw new SAXException("Invalid input: missing " + PERFORMANCE_ELEM_NAME + " root element.");
+				}
 			}
 		}
-		System.out.println("----------------------------------------------------");
-		System.out.println(ttTotal.toPrettyStringMillis("", m_includeSubtaskLevels));
-		System.out.println("----------------------------------------------------");
+
+		@Override
+		public void endElement(String uri, String localName, String qName) throws SAXException {
+			if(PERFORMANCE_ELEM_NAME.equals(localName))
+			{
+				isPerf = false;
+			}
+			else if(BRIDGES_ELEM_NAME.equals(localName))
+			{
+				isBridges = false;
+			}
+			else if(MODULE_ELEM_NAME.equals(localName))
+			{
+				isModule = false;
+			}
+			else if(TEST_ELEM_NAME.equals(localName))
+			{
+				isTest = false;
+			}
+		}
+		
+		@Override
+		public void characters(char[] ch, int start, int length) throws SAXException {}
+		@Override
+		public void setDocumentLocator(Locator locator) {}
+		@Override
+		public void startDocument() throws SAXException {}
+		@Override
+		public void endDocument() throws SAXException {}
+		@Override
+		public void startPrefixMapping(String prefix, String uri) throws SAXException {}
+		@Override
+		public void endPrefixMapping(String prefix) throws SAXException {}
+		@Override
+		public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {}
+		@Override
+		public void processingInstruction(String target, String data) throws SAXException {}
+		@Override
+		public void skippedEntity(String name) throws SAXException {}
+	}
+	class Module 
+	{
+		private final String mi_name;
+		private final TestConfig mi_config;
+		private final HashMap<String, Object> mi_props = new HashMap<String, Object>();
+		private final ArrayList<PerfTestWrapper> mi_tests = new ArrayList<PerfTestWrapper>();
+		public Module(String name, TestConfig tc) 
+		{
+			mi_name = PreCondition.assertArgumentNotNull(name);
+			mi_config = PreCondition.assertArgumentNotNull(tc);
+		}
+		public String getName()
+		{
+			return mi_name;
+		}
+		public TestConfig getTestConfig()
+		{
+			return mi_config;
+		}
+		public void addTestWrapper(PerfTestWrapper testWrapper)
+		{
+			mi_tests.add(PreCondition.assertArgumentNotNull(testWrapper));
+		}
+		public PerfTestWrapper getLastPerfTestWrapper()
+		{
+			return mi_tests.get(mi_tests.size() - 1);
+		}
+		public Iterable<PerfTestWrapper> getTestWrappers()
+		{
+			return mi_tests;
+		}
+		public HashMap<String, Object> getProperties()
+		{
+			return mi_props;
+		}
+	}
+	class PerfTestWrapper
+	{
+		private final PerfTest mi_test;
+		private final TestConfig mi_config;
+		private final HashMap<String, Object> mi_props = new HashMap<String, Object>();
+		public PerfTestWrapper(PerfTest perfTest, TestConfig tc)
+		{
+			mi_test = PreCondition.assertArgumentNotNull(perfTest);
+			mi_config = PreCondition.assertArgumentNotNull(tc);
+		}
+		public PerfTest getTest()
+		{
+			return mi_test;
+		}
+		public TestConfig getTestConfig()
+		{
+			return mi_config;
+		}
+		public HashMap<String, Object> getProperties()
+		{
+			return mi_props;
+		}
+		public PerfTestWrapper copy()
+		{
+			PerfTestWrapper retval = new PerfTestWrapper(mi_test, mi_config);
+			return retval;
+		}
+	}
+	class TestConfig
+	{
+		public int mi_cnt = 1;
+		public boolean mi_excludeOneRun = true;
 	}
 }

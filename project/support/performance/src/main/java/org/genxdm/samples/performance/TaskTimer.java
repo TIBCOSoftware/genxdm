@@ -24,6 +24,7 @@ public class TaskTimer {
 	private long m_elapsed;
 	final private boolean m_checkMemory;
 	private ArrayList<String> m_notes;
+	private boolean m_printTimeUnits;
 	
 	public TaskTimer(String name)
 	{
@@ -43,6 +44,17 @@ public class TaskTimer {
 		TaskTimer child = new TaskTimer(name, m_checkMemory);
 		addTask(child);
 		return child;
+	}
+	public void setPrintTimeUnits(boolean printTimeUnits)
+	{
+		m_printTimeUnits = printTimeUnits;
+		if(m_subtasks != null)
+		{
+			for(TaskTimer child : m_subtasks)
+			{
+				child.setPrintTimeUnits(printTimeUnits);
+			}
+		}
 	}
 	public void addNote(String note)
 	{
@@ -121,7 +133,12 @@ public class TaskTimer {
 	public String toPrettyStringNanos(String indent, int includeSubtimes)
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append(indent).append(m_name).append(": ").append(getGroupElapsedTimeNanos()).append(" ns").append('\n');
+		sb.append(indent).append(m_name).append(": ").append(getGroupElapsedTimeNanos());
+		if(m_printTimeUnits)
+		{
+			sb.append(" ns");
+		}
+		sb.append('\n');
 		if(m_notes != null)
 		{
 			for(String note : m_notes)
@@ -141,7 +158,13 @@ public class TaskTimer {
 	public String toPrettyStringMillis(String indent, int includeSubtimes)
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append(indent).append(m_name).append(": ").append(getGroupElapsedTimeMillis()).append(" ms").append('\n');
+		sb.append(indent).append(m_name).append(": ").append(getGroupElapsedTimeMillis());
+		if(m_printTimeUnits)
+		{
+			sb.append(" ms");
+		}
+		sb.append('\n');
+		
 		if(m_notes != null)
 		{
 			for(String note : m_notes)
@@ -161,7 +184,13 @@ public class TaskTimer {
 	public String toPrettyStringSeconds(String indent, int includeSubtimes)
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append(indent).append(m_name).append(": ").append(getGroupElapsedTimeSeconds()).append(" sec").append('\n');
+		sb.append(indent).append(m_name).append(": ").append(getGroupElapsedTimeSeconds());
+		if(m_printTimeUnits)
+		{
+			sb.append(" sec");
+		}
+		sb.append('\n');
+		
 		if(m_notes != null)
 		{
 			for(String note : m_notes)
@@ -175,6 +204,33 @@ public class TaskTimer {
 			{
 				sb.append(subtask.toPrettyStringSeconds(indent.concat("\t"), includeSubtimes-1));
 			}
+		}
+		return sb.toString();
+	}
+	public String toCsvMillis(int includeSubtimes)
+	{
+		StringBuffer sb = new StringBuffer();
+		sb.append(toCsvMillis("", includeSubtimes));
+		return sb.toString();
+	}
+	private String toCsvMillis(String prepend, int includeSubtimes)
+	{
+		StringBuffer sb = new StringBuffer();
+		if(includeSubtimes > 0)
+		{
+			for(TaskTimer subtask : getSubtasks())
+			{
+				sb.append(subtask.toCsvMillis(prepend + m_name + ", ", includeSubtimes-1));
+			}
+		}
+		else
+		{
+			sb.append(prepend).append(m_name).append(",").append(getGroupElapsedTimeMillis());
+			if(m_printTimeUnits)
+			{
+				sb.append(" ms");
+			}
+			sb.append('\n');
 		}
 		return sb.toString();
 	}
