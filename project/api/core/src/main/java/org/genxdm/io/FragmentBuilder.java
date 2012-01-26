@@ -20,8 +20,16 @@ import org.genxdm.NodeSource;
 /**
  * An instance of this interface assembles the events into an XML tree representation.
  * 
+ * <p>
  * The tree built by this interface contains text nodes in string form; it does not
  * contain any atoms or type information.
+ * </p>
+ * 
+ * <p>Note that while this interface extends the {@link ContentHandler} interface, it specifically
+ * relaxes the constraint that all namespaces must be properly declared via the
+ * {@link ContentHandler#namespace(String, String)} method. It will also allows namespace
+ * and attribute calls in any order so that namespaces need not be declared first, and it
+ * accounts for missing calls to endElement when endDocument is called.</p>
  */
 public interface FragmentBuilder<N>
     extends ContentHandler, NodeSource<N>
