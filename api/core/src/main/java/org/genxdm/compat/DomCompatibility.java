@@ -92,8 +92,11 @@ public class DomCompatibility {
      */
     public static <N> List<N> listFromIterable(Iterable<N> axis) {
         List<N> result = new ArrayList<N>();
-        for (N node : axis)
-            result.add(node);
+        if(axis != null) {
+            for (N node : axis) {
+                result.add(node);
+            }
+        }
         return result;
     }
     
