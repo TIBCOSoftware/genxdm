@@ -261,7 +261,8 @@ public class ContentHandlerOnXmlStreamWriter
             elementPrefix = verifyNamespace(elementNamespace, elementPrefix, false);
             for (Attrib attribute : attributes)
             {
-                attribute.prefix = verifyNamespace(attribute.namespace, attribute.prefix, true);
+                String prefix = ( attribute.prefix == null || attribute.prefix.length() == 0) ? null : attribute.prefix;
+                attribute.prefix = verifyNamespace(attribute.namespace, prefix, true);
             }
         }
         catch (XMLStreamException xse)
