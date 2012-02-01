@@ -17,6 +17,11 @@ package org.genxdm.mutable;
 
 import org.genxdm.ProcessingContext;
 
+/**
+ * Defines the context for doing mutations to an existing tree.
+ * 
+ * @param <N> the node abstraction
+ */
 public interface MutableContext<N>
 {
     /** Provide the node factory associated with this context.

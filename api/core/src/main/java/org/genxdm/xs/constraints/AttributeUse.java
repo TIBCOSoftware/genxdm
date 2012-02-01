@@ -19,9 +19,6 @@ import org.genxdm.xs.components.AttributeDefinition;
 
 /**
  * Describes the use of an attribute declaration.
- * 
- * @param <A>
- *            The atom handle.
  */
 public interface AttributeUse extends HasValueConstraint
 {

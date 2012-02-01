@@ -21,9 +21,6 @@ import org.genxdm.typed.types.AtomBridge;
 
 /**
  * A list of atomic values specified by an xs:enumeration.
- * 
- * @param <A>
- *            The atom handle.
  */
 public interface EnumerationDefinition
 {

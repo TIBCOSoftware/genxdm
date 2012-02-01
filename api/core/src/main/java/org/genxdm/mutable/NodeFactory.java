@@ -17,6 +17,14 @@ package org.genxdm.mutable;
 
 import java.net.URI;
 
+/**
+ * Use this interface to create nodes for later insertion into a tree as part of a mutation.
+ * 
+ * @param <N> the node abstraction
+ * 
+ * @see MutableModel
+ * @see MutableCursor
+ */
 public interface NodeFactory<N>
 {
     /**

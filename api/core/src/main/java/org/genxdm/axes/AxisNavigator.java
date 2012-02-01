@@ -23,17 +23,17 @@ import org.genxdm.nodes.Informer;
  *
  * <p>Differs from {@link AxisNodeNavigator} in that it presumes positional
  * state; in this way it corresponds to AxisNodeNavigator as {@link Navigator}
- * corresponds to {@NodeNavigator} and {@link Informer} corresponds to
- * {@link NodeInformer}, or more generally, as {@link Cursor} corresponds to
- * {@link Model}.</p> 
+ * corresponds to {@link NodeNavigator} and {@link Informer} corresponds to
+ * {@link org.genxdm.nodes.NodeInformer}, or more generally, as {@link org.genxdm.Cursor} corresponds to
+ * {@link org.genxdm.Model}.</p> 
  *
  * <p>Note that this interface is not currently implemented, and should be
  * regarded as experimental.  In theory, it could add axis navigation to the
- * {@link Cursor} abstraction, but it would do so by (conceptually) wrapping
+ * {@link org.genxdm.Cursor} abstraction, but it would do so by (conceptually) wrapping
  * each returned node in an {@link Informer} wrapper. It is left here so that
  * it can be implemented, but no bridge currently implements it.</p>
  * 
- * @see http://www.w3.org/TR/xpath20/#axes
+ * @see <a href="http://www.w3.org/TR/xpath20/#axes">XPath 2.0 - Axes </a>
  */
 public interface AxisNavigator
 {
@@ -61,7 +61,7 @@ public interface AxisNavigator
      *            Determines whether attributes in the XML namespace will be inherited. The standard value for this
      *            parameter is <code>false</code>.
      * 
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-attributes
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-attributes">XDM attributes accessor</a>
      * @return an iterable of Informer-s for the axis.
      */
     Iterable<Informer> getAttributeAxis(boolean inherit);
@@ -73,7 +73,7 @@ public interface AxisNavigator
      * dm:children</a> accessor in the XDM.</p>
      * 
      * 
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-children
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-children">XDM dm:children accessor</a>
      * @return an iterable of Informer-s for the axis.
      */
     Iterable<Informer> getChildAxis();
@@ -137,7 +137,7 @@ public interface AxisNavigator
      *            Determines whether in-scope prefix mappings will be included in the result. The standard setting for
      *            this parameter is <code>true</code>.
      * 
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-nodes
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-nodes">XDM dm:namespace-nodes</a>
      * @return an iterable of Informer-s for the axis.
      */
     Iterable<Informer> getNamespaceAxis(boolean inherit);

@@ -69,7 +69,7 @@ public interface NodeInformer<N>
      * @return the absolute value of the base-uri property, if it is available,
      * or null if it is not.
      * 
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-base-uri
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-base-uri">XDM dm:base-uri accessor</a>
      */
     URI getBaseURI(N node);
 
@@ -85,7 +85,7 @@ public interface NodeInformer<N>
      *         Node is constructed, or if it is used on a node other than a
      *         Document Node, returns null
      *         
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-document-uri
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-document-uri">XDM dm:document-uri accessor</a>
      */
     URI getDocumentURI(N node);
 
@@ -106,7 +106,7 @@ public interface NodeInformer<N>
      * 
      * @return the name of the node.
      *            
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name">XDM dm:node-name accessor</a>
      */
     String getLocalName(N node);
 
@@ -123,7 +123,7 @@ public interface NodeInformer<N>
      * @return an iterable of {@link NamespaceBinding}s for namespaces declared
      * in this element node (which may be empty); null for non-element nodes
      * 
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-bindings
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-bindings">XDM dm:namespace-bindings accessor</a>
      */
     Iterable<NamespaceBinding> getNamespaceBindings(N node);
 
@@ -162,7 +162,7 @@ public interface NodeInformer<N>
      * 
      * @return the namespace-uri associated with this node.
      * 
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name">XDM dm:node-name accessor</a>
      */
     String getNamespaceURI(N node);
 
@@ -195,7 +195,7 @@ public interface NodeInformer<N>
      *            The node for which the node-kind is required.
      *            
      * @return a {@link NodeKind}; if node is null, returns null.
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-kind
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-kind">XDM dm:node-kind accessor</a>
      */
     NodeKind getNodeKind(N node);
 
@@ -222,7 +222,7 @@ public interface NodeInformer<N>
      *            The node for which the dm:string-value is required.
      * 
      * @return the string value of this node.
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-string-value
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-string-value">XDM dm:string-value accessor</a>
      */
     String getStringValue(N node);
 
@@ -315,7 +315,7 @@ public interface NodeInformer<N>
      * otherwise false.  Elements that contain attributes that return true also
      * return true.
      * 
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-is-id
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-is-id">XDM dm:is-id accessor</a>
      */
     boolean isId(N node);
     
@@ -329,7 +329,7 @@ public interface NodeInformer<N>
      * derived from xs:IDREF or xs:IDREFS, or if it is an attribute with a DTD-defined
      * type of IDREF or IDREFS.
      * 
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-is-idrefs
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-is-idrefs">XDM dm:is-idrefs accessor</a>
      */
     boolean isIdRefs(N node);
 

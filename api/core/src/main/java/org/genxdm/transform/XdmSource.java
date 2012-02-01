@@ -70,7 +70,7 @@ public class XdmSource<N>
     
     /** Set the SystemID for this Source.
      *
-     * @param systemID the system ID
+     * @param systemId the system ID
      */
     @Override
     public void setSystemId(String systemId)

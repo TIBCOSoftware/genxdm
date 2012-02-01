@@ -191,7 +191,7 @@ public interface Informer
     /**
      * Determines whether the current node matches in name.
      * 
-     * <p>Equivalent to the {@link matches(NodeKind, String, String)} method
+     * <p>Equivalent to the {@link #matches(NodeKind, String, String)} method
      * with a <code>null</code> first argument.</p>
      * 
      * @param namespaceURI

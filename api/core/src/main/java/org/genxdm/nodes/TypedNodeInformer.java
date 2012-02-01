@@ -75,7 +75,7 @@ public interface TypedNodeInformer<N, A>
      * node should return xs:untyped (element) or xs:untypedAtomic (attribute).
      * Text nodes return xs:untypedAtomic.  Document, namespace, comment,
      * and processing instruction nodes return null.
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-type-name
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-type-name">XDM dm:type-name accessor</a>
      */
     QName getTypeName(N node);
 
@@ -96,8 +96,8 @@ public interface TypedNodeInformer<N, A>
      * For text nodes, returns the value as an xs:untypedAtomic. Invalid, unvalidated,
      * and partially-validated nodes tend to return string values variously
      * typed. null (the empty sequence) is possible in some circumstances.
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-typed-value
-     * @see http://www.w3.org/TR/xpath-datamodel/#TypedValueDetermination
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-typed-value">XDM dm:typed-value accessor</a>
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#TypedValueDetermination">XDM Typed Value Determination</a>
      */
     Iterable<? extends A> getValue(N node); // TODO: should throw exception if
     // called on an element with element-only content; required to 'raise an error'
