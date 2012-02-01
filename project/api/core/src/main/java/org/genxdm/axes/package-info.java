@@ -18,13 +18,13 @@
 iteration over axes (collections of nodes standing in a particular relationship
 with the origin node).  Taken together with the informational abstractions in
 the <code>nodes</code> package, defines the bulk of functionality in the central
-{@link Model} and {@link Cursor} abstractions.</p>
+{@link org.genxdm.Model} and {@link org.genxdm.Cursor} abstractions.</p>
 
 <p>There are four significant abstractions, but only three are actually implemented
-and used: {@link Navigator}, {@link NodeNavigator}, {@link AxisNodeNavigator},
-and (unused) {@link AxisNavigator}. In addition, <code>Navigator</code> has had
-its single N-specialized method moved into a separate interface, {@link Repositioner}.
-{@link Cursor} actually implements <code>Repositioner</code> rather than the
+and used: {@link org.genxdm.axes.Navigator}, {@link org.genxdm.axes.NodeNavigator}, {@link org.genxdm.axes.AxisNodeNavigator},
+and (unused) {@link org.genxdm.axes.AxisNavigator}. In addition, <code>Navigator</code> has had
+its single N-specialized method moved into a separate interface, {@link org.genxdm.axes.Repositioner}.
+{@link org.genxdm.Cursor} actually implements <code>Repositioner</code> rather than the
 <code>Navigator</code> base interface, however.</p>
 
 <p><code>Navigator</code> provides <code>moveTo[Relationship]</code> methods,
@@ -40,7 +40,7 @@ but is a stateless abstraction.  Consequently, each of its <code>get[Relationshi
 methods takes a &lt;N>ode as its first argument, and returns one (or null, if
 no node has such a relationship to the supplied node).</p>
 
-<p><code>AxisNodeNavigator</code> provides navigation over {@link Iterable}
+<p><code>AxisNodeNavigator</code> provides navigation over {@link java.lang.Iterable}
 collections of nodes that all stand in a given relationship to the (supplied
 in each method) context &lt;N>ode.  The (experimental) <code>AxisNavigator</code>
 is designed to provide similar functionality for Cursor, but is untested (in

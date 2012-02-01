@@ -16,8 +16,6 @@
 package org.genxdm.xs.facets;
 
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.exceptions.FacetMinMaxException;
-import org.genxdm.xs.types.SimpleType;
 
 /**
  * One of the xs:maxInclusive, xs:minInclusive, xs:maxExclusive and xs:minExclusive facets.

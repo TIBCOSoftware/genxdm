@@ -15,13 +15,7 @@
  */
 package org.genxdm.apitest.typed;
 
-import org.genxdm.typed.types.Quantifier;
-
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 // NOTE: disabled until we figure out why everything is replicated.
 // see issue 39.  Also note that this is only half-converted to junit 4.

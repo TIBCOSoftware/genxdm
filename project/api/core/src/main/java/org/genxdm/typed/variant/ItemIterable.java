@@ -1,7 +1,5 @@
 package org.genxdm.typed.variant;
 
-import java.util.Iterator;
-
 import org.genxdm.exceptions.PreCondition;
 
 public class ItemIterable<N, A>

@@ -20,6 +20,12 @@ import org.genxdm.Model;
 /** Provides modification of the Model based on the XQuery Update Facility,
  * but with immediate effect.
  *
+ * <p>To create nodes for insertion via this interface, see {@link NodeFactory}.
+ * </p>
+ * 
+ * @param <N> the node abstraction
+ * 
+ * @see NodeFactory
  **/
 public interface MutableModel<N> extends Model<N>
 {

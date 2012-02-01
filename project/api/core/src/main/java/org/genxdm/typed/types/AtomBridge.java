@@ -126,7 +126,7 @@ public interface AtomBridge<A>
      *            must not be null, but may be the empty string.
      * @param dataType
      *            The target native data type; must not be null.
-     * @param PrefixResolver the resolver used when turning lexical representations
+     * @param resolver the resolver used when turning lexical representations
      * of QNames into their atomic values; if null, then QName resolution will fail
      * with an exception (equivalent to the overload of this method with no
      * resolver).
@@ -146,7 +146,7 @@ public interface AtomBridge<A>
     /**
      * Returns an xs:boolean based upon the value.
      * 
-     * @param the value to be represented.
+     * @param booleanValue the value to be represented.
      * @return an atom representing the supplied boolean as a boolean value.
      */
     A createBoolean(boolean booleanValue);
@@ -163,11 +163,11 @@ public interface AtomBridge<A>
     /**
      * Returns an xs:date atomic value.
      * 
-     * @param year
-     * @param month
-     * @param dayOfMonth
-     * @param timezone
-     * @return
+     * @param year For what year do we wish to create a date?
+     * @param month For what month?
+     * @param dayOfMonth    For what day of the month?
+     * @param timezone  In what timezone
+     * @return  An atomic value corresponding to the parameters passed.
      */
     A createDate(int year, int month, int dayOfMonth, int timezone);
 

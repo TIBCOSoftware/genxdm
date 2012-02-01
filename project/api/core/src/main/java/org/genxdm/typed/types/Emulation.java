@@ -80,7 +80,7 @@ public enum Emulation
         }
     };
 
-    private static <A> String atomsToString(final List<? extends A> value, final String separator, final Emulation emulation, final AtomBridge<A> atomBridge)
+    private static <A> String atomsToString(final Iterable<? extends A> value, final String separator, final Emulation emulation, final AtomBridge<A> atomBridge)
     {
         final Iterator<? extends A> atoms = value.iterator();
 
