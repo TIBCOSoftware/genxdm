@@ -16,23 +16,23 @@
 /** 
 <p>This package contains abstractions used to investigate the properties of nodes.
 Taken together with the navigation abstractions found in the <code>axes</code>
-package, the bulk of the {@link Model} and {@link Cursor} interfaces are
+package, the bulk of the {@link org.genxdm.Model} and {@link org.genxdm.Cursor} interfaces are
 defined.</p> 
 
-<p>There are three basic interfaces: {@link Informer}, {@link NodeInformer},
-and {@link Bookmark}.</p>
+<p>There are three basic interfaces: {@link org.genxdm.nodes.Informer}, {@link org.genxdm.nodes.NodeInformer},
+and {@link org.genxdm.nodes.Bookmark}.</p>
 
 <p>Informer and NodeInformer provide equivalent information about nodes, using
 stateful and stateless models.  Informer presumes that it has, as its state,
 a single node.  NodeInformer has a &lt;N> supplied as the first argument of
 all of its methods.</p>
 
-<p>Support for type annotations and typed values is provided by {@link TypeInformer}
-and {@link TypedNodeInformer}, which enhance Informer and NodeInformer
+<p>Support for type annotations and typed values is provided by {@link org.genxdm.nodes.TypeInformer}
+and {@link org.genxdm.nodes.TypedNodeInformer}, which enhance Informer and NodeInformer
 respectively.</p>
 
 <p>Bookmark provides a positionally-immutable, stateful abstraction to wrap
-individual nodes. It's basically a {@link Cursor} locked into position.</p>
+individual nodes. It's basically a {@link org.genxdm.Cursor} locked into position.</p>
 
 */
 package org.genxdm.nodes;

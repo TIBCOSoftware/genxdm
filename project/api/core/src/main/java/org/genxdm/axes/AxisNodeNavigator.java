@@ -77,7 +77,7 @@ unless the context node is an element node.</li>
 </ul>
 
  * @param <N> the 'node' abstraction.
- * @see http://www.w3.org/TR/xpath20/#axes
+ * @see <a href="http://www.w3.org/TR/xpath20/#axes">XDM axes</a>
  */
 public interface AxisNodeNavigator<N>
 {
@@ -113,7 +113,7 @@ public interface AxisNodeNavigator<N>
      *            parameter is <code>false</code>.
      * 
      * @return an iterable, which may be empty; never null.
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-attributes
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-attributes">XDM dm:attributes accessor</a>
      */
     Iterable<N> getAttributeAxis(N node, boolean inherit);
 
@@ -129,7 +129,7 @@ public interface AxisNodeNavigator<N>
      *            The origin node; may not be null.
      * @return an iterable, which may be empty; never null.
      * 
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-children
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-children">XDM dm:children accessor</a>
      */
     Iterable<N> getChildAxis(N node);
 
@@ -208,7 +208,7 @@ public interface AxisNodeNavigator<N>
      *            Determines whether in-scope prefix mappings will be included in the result. The standard setting for
      *            this parameter is <code>true</code>.
      * 
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-nodes
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-nodes">XDM dm:namespace-nodes accessor</a>
      * @return an iterable, which may be empty; never null.
      */
     Iterable<N> getNamespaceAxis(N node, boolean inherit);

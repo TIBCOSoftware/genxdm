@@ -17,6 +17,12 @@ package org.genxdm.mutable;
 
 import org.genxdm.Cursor;
 
+/**
+ * A stateful counterpart to {@link MutableModel}, extends the notion of {@link Cursor}
+ * to include mutability.
+ * 
+ * @param <N> the node abstraction
+ */
 public interface MutableCursor<N>
     extends Cursor<N>
 {
@@ -90,7 +96,7 @@ public interface MutableCursor<N>
      * 
      * The context node must be a text, element, comment, or processing instruction node.
      * 
-     * @param content
+     * @param next
      *            The node to be added.  Must be a text, element,
      *            comment, or processing instruction node.  May not be null.
      **/
@@ -193,7 +199,7 @@ public interface MutableCursor<N>
      *
      * The context node must be a document or element.
      * 
-     * @param content
+     * @param newChild
      *            The child to be added to the parent.  Must be a text, element,
      *            comment, or processing instruction node.  May not be null.
      **/

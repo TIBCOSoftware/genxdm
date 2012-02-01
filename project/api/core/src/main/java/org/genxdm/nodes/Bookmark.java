@@ -47,7 +47,7 @@ public interface Bookmark<N>
      * this bookmark is positioned.
      * 
      * <p>In typical use, the Model will be queried starting from the result
-     * of {@link getNode()}</p>
+     * of {@link #getNode()}</p>
      * 
      * @return a Model for the owning processing context.
      */

@@ -70,7 +70,7 @@ public interface TypeInformer<A>
      * @return the type name, if the current node context is an element or attribute;
      * otherwise null.  If the context node is an element or attribute, but is
      * not validated, returns an xs:untyped or xs:untyped-atomic.
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-type-name
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-type-name">XDM dm:type-name accessor</a>
      */
     QName getTypeName();
 
@@ -85,7 +85,7 @@ public interface TypeInformer<A>
      * rather complex (for documents and elements particularly), or very simple.
      * returns an xs:untyped-atomic (or string) if the node is not validated (or
      * for comment and processing instruction nodes).
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-typed-value
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-typed-value">XDM dm:typed-value accessor</a>
      */
     Iterable<? extends A> getValue();// TODO: should throw exception if
     // called on an element with element-only content; required to 'raise an error'
