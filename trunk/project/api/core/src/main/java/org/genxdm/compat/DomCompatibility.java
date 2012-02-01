@@ -36,7 +36,7 @@ public class DomCompatibility {
      * @param node  What node are we starting with?
      * @param namespaceURI  What namespace are we searching for?  <code>null</code> implies any namespace
      * @param localName What local name are we searching for?  <code>null</code> implies any local name.
-     * @return
+     * @return The first descendent or self that matches the given name and local name.
      */
     public static <N> N getFirstDescendantOrSelfElementByName(Model<N> model, N node, String namespaceURI, 
             String localName) {
@@ -88,7 +88,7 @@ public class DomCompatibility {
      * Utility method to fill a list from an {@link Iterable}
      * @param <N>
      * @param axis
-     * @return
+     * @return A {@link List} from the Iterable.
      */
     public static <N> List<N> listFromIterable(Iterable<N> axis) {
         List<N> result = new ArrayList<N>();
@@ -125,13 +125,13 @@ public class DomCompatibility {
     }
     
     public static <N> N insertBefore(MutableModel<N> model, N parent, N newChild, N refChild) {
-    	if (refChild == null) {
-    		model.appendChild(parent, newChild);
-    	}
-    	else {
-    		model.insertBefore(refChild, newChild);
-    	}
-    	
-    	return newChild;
+        if (refChild == null) {
+            model.appendChild(parent, newChild);
+        }
+        else {
+            model.insertBefore(refChild, newChild);
+        }
+        
+        return newChild;
     }
 }

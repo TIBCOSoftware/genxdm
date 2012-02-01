@@ -24,10 +24,6 @@ import org.genxdm.exceptions.SpillagePolicy;
  * While casting is usually defined for XPath and XQuery, this interface allows generic 
  * casting utilities to be defined and used for any XML-based language without 
  * having to define adapters.
- * 
- * 
- * @param <A>
- *            The atom handle.
  */
 public interface CastingContext
 {

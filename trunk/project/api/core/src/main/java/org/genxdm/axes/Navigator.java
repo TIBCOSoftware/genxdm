@@ -19,7 +19,7 @@ package org.genxdm.axes;
  * a tree of connected nodes.
  * 
  * <p>Note that Navigator, by design, does not actually require a specialization
- * of the common &lt;N>ode parameter.  In theory, like the {@link Informer} with
+ * of the common &lt;N>ode parameter.  In theory, like the {@link org.genxdm.nodes.Informer} with
  * which it is commonly paired, it can be used over a tree which does not have
  * a "node" abstraction easily conformant to the design of GenXDM.</p>
  */

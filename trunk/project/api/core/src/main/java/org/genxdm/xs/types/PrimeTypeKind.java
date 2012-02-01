@@ -16,7 +16,7 @@
 package org.genxdm.xs.types;
 
 /**
- * The following enumerated constants are used by {@link SchemaTypeBridge} to classify the sequence type instance.
+ * The following enumerated constants are used by {@link PrimeType} to classify the sequence type instance.
  */
 public enum PrimeTypeKind
 {

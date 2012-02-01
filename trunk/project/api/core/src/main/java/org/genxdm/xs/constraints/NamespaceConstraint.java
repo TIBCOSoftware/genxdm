@@ -71,8 +71,6 @@ public final class NamespaceConstraint
 
     /**
      * Singleton implementation of the namespace constraint allowing any namespaces.
-     * 
-     * @param nameBridge
      */
     public static NamespaceConstraint Any()
     {

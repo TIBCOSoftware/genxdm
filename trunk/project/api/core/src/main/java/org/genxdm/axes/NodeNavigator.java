@@ -56,7 +56,7 @@ public interface NodeNavigator<N>
     /**
      * Returns the first child node of the node provided.
      * 
-     * @param node
+     * @param origin
      *            The node for which the first child node is required;
      *            may not be null.
      * @return the first child node of the supplied origin node, if that
@@ -163,11 +163,11 @@ public interface NodeNavigator<N>
      * underlying the bridge uses the term 'parent' for the elements which contain
      * these node types.</p>
      * 
-     * @param node
+     * @param origin
      *            The node for which the parent is required; may not be null.
      * @return the parent of the specified node, if it has one; otherwise null.
      *         A document node <em>must</em> return null.            
-     * @see http://www.w3.org/TR/xpath-datamodel/#acc-summ-parent
+     * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-parent">XDM dm:parent accessor</a>
      */
     N getParent(N origin);
 

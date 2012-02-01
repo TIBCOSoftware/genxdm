@@ -21,7 +21,7 @@ This package contains the key jumping off points for the abstractions involved i
 
 <h1>Overview</h1>
 The key jumping off points for GenXDM can be found in this package. The {@link org.genxdm.Model}
-interface gives you the means to access an XML tree in a stateless fashion. The {@link Cursor}
+interface gives you the means to access an XML tree in a stateless fashion. The {@link org.genxdm.Cursor}
 interface provides a stateful way to do the same, but saves you the hassle of keeping track of
 the node you're at. And finally, the {@link org.genxdm.ProcessingContext} gives you a way to
 access these two abstractions, and other important parts of GenXDM.
