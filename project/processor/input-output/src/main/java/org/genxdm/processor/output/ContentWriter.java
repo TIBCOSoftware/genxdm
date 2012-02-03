@@ -76,9 +76,14 @@ public class ContentWriter
         {
             String tagName = tags.pop();
             if (openedTag)
+            {
                 output.write(" " + SLASH + GT);
+                openedTag = false;
+            }
             else
+            {
                 output.write(LT + SLASH + tagName + GT);
+            }
         }
         catch (IOException ioe)
         {
@@ -137,7 +142,17 @@ public class ContentWriter
     public void startElement(String namespaceURI, String localName, String prefix)
         throws GenXDMException
     {
-        tags.push(getQName(prefix, localName));
+    	String qname = getQName(prefix, localName);
+    	try
+    	{
+            output.write(LT + qname);
+    	}
+        catch (IOException ioe)
+        {
+            throw new GenXDMException(ioe);
+        }
+        
+        tags.push(qname); // getQName(prefix, localName));
         openedTag = true;
     }
 
