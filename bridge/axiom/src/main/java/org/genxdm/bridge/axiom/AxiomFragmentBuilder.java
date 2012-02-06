@@ -228,8 +228,6 @@ public class AxiomFragmentBuilder
             final OMContainer container = AxiomSupport.dynamicDowncastContainer(currentNode);
             if (container != null)
             {
-                if ( (container instanceof OMDocument) && (data.trim().length() > 0) )
-                    throw new IllegalStateException("Non-whitespace text is not permitted in prolog or epilog.");
                 final OMText text = factory.createOMText(data);
                 container.addChild(text);
                 currentNode = text;
