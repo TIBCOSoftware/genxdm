@@ -175,33 +175,38 @@ public abstract class BuilderBase<N>
             // expected; can't end the document when there are elements open
         }
         
-        builder.reset();
-        // startdocument, text (not just whitespace)
-        builder.startDocument(null, null);
-        try
-        {
-            builder.text("text is not allowed in the prolog");
-            fail("permitted non-whitespace characters in the prolog");
-        }
-        catch (RuntimeException ge)
-        {
-            // expected: can't put non-whitespace text in the prolog
-        }
+        // XDM permits text nodes to be children of a document node; such
+        // permission is less restrictive than the XML infoset specs.  So, 
+        // the following two tests aren't suitable for an XDM, and they are 
+        // commented out.
+//        builder.reset();
+//        // startdocument, text (not just whitespace)
+//        builder.startDocument(null, null);
+//        try
+//        {
+//            builder.text("text is not allowed in the prolog");
+//            fail("permitted non-whitespace characters in the prolog");
+//        }
+//        catch (RuntimeException ge)
+//        {
+//            // expected: can't put non-whitespace text in the prolog
+//        }
+//        
+//        builder.reset();
+//        // startdocument, startelement, endelement, text (not whitespace)
+//        builder.startDocument(null, null);
+//        builder.startElement(XMLConstants.NULL_NS_URI, "element", XMLConstants.DEFAULT_NS_PREFIX);
+//        builder.endElement();
+//        try
+//        {
+//           builder.text("text is not allowed in the epilog");
+//            fail("permitted non-whitespace characters in the epilog");
+//        }
+//        catch (RuntimeException ge)
+//        {
+//            // expected: can't put non-whitespace text in the epilog
+//        }
 
-        builder.reset();
-        // startdocument, startelement, endelement, text (not whitespace)
-        builder.startDocument(null, null);
-        builder.startElement(XMLConstants.NULL_NS_URI, "element", XMLConstants.DEFAULT_NS_PREFIX);
-        builder.endElement();
-        try
-        {
-            builder.text("text is not allowed in the epilog");
-            fail("permitted non-whitespace characters in the epilog");
-        }
-        catch (RuntimeException ge)
-        {
-            // expected: can't put non-whitespace text in the epilog
-        }
         
         builder.reset();
         // TODO: same thing for document inside document.
