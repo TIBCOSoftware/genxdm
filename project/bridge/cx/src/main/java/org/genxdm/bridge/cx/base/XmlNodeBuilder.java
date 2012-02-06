@@ -192,8 +192,6 @@ public class XmlNodeBuilder
         depth++;
         if (current != null)
         {
-            if ( (current instanceof XmlRootNode) && (data.trim().length() > 0) )
-                throw new IllegalStateException("Non-whitespace text is not permitted in prolog or epilog.");
             final XmlTextNode text = factory.createText(data);
             mutator.appendChild(current, text);
             current = text;

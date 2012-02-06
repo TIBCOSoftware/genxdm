@@ -212,8 +212,6 @@ public class DomFragmentBuilder
         throws GenXDMException
     {
         push(strval, NodeKind.TEXT);
-        if ( (m_current != null) && (m_current instanceof Document) && (m_chBuffer.toString().trim().length() > 0))
-            throw new IllegalStateException("Non-whitespace text is not permitted in prolog or epilog.");
     }
 
     public void close()
