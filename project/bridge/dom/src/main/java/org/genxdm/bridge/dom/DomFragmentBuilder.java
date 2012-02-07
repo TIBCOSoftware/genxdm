@@ -74,8 +74,8 @@ public class DomFragmentBuilder
     {
         flush();
         endNodeProcessing();
-        if (m_depth > 0)
-            throw new IllegalStateException("Document ended with unclosed elements.");
+        while (m_depth > 0)
+            endNodeProcessing();
     }
 
     public void endElement() throws GenXDMException
@@ -335,13 +335,15 @@ public class DomFragmentBuilder
             	// at the root of the Document, before/after the first element. So we check for that
             	// here, and turn off error checking on the DOM, because the built-in JDK DOM will
             	// throw chunks.
-            	if (parent == doc && strval.trim().length() == 0) {
+            	if (parent == doc && strval.trim().length() == 0) 
+            	{
             		boolean strict = doc.getStrictErrorChecking();
             		doc.setStrictErrorChecking(false);
             		parent.appendChild(text);
             		doc.setStrictErrorChecking(strict);
             	}
-            	else {
+            	else 
+            	{
             		parent.appendChild(text);
             	}
             }
