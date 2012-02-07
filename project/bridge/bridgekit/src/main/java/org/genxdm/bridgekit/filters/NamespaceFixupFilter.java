@@ -33,6 +33,10 @@ public class NamespaceFixupFilter
         throws GenXDMException
     {
         PreCondition.assertNotNull(output);
+        if (localName.startsWith("xml"))
+            return; //silently discard it
+        if ( (prefix != null) && prefix.equals("xmlns") )
+            return;
         // first, make sure that we're not sending going to try to
         // generate an attribute with default prefix in non-default namespace
         String ns = namespaceURI;
@@ -91,14 +95,20 @@ public class NamespaceFixupFilter
         // check reserved namespaces
         if (prefix.equals(XMLConstants.XML_NS_PREFIX) &&
             !namespaceURI.equals(XMLConstants.XML_NS_URI) )
-            throw new GenXDMException("The prefix 'xml' is reserved.");
+            return; // silently drop it.
+//            throw new GenXDMException("The prefix 'xml' is reserved.");
         if (prefix.equals(XMLConstants.XMLNS_ATTRIBUTE) &&
             !namespaceURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI) )
-            throw new GenXDMException("The prefix 'xmlns' is reserved.");
+            return; // silently drop it.
+//            throw new GenXDMException("The prefix 'xmlns' is reserved.");
         // make sure that the prefix isn't already declared in this scope
         String boundTo = getDeclaredURI(prefix);
         if ( (boundTo != null) && !boundTo.equals(namespaceURI) )
-            throw new GenXDMException("The prefix '" + prefix + "' is already bound to " + boundTo + "and cannot also be bound to " + namespaceURI + ".");
+        {
+            // silently change it.
+            prefix = randomPrefix(namespaceURI);
+//            throw new GenXDMException("The prefix '" + prefix + "' is already bound to " + boundTo + "and cannot also be bound to " + namespaceURI + ".");
+        }
         // queue the namespaces
         namespaces.add(new DefaultNamespaceBinding(prefix, namespaceURI));
         // and modify the current scope
