@@ -85,9 +85,11 @@ public class XmlNodeBuilder
         throws GenXDMException
     {
         flushCatch();
+        // this one should be for the document
         endNodeProcessing();
-        if (depth > 0)
-            throw new IllegalStateException("Missing one or more element end tags");
+        // if it wasn't, there were elements open.  close 'em all.
+        while (depth > 0)
+            endNodeProcessing();
     }
 
     public void endElement()
