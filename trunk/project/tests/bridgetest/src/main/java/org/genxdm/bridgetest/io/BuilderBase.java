@@ -161,19 +161,19 @@ public abstract class BuilderBase<N>
 //            // expected; can't create namespace sibling of text node inside element.
 //        }
         
-        builder.reset();
-        // startdocument, startElement, endDocument
-        builder.startDocument(null, null);
-        builder.startElement(XMLConstants.NULL_NS_URI, "element", XMLConstants.DEFAULT_NS_PREFIX);
-        try
-        {
-            builder.endDocument();
-            fail("ended document with open element");
-        }
-        catch (RuntimeException ge)
-        {
-            // expected; can't end the document when there are elements open
-        }
+//        builder.reset();
+//        // startdocument, startElement, endDocument
+//        builder.startDocument(null, null);
+//        builder.startElement(XMLConstants.NULL_NS_URI, "element", XMLConstants.DEFAULT_NS_PREFIX);
+//        try
+//        {
+//            builder.endDocument();
+//            fail("ended document with open element");
+//        }
+//        catch (RuntimeException ge)
+//        {
+//            // expected; can't end the document when there are elements open
+//        }
         
         // XDM permits text nodes to be children of a document node; such
         // permission is less restrictive than the XML infoset specs.  So, 
