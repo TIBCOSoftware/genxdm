@@ -518,7 +518,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 
     public String getC14NString(final List<? extends XmlAtom> atoms)
     {
-        final int size = atoms.size();
+        final int size = (atoms == null) ? 0 : atoms.size();
         if (size > 0)
         {
             if (size == 1)
