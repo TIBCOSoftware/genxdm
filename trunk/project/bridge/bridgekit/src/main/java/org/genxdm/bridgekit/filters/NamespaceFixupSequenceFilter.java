@@ -339,7 +339,10 @@ public class NamespaceFixupSequenceFilter<A>
         for (Map.Entry<String, String> binding : scope.entrySet())
         {
             if (binding.getValue().equals(ns))
+            {
                 results.add(binding.getKey());
+                found = true;
+            }
         }
         if (found)
             return results;
