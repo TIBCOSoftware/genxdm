@@ -33,10 +33,10 @@ public class NamespaceFixupFilter
         throws GenXDMException
     {
         PreCondition.assertNotNull(output);
-        if (localName.startsWith("xml"))
+        if (localName.toLowerCase().startsWith("xml"))
             return; //silently discard it
         if ( (prefix != null) && prefix.equals("xmlns") )
-            return;
+            prefix = randomPrefix(namespaceURI);
         // first, make sure that we're not sending going to try to
         // generate an attribute with default prefix in non-default namespace
         String ns = namespaceURI;
@@ -106,8 +106,8 @@ public class NamespaceFixupFilter
         if ( (boundTo != null) && !boundTo.equals(namespaceURI) )
         {
             // silently change it.
-            prefix = randomPrefix(namespaceURI);
-//            throw new GenXDMException("The prefix '" + prefix + "' is already bound to " + boundTo + "and cannot also be bound to " + namespaceURI + ".");
+            //prefix = randomPrefix(namespaceURI);
+            throw new GenXDMException("The prefix '" + prefix + "' is already bound to " + boundTo + "and cannot also be bound to " + namespaceURI + ".");
         }
         // queue the namespaces
         namespaces.add(new DefaultNamespaceBinding(prefix, namespaceURI));
