@@ -26,7 +26,7 @@
     <groupId>org.genxdm</groupId>
     <artifactId>project</artifactId>
     <packaging>pom</packaging>
-    <version>0.8</version>
+    <version>0.9</version>
     
     <name>GenXDM</name>
     <url>http://www.genxdm.org/</url>
@@ -53,7 +53,7 @@
     <distributionManagement>
         <site>
           <id>genxdm-server</id>
-          <url>dav:http://172.16.164.131/</url>
+          <url>dav:http://www.genxdm.org/</url>
         </site>
     </distributionManagement>
 
