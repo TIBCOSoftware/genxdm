@@ -21,13 +21,13 @@
   <parent>
     <artifactId>support</artifactId>
     <groupId>org.genxdm</groupId>
-    <version>0.5</version>
+    <version>0.6</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
   <artifactId>samples</artifactId>
-  <version>0.2</version>
-  <!-- needs code review; believed to be immature. -->
+  <version>0.1</version>
+  <!-- previous set of samples removed for redundancy with delivered code. -->
   <name>GenXDM Samples</name>
   <url>http://www.genxdm.org/support/samples/</url>
 
