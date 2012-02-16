@@ -43,17 +43,22 @@ public class NamespaceFixupSequenceFilter<A>
         throws GenXDMException
     {
         PreCondition.assertNotNull(output);
+        if (localName.equalsIgnoreCase("xmlns") || ((prefix != null) && prefix.equalsIgnoreCase("xmlns")) )
+        {
+            // treat it as a mistaken attempt to declare a namespace using the wrong method.
+            if (atoms != null)
+                namespace(localName.equalsIgnoreCase("xmlns") ? "" : localName, atoms.getC14NString(data));
+            return;
+        }
         if (localName.toLowerCase().startsWith("xml"))
-            return; //silently discard it
-        if ( (prefix != null) && prefix.equals("xmlns") )
-            prefix = randomPrefix(namespaceURI);
+            throw new GenXDMException("Invalid attribute name: " + localName);
         // first, make sure that we're not sending going to try to
         // generate an attribute with default prefix in non-default namespace
-        String ns = namespaceURI;
-        String p = prefix;
-        if ( (ns != null) && (ns.trim().length() > 0) )
+        String ns = namespaceURI == null ? "" : namespaceURI;
+        String p = prefix == null ? "" : prefix;
+        if (ns.trim().length() > 0)
         {
-            if ( (p == null) || (p.trim().length() == 0) )
+            if (p.trim().length() == 0)
             {
                 Set<String> prefixes = getPrefixesForURI(ns);
                 if (prefixes != null)
@@ -99,13 +104,21 @@ public class NamespaceFixupSequenceFilter<A>
         throws GenXDMException
     {
         PreCondition.assertNotNull(output);
+        if (localName.equalsIgnoreCase("xmlns") || ((prefix != null) && prefix.equalsIgnoreCase("xmlns")) )
+        {
+            // treat it as a mistaken attempt to declare a namespace using the wrong method.
+            namespace(localName.equalsIgnoreCase("xmlns") ? "" : localName, value);
+            return;
+        }
+        if (localName.toLowerCase().startsWith("xml"))
+            throw new GenXDMException("Invalid attribute name: " + localName);
         // first, make sure that we're not sending going to try to
         // generate an attribute with default prefix in non-default namespace
-        String ns = namespaceURI;
-        String p = prefix;
-        if ( (ns != null) && (ns.trim().length() > 0) )
+        String ns = namespaceURI == null ? "" : namespaceURI;
+        String p = prefix == null ? "" : prefix;
+        if (ns.trim().length() > 0)
         {
-            if ( (p == null) || (p.trim().length() == 0) )
+            if (p.trim().length() == 0)
             {
                 Set<String> prefixes = getPrefixesForURI(ns);
                 if (prefixes != null)
@@ -158,17 +171,15 @@ public class NamespaceFixupSequenceFilter<A>
         if (prefix.equals(XMLConstants.XML_NS_PREFIX) &&
             !namespaceURI.equals(XMLConstants.XML_NS_URI) )
             return; // silently drop it.
-//            throw new GenXDMException("The prefix 'xml' is reserved.");
         if (prefix.equals(XMLConstants.XMLNS_ATTRIBUTE) &&
             !namespaceURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI) )
             return; // silently drop it.
-//            throw new GenXDMException("The prefix 'xmlns' is reserved.");
+        if (namespaceURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI))
+            return;
         // make sure that the prefix isn't already declared in this scope
         String boundTo = getDeclaredURI(prefix);
         if ( (boundTo != null) && !boundTo.equals(namespaceURI) )
         {
-            // silently change it.
-            //prefix = randomPrefix(namespaceURI);
             throw new GenXDMException("The prefix '" + prefix + "' is already bound to " + boundTo + "and cannot also be bound to " + namespaceURI + ".");
         }
         // queue the namespaces
@@ -245,7 +256,7 @@ public class NamespaceFixupSequenceFilter<A>
     @Override
     public void setAtomBridge(AtomBridge<A> bridge)
     {
-        //this.atoms = PreCondition.assertNotNull(bridge);
+        this.atoms = PreCondition.assertNotNull(bridge);
     }
     
     private void newScope()
@@ -402,7 +413,7 @@ public class NamespaceFixupSequenceFilter<A>
     private int counter = 0;
     private SequenceHandler<A> output;
     private TypesBridge types;
-    //private AtomBridge atoms;
+    private AtomBridge<A> atoms;
     private Set<DerivationMethod> methods = new HashSet<DerivationMethod>(3);
     
 }
