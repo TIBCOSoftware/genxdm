@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <!-- Copyright (c) 2010 TIBCO Software Inc.
+        
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+    
+    -->
+  <properties>
+  </properties>
+  <parent>
+    <artifactId>support</artifactId>
+    <groupId>org.genxdm</groupId>
+    <version>0.6</version>
+  </parent>
+  
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>performance</artifactId>
+  <version>0.4</version>
+  <!-- needs code review; believed to be immature. -->
+  <name>GenXDM Performance Evaluation</name>
+  <url>http://www.genxdm.org/support/performance/</url>
+
+  <reporting>
+      <plugins>
+          <plugin>
+              <artifactId>maven-javadoc-plugin</artifactId>
+          </plugin>
+          <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>jxr-maven-plugin</artifactId>
+          </plugin>
+          <plugin>
+              <artifactId>maven-surefire-report-plugin</artifactId>
+          </plugin>
+          <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>cobertura-maven-plugin</artifactId>
+          </plugin>
+      </plugins>
+  </reporting>
+
+  <scm>
+      <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/support/performance</connection>
+      <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/support/performance</developerConnection>
+      <url>http://genxdm.googlecode.com/svn/trunk/project/support/performance</url>
+  </scm>
+
+  <dependencies>
+    <!--dependency>
+        <groupId>org.genxdm</groupId>
+        <artifactId>genxdm-api</artifactId>
+        <version>[,2]</version>
+    </dependency-->
+    <dependency>
+        <groupId>org.genxdm</groupId>
+        <artifactId>bridge-dom</artifactId>
+        <version>[,2)</version>
+    </dependency>
+    <dependency>
+        <groupId>org.genxdm</groupId>
+        <artifactId>bridge-cx</artifactId>
+        <version>[,2)</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.ws.commons.axiom</groupId>
+        <artifactId>axiom-impl</artifactId>
+        <version>[1.2.11,2.0.0)</version>
+    </dependency>
+    <dependency>
+        <groupId>org.genxdm</groupId>
+        <artifactId>bridge-axiom</artifactId>
+        <version>[,2]</version>
+    </dependency>
+    <dependency>
+        <groupId>org.genxdm</groupId>
+        <artifactId>proc-w3cxs-val</artifactId>
+        <version>[,2]</version>
+    </dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>[2,3)</version>
+    </dependency>  
+</dependencies>
+</project>
