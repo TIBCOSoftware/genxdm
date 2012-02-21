@@ -53,7 +53,7 @@
     <distributionManagement>
         <site>
           <id>genxdm-server</id>
-          <url>dav:http://www.genxdm.org/</url>
+          <url>dav:http://www.genxdm.org/gx-dev/</url>
         </site>
     </distributionManagement>
 
