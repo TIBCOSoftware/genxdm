@@ -55,6 +55,10 @@
           <id>genxdm-server</id>
           <url>dav:http://www.genxdm.org/gx-dev/</url>
         </site>
+        <repository>
+            <id>genxdm-repo</id>
+            <url>dav:http://www.genxdm.org/gx-dev/maven2/</url>
+        </repository>
     </distributionManagement>
 
     <issueManagement>
