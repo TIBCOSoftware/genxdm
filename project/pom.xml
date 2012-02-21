@@ -71,11 +71,11 @@
             </roles>
         </developer>
         <developer>
-            <id>joe.baysdon</id>
+            <id>joe.baysdon@gmail.com</id>
             <name>Joe Baysdon</name>
         </developer>
         <developer>
-            <id>eric</id>
+            <id>eric@tibco.com</id>
             <name>Eric Johnson</name>
         </developer>
     </developers>
@@ -101,9 +101,17 @@
 
     <reporting>
         <plugins>
-            <!--plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-changelog-plugin</artifactId>
-            </plugin-->
+                <configuration>
+                  <type>range</type>
+                  <!-- set to 90; change to indicate the actual number of days
+                       since last release, when running mvn site, or use the
+                       date type, perhaps -->
+                  <range>90</range>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>taglist-maven-plugin</artifactId>
