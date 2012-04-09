@@ -9,7 +9,7 @@ public abstract class TypedTestBase<N, A>
 {
     protected TypedContext<N, A> getTypedContext()
     {
-        return newProcessingContext().getTypedContext();
+        return newProcessingContext().getTypedContext(null);
     }
     
     protected N createValidTypedDocument()

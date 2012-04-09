@@ -21,14 +21,14 @@ public class POTreeValidationTest
     @Override
     public SAXValidator<XmlAtom> getSAXValidator()
     {
-        ValidatorFactory<Node, XmlAtom> factory = new ValidatorFactory<Node, XmlAtom>(newProcessingContext().getTypedContext());
+        ValidatorFactory<Node, XmlAtom> factory = new ValidatorFactory<Node, XmlAtom>(newProcessingContext().getTypedContext(null));
         return factory.newSAXContentValidator();
     }
 
     @Override
     public ValidationHandler<XmlAtom> getValidationHandler()
     {
-        ValidatorFactory<Node, XmlAtom> factory = new ValidatorFactory<Node, XmlAtom>(newProcessingContext().getTypedContext());
+        ValidatorFactory<Node, XmlAtom> factory = new ValidatorFactory<Node, XmlAtom>(newProcessingContext().getTypedContext(null));
         return factory.newXdmContentValidator();
     }
 

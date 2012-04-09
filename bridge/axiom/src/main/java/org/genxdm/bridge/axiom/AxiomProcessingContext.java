@@ -39,6 +39,7 @@ import org.genxdm.mutable.NodeFactory;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.processor.io.DefaultDocumentHandler;
 import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.types.TypesBridge;
 
 /** ProcessingContext to support abstraction of the AxiOM LLOM tree model.
  *
@@ -140,7 +141,7 @@ public class AxiomProcessingContext
     }
     
     @SuppressWarnings("unchecked")
-    public TypedContext<Object, XmlAtom> getTypedContext()
+    public TypedContext<Object, XmlAtom> getTypedContext(TypesBridge cache)
     {
         return null; //TODO: implement properly; change this and isSupported. 
 //        if (saContext == null)

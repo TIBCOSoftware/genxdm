@@ -48,11 +48,16 @@ public class TypedXmlNodeContext
     implements TypedContext<XmlNode, XmlAtom>
 {
 
-    public TypedXmlNodeContext(XmlNodeContext context)
+    public TypedXmlNodeContext(XmlNodeContext context, TypesBridge typesBridge)
     {
         this.context = PreCondition.assertNotNull(context, "context");
-        this.cache = new SchemaCacheFactory().newSchemaCache();
-        this.types = new TypesBridgeImpl(cache);
+        if (typesBridge == null)
+        {
+            SchemaCache cache = new SchemaCacheFactory().newSchemaCache();
+            this.types = new TypesBridgeImpl(cache);
+        }
+        else
+            this.types = typesBridge;
         this.atoms = new XmlAtomBridge(types);
         this.model = new TypedXmlNodeModel(atoms);
     }
@@ -130,6 +135,5 @@ public class TypedXmlNodeContext
     private final XmlNodeContext context;
     private final TypedXmlNodeModel model;
     private final XmlAtomBridge atoms;
-    private final SchemaCache cache;
-    private final TypesBridgeImpl types;
+    private final TypesBridge types;
 }

@@ -20,6 +20,7 @@ import org.genxdm.io.FragmentBuilder;
 import org.genxdm.mutable.MutableContext;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.types.TypesBridge;
 
 /**
  * The processing context is a factory for new XML documents and adapters.
@@ -55,12 +56,28 @@ public interface ProcessingContext<N> extends DocumentHandlerFactory<N>
     MutableContext<N> getMutableContext();
     
     /**
-     * Indicates whether this processing context supports schema processing and awareness.
+     * Get a TypedContext associated with this ProcessingContext which
+     * is also associated with the supplied TypesBridge.
      * 
-     * @return a TypedContext associated with this ProcessingContext, or null
-     * if no such context is available
+     * A ProcessingContext only has one instance of a TypedContext associated
+     * with any TypesBridge argument, <em>including <code>null</code>.</em>
+     * Callers that do not care about the cache of schema components (except
+     * that it has what it needs to) should always supply null.  Callers who
+     * are sharing a single cache of components among multiple bridges must handle
+     * the TypesBridge management themselves (call with null the first time,
+     * get the newly-instantiated TypesBridge, and then supply that cache to
+     * other TypedContexts).
+     * 
+     * @param cache the preferred TypesBridge with which this TypedContext is
+     * to be associated.  The first time that a null is supplied, the TypedContext 
+     * will initialize a new TypesBridge, and that TypedContext will be returned 
+     * for subsequent calls with a null argument. 
+     * 
+     * @return a TypedContext associated with this ProcessingContext and the
+     * supplied TypesBridge, or null if no such context is available. If the ProcessingContext does not support schema-aware
+     * processing, null will be returned.
      */
-    <A> TypedContext<N, A> getTypedContext();
+    <A> TypedContext<N, A> getTypedContext(TypesBridge cache);
     
     /**
      * Determines whether the item is a node (an instance of the bridge's
