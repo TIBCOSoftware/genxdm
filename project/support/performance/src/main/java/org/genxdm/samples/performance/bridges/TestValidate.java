@@ -72,7 +72,7 @@ public class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 		m_copyTypeAnnotations = Boolean.parseBoolean((String)props.get(COPY_TYPE_ANNOTATION_NAME));
 
 		// Load a schema...
-		final TypedContext<N,A> typedContext = getPcx().getTypedContext();
+		final TypedContext<N,A> typedContext = getPcx().getTypedContext(null);
 		for(String schemaFile : m_schemaFiles)
 		{
 	        final String schemaFilePath = getBaseURI() + "/" + schemaFile;

@@ -48,10 +48,15 @@ import org.w3c.dom.Node;
 public final class DomSAProcessingContext 
     implements TypedContext<Node, XmlAtom>
 {
-    public DomSAProcessingContext(DomProcessingContext parent)
+    public DomSAProcessingContext(DomProcessingContext parent, TypesBridge types)
     {
-        this.cache = new SchemaCacheFactory().newSchemaCache();
-        this.typesBridge = new TypesBridgeImpl(cache);
+        if (types == null)
+        {
+            SchemaCache cache = new SchemaCacheFactory().newSchemaCache();
+            this.typesBridge = new TypesBridgeImpl(cache);
+        }
+        else
+            this.typesBridge = types;
         this.atomBridge = new XmlAtomBridge(typesBridge);
         this.m_model = new DomSAModel(this);
         this.parent = PreCondition.assertNotNull(parent);
@@ -134,7 +139,6 @@ public final class DomSAProcessingContext
 
     private final DomProcessingContext parent;
     private final XmlAtomBridge atomBridge;
-    private final SchemaCache cache;
     private final TypesBridge typesBridge;
 
     private final DomSAModel m_model;

@@ -56,10 +56,10 @@ public class Converter<N, A>
         throws GenXDMException
     {
         // if both contexts are typed, then do a typed-typed conversion.
-        TypedContext<N, A> sourceTypedContext = context.getTypedContext();
+        TypedContext<N, A> sourceTypedContext = context.getTypedContext(null);
         if (sourceTypedContext != null)
         {
-            TypedContext<Ntrg, Atrg> targetTypedContext = targetContext.getTypedContext();
+            TypedContext<Ntrg, Atrg> targetTypedContext = targetContext.getTypedContext(null);
             if (targetTypedContext != null)
             {
                 return convert(source, targetTypedContext.newSequenceBuilder(), targetTypedContext.getAtomBridge());
@@ -112,8 +112,8 @@ public class Converter<N, A>
                                      final AtomBridge<Atrg> targetBridge)
         throws GenXDMException
     {
-        PreCondition.assertNotNull(context.getTypedContext(), "context is typed");
-        TypedContext<N, A> tc = context.getTypedContext();
+        PreCondition.assertNotNull(context.getTypedContext(null), "context is typed");
+        TypedContext<N, A> tc = context.getTypedContext(null);
         builder.reset();
 
         TypedModel<N, A> model = tc.getModel();

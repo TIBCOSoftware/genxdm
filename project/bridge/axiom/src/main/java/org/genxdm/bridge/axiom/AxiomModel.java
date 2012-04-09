@@ -604,7 +604,10 @@ public class AxiomModel
             final OMAttribute attribute = AxiomSupport.dynamicDowncastAttribute(node);
             if (null != attribute)
             {
-                return attribute.getNamespace().getNamespaceURI();
+                OMNamespace ns = attribute.getNamespace();
+                if (ns == null)
+                    return "";
+                return ns.getNamespaceURI();
             }
         }
         NodeKind kind = AxiomSupport.getNodeKind(node);
@@ -711,7 +714,10 @@ public class AxiomModel
             final OMAttribute attribute = AxiomSupport.dynamicDowncastAttribute(node);
             if (null != attribute)
             {
-                return attribute.getNamespace().getPrefix();
+                OMNamespace ns = attribute.getNamespace();
+                if (ns == null)
+                    return "";
+                return ns.getPrefix();
             }
         }
         {

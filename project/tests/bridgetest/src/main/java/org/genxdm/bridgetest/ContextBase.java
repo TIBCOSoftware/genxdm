@@ -144,7 +144,7 @@ public abstract class ContextBase<N>
         // if the feature is supported, must return non-null.
         ProcessingContext<N> context = newProcessingContext();
         
-        TypedContext<N, ?> typo = context.getTypedContext();
+        TypedContext<N, ?> typo = context.getTypedContext(null);
         if (context.isSupported(Feature.TYPED))
         {
             assertNotNull(typo);
