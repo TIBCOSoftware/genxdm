@@ -15,6 +15,9 @@
  */
 package org.genxdm.bridge.cx.base;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.xml.stream.XMLReporter;
 
 import org.genxdm.Cursor;
@@ -32,6 +35,7 @@ import org.genxdm.io.Resolver;
 import org.genxdm.mutable.MutableContext;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.processor.io.DefaultDocumentHandler;
+import org.genxdm.typed.types.TypesBridge;
 
 public final class XmlNodeContext
     implements ProcessingContext<XmlNode>
@@ -57,11 +61,25 @@ public final class XmlNodeContext
     }
 
     @SuppressWarnings("unchecked")
-    public TypedXmlNodeContext getTypedContext()
+    public TypedXmlNodeContext getTypedContext(TypesBridge cache)
     {
-        if (typedContext == null)
-            typedContext = new TypedXmlNodeContext(this);
-        return typedContext;
+        TypedXmlNodeContext tc;
+        if ( (defaultCache == null) && (cache == null) )
+        {
+            tc = new TypedXmlNodeContext(this, null);
+            defaultCache = tc.getTypesBridge();
+            typedContexts.put(defaultCache, tc);
+        }
+        else if (cache == null) // but defaultCache already initialized
+            tc = typedContexts.get(defaultCache);
+        else // don't care about default; cache has been supplied
+            tc = typedContexts.get(cache);
+        if (tc == null) // only happens if cache supplied, first time seen
+        {
+            tc = new TypedXmlNodeContext(this, cache);
+            typedContexts.put(cache, tc);
+        }
+        return tc;
     }
 
     public boolean isNode(Object item)
@@ -135,7 +153,8 @@ public final class XmlNodeContext
     
     private final XmlNodeModel model = new XmlNodeModel();
     private final XmlNodeMutableContext mutant;
-    private TypedXmlNodeContext typedContext;
+    private Map<TypesBridge, TypedXmlNodeContext> typedContexts = new HashMap<TypesBridge, TypedXmlNodeContext>();
+    private TypesBridge defaultCache;
     private XMLReporter reporter;
     private Resolver resolver;
 }

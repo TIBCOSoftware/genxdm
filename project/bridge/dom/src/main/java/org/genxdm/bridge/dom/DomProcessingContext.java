@@ -15,6 +15,9 @@
  */
 package org.genxdm.bridge.dom;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.genxdm.Cursor;
@@ -36,6 +39,7 @@ import org.genxdm.mutable.MutableCursor;
 import org.genxdm.mutable.MutableModel;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.types.TypesBridge;
 import org.w3c.dom.Node;
 
 public class DomProcessingContext
@@ -104,11 +108,25 @@ public class DomProcessingContext
     }
 
     @SuppressWarnings("unchecked")
-    public TypedContext<Node, XmlAtom> getTypedContext()
+    public TypedContext<Node, XmlAtom> getTypedContext(TypesBridge cache)
     {
-        if (typedContext == null)
-            typedContext = new DomSAProcessingContext(this);
-        return typedContext;
+        DomSAProcessingContext tc = null;
+        if ( (defaultCache == null) && (cache == null) )
+        {
+            tc = new DomSAProcessingContext(this, null);
+            defaultCache = tc.getTypesBridge();
+            typedContexts.put(defaultCache, tc);
+        }
+        else if (cache == null) // but defaultCache != null)
+            tc = typedContexts.get(defaultCache);
+        else // cache is non-null; don't care about default
+            tc = typedContexts.get(cache);
+        if (tc == null) // previous line returned null; first time we've seen this cache
+        {
+            tc = new DomSAProcessingContext(this, cache);
+            typedContexts.put(cache, tc);
+        }
+        return tc;
     }
 
     public Cursor<Node> newCursor(Node node)
@@ -172,5 +190,6 @@ public class DomProcessingContext
     
     private final DomModel model = new DomModel();
     private MutantContext mutantContext;
-    private DomSAProcessingContext typedContext;
+    private Map<TypesBridge, DomSAProcessingContext> typedContexts = new HashMap<TypesBridge, DomSAProcessingContext>();
+    private TypesBridge defaultCache;
 }

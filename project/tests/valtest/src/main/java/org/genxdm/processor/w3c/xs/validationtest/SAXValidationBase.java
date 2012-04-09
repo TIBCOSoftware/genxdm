@@ -52,7 +52,7 @@ public abstract class SAXValidationBase<N, A>
         throws AbortException, IOException
     {
         ProcessingContext<N> context = newProcessingContext();
-        TypedContext<N, A> cache = context.getTypedContext();
+        TypedContext<N, A> cache = context.getTypedContext(null);
         loadSchema(cache.getTypesBridge());
         
         SAXValidator<A> validator = getSAXValidator();

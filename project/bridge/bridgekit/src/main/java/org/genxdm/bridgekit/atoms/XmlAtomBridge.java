@@ -48,7 +48,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 
     public XmlAtomBridge(final Schema schema)
     {
-        this.schema = schema;
+        this.schema = PreCondition.assertNotNull(schema, "schema");
         this.nameBridge = NameSource.SINGLETON;
     }
 

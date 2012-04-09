@@ -123,7 +123,7 @@
         </plugins>
     </reporting>
 
-     <modules> 
+    <modules> 
         <module>api</module> <!-- api container --> 
         <module>bridge</module> <!-- implementations container --> 
         <module>processor</module> <!-- processors container -->

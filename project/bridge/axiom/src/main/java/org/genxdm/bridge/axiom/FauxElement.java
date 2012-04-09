@@ -16,13 +16,16 @@
 package org.genxdm.bridge.axiom;
 
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMContainer;
@@ -33,6 +36,7 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.OMXMLStreamReaderConfiguration;
 import org.genxdm.exceptions.PreCondition;
 
 // this exists so that we can attach namespaces to documents.
@@ -416,10 +420,54 @@ public class FauxElement
 		return null;
 	}
 
-	public void serialize(XMLStreamWriter arg0, boolean arg1)
+	public void serialize(XMLStreamWriter writer, boolean cache)
 			throws XMLStreamException 
 	{
-		
+		// do nothing; this is not a real element
+	}
+	
+	public void writeTextTo(Writer writer, boolean cache)
+	{
+	    // do nothing, this is not a real element
+	}
+	
+	public Reader getTextAsStream(boolean cache)
+	{
+	    return null;
+	}
+	
+	public NamespaceContext getNamespaceContext(boolean flag)
+	{
+	    return null;
+	}
+	
+	public Iterator getNamespacesInScope()
+	{
+	    return null;
+	}
+	
+	public void undeclarePrefix(String prefix)
+	{
+	}
+	
+	public SAXSource getSAXSource(boolean cache)
+	{
+	    return null;
+	}
+	
+	public XMLStreamReader getXMLStreamReader(boolean cache, OMXMLStreamReaderConfiguration config)
+	{
+	    return null;
+	}
+	
+	public Iterator getDescendants(boolean includeSelf)
+	{
+	    return null;
+	}
+	
+	public String getPrefix()
+	{
+	    return null;
 	}
 	
     private final OMContainer root;

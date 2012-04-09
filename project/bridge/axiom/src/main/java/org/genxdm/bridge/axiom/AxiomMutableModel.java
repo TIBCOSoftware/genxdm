@@ -125,10 +125,12 @@ public class AxiomMutableModel
                 OMContainer container = node.getParent();
                 
                 node.detach();
-                
-                if (container instanceof OMDocument && node instanceof OMElement) {
-                	((OMDocument) container).setOMDocumentElement(null);
-                }
+
+                // this no longer works, because you can't null the document element.
+                // so it's not actually removed. what fun.
+//                if (container instanceof OMDocument && node instanceof OMElement) {
+//                	((OMDocument) container).setOMDocumentElement(null);
+//                }
                 return node;
         }
     }
