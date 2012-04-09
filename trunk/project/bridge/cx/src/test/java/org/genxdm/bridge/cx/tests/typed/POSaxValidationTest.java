@@ -22,14 +22,14 @@ public class POSaxValidationTest
     @Override
     public SAXValidator<XmlAtom> getSAXValidator()
     {
-        ValidatorFactory<XmlNode, XmlAtom> factory = new ValidatorFactory<XmlNode, XmlAtom>(newProcessingContext().getTypedContext());
+        ValidatorFactory<XmlNode, XmlAtom> factory = new ValidatorFactory<XmlNode, XmlAtom>(newProcessingContext().getTypedContext(null));
         return factory.newSAXContentValidator();
     }
 
     @Override
     public ValidationHandler<XmlAtom> getValidationHandler()
     {
-        ValidatorFactory<XmlNode, XmlAtom> factory = new ValidatorFactory<XmlNode, XmlAtom>(newProcessingContext().getTypedContext());
+        ValidatorFactory<XmlNode, XmlAtom> factory = new ValidatorFactory<XmlNode, XmlAtom>(newProcessingContext().getTypedContext(null));
         return factory.newXdmContentValidator();
     }
 

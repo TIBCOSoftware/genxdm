@@ -66,7 +66,7 @@ public abstract class TreeValidationBase<N, A>
         assertNotNull(untyped);
         POVerifier.verifyUntyped(untyped, context.getModel());
 
-        TypedContext<N, A> cache = context.getTypedContext();
+        TypedContext<N, A> cache = context.getTypedContext(null);
         loadSchema(cache.getTypesBridge());
 
         ValidationHandler<A> validator = getValidationHandler();
