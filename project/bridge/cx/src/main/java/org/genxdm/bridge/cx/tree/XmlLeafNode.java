@@ -23,12 +23,10 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.genxdm.bridgekit.atoms.XmlAtomBridge;
 import org.genxdm.bridgekit.atoms.XmlUntypedAtomic;
 import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.names.NameSource;
 import org.genxdm.names.NamespaceBinding;
 import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.Type;
