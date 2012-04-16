@@ -21,10 +21,6 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.genxdm.bridge.cx.base.XmlNodeModel;
-import org.genxdm.bridge.cx.tree.XmlAttributeNode;
-import org.genxdm.bridge.cx.tree.XmlContainerNode;
-import org.genxdm.bridge.cx.tree.XmlElementNode;
-import org.genxdm.bridge.cx.tree.XmlNamespaceNode;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridge.cx.tree.XmlRootNode;
 import org.genxdm.bridgekit.atoms.XmlAtom;
