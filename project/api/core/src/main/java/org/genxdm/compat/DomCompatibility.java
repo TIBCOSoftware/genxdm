@@ -30,6 +30,38 @@ import org.genxdm.mutable.NodeFactory;
 public class DomCompatibility {
 
     /**
+     * Replaces a particular node with a sequence of nodes - this mirrors the behavior
+     * of DOM DocumentFragment behavior.
+     * 
+     * @param model The tree model bridge
+     * @param toReplace Node to be replaced.
+     * @param newNodes  Nodes to be inserted.
+     */
+    public static <N> void replaceNodeSequence(MutableModel<N> model, N toReplace, Iterable<N> newNodes) {
+
+        boolean firstIteration = true;
+        N next = model.getNextSibling(toReplace);
+        N parent = model.getParent(toReplace);
+        
+        for (N newNode : newNodes) {
+            if (firstIteration) {
+                model.replace(toReplace, newNode);
+                firstIteration = false;
+            }
+            else {
+                // since we can only replace one node, after the first one, we have to be satisfied with
+                // inserting or appending, depending on the target node.
+                if (next == null) {
+                    model.appendChild(parent, newNode);
+                }
+                else {
+                    model.insertBefore(next, newNode);
+                }
+            }
+        }
+    }
+    
+    /**
      * Finds the first descendant or self element that has the given namespace or name.  
      * @param <N>
      * @param model  What's the model that we're traversing?
