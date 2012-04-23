@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.genxdm</groupId>
         <artifactId>apis</artifactId>
-        <version>0.10</version>
+        <version>0.11</version>
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
