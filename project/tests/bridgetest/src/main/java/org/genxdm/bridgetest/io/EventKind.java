@@ -13,17 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.typed.io;
-
-import org.genxdm.io.pull.EventReader;
-import org.genxdm.nodes.TypeInformer;
+package org.genxdm.bridgetest.io;
 
 /**
- * Allows data model events to be pulled sequentially.
- * @deprecated This interface has never been implemented; it is at risk of
- * removal for lack of interest.
+ * Enumeration representing possible types of events in the XQuery Data Model.
+ * 
+ * @deprecated This enumeration has never been used outside of testing; it
+ * may be removed.
  */
-public interface TypedReader<A> 
-    extends EventReader, TypeInformer<A>
+public enum EventKind
 {
+    START_SEQUENCE,
+    END_SEQUENCE,
+
+    START_DOCUMENT,
+    END_DOCUMENT,
+
+    START_ELEMENT,
+    END_ELEMENT,
+
+    ATTRIBUTE,
+    CHARACTERS,
+    SPACE,
+    NAMESPACE,
+    PROCESSING_INSTRUCTION,
+    COMMENT,
+    ATOM
 }

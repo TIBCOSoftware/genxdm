@@ -29,7 +29,6 @@ import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
 import org.genxdm.xs.ComponentProvider;
-import org.genxdm.xs.Schema;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
