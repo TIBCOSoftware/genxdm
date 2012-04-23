@@ -142,11 +142,11 @@ public class ContentWriter
     public void startElement(String namespaceURI, String localName, String prefix)
         throws GenXDMException
     {
-    	String qname = getQName(prefix, localName);
-    	try
-    	{
+        String qname = getQName(prefix, localName);
+        try
+        {
             output.write(LT + qname);
-    	}
+        }
         catch (IOException ioe)
         {
             throw new GenXDMException(ioe);

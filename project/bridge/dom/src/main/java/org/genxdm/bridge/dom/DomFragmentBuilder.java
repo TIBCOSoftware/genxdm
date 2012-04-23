@@ -328,24 +328,24 @@ public class DomFragmentBuilder
         else
         {
             Document doc = DomSupport.getOwner(parent);
-			final Node text = doc.createTextNode(strval);
+            final Node text = doc.createTextNode(strval);
             try
             {
-            	// Here's a crazy work-around - we want to be able to insert white-space text nodes
-            	// at the root of the Document, before/after the first element. So we check for that
-            	// here, and turn off error checking on the DOM, because the built-in JDK DOM will
-            	// throw chunks.
-            	if (parent == doc && strval.trim().length() == 0) 
-            	{
-            		boolean strict = doc.getStrictErrorChecking();
-            		doc.setStrictErrorChecking(false);
-            		parent.appendChild(text);
-            		doc.setStrictErrorChecking(strict);
-            	}
-            	else 
-            	{
-            		parent.appendChild(text);
-            	}
+                // Here's a crazy work-around - we want to be able to insert white-space text nodes
+                // at the root of the Document, before/after the first element. So we check for that
+                // here, and turn off error checking on the DOM, because the built-in JDK DOM will
+                // throw chunks.
+                if (parent == doc && strval.trim().length() == 0) 
+                {
+                    boolean strict = doc.getStrictErrorChecking();
+                    doc.setStrictErrorChecking(false);
+                    parent.appendChild(text);
+                    doc.setStrictErrorChecking(strict);
+                }
+                else 
+                {
+                    parent.appendChild(text);
+                }
             }
             catch (final DOMException e)
             {
