@@ -246,7 +246,6 @@ public abstract class SimpleTypeImpl extends TypeImpl implements SimpleType
 
     private final HashSet<EnumerationDefinition> m_enumerationFacets = new HashSet<EnumerationDefinition>();
 
-    @SuppressWarnings("unchecked")
     private final Facet[] m_facetArray = (Facet[])(Array.newInstance(Facet.class, FacetKind.values().length));
 
     private final HashSet<Facet> m_facets = new HashSet<Facet>();

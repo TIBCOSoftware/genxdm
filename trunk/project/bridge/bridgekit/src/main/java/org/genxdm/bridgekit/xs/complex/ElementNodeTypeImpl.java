@@ -23,7 +23,6 @@ import org.genxdm.bridgekit.xs.BuiltInSchema;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.ElementNodeType;
-import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.PrimeChoiceType;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
