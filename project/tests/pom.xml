@@ -21,14 +21,13 @@
     <parent>
         <groupId>org.genxdm</groupId>
         <artifactId>project</artifactId>
-        <version>0.9</version>
+        <version>0.10</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>tests</artifactId>
     <packaging>pom</packaging>
-    <version>0.6</version>
-    <!-- version matches main project version; no other reason -->
+    <version>0.7</version>
     <name>GenXDM Conformance Test modules</name>
     <url>http://www.genxdm.org/tests/</url>
 

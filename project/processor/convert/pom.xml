@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.genxdm</groupId>
         <artifactId>processor</artifactId>
-        <version>0.6</version>
+        <version>0.7</version>
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>proc-convert</artifactId>
-    <version>0.8</version>
+    <version>0.9</version>
     <!-- Not necessarily "mature", but it's so simple that it's hard to imagine
          significant change unless underlying APIs change -->
     <name>GenXDM Conversion Processor</name>

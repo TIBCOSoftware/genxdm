@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.genxdm</groupId>
         <artifactId>tests</artifactId>
-        <version>0.6</version>
+        <version>0.7</version>
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>validationtest</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
     <name>GenXDM Validation Test Kit</name>
     <url>http://www.genxdm.org/tests/validationtest/</url>
 
