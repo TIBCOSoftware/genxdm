@@ -1,6 +1,6 @@
 You must install Maven 2.
 
-You must have at least 1.5 JDK.
+You must have at least J2SE 1.6.
 
 You should be familiar with Maven's "goals" and usage.  As this is a
 multi-module project, "mvn compile" will not work.  "mvn install" is the
