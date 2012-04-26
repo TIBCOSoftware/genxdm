@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <!-- Copyright (c) 2010 TIBCO Software Inc.
+        
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+    
+    -->
+    <properties>
+    </properties>
+    
+    <parent>
+        <groupId>org.genxdm</groupId>
+        <artifactId>processor</artifactId>
+        <version>0.7</version>
+    </parent>
+    
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>proc-w3cxs-val</artifactId>
+    <version>0.8</version>
+    <name>GenXDM W3C XML Schema Validator</name>
+    <url>http://www.genxdm.org/processor/proc-w3cxs-val/</url>
+
+    <scm>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/processor/w3c.xs.validation</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/processor/w3c.xs.validation</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/processor/w3c.xs.validation</url>
+    </scm>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jxr-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>jdepend-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.genxdm</groupId>
+            <artifactId>genxdm-api</artifactId>
+            <version>[,2)</version>
+        </dependency>
+        <dependency>
+            <groupId>org.genxdm</groupId>
+            <artifactId>proc-w3cxs</artifactId>
+            <version>[,2)</version>
+        </dependency>
+    </dependencies>
+</project>
