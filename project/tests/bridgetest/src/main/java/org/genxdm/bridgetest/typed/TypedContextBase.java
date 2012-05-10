@@ -1,10 +1,12 @@
 package org.genxdm.bridgetest.typed;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.genxdm.ProcessingContext;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.types.TypesBridge;
 import org.junit.Test;
 
 public abstract class TypedContextBase<N, A>
@@ -14,17 +16,23 @@ public abstract class TypedContextBase<N, A>
     @Test
     public void bridges()
     {
-        TypedContext<N, A> context = getTypedContext();
+        TypedContext<N, A> context = getTypedContext(null);
         assertNotNull(context);
         assertNotNull(context.getAtomBridge());
         assertNotNull(context.getTypesBridge());
         assertNotNull(context.getVariantBridge());
+        // this doesn't work.  why not?
+//        TypedContext<N, A> c2 = getTypedContext(null);
+//        assertTrue(context == c2);
+//        TypesBridge types = context.getTypesBridge();
+//        c2 = getTypedContext(types);
+//        assertTrue(context == c2);
     }
     
     @Test
     public void navigators()
     {
-        TypedContext<N, A> context = getTypedContext();
+        TypedContext<N, A> context = getTypedContext(null);
         ProcessingContext<N> parent = context.getProcessingContext();
         assertNotNull(parent);
         assertNotNull(context.getModel());

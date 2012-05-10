@@ -39,34 +39,6 @@ import org.genxdm.xs.types.Type;
 
 public final class ElementDeclTypeImpl extends DataComponentImpl implements ElementDefinition
 {
-    private final EnumSet<DerivationMethod> m_block = EnumSet.noneOf(DerivationMethod.class);
-    private final Set<DerivationMethod> m_blockUnmodifiable = Collections.unmodifiableSet(m_block);
-    private final HashMap<QName, IdentityConstraint> m_constraints = new HashMap<QName, IdentityConstraint>();
-    private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
-    private final Set<DerivationMethod> m_finalUnmodifiable = Collections.unmodifiableSet(m_final);
-
-    /**
-     * The {abstract} property is mutable defaults to <code>false</code>
-     */
-    private boolean m_isAbstract = false;
-
-    /**
-     * The {nullable} property is mutable defaults to <code>false</code>
-     */
-    private boolean m_isNillable = false;
-
-    /**
-     * The {substitution group} (head) is mutable.
-     */
-    private ElementDeclTypeImpl m_substitutionGroup = null;
-
-    private final HashSet<ElementDefinition> m_substitutionGroupMembers = new HashSet<ElementDefinition>();
-
-    /**
-     * The {type} property is mutable.
-     */
-    private Type m_type;
-
     public ElementDeclTypeImpl(final QName name, final ScopeExtent scope, final Type type)
     {
         super(name, scope);
@@ -294,4 +266,37 @@ public final class ElementDeclTypeImpl extends DataComponentImpl implements Elem
     {
         return "schema-element(" + getName().toString() + ")";
     }
+
+    private final EnumSet<DerivationMethod> m_block = EnumSet.noneOf(DerivationMethod.class);
+    private final Set<DerivationMethod> m_blockUnmodifiable = Collections.unmodifiableSet(m_block);
+    private final HashMap<QName, IdentityConstraint> m_constraints = new HashMap<QName, IdentityConstraint>();
+    private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
+    private final Set<DerivationMethod> m_finalUnmodifiable = Collections.unmodifiableSet(m_final);
+
+    /**
+     * The {abstract} property is mutable defaults to <code>false</code>
+     */
+    private boolean m_isAbstract = false;
+
+    /**
+     * The {nullable} property is mutable defaults to <code>false</code>
+     */
+    private boolean m_isNillable = false;
+
+    /**
+     * The {substitution group} (head) is mutable.
+     */
+    private ElementDeclTypeImpl m_substitutionGroup = null;
+
+    private final HashSet<ElementDefinition> m_substitutionGroupMembers = new HashSet<ElementDefinition>();
+
+    /**
+     * The {type} property is mutable.
+     * This permits it to be declared generically (but non-null) at instantiation,
+     * and later fined down, after circularities (which are permitted) have been
+     * resolved.  The alternative to requiring the type would be to set it to the
+     * ComplexUrType by default, and let that be overridden in the constructor.
+     */
+    private Type m_type;
+
 }
