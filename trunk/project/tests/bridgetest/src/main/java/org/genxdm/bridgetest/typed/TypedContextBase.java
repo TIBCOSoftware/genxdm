@@ -21,7 +21,7 @@ public abstract class TypedContextBase<N, A>
         assertNotNull(context.getAtomBridge());
         assertNotNull(context.getTypesBridge());
         assertNotNull(context.getVariantBridge());
-        // this doesn't work.  why not?
+        // TODO: this doesn't work.  why not?
 //        TypedContext<N, A> c2 = getTypedContext(null);
 //        assertTrue(context == c2);
 //        TypesBridge types = context.getTypesBridge();
