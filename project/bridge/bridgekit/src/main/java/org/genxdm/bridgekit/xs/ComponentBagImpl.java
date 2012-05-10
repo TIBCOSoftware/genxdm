@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.impl;
+package org.genxdm.bridgekit.xs;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +37,7 @@ import org.genxdm.xs.types.Type;
 /**
  * A bag for storing of {@link org.genxdm.xs.components.SchemaComponent}(s).
  */
-final class ComponentBagImpl implements ComponentBag
+public final class ComponentBagImpl implements ComponentBag
 {
     private final Map<QName, AttributeGroupDefinition> m_attributeGroups = new HashMap<QName, AttributeGroupDefinition>();
 
