@@ -18,6 +18,7 @@ package org.genxdm.processor.w3c.xs.impl;
 import java.io.InputStream;
 import java.net.URI;
 
+import org.genxdm.bridgekit.xs.ComponentBagImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLComponentLocator;
 import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLSccExceptionAdapter;

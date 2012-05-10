@@ -64,14 +64,17 @@ public final class XmlNodeContext
     public TypedXmlNodeContext getTypedContext(TypesBridge cache)
     {
         TypedXmlNodeContext tc;
-        if ( (defaultCache == null) && (cache == null) )
+        if (cache == null)
         {
-            tc = new TypedXmlNodeContext(this, null);
-            defaultCache = tc.getTypesBridge();
-            typedContexts.put(defaultCache, tc);
+            if (defaultCache == null)
+            {
+                tc = new TypedXmlNodeContext(this, null);
+                defaultCache = tc.getTypesBridge();
+                typedContexts.put(defaultCache, tc);
+            }
+            else 
+                tc = typedContexts.get(defaultCache);
         }
-        else if (cache == null) // but defaultCache already initialized
-            tc = typedContexts.get(defaultCache);
         else // don't care about default; cache has been supplied
             tc = typedContexts.get(cache);
         if (tc == null) // only happens if cache supplied, first time seen
