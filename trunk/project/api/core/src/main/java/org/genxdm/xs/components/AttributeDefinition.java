@@ -16,7 +16,7 @@
 package org.genxdm.xs.components;
 
 import org.genxdm.xs.types.AttributeNodeType;
-import org.genxdm.xs.types.SimpleMarkerType;
+import org.genxdm.xs.types.SimpleType;
 
 /**
  * An attribute declaration, which may be global or local to some complex type.
@@ -29,5 +29,5 @@ public interface AttributeDefinition extends AttributeNodeType, SchemaDataCompon
      * This may be a simple type definition or the simple ur-type definition.
      * </p>
      */
-    SimpleMarkerType getType();
+    SimpleType getType();
 }

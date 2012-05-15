@@ -5,7 +5,7 @@ import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgetest.typed.TypedContextBase;
 import org.w3c.dom.Node;
 
-public class TypeContextTest
+public class TypedContextTest
     extends TypedContextBase<Node, XmlAtom>
 {
 
