@@ -17,17 +17,17 @@ package org.genxdm.bridgekit.xs.complex;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.NodeKind;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.ValueConstraint;
-import org.genxdm.NodeKind;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceTypeVisitor;
-import org.genxdm.xs.types.SimpleMarkerType;
+import org.genxdm.xs.types.SimpleType;
 
 public final class AttributeDeclWithParentAxisType implements AttributeDefinition
 {
@@ -73,7 +73,7 @@ public final class AttributeDeclWithParentAxisType implements AttributeDefinitio
         return m_attribute.getTargetNamespace();
     }
 
-    public SimpleMarkerType getType()
+    public SimpleType getType()
     {
         return m_attribute.getType();
     }

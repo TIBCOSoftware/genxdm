@@ -58,7 +58,6 @@ import org.genxdm.xs.exceptions.ComponentConstraintException;
 import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.resolve.LocationInSchema;
-import org.genxdm.xs.types.ComplexMarkerType;
 import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.ContentTypeKind;
 import org.genxdm.xs.types.SimpleType;
@@ -218,9 +217,9 @@ final class ModelPSVI implements VxPSVI, Locatable
 			errors.error(new CvcElementInSimpleTypeException(getName(), getLocation(), childName, childLocatable.getLocation()));
 			return false;
 		}
-		else if (elementType instanceof ComplexMarkerType)
+		else if (elementType instanceof ComplexType)
 		{
-			final ComplexMarkerType complexType = (ComplexMarkerType)elementType;
+			final ComplexType complexType = (ComplexType)elementType;
 			if (m_suspendChecking)
 			{
 				return false;

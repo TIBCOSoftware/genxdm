@@ -25,14 +25,13 @@ import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceTypeVisitor;
-import org.genxdm.xs.types.SimpleMarkerType;
 import org.genxdm.xs.types.SimpleType;
 
 public final class AttributeDeclTypeImpl extends DataComponentImpl implements AttributeDefinition
 {
-    private SimpleMarkerType m_type;
+    private SimpleType m_type;
 
-    public AttributeDeclTypeImpl(final QName name, final ScopeExtent scope, final SimpleMarkerType type)
+    public AttributeDeclTypeImpl(final QName name, final ScopeExtent scope, final SimpleType type)
     {
         super(name, scope);
         this.m_type = PreCondition.assertArgumentNotNull(type, "type");
@@ -53,7 +52,7 @@ public final class AttributeDeclTypeImpl extends DataComponentImpl implements At
         return NodeKind.ATTRIBUTE;
     }
 
-    public SimpleMarkerType getType()
+    public SimpleType getType()
     {
         return m_type;
     }

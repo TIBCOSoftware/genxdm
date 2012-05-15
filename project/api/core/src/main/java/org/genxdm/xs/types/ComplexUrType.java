@@ -24,16 +24,9 @@ public interface ComplexUrType extends ComplexType
 {
     /**
      * Returns the {base type definition} property.
+     * 
+     * Narrows the return of the supermethod.
      */
     ComplexUrType getBaseType();
 
-    /**
-     * Returns the {attribute wildcard} property for a complex type.
-     */
-    SchemaWildcard getAttributeWildcard();
-
-    /**
-     * Returns the {content type} property.
-     */
-    ContentType getContentType();
 }

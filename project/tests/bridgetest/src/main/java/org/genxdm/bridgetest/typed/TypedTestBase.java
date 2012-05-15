@@ -1,5 +1,8 @@
 package org.genxdm.bridgetest.typed;
 
+import java.util.EnumSet;
+import java.util.HashMap;
+
 import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.xs.ComponentBagImpl;
@@ -12,8 +15,11 @@ import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.TypesBridge;
 import org.genxdm.xs.Schema;
 import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.constraints.AttributeUse;
+import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.NativeType;
 
 public abstract class TypedTestBase<N, A>
     extends TestBase<N>
@@ -28,17 +34,17 @@ public abstract class TypedTestBase<N, A>
                 // of course, that turns out not to be so simple, because an
                 // element definition has a type.  And that type has a base type, and a content model,
                 // and more *crap* than can be easily imagined.
-                QName typeName = new QName(NSANON, "type-".concat(Integer.toString(nextType++)));
+                QName typeName = new QName(NSCOM, "docType");
                 ComplexType docElementType = new ComplexTypeImpl(typeName, 
                         /*native*/false, 
-                        /*anonymous*/true, 
-                        ScopeExtent.Local, 
+                        /*anonymous*/false, 
+                        ScopeExtent.Global,
                         /*base type*/schema.getComponentProvider().getComplexUrType(), 
-                        /*derivation method*/null, 
-                        /*attribute uses*/null, 
+                        /*derivation method*/DerivationMethod.Restriction, 
+                        /*attribute uses (map) (permitted attributes)*/new HashMap<QName, AttributeUse>(), 
                         /*content type*/new ContentTypeImpl()/*this means empty*/, 
-                        /*block*/null, 
-                        /*atoms*/null);
+                        /*block (set of derivation methods)*/EnumSet.noneOf(DerivationMethod.class),
+                        /*atoms*/schema.getComponentProvider().getAtomicType(NativeType.UNTYPED_ATOMIC));
                 
                 QName name = new QName(NSCOM, "doc");
                 ElementDefinition docElement = new ElementDeclTypeImpl(name, ScopeExtent.Global, docElementType);
@@ -50,7 +56,12 @@ public abstract class TypedTestBase<N, A>
             }
             public <N, A> N buildTypedDocument(SequenceBuilder<N, A> builder, TypesBridge schema)
             {
-                return null;
+                builder.startDocument(null, null);
+                builder.startElement(NSCOM, "doc", "", new QName(NSCOM, "docType"));
+                builder.namespace("", NSCOM);
+                builder.endElement();
+                builder.endDocument();
+                return builder.getNode();
             }
         },
         

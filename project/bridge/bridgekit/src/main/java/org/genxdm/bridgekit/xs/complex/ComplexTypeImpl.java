@@ -44,58 +44,6 @@ import org.genxdm.xs.types.Type;
  */
 public final class ComplexTypeImpl extends TypeImpl implements ComplexType, PrimeType
 {
-    private static  SchemaWildcard computeAttributeWildcard(final Type baseType, final DerivationMethod derivation)
-    {
-        if (derivation.isRestriction())
-        {
-            return null;
-        }
-        if (derivation.isExtension())
-        {
-            if (baseType instanceof ComplexType)
-            {
-                return ((ComplexType)baseType).getAttributeWildcard();
-            }
-            else
-            {
-                return null;
-            }
-        }
-        else
-        {
-            throw new AssertionError(derivation);
-        }
-    }
-
-    private final boolean isNative;
-    private final Map<QName, AttributeUse> m_attributeUses;
-    /**
-     * {attribute wildcard} is mutable
-     */
-    private SchemaWildcard m_attributeWildcard = null;
-    private final Type m_baseType;
-
-    private final Set<DerivationMethod> m_block;
-
-    private final Set<DerivationMethod> m_blockUnmodifiable;
-
-    private final AtomicType m_atoms;
-
-    /**
-     * {content type} is mutable.
-     */
-    private ContentType m_contentType;
-
-    /**
-     * {final} is mutable.
-     */
-    private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
-
-    /**
-     * {abstract} is mutable and defaults to <code>false</code>.
-     */
-    private boolean m_isAbstract = false;
-
     public ComplexTypeImpl(final QName name, final boolean isNative, final boolean isAnonymous, final ScopeExtent scope, final Type baseType, final DerivationMethod derivation, final Map<QName, AttributeUse> attributeUses,
             final ContentType contentType, final Set<DerivationMethod> block, final AtomicType atoms)
     {
@@ -285,4 +233,56 @@ public final class ComplexTypeImpl extends TypeImpl implements ComplexType, Prim
             }
         }
     }
+
+    private static  SchemaWildcard computeAttributeWildcard(final Type baseType, final DerivationMethod derivation)
+    {
+        if (derivation.isRestriction())
+        {
+            return null;
+        }
+        if (derivation.isExtension())
+        {
+            if (baseType instanceof ComplexType)
+            {
+                return ((ComplexType)baseType).getAttributeWildcard();
+            }
+            else
+            {
+                return null;
+            }
+        }
+        else
+        {
+            throw new AssertionError(derivation);
+        }
+    }
+
+    private final boolean isNative;
+    private final Map<QName, AttributeUse> m_attributeUses;
+    /**
+     * {attribute wildcard} is mutable
+     */
+    private SchemaWildcard m_attributeWildcard = null;
+    private final Type m_baseType;
+
+    private final Set<DerivationMethod> m_block;
+
+    private final Set<DerivationMethod> m_blockUnmodifiable;
+
+    private final AtomicType m_atoms;
+
+    /**
+     * {content type} is mutable.
+     */
+    private ContentType m_contentType;
+
+    /**
+     * {final} is mutable.
+     */
+    private final EnumSet<DerivationMethod> m_final = EnumSet.noneOf(DerivationMethod.class);
+
+    /**
+     * {abstract} is mutable and defaults to <code>false</code>.
+     */
+    private boolean m_isAbstract = false;
 }

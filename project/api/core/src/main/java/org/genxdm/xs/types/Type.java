@@ -17,8 +17,6 @@ package org.genxdm.xs.types;
 
 import java.util.Set;
 
-import javax.xml.namespace.QName;
-
 import org.genxdm.xs.components.SchemaComponent;
 import org.genxdm.xs.enums.DerivationMethod;
 
@@ -49,27 +47,10 @@ public interface Type extends SchemaComponent, SequenceType
     Set<DerivationMethod> getFinal();
 
     /**
-     * The {name} property, which is in fact the local-name part of an expanded-QName.
-     */
-    String getLocalName();
-
-    /**
-     * The {name} and {target namespace} properties.
-     */
-    QName getName();
-
-    /**
-     * The {target namespace} property.
-     */
-    String getTargetNamespace();
-
-    /**
      * Returns the {abstract} property of this type. <br/>
      * Determines whether object of this type can be instantiated. An abstract type can only be used to derive subtypes.
      */
     boolean isAbstract();
-
-    boolean isAnonymous();
 
     /**
      * Returns whether this type is a simple type with a variety of atomic.
