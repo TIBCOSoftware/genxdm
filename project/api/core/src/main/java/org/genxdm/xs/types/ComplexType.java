@@ -28,7 +28,7 @@ import org.genxdm.xs.enums.DerivationMethod;
  * A Complex Type Definition.
  * 
  */
-public interface ComplexType extends ComplexMarkerType
+public interface ComplexType extends Type
 {
     /**
      * Returns the {attribute uses} property for a complex type.
