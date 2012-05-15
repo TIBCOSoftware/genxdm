@@ -42,14 +42,11 @@ import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.exceptions.SimpleTypeException;
-import org.genxdm.xs.types.ComplexMarkerType;
 import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.ContentType;
-import org.genxdm.xs.types.SimpleMarkerType;
 import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.SimpleUrType;
 import org.genxdm.xs.types.Type;
-
 
 /**
  * The workhorse of validation is this kernel. Currently there is an explicit coupling to the WXS schema model. However,
@@ -340,9 +337,16 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 				final Type elementType = m_currentPSVI.getType();
 				if (null != elementType)
 				{
-					if (elementType instanceof SimpleMarkerType)
+					if (elementType instanceof SimpleType)
 					{
-						if (elementType instanceof SimpleType)
+					    if (elementType instanceof SimpleUrType)
+                        {
+                            if (null != m_downstream)
+                            {
+                                m_downstream.text(initialValue);
+                            }
+                        }
+					    else if (elementType instanceof SimpleType)
 						{
 							final SimpleType simpleType = (SimpleType)elementType;
 							try
@@ -371,21 +375,14 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 								}
 							}
 						}
-						else if (elementType instanceof SimpleUrType)
-						{
-							if (null != m_downstream)
-							{
-								m_downstream.text(initialValue);
-							}
-						}
 						else
 						{
 							throw new AssertionError(elementType);
 						}
 					}
-					else if (elementType instanceof ComplexMarkerType)
+					else if (elementType instanceof ComplexType)
 					{
-						final ComplexMarkerType complexType = (ComplexMarkerType)elementType;
+						final ComplexType complexType = (ComplexType)elementType;
 						final ContentType contentType = complexType.getContentType();
 						switch (contentType.getKind())
 						{

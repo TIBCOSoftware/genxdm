@@ -30,7 +30,7 @@ import org.genxdm.xs.facets.Pattern;
  * A Simple Type definition.
  * 
  */
-public interface SimpleType extends SimpleMarkerType
+public interface SimpleType extends Type
 {
     Iterable<EnumerationDefinition> getEnumerations();
 
