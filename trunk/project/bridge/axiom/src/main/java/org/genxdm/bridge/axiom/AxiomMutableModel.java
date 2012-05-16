@@ -18,6 +18,7 @@ package org.genxdm.bridge.axiom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
@@ -28,9 +29,9 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.impl.OMNamespaceImpl;
 import org.apache.axiom.om.impl.OMNodeEx;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.mutable.MutableModel;
 import org.genxdm.mutable.NodeFactory;
 
@@ -122,14 +123,14 @@ public class AxiomMutableModel
                 throw new IllegalArgumentException("cannot delete document");
             default :
                 OMNode node = AxiomSupport.dynamicDowncastNode(target);
-                OMContainer container = node.getParent();
+                //OMContainer container = node.getParent();
                 
                 node.detach();
 
                 // this no longer works, because you can't null the document element.
                 // so it's not actually removed. what fun.
 //                if (container instanceof OMDocument && node instanceof OMElement) {
-//                	((OMDocument) container).setOMDocumentElement(null);
+//                  ((OMDocument) container).setOMDocumentElement(null);
 //                }
                 return node;
         }
@@ -248,7 +249,7 @@ public class AxiomMutableModel
      */
     public Object insertNamespace(final Object element, final String prefix, final String uri)
     {
-        OMNamespace ns = new OMNamespaceImpl(uri, prefix);
+        OMNamespace ns = factory.omFactory.createOMNamespace(uri, prefix);
         OMElement omElem = AxiomSupport.staticDowncastElement(element);
         omElem.declareNamespace(ns);
         return ns;
@@ -311,18 +312,18 @@ public class AxiomMutableModel
             case PROCESSING_INSTRUCTION :
                 if (getNodeKind(content).isChild())
                 {
-                	OMNode original = AxiomSupport.dynamicDowncastNode(target);
+                    OMNode original = AxiomSupport.dynamicDowncastNode(target);
                     OMNode replacement = AxiomSupport.dynamicDowncastNode(content);
-                	
-                	OMContainer originalParent = insertBeforeWorkAround(
-							original, replacement);
+                    
+                    OMContainer originalParent = insertBeforeWorkAround(
+                            original, replacement);
 
                     original.detach();
                     
-                	if (originalParent instanceof OMDocument && replacement instanceof OMElement) {
-                		( (OMDocument) originalParent).setOMDocumentElement( (OMElement) replacement);
-                	}
-                	
+                    if (originalParent instanceof OMDocument && replacement instanceof OMElement) {
+                        ( (OMDocument) originalParent).setOMDocumentElement( (OMElement) replacement);
+                    }
+                    
                     return target;
                 }
                 throw new IllegalArgumentException();
@@ -337,28 +338,6 @@ public class AxiomMutableModel
                 throw new UnsupportedOperationException();
         }
     }
-
-    /**
-     * This method exists as a work-around for AXIOM-360
-     * 
-     * @param target
-     * @param toInsertBefore
-     * @return
-     */
-	private OMContainer insertBeforeWorkAround(OMNode target,
-			OMNode toInsertBefore) {
-		// See comment below about AXIOM-360 - note we have to get the
-		// parent before detaching.
-		OMContainer originalParent = target.getParent();
-		
-		target.insertSiblingBefore(toInsertBefore);
-
-		// Note that the following three lines are a work-around for bug:
-		// https://issues.apache.org/jira/browse/AXIOM-360, in 1.2.11 of AXIOM
-		OMNodeEx replacementImpl = (OMNodeEx) toInsertBefore;
-		replacementImpl.setParent(originalParent);
-		return originalParent;
-	}
 
     public String replaceValue(final Object target, final String value)
     {
@@ -391,6 +370,58 @@ public class AxiomMutableModel
             default :
                 throw new UnsupportedOperationException();
         }
+    }
+
+    /**
+     * This removes the value of the attribute from the ID to element map that
+     * we have for the document in question.
+     */
+    @Override
+    public void setIsIdAttribute(Object attr, boolean isId) {
+        if (!isAttribute(attr)) {
+            throw new IllegalArgumentException("Attempt to setIsIdAttribute on non attribute not allowed.");
+        }
+        
+        OMDocument doc = AxiomSupport.dynamicDowncastDocument(getRoot(attr));
+        OMAttribute attrNode = AxiomSupport.staticDowncastAttribute(attr);
+        Map<String, OMElement> idMap = AxiomSupport.getIdMap(doc);
+
+        String type = attrNode.getAttributeType(); 
+        if ( !DtdAttributeKind.CDATA.toString().equals(type) && !DtdAttributeKind.ID.toString().equals(type)) {
+            throw new IllegalStateException("Attempting to set the isId character of an attribute that isn't a CDATA or ID type.");
+        }
+        String idValue = getStringValue(attr);
+        
+        if (isId) {
+            idMap.put(idValue, attrNode.getOwner());
+            attrNode.setAttributeType(DtdAttributeKind.ID.toString());
+        }
+        else {
+            idMap.remove(idValue);
+            attrNode.setAttributeType(DtdAttributeKind.CDATA.toString());
+        }
+    }
+
+    /**
+     * This method exists as a work-around for AXIOM-360
+     * 
+     * @param target
+     * @param toInsertBefore
+     * @return
+     */
+    private OMContainer insertBeforeWorkAround(OMNode target,
+            OMNode toInsertBefore) {
+        // See comment below about AXIOM-360 - note we have to get the
+        // parent before detaching.
+        OMContainer originalParent = target.getParent();
+        
+        target.insertSiblingBefore(toInsertBefore);
+
+        // Note that the following three lines are a work-around for bug:
+        // https://issues.apache.org/jira/browse/AXIOM-360, in 1.2.11 of AXIOM
+        OMNodeEx replacementImpl = (OMNodeEx) toInsertBefore;
+        replacementImpl.setParent(originalParent);
+        return originalParent;
     }
 
     private final AxiomFactory factory;

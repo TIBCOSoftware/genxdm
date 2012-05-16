@@ -159,10 +159,14 @@ public abstract class NodeInformerBase<N>
         // true in the concrete subclass).  see issue 50.  this is a poor
         // solution to a real problem in the dom implementation.
         N idRefNode = model.getNextSibling(idNode); // e4
+        attr = model.getAttribute(idRefNode, XMLConstants.NULL_NS_URI, "ref");
+        // checking for an obscure issue - an attribute which is NOT an ID
+        // attribute with no namespace caused problems with some bridges
+        assertTrue(!model.isId(attr));
+        
         if (!disableIdrefsTests)
         {
             assertTrue(model.isIdRefs(idRefNode));
-            attr = model.getAttribute(idRefNode, XMLConstants.NULL_NS_URI, "ref");
             assertTrue(model.isIdRefs(attr));
         }
 

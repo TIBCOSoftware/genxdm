@@ -29,6 +29,7 @@ import org.genxdm.NodeKind;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridgetest.TestBase;
 import org.genxdm.bridgetest.utilities.Events;
+import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.mutable.MutableModel;
 import org.genxdm.mutable.NodeFactory;
@@ -518,5 +519,67 @@ public abstract class MutableModelBase<N>
         copy = model.copyNode(mark, false);
         assertEquals(model.getLocalName(mark), model.getLocalName(copy));
         assertEquals(model.getStringValue(mark), model.getStringValue(copy));
+    }
+    
+    /**
+     * Tests the {@link MutableModel#setIsIdAttribute(Object, boolean)} to check
+     * that ID lookup succeeds and fails as appropriate....
+     * 
+     * <p>Uses the following very simple XML (with some whitespace added below for clarity).</p>
+     * <pre>
+     * &lt;foo id1="lookup1", id2="lookup2"&gt;
+     *   &lt;bar id3="lookup3" id4="lookup4"/&gt;
+     * &lt;/foo&gt;
+     * </pre>
+     */
+    @Test
+    public void setIsId() {
+        ProcessingContext<N> context = newProcessingContext();
+        MutableModel<N> model = context.getMutableContext().getModel();
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+
+        // create our sample fragment.
+        builder.startDocument(null, null);
+        builder.startElement("", "foo", "");
+        builder.attribute("", "id1", "", "lookup1", DtdAttributeKind.CDATA);
+        builder.attribute("", "id2", "", "lookup2", DtdAttributeKind.CDATA);
+        builder.startElement("", "bar", "");
+        builder.attribute("", "id3", "", "lookup3", DtdAttributeKind.CDATA);
+        builder.attribute("", "id4", "", "lookup4", DtdAttributeKind.CDATA);
+        builder.endElement();
+        builder.endElement();
+        builder.endDocument();
+        
+        // verify that ID lookup fails at the start....
+        N doc = builder.getNode();
+        N firstLookup = model.getElementById(doc, "lookup1");
+        assertNull("The firstLookup should be null, but isn't", firstLookup);
+
+        // now, get one of the attributes, and set it as an ID attribute, check if lookup succeeds.
+        N fooElem = model.getFirstChildElement(doc);
+        N attrId1 = model.getAttribute(fooElem, "", "id1");
+        assertTrue("The attribute in question should not be an ID attribute, but is!", !model.isId(attrId1));
+        
+        model.setIsIdAttribute(attrId1, true);
+        firstLookup = model.getElementById(fooElem, "lookup1");
+        assertTrue("The element found by lookup should match fooElem", firstLookup == fooElem);
+        assertTrue("The attribute should not be an ID attribute, but isn't!", model.isId(attrId1));
+        
+        // now unset the attribute as an ID attribute, and do lookup again.
+        model.setIsIdAttribute(attrId1, false);
+        firstLookup = model.getElementById(fooElem, "lookup1");
+        assertNull("The firstLookup should be null after unsetting, but isn't", firstLookup);
+        assertTrue("The attribute in question should not be an ID attribute anymore, but is!", !model.isId(attrId1));
+        
+        // Note that the following is supposed to verify that an IllegalArgumentException gets thrown.
+        N barElem = model.getFirstChildElement(fooElem);
+        boolean caughtException = false;
+        try {
+            model.setIsIdAttribute(barElem, true);
+        } catch (IllegalArgumentException e) {
+            caughtException = true;
+        }
+        
+        assertTrue("Should have caught an IllegalArgumentException, but didn't", caughtException);
     }
 }
