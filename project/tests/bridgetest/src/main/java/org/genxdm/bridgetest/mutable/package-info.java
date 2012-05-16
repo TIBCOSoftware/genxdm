@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2009-2010 TIBCO Software Inc.
+/*
+ * Copyright (c) 2012 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.xs.types;
-
 /**
- * Marker interface for the Complex Ur-Type (xs:anyType).
+ * This package contains tests for the mutable API.
+ * 
+ * <p>See the package {@link org.genxdm.bridgetest} for details on how
+ * to use the classes in this package.</p>
  */
-public interface ComplexUrType extends ComplexType
-{
-    /**
-     * Returns the {base type definition} property.
-     * 
-     * Narrows the return of the supermethod.
-     */
-    ComplexUrType getBaseType();
+package org.genxdm.bridgetest.mutable;
 
-}

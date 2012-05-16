@@ -80,6 +80,19 @@ public final class XmlRootNode
         idNodes.add(node);
     }
     
+    /**
+     * Counterpart to {@link #addIdNode(XmlNode)}, this method removes an ID node.
+     * 
+     * <p>It is the caller's responsibility to make sure on the passed node,
+     * that the "DtdAttributeKind" is set to CDATA when removing a node.
+     * </p>
+     * 
+     * @param node The attribute node to remove from the ID set.
+     */
+    void removeIdNode(XmlNode node) {
+        idNodes.remove(node);
+    }
+    
     private void parseDocTypeDecl()
     {
         // TODO
