@@ -301,6 +301,38 @@ public class XmlNodeMutator
         return ((XmlLeafNode)target).setValue(value);
     }
 
+    /**
+     * This implementation needs to update the document (a.k.a "root") node with the new
+     * attribute as an ID attribute, and update the attribute itself as an ID attribute
+     * (or, the opposite, depending on the value of the isId parameter).
+     */
+    @Override
+    public void setIsIdAttribute(XmlNode attr, boolean isId) {
+        
+        // Note that throwing this exception is an explicit part of the contract for this
+        // method, thus not using the PreCondition.... methods.
+        if (!attr.isAttribute()) {
+            throw new IllegalArgumentException("The passed node is not an attribute node.");
+        }
+
+        // Do the casts to various bits...
+        XmlAttributeNode attrNode = (XmlAttributeNode) attr;
+        XmlNode root = getRoot(attr);
+        if (root == null) {
+            throw new IllegalStateException("Attempting to set an isId true on an attribute, but no root found.");
+        }
+        XmlRootNode rootNode = (XmlRootNode) root;
+        
+        // only if the attribute is not already an ID node should we set it as an ID attribute
+        if (isId) {
+            rootNode.addIdNode(attr);
+        }
+        else {
+            rootNode.removeIdNode(attr);
+        }
+        attrNode.setIsDtdIdAttribute(isId);
+    }
+
     // this is used when creating fake nodes.  they point to their parents,
     // but the parents don't point to them.
     public void setParent(final XmlNode child, final XmlContainerNode parent)

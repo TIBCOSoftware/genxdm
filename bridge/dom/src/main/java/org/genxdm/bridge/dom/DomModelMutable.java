@@ -245,6 +245,16 @@ public final class DomModelMutable
         return DomSupport.setNamespace(element, prefix, uri);
     }
     
+    @Override
+    public void setIsIdAttribute(Node attr, boolean isId) {
+        if (!isAttribute(attr)) {
+            throw new IllegalArgumentException("Passed node is not an attribute.");
+        }
+        PreCondition.assertArgumentNotNull(attr, "attr");
+        Element parent = (Element) getParent(attr);
+        parent.setIdAttributeNode( (Attr)attr, isId);
+    }
+
     private Node ensureOwnership(Document d, Node n)
     {
         if (n.getOwnerDocument() != d) {

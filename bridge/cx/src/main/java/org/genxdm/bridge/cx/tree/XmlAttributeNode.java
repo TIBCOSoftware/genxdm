@@ -87,12 +87,6 @@ public final class XmlAttributeNode
         return false;
     }
     
-    void checkId()
-    {
-        if (isId() && (getRoot().getNodeKind() == NodeKind.DOCUMENT) )
-            ((XmlRootNode)getRoot()).addIdNode(this);
-    }
-    
     @Override
     void setParent(XmlContainerNode container)
     {
@@ -100,5 +94,26 @@ public final class XmlAttributeNode
         checkId();
     }
 
+    void checkId()
+    {
+        if (isId() && (getRoot().getNodeKind() == NodeKind.DOCUMENT) )
+            ((XmlRootNode)getRoot()).addIdNode(this);
+    }
+    
+    /**
+     * An internal implementation detail of mutability, to support the mutability API, we
+     * need to allow for the setting of the "isId" character, which in this case means setting
+     * as either CDATA or ID.
+     * 
+     * @param isId  <code>true</code> means to turn it into a DTD ID type, otherwise
+     * turn it back into CDATA.
+     */
+    void setIsDtdIdAttribute(boolean isId) {
+        if (dtdType != DtdAttributeKind.CDATA && dtdType != DtdAttributeKind.ID) {
+            throw new IllegalStateException("Attempting to set DTD ID attribute flag on an attribute with a different type");
+        }
+        dtdType = isId ? DtdAttributeKind.ID : DtdAttributeKind.CDATA;
+    }
+    
     private DtdAttributeKind dtdType;
 }

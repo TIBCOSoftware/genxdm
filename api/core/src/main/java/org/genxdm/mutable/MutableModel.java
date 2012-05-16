@@ -311,4 +311,32 @@ public interface MutableModel<N> extends Model<N>
      *         replacement was possible.
      **/
     String replaceValue(final N target, final String value);
+    
+    /**
+     * To support the mutation capabilities of DOM 3, not directly or efficiently
+     * supported by the XQUF, we've added this function, but it should be used with
+     * caution!
+     * 
+     * <p>Note that this method can only be called on an attribute that is
+     * already a part of a document. Attempts to call this method on a non-attribute
+     * node will result in an {@link IllegalArgumentException}.
+     * Note that there's no enforcement on setting two attributes with the same value
+     * both as ID attributes - if that will be enforced anywhere it will be during
+     * validation. Attempts to use this method on attributes not part of a tree
+     * are unspecified.
+     * </p>
+     * 
+     * <p>In addition, note that this method will not augment any DTD information
+     * associated with the document. That means that calling this method, followed by
+     * serialization and de-serialization will not preserve the "isId" information
+     * set by this method.</p> 
+     * 
+     * @param attr The attribute to set/unset as an ID attribute.
+     * @param isId  Should this be set as an ID attribute or not.
+     * 
+     * @see <a href="http://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-ElSetIdAttr">Element setIdAttribute</a> from the W3C's definition of DOM Level 3
+     * 
+     * @throws IllegalArgumentException If the node passed is not an attribute node.
+     */
+    void setIsIdAttribute(final N attr, boolean isId);
 }
