@@ -156,12 +156,16 @@ public final class PreCondition
 
     public static void assertTrue(final boolean condition) throws AssertionError
     {
-        assert condition;
+        if (!condition) { 
+            throw new AssertionError("Condition is not true.");
+        }
     }
 
     public static void assertTrue(final boolean condition, final String message) throws AssertionError
     {
-        assert condition : message;
+        if (!condition) {
+            throw new AssertionError(message);
+        }
     }
 
     public static <T> T checkArgumentNotNull(final T object) throws IllegalArgumentException

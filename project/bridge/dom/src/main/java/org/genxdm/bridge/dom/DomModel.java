@@ -818,7 +818,7 @@ public class DomModel
             Attr attr = (Attr)node;
             if (attr.isId())
                 return true;
-            if (attr.getNamespaceURI().equals(XMLConstants.XML_NS_URI) &&
+            if (XMLConstants.XML_NS_URI.equals(attr.getNamespaceURI()) &&
                     attr.getLocalName().equals("id") )
                 return true;
         }
