@@ -44,22 +44,11 @@ import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.io.TypedDocumentHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.TypesBridge;
-import org.genxdm.typed.variant.VariantBridge;
-import org.genxdm.xs.ComponentBag;
-import org.genxdm.xs.ComponentProvider;
-import org.genxdm.xs.components.AttributeDefinition;
-import org.genxdm.xs.components.AttributeGroupDefinition;
-import org.genxdm.xs.components.ElementDefinition;
-import org.genxdm.xs.components.ModelGroup;
-import org.genxdm.xs.components.NotationDefinition;
-import org.genxdm.xs.constraints.IdentityConstraint;
-import org.genxdm.xs.types.ComplexType;
-import org.genxdm.xs.types.SimpleType;
 
 public final class AxiomSAProcessingContext 
     implements TypedContext<Object, XmlAtom>
 {
-	public AxiomSAProcessingContext(final AxiomProcessingContext context)
+    public AxiomSAProcessingContext(final AxiomProcessingContext context)
 	{
 	    this.context = PreCondition.assertNotNull(context, "context");
 		final SchemaCacheFactory cacheFactory = new SchemaCacheFactory();
@@ -90,12 +79,6 @@ public final class AxiomSAProcessingContext
 	public AxiomProcessingContext getProcessingContext()
 	{
 	    return context;
-	}
-
-	public VariantBridge<Object, XmlAtom> getVariantBridge()
-	{
-	    // TODO
-	    return null;
 	}
 
 	public TypedCursor<Object, XmlAtom> newCursor(Object node)

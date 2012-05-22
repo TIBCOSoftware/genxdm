@@ -42,7 +42,6 @@ import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.TypesBridge;
-import org.genxdm.typed.variant.VariantBridge;
 import org.w3c.dom.Node;
 
 public final class DomSAProcessingContext 
@@ -84,12 +83,6 @@ public final class DomSAProcessingContext
     public ProcessingContext<Node> getProcessingContext()
     {
         return parent;
-    }
-
-    @Override
-    public VariantBridge<Node, XmlAtom> getVariantBridge()
-    {
-        return new DomValueBridge();
     }
 
     @Override
