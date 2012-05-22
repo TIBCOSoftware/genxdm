@@ -22,7 +22,6 @@ import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.TypedDocumentHandlerFactory;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.TypesBridge;
-import org.genxdm.typed.variant.VariantBridge;
 
 /**
  * A context for schema-related processing and state.
@@ -70,14 +69,6 @@ public interface TypedContext<N, A>
      */
     ProcessingContext<N> getProcessingContext();
     
-    /**
-     * Returns the associated VariantBridge.  A 'variant' is a means of packaging
-     * co-variant returns in a way that won't make Java choke.
-     * 
-     * @return the VariantBridge associated with this typed context; never null.
-     */
-    VariantBridge<N, A> getVariantBridge();
-
     /**
      * Returns a cursor for navigating the data model.
      * 

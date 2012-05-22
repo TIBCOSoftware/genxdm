@@ -42,7 +42,6 @@ import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.TypesBridge;
-import org.genxdm.typed.variant.VariantBridge;
 
 public class TypedXmlNodeContext
     implements TypedContext<XmlNode, XmlAtom>
@@ -80,11 +79,6 @@ public class TypedXmlNodeContext
     public ProcessingContext<XmlNode> getProcessingContext()
     {
         return context;
-    }
-
-    public VariantBridge<XmlNode, XmlAtom> getVariantBridge()
-    {
-        return new XmlVariantBridge();
     }
 
     public TypedCursor<XmlNode, XmlAtom> newCursor(final XmlNode node)
