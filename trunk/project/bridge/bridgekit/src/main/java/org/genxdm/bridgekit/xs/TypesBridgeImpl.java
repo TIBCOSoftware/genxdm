@@ -15,12 +15,12 @@
  */
 package org.genxdm.bridgekit.xs;
 
+import static org.genxdm.bridgekit.names.QNameAsSet.ESCAPE;
+
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
-
-import static org.genxdm.bridgekit.names.QNameAsSet.ESCAPE;
 
 import org.genxdm.bridgekit.xs.complex.AttributeDeclWithParentAxisType;
 import org.genxdm.bridgekit.xs.complex.AttributeNodeTypeImpl;
@@ -47,6 +47,7 @@ import org.genxdm.typed.types.Quantifier;
 import org.genxdm.typed.types.TypesBridge;
 import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.ComponentProvider;
+import org.genxdm.xs.Schema;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
 import org.genxdm.xs.components.ElementDefinition;
@@ -83,20 +84,20 @@ import org.genxdm.xs.types.Type;
 
 public final class TypesBridgeImpl implements TypesBridge
 {
-    public TypesBridgeImpl(SchemaCache cache)
+    public TypesBridgeImpl(Schema cache)
     {
         m_cache = PreCondition.assertNotNull(cache, "cache");
 
-        ANY_ATOMIC_TYPE = m_cache.getAtomicUrType();
+        ANY_ATOMIC_TYPE = m_cache.getComponentProvider().getAtomicUrType();
 
         ELEMENT = new ElementNodeTypeImpl(WILDNAME, null, false);
         NAMESPACE = new NamespaceNodeTypeImpl();
-        ATTRIBUTE = new AttributeNodeTypeImpl(WILDNAME, null, m_cache);
+        ATTRIBUTE = new AttributeNodeTypeImpl(WILDNAME, null, m_cache.getComponentProvider());
         COMMENT = new CommentNodeTypeImpl();
         PROCESSING_INSTRUCTION = new ProcessingInstructionNodeTypeImpl(null);
         TEXT = new TextNodeTypeImpl();
         final SequenceType X = ZMultiplyType.zeroOrMore(ZPrimeChoiceType.choice(ELEMENT, ZPrimeChoiceType.choice(TEXT, ZPrimeChoiceType.choice(COMMENT, PROCESSING_INSTRUCTION))));
-        DOCUMENT = new DocumentNodeTypeImpl(X, m_cache);
+        DOCUMENT = new DocumentNodeTypeImpl(X, m_cache.getComponentProvider());
 
         ANY_KIND = ZPrimeChoiceType.choice(ELEMENT, ZPrimeChoiceType.choice(ATTRIBUTE, ZPrimeChoiceType.choice(TEXT, ZPrimeChoiceType.choice(DOCUMENT, ZPrimeChoiceType.choice(COMMENT, ZPrimeChoiceType.choice(NAMESPACE, PROCESSING_INSTRUCTION))))));
         ANY_ITEM = ZPrimeChoiceType.choice(ANY_KIND, ANY_ATOMIC_TYPE);
@@ -226,7 +227,7 @@ public final class TypesBridgeImpl implements TypesBridge
         }
         else
         {
-            return zeroOrMore(m_cache.getTypeDefinition(NativeType.ANY_ATOMIC_TYPE));
+            return zeroOrMore(m_cache.getComponentProvider().getTypeDefinition(NativeType.ANY_ATOMIC_TYPE));
         }
     }
 
@@ -242,7 +243,7 @@ public final class TypesBridgeImpl implements TypesBridge
             }
             case ELEMENT:
             {
-                return attributeWild(m_cache.getTypeDefinition(NativeType.UNTYPED_ATOMIC));
+                return attributeWild(m_cache.getComponentProvider().getTypeDefinition(NativeType.UNTYPED_ATOMIC));
             }
             case SCHEMA_ELEMENT:
             {
@@ -282,14 +283,14 @@ public final class TypesBridgeImpl implements TypesBridge
     public AttributeNodeType attributeType(final QName name, final SequenceType type)
     {
         if (name != null)
-            return new AttributeNodeTypeImpl(name, type, m_cache);
+            return new AttributeNodeTypeImpl(name, type, m_cache.getComponentProvider());
         return attributeWild(type);
     }
 
     @Override
     public AttributeNodeType attributeWild(SequenceType type)
     {
-        return new AttributeNodeTypeImpl(WILDNAME, type, m_cache);
+        return new AttributeNodeTypeImpl(WILDNAME, type, m_cache.getComponentProvider());
     }
 
     public SequenceType childAxis(final SequenceType type)
@@ -563,7 +564,7 @@ public final class TypesBridgeImpl implements TypesBridge
     public DocumentNodeType documentType(final SequenceType contentType)
     {
         if (contentType != null)
-            return new DocumentNodeTypeImpl(contentType, m_cache);
+            return new DocumentNodeTypeImpl(contentType, m_cache.getComponentProvider());
         return DOCUMENT;
     }
 
@@ -625,7 +626,7 @@ public final class TypesBridgeImpl implements TypesBridge
             }
             case ATTRIBUTE:
             {
-                return multiply(zeroOrMore(attributeType(null, m_cache.getTypeDefinition(NativeType.UNTYPED_ATOMIC))), type.quantifier());
+                return multiply(zeroOrMore(attributeType(null, m_cache.getComponentProvider().getTypeDefinition(NativeType.UNTYPED_ATOMIC))), type.quantifier());
             }
             case SCHEMA_ATTRIBUTE:
             {
@@ -735,12 +736,12 @@ public final class TypesBridgeImpl implements TypesBridge
 
     public Type getType(final QName typeName)
     {
-        return m_cache.getTypeDefinition(typeName);
+        return m_cache.getComponentProvider().getTypeDefinition(typeName);
     }
 
     public Type getType(final NativeType nativeType)
     {
-        return m_cache.getTypeDefinition(nativeType);
+        return m_cache.getComponentProvider().getTypeDefinition(nativeType);
     }
 
     public SequenceType handle(final SequenceType sequenceType)
@@ -972,7 +973,7 @@ public final class TypesBridgeImpl implements TypesBridge
             }
             case ATTRIBUTE:
             {
-                return multiply(zeroOrMore(attributeType(null, m_cache.getTypeDefinition(NativeType.UNTYPED_ATOMIC))), type.quantifier());
+                return multiply(zeroOrMore(attributeType(null, m_cache.getComponentProvider().getTypeDefinition(NativeType.UNTYPED_ATOMIC))), type.quantifier());
             }
             case SCHEMA_ATTRIBUTE:
             {
@@ -1058,17 +1059,17 @@ public final class TypesBridgeImpl implements TypesBridge
 
     public SequenceType schemaAttribute(final QName attributeName)
     {
-        return m_cache.getAttributeDeclaration(attributeName);
+        return m_cache.getComponentProvider().getAttributeDeclaration(attributeName);
     }
 
     public SequenceType schemaElement(final QName elementName)
     {
-        return m_cache.getElementDeclaration(elementName);
+        return m_cache.getComponentProvider().getElementDeclaration(elementName);
     }
 
     public SequenceType schemaType(final QName typeName)
     {
-        return m_cache.getTypeDefinition(typeName);
+        return m_cache.getComponentProvider().getTypeDefinition(typeName);
     }
 
     public SequenceType selfAxis(final SequenceType type)
@@ -1405,7 +1406,7 @@ public final class TypesBridgeImpl implements TypesBridge
     
     private final ConcurrentHashMap<Type, ArrayList<AttributeUse>> m_attributeUses = new ConcurrentHashMap<Type, ArrayList<AttributeUse>>();
 
-    private final SchemaCache m_cache;
+    private final Schema m_cache;
 
     private final QName WILDNAME = new QName(ESCAPE, ESCAPE);
 

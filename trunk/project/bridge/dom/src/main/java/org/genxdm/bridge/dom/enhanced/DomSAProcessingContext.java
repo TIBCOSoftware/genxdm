@@ -27,7 +27,6 @@ import org.genxdm.bridgekit.atoms.XmlAtomBridge;
 import org.genxdm.bridgekit.filters.FilteredSequenceBuilder;
 import org.genxdm.bridgekit.filters.NamespaceFixupSequenceFilter;
 import org.genxdm.bridgekit.tree.CursorOnTypedModel;
-import org.genxdm.bridgekit.xs.SchemaCache;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
 import org.genxdm.bridgekit.xs.TypesBridgeImpl;
 import org.genxdm.exceptions.PreCondition;
@@ -42,6 +41,7 @@ import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.TypesBridge;
+import org.genxdm.xs.Schema;
 import org.w3c.dom.Node;
 
 public final class DomSAProcessingContext 
@@ -51,7 +51,7 @@ public final class DomSAProcessingContext
     {
         if (types == null)
         {
-            SchemaCache cache = new SchemaCacheFactory().newSchemaCache();
+            Schema cache = new SchemaCacheFactory().newSchemaCache();
             this.typesBridge = new TypesBridgeImpl(cache);
         }
         else

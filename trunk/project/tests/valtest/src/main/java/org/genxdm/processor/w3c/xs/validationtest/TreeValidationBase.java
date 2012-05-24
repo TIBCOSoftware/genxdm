@@ -39,7 +39,7 @@ public abstract class TreeValidationBase<N, A>
         Catalog cat = new DefaultCatalog();
         SchemaCatalog scat = new DefaultSchemaCatalog(cat);
         CatalogResolver resolver = DefaultCatalogResolver.SINGLETON;
-        ComponentProvider bootstrap = new SchemaCacheFactory().newSchemaCache();
+        ComponentProvider bootstrap = new SchemaCacheFactory().newSchemaCache().getComponentProvider();
         
         // initialize the catalog for the schemas we want to read.
         
