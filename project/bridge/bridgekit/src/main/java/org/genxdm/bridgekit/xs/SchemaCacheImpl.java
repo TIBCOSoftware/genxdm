@@ -25,6 +25,7 @@ import org.genxdm.bridgekit.xs.complex.CommentNodeTypeImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.ComponentProvider;
+import org.genxdm.xs.Schema;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
 import org.genxdm.xs.components.ComponentKind;
@@ -44,7 +45,7 @@ import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.SimpleUrType;
 import org.genxdm.xs.types.Type;
 
-final class SchemaCacheImpl implements SchemaCache
+final class SchemaCacheImpl implements Schema
 {
     public SchemaCacheImpl()
     {
@@ -58,26 +59,12 @@ final class SchemaCacheImpl implements SchemaCache
         COMMENT = new CommentNodeTypeImpl();
     }
 
-    private void assertNotLocked()
-    {
-        PreCondition.assertFalse(m_isLocked, "isLocked -> true");
-    }
-
-    private QName checkComponent(final SchemaComponent component, final ComponentKind kind)
-    {
-        PreCondition.assertArgumentNotNull(component);
-        if (!kind.canBeAnonymous)
-        {
-            PreCondition.assertFalse(component.isAnonymous());
-        }
-        return PreCondition.assertArgumentNotNull(component.getName());
-    }
-
     public PrimeType comment()
     {
         return COMMENT;
     }
 
+    @Override
     public void declareAttribute(final AttributeDefinition attribute)
     {
         final QName name = checkComponent(attribute, ComponentKind.ATTRIBUTE);
@@ -88,6 +75,7 @@ final class SchemaCacheImpl implements SchemaCache
         }
     }
 
+    @Override
     public void declareElement(final ElementDefinition element)
     {
         final QName name = checkComponent(element, ComponentKind.ELEMENT);
@@ -98,6 +86,7 @@ final class SchemaCacheImpl implements SchemaCache
         }
     }
 
+    @Override
     public void declareNotation(final NotationDefinition notation)
     {
         final QName name = checkComponent(notation, ComponentKind.NOTATION);
@@ -108,6 +97,7 @@ final class SchemaCacheImpl implements SchemaCache
         }
     }
 
+    @Override
     public void defineAttributeGroup(final AttributeGroupDefinition attributeGroup)
     {
         final QName name = checkComponent(attributeGroup, ComponentKind.ATTRIBUTE_GROUP);
@@ -118,6 +108,7 @@ final class SchemaCacheImpl implements SchemaCache
         }
     }
 
+    @Override
     public void defineComplexType(final ComplexType complexType)
     {
         final QName name = checkComponent(complexType, ComponentKind.COMPLEX_TYPE);
@@ -128,6 +119,7 @@ final class SchemaCacheImpl implements SchemaCache
         }
     }
 
+    @Override
     public void defineIdentityConstraint(final IdentityConstraint identityConstraint)
     {
         final QName name = checkComponent(identityConstraint, ComponentKind.IDENTITY_CONSTRAINT);
@@ -138,6 +130,7 @@ final class SchemaCacheImpl implements SchemaCache
         }
     }
 
+    @Override
     public void defineModelGroup(final ModelGroup modelGroup)
     {
         final QName name = checkComponent(modelGroup, ComponentKind.MODEL_GROUP);
@@ -148,6 +141,7 @@ final class SchemaCacheImpl implements SchemaCache
         }
     }
 
+    @Override
     public void defineSimpleType(final SimpleType simpleType)
     {
         final QName name = checkComponent(simpleType, ComponentKind.SIMPLE_TYPE);
@@ -158,443 +152,37 @@ final class SchemaCacheImpl implements SchemaCache
         }
     }
 
-    public synchronized QName generateUniqueName()
+    @Override
+    public ComponentProvider getComponentProvider()
     {
-        assertNotLocked();
-        return new QName("http://genxdm.org/typed/local-types", "type-".concat(Integer.toString(m_nextType++)));
+        return m_provider;
     }
 
-    public AtomicType getAtomicType(final QName name)
+    @Override
+    public ComponentBag getComponents()
     {
-        final SimpleType simpleType = m_simpleTypes.get(name);
-        if (simpleType.isAtomicType())
-        {
-            return (AtomicType)simpleType;
-        }
-        else
-        {
-            return null;
-        }
+        return m_components;
     }
-
-    public AtomicType getAtomicType(final NativeType nativeType)
-    {
-        final Type type = getTypeDefinition(nativeType);
-        if (type.isAtomicType())
-        {
-            return (AtomicType)type;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public AtomicUrType getAtomicUrType()
-    {
-        return BUILT_IN.ANY_ATOMIC_TYPE;
-    }
-
-    public AttributeDefinition getAttributeDeclaration(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        return m_attributes.get(name);
-    }
-
-    public AttributeGroupDefinition getAttributeGroup(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        return m_attributeGroups.get(name);
-    }
-
-    public ComplexType getComplexType(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        return m_complexTypes.get(name);
-    }
-
-    public ComplexUrType getComplexUrType()
-    {
-        return BUILT_IN.ANY_COMPLEX_TYPE;
-    }
-
-    public ElementDefinition getElementDeclaration(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        return m_elements.get(name);
-    }
-
-    public IdentityConstraint getIdentityConstraint(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        return m_identityConstraints.get(name);
-    }
-
-    public ModelGroup getModelGroup(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        return m_modelGroups.get(name);
-    }
-
+    
+    @Override
     public Iterable<String> getNamespaces()
     {
         return namespaces;
     }
 
-    public NotationDefinition getNotationDeclaration(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        return m_notations.get(name);
-    }
-
-    public SimpleType getSimpleType(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        return m_simpleTypes.get(name);
-    }
-
-    public SimpleType getSimpleType(final NativeType nativeType)
-    {
-        final Type type = getTypeDefinition(nativeType);
-        if (type instanceof SimpleType)
-        {
-            return (SimpleType)type;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public SimpleUrType getSimpleUrType()
-    {
-        return BUILT_IN.ANY_SIMPLE_TYPE;
-    }
-
-    public Type getTypeDefinition(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        if (m_complexTypes.containsKey(name))
-        {
-            return m_complexTypes.get(name);
-        }
-        else if (m_simpleTypes.containsKey(name))
-        {
-            return m_simpleTypes.get(name);
-        }
-        else if (name.equals(BUILT_IN.ANY_ATOMIC_TYPE.getName()))
-        {
-            return BUILT_IN.ANY_ATOMIC_TYPE;
-        }
-        else if (name.equals(BUILT_IN.ANY_SIMPLE_TYPE.getName()))
-        {
-            return BUILT_IN.ANY_SIMPLE_TYPE;
-        }
-        else if (name.equals(BUILT_IN.ANY_COMPLEX_TYPE.getName()))
-        {
-            return BUILT_IN.ANY_COMPLEX_TYPE;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public Type getTypeDefinition(final NativeType nativeType)
-    {
-        switch (nativeType)
-        {
-            case BOOLEAN:
-            {
-                return BUILT_IN.BOOLEAN;
-            }
-            case STRING:
-            {
-                return BUILT_IN.STRING;
-            }
-            case DOUBLE:
-            {
-                return BUILT_IN.DOUBLE;
-            }
-            case FLOAT:
-            {
-                return BUILT_IN.FLOAT;
-            }
-            case DECIMAL:
-            {
-                return BUILT_IN.DECIMAL;
-            }
-            case INTEGER:
-            {
-                return BUILT_IN.INTEGER;
-            }
-            case LONG:
-            {
-                return BUILT_IN.LONG;
-            }
-            case INT:
-            {
-                return BUILT_IN.INT;
-            }
-            case SHORT:
-            {
-                return BUILT_IN.SHORT;
-            }
-            case BYTE:
-            {
-                return BUILT_IN.BYTE;
-            }
-            case NON_POSITIVE_INTEGER:
-            {
-                return BUILT_IN.NON_POSITIVE_INTEGER;
-            }
-            case NEGATIVE_INTEGER:
-            {
-                return BUILT_IN.NEGATIVE_INTEGER;
-            }
-            case NON_NEGATIVE_INTEGER:
-            {
-                return BUILT_IN.NON_NEGATIVE_INTEGER;
-            }
-            case POSITIVE_INTEGER:
-            {
-                return BUILT_IN.POSITIVE_INTEGER;
-            }
-            case UNSIGNED_LONG:
-            {
-                return BUILT_IN.UNSIGNED_LONG;
-            }
-            case UNSIGNED_INT:
-            {
-                return BUILT_IN.UNSIGNED_INT;
-            }
-            case UNSIGNED_SHORT:
-            {
-                return BUILT_IN.UNSIGNED_SHORT;
-            }
-            case UNSIGNED_BYTE:
-            {
-                return BUILT_IN.UNSIGNED_BYTE;
-            }
-            case UNTYPED_ATOMIC:
-            {
-                return BUILT_IN.UNTYPED_ATOMIC;
-            }
-            case UNTYPED:
-            {
-                return BUILT_IN.UNTYPED;
-            }
-            case DATE:
-            {
-                return BUILT_IN.DATE;
-            }
-            case DATETIME:
-            {
-                return BUILT_IN.DATETIME;
-            }
-            case TIME:
-            {
-                return BUILT_IN.TIME;
-            }
-            case GYEARMONTH:
-            {
-                return BUILT_IN.GYEARMONTH;
-            }
-            case GYEAR:
-            {
-                return BUILT_IN.GYEAR;
-            }
-            case GMONTHDAY:
-            {
-                return BUILT_IN.GMONTHDAY;
-            }
-            case GDAY:
-            {
-                return BUILT_IN.GDAY;
-            }
-            case GMONTH:
-            {
-                return BUILT_IN.GMONTH;
-            }
-            case DURATION_DAYTIME:
-            {
-                return BUILT_IN.DURATION_DAYTIME;
-            }
-            case DURATION_YEARMONTH:
-            {
-                return BUILT_IN.DURATION_YEARMONTH;
-            }
-            case DURATION:
-            {
-                return BUILT_IN.DURATION;
-            }
-            case ANY_URI:
-            {
-                return BUILT_IN.ANY_URI;
-            }
-            case BASE64_BINARY:
-            {
-                return BUILT_IN.BASE64_BINARY;
-            }
-            case HEX_BINARY:
-            {
-                return BUILT_IN.HEX_BINARY;
-            }
-            case LANGUAGE:
-            {
-                return BUILT_IN.LANGUAGE;
-            }
-            case QNAME:
-            {
-                return BUILT_IN.QNAME;
-            }
-            case ANY_TYPE:
-            {
-                return BUILT_IN.ANY_COMPLEX_TYPE;
-            }
-            case ANY_SIMPLE_TYPE:
-            {
-                return BUILT_IN.ANY_SIMPLE_TYPE;
-            }
-            case ANY_ATOMIC_TYPE:
-            {
-                return BUILT_IN.ANY_ATOMIC_TYPE;
-            }
-            case NORMALIZED_STRING:
-            {
-                return BUILT_IN.NORMALIZED_STRING;
-            }
-            case TOKEN:
-            {
-                return BUILT_IN.TOKEN;
-            }
-            case NMTOKEN:
-            {
-                return BUILT_IN.NMTOKEN;
-            }
-            case NAME:
-            {
-                return BUILT_IN.NAME;
-            }
-            case NCNAME:
-            {
-                return BUILT_IN.NCNAME;
-            }
-            case ID:
-            {
-                return BUILT_IN.ID;
-            }
-            case IDREF:
-            {
-                return BUILT_IN.IDREF;
-            }
-            case ENTITY:
-            {
-                return BUILT_IN.ENTITY;
-            }
-            case NOTATION:
-            {
-                return BUILT_IN.NOTATION;
-            }
-            case IDREFS:
-            {
-                return BUILT_IN.IDREFS;
-            }
-            case NMTOKENS:
-            {
-                return BUILT_IN.NMTOKENS;
-            }
-            case ENTITIES:
-            {
-                return BUILT_IN.ENTITIES;
-            }
-            default:
-            {
-                throw new AssertionError(nativeType);
-            }
-        }
-    }
-
-    public boolean hasAttribute(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        return m_attributes.containsKey(name);
-    }
-
-    public boolean hasAttributeGroup(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        return m_attributeGroups.containsKey(name);
-    }
-
-    public boolean hasComplexType(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        return m_complexTypes.containsKey(name);
-    }
-
-    public boolean hasElement(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        return m_elements.containsKey(name);
-    }
-
-    public boolean hasIdentityConstraint(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        return m_identityConstraints.containsKey(name);
-    }
-
-    public boolean hasModelGroup(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        return m_modelGroups.containsKey(name);
-    }
-
-    public boolean hasNotation(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        return m_notations.containsKey(name);
-    }
-
-    public boolean hasSimpleType(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        return m_simpleTypes.containsKey(name);
-    }
-
-    public boolean hasType(final QName name)
-    {
-        PreCondition.assertArgumentNotNull(name, "name");
-        if (m_complexTypes.containsKey(name))
-        {
-            return true;
-        }
-        else if (m_simpleTypes.containsKey(name))
-        {
-            return true;
-        }
-        return false;
-    }
-
+    @Override
     public boolean isLocked()
     {
         return m_isLocked;
     }
 
+    @Override
     public void lock()
     {
         m_isLocked = true;
     }
 
-    private void recordNamespace(final SchemaComponent component)
-    {
-        if (!component.isAnonymous())
-        {
-            namespaces.add(component.getTargetNamespace());
-        }
-    }
-
+    @Override
     public void register(final ComponentBag components)
     {
         assertNotLocked();
@@ -635,76 +223,543 @@ final class SchemaCacheImpl implements SchemaCache
         }
     }
 
-    @Override
-    public ComponentProvider getComponentProvider()
+    private void assertNotLocked()
     {
-        return this;
+        PreCondition.assertFalse(m_isLocked, "isLocked -> true");
     }
 
-    @Override
-    public ComponentBag getComponents()
+    private QName checkComponent(final SchemaComponent component, final ComponentKind kind)
     {
-        return components;
+        PreCondition.assertArgumentNotNull(component);
+        if (!kind.canBeAnonymous)
+        {
+            PreCondition.assertFalse(component.isAnonymous());
+        }
+        return PreCondition.assertArgumentNotNull(component.getName());
     }
-    
+
+    private void recordNamespace(final SchemaComponent component)
+    {
+        if (!component.isAnonymous())
+        {
+            namespaces.add(component.getTargetNamespace());
+        }
+    }
+
     private class BagImpl implements ComponentBag
     {
+        @Override
         public Iterable<AttributeGroupDefinition> getAttributeGroups()
         {
             return m_attributeGroups.values();
         }
 
+        @Override
         public Iterable<AttributeDefinition> getAttributes()
         {
             return m_attributes.values();
         }
 
+        @Override
         public Iterable<ComplexType> getComplexTypes()
         {
             return m_complexTypes.values();
         }
 
+        @Override
         public Iterable<ElementDefinition> getElements()
         {
             return m_elements.values();
         }
 
+        @Override
         public Iterable<IdentityConstraint> getIdentityConstraints()
         {
             return m_identityConstraints.values();
         }
 
+        @Override
         public Iterable<ModelGroup> getModelGroups()
         {
             return m_modelGroups.values();
         }
 
+        @Override
         public Iterable<NotationDefinition> getNotations()
         {
             return m_notations.values();
         }
 
+        @Override
         public Iterable<SimpleType> getSimpleTypes()
         {
             return m_simpleTypes.values();
         }
-
     }
+    
+    private class ProviderImpl implements ComponentProvider
+    {
 
-    private final ComponentBag components = new BagImpl();
+        @Override
+        public synchronized QName generateUniqueName()
+        {
+            assertNotLocked();
+            return new QName("http://genxdm.org/typed/local-types", "type-".concat(Integer.toString(m_nextType++)));
+        }
+
+        @Override
+        public AtomicType getAtomicType(final QName name)
+        {
+            final SimpleType simpleType = m_simpleTypes.get(name);
+            if (simpleType.isAtomicType())
+            {
+                return (AtomicType)simpleType;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        @Override
+        public AtomicType getAtomicType(final NativeType nativeType)
+        {
+            final Type type = getTypeDefinition(nativeType);
+            if (type.isAtomicType())
+            {
+                return (AtomicType)type;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        @Override
+        public AtomicUrType getAtomicUrType()
+        {
+            return BUILT_IN.ANY_ATOMIC_TYPE;
+        }
+
+        @Override
+        public AttributeDefinition getAttributeDeclaration(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            return m_attributes.get(name);
+        }
+
+        @Override
+        public AttributeGroupDefinition getAttributeGroup(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            return m_attributeGroups.get(name);
+        }
+
+        @Override
+        public ComplexType getComplexType(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            return m_complexTypes.get(name);
+        }
+
+        @Override
+        public ComplexUrType getComplexUrType()
+        {
+            return BUILT_IN.ANY_COMPLEX_TYPE;
+        }
+
+        @Override
+        public ElementDefinition getElementDeclaration(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            return m_elements.get(name);
+        }
+
+        @Override
+        public IdentityConstraint getIdentityConstraint(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            return m_identityConstraints.get(name);
+        }
+
+        @Override
+        public ModelGroup getModelGroup(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            return m_modelGroups.get(name);
+        }
+
+        @Override
+        public NotationDefinition getNotationDeclaration(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            return m_notations.get(name);
+        }
+
+        @Override
+        public SimpleType getSimpleType(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            return m_simpleTypes.get(name);
+        }
+
+        @Override
+        public SimpleType getSimpleType(final NativeType nativeType)
+        {
+            final Type type = getTypeDefinition(nativeType);
+            if (type instanceof SimpleType)
+            {
+                return (SimpleType)type;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        @Override
+        public SimpleUrType getSimpleUrType()
+        {
+            return BUILT_IN.ANY_SIMPLE_TYPE;
+        }
+
+        @Override
+        public Type getTypeDefinition(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            if (m_complexTypes.containsKey(name))
+            {
+                return m_complexTypes.get(name);
+            }
+            else if (m_simpleTypes.containsKey(name))
+            {
+                return m_simpleTypes.get(name);
+            }
+            else if (name.equals(BUILT_IN.ANY_ATOMIC_TYPE.getName()))
+            {
+                return BUILT_IN.ANY_ATOMIC_TYPE;
+            }
+            else if (name.equals(BUILT_IN.ANY_SIMPLE_TYPE.getName()))
+            {
+                return BUILT_IN.ANY_SIMPLE_TYPE;
+            }
+            else if (name.equals(BUILT_IN.ANY_COMPLEX_TYPE.getName()))
+            {
+                return BUILT_IN.ANY_COMPLEX_TYPE;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        @Override
+        public Type getTypeDefinition(final NativeType nativeType)
+        {
+            switch (nativeType)
+            {
+                case BOOLEAN:
+                {
+                    return BUILT_IN.BOOLEAN;
+                }
+                case STRING:
+                {
+                    return BUILT_IN.STRING;
+                }
+                case DOUBLE:
+                {
+                    return BUILT_IN.DOUBLE;
+                }
+                case FLOAT:
+                {
+                    return BUILT_IN.FLOAT;
+                }
+                case DECIMAL:
+                {
+                    return BUILT_IN.DECIMAL;
+                }
+                case INTEGER:
+                {
+                    return BUILT_IN.INTEGER;
+                }
+                case LONG:
+                {
+                    return BUILT_IN.LONG;
+                }
+                case INT:
+                {
+                    return BUILT_IN.INT;
+                }
+                case SHORT:
+                {
+                    return BUILT_IN.SHORT;
+                }
+                case BYTE:
+                {
+                    return BUILT_IN.BYTE;
+                }
+                case NON_POSITIVE_INTEGER:
+                {
+                    return BUILT_IN.NON_POSITIVE_INTEGER;
+                }
+                case NEGATIVE_INTEGER:
+                {
+                    return BUILT_IN.NEGATIVE_INTEGER;
+                }
+                case NON_NEGATIVE_INTEGER:
+                {
+                    return BUILT_IN.NON_NEGATIVE_INTEGER;
+                }
+                case POSITIVE_INTEGER:
+                {
+                    return BUILT_IN.POSITIVE_INTEGER;
+                }
+                case UNSIGNED_LONG:
+                {
+                    return BUILT_IN.UNSIGNED_LONG;
+                }
+                case UNSIGNED_INT:
+                {
+                    return BUILT_IN.UNSIGNED_INT;
+                }
+                case UNSIGNED_SHORT:
+                {
+                    return BUILT_IN.UNSIGNED_SHORT;
+                }
+                case UNSIGNED_BYTE:
+                {
+                    return BUILT_IN.UNSIGNED_BYTE;
+                }
+                case UNTYPED_ATOMIC:
+                {
+                    return BUILT_IN.UNTYPED_ATOMIC;
+                }
+                case UNTYPED:
+                {
+                    return BUILT_IN.UNTYPED;
+                }
+                case DATE:
+                {
+                    return BUILT_IN.DATE;
+                }
+                case DATETIME:
+                {
+                    return BUILT_IN.DATETIME;
+                }
+                case TIME:
+                {
+                    return BUILT_IN.TIME;
+                }
+                case GYEARMONTH:
+                {
+                    return BUILT_IN.GYEARMONTH;
+                }
+                case GYEAR:
+                {
+                    return BUILT_IN.GYEAR;
+                }
+                case GMONTHDAY:
+                {
+                    return BUILT_IN.GMONTHDAY;
+                }
+                case GDAY:
+                {
+                    return BUILT_IN.GDAY;
+                }
+                case GMONTH:
+                {
+                    return BUILT_IN.GMONTH;
+                }
+                case DURATION_DAYTIME:
+                {
+                    return BUILT_IN.DURATION_DAYTIME;
+                }
+                case DURATION_YEARMONTH:
+                {
+                    return BUILT_IN.DURATION_YEARMONTH;
+                }
+                case DURATION:
+                {
+                    return BUILT_IN.DURATION;
+                }
+                case ANY_URI:
+                {
+                    return BUILT_IN.ANY_URI;
+                }
+                case BASE64_BINARY:
+                {
+                    return BUILT_IN.BASE64_BINARY;
+                }
+                case HEX_BINARY:
+                {
+                    return BUILT_IN.HEX_BINARY;
+                }
+                case LANGUAGE:
+                {
+                    return BUILT_IN.LANGUAGE;
+                }
+                case QNAME:
+                {
+                    return BUILT_IN.QNAME;
+                }
+                case ANY_TYPE:
+                {
+                    return BUILT_IN.ANY_COMPLEX_TYPE;
+                }
+                case ANY_SIMPLE_TYPE:
+                {
+                    return BUILT_IN.ANY_SIMPLE_TYPE;
+                }
+                case ANY_ATOMIC_TYPE:
+                {
+                    return BUILT_IN.ANY_ATOMIC_TYPE;
+                }
+                case NORMALIZED_STRING:
+                {
+                    return BUILT_IN.NORMALIZED_STRING;
+                }
+                case TOKEN:
+                {
+                    return BUILT_IN.TOKEN;
+                }
+                case NMTOKEN:
+                {
+                    return BUILT_IN.NMTOKEN;
+                }
+                case NAME:
+                {
+                    return BUILT_IN.NAME;
+                }
+                case NCNAME:
+                {
+                    return BUILT_IN.NCNAME;
+                }
+                case ID:
+                {
+                    return BUILT_IN.ID;
+                }
+                case IDREF:
+                {
+                    return BUILT_IN.IDREF;
+                }
+                case ENTITY:
+                {
+                    return BUILT_IN.ENTITY;
+                }
+                case NOTATION:
+                {
+                    return BUILT_IN.NOTATION;
+                }
+                case IDREFS:
+                {
+                    return BUILT_IN.IDREFS;
+                }
+                case NMTOKENS:
+                {
+                    return BUILT_IN.NMTOKENS;
+                }
+                case ENTITIES:
+                {
+                    return BUILT_IN.ENTITIES;
+                }
+                default:
+                {
+                    throw new AssertionError(nativeType);
+                }
+            }
+        }
+
+        @Override
+        public boolean hasAttribute(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            return m_attributes.containsKey(name);
+        }
+
+        @Override
+        public boolean hasAttributeGroup(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            return m_attributeGroups.containsKey(name);
+        }
+
+        @Override
+        public boolean hasComplexType(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            return m_complexTypes.containsKey(name);
+        }
+
+        @Override
+        public boolean hasElement(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            return m_elements.containsKey(name);
+        }
+
+        @Override
+        public boolean hasIdentityConstraint(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            return m_identityConstraints.containsKey(name);
+        }
+
+        @Override
+        public boolean hasModelGroup(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            return m_modelGroups.containsKey(name);
+        }
+
+        @Override
+        public boolean hasNotation(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            return m_notations.containsKey(name);
+        }
+
+        @Override
+        public boolean hasSimpleType(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            return m_simpleTypes.containsKey(name);
+        }
+
+        @Override
+        public boolean hasType(final QName name)
+        {
+            PreCondition.assertArgumentNotNull(name, "name");
+            if (m_complexTypes.containsKey(name))
+            {
+                return true;
+            }
+            else if (m_simpleTypes.containsKey(name))
+            {
+                return true;
+            }
+            return false;
+        }
+    }
+    
+    private final ComponentProvider m_provider = new ProviderImpl();
+    private final ComponentBag m_components = new BagImpl();
+
+    // built-ins
     private final BuiltInSchema BUILT_IN;
     private final NodeType COMMENT;
-    final ConcurrentHashMap<QName, AttributeGroupDefinition> m_attributeGroups = new ConcurrentHashMap<QName, AttributeGroupDefinition>();
-    final ConcurrentHashMap<QName, AttributeDefinition> m_attributes = new ConcurrentHashMap<QName, AttributeDefinition>();
 
-    final ConcurrentHashMap<QName, ComplexType> m_complexTypes = new ConcurrentHashMap<QName, ComplexType>();
-    final ConcurrentHashMap<QName, ElementDefinition> m_elements = new ConcurrentHashMap<QName, ElementDefinition>();
-    final ConcurrentHashMap<QName, IdentityConstraint> m_identityConstraints = new ConcurrentHashMap<QName, IdentityConstraint>();
-    private boolean m_isLocked = false;
-    final ConcurrentHashMap<QName, ModelGroup> m_modelGroups = new ConcurrentHashMap<QName, ModelGroup>();
-    private int m_nextType = 0;
-    final ConcurrentHashMap<QName, NotationDefinition> m_notations = new ConcurrentHashMap<QName, NotationDefinition>();
+    // the components
+    private final ConcurrentHashMap<QName, AttributeGroupDefinition> m_attributeGroups = new ConcurrentHashMap<QName, AttributeGroupDefinition>();
+    private final ConcurrentHashMap<QName, AttributeDefinition> m_attributes = new ConcurrentHashMap<QName, AttributeDefinition>();
+    private final ConcurrentHashMap<QName, ComplexType> m_complexTypes = new ConcurrentHashMap<QName, ComplexType>();
+    private final ConcurrentHashMap<QName, ElementDefinition> m_elements = new ConcurrentHashMap<QName, ElementDefinition>();
+    private final ConcurrentHashMap<QName, IdentityConstraint> m_identityConstraints = new ConcurrentHashMap<QName, IdentityConstraint>();
+    private final ConcurrentHashMap<QName, ModelGroup> m_modelGroups = new ConcurrentHashMap<QName, ModelGroup>();
+    private final ConcurrentHashMap<QName, NotationDefinition> m_notations = new ConcurrentHashMap<QName, NotationDefinition>();
     private final ConcurrentHashMap<QName, SimpleType> m_simpleTypes = new ConcurrentHashMap<QName, SimpleType>();
+
+    private boolean m_isLocked = false;
+    private int m_nextType = 0;
     /**
      * The set of namespaces of all components. We build this during registration, which acts as the gateway.
      */
