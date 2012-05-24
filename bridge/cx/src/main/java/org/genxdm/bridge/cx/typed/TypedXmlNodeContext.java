@@ -27,7 +27,6 @@ import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XmlAtomBridge;
 import org.genxdm.bridgekit.filters.FilteredSequenceBuilder;
 import org.genxdm.bridgekit.filters.NamespaceFixupSequenceFilter;
-import org.genxdm.bridgekit.xs.SchemaCache;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
 import org.genxdm.bridgekit.xs.TypesBridgeImpl;
 import org.genxdm.exceptions.PreCondition;
@@ -42,6 +41,7 @@ import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.TypesBridge;
+import org.genxdm.xs.Schema;
 
 public class TypedXmlNodeContext
     implements TypedContext<XmlNode, XmlAtom>
@@ -52,7 +52,7 @@ public class TypedXmlNodeContext
         this.context = PreCondition.assertNotNull(context, "context");
         if (typesBridge == null)
         {
-            SchemaCache cache = new SchemaCacheFactory().newSchemaCache();
+            Schema cache = new SchemaCacheFactory().newSchemaCache();
             this.types = new TypesBridgeImpl(cache);
         }
         else

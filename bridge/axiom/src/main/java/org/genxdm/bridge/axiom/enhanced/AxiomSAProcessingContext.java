@@ -28,7 +28,6 @@ import org.genxdm.bridgekit.filters.NamespaceFixupSequenceFilter;
 import org.genxdm.bridgekit.tree.CoreModelDecoration;
 import org.genxdm.bridgekit.tree.CoreModelDecorator;
 import org.genxdm.bridgekit.tree.CursorOnTypedModel;
-import org.genxdm.bridgekit.xs.SchemaCache;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
 import org.genxdm.bridgekit.xs.TypesBridgeImpl;
 import org.genxdm.exceptions.PreCondition;
@@ -44,6 +43,7 @@ import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.io.TypedDocumentHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.TypesBridge;
+import org.genxdm.xs.Schema;
 
 public final class AxiomSAProcessingContext 
     implements TypedContext<Object, XmlAtom>
@@ -114,7 +114,7 @@ public final class AxiomSAProcessingContext
     
     private final AxiomProcessingContext context;
 	private final AtomBridge<XmlAtom> atomBridge;
-	private final SchemaCache cache;
+	private final Schema cache;
 	
 	@SuppressWarnings("unused")
 	private boolean locked;
