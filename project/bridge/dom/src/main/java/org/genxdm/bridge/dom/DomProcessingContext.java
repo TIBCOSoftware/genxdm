@@ -18,7 +18,9 @@ package org.genxdm.bridge.dom;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.genxdm.Cursor;
 import org.genxdm.Feature;
@@ -186,6 +188,11 @@ public class DomProcessingContext
     static {
         sm_dbf = DocumentBuilderFactory.newInstance();
         sm_dbf.setNamespaceAware(true);
+        try {
+            sm_dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        } catch (ParserConfigurationException e) {
+            // TODO - this failure really should be logged.
+        }
     }
     
     private final DomModel model = new DomModel();

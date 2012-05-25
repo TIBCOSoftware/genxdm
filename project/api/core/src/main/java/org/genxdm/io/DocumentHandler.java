@@ -22,6 +22,8 @@ import java.io.Reader;
 import java.io.Writer;
 import java.net.URI;
 
+import javax.xml.XMLConstants;
+
 import org.genxdm.exceptions.XdmMarshalException;
 import org.xml.sax.InputSource;
 
@@ -93,4 +95,14 @@ public interface DocumentHandler<N>
      * @param source the starting node from which to traverse (usually a document node); may not be null
      */
     void write(final Writer characterStream, final N source) throws IOException, XdmMarshalException;
+    
+    /**
+     * A method that corresponds to the {@link XMLConstants#FEATURE_SECURE_PROCESSING} flag that can be
+     * passed to various XML processors.
+     * 
+     * <p>Note that what "secure" means is parser implementation dependent.</p>
+     * 
+     * @return <code>true</code> if the processing will be done securely.
+     */
+    boolean isSecurelyProcessing();
 }
