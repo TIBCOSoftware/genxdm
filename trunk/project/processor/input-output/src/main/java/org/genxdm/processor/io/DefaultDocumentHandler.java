@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.net.URI;
 
+//import javax.xml.XMLConstants;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLReporter;
@@ -64,6 +65,7 @@ public class DefaultDocumentHandler<N>
         this.builder = PreCondition.assertNotNull(builder, "builder");
         ipf.setProperty("javax.xml.stream.isCoalescing", true);
         ipf.setProperty("javax.xml.stream.isReplacingEntityReferences", true);
+        //ipf.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
     }
     
     public void setResolver(Resolver resolver)
@@ -137,6 +139,16 @@ public class DefaultDocumentHandler<N>
             return parse(rdr.getResource(), systemId);
         }
         return null;
+    }
+
+    /**
+     * For the moment, if we don't do external entities, we're assuming that is "secure."
+     */
+    @Override
+    public boolean isSecurelyProcessing() {
+        // TODO - figure out how to better support security with the use of a StAX parser.
+        return true;
+        //return !Boolean.TRUE.equals(ipf.getProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES));
     }
 
     protected N parseEventReader(XMLEventReader reader, URI systemId)
