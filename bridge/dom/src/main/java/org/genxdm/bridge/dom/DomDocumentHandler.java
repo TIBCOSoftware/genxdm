@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.net.URI;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -98,6 +99,19 @@ public class DomDocumentHandler extends DefaultDocumentHandler<Node> {
             throw new XdmMarshalException(e);
         }
         return result;
+    }
+
+    /**
+     * DOM support determines secure parsing by simply asking the DocumentBuilderFactory how it is configured.
+     */
+    @Override
+    public boolean isSecurelyProcessing() {
+        try {
+            return m_dbf.getFeature(XMLConstants.FEATURE_SECURE_PROCESSING);
+        } catch (ParserConfigurationException e) {
+            // TODO Auto-generated catch block
+            return false;
+        }
     }
 
     /**

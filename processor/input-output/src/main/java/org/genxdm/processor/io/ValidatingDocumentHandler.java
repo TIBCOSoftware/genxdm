@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.net.URI;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLReporter;
@@ -104,6 +105,18 @@ public class ValidatingDocumentHandler<N, A>
     public Validator<A> getValidator()
     {
         return validator;
+    }
+
+    /**
+     * Using a SAX parser - just ask the parser if it is parsing securely.
+     */
+    @Override
+    public boolean isSecurelyProcessing() {
+        try {
+            return spf.getFeature(XMLConstants.FEATURE_SECURE_PROCESSING);
+        } catch (Exception e) {
+            return false;
+        }
     }
     
     private final TypedContext<N, A> context;
