@@ -53,7 +53,7 @@ public final class AxiomSAProcessingContext
 	    this.context = PreCondition.assertNotNull(context, "context");
 		final SchemaCacheFactory cacheFactory = new SchemaCacheFactory();
 		this.cache = cacheFactory.newSchemaCache();
-		this.metaBridge = new TypesBridgeImpl(this.cache);
+		this.metaBridge = new TypesBridgeImpl();
         this.atomBridge = new XmlAtomBridge(this.cache);
 		EnumSet<CoreModelDecoration> delegations = EnumSet.noneOf(CoreModelDecoration.class);
 		delegations.add(CoreModelDecoration.CHILD_AXIS);
