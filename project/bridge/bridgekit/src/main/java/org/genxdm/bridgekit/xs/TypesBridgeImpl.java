@@ -83,16 +83,16 @@ public final class TypesBridgeImpl implements TypesBridge
     {
         m_cache = PreCondition.assertNotNull(cache, "cache");
 
-        ANY_ATOMIC_TYPE = m_cache.getComponentProvider().getAtomicUrType();
+        ANY_ATOMIC_TYPE = BuiltInSchema.SINGLETON.ANY_ATOMIC_TYPE; 
 
         ELEMENT = new ElementNodeTypeImpl(WILDNAME, null, false);
         NAMESPACE = new NamespaceNodeTypeImpl();
-        ATTRIBUTE = new AttributeNodeTypeImpl(WILDNAME, null, m_cache.getComponentProvider());
+        ATTRIBUTE = new AttributeNodeTypeImpl(WILDNAME, null);
         COMMENT = new CommentNodeTypeImpl();
         PROCESSING_INSTRUCTION = new ProcessingInstructionNodeTypeImpl(null);
         TEXT = new TextNodeTypeImpl();
         final SequenceType X = ZMultiplyType.zeroOrMore(ZPrimeChoiceType.choice(ELEMENT, ZPrimeChoiceType.choice(TEXT, ZPrimeChoiceType.choice(COMMENT, PROCESSING_INSTRUCTION))));
-        DOCUMENT = new DocumentNodeTypeImpl(X, m_cache.getComponentProvider());
+        DOCUMENT = new DocumentNodeTypeImpl(X);
 
         ANY_KIND = ZPrimeChoiceType.choice(ELEMENT, ZPrimeChoiceType.choice(ATTRIBUTE, ZPrimeChoiceType.choice(TEXT, ZPrimeChoiceType.choice(DOCUMENT, ZPrimeChoiceType.choice(COMMENT, ZPrimeChoiceType.choice(NAMESPACE, PROCESSING_INSTRUCTION))))));
         ANY_ITEM = ZPrimeChoiceType.choice(ANY_KIND, ANY_ATOMIC_TYPE);
@@ -226,7 +226,7 @@ public final class TypesBridgeImpl implements TypesBridge
         }
         else
         {
-            return zeroOrMore(m_cache.getComponentProvider().getTypeDefinition(NativeType.ANY_ATOMIC_TYPE));
+            return zeroOrMore(BuiltInSchema.SINGLETON.ANY_ATOMIC_TYPE);
         }
     }
 
@@ -243,7 +243,7 @@ public final class TypesBridgeImpl implements TypesBridge
             }
             case ELEMENT:
             {
-                return attributeWild(m_cache.getComponentProvider().getTypeDefinition(NativeType.UNTYPED_ATOMIC));
+                return attributeWild(BuiltInSchema.SINGLETON.UNTYPED_ATOMIC);
             }
             case SCHEMA_ELEMENT:
             {
@@ -284,14 +284,14 @@ public final class TypesBridgeImpl implements TypesBridge
     public AttributeNodeType attributeType(final QName name, final SequenceType type)
     {
         if (name != null)
-            return new AttributeNodeTypeImpl(name, type, m_cache.getComponentProvider());
+            return new AttributeNodeTypeImpl(name, type);
         return attributeWild(type);
     }
 
     @Override
     public AttributeNodeType attributeWild(SequenceType type)
     {
-        return new AttributeNodeTypeImpl(WILDNAME, type, m_cache.getComponentProvider());
+        return new AttributeNodeTypeImpl(WILDNAME, type);
     }
 
     @Override
@@ -518,7 +518,7 @@ public final class TypesBridgeImpl implements TypesBridge
     public DocumentNodeType documentType(final SequenceType contentType)
     {
         if (contentType != null)
-            return new DocumentNodeTypeImpl(contentType, m_cache.getComponentProvider());
+            return new DocumentNodeTypeImpl(contentType);
         return DOCUMENT;
     }
 
@@ -585,7 +585,7 @@ public final class TypesBridgeImpl implements TypesBridge
             }
             case ATTRIBUTE:
             {
-                return multiply(zeroOrMore(attributeType(null, m_cache.getComponentProvider().getTypeDefinition(NativeType.UNTYPED_ATOMIC))), type.quantifier());
+                return multiply(zeroOrMore(attributeType(null, BuiltInSchema.SINGLETON.UNTYPED_ATOMIC)), type.quantifier());
             }
             case SCHEMA_ATTRIBUTE:
             {
@@ -952,7 +952,7 @@ public final class TypesBridgeImpl implements TypesBridge
             }
             case ATTRIBUTE:
             {
-                return multiply(zeroOrMore(attributeType(null, m_cache.getComponentProvider().getTypeDefinition(NativeType.UNTYPED_ATOMIC))), type.quantifier());
+                return multiply(zeroOrMore(attributeType(null, BuiltInSchema.SINGLETON.UNTYPED_ATOMIC)), type.quantifier());
             }
             case SCHEMA_ATTRIBUTE:
             {
