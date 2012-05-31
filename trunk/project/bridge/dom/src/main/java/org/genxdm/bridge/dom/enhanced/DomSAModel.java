@@ -30,8 +30,8 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.typed.types.TypesBridge;
 import org.genxdm.xs.ComponentProvider;
+import org.genxdm.xs.Schema;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.Type;
@@ -48,9 +48,9 @@ class DomSAModel
     public DomSAModel(final TypedContext<Node, XmlAtom> pcx)
     {
         PreCondition.assertArgumentNotNull(pcx, "pcx");
-        this.typesBridge = pcx.getTypesBridge();
+        this.schema = pcx.getSchema();
         this.atomBridge = pcx.getAtomBridge();
-        this.provider = typesBridge.getComponentProvider();
+        this.provider = schema.getComponentProvider();
     }
 
     public List<XmlAtom> getAttributeValue(final Node parent, final String namespaceURI, final String localName)
@@ -121,7 +121,7 @@ class DomSAModel
     {
         if (node != null)
         {
-            final QName annotation = getAnnotationType(node, typesBridge); 
+            final QName annotation = getAnnotationType(node, schema); 
             switch (getNodeKind(node))
             {
                 case ATTRIBUTE:
@@ -290,7 +290,7 @@ class DomSAModel
         }
     }
 
-    private QName getAnnotationType(final Node node, final TypesBridge metaBridge)
+    private QName getAnnotationType(final Node node, final Schema metaBridge)
     {
         PreCondition.assertArgumentNotNull(node, "node");
         if (DomSupport.supportsCoreLevel3(node))
@@ -379,7 +379,7 @@ class DomSAModel
 
     private final AtomBridge<XmlAtom> atomBridge;
 
-    private final TypesBridge typesBridge;
+    private final Schema schema;
     
     private final ComponentProvider provider;
 

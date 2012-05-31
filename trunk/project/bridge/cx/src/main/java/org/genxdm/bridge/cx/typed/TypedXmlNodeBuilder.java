@@ -28,7 +28,7 @@ import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.io.SequenceBuilder;
-import org.genxdm.typed.types.TypesBridge;
+import org.genxdm.xs.Schema;
 import org.genxdm.xs.types.Type;
 
 public class TypedXmlNodeBuilder
@@ -38,7 +38,7 @@ public class TypedXmlNodeBuilder
     
     TypedXmlNodeBuilder(TypedXmlNodeContext context)
     {
-        this.cache = PreCondition.assertNotNull(context.getTypesBridge(), "schema");
+        this.cache = PreCondition.assertNotNull(context.getSchema(), "schema");
     }
 
     public void attribute(String namespaceURI, String localName, String prefix, List<? extends XmlAtom> data, QName type)
@@ -99,5 +99,5 @@ public class TypedXmlNodeBuilder
         endNodeProcessing();
     }
     
-    private final TypesBridge cache;
+    private final Schema cache;
 }

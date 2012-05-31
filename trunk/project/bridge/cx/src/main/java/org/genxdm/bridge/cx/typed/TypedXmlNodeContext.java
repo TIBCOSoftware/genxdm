@@ -47,17 +47,19 @@ public class TypedXmlNodeContext
     implements TypedContext<XmlNode, XmlAtom>
 {
 
-    public TypedXmlNodeContext(XmlNodeContext context, TypesBridge typesBridge)
+    public TypedXmlNodeContext(XmlNodeContext context, Schema schema)
     {
         this.context = PreCondition.assertNotNull(context, "context");
-        if (typesBridge == null)
+        if (schema == null)
         {
-            Schema cache = new SchemaCacheFactory().newSchemaCache();
-            this.types = new TypesBridgeImpl(cache);
+            this.schema = new SchemaCacheFactory().newSchemaCache();
         }
         else
-            this.types = typesBridge;
-        this.atoms = new XmlAtomBridge(types);
+        {
+        	this.schema = schema;
+        }
+        this.types = new TypesBridgeImpl(this.schema);
+        this.atoms = new XmlAtomBridge(this.schema);
         this.model = new TypedXmlNodeModel(atoms);
     }
     
@@ -71,6 +73,11 @@ public class TypedXmlNodeContext
         return types;
     }
 
+    public Schema getSchema()
+    {
+    	return schema;
+    }
+    
     public TypedModel<XmlNode, XmlAtom> getModel()
     {
         return model;
@@ -93,8 +100,8 @@ public class TypedXmlNodeContext
         // either combining the filter and the wrapper, or pulling the
         // implementation into TypedXmlNodeBuilder.
         SequenceFilter<XmlAtom> filter = new NamespaceFixupSequenceFilter<XmlAtom>();
-        filter.setTypesBridge(types);
         filter.setAtomBridge(atoms);
+        filter.setSchema(schema);
         return new FilteredSequenceBuilder<XmlNode, XmlAtom>(filter, new TypedXmlNodeBuilder(this));
     }
 
@@ -110,7 +117,7 @@ public class TypedXmlNodeContext
         SequenceBuilder<XmlNode, XmlAtom> builder = newSequenceBuilder();
         // TODO: this assumes building a new tree and returning it.
         // can we instead provide a tool that walks the existing tree and modifies it?
-        validator.setSchema(this.getTypesBridge());
+        validator.setSchema(this.getSchema());
         validator.setSequenceHandler(builder);
         model.stream(source, true, validator);
         try 
@@ -130,4 +137,5 @@ public class TypedXmlNodeContext
     private final TypedXmlNodeModel model;
     private final XmlAtomBridge atoms;
     private final TypesBridge types;
+    private final Schema schema;
 }

@@ -47,16 +47,18 @@ import org.w3c.dom.Node;
 public final class DomSAProcessingContext 
     implements TypedContext<Node, XmlAtom>
 {
-    public DomSAProcessingContext(DomProcessingContext parent, TypesBridge types)
+    public DomSAProcessingContext(DomProcessingContext parent, Schema schema)
     {
-        if (types == null)
+        if (schema == null)
         {
-            Schema cache = new SchemaCacheFactory().newSchemaCache();
-            this.typesBridge = new TypesBridgeImpl(cache);
+            this.schema = new SchemaCacheFactory().newSchemaCache();
         }
         else
-            this.typesBridge = types;
-        this.atomBridge = new XmlAtomBridge(typesBridge);
+        {
+            this.schema = schema;
+        }
+        this.typesBridge = new TypesBridgeImpl(this.schema);
+        this.atomBridge = new XmlAtomBridge(this.schema);
         this.m_model = new DomSAModel(this);
         this.parent = PreCondition.assertNotNull(parent);
     }
@@ -72,7 +74,11 @@ public final class DomSAProcessingContext
     {
         return typesBridge;
     }
-
+    @Override
+    public Schema getSchema()
+    {
+    	return schema;
+    }
     @Override
     public TypedModel<Node, XmlAtom> getModel()
     {
@@ -99,7 +105,7 @@ public final class DomSAProcessingContext
         // either combining the filter and the wrapper, or pulling the
         // implementation into DomSequenceBuilder.
         SequenceFilter<XmlAtom> filter = new NamespaceFixupSequenceFilter<XmlAtom>();
-        filter.setTypesBridge(typesBridge);
+        filter.setSchema(schema);
         filter.setAtomBridge(atomBridge);
         return new FilteredSequenceBuilder<Node, XmlAtom>(filter, new DomSequenceBuilder(parent.getDocumentBuilderFactory(), this));
     }
@@ -114,7 +120,7 @@ public final class DomSAProcessingContext
     public Node validate(Node source, ValidationHandler<XmlAtom> validator, URI namespace)
     {
         SequenceBuilder<Node, XmlAtom> builder = newSequenceBuilder();
-        validator.setSchema(typesBridge);
+        validator.setSchema(schema);
         validator.setSequenceHandler(builder);
         m_model.stream(source, true, validator);
         try 
@@ -133,6 +139,7 @@ public final class DomSAProcessingContext
     private final DomProcessingContext parent;
     private final XmlAtomBridge atomBridge;
     private final TypesBridge typesBridge;
+    private final Schema schema;
 
     private final DomSAModel m_model;
 }
