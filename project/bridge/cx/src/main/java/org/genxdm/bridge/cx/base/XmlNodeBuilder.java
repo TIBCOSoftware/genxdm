@@ -29,7 +29,6 @@ import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridge.cx.tree.XmlNodeFactory;
 import org.genxdm.bridge.cx.tree.XmlNodeMutator;
 import org.genxdm.bridge.cx.tree.XmlPINode;
-import org.genxdm.bridge.cx.tree.XmlRootNode;
 import org.genxdm.bridge.cx.tree.XmlTextNode;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;

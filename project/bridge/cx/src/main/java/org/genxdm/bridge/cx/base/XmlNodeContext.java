@@ -35,7 +35,7 @@ import org.genxdm.io.Resolver;
 import org.genxdm.mutable.MutableContext;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.processor.io.DefaultDocumentHandler;
-import org.genxdm.typed.types.TypesBridge;
+import org.genxdm.xs.Schema;
 
 public final class XmlNodeContext
     implements ProcessingContext<XmlNode>
@@ -61,7 +61,7 @@ public final class XmlNodeContext
     }
 
     @SuppressWarnings("unchecked")
-    public TypedXmlNodeContext getTypedContext(TypesBridge cache)
+    public TypedXmlNodeContext getTypedContext(Schema cache)
     {
         TypedXmlNodeContext tc;
         if (cache == null)
@@ -69,7 +69,7 @@ public final class XmlNodeContext
             if (defaultCache == null)
             {
                 tc = new TypedXmlNodeContext(this, null);
-                defaultCache = tc.getTypesBridge();
+                defaultCache = tc.getSchema();
                 typedContexts.put(defaultCache, tc);
             }
             else 
@@ -156,8 +156,8 @@ public final class XmlNodeContext
     
     private final XmlNodeModel model = new XmlNodeModel();
     private final XmlNodeMutableContext mutant;
-    private Map<TypesBridge, TypedXmlNodeContext> typedContexts = new HashMap<TypesBridge, TypedXmlNodeContext>();
-    private TypesBridge defaultCache;
+    private Map<Schema, TypedXmlNodeContext> typedContexts = new HashMap<Schema, TypedXmlNodeContext>();
+    private Schema defaultCache;
     private XMLReporter reporter;
     private Resolver resolver;
 }
