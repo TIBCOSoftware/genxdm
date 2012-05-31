@@ -17,7 +17,6 @@ package org.genxdm.bridgekit.xs.complex;
 
 import org.genxdm.NodeKind;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.types.DocumentNodeType;
 import org.genxdm.xs.types.PrimeChoiceType;
 import org.genxdm.xs.types.PrimeType;
@@ -29,7 +28,7 @@ public final class DocumentNodeTypeImpl extends AbstractBranchNodeType implement
 {
     private final SequenceType m_contentType;
 
-    public DocumentNodeTypeImpl(final SequenceType contentType, final ComponentProvider cache)
+    public DocumentNodeTypeImpl(final SequenceType contentType)
     {
         super(NodeKind.DOCUMENT);
         m_contentType = PreCondition.assertArgumentNotNull(contentType, "contentType");
