@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.genxdm</groupId>
         <artifactId>bridge</artifactId>
-        <version>0.7</version>
+        <version>0.8</version>
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bridge-axiom</artifactId>
-    <version>0.8</version>
+    <version>0.9</version>
     <!-- about as good as dom, at this point. -->
     <name>GenXDM Axiom Bridge</name>
     <url>http://www.genxdm.org/bridge/bridge-axiom/</url>

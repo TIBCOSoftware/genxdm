@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.genxdm</groupId>
         <artifactId>bridge</artifactId>
-        <version>0.7</version>
+        <version>0.8</version>
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bridge-cx</artifactId>
-    <version>0.11</version>
+    <version>0.12</version>
     <!-- recently completely refactored. this should be relatively mature as
          an example/reference implementation, barring the possibility of
          changes to the API that will mandate changes here. -->
