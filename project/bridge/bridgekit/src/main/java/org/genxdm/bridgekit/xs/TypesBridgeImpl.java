@@ -103,6 +103,7 @@ public final class TypesBridgeImpl implements TypesBridge
         ANY_ITEM = ZPrimeChoiceType.choice(ANY_KIND, ANY_ATOMIC_TYPE);
     }
 
+    @Override
     public void accept(final SequenceType type, final MetaVisitor visitor)
     {
         if (type instanceof SimpleType)
@@ -178,6 +179,7 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public SequenceType ancestorAxis(final SequenceType type)
     {
         final PrimeType prime = type.prime();
@@ -214,11 +216,13 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public SequenceType ancestorOrSelfAxis(final SequenceType contextType)
     {
         return zeroOrMore(nodeType());
     }
 
+    @Override
     public SequenceType atomSet(final SequenceType type)
     {
         if (type instanceof SimpleType)
@@ -231,6 +235,7 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public SequenceType attributeAxis(final SequenceType type)
     {
         final PrimeType prime = type.prime();
@@ -280,6 +285,7 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public AttributeNodeType attributeType(final QName name, final SequenceType type)
     {
         if (name != null)
@@ -293,6 +299,7 @@ public final class TypesBridgeImpl implements TypesBridge
         return new AttributeNodeTypeImpl(WILDNAME, type, m_cache.getComponentProvider());
     }
 
+    @Override
     public SequenceType childAxis(final SequenceType type)
     {
         final PrimeType prime = type.prime();
@@ -375,11 +382,13 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public SequenceType choice(final SequenceType one, final SequenceType two)
     {
         return ZChoiceType.choice(one, two);
     }
 
+    @Override
     public SequenceType commentTest(final SequenceType arg)
     {
         final PrimeType primeType = arg.prime();
@@ -406,16 +415,19 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public CommentNodeType commentType()
     {
         return COMMENT;
     }
 
+    @Override
     public SequenceType concat(final SequenceType lhs, final SequenceType rhs)
     {
         return ZConcatType.concat(lhs, rhs);
     }
 
+    @Override
     public SequenceType contentType(final SequenceType type)
     {
         if (type instanceof DocumentNodeType)
@@ -484,6 +496,7 @@ public final class TypesBridgeImpl implements TypesBridge
         m_cache.defineSimpleType(simpleType);
     }
 
+    @Override
     public SequenceType descendantAxis(final SequenceType type)
     {
         final PrimeType prime = type.prime();
@@ -524,6 +537,7 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public SequenceType descendantOrSelfAxis(final SequenceType type)
     {
         final PrimeType prime = type.prime();
@@ -561,6 +575,7 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public DocumentNodeType documentType(final SequenceType contentType)
     {
         if (contentType != null)
@@ -568,6 +583,7 @@ public final class TypesBridgeImpl implements TypesBridge
         return DOCUMENT;
     }
 
+    @Override
     public SequenceType elementTest(final SequenceType arg)
     {
         final PrimeType primeType = arg.prime();
@@ -591,6 +607,7 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public ElementNodeType elementType(final QName name, final SequenceType type, final boolean nillable)
     {
         if (name != null)
@@ -604,16 +621,19 @@ public final class TypesBridgeImpl implements TypesBridge
         return new ElementNodeTypeImpl(WILDNAME, type, nillable);
     }
 
+    @Override
     public EmptyType emptyType()
     {
         return EMPTY;
     }
 
+    @Override
     public SequenceType followingAxis(final SequenceType contextType)
     {
         return zeroOrMore(nodeType());
     }
 
+    @Override
     public SequenceType followingSiblingAxis(final SequenceType type)
     {
         final PrimeType prime = type.prime();
@@ -665,6 +685,7 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public SequenceType getBinaryLHS(final SequenceType type)
     {
         if (type instanceof ChoiceType)
@@ -678,6 +699,7 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public SequenceType getBinaryRHS(final SequenceType type)
     {
         if (type instanceof ChoiceType)
@@ -691,6 +713,7 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public QName getErrorCode(final SequenceType noneType)
     {
         if (noneType instanceof NoneType)
@@ -706,6 +729,7 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public QName getName(final SequenceType type)
     {
         if (type instanceof Type)
@@ -734,76 +758,91 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public Type getType(final QName typeName)
     {
         return m_cache.getComponentProvider().getTypeDefinition(typeName);
     }
 
+    @Override
     public Type getType(final NativeType nativeType)
     {
         return m_cache.getComponentProvider().getTypeDefinition(nativeType);
     }
 
+    @Override
     public SequenceType handle(final SequenceType sequenceType)
     {
         return sequenceType;
     }
 
+    @Override
     public SequenceType interleave(final SequenceType one, final SequenceType two)
     {
         return ZInterleaveType.interleave(one, two);
     }
 
+    @Override
     public boolean isAttributeNodeType(final SequenceType type)
     {
         return type instanceof AttributeNodeType;
     }
 
+    @Override
     public boolean isChoice(final SequenceType type)
     {
         return (type instanceof ChoiceType);
     }
 
+    @Override
     public boolean isCommentNodeType(final SequenceType type)
     {
         return type instanceof CommentNodeType;
     }
 
+    @Override
     public boolean isDocumentNodeType(final SequenceType type)
     {
         return type instanceof DocumentNodeType;
     }
 
+    @Override
     public boolean isElementNodeType(final SequenceType type)
     {
         return (type instanceof ElementNodeType);
     }
 
+    @Override
     public boolean isEmpty(final SequenceType type)
     {
         return type instanceof EmptyType;
     }
 
+    @Override
     public boolean isNamespaceNodeType(final SequenceType type)
     {
         return type instanceof NamespaceNodeType;
     }
 
+    @Override
     public boolean isNone(final SequenceType type)
     {
         return (type instanceof NoneType);
     }
 
+    @Override
     public boolean isProcessingInstructionNodeType(final SequenceType type)
     {
         return type instanceof ProcessingInstructionNodeType;
     }
 
+    @Override
     public boolean isTextNodeType(final SequenceType type)
     {
         return type instanceof TextNodeType;
     }
 
+    @Override
     public PrimeType itemType()
     {
         return ANY_ITEM;
@@ -821,6 +860,7 @@ public final class TypesBridgeImpl implements TypesBridge
         m_cache.lock();
     }
 
+    @Override
     public SequenceType multiply(final SequenceType argument, final Quantifier multiplier)
     {
         PreCondition.assertArgumentNotNull(argument, "argument");
@@ -850,11 +890,13 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public SequenceType namespaceAxis(final SequenceType contextType)
     {
         return zeroOrMore(nodeType());
     }
 
+    @Override
     public SequenceType namespaceTest(final SequenceType arg)
     {
         final PrimeType primeType = arg.prime();
@@ -877,11 +919,13 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public NamespaceNodeType namespaceType()
     {
         return NAMESPACE;
     }
 
+    @Override
     public SequenceType nodeTest(final SequenceType arg)
     {
         final PrimeType primeType = arg.prime();
@@ -919,26 +963,31 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public PrimeType nodeType()
     {
         return ANY_KIND;
     }
 
+    @Override
     public NoneType noneType()
     {
         return new NoneTypeImpl();
     }
 
+    @Override
     public NoneType noneType(final QName errorCode)
     {
         return new NoneTypeImpl(errorCode);
     }
 
+    @Override
     public SequenceType oneOrMore(final SequenceType type)
     {
         return multiply(type, Quantifier.ONE_OR_MORE);
     }
 
+    @Override
     public SequenceType optional(final SequenceType type)
     {
         if (null != type)
@@ -951,16 +1000,19 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public SequenceType parentAxis(final SequenceType contextType)
     {
         return optional(nodeType());
     }
 
+    @Override
     public SequenceType precedingAxis(final SequenceType contextType)
     {
         return zeroOrMore(nodeType());
     }
 
+    @Override
     public SequenceType precedingSiblingAxis(final SequenceType type)
     {
         final PrimeType prime = type.prime();
@@ -1012,11 +1064,13 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public PrimeType prime(final SequenceType type)
     {
         return type.prime();
     }
 
+    @Override
     public SequenceType processingInstructionTest(final SequenceType arg, final String name)
     {
         final PrimeType primeType = arg.prime();
@@ -1038,6 +1092,7 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public ProcessingInstructionNodeType processingInstructionType(final String name)
     {
         if (name != null)
@@ -1045,11 +1100,13 @@ public final class TypesBridgeImpl implements TypesBridge
         return PROCESSING_INSTRUCTION;
     }
 
+    @Override
     public Quantifier quantifier(final SequenceType type)
     {
         return type.quantifier();
     }
 
+    @Override
     public boolean sameAs(final SequenceType one, final SequenceType two)
     {
         PreCondition.assertArgumentNotNull(one, "one");
@@ -1057,21 +1114,25 @@ public final class TypesBridgeImpl implements TypesBridge
         return subtype(one, two) && subtype(two, one);
     }
 
+    @Override
     public SequenceType schemaAttribute(final QName attributeName)
     {
         return m_cache.getComponentProvider().getAttributeDeclaration(attributeName);
     }
 
+    @Override
     public SequenceType schemaElement(final QName elementName)
     {
         return m_cache.getComponentProvider().getElementDeclaration(elementName);
     }
 
+    @Override
     public SequenceType schemaType(final QName typeName)
     {
         return m_cache.getComponentProvider().getTypeDefinition(typeName);
     }
 
+    @Override
     public SequenceType selfAxis(final SequenceType type)
     {
         final PrimeType prime = type.prime();
@@ -1099,6 +1160,7 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public boolean subtype(final SequenceType lhs, final SequenceType rhs)
     {
         PreCondition.assertArgumentNotNull(lhs, "lhs");
@@ -1106,6 +1168,7 @@ public final class TypesBridgeImpl implements TypesBridge
         return SchemaSupport.subtype(lhs, rhs);
     }
 
+    @Override
     public SequenceType textTest(final SequenceType arg)
     {
         final PrimeType primeType = arg.prime();
@@ -1131,21 +1194,25 @@ public final class TypesBridgeImpl implements TypesBridge
         }
     }
 
+    @Override
     public TextNodeType textType()
     {
         return TEXT;
     }
 
+    @Override
     public String toString(final SequenceType type, final NamespaceResolver mappings, final String defaultElementAndTypeNamespace) throws GenXDMException
     {
         return type.toString();
     }
 
+    @Override
     public SequenceType[] typeArray(final int size)
     {
         return new SequenceType[size];
     }
 
+    @Override
     public SequenceType zeroOrMore(final SequenceType type)
     {
         return multiply(type, Quantifier.ZERO_OR_MORE);
