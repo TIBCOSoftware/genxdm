@@ -19,7 +19,6 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.names.NamespaceResolver;
-import org.genxdm.xs.Schema;
 import org.genxdm.xs.types.AttributeNodeType;
 import org.genxdm.xs.types.CommentNodeType;
 import org.genxdm.xs.types.DocumentNodeType;
@@ -36,7 +35,7 @@ import org.genxdm.xs.types.TextNodeType;
 /**
  * A processing context parameterized by atom(s) and type(s).
  */
-public interface TypesBridge extends Schema
+public interface TypesBridge
 {
     // TODO: push down accept to SequenceType (removing the first param).
     // see impl in TypesBridgeImpl

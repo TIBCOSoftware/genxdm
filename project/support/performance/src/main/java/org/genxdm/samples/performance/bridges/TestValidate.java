@@ -90,7 +90,7 @@ public class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 		// Create a validator...
 		final ValidatorFactory<N, A> vcf = new ValidatorFactory<N, A>(typedContext);
 		m_validator = vcf.newXdmContentValidator();
-		m_validator.setSchema(typedContext.getTypesBridge());
+		m_validator.setSchema(typedContext.getSchema());
 	}
 	
 	@Override
@@ -147,7 +147,7 @@ public class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 //		final SchemaLoadOptions args = new SchemaLoadOptions();
 		final W3cXmlSchemaParser parser = new W3cXmlSchemaParser();
 		
-		parser.setComponentProvider(tpcx.getTypesBridge().getComponentProvider());
+		parser.setComponentProvider(tpcx.getSchema().getComponentProvider());
 		parser.setCatalogResolver(new MyResolver(), new MyCatalog());
 		
 		for (final Resolved<InputStream> resource : resources)
@@ -160,7 +160,7 @@ public class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 					System.out.println("      " + error.getLocalizedMessage());
 				}
 			}
-			tpcx.getTypesBridge().register(scBag);
+			tpcx.getSchema().register(scBag);
 		}
 		return errors;
 	}

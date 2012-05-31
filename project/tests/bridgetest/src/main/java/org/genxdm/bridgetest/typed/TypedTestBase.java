@@ -124,9 +124,9 @@ public abstract class TypedTestBase<N, A>
     };
     
     // convenience method for testing typed context variants
-    protected TypedContext<N, A> getTypedContext(TypesBridge bridge)
+    protected TypedContext<N, A> getTypedContext(Schema schema)
     {
-        return newProcessingContext().getTypedContext(bridge);
+        return newProcessingContext().getTypedContext(schema);
     }
     
     // to use this, specify one of the enums
@@ -136,7 +136,7 @@ public abstract class TypedTestBase<N, A>
     protected N createValidTypedDocument(TypedContext<N, A> schemaContext, Doctype dc)
     {
         // create/register the schema components
-        dc.initializeSchema(schemaContext.getTypesBridge());
+        dc.initializeSchema(schemaContext.getSchema());
         // build the typed document
         N document = dc.buildTypedDocument(schemaContext.newSequenceBuilder(), schemaContext.getTypesBridge());
         // return it

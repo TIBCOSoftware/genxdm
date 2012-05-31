@@ -67,7 +67,7 @@ public abstract class TreeValidationBase<N, A>
         POVerifier.verifyUntyped(untyped, context.getModel());
 
         TypedContext<N, A> cache = context.getTypedContext(null);
-        loadSchema(cache.getTypesBridge());
+        loadSchema(cache.getSchema());
 
         ValidationHandler<A> validator = getValidationHandler();
         // the validate method *should* set the sequence handler and schema.
