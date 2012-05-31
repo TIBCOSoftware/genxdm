@@ -26,7 +26,7 @@
     <groupId>org.genxdm</groupId>
     <artifactId>project</artifactId>
     <packaging>pom</packaging>
-    <version>0.10</version>
+    <version>0.11</version>
     
     <name>GenXDM</name>
     <url>http://www.genxdm.org/</url>
