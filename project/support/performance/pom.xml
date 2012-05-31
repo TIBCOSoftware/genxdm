@@ -21,12 +21,12 @@
   <parent>
     <artifactId>support</artifactId>
     <groupId>org.genxdm</groupId>
-    <version>0.7</version>
+    <version>0.8</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
   <artifactId>performance</artifactId>
-  <version>0.5</version>
+  <version>0.6</version>
   <!-- needs code review; believed to be immature. -->
   <name>GenXDM Performance Evaluation</name>
   <url>http://www.genxdm.org/support/performance/</url>
