@@ -45,7 +45,6 @@ import org.genxdm.names.NamespaceResolver;
 import org.genxdm.typed.types.MetaVisitor;
 import org.genxdm.typed.types.Quantifier;
 import org.genxdm.typed.types.TypesBridge;
-import org.genxdm.xs.Schema;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
@@ -67,7 +66,6 @@ import org.genxdm.xs.types.ElementNodeType;
 import org.genxdm.xs.types.EmptyType;
 import org.genxdm.xs.types.MultiplyType;
 import org.genxdm.xs.types.NamespaceNodeType;
-import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.NoneType;
 import org.genxdm.xs.types.PrimeChoiceType;
 import org.genxdm.xs.types.PrimeType;
@@ -79,10 +77,8 @@ import org.genxdm.xs.types.Type;
 
 public final class TypesBridgeImpl implements TypesBridge
 {
-    public TypesBridgeImpl(Schema cache)
+    public TypesBridgeImpl()
     {
-        m_cache = PreCondition.assertNotNull(cache, "cache");
-
         ANY_ATOMIC_TYPE = BuiltInSchema.SINGLETON.ANY_ATOMIC_TYPE; 
 
         ELEMENT = new ElementNodeTypeImpl(WILDNAME, null, false);
@@ -698,18 +694,6 @@ public final class TypesBridgeImpl implements TypesBridge
     }
 
     @Override
-    public Type getType(final QName typeName)
-    {
-        return m_cache.getComponentProvider().getTypeDefinition(typeName);
-    }
-
-    @Override
-    public Type getType(final NativeType nativeType)
-    {
-        return m_cache.getComponentProvider().getTypeDefinition(nativeType);
-    }
-
-    @Override
     public SequenceType handle(final SequenceType sequenceType)
     {
         return sequenceType;
@@ -1042,24 +1026,6 @@ public final class TypesBridgeImpl implements TypesBridge
     }
 
     @Override
-    public SequenceType schemaAttribute(final QName attributeName)
-    {
-        return m_cache.getComponentProvider().getAttributeDeclaration(attributeName);
-    }
-
-    @Override
-    public SequenceType schemaElement(final QName elementName)
-    {
-        return m_cache.getComponentProvider().getElementDeclaration(elementName);
-    }
-
-    @Override
-    public SequenceType schemaType(final QName typeName)
-    {
-        return m_cache.getComponentProvider().getTypeDefinition(typeName);
-    }
-
-    @Override
     public SequenceType selfAxis(final SequenceType type)
     {
         final PrimeType prime = type.prime();
@@ -1370,8 +1336,6 @@ public final class TypesBridgeImpl implements TypesBridge
 
     
     private final ConcurrentHashMap<Type, ArrayList<AttributeUse>> m_attributeUses = new ConcurrentHashMap<Type, ArrayList<AttributeUse>>();
-
-    private final Schema m_cache;
 
     private final QName WILDNAME = new QName(ESCAPE, ESCAPE);
 

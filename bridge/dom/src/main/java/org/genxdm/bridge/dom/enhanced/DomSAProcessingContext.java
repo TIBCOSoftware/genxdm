@@ -57,7 +57,7 @@ public final class DomSAProcessingContext
         {
             this.schema = schema;
         }
-        this.typesBridge = new TypesBridgeImpl(this.schema);
+        this.typesBridge = new TypesBridgeImpl();
         this.atomBridge = new XmlAtomBridge(this.schema);
         this.m_model = new DomSAModel(this);
         this.parent = PreCondition.assertNotNull(parent);

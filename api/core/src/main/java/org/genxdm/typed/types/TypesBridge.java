@@ -198,23 +198,6 @@ public interface TypesBridge
     QName getName(SequenceType type);
 
     /**
-     * Returns the specified type definition given a built in type.
-     * 
-     * @param nativeType
-     *            The built in type definition.
-     */
-    SequenceType getType(NativeType nativeType);
-
-    /**
-     * Returns a type definition with the specified name.
-     * 
-     * @param typeName
-     *            The name of the type definition.
-     * @return The type definition. May be <code>null</code> if the type does not exist.
-     */
-    SequenceType getType(QName typeName);
-
-    /**
      * Converts the specified type into an opaque handle.
      */
     SequenceType handle(SequenceType sequenceType);
@@ -369,21 +352,6 @@ public interface TypesBridge
 
     // TODO: how is this different from "equals"?
     boolean sameAs(SequenceType one, SequenceType two);
-
-    /**
-     * Returns a type denoting "schema-attribute(attributeName)".
-     */
-    SequenceType schemaAttribute(QName attributeName);
-
-    /**
-     * Returns a type denoting "schema-element(elementName)".
-     */
-    SequenceType schemaElement(QName elementDeclaration);
-
-    /**
-     * Returns a type denoting "schema-type(typeName)".
-     */
-    SequenceType schemaType(QName typeName);
 
     /**
      * Computes the type resulting from the application of the self axis.

@@ -58,7 +58,7 @@ public class TypedXmlNodeContext
         {
         	this.schema = schema;
         }
-        this.types = new TypesBridgeImpl(this.schema);
+        this.types = new TypesBridgeImpl();
         this.atoms = new XmlAtomBridge(this.schema);
         this.model = new TypedXmlNodeModel(atoms);
     }
