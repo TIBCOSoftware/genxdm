@@ -77,7 +77,7 @@ public final class DomSAProcessingContext
     @Override
     public Schema getSchema()
     {
-    	return schema;
+        return schema;
     }
     @Override
     public TypedModel<Node, XmlAtom> getModel()
