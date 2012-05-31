@@ -64,19 +64,20 @@ public final class XmlNodeContext
     public TypedXmlNodeContext getTypedContext(Schema cache)
     {
         TypedXmlNodeContext tc;
-        if (cache == null)
+        if (cache != null)
+            tc = typedContexts.get(cache);
+        else
         {
-            if (defaultCache == null)
+            if (defaultCache != null)
+                tc = typedContexts.get(defaultCache);
+            else
             {
                 tc = new TypedXmlNodeContext(this, null);
                 defaultCache = tc.getSchema();
                 typedContexts.put(defaultCache, tc);
             }
-            else 
-                tc = typedContexts.get(defaultCache);
         }
-        else // don't care about default; cache has been supplied
-            tc = typedContexts.get(cache);
+            
         if (tc == null) // only happens if cache supplied, first time seen
         {
             tc = new TypedXmlNodeContext(this, cache);

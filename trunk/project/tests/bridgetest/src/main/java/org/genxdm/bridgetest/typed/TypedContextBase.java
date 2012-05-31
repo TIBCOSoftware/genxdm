@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.genxdm.ProcessingContext;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.typed.TypedContext;
-import org.genxdm.typed.types.TypesBridge;
+import org.genxdm.xs.Schema;
 import org.junit.Test;
 
 public abstract class TypedContextBase<N, A>
@@ -21,11 +21,11 @@ public abstract class TypedContextBase<N, A>
         assertNotNull(context.getAtomBridge());
         assertNotNull(context.getTypesBridge());
         // TODO: this doesn't work.  why not?
-//        TypedContext<N, A> c2 = getTypedContext(null);
-//        assertTrue(context == c2);
-//        TypesBridge types = context.getTypesBridge();
-//        c2 = getTypedContext(types);
-//        assertTrue(context == c2);
+        TypedContext<N, A> c2 = getTypedContext(null);
+        assertTrue(context == c2);
+        Schema schema = context.getSchema();
+        c2 = getTypedContext(schema);
+        assertTrue(context == c2);
     }
     
     @Test

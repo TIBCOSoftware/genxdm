@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.ProcessingContext;
 import org.genxdm.bridgekit.xs.ComponentBagImpl;
 import org.genxdm.bridgekit.xs.complex.ComplexTypeImpl;
 import org.genxdm.bridgekit.xs.complex.ContentTypeImpl;
@@ -20,6 +21,7 @@ import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.NativeType;
+import org.junit.Before;
 
 public abstract class TypedTestBase<N, A>
     extends TestBase<N>
@@ -126,7 +128,7 @@ public abstract class TypedTestBase<N, A>
     // convenience method for testing typed context variants
     protected TypedContext<N, A> getTypedContext(Schema schema)
     {
-        return newProcessingContext().getTypedContext(schema);
+        return context.getTypedContext(schema);
     }
     
     // to use this, specify one of the enums
@@ -142,9 +144,16 @@ public abstract class TypedTestBase<N, A>
         // return it
         return document;
     }
+    
+    @Before
+    public void setUp()
+    {
+        context = newProcessingContext();
+    }
 
     static int nextType = 0;
     
+    protected ProcessingContext<N> context;
     protected static final String NSCOM = "http://www.example.com/namespace";
     protected static final String NSORG = "http://www.example.org/namespace";
     protected static final String NSNET = "http://www.example.net/namespace";

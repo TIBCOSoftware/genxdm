@@ -113,16 +113,19 @@ public class DomProcessingContext
     public TypedContext<Node, XmlAtom> getTypedContext(Schema cache)
     {
         DomSAProcessingContext tc = null;
-        if ( (defaultCache == null) && (cache == null) )
-        {
-            tc = new DomSAProcessingContext(this, null);
-            defaultCache = tc.getSchema();
-            typedContexts.put(defaultCache, tc);
-        }
-        else if (cache == null) // but defaultCache != null)
-            tc = typedContexts.get(defaultCache);
-        else // cache is non-null; don't care about default
+        if (cache != null)
             tc = typedContexts.get(cache);
+        else
+        {
+            if (defaultCache != null)
+                tc = typedContexts.get(defaultCache);
+            else
+            {
+                tc = new DomSAProcessingContext(this, null);
+                defaultCache = tc.getSchema();
+                typedContexts.put(defaultCache, tc);
+            }
+        }
         if (tc == null) // previous line returned null; first time we've seen this cache
         {
             tc = new DomSAProcessingContext(this, cache);
