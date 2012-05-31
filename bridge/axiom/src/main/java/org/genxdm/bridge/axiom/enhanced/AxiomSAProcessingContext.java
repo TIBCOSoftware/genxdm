@@ -52,9 +52,9 @@ public final class AxiomSAProcessingContext
 	{
 	    this.context = PreCondition.assertNotNull(context, "context");
 		final SchemaCacheFactory cacheFactory = new SchemaCacheFactory();
-		cache = cacheFactory.newSchemaCache();
-		this.metaBridge = new TypesBridgeImpl(cache);
-        this.atomBridge = new XmlAtomBridge(this.metaBridge);
+		this.cache = cacheFactory.newSchemaCache();
+		this.metaBridge = new TypesBridgeImpl(this.cache);
+        this.atomBridge = new XmlAtomBridge(this.cache);
 		EnumSet<CoreModelDecoration> delegations = EnumSet.noneOf(CoreModelDecoration.class);
 		delegations.add(CoreModelDecoration.CHILD_AXIS);
 		delegations.add(CoreModelDecoration.CHILD_ELEMENTS);
@@ -71,6 +71,10 @@ public final class AxiomSAProcessingContext
 		return metaBridge;
 	}
 
+    public Schema getSchema()
+    {
+    	return cache;
+    }
 	public TypedModel<Object, XmlAtom> getModel()
 	{
 		return model;
@@ -93,7 +97,7 @@ public final class AxiomSAProcessingContext
         // either combining the filter and the wrapper, or pulling the
         // implementation into here.
         SequenceFilter<XmlAtom> filter = new NamespaceFixupSequenceFilter<XmlAtom>();
-        filter.setTypesBridge(metaBridge);
+        filter.setSchema(cache);
         filter.setAtomBridge(atomBridge);
 	    return new FilteredSequenceBuilder<Object, XmlAtom>(filter, new AxiomSequenceBuilder(this, context.getOMFactory(), true));
     }

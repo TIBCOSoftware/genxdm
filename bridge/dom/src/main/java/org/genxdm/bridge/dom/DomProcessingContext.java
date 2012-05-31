@@ -41,7 +41,7 @@ import org.genxdm.mutable.MutableCursor;
 import org.genxdm.mutable.MutableModel;
 import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
-import org.genxdm.typed.types.TypesBridge;
+import org.genxdm.xs.Schema;
 import org.w3c.dom.Node;
 
 public class DomProcessingContext
@@ -110,13 +110,13 @@ public class DomProcessingContext
     }
 
     @SuppressWarnings("unchecked")
-    public TypedContext<Node, XmlAtom> getTypedContext(TypesBridge cache)
+    public TypedContext<Node, XmlAtom> getTypedContext(Schema cache)
     {
         DomSAProcessingContext tc = null;
         if ( (defaultCache == null) && (cache == null) )
         {
             tc = new DomSAProcessingContext(this, null);
-            defaultCache = tc.getTypesBridge();
+            defaultCache = tc.getSchema();
             typedContexts.put(defaultCache, tc);
         }
         else if (cache == null) // but defaultCache != null)
@@ -197,6 +197,6 @@ public class DomProcessingContext
     
     private final DomModel model = new DomModel();
     private MutantContext mutantContext;
-    private Map<TypesBridge, DomSAProcessingContext> typedContexts = new HashMap<TypesBridge, DomSAProcessingContext>();
-    private TypesBridge defaultCache;
+    private Map<Schema, DomSAProcessingContext> typedContexts = new HashMap<Schema, DomSAProcessingContext>();
+    private Schema defaultCache;
 }

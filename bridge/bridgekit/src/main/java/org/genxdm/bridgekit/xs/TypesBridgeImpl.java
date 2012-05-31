@@ -45,19 +45,14 @@ import org.genxdm.names.NamespaceResolver;
 import org.genxdm.typed.types.MetaVisitor;
 import org.genxdm.typed.types.Quantifier;
 import org.genxdm.typed.types.TypesBridge;
-import org.genxdm.xs.ComponentBag;
-import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.Schema;
 import org.genxdm.xs.components.AttributeDefinition;
-import org.genxdm.xs.components.AttributeGroupDefinition;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ModelGroup;
-import org.genxdm.xs.components.NotationDefinition;
 import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.components.SchemaWildcard;
 import org.genxdm.xs.constraints.AttributeUse;
 import org.genxdm.xs.constraints.ElementUse;
-import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.constraints.ModelGroupUse;
 import org.genxdm.xs.constraints.NamespaceConstraint;
 import org.genxdm.xs.constraints.WildcardUse;
@@ -441,62 +436,6 @@ public final class TypesBridgeImpl implements TypesBridge
     }
 
     @Override
-    public void declareAttribute(AttributeDefinition attribute)
-    {
-        assertNotLocked();
-        m_cache.declareAttribute(attribute);
-    }
-
-    @Override
-    public void declareElement(ElementDefinition element)
-    {
-        assertNotLocked();
-        m_cache.declareElement(element);
-    }
-
-    @Override
-    public void declareNotation(NotationDefinition notation)
-    {
-        assertNotLocked();
-        m_cache.declareNotation(notation);
-    }
-
-    @Override
-    public void defineAttributeGroup(AttributeGroupDefinition attributeGroup)
-    {
-        assertNotLocked();
-        m_cache.defineAttributeGroup(attributeGroup);
-    }
-
-    @Override
-    public void defineComplexType(ComplexType complexType)
-    {
-        assertNotLocked();
-        m_cache.defineComplexType(complexType);
-    }
-
-    @Override
-    public void defineIdentityConstraint(IdentityConstraint identityConstraint)
-    {
-        assertNotLocked();
-        m_cache.defineIdentityConstraint(identityConstraint);
-    }
-
-    @Override
-    public void defineModelGroup(ModelGroup modelGroup)
-    {
-        assertNotLocked();
-        m_cache.defineModelGroup(modelGroup);
-    }
-
-    @Override
-    public void defineSimpleType(SimpleType simpleType)
-    {
-        assertNotLocked();
-        m_cache.defineSimpleType(simpleType);
-    }
-
-    @Override
     public SequenceType descendantAxis(final SequenceType type)
     {
         final PrimeType prime = type.prime();
@@ -846,18 +785,6 @@ public final class TypesBridgeImpl implements TypesBridge
     public PrimeType itemType()
     {
         return ANY_ITEM;
-    }
-
-    @Override
-    public boolean isLocked()
-    {
-        return m_cache.isLocked();
-    }
-
-    @Override
-    public void lock()
-    {
-        m_cache.lock();
     }
 
     @Override
@@ -1216,35 +1143,6 @@ public final class TypesBridgeImpl implements TypesBridge
     public SequenceType zeroOrMore(final SequenceType type)
     {
         return multiply(type, Quantifier.ZERO_OR_MORE);
-    }
-
-    @Override
-    public ComponentProvider getComponentProvider()
-    {
-        return m_cache.getComponentProvider();
-    }
-
-    @Override
-    public ComponentBag getComponents()
-    {
-        return m_cache.getComponents();
-    }
-
-    @Override
-    public Iterable<String> getNamespaces()
-    {
-        return m_cache.getNamespaces();
-    }
-
-    @Override
-    public void register(ComponentBag components)
-    {
-        assertNotLocked();
-        m_cache.register(components);
-    }
-
-    private void assertNotLocked()
-    {
     }
 
     private SequenceType attributeAxisFromComplexType(final ComplexType complexType, final ElementDefinition parentAxis)

@@ -21,7 +21,7 @@ import org.genxdm.names.NamespaceBinding;
 import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.typed.types.TypesBridge;
+import org.genxdm.xs.Schema;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.types.Type;
 
@@ -68,7 +68,7 @@ public class NamespaceFixupSequenceFilter<A>
             }
             required.add(new DefaultNamespaceBinding(p, ns));
         }
-        Type t = (type == null) ? BuiltInSchema.SINGLETON.UNTYPED_ATOMIC : types.getComponentProvider().getTypeDefinition(type);
+        Type t = (type == null) ? BuiltInSchema.SINGLETON.UNTYPED_ATOMIC : schema.getComponentProvider().getTypeDefinition(type);
         // i'm not sure about this test
         if ( (type != null) && t.derivedFromType(BuiltInSchema.SINGLETON.QNAME, methods) )
         {
@@ -248,9 +248,9 @@ public class NamespaceFixupSequenceFilter<A>
     }
     
     @Override
-    public void setTypesBridge(TypesBridge bridge)
+    public void setSchema(Schema schema)
     {
-        this.types = PreCondition.assertNotNull(bridge);
+    	this.schema = PreCondition.assertNotNull(schema);
     }
     
     @Override
@@ -412,8 +412,8 @@ public class NamespaceFixupSequenceFilter<A>
     private int depth = -1;
     private int counter = 0;
     private SequenceHandler<A> output;
-    private TypesBridge types;
     private AtomBridge<A> atoms;
+    private Schema schema;
     private Set<DerivationMethod> methods = new HashSet<DerivationMethod>(3);
     
 }
