@@ -22,6 +22,9 @@ package org.genxdm.axes;
  * of the common &lt;N>ode parameter.  In theory, like the {@link org.genxdm.nodes.Informer} with
  * which it is commonly paired, it can be used over a tree which does not have
  * a "node" abstraction easily conformant to the design of GenXDM.</p>
+ * 
+ * <p>See {@link org.genxdm.Precursor} for an example of a node-free abstraction
+ * that combines navigation and information.</p>
  */
 public interface Navigator
 {
