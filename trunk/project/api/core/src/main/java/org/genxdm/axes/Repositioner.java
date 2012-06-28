@@ -20,7 +20,6 @@ package org.genxdm.axes;
  * {@link Navigator}.
  */
 public interface Repositioner<N>
-    extends Navigator
 {
     /**
      * Positions the cursor at the specified bookmark.

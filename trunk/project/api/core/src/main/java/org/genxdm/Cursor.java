@@ -29,20 +29,11 @@ import org.genxdm.nodes.Informer;
  * to the properties of its underlying node.</p>
  */
 public interface Cursor<N>
-    extends Informer, Repositioner<N>, Comparable<Cursor<N>>
+    extends Precursor, Repositioner<N>, Comparable<Cursor<N>>
 {
     /**
      * Obtain a fixed-location marker initialized with the current node.
      */
     Bookmark<N> bookmark();
     
-    /**
-     * Support for streaming the current node to a {@link ContentHandler}.
-     * 
-     * @param writer
-     *            The handler for events generated.
-     * 
-     * @throws GenXDMException
-     */
-    void write(ContentHandler writer) throws GenXDMException;
 }
