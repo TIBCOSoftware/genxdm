@@ -19,10 +19,6 @@ import java.util.Iterator;
 
 import org.genxdm.io.Reader;
 
-/**
- * @deprecated This interface has never been implemented; it is at risk for
- * removal as it seems to be of no interest to implementors. 
- */
 public interface EventReader
     extends Reader, Iterator<EventKind>
 {
