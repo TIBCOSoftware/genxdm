@@ -23,7 +23,6 @@ import java.io.UnsupportedEncodingException;
  * This class provides a number of static utility functions useful in encoding and decoding materials received in a MIME
  * message. This codec handles Base64.
  * 
- * @author Amelia A Lewis &lt;alewis@apache.com>
  */
 final class Base64BinarySupport
 {
