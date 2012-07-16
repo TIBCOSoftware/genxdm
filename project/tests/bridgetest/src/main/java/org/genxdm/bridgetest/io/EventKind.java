@@ -18,8 +18,6 @@ package org.genxdm.bridgetest.io;
 /**
  * Enumeration representing possible types of events in the XQuery Data Model.
  * 
- * @deprecated This enumeration has never been used outside of testing; it
- * may be removed.
  */
 public enum EventKind
 {
