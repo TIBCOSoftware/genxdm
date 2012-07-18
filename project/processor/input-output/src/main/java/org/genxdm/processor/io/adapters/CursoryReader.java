@@ -10,20 +10,38 @@ import org.genxdm.NodeKind;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.output.XmlEncoder;
 
+/** Consumes a cursor (not idempotent) to produce a character stream conforming
+ * to the java.io.Reader interface.
+ *
+ * @param <N> the node abstraction
+ */
 public class CursoryReader<N>
     extends Reader
 {
 
+    /** Initialize a reader from a cursor
+     * 
+     * @param cursor the cursor over which the reader operates, initialized
+     * to the desired starting position; may not be null.
+     */
     public CursoryReader(Cursor<N> cursor)
     {
-        // TODO: drop a bookmark to allow fragments?
         this.cursor = PreCondition.assertNotNull(cursor, "cursor");
+        originId = cursor.getNodeId();
     }
 
+    /** Initialize a reader with synchronized access semantics (per the
+     * superclass constructor)
+     * 
+     * @param cursor the cursor over which the reader operates, initialized
+     * to the desired starting position; may not be null.
+     * @param lock the object on which to synchronize; may not be null.
+     */
     public CursoryReader(Cursor<N> cursor, Object lock)
     {
         super(lock);
         this.cursor = PreCondition.assertNotNull(cursor, "cursor");
+        originId = cursor.getNodeId();
     }
 
     @Override
@@ -48,10 +66,13 @@ public class CursoryReader<N>
     public void close()
         throws IOException
     {
-        // TODO Auto-generated method stub
-
+        // do nothing
     }
     
+    /** Take the next step into the tree.
+     * 
+     * @throws IOException
+     */
     private void lurch()
         throws IOException
     {
@@ -135,6 +156,9 @@ public class CursoryReader<N>
         }
     }
     
+    /** Step up, insuring that we don't step backwards.
+     * 
+     */
     private void pop()
     {
         // we are inside a child node. there is no next sibling.
@@ -142,8 +166,11 @@ public class CursoryReader<N>
         // then we have to find the next thing to move to.
         cursor.moveToParent();
         if (cursor.getNodeKind() == NodeKind.DOCUMENT)
-            return; // we're done
+            return; // there's no more pop possible; we're done
+        Object currentId = cursor.getNodeId();
         builder.append("</" + getQName(cursor.getPrefix(), cursor.getLocalName()) + ">");
+        if (currentId.equals(originId))
+            return; // we're back to where we started; *don't* continue.
         if (cursor.hasNextSibling())
             cursor.moveToNextSibling();
         else
@@ -159,6 +186,7 @@ public class CursoryReader<N>
     }
 
     private final Cursor<N> cursor;
+    private final Object originId;
     private final StringBuilder builder = new StringBuilder();
     private final XmlEncoder encoder = new XmlEncoder();
 }
