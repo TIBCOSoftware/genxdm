@@ -17,8 +17,10 @@ package org.genxdm.bridgekit.tree;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.TypedModel;
+import org.genxdm.typed.io.SequenceHandler;
 
 /**
  * Implementation of a {@link GuCursor} when only a model is available.
@@ -38,24 +40,35 @@ public final class CursorOnTypedModel<N, A>
         this.tmodel = (TypedModel<N, A>)model;
     }
 
-    public Iterable<? extends A> getValue()
-    {
-        return tmodel.getValue(node);
-    }
-
-    public QName getTypeName()
-    {
-        return tmodel.getTypeName(node);
-    }
-    
+    @Override
     public QName getAttributeTypeName(String namespaceURI, String localName)
     {
         return tmodel.getAttributeTypeName(node, namespaceURI, localName);
     }
     
+    @Override
     public Iterable<? extends A> getAttributeValue(final String namespaceURI, final String localName)
     {
         return tmodel.getAttributeValue(node, namespaceURI, localName);
+    }
+
+    @Override
+    public QName getTypeName()
+    {
+        return tmodel.getTypeName(node);
+    }
+    
+    @Override
+    public Iterable<? extends A> getValue()
+    {
+        return tmodel.getValue(node);
+    }
+
+    @Override
+    public void write(N node, boolean copyNamespaces, SequenceHandler<A> handler)
+        throws GenXDMException
+    {
+        tmodel.stream(node, copyNamespaces, handler);
     }
 
     private final TypedModel<N, A> tmodel;
