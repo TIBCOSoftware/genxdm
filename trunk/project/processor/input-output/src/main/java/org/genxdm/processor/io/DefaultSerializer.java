@@ -25,7 +25,18 @@ abstract class DefaultSerializer<N>
     protected DefaultSerializer(final Model<N> model)
     {
         this.model = model;
+        opf = XMLOutputFactory.newInstance();
     }
+    
+    protected DefaultSerializer(final XMLOutputFactory factory, final Model<N> model)
+    {
+        this.model = model;
+        if (factory == null)
+            opf = XMLOutputFactory.newInstance();
+        else
+            opf = factory;
+    }
+            
     
     public void write(final OutputStream byteStream, final N source, String encoding)
         throws IOException, XdmMarshalException
@@ -68,7 +79,7 @@ abstract class DefaultSerializer<N>
         }
     }
 
-    protected final XMLOutputFactory opf = XMLOutputFactory.newInstance();
+    protected final XMLOutputFactory opf;
     protected final Model<N> model;
 
 }

@@ -20,9 +20,9 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.net.URI;
 
-//import javax.xml.XMLConstants;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLReporter;
 import javax.xml.stream.XMLStreamException;
 
@@ -59,13 +59,23 @@ public class DefaultDocumentHandler<N>
         this(PreCondition.assertNotNull(context, "context").newFragmentBuilder(), context.getModel());
     }
     
+    public DefaultDocumentHandler(XMLInputFactory inputFac, XMLOutputFactory outputFac, ProcessingContext<N> context)
+    {
+        super(outputFac, context.getModel());
+        if (inputFac == null)
+            ipf = XMLInputFactory.newInstance();
+        else
+            ipf = inputFac;
+        this.builder = context.newFragmentBuilder();
+        initIPF();
+    }
+    
     public DefaultDocumentHandler(final FragmentBuilder<N> builder, final Model<N> model)
     {
         super(PreCondition.assertNotNull(model, "model"));
         this.builder = PreCondition.assertNotNull(builder, "builder");
-        ipf.setProperty("javax.xml.stream.isCoalescing", true);
-        ipf.setProperty("javax.xml.stream.isReplacingEntityReferences", true);
-        //ipf.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+        ipf = XMLInputFactory.newInstance();
+        initIPF();
     }
     
     public void setResolver(Resolver resolver)
@@ -163,8 +173,15 @@ public class DefaultDocumentHandler<N>
         visitor.parse();
         return builder.getNode();
     }
+    
+    private void initIPF()
+    {
+        ipf.setProperty("javax.xml.stream.isCoalescing", true);
+        ipf.setProperty("javax.xml.stream.isReplacingEntityReferences", true);
+        //ipf.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+    }
 
-    protected final XMLInputFactory ipf = XMLInputFactory.newInstance();
+    protected final XMLInputFactory ipf;
     private final FragmentBuilder<N> builder;
     private Resolver resolver;
 
