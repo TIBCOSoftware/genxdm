@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.mutable.NodeFactory;
 import org.genxdm.xs.types.Type;
@@ -37,11 +38,13 @@ public class XmlNodeFactory
     
     public XmlAttributeNode createAttribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
     {
+        PreCondition.assertNotNull(prefix, "prefix");
         return new XmlAttributeNode(namespaceURI, localName, prefix, type, value);
     }
     
     public XmlAttributeNode createAttribute(String namespaceURI, String localName, String prefix, List<? extends XmlAtom> data, Type type)
     {
+        PreCondition.assertNotNull(prefix, "prefix");
         return new XmlAttributeNode(namespaceURI, localName, prefix, type, makeList(data));
     }
     
@@ -57,11 +60,13 @@ public class XmlNodeFactory
 
     public XmlElementNode createElement(String namespaceURI, String localName, String prefix)
     {
+        PreCondition.assertNotNull(prefix, "prefix");
         return new XmlElementNode(namespaceURI, localName, prefix, null);
     }
     
     public XmlElementNode createElement(String namespaceURI, String localName, String prefix, Type type)
     {
+        PreCondition.assertNotNull(prefix, "prefix");
         return new XmlElementNode(namespaceURI, localName, prefix, type);
     }
 
