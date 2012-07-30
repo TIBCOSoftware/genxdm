@@ -17,6 +17,7 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 
 import java.util.ArrayList;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.resolve.LocationInSchema;
 

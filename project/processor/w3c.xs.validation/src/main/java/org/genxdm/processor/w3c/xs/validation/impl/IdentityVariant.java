@@ -17,6 +17,8 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 
 import java.util.ArrayList;
 
+import org.genxdm.exceptions.PreCondition;
+
 /**
  * A variant that can store one of two things, dangling references or a value.
  */

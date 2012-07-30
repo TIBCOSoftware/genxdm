@@ -18,6 +18,8 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.genxdm.exceptions.PreCondition;
+
 /**
  * A tuple is an ordered list of keys values.
  */

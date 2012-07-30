@@ -24,6 +24,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcElementAbstractException;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcElementDeclarationAndTypeException;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcElementFixedAndNilledException;

@@ -19,6 +19,7 @@ import java.util.Collections;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ParticleTerm;
 
