@@ -21,6 +21,7 @@ import java.util.Enumeration;
 
 import javax.xml.XMLConstants;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.names.PrefixResolver;
 

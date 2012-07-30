@@ -19,6 +19,7 @@ import java.util.LinkedList;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.regex.api.RegExMachine;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ParticleTerm;

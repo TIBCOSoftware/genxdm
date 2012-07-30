@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.regex.api.RegExBridge;
 import org.genxdm.processor.w3c.xs.regex.api.RegExFactory;
 import org.genxdm.processor.w3c.xs.regex.api.RegExMachine;

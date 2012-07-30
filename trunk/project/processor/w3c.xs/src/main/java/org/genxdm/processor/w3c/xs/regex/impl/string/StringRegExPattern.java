@@ -17,6 +17,7 @@ package org.genxdm.processor.w3c.xs.regex.impl.string;
 
 import java.util.List;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.regex.api.RegExFactory;
 import org.genxdm.processor.w3c.xs.regex.api.RegExPattern;
 import org.genxdm.processor.w3c.xs.regex.impl.nfa.NfaFactory;

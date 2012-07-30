@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2010 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  */
 package org.genxdm.processor.w3c.xs.regex.impl.nfa;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.regex.api.RegExBridge;
 import org.genxdm.processor.w3c.xs.regex.api.RegExFactory;
 import org.genxdm.processor.w3c.xs.regex.api.RegExPattern;

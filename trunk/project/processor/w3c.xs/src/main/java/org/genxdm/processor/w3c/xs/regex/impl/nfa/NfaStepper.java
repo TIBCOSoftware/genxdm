@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2010 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.regex.api.RegExBridge;
 import org.genxdm.processor.w3c.xs.regex.api.RegExMachine;
 

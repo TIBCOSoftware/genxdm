@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcIdentityConstraintFieldNodeNotSimpleTypeException;
 import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateKeyFieldException;
 import org.genxdm.typed.types.AtomBridge;

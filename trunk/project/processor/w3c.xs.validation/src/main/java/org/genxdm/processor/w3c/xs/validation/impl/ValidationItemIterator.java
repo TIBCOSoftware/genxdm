@@ -18,6 +18,8 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.genxdm.exceptions.PreCondition;
+
 /**
  * An {@link Iterator} for walking up the stack of {@link ValidationItem}s.
  */
