@@ -27,7 +27,7 @@ import java.util.Set;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.genxdm.names.NameSource;
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.PrefixResolver;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcAttributeFixedValueOverriddenException;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcAttributeNormalizedValueException;

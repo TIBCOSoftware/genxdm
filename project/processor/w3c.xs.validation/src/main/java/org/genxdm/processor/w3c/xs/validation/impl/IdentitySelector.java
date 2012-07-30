@@ -22,6 +22,7 @@ import java.util.LinkedList;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.constraints.RestrictedXPath;
 import org.genxdm.xs.exceptions.AbortException;
 

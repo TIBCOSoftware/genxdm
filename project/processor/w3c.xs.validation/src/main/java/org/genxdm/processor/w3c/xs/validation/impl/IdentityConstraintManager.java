@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.IdentityConstraint;

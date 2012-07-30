@@ -15,6 +15,7 @@
  */
 package org.genxdm.processor.w3c.xs.validation.impl;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
 
 

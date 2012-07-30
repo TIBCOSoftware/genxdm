@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcElementFixedValueOverriddenSimpleException;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcElementUnexpectedChildInNilledElementException;

@@ -17,6 +17,8 @@ package org.genxdm.processor.w3c.xs.validation.impl;
 
 import java.util.Iterator;
 
+import org.genxdm.exceptions.PreCondition;
+
 /**
  * An {@link Iterable} for walking up the stack of {@link ValidationItem}s.
  */
