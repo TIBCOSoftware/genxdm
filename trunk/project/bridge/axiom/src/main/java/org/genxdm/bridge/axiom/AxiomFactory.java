@@ -25,6 +25,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.mutable.NodeFactory;
 
 public class AxiomFactory
@@ -38,6 +39,7 @@ public class AxiomFactory
 
     public OMAttribute createAttribute(String namespaceURI, String localName, String prefix, String value)
     {
+        PreCondition.assertNotNull(prefix, "prefix");
         return omFactory.createOMAttribute(localName, omFactory.createOMNamespace(namespaceURI, prefix), value);
     }
 
@@ -53,6 +55,7 @@ public class AxiomFactory
 
     public OMElement createElement(String namespaceURI, String localName, String prefix)
     {
+        PreCondition.assertNotNull(prefix, "prefix");
         OMNamespace ns = omFactory.createOMNamespace(namespaceURI, prefix);
         return omFactory.createOMElement(localName, ns);
     }

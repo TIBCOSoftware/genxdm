@@ -49,6 +49,7 @@ public class DomNodeFactory
     
     public Node createAttribute(String namespaceURI, String localName, String prefix, String value)
     {
+        PreCondition.assertNotNull(prefix, "prefix");
         insureDocumentExists();
         return DomSupport.createAttributeUntyped(m_doc, namespaceURI, localName, prefix, value);
     }
@@ -75,6 +76,7 @@ public class DomNodeFactory
 
     public Node createElement(String namespaceURI, String localName, String prefix)
     {
+        PreCondition.assertNotNull(prefix, "prefix");
         insureDocumentExists();
         return DomSupport.createElement(m_doc, namespaceURI, localName, prefix);
     }
