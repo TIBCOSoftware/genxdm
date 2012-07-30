@@ -32,7 +32,17 @@ import org.xml.sax.InputSource;
  * The DocumentHandler interface provides a means to supply XML (as
  * readers or input streams) to be built into a target
  * tree model; it also permits tree models to "serialize" onto parallel output
- * abstractions (writers and output streams). 
+ * abstractions (writers and output streams).
+ * 
+ * These are conveniences; it is not difficult to hook a parser to a
+ * fragment builder or a writer to a content handler to model.stream() if
+ * alternative behavior is desired.
+ * 
+ * DocumentHandler is <em>not</em> thread-safe, either for parsing or for
+ * writing. Internal state is not protected by synchronization, and will be
+ * affected by calls from another thread that begin before calls from the
+ * original thread end. Do not pass the DocumentHandler to different threads
+ * unless the threads themselves enforce synchronization.
  *
  * @param <N> the Node handle.
  */
