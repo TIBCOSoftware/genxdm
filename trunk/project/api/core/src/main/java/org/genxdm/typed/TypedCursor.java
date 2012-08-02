@@ -32,5 +32,4 @@ import org.genxdm.typed.io.SequenceHandler;
 public interface TypedCursor<N, A> 
     extends Cursor<N>, TypeInformer<A>
 {
-    void write(N node, boolean copyNamespaces, SequenceHandler<A> handler) throws GenXDMException;
 }
