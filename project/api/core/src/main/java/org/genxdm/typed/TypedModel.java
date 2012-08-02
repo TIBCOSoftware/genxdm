@@ -16,9 +16,7 @@
 package org.genxdm.typed;
 
 import org.genxdm.Model;
-import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.nodes.TypedNodeInformer;
-import org.genxdm.typed.io.SequenceHandler;
 
 /**
  * Aspect of the data model interface providing typed access to the XQuery Data Model tree.
@@ -31,17 +29,4 @@ import org.genxdm.typed.io.SequenceHandler;
 public interface TypedModel<N, A> 
     extends Model<N>, TypedNodeInformer<N, A>
 {
-    // TODO: change the signature of this so it can't be mistaken
-    // for the base interface's stream.
-    /**
-     * Support for streaming a node to a {@link SequenceHandler}.
-     * 
-     * @param node
-     *            The node to be streamed. Must not be null.
-     * @param copyNamespaces
-     *            Determines whether namespaces nodes are streamed.
-     * @param handler
-     *            The handler for events generated. Must not be null.
-     */
-    void stream(N node, boolean copyNamespaces, SequenceHandler<A> handler) throws GenXDMException;
 }
