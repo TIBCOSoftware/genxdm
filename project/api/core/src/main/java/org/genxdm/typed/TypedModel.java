@@ -21,6 +21,11 @@ import org.genxdm.nodes.TypedNodeInformer;
 /**
  * Aspect of the data model interface providing typed access to the XQuery Data Model tree.
  * 
+ * Implementation note: implementations are encouraged to override their
+ * inherited (from Model) stream() method with a cast narrowing the ContentHandler
+ * parameter to SequenceHandler<A>. This can permit transmission of type annotations
+ * and typed values without revalidation in some cases.
+ * 
  * @param <N>
  *            The node handle
  * @param <A>

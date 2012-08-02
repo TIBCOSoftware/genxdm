@@ -18,6 +18,7 @@ package org.genxdm.processor.w3c.xs.impl;
 import java.io.InputStream;
 import java.net.URI;
 
+import org.genxdm.Precursor;
 import org.genxdm.bridgekit.xs.ComponentBagImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLComponentLocator;
@@ -41,31 +42,17 @@ final public class XMLParserImpl implements SchemaParser
         this.cache = PreCondition.assertArgumentNotNull(cache, "cache");
     }
 
-    public ComponentBag parse(final URI schemaLocation, final InputStream istream, final URI systemId) 
-        throws SchemaException
+    @Override
+    public ComponentBag parse(final URI schemaLocation, final Precursor tree,
+            final URI systemId, final SchemaExceptionHandler errors)
+        throws AbortException
     {
-        // This convenience routine is implemented in terms of the more general routine.
-        final SchemaExceptionCatcher errors = new SchemaExceptionCatcher();
-        try
-        {
-            final ComponentBag components = parse(schemaLocation, istream, systemId, errors);
-            if (errors.size() > 0)
-            {
-                // Only the first error is reported.
-                throw errors.getFirst();
-            }
-            else
-            {
-                return components;
-            }
-        }
-        catch (final AbortException e)
-        {
-            // This should not happen because the errors are reported to a catcher.
-            throw new AssertionError(e);
-        }
+        PreCondition.assertNotNull(tree, "tree");
+        CursoryInputStream stream = new CursoryInputStream(tree, "UTF-8");
+        return parse(schemaLocation, stream, systemId, errors);
     }
-
+    
+    @Override
     public ComponentBag parse(final URI schemaLocation, final InputStream istream, final URI systemId, final SchemaExceptionHandler errors) 
         throws AbortException
     {
@@ -74,7 +61,7 @@ final public class XMLParserImpl implements SchemaParser
         // PreCondition.assertArgumentNotNull(errors, "errors");
 
         // The cache holds an in-memory model of the XML representation.
-        final XMLSchemaCache cache = new XMLSchemaCache();
+        final XMLSchemaCache schemaCache = new XMLSchemaCache();
 
         // The top-level module acts as a parent for includes, imports and redefines.
         final XMLSchemaModule module = new XMLSchemaModule(null, schemaLocation, systemId);
@@ -83,56 +70,37 @@ final public class XMLParserImpl implements SchemaParser
         final SchemaExceptionCatcher caught = new SchemaExceptionCatcher();
 
         // Delegate the parsing into an XML representation
-        final XMLSchemaParser parser = new XMLSchemaParser(this.cache, caught, m_catalog, m_resolver, processRepeatedNamespaces());
+        final XMLSchemaParser parser = new XMLSchemaParser(this.cache, caught, m_catalog, m_resolver, true);
 
-        parser.parse(systemId, istream, cache, module);
+        parser.parse(systemId, istream, schemaCache, module);
+        
+        return resolve(schemaCache, caught, errors);
 
-        if (caught.size() > 0)
-        {
-            reportErrors(caught, errors);
-            return null;
-        }
-
-        // Convert the XML representation into the compiled schema.
-        final Pair<ComponentBagImpl, XMLComponentLocator> converted = convert(cache, caught);
-
-        if (caught.size() == 0)
-        {
-            final XMLSccExceptionAdapter scc = new XMLSccExceptionAdapter(caught, converted.getSecond());
-
-            SchemaConstraintChecker checker = new SchemaConstraintChecker(converted.getFirst(), this.cache);
-            checker.checkSchemaComponentConstraints(scc);
-
-            if (caught.size() == 0)
-            {
-                return converted.getFirst();
-            }
-            else
-            {
-                reportErrors(caught, errors);
-                return null;
-            }
-        }
-        else
-        {
-            reportErrors(caught, errors);
-            return null;
-        }
     }
 
-    private void reportErrors(final SchemaExceptionCatcher caught, final SchemaExceptionHandler errors) throws AbortException
+    @Override
+    public void setCatalogResolver(final CatalogResolver resolver, final SchemaCatalog catalog)
     {
-        for (final SchemaException error : caught)
-        {
-            if (null != errors)
-            {
-                errors.error(error);
-            }
-            else
-            {
-                throw new AbortException(error);
-            }
-        }
+        m_resolver = resolver;
+        m_catalog = catalog;
+    }
+
+    @Override
+    public void setComponentProvider(final ComponentProvider provider)
+    {
+        this.cache = provider;
+    }
+    
+    @Override
+    public void setRegExCompiler(final SchemaRegExCompiler regexc)
+    {
+        m_regexc = regexc;
+    }
+
+    @Override
+    public void setSchemaLoadOptions(final SchemaLoadOptions options)
+    {
+        m_options = options;
     }
 
     /**
@@ -153,50 +121,48 @@ final public class XMLParserImpl implements SchemaParser
         return XMLSchemaConverter.convert(m_regexc, this.cache, cache, errors);
     }
 
-    public void setCatalogResolver(final CatalogResolver resolver, final SchemaCatalog catalog)
+    private void reportErrors(final SchemaExceptionCatcher caught, final SchemaExceptionHandler errors) throws AbortException
     {
-        m_resolver = resolver;
-        m_catalog = catalog;
-    }
-
-    public CatalogResolver getResolver()
-    {
-        return m_resolver;
-    }
-
-    public SchemaCatalog getCatalog()
-    {
-        return m_catalog;
-    }
-
-    public void setComponentProvider(final ComponentProvider provider)
-    {
-        this.cache = provider;
+        for (final SchemaException error : caught)
+        {
+            if (null != errors)
+            {
+                errors.error(error);
+            }
+            else
+            {
+                throw new AbortException(error);
+            }
+        }
     }
     
-    public void setRegExCompiler(final SchemaRegExCompiler regexc)
+    private ComponentBag resolve(XMLSchemaCache schemaCache, SchemaExceptionCatcher catcher,
+            SchemaExceptionHandler errors)
+        throws AbortException
     {
-        m_regexc = regexc;
-    }
+        if (!catcher.isEmpty())
+        {
+            reportErrors(catcher, errors);
+            return null;
+        }
 
-    public SchemaRegExCompiler getRegExCompiler()
-    {
-        return m_regexc;
-    }
+        // Convert the XML representation into the compiled schema.
+        final Pair<ComponentBagImpl, XMLComponentLocator> converted = convert(schemaCache, catcher);
 
-    public void setProcessRepeatedNamespaces(final boolean processRepeatedNamespaces)
-    {
-        m_processRepeatedNamespaces = processRepeatedNamespaces;
-    }
+        if (catcher.isEmpty())
+        {
+            final XMLSccExceptionAdapter scc = new XMLSccExceptionAdapter(catcher, converted.getSecond());
 
-    public boolean processRepeatedNamespaces()
-    {
-        return m_processRepeatedNamespaces;
-    }
-    
-    public void setSchemaLoadOptions(final SchemaLoadOptions options)
-    {
-        // TODO: not implemented
+            SchemaConstraintChecker checker = new SchemaConstraintChecker(converted.getFirst(), cache);
+            checker.checkSchemaComponentConstraints(scc);
+
+            if (catcher.isEmpty())
+                return converted.getFirst();
+        }
+        // implicit else for the last two conditionals, because they test the
+        // same thing, and the inner one has a return.
+        reportErrors(catcher, errors);
+        return null;
     }
 
     /**
@@ -207,6 +173,6 @@ final public class XMLParserImpl implements SchemaParser
     private SchemaCatalog m_catalog;
     private CatalogResolver m_resolver;
     private SchemaRegExCompiler m_regexc;
-    private boolean m_processRepeatedNamespaces = true;
+    private SchemaLoadOptions m_options;
 
 }

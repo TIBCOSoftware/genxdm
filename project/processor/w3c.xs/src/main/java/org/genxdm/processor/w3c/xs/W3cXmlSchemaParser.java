@@ -18,6 +18,7 @@ package org.genxdm.processor.w3c.xs;
 import java.io.InputStream;
 import java.net.URI;
 
+import org.genxdm.Precursor;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.impl.RegExCompilerXSDL;
 import org.genxdm.processor.w3c.xs.impl.XMLParserImpl;
@@ -38,7 +39,22 @@ public final class W3cXmlSchemaParser
     {
         this.regexc = DEFAULT_REGEX_COMPILER;
     }
+    
+    @Override 
+    public ComponentBag parse(final URI schemaLocation, final Precursor tree,
+            final URI systemId, final SchemaExceptionHandler errors)
+        throws AbortException
+    {
+        PreCondition.assertArgumentNotNull(tree, "tree");
+        final XMLParserImpl parser = new XMLParserImpl(components);
+        parser.setCatalogResolver(resolver, catalog);
+        parser.setRegExCompiler(regexc);
+        parser.setSchemaLoadOptions(options);
 
+        return parser.parse(schemaLocation, tree, systemId, errors);
+    }
+
+    @Override
     public ComponentBag parse(final URI schemaLocation, final InputStream istream,
                                  final URI systemId, final SchemaExceptionHandler errors)
         throws AbortException
@@ -48,6 +64,7 @@ public final class W3cXmlSchemaParser
 
         parser.setCatalogResolver(resolver, catalog);
         parser.setRegExCompiler(regexc);
+        parser.setSchemaLoadOptions(options);
 
         return parser.parse(schemaLocation, istream, systemId, errors);
     }
@@ -59,6 +76,7 @@ public final class W3cXmlSchemaParser
      *            The new compiler. May be <code>null</code> to reset to
      *            default.
      */
+    @Override
     public void setRegExCompiler(final SchemaRegExCompiler regexc)
     {
         if (null != regexc)
@@ -71,12 +89,14 @@ public final class W3cXmlSchemaParser
         }
     }
     
+    @Override
     public void setCatalogResolver(final CatalogResolver resolver, final SchemaCatalog catalog)
     {
         this.resolver = resolver;
         this.catalog = catalog;
     }
     
+    @Override
     public void setComponentProvider(final ComponentProvider provider)
     {
         this.components = provider;
@@ -85,6 +105,7 @@ public final class W3cXmlSchemaParser
     /**
      * At present, these values are ignored by this parser implementation.
      */
+    @Override
     public void setSchemaLoadOptions(final SchemaLoadOptions options)
     {
         this.options = options;

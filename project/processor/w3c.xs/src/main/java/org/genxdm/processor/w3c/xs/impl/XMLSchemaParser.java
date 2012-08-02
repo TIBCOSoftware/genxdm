@@ -148,6 +148,128 @@ final class XMLSchemaParser extends XMLRepresentation
         ANY_TYPE = new XMLTypeRef(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anyType"));
     }
 
+    public void parse(final URI systemId, final InputStream istream, final XMLSchemaCache cache, final XMLSchemaModule module) throws AbortException
+    {
+        PreCondition.assertArgumentNotNull(cache, "cache");
+        PreCondition.assertArgumentNotNull(module, "module");
+
+        if (cache.m_seenSystemIds.contains(systemId))
+        {
+            return;
+        }
+        else
+        {
+            cache.m_seenSystemIds.add(systemId);
+        }
+
+        final XMLInputFactory factory = XMLInputFactory.newInstance();
+
+        final XMLStreamReader reader;
+        // TODO: this is potentially a problem.
+        // while it won't read schemas recursively (which is good),
+        // it uses a different 'xml schema cache' for every instantiation
+        // of this parser (both the schema cache and this parser are
+        // instantiated and called from xmlparserimpl.parse()).
+        // this means that it is trivially easy to read the same
+        // schema over and over and over, and it is not at all clear
+        // what sort of action should happen when this occurs.
+        try
+        {
+            if (null != systemId)
+            {
+                reader = factory.createXMLStreamReader(systemId.toString(), istream);
+            }
+            else
+            {
+                reader = factory.createXMLStreamReader(null, istream);
+            }
+        }
+        catch (final XMLStreamException e)
+        {
+            // TODO: figure out what happens.  following comment was in received code.
+            // I'm not sure what has happened here, but it doesn't fit into the
+            // category of not
+            // being well formed XML. Perhaps it's not XML at all. We'll throw
+            // this assertion and deal
+            // with it more accurately when we know more.
+            throw new AssertionError(e);
+        }
+        try
+        {
+            boolean done = false;
+
+            while (!done)
+            {
+                final int event = reader.next();
+
+                switch (event)
+                {
+                    case XMLStreamConstants.END_DOCUMENT:
+                    {
+                        reader.close();
+                        done = true;
+                    }
+                    break;
+                    case XMLStreamConstants.START_ELEMENT:
+                    {
+                        m_pms.pushContext();
+                        try
+                        {
+                            copyNamespaces(reader, m_pms);
+                            if (isWXS(reader.getNamespaceURI()))
+                            {
+                                final String localName = reader.getLocalName();
+                                if (LN_SCHEMA.equals(localName))
+                                {
+                                    schemaTag(reader, cache, module);
+                                }
+                                else
+                                {
+                                    reportUnexpectedElementTag("document", reader.getName(), reader.getLocation());
+                                    skipTag(reader);
+                                }
+                            }
+                            else
+                            {
+                                reportUnexpectedElementTag("document", reader.getName(), reader.getLocation());
+                                skipTag(reader);
+                            }
+                        }
+                        finally
+                        {
+                            m_pms.popContext();
+                        }
+                    }
+                    break;
+                    default:
+                    {
+                        // ignore
+                    }
+                }
+            }
+        }
+        catch (final XMLStreamException e)
+        {
+            if (module.isImport())
+            {
+                m_errors.error(new SmImportNotWellFormedException(getFrozenLocation(reader.getLocation())));
+            }
+            else if (module.isInclude())
+            {
+                m_errors.error(new SmInclusionNotWellFormedException(getFrozenLocation(reader.getLocation())));
+            }
+            else if (module.isRedefine())
+            {
+                m_errors.error(new SmRedefinitionNotWellFormedException(getFrozenLocation(reader.getLocation())));
+            }
+            else
+            // must be top level schema
+            {
+                m_errors.error(new SmTopLevelSchemaNotWellFormedException(getFrozenLocation(reader.getLocation())));
+            }
+        }
+    }
+
     private void annotationContent(final String contextName, final XMLStreamReader reader, final XMLSchemaModule module) throws XMLStreamException, AbortException
     {
         boolean firstElement = true;
@@ -5444,128 +5566,6 @@ final class XMLSchemaParser extends XMLRepresentation
             }
         }
         return null;
-    }
-
-    public void parse(final URI systemId, final InputStream istream, final XMLSchemaCache cache, final XMLSchemaModule module) throws AbortException
-    {
-        PreCondition.assertArgumentNotNull(cache, "cache");
-        PreCondition.assertArgumentNotNull(module, "module");
-
-        if (cache.m_seenSystemIds.contains(systemId))
-        {
-            return;
-        }
-        else
-        {
-            cache.m_seenSystemIds.add(systemId);
-        }
-
-        final XMLInputFactory factory = XMLInputFactory.newInstance();
-
-        final XMLStreamReader reader;
-        // TODO: this is potentially a problem.
-        // while it won't read schemas recursively (which is good),
-        // it uses a different 'xml schema cache' for every instantiation
-        // of this parser (both the schema cache and this parser are
-        // instantiated and called from xmlparserimpl.parse()).
-        // this means that it is trivially easy to read the same
-        // schema over and over and over, and it is not at all clear
-        // what sort of action should happen when this occurs.
-        try
-        {
-            if (null != systemId)
-            {
-                reader = factory.createXMLStreamReader(systemId.toString(), istream);
-            }
-            else
-            {
-                reader = factory.createXMLStreamReader(null, istream);
-            }
-        }
-        catch (final XMLStreamException e)
-        {
-            // TODO: figure out what happens.  following comment was in received code.
-            // I'm not sure what has happened here, but it doesn't fit into the
-            // category of not
-            // being well formed XML. Perhaps it's not XML at all. We'll throw
-            // this assertion and deal
-            // with it more accurately when we know more.
-            throw new AssertionError(e);
-        }
-        try
-        {
-            boolean done = false;
-
-            while (!done)
-            {
-                final int event = reader.next();
-
-                switch (event)
-                {
-                    case XMLStreamConstants.END_DOCUMENT:
-                    {
-                        reader.close();
-                        done = true;
-                    }
-                    break;
-                    case XMLStreamConstants.START_ELEMENT:
-                    {
-                        m_pms.pushContext();
-                        try
-                        {
-                            copyNamespaces(reader, m_pms);
-                            if (isWXS(reader.getNamespaceURI()))
-                            {
-                                final String localName = reader.getLocalName();
-                                if (LN_SCHEMA.equals(localName))
-                                {
-                                    schemaTag(reader, cache, module);
-                                }
-                                else
-                                {
-                                    reportUnexpectedElementTag("document", reader.getName(), reader.getLocation());
-                                    skipTag(reader);
-                                }
-                            }
-                            else
-                            {
-                                reportUnexpectedElementTag("document", reader.getName(), reader.getLocation());
-                                skipTag(reader);
-                            }
-                        }
-                        finally
-                        {
-                            m_pms.popContext();
-                        }
-                    }
-                    break;
-                    default:
-                    {
-                        // ignore
-                    }
-                }
-            }
-        }
-        catch (final XMLStreamException e)
-        {
-            if (module.isImport())
-            {
-                m_errors.error(new SmImportNotWellFormedException(getFrozenLocation(reader.getLocation())));
-            }
-            else if (module.isInclude())
-            {
-                m_errors.error(new SmInclusionNotWellFormedException(getFrozenLocation(reader.getLocation())));
-            }
-            else if (module.isRedefine())
-            {
-                m_errors.error(new SmRedefinitionNotWellFormedException(getFrozenLocation(reader.getLocation())));
-            }
-            else
-            // must be top level schema
-            {
-                m_errors.error(new SmTopLevelSchemaNotWellFormedException(getFrozenLocation(reader.getLocation())));
-            }
-        }
     }
 
     private void parseExternalModule(final XMLSchemaCache cache, final XMLSchemaModule parent, final Location location, final URI namespace, final URI schemaLocation, final ModuleKind moduleKind) throws AbortException
