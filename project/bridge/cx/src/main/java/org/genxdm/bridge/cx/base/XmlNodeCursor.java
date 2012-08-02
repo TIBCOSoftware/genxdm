@@ -45,6 +45,12 @@ public class XmlNodeCursor
     public void write(ContentHandler writer)
     {
         Walker.walk(node, writer);
+        if ( (node.getNodeKind() != NodeKind.DOCUMENT) &&
+              node.hasParent() )
+        {
+            if (!moveToNextSibling())
+                moveToParent();
+        }
     }
 
     public URI getBaseURI()
