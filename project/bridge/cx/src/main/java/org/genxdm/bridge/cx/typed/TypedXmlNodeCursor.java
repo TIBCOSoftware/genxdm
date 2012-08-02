@@ -20,10 +20,8 @@ import javax.xml.namespace.QName;
 import org.genxdm.bridge.cx.base.XmlNodeCursor;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.TypedCursor;
-import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
 
 public class TypedXmlNodeCursor
@@ -89,13 +87,5 @@ public class TypedXmlNodeCursor
         }
     }
 
-    @Override
-    public void write(XmlNode node, boolean copyNamespaces, SequenceHandler<XmlAtom> handler)
-        throws GenXDMException
-    {
-        // easy way
-        context.getModel().stream(node, copyNamespaces, handler);
-    }
-    
     private final TypedXmlNodeContext context;
 }
