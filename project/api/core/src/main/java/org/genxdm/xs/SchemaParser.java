@@ -18,6 +18,7 @@ package org.genxdm.xs;
 import java.io.InputStream;
 import java.net.URI;
 
+import org.genxdm.Precursor;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.facets.SchemaRegExCompiler;
@@ -26,6 +27,10 @@ import org.genxdm.xs.resolve.SchemaCatalog;
 
 public interface SchemaParser
 {
+    ComponentBag parse(final URI schemaLocation, final Precursor tree,
+            final URI systemId, final SchemaExceptionHandler errors)
+        throws AbortException;
+    
     /** Parse and validate a schema, returning a bag of the components
      * acquired.
      * 
