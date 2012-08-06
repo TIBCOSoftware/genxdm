@@ -41,10 +41,8 @@ public interface Model<N>
      * 
      * @param node
      *            The node to be streamed.
-     * @param copyNamespaces
-     *            Determines whether namespaces nodes are streamed.
      * @param handler
      *            The handler for events generated.
      */
-    void stream(N node, boolean copyNamespaces, ContentHandler handler) throws GenXDMException;
+    void stream(N node, ContentHandler handler) throws GenXDMException;
 }

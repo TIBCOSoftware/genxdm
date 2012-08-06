@@ -520,11 +520,12 @@ public final class CoreModelDecorator<N, A>
         return model.matches(node, namespaceURI, localName);
     }
 
-    public void stream(final N node, final boolean copyNamespaces, final ContentHandler handler) throws GenXDMException
+    @Override
+    public void stream(final N node, final ContentHandler handler) throws GenXDMException
     {
     }
 
-    public void stream(final N node, final boolean copyNamespaces, final SequenceHandler<A> handler) throws GenXDMException
+    public void stream(final N node,final SequenceHandler<A> handler) throws GenXDMException
     {
         // TODO Auto-generated method stub
         throw new AssertionError();

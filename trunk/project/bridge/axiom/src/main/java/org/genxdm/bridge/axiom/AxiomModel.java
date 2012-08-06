@@ -1295,7 +1295,8 @@ public class AxiomModel
     }
 
     @SuppressWarnings("rawtypes")
-    public void stream(Object node, boolean copyNamespaces, ContentHandler handler)
+    @Override
+    public void stream(Object node, ContentHandler handler)
         throws GenXDMException
     {
         switch (getNodeKind(node))
@@ -1309,7 +1310,7 @@ public class AxiomModel
                         Iterator it = element.getAllDeclaredNamespaces();
                         while (it.hasNext())
                         {
-                            stream(it.next(), copyNamespaces, handler);
+                            stream(it.next(), handler);
                         }
                     }
                     if (hasAttributes(node))
@@ -1317,7 +1318,7 @@ public class AxiomModel
                         Iterator it = element.getAllAttributes();
                         while (it.hasNext())
                         {
-                            stream(it.next(), copyNamespaces, handler);
+                            stream(it.next(), handler);
                         }
                     }
                     if (hasChildren(node))
@@ -1325,7 +1326,7 @@ public class AxiomModel
                         Iterator it = element.getChildren();
                         while (it.hasNext())
                         {
-                            stream(it.next(), copyNamespaces, handler);
+                            stream(it.next(), handler);
                         }
                     }
                     handler.endElement();
@@ -1334,7 +1335,7 @@ public class AxiomModel
             case ATTRIBUTE:
                 {
                     OMAttribute attribute = AxiomSupport.dynamicDowncastAttribute(node);
-                    final String prefix = copyNamespaces ?  attribute.getQName().getPrefix() : "";
+                    final String prefix = attribute.getQName().getPrefix();
                     handler.attribute(attribute.getQName().getNamespaceURI(), attribute.getQName().getLocalPart(), prefix, attribute.getAttributeValue(), DtdAttributeKind.get(attribute.getAttributeType()));
                 }
                 break;
@@ -1352,18 +1353,15 @@ public class AxiomModel
                     Iterator it = doc.getChildren();
                     while (it.hasNext())
                     {
-                        stream(it.next(), copyNamespaces, handler);
+                        stream(it.next(), handler);
                     }
                     handler.endDocument();
                 }
                 break;
             case NAMESPACE:
                 {
-                    if (copyNamespaces)
-                    {
-                        OMNamespace ns = AxiomSupport.dynamicDowncastNamespace(node);
-                        handler.namespace(ns.getPrefix(), ns.getNamespaceURI());
-                    }
+                    OMNamespace ns = AxiomSupport.dynamicDowncastNamespace(node);
+                    handler.namespace(ns.getPrefix(), ns.getNamespaceURI());
                 }
                 break;
             case COMMENT:

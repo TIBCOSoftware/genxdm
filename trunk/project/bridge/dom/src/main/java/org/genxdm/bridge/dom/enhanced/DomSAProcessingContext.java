@@ -122,7 +122,7 @@ public final class DomSAProcessingContext
         SequenceBuilder<Node, XmlAtom> builder = newSequenceBuilder();
         validator.setSchema(schema);
         validator.setSequenceHandler(builder);
-        m_model.stream(source, true, validator);
+        m_model.stream(source, validator);
         try 
         {
             validator.flush();

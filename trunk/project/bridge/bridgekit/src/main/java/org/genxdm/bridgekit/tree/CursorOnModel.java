@@ -111,7 +111,7 @@ public class CursorOnModel<N>
 
     public void write(final ContentHandler writer)
     {
-        model.stream(node, true, writer);
+        model.stream(node, writer);
         if ( (nodeType != NodeKind.DOCUMENT) &&
              hasParent() ) // not at the top level
         {
