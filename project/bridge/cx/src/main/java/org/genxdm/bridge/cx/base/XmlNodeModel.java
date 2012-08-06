@@ -55,10 +55,10 @@ public class XmlNodeModel
     implements Model<XmlNode>
 {
 
-    public void stream(final XmlNode node, final boolean copyNamespaces, final ContentHandler handler)
+    public void stream(final XmlNode node, final ContentHandler handler)
         throws GenXDMException
     {
-        Walker.walk(node, copyNamespaces, handler);
+        Walker.walk(node, handler);
     }
 
     public int compare(final XmlNode n1, final XmlNode n2)

@@ -917,7 +917,7 @@ public class DomModel
         return true;
     }
 
-    public void stream(Node node, boolean copyNamespaces, ContentHandler handler)
+    public void stream(Node node, ContentHandler handler)
         throws GenXDMException
     {
         switch (getNodeKind(node))
@@ -934,16 +934,13 @@ public class DomModel
                             {
                                 final int length = mixed.getLength();
     
-                                if (copyNamespaces)
+                                // The namespace "attributes" come before the real attributes.
+                                for (int i = 0; i < length; i++)
                                 {
-                                    // The namespace "attributes" come before the real attributes.
-                                    for (int i = 0; i < length; i++)
+                                    final Node namespace = mixed.item(i);
+                                    if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespace.getNamespaceURI()))
                                     {
-                                        final Node namespace = mixed.item(i);
-                                        if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespace.getNamespaceURI()))
-                                        {
-                                            stream(namespace, copyNamespaces, handler);
-                                        }
+                                        stream(namespace, handler);
                                     }
                                 }
     
@@ -953,7 +950,7 @@ public class DomModel
                                     final Node attribute = mixed.item(i);
                                     if (!XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attribute.getNamespaceURI()))
                                     {
-                                        stream(attribute, copyNamespaces, handler);
+                                        stream(attribute, handler);
                                     }
                                 }
                             }
@@ -961,7 +958,7 @@ public class DomModel
                         Node child = node.getFirstChild();
                         while (null != child)
                         {
-                            stream(child, copyNamespaces, handler);
+                            stream(child, handler);
                             child = child.getNextSibling();
                         }
                     }
@@ -973,7 +970,7 @@ public class DomModel
                 break;
             case ATTRIBUTE:
                 {
-                    final String prefix = copyNamespaces ? getAttributePrefix(node) : "";
+                    final String prefix = getAttributePrefix(node);
                     handler.attribute(getNamespaceURI(node), getLocalName(node), prefix, node.getNodeValue(), null);
                 }
                 break;
@@ -990,7 +987,7 @@ public class DomModel
                         Node child = node.getFirstChild();
                         while (null != child)
                         {
-                            stream(child, copyNamespaces, handler);
+                            stream(child, handler);
                             child = child.getNextSibling();
                         }
                     }
@@ -1002,12 +999,9 @@ public class DomModel
                 break;
             case NAMESPACE:
                 {
-                    if (copyNamespaces)
-                    {
-                        final String prefix = DomSupport.getLocalNameAsString(node);
-                        final String uri = node.getNodeValue();
-                        handler.namespace(prefix, uri);
-                    }
+                    final String prefix = DomSupport.getLocalNameAsString(node);
+                    final String uri = node.getNodeValue();
+                    handler.namespace(prefix, uri);
                 }
                 break;
             case COMMENT:

@@ -119,7 +119,7 @@ public class TypedXmlNodeContext
         // can we instead provide a tool that walks the existing tree and modifies it?
         validator.setSchema(this.getSchema());
         validator.setSequenceHandler(builder);
-        model.stream(source, true, validator);
+        model.stream(source, validator);
         try 
         {
             validator.flush();

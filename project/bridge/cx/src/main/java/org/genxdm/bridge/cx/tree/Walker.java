@@ -21,13 +21,7 @@ public final class Walker
 {
     private Walker() {} // not instantiable.
     
-    // this is here so that we can sidestep method calls in Cursor.write() and Model.stream().
     public static final void walk(final XmlNode node, final ContentHandler handler)
-    {
-        walk(node, true, handler);
-    }
-    
-    public static final void walk(final XmlNode node, final boolean namespaces, final ContentHandler handler)
     {
         switch (node.getNodeKind())
         {
@@ -36,14 +30,11 @@ public final class Walker
                 handler.startElement(node.namespaceURI, node.localName, node.prefixHint);
                 try
                 {
-                    if (namespaces)
+                    XmlNamespaceNode namespace = ((XmlElementNode)node).firstNamespace;
+                    while (namespace != null)
                     {
-                        XmlNamespaceNode namespace = ((XmlElementNode)node).firstNamespace;
-                        while (namespace != null)
-                        {
-                            walk(namespace, handler);
-                            namespace = (XmlNamespaceNode)namespace.nextSibling;
-                        }
+                        walk(namespace, handler);
+                        namespace = (XmlNamespaceNode)namespace.nextSibling;
                     }
                     XmlAttributeNode attribute = ((XmlElementNode)node).firstAttribute;
                     while (attribute != null)
@@ -94,8 +85,7 @@ public final class Walker
             }
             case NAMESPACE:
             {
-                if (namespaces)
-                    handler.namespace(node.localName, node.getStringValue());
+                handler.namespace(node.localName, node.getStringValue());
                 break;
             }
             case COMMENT:

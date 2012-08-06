@@ -70,7 +70,7 @@ abstract class DefaultSerializer<N>
             XMLStreamWriter stream = opf.createXMLStreamWriter(characterStream);
             ContentHandlerOnXmlStreamWriter adapter = new ContentHandlerOnXmlStreamWriter(stream);
             //ContentWriter adapter = new ContentWriter(characterStream);
-            model.stream(source, true, adapter);
+            model.stream(source, adapter);
             stream.flush();
         }
         catch (XMLStreamException xse)

@@ -478,7 +478,7 @@ public abstract class MutableModelBase<N>
         
         // now verify that the copy matches the original
         matcher.match();
-        model.stream(doc2, true, matcher);
+        model.stream(doc2, matcher);
         
         N mark = model.copyNode(doc, false);
         // can't assert equals.  they're not "equal," even though they're

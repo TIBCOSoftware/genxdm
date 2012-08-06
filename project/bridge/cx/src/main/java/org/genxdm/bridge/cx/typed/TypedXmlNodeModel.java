@@ -87,7 +87,7 @@ public class TypedXmlNodeModel
         }
     }
 
-    public void stream(XmlNode node, boolean copyNamespaces, SequenceHandler<XmlAtom> handler)
+    public void stream(XmlNode node, SequenceHandler<XmlAtom> handler)
         throws GenXDMException
     {
         switch (node.getNodeKind())
@@ -97,23 +97,20 @@ public class TypedXmlNodeModel
                 handler.startElement(node.getNamespaceURI(), node.getLocalName(), node.getPrefix(), node.getTypeName());
                 try
                 {
-                    if (copyNamespaces)
+                    Iterable<XmlNode> namespaces = getNamespaceAxis(node, false);
+                    for (XmlNode namespace : namespaces)
                     {
-                        Iterable<XmlNode> namespaces = getNamespaceAxis(node, false);
-                        for (XmlNode namespace : namespaces)
-                        {
-                            stream(namespace, copyNamespaces, handler);
-                        }
+                        stream(namespace, handler);
                     }
                     Iterable<XmlNode> attributes = getAttributeAxis(node, false);
                     for (XmlNode attribute : attributes)
                     {
-                        stream(attribute, copyNamespaces, handler);
+                        stream(attribute, handler);
                     }
                     Iterable<XmlNode> children = getChildAxis(node);
                     for (XmlNode child : children)
                     {
-                        stream(child, copyNamespaces, handler);
+                        stream(child, handler);
                     }
                 }
                 finally
@@ -143,7 +140,7 @@ public class TypedXmlNodeModel
                     Iterable<XmlNode> children = getChildAxis(node);
                     for (XmlNode child : children)
                     {
-                        stream(child, copyNamespaces, handler);
+                        stream(child, handler);
                     }
                 }
                 finally
@@ -154,8 +151,7 @@ public class TypedXmlNodeModel
             }
             case NAMESPACE:
             {
-                if (copyNamespaces)
-                    handler.namespace(node.getLocalName(), node.getStringValue());
+                handler.namespace(node.getLocalName(), node.getStringValue());
                 break;
             }
             case COMMENT:
