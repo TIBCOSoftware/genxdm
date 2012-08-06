@@ -50,7 +50,7 @@ public abstract class ModelBase<N>
         assertNotNull(model);
 
         matcher.match();
-        model.stream(doc, true, matcher);
+        model.stream(doc, matcher);
         
         // TODO: more comparisons?
     }

@@ -107,7 +107,7 @@ public class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 	}
 	@Override
 	public void execute() {
-		getModel().stream(getTestNode(), m_copyTypeAnnotations, m_validator);
+		getModel().stream(getTestNode(), m_validator);
 	}
 	@Override
 	public Iterable<String> iterativeTeardown() {

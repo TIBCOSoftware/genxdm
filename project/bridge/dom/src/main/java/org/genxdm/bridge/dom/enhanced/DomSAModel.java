@@ -192,7 +192,7 @@ class DomSAModel
 //      }
 //  }
 
-    public final void stream(final Node origin, boolean copyNamespaces, final SequenceHandler<XmlAtom> handler) throws GenXDMException
+    public final void stream(final Node origin, final SequenceHandler<XmlAtom> handler) throws GenXDMException
     {
         switch (getNodeKind(origin))
         {
@@ -210,16 +210,13 @@ class DomSAModel
                         {
                             final int length = mixed.getLength();
 
-                            if (copyNamespaces)
+                            // The namespace "attributes" come before the real attributes.
+                            for (int i = 0; i < length; i++)
                             {
-                                // The namespace "attributes" come before the real attributes.
-                                for (int i = 0; i < length; i++)
+                                final Node namespace = mixed.item(i);
+                                if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespace.getNamespaceURI()))
                                 {
-                                    final Node namespace = mixed.item(i);
-                                    if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespace.getNamespaceURI()))
-                                    {
-                                        deepCopyNamespace(namespace, handler);
-                                    }
+                                    deepCopyNamespace(namespace, handler);
                                 }
                             }
 
@@ -229,12 +226,12 @@ class DomSAModel
                                 final Node attribute = mixed.item(i);
                                 if (!XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attribute.getNamespaceURI()))
                                 {
-                                    deepCopyAttribute(attribute, copyNamespaces, true, handler);
+                                    deepCopyAttribute(attribute, true, handler);
                                 }
                             }
                         }
                     }
-                    deepCopyChildren(origin, copyNamespaces, true, handler);
+                    deepCopyChildren(origin, true, handler);
                 }
                 finally
                 {
@@ -244,7 +241,7 @@ class DomSAModel
             break;
             case ATTRIBUTE:
             {
-                deepCopyAttribute(origin, copyNamespaces, true, handler);
+                deepCopyAttribute(origin, true, handler);
             }
             break;
             case TEXT:
@@ -257,7 +254,7 @@ class DomSAModel
                 handler.startDocument(getDocumentURI(origin), null);
                 try
                 {
-                    deepCopyChildren(origin, copyNamespaces, true, handler);
+                    deepCopyChildren(origin, true, handler);
                 }
                 finally
                 {
@@ -267,10 +264,7 @@ class DomSAModel
             break;
             case NAMESPACE:
             {
-                if (copyNamespaces)
-                {
-                    deepCopyNamespace(origin, handler);
-                }
+                deepCopyNamespace(origin, handler);
             }
             break;
             case COMMENT:
@@ -328,21 +322,21 @@ class DomSAModel
 //        }
 //    }
 
-    private void deepCopyAttribute(final Node attribute, final boolean copyNamespaces, final boolean copyTypeAnnotations, final SequenceHandler<XmlAtom> handler) throws GenXDMException
+    private void deepCopyAttribute(final Node attribute, final boolean copyTypeAnnotations, final SequenceHandler<XmlAtom> handler) throws GenXDMException
     {
-        final String prefix = copyNamespaces ? getAttributePrefix(attribute) : "";
+        final String prefix = getAttributePrefix(attribute);
         handler.attribute(getNamespaceURI(attribute), getLocalName(attribute), prefix, attribute.getNodeValue(), null);
     }
 
     /**
      * An optimized child axis traversal for that avoids intermediate {@link Iterable} creation.
      */
-    private void deepCopyChildren(final Node origin, final boolean copyNamespaces, final boolean copyTypeAnnotations, final SequenceHandler<XmlAtom> handler) throws GenXDMException
+    private void deepCopyChildren(final Node origin, final boolean copyTypeAnnotations, final SequenceHandler<XmlAtom> handler) throws GenXDMException
     {
         Node child = origin.getFirstChild();
         while (null != child)
         {
-            stream(child, copyNamespaces, handler);
+            stream(child, handler);
             child = child.getNextSibling();
         }
     }

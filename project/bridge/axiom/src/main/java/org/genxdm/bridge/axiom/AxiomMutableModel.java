@@ -75,7 +75,7 @@ public class AxiomMutableModel
         if (deep)
         {
             AxiomFragmentBuilder builder = new AxiomFragmentBuilder(factory.omFactory, false);
-            stream(source, true, builder);
+            stream(source, builder);
             return builder.getNode();
         }
         else
