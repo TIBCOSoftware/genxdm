@@ -1,0 +1,42 @@
+#summary OSGi experiences
+#sidebar TableOfContents
+
+= Summary =
+
+At the moment, this is a record of experiences in adding OSGi support. Expect
+it to be somewhat chaotic. Currently, the code is in /branches/osgi-project.
+
+At some point in the future, this will either go away (and so will this page)
+because we've given it up as a bad job or an impossible task, or it will
+be restructured and rewritten to help folks understand how the (successful)
+OSGi integration works, and where the problems are.
+
+= Initial Steps =
+
+Way back at the start of the project, we tried to integrate felix. Didn't
+seem to work (partly due to versioning issues, which remain a known problem).
+
+= Second Attempt =
+
+Following interactions with an OSGi guru, and a renewed interest in using the
+facilities of OSGi for modularization and such, we undertook a new effort.
+
+== First Phase ==
+
+ * create a branch, so that we can play in it (/branches/osgi-project)
+ * discover BNDTools, which appears to be extremely useful
+ * software base:
+  * maven 2 
+  * Eclipse 3.7
+  * subversive
+  * m2eclipse
+  * BNDTools 1.0.0
+ * add the repo in svn repo exploring (installs svn connector)
+ * import existing maven projects from the branch
+  * leave out the book, because it causes errors we don't care about right now
+  * it gets you to install an additional thing for m2eclipse archiving
+  * then i had to fix all the .project and .classpath files because of m2e updates that changed builder and nature
+  * it doesn't seem to work to give a container (pom) project bndtools nature?
+   * I _think_ that's the problem I first encountered
+   * or it might have to do with bndtools creating a cnf in the workspace, when it has to be a sibling of the projects
+   * grrrr
