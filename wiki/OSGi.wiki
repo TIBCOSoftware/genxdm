@@ -39,4 +39,9 @@ facilities of OSGi for modularization and such, we undertook a new effort.
   * it doesn't seem to work to give a container (pom) project bndtools nature?
    * I _think_ that's the problem I first encountered
    * or it might have to do with bndtools creating a cnf in the workspace, when it has to be a sibling of the projects
-   * grrrr
+   * grrrr. okay, bndtools apparently doesn't support multi-module, at a guess. commenting on github.
+   * but no, you can't give a pom bndtools nature, and there can only be one project with the name cnf imported, so we're at least temporarily stymied
+
+== Second Pass ==
+
+...
