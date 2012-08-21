@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <!-- Copyright (c) 2010 TIBCO Software Inc.
+        
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+    
+    -->
+    <properties>
+    </properties>
+    
+    <parent>
+        <groupId>org.genxdm</groupId>
+        <artifactId>tests</artifactId>
+        <version>0.8</version>
+    </parent>
+    
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>iotest</artifactId>
+    <version>0.3</version>
+    <!-- Known incomplete, and even the completed stuff is arguably out of
+         date for the processor that it's exercising.  This needs to be
+         revisited when bridgetest revisions are complete. -->
+    <name>GenXDM Input/Output Processor Tests</name>
+    <url>http://www.genxdm.org/tests/iotest/</url>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jxr-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>jdepend-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <scm>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/tests/iotest</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/tests/iotest</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/tests/iotest</url>
+    </scm>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.genxdm</groupId>
+            <artifactId>proc-io</artifactId>
+            <version>[,2)</version>
+        </dependency>
+        <dependency>
+            <groupId>org.genxdm</groupId>
+            <artifactId>bridgekit</artifactId>
+            <version>[,2)</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>[4.0.0,5.0.0)</version>
+        </dependency>
+    </dependencies>
+</project>
