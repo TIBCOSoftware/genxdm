@@ -26,7 +26,7 @@
     <groupId>org.genxdm</groupId>
     <artifactId>project</artifactId>
     <packaging>pom</packaging>
-    <version>0.11</version>
+    <version>0.14.0</version>
     
     <name>GenXDM</name>
     <url>http://www.genxdm.org/</url>
@@ -124,11 +124,21 @@
     </reporting>
 
     <modules> 
-        <module>api</module> <!-- api container --> 
-        <module>bridge</module> <!-- implementations container --> 
-        <module>processor</module> <!-- processors container -->
-        <module>support</module> <!-- samples and tutorials container -->
-        <module>tests</module> <!-- conformance tests container -->
+        <module>genxdm-api</module>
+        <module>genxdm-xpath-api</module>
+        <module>bridgekit</module>
+        <module>bridge-axiom</module>
+        <module>bridge-cx</module>
+        <module>bridge-dom</module>
+        <module>proc-convert</module>
+        <module>proc-io</module>
+        <module>proc-w3cxs</module>
+        <module>proc-w3cxs-val</module>
+        <module>proc-xpath</module>
+        <module>bridgetest</module>
+        <module>iotest</module>
+        <module>valtest</module>
+        <module>xpathtest</module>
     </modules>
 
     <build>
