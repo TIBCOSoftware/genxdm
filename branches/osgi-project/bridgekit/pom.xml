@@ -28,11 +28,12 @@
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bridgekit</artifactId>
-    <version>0.13</version>
+    <version>0.13.0</version>
     <!-- Probably needs to be revisited at some point, but seems okay at the
          moment. -->
     <name>GenXDM Bridge Kit</name>
     <url>http://www.genxdm.org/bridge/bridgekit/</url>
+    <packaging>bundle</packaging>
     
     <reporting>
         <plugins>

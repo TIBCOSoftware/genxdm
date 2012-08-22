@@ -74,20 +74,6 @@
             <version>[4.0.0,5.0.0)</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>org.osgi.core</artifactId>
-            <version>1.0.0</version>
-        </dependency>
     </dependencies>
-    
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <extensions>true</extensions>
-            </plugin>
-        </plugins>
-    </build>
+
 </project>

@@ -28,7 +28,7 @@
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>genxdm-xpath-api</artifactId>
-    <version>0.11</version>
+    <version>0.11.0</version>
     <!-- considered very stable; API mostly derived from preexisting XT
          XPath code. -->
     <name>GenXDM XPath 1.0 API</name>
@@ -37,6 +37,7 @@
         the XPath processing developed by James Clark and Bill Lindsey for
         XT (with their permission; see copying.txt and copyingjc.txt for their
         licenses).</description>
+    <packaging>bundle</packaging>
 
     <reporting>
         <plugins>
