@@ -55,6 +55,12 @@ management of the pom. Note that this is high maintenance. We may
 dropkick the current branch and start over, as well (restructuring was
 a bndtools requirement).
 
+Whoops! wrong. It appears that a little more research (that I literally
+stumbled across while looking for other things) solves most of the issues,
+though it means a remarkably complex-looking root POM. But then the generated
+bits start looking really pretty cool--rather nice manifests (although there
+are things in there that we *really* oughta clean up).
+
 == Second Pass ==
 
 ...
