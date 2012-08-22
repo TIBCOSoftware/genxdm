@@ -30,7 +30,7 @@
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>xpathtest</artifactId>
-    <version>0.6</version>
+    <version>0.6.0</version>
     <!-- The version specified may be lower than it needs to be.  We need
          a code review here to determine actual maturity level, I think. -->
     <name>GenXDM XPath 1.0 Conformance tests</name>
@@ -82,4 +82,5 @@
             <version>[4.0.0,5.0.0)</version>
         </dependency>
     </dependencies>
+    <packaging>bundle</packaging>
 </project>

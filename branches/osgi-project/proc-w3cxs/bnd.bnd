@@ -1,0 +1,12 @@
+Bundle-Version: 0.11.0
+Private-Package: org.genxdm.processor.w3c.xs.impl,\
+	org.genxdm.processor.w3c.xs.impl.xmlrep
+Export-Package: org.genxdm.processor.w3c.xs;version=0.11.0,\
+	org.genxdm.processor.w3c.xs.exception;version=0.11.0,\
+	org.genxdm.processor.w3c.xs.exception.cvc;version=0.11.0,\
+	org.genxdm.processor.w3c.xs.exception.scc;version=0.11.0,\
+	org.genxdm.processor.w3c.xs.exception.sm;version=0.11.0,\
+	org.genxdm.processor.w3c.xs.exception.src;version=0.11.0,\
+	org.genxdm.processor.w3c.xs.regex.api;version=0.11.0,\
+	org.genxdm.processor.w3c.xs.regex.impl.nfa;version=0.11.0,\
+	org.genxdm.processor.w3c.xs.regex.impl.string;version=0.11.0
