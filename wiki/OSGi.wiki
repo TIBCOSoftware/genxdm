@@ -42,6 +42,19 @@ facilities of OSGi for modularization and such, we undertook a new effort.
    * grrrr. okay, bndtools apparently doesn't support multi-module, at a guess. commenting on github.
    * but no, you can't give a pom bndtools nature, and there can only be one project with the name cnf imported, so we're at least temporarily stymied
 
+Summary of first phase: although the 'alpha' bndtools mentioned in a blog
+posting from march 2011 had a wizard, it appears that the released bndtools
+lacks the functionality mentioned. It looks as though bndtools offers no
+particular advantages over pure felix: we still need to do all the parallel
+management of manifest and pom manually. Some of the things that should
+be happening in bndtools aren't; some things just don't work the way that
+they ought to.
+
+Next step: abandon bndtools and try doing this with pure felix and manual
+management of the pom. Note that this is high maintenance. We may
+dropkick the current branch and start over, as well (restructuring was
+a bndtools requirement).
+
 == Second Pass ==
 
 ...
