@@ -1,0 +1,20 @@
+this is kinda like an issues list for the branch:
+
+1) change the artifact ids. they can't have dashes in.
+    genxdm-api -> api
+    genxdm-xpath-api -> xpath.v10
+    bridgekit -> no change
+    bridgetest -> no change
+    bridge-xyzzy -> bridge.xyzzy
+    iotest -> processor.io.tests
+    proc-convert -> processor.convert
+    proc-io -> processor.io
+    proc-w3cxs -> processor.w3c.xs
+    proc-w3cxs-val -> processor.w3c.xs.validation
+    proc-xpath -> processor.xpath.v10
+    valtest -> processor.w3c.xs.validationtest
+    xpathtest -> processor.xpath.v10.tests
+2) figure out how to make the generated jar files use the
+   groupId.artifactId-version pattern.
+3) based on some of the weird names shown above, consider renaming packages
+   for consistency, and then making the artifactIds match.
