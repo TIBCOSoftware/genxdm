@@ -14,7 +14,12 @@ this is kinda like an issues list for the branch:
     proc-xpath -> processor.xpath.v10
     valtest -> processor.w3c.xs.validationtest
     xpathtest -> processor.xpath.v10.tests
-2) figure out how to make the generated jar files use the
+* 2) figure out how to make the generated jar files use the
    groupId.artifactId-version pattern.
+   * DONE: use <finalName>${groupId}.${artifactId}-${version}</finalName>
+           in the root POM (in <build />).
 3) based on some of the weird names shown above, consider renaming packages
    for consistency, and then making the artifactIds match.
+4) update versions (pretty seriously)
+5) fix the OSGi wiki page, and make it link
+6) add to PREREQUISITES in this directory
