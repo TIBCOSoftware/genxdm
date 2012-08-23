@@ -27,7 +27,7 @@
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>proc-w3cxs-val</artifactId>
+    <artifactId>processor.w3c.xs.validation</artifactId>
     <version>0.10.0</version>
     <name>GenXDM W3C XML Schema Validator</name>
     <url>http://www.genxdm.org/processor/proc-w3cxs-val/</url>
@@ -64,12 +64,7 @@
     <dependencies>
         <dependency>
             <groupId>org.genxdm</groupId>
-            <artifactId>genxdm-api</artifactId>
-            <version>[,2)</version>
-        </dependency>
-        <dependency>
-            <groupId>org.genxdm</groupId>
-            <artifactId>proc-w3cxs</artifactId>
+            <artifactId>processor.w3c.xs</artifactId>
             <version>[,2)</version>
         </dependency>
     </dependencies>

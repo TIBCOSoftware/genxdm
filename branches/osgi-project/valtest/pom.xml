@@ -27,7 +27,7 @@
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>validationtest</artifactId>
+    <artifactId>processor.w3c.xs.validationtest</artifactId>
     <version>0.3.0</version>
     <name>GenXDM Validation Test Kit</name>
     <url>http://www.genxdm.org/tests/validationtest/</url>
@@ -64,7 +64,7 @@
     <dependencies>
         <dependency>
             <groupId>org.genxdm</groupId>
-            <artifactId>proc-w3cxs-val</artifactId>
+            <artifactId>processor.w3c.xs.validation</artifactId>
             <version>[,2)</version>
         </dependency>
         <dependency>

@@ -27,7 +27,7 @@
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>proc-convert</artifactId>
+    <artifactId>processor.convert</artifactId>
     <version>0.10.0</version>
     <!-- Not necessarily "mature", but it's so simple that it's hard to imagine
          significant change unless underlying APIs change -->
@@ -66,7 +66,7 @@
     <dependencies>
         <dependency>
             <groupId>org.genxdm</groupId>
-            <artifactId>genxdm-api</artifactId>
+            <artifactId>api</artifactId>
             <version>[,2)</version>
         </dependency>
     </dependencies>

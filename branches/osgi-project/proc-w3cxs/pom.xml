@@ -27,7 +27,7 @@
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>proc-w3cxs</artifactId>
+    <artifactId>processor.w3c.xs</artifactId>
     <version>0.11.0</version>
     <name>GenXDM W3C XML Schema Parser</name>
     <url>http://www.genxdm.org/processor/proc-w3cxs/</url>

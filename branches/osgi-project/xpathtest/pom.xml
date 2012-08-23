@@ -29,7 +29,7 @@
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>xpathtest</artifactId>
+    <artifactId>processor.xpath.v10.tests</artifactId>
     <version>0.6.0</version>
     <!-- The version specified may be lower than it needs to be.  We need
          a code review here to determine actual maturity level, I think. -->
@@ -68,12 +68,7 @@
     <dependencies>
         <dependency>
             <groupId>org.genxdm</groupId>
-            <artifactId>genxdm-xpath-api</artifactId>
-            <version>[,2)</version>
-        </dependency>
-        <dependency>
-            <groupId>org.genxdm</groupId>
-            <artifactId>proc-xpath</artifactId>
+            <artifactId>processor.xpath.v10</artifactId>
             <version>[,2)</version>
         </dependency>
         <dependency>

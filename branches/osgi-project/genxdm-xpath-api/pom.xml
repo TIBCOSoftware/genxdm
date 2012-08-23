@@ -27,7 +27,7 @@
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>genxdm-xpath-api</artifactId>
+    <artifactId>xpath.v10</artifactId>
     <version>0.11.0</version>
     <!-- considered very stable; API mostly derived from preexisting XT
          XPath code. -->
@@ -73,7 +73,7 @@
     <dependencies>
         <dependency>
             <groupId>org.genxdm</groupId>
-            <artifactId>genxdm-api</artifactId>
+            <artifactId>api</artifactId>
             <version>[,2)</version>
         </dependency>
     </dependencies>

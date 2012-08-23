@@ -27,7 +27,7 @@
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>iotest</artifactId>
+    <artifactId>processor.io.tests</artifactId>
     <version>0.3.0</version>
     <!-- Known incomplete, and even the completed stuff is arguably out of
          date for the processor that it's exercising.  This needs to be
@@ -68,7 +68,7 @@
     <dependencies>
         <dependency>
             <groupId>org.genxdm</groupId>
-            <artifactId>proc-io</artifactId>
+            <artifactId>processor.io</artifactId>
             <version>[,2)</version>
         </dependency>
         <dependency>
