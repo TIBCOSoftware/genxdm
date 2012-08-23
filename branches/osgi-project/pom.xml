@@ -142,7 +142,7 @@
     </modules>
 
     <build>
-        <finalName>${groupId}.${artifactId}-${version}</finalName>
+        <finalName>${groupId}.${artifactId}_${version}</finalName>
         <pluginManagement>
             <plugins>
                 <!--This plugin's configuration is used to store Eclipse 
