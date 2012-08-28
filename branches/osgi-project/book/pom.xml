@@ -22,20 +22,20 @@
     
     <parent>
         <groupId>org.genxdm</groupId>
-        <artifactId>support</artifactId>
-        <version>0.8</version>
+        <artifactId>project</artifactId>
+        <version>0.14.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>genxdm-book</artifactId>
-    <version>0.5</version>
+    <artifactId>book</artifactId>
+    <version>0.6.0</version>
     <name>GenXDM Book</name>
-    <url>http://www.genxdm.org/support/genxdm-book/</url>
+    <url>http://www.genxdm.org/book/</url>
 
     <scm>
-        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/support/book</connection>
-        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/support/book</developerConnection>
-        <url>http://genxdm.googlecode.com/svn/trunk/project/support/book</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/book</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/book</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/book</url>
     </scm>
 
     <build>

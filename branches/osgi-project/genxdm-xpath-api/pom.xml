@@ -27,17 +27,15 @@
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
+    <packaging>bundle</packaging>
     <artifactId>xpath.v10</artifactId>
     <version>0.11.0</version>
-    <!-- considered very stable; API mostly derived from preexisting XT
-         XPath code. -->
     <name>GenXDM XPath 1.0 API</name>
-    <url>http://www.genxdm.org/apis/genxdm-xpath-api/</url>
+    <url>http://www.genxdm.org/apis/xpath.v10/</url>
     <description>The GenXDM XPath 1.0 API module is based on an abstraction of
-        the XPath processing developed by James Clark and Bill Lindsey for
-        XT (with their permission; see copying.txt and copyingjc.txt for their
-        licenses).</description>
-    <packaging>bundle</packaging>
+the XPath processing developed by James Clark and Bill Lindsey for
+XT (with their permission; see copying.txt and copyingjc.txt for their
+licenses).</description>
 
     <reporting>
         <plugins>
@@ -63,9 +61,9 @@
     </reporting>
 
     <scm>
-        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/api/xpath</connection>
-        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/api/xpath</developerConnection>
-        <url>http://genxdm.googlecode.com/svn/trunk/project/api/xpath</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/xpath.v10</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/xpath.v10</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/xpath.v10</url>
     </scm>
 
     <organization>

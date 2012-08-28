@@ -27,13 +27,14 @@
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
+    <packaging>bundle</packaging>
     <artifactId>processor.io.tests</artifactId>
     <version>0.3.0</version>
     <!-- Known incomplete, and even the completed stuff is arguably out of
          date for the processor that it's exercising.  This needs to be
          revisited when bridgetest revisions are complete. -->
     <name>GenXDM Input/Output Processor Tests</name>
-    <url>http://www.genxdm.org/tests/iotest/</url>
+    <url>http://www.genxdm.org/io.tests/</url>
 
     <reporting>
         <plugins>
@@ -59,9 +60,9 @@
     </reporting>
 
     <scm>
-        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/tests/iotest</connection>
-        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/tests/iotest</developerConnection>
-        <url>http://genxdm.googlecode.com/svn/trunk/project/tests/iotest</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/io.tests</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/io.tests</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/io.tests</url>
     </scm>
 
 
@@ -82,5 +83,4 @@
             <version>[4.0.0,5.0.0)</version>
         </dependency>
     </dependencies>
-    <packaging>bundle</packaging>
 </project>

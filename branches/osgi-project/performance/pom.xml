@@ -19,17 +19,17 @@
   <properties>
   </properties>
   <parent>
-    <artifactId>support</artifactId>
+    <artifactId>project</artifactId>
     <groupId>org.genxdm</groupId>
-    <version>0.8</version>
+    <version>0.14.0</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
+  <packaging>bundle</packaging>
   <artifactId>performance</artifactId>
-  <version>0.7</version>
-  <!-- needs code review; believed to be immature. -->
+  <version>0.8.0</version>
   <name>GenXDM Performance Evaluation</name>
-  <url>http://www.genxdm.org/support/performance/</url>
+  <url>http://www.genxdm.org/performance/</url>
 
   <reporting>
       <plugins>
@@ -55,25 +55,20 @@
   </reporting>
 
   <scm>
-      <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/support/performance</connection>
-      <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/support/performance</developerConnection>
-      <url>http://genxdm.googlecode.com/svn/trunk/project/support/performance</url>
+      <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/performance</connection>
+      <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/performance</developerConnection>
+      <url>http://genxdm.googlecode.com/svn/trunk/project/performance</url>
   </scm>
 
   <dependencies>
-    <!--dependency>
-        <groupId>org.genxdm</groupId>
-        <artifactId>genxdm-api</artifactId>
-        <version>[,2]</version>
-    </dependency-->
     <dependency>
         <groupId>org.genxdm</groupId>
-        <artifactId>bridge-dom</artifactId>
+        <artifactId>bridge.dom</artifactId>
         <version>[,2)</version>
     </dependency>
     <dependency>
         <groupId>org.genxdm</groupId>
-        <artifactId>bridge-cx</artifactId>
+        <artifactId>bridge.cx</artifactId>
         <version>[,2)</version>
     </dependency>
     <dependency>
@@ -83,12 +78,12 @@
     </dependency>
     <dependency>
         <groupId>org.genxdm</groupId>
-        <artifactId>bridge-axiom</artifactId>
+        <artifactId>bridge.axiom</artifactId>
         <version>[,2]</version>
     </dependency>
     <dependency>
         <groupId>org.genxdm</groupId>
-        <artifactId>proc-w3cxs-val</artifactId>
+        <artifactId>processor.w3c.xs.validation</artifactId>
         <version>[,2]</version>
     </dependency>
     <dependency>
@@ -96,5 +91,5 @@
       <artifactId>xercesImpl</artifactId>
       <version>[2,3)</version>
     </dependency>  
-</dependencies>
+  </dependencies>
 </project>

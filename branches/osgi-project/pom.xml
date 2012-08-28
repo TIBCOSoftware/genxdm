@@ -124,21 +124,23 @@
     </reporting>
 
     <modules> 
-        <module>genxdm-api</module>
-        <module>genxdm-xpath-api</module>
+        <module>api</module>
+        <module>xpath.v10</module>
         <module>bridgekit</module>
-        <module>bridge-axiom</module>
-        <module>bridge-cx</module>
-        <module>bridge-dom</module>
-        <module>proc-convert</module>
-        <module>proc-io</module>
-        <module>proc-w3cxs</module>
-        <module>proc-w3cxs-val</module>
-        <module>proc-xpath</module>
+        <module>bridge.axiom</module>
+        <module>bridge.cx</module>
+        <module>bridge.dom</module>
+        <module>processor.convert</module>
+        <module>processor.io</module>
+        <module>processor.w3c.xs</module>
+        <module>processor.w3c.xs.validation</module>
+        <module>processor.xpath.v10</module>
         <module>bridgetest</module>
-        <module>iotest</module>
-        <module>valtest</module>
-        <module>xpathtest</module>
+        <module>io.tests</module>
+        <module>w3c.xs.validationtest</module>
+        <module>xpath.v10.tests</module>
+        <module>book</module>
+        <module>performance</module>
     </modules>
 
     <build>

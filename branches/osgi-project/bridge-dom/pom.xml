@@ -27,13 +27,11 @@
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
+    <packaging>bundle</packaging>
     <artifactId>bridge.dom</artifactId>
     <version>0.12.0</version>
-    <!-- once the most mature of the bridges, and still probably the most-used
-         and most tested in practice, but the API has changed and the changes
-         that have happened here have not always been thoughtful and well-chosen -->
     <name>GenXDM Document Object Model Bridge</name>
-    <url>http://www.genxdm.org/bridge/bridge-dom/</url>
+    <url>http://www.genxdm.org/bridge/bridge.dom/</url>
 
     <reporting>
         <plugins>
@@ -59,9 +57,9 @@
     </reporting>
 
     <scm>
-        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/bridge/dom</connection>
-        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/bridge/dom</developerConnection>
-        <url>http://genxdm.googlecode.com/svn/trunk/project/bridge/dom</url>
+        <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/bridge.dom</connection>
+        <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/bridge.dom</developerConnection>
+        <url>http://genxdm.googlecode.com/svn/trunk/project/bridge.dom</url>
     </scm>
 
     <dependencies>
@@ -106,5 +104,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <packaging>bundle</packaging>
 </project>
