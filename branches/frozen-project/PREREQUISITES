@@ -1,0 +1,12 @@
+You must install Maven 2.
+
+You must have at least J2SE 1.6.
+
+You should be familiar with Maven's "goals" and usage.  As this is a
+multi-module project, "mvn compile" will not work.  "mvn install" is the
+"standard" command for builds.  If tests have broken, try
+"mvn install -Dmaven.test.skip=true".
+
+For Eclipse integration, you must install Maven2Eclipse:
+    http://m2eclipse.sonatype.org/update/
+
