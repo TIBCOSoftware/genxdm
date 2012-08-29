@@ -3,9 +3,9 @@
 
 = Command Line =
 
-(information on how to build with maven goes here)
-
 Short version: Maven 2, JDK 1.6, and everything should Just Work.
+
+Longer version: actually, if those prerequisites are met, then everything really should just work. You need the 1.6 JDK and maven 2 (maven 3 is not good; at last check it had a broken documentation cycle).
 
 = Eclipse =
 
