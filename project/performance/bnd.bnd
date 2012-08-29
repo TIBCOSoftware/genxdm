@@ -1,0 +1,7 @@
+Bundle-Version: 0.8.0
+Export-Package: org.genxdm.samples.performance;version=0.8.0,\
+	org.genxdm.samples.performance.bridges;version=0.8.0,\
+	org.genxdm.samples.performance.bridges.axiom;version=0.8.0,\
+	org.genxdm.samples.performance.bridges.cx;version=0.8.0,\
+	org.genxdm.samples.performance.bridges.dom;version=0.8.0,\
+	org.genxdm.samples.performance.dom;version=0.8.0
