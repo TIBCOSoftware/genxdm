@@ -1,0 +1,5 @@
+Export-Package: org.genxdm.bridge.cx;version=0.13.0,\
+	org.genxdm.bridge.cx.base;version=0.13.0,\
+	org.genxdm.bridge.cx.typed;version=0.13.0
+Bundle-Version: 0.13.0
+Private-Package: org.genxdm.bridge.cx.tree

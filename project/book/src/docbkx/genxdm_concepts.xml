@@ -1,0 +1,924 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<article id="bookmap_0607E44F01B444C689FF5B4B222D3F86">
+    <title>GenXDM Concepts</title>
+
+    <section id="concept_introduction">
+        <title id="ttlN2000D">Introduction</title>
+        <para id="paraN20018"><phrase id="phrsN2001C">GenXDM</phrase>is
+        an XDM application programming interface (API) for analyzing, creating, and
+        manipulating XML in Java. <phrase id="phrsN20022">GenXDM</phrase>
+        embodies the XQuery Data Model, and is consequently a tree-oriented API, but it
+        does not introduce a new tree model. Instead, it is intended to run over
+        existing tree models, and to permit the introduction of new, specialized models
+        optimized for a particular purpose. 
+        </para>
+        <para id="paraN20029"><phrase id="phrsN2002D">GenXDM</phrase>
+        enables applications to write code that uses and manipulates XML trees without
+        being tied to a particular XML tree representation like DOM, DOM4J, AXIOM, or
+        any other. It also prods developers towards an immutable view of XML trees,
+        which makes it easier and faster to work with XML across multiple cores and
+        multiple processors. 
+        </para>
+        <sidebar id="section_29408B817BFF409FB8F82C560F87D1CE">
+            <title id="ttlN2003A">Benefits</title>
+            <para id="paraN20040"><phrase id="phrsN20044">GenXDM</phrase>
+              does not supplant the DOM. Instead, 
+              <phrase id="phrsN2004A">GenXDM</phrase>
+              provides an easy-to-use API that works with the DOM by way of a bridge. With 
+              <phrase id="phrsN20050">GenXDM</phrase>,
+              you can: 
+            </para>
+            <itemizedlist id="ul_52E8DAE1CA39484E8D1CDB44C4C44934">
+                <listitem id="li_C682B0904897452DAB2B2518E038AD21">
+                    <para><emphasis role="bold" id="bN20062">Coordinate with
+                     multiple XML models.</emphasis><phrase id="phrsN20067">GenXDM</phrase>
+                     works with the current infrastructure of XML tools, using their preferred
+                     models, while providing a path forward in which new tools can be
+                     model-agnostic. 
+                    </para>
+                </listitem>
+                <listitem id="li_9B349147B79F4A21ACBC9D9393CAC000">
+                    <para><emphasis role="bold" id="bN20073">Bridge to any XML
+                     model.</emphasis> A bridge between <phrase id="phrsN20079">GenXDM</phrase>
+                     and an XML model provides a mechanism to share tools between different models. 
+                     <phrase id="phrsN2007F">GenXDM</phrase>
+                     provides a bridge to the DOM using the Handle/Body pattern, reducing overhead.
+                     If a bridge does not already exist for the XML model you use, you can create a
+                     bridge. 
+                    </para>
+                </listitem>
+                <listitem id="li_9397799AFDD94786AB073474BD695F43">
+                    <para><emphasis role="bold" id="bN2008B">Minimize overhead.</emphasis><phrase id="phrsN20091">GenXDM</phrase>
+                     provides a bridge to the DOM using the Handle/Body pattern. Unlike a wrapper, a
+                     bridge lends itself to more generic use and reduces overhead, particularly when
+                     dealing with large XML documents. 
+                    </para>
+                </listitem>
+                <listitem id="li_BE262D7800ED4C919535F864A86801D8">
+                    <para><emphasis role="bold" id="bN2009D">Build predictable
+                     tools.</emphasis> The <phrase id="phrsN200A3">GenXDM</phrase>
+                     API is easy to work with, allowing users to build tools that are more
+                     predictable than those built against the DOM. 
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </sidebar>
+
+        <section id="concept_design">
+            <title id="ttlN7000D"><phrase id="phrsN70011">GenXDM</phrase> Design</title>
+            <para id="paraN7001D"><phrase id="phrsN70021">GenXDM</phrase>
+            makes extensive use of Java generics to enable the API to run over any
+            arbitrary tree model for which a "bridge" has been created. Bridges are
+            provided for W3C DOM, for Apache Axiom, and for a simple "reference model"
+            intended to aid others to develop bridges as well. 
+            </para>
+            <para id="paraN70028">The API divides naturally into 
+            <emphasis role="italic" id="iN7002D">bridges</emphasis> and 
+            <emphasis role="italic" id="iN70033">processors</emphasis>, which are usually organized by 
+            <emphasis role="italic" id="iN70039">applications</emphasis>. 
+            </para>
+            <para id="paraN70040">A bridge, as an implementation
+            of the <phrase id="phrsN70045">GenXDM</phrase>
+            handles, connects the <phrase id="phrsN7004B">GenXDM</phrase>
+            API to the underlying Data Model. The bridge provides the abstraction over
+            which applications and processors operate, including the model, input/output,
+            and a context that associates related tree-specific functions. 
+            </para>
+            <para id="paraN70052">Operating over the data model
+            described in the bridge, a <phrase id="phrsN70057">GenXDM</phrase>
+            processor is a code library that performs a specific, well-described function
+            over XML. For example, most processors can be described with a single word or
+            phrase: "serializer," "parser," "converter," "validator," "transformer,"
+            "signer," and so on. 
+            </para>
+            <para id="paraN7005E">An application is a design
+            pattern that performs a larger task, usually consisting of several smaller
+            processes that are organized by the application. In other words, the
+            application orchestrates the behavior of one or more processors. Additionally,
+            an application usually manages the bridges, selecting the appropriate bridge
+            for the incoming node type. Most often, the 
+            <literal id="cdphN70063">ProcessingContextFactories</literal> are instantiated at the
+            application level. 
+            </para>
+            <para id="paraN7006A">A bridge exposes an instance of the Data Model (typed or untyped,
+            mutable or immutable). A processor operates over the data model-several
+            examples are provided with interesting functionality, core utility, or as
+            samples for the inspiration of further development. 
+            </para>
+            <para id="paraN70070">See 
+            <ulink type="concept" url="c_Bridges.xml#concept_EB038B3705124EACBE52D26A151D2A26" id="linkN70075">Bridges</ulink>
+            and 
+            <ulink type="concept" url="c_Processors.xml#concept_EB038B3705124EACBE52D26A151D2A26" id="linkN7007F">Processors</ulink> for additional information.
+            </para>
+            <para id="paraN7008A">The 
+            <phrase id="phrsN7008F">GenXDM</phrase>
+            design rests on four pillars: the Handle/Body design pattern, Java generics,
+            the XQuery Data Model, and immutability for XML processing as a paradigm. 
+            </para>
+
+            <section id="concept_handle-body">
+                <title id="ttlN8000D">Handle/Body Pattern</title>
+                <para id="paraN80018"><phrase id="phrsN8001C">GenXDM</phrase>
+                uses the Handle/Body pattern (also sometimes called the Bridge pattern). This
+                pattern provides a well-defined set of operations over an abstraction (the
+                handle), which may then be adapted to specific implementations (the body). For 
+                <phrase id="phrsN80022">GenXDM</phrase>,
+                the primary "handles" are the:
+                </para>
+                <itemizedlist id="ul_F630827F08B64B3AAC0BE185DC0BB411">
+                    <listitem id="li_E40C781A119A4B97AF68AE6ABD6A47B8">
+                        <para>Model or Cursor</para>
+                    </listitem>
+                    <listitem id="li_2371094E1DC844C585C1786A92DA4E85">
+                        <para>Processing Context</para>
+                    </listitem>
+                    <listitem id="li_0B6BE6EFA36641FD9373F6E077152944">
+                        <para>Node Factory in the mutable API</para>
+                    </listitem>
+                    <listitem id="li_25B0B0AB1EF74FBA996BEEBCC1573DE0">
+                        <para>Type and typed-value (Atom) Bridges in the schema-aware API</para>
+                    </listitem>
+                </itemizedlist>
+                <para id="paraN8004C">The <phrase id="phrsN80051">GenXDM</phrase>
+                use of the Handle/Body pattern for XML tree models can be compared to the
+                similar pattern used for database drivers in the Java Database Connection
+                (JDBC) API. Each bridge may be viewed as equivalent to a vendor-specific
+                driver. 
+                </para>
+                <para id="paraN80058">Because applications and processors need not write separate code paths
+                for different tree models, Handle/Body models can be injected very late, even
+                at runtime. As a result, available models can be compared, based on the
+                application's or processor's requirements, and the tree model best suited to
+                the problem at hand preferred. This in turn allows for more rigorous testing
+                and can lead to model improvements. 
+                </para>
+                <para id="paraN8005E"><phrase id="phrsN80062">GenXDM</phrase>
+                and the Handle/Body model also allows developers to choose a model based on
+                technical merits without considering the importance of the network effect for
+                the DOM. With <phrase id="phrsN80068">GenXDM</phrase>,
+                "niche" tree models for XML can be designed and optimized for particular use
+                cases. In other words, by always using these handles for access,
+                special-purpose bodies become more practical.
+                </para>
+                <note id="noteN8006F">
+                    <para>The Handle/Body pattern is different from a wrapper. Whereas a
+                    wrapper encases every node in the tree, the Handle/Body pattern presents
+                    applications and processors with just one new abstraction, or handle,
+                    represented by a single instance. This allows 
+                    <phrase id="phrsN80074">GenXDM</phrase>
+                    to add very little weight to the existing tree model compared to the weight
+                    added by a wrapper covering each node in the tree. 
+                    </para>
+                    <para id="paraN8007A"> Although there is a cost (in memory and performance) to using the
+                    handles rather than directly manipulating the bodies, the benefits in
+                    flexibility and capability are more nearly commensurate. In exchange for a
+                    memory/performance impact measured in low single-digit percentages (for most
+                    tree model APIs), an application or processor gains the ability to manipulate
+                    all supported tree model APIs.
+                    </para>
+                </note>
+            </section>
+
+            <section id="concept_generics">
+                <title id="ttlN9000D">Java Generics</title>
+                <para id="paraN90018"><phrase id="phrsN9001C">GenXDM</phrase>
+                makes extensive use of Java generics to enable the API to run over any
+                arbitrary tree model for which a "bridge" has been created. 
+                </para>
+                <para id="paraN90023">In addition to using built-in Java generics, 
+                <phrase id="phrsN90028">GenXDM</phrase> defines two common parameters, 
+                <literal id="cdphN9002E">N</literal> and 
+                <literal id="cdphN90034">A</literal>:
+                </para>
+                <itemizedlist id="ul_EFB7F33D8DB3448DA986EE2EECD997B7">
+                    <listitem id="li_DE7FD2FFABEC4ECAA6B0D15F25FB05D7">
+                        <para><literal id="cdphN90047">N</literal> is the "node" handle.</para>
+                    </listitem>
+                    <listitem id="li_D35D3344F0444464B429C15012B8BA41">
+                        <para><literal id="cdphN90054">A</literal> is the "atom" or "atomic value" handle.</para>
+                    </listitem>
+                </itemizedlist>
+                <para id="paraN9005C">In <phrase id="phrsN90061">GenXDM</phrase>,
+                APIs that accept or return collections typically use iterable in their
+                signatures. This is opposed to counts, specialized objects with
+                pseudo-iterators, single-use iterators, or arrays.
+                </para>
+                <para id="paraN90068">Java generics provide interoperability. By defining the node and atom
+                handle parameters, each of the tree models can be viewed and manipulated
+                through the lens of the XQuery Data Model. As a result, 
+                <phrase id="phrsN9006D">GenXDM</phrase>
+                developers can ignore the effect created by the existence of parsers,
+                processors, and applications that understand no model but the DOM, regardless
+                of its fitness for their domain of operation. Because 
+                <phrase id="phrsN90073">GenXDM</phrase>
+                provides a DOM bridge, it is able to leverage that network effect. Each bridge
+                added increases the network effect. However, note that conversion from model to
+                model remains expensive so single document conversion is not efficient.
+                </para>
+            </section>
+
+            <section id="concept_xdm">
+                <title id="ttlNA000D">XQuery Data Model</title>
+                <para id="paraNA0018"><phrase id="phrsNA001C">GenXDM</phrase>
+                provides a Java API that embodies the XQuery Data Model (XDM). The XDM is
+                conceptually complete, and defined in a context that permits type definition,
+                navigation operations, and more advanced functions. This rigorous, well-defined
+                specification was adopted as the basis for the 
+                <phrase id="phrsNA0022">GenXDM</phrase> API, and represents gXML's answer to the problem of 
+                <ulink type="li" url="c_Solutions.xml#concept_EB038B3705124EACBE52D26A151D2A26/li_5D05D9F6CF784A0C8FEC2DCE225701C8" id="linkNA0028">variability</ulink>. Any property or concept that exists
+                in the XDM specification is present in <phrase id="phrsNA0032">GenXDM</phrase>.
+                If the concept is not in the XDM specification, then either it should not be
+                exposed in the <phrase id="phrsNA0038">GenXDM</phrase>
+                API, or it should be compatible with the well-specified API. For example, the
+                entire mutable <phrase id="phrsNA003E">GenXDM</phrase>
+                API was added as an extension because XQuery does not define operations that
+                modify trees. 
+                </para>
+                <para id="paraNA0045">The XQuery Data Model also provides the first well-integrated access to
+                XML Schema information. <phrase id="phrsNA004A">GenXDM</phrase>
+                defines a common model for XML Schema, compatible with the XDM's definition and
+                use of XML Schema types and typed values, as a standard extension. 
+                </para>
+                <para id="paraNA0051">Although <phrase id="phrsNA0056">GenXDM</phrase>
+                is not the only model to provide support for XML Schema, the schema-aware
+                extensions in <phrase id="phrsNA005C">GenXDM</phrase>
+                can be implemented for any tree model, and are exposed through APIs that are
+                clearly related to, and usually extensions of, the core <phrase id="phrsNA0062">GenXDM</phrase>
+                APIs. In other words, by addressing the problem of variability by adhering to
+                and conforming with the XQuery Data Model Specification, <phrase id="phrsNA0068">GenXDM</phrase>
+                enables the development of a "next wave" of XML processing technologies, based
+                on XPath 2.0, XSLT 2.0, and XQuery 1.0 (including the new generation of
+                XQuery-conformant databases). 
+                </para>
+            </section>
+
+            <section id="concept_immutability">
+                <title id="ttlNB000D">Immutable Paradigm</title>
+                <para id="paraNB0018"><phrase id="phrsNB001C">GenXDM</phrase>
+                promotes a paradigm in which a received or generated XML document is input, and
+                the document is then transformed and supplied to other processes, wherever
+                those processes are. The nodes the any given XML instance are never modified
+                during processing. As a result, <phrase id="phrsNB0022">GenXDM</phrase>
+                allows an immutable paradigm. In combination with the enabling of custom,
+                potentially domain-specific XML tree models accessed through a <phrase id="phrsNB0028">GenXDM</phrase>
+                bridge, the immutable paradigm (over an immutable tree model) can achieve
+                optimizations not possible for a tree model in which the existence of
+                mutability prevents against caching, compaction, and deferred loading. 
+                </para>
+                <para id="paraNB002F">
+                    <note id="noteNB0034">
+                        <para>To ease migration, the 
+                        <ulink type="li" url="c_API_Interfaces.xml#concept_EB038B3705124EACBE52D26A151D2A26/li_6CAF2090F33F433CAC1650B50C776C0B" id="linkNB0039"><literal id="cdphNB0041">MutableContext</literal></ulink>
+                        extension permits mutability.
+                        </para>
+                    </note>
+                </para>
+            </section>
+        </section>
+
+        <section id="concept_solutions">
+            <title id="ttlNC000D">Solutions</title>
+            <para id="paraNC0018"><phrase id="phrsNC001C">GenXDM</phrase>
+            offers solutions to a number of issues with the XML tree models in Java: 
+            </para>
+            <itemizedlist id="ul_F2983244917D4A3EA8D59CC0CD8318FB">
+                <listitem id="li_0DC90CA133FE41408E195560E6A7264D">
+                    <para>
+                        <emphasis role="bold" id="bNC002F">Multiplicity</emphasis>
+                    </para>
+                    <para id="paraNC0035">XML in Java developers have a variety of XML tree models to choose
+                     from, including DOM, JDOM, DOM4J, XOM, and AxiOM. Innumerable private models
+                     are also available. In most cases, applications and processors written for one
+                     of these models are not usable with other models. 
+                    </para>
+                </listitem>
+                <listitem id="li_F30EB39C1F4147D29557419BA04C011B">
+                    <para>
+                        <emphasis role="bold" id="bNC0042">Interoperability</emphasis>
+                    </para>
+                    <para id="paraNC0048"> Document Object Model (DOM) was the first tree model offered, and
+                     as such had a first mover advantage. Subsequent tree models were developed to
+                     address the shortcomings of the DOM, but not to interoperate with it. Although
+                     other models may have technical advantages that make them more suitable than
+                     the DOM for a given application, in order to use those new models efficiently
+                     within the JVM, all parts of the application need to use the same tree model.
+                     Developers must solve a cruel equation in which the marginal benefits of
+                     switching from the DOM are typically low, whereas the marginal costs are always
+                     high. The alternatives seem to be to write multiple code paths to achieve the
+                     same purpose (with different tree models), or to wrap each node of each tree
+                     model in an application-specific abstraction. 
+                    </para>
+                </listitem>
+                <listitem id="li_5D05D9F6CF784A0C8FEC2DCE225701C8">
+                    <para>
+                        <emphasis role="bold" id="bNC0055">Variability</emphasis>
+                    </para>
+                    <para id="paraNC005B">Each of the various tree models exposes different specifications and
+                    property sets, or abstractions (node types). Additionally, in each tree model
+                    the boundaries between lexical, syntactic, and semantic may be drawn at
+                    different points. One consequence of this variability is that it is difficult
+                    or awkward to add support for specifications "higher in the stack." Such
+                    specifications are most commonly handled as extensions. For example, XPath 1.0
+                    and XSLT 1.0 work as external tools. AxiOM is an entire XML tree model built
+                    largely so that the SOAP abstractions could be represented cleanly as
+                    extensions. 
+                    </para>
+                </listitem>
+                <listitem id="li_249A23FE58BF4DBA8AE7B35E3C505C9B">
+                    <para>
+                        <emphasis role="bold" id="bNC0068">Weight</emphasis>
+                    </para>
+                    <para id="paraNC006E">The DOM requires considerably more memory than the XML itself
+                    requires. Newer tree models are better, but still weighty. 
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </section>
+    </section>
+
+    <section id="concept_applications">
+        <title id="ttlND000D">Applications</title>
+        <para id="p_B48804D107074718BA2307FFB84508E2">An application is a design
+        pattern that performs a larger task, usually consisting of several smaller
+        processes that are organized by the application. In other words, the
+        application orchestrates the behavior of one or more processors. Additionally,
+        an application usually manages the bridges, selecting the appropriate bridge
+        for the incoming node type. Most often, the 
+        <literal id="cdphND001E">ProcessingContextFactories</literal> are instantiated at the
+        application level. 
+        </para>
+
+        <section id="concept_extensions">
+            <title id="ttlN15000D">Extensions</title>
+            <para id="paraN150018">The<phrase id="phrsN15001D">GenXDM</phrase>
+            API is completed with two extensions in the core 
+            <literal id="cdphN150023">ProcessingContext</literal> to permit bridges to signal support
+            for optional functionality. The 
+            <emphasis role="bold" id="bN150029">mutable</emphasis> extension adds mutability by adding methods to the base
+            interfaces, or by adding new interfaces. The schema-aware or 
+            <emphasis role="bold" id="bN15002F">typed</emphasis> extension adds schema awareness, again by adding methods to
+            base interfaces, or by adding new interfaces; the typed extension also
+            introduces the "atom" parameter.
+            </para>
+            <section id="concept_mutable_extensions">
+                <title id="ttlN16000D">Mutable Extensions</title>
+                <para id="paraN160018"><literal id="cdphN16001C">MutableContext</literal> permits mutability. Although
+                immutability provides important benefits for XML processing, all
+                currently-available tree models are mutable, and nearly all processors and
+                applications expect mutability. To ease migration, 
+                <literal id="cdphN160022">ProcessingContext</literal> provides a method, 
+                <literal id="cdphN160028">getMutableContext()</literal> which permits the bridge to signal
+                that it supports mutability, by returning an implementation of the 
+                <literal id="cdphN16002E">MutableContext</literal> extension. 
+                </para>
+            </section>
+            <section id="concept_typed_extensions">
+                <title id="ttlN18000D">Typed Extensions</title>
+                <para id="paraN180018"><literal id="cdphN18001C">TypedContext</literal> provides the XDM-defined schema-aware
+                properties and manipulations. Most notably, the typed context introduces an
+                additional parameter, the &lt;A&gt;tom handle. The base and mutable interfaces
+                deal only with string values for text node and attribute content (in XDM terms,
+                actually untyped atomic). The XQuery Data Model defines the concept of "atom",
+                which corresponds to a typed value or list of typed values. Atoms are
+                inherently sequences of atoms (a single atom is a one-element list); "sequence"
+                is also introduced in the schema-aware API, but unlike atom, is not represented
+                by an independent common parameter. 
+                </para>
+            </section>
+        </section>
+    </section>
+
+    <section id="concept_processors">
+        <title id="ttlN1C000D">Processors</title>
+        <para id="p_085AD3A1ED3D4DE982EB84E52570DB85">Operating over the data model
+        described in the bridge, a <phrase id="phrsN1C001E">GenXDM</phrase>
+        processor is a code library that performs a specific, well-described function
+        over XML. For example, most processors can be described with a single word or
+        phrase: "serializer," "parser," "converter," "validator," "transformer,"
+        "signer," and so on. 
+        </para>
+        <para id="paraN1C0025">A processor is distinguished from an application, which may create
+        (generate), destroy (consume), modify, and otherwise manipulate XML in multiple
+        steps. Where a processor contributes special functionality to the performance
+        of a goal, the application oversees and orchestrates achievement of the goal
+        from receipt to completion. 
+        </para>
+        <para id="paraN1C002B">Because of the wide variety of valid processor types, no specific
+        interface or contract is specified for XML processors designed for use with 
+        <phrase id="phrsN1C0030">GenXDM</phrase>.
+        This is in contrast with bridges, for which an extensive API exists in 
+        <phrase id="phrsN1C0036">GenXDM</phrase>.
+        The difference arises from the wide variety of valid processors. While some
+        processors might be defined to have a method with the signature: 
+        <literal id="cdphN1C003C">N process(N, Model&lt;N&gt;)</literal>, for others this is
+        entirely inappropriate. Even for processors that might reasonably process a
+        node, their function is more clearly expressed if they "transform" or "extract"
+        or "enhance", or otherwise mark their processing by its specific name, not the
+        more general one. 
+        </para>
+        <section id="concept_EB038B3705124EACBE52D26A151D2A26">
+            <title id="ttlN1D000D">State</title>
+            <para id="paraN1D0018"><phrase id="phrsN1D001C">GenXDM</phrase>
+            processors may be divided into two classes: stateful and stateless. Here, 
+            <emphasis role="italic" id="iN1D0022">state</emphasis> refers to the processor's need to maintain state in the form
+            of any of the parameters specialized by a particular bridge implementation
+            (node and atom), disregarding maintenance of state unrelated to 
+            <phrase id="phrsN1D0028">GenXDM</phrase>
+            parameters. 
+            </para>
+            <sidebar id="section_344850AB66C1406D8757D7879E712FFB">
+                <title id="ttlN1D0035">Stateful</title>
+                <para id="paraN1D003B">A stateful processor is ideally written generically, but certain of
+                its component classes will themselves be parameterized with one or both of the
+                node and atom handles. Consequently, a instance of a processor is tied to a
+                particular bridge implementation at installation. For example, generic
+                processor taking only the node as a parameter would have to be specialized as 
+                <literal id="cdphN1D0040">GenericProcessor&lt;Node&gt;</literal> for use with the DOM
+                bridge. The same class would be separately instantiated for use with the Cx
+                bridge as 
+                <literal id="cdphN1D0046">GenericProcessor&lt;XmlNode&gt;</literal>. Stateful processors
+                typically contain one or more member fields whose type is specified as a
+                parameter (or which is a parameterized class, such as an instance of 
+                <literal id="cdphN1D004C">Cursor&lt;N&gt;</literal> or 
+                <literal id="cdphN1D0052">Bookmark&lt;N&gt;</literal>).
+                </para>
+                <para id="paraN1D0059">For example, an input-output module is included in the 
+                <phrase id="phrsN1D005E">GenXDM</phrase>
+                source tree. This module includes a stateful processor implementing 
+                <literal id="cdphN1D0064">DocumentHandler&lt;N&gt;</literal>. This 
+                <literal id="cdphN1D006A">DocumentHandler</literal> contains a member field which is a 
+                <literal id="cdphN1D0070">FragmentBuilder&lt;N&gt;</literal> supplied by the bridge's 
+                <literal id="cdphN1D0076">ProcessingContext</literal>. This is a good example of the
+                stateful style: at instantiation, each 
+                <literal id="cdphN1D007C">DefaultDocumentHandler&lt;N&gt;</literal> is specialized for the
+                bridge's definition of &lt;N&gt;, associating this handler instance with a
+                particular bridge. More precisely, the handler is associated with a single
+                instance of the bridge's implementation of 
+                <literal id="cdphN1D0082">ProcessingContext</literal>. This processor's "process" methods
+                are defined by the 
+                <literal id="cdphN1D0088">DocumentHandler</literal> interface, found in the core 
+                <phrase id="phrsN1D008E">GenXDM</phrase>
+                API.
+                </para>
+            </sidebar>
+            <sidebar id="section_E8EFC90680164240A8079CD92291F6AE">
+                <title id="ttlN1D009C">Stateless</title>
+                <para id="paraN1D00A2">The stateless processor is an alternate implementation style. If no
+                class in the processor needs to retain state typed as or with a 
+                <phrase id="phrsN1D00A7">GenXDM</phrase>
+                parameter, then the processor may be used by declaring the necessary parameters
+                on a method, and supplying the necessary disambiguation as arguments to the
+                method. For instance, a stateless processor might expose the method:
+                </para>
+                <para id="paraN1D00AE">
+                    <programlisting id="cdblkN1D00B3">&lt;N&gt; N nearestAncestor(Iterable&lt;N&gt; context, Model&lt;N&gt; model)</programlisting>
+                </para>
+                <para id="paraN1D00BB">The arguments to the method are both parameterized: the context
+                provides a collection of nodes; the model provides the tool to interrogate each
+                of the nodes in the supplied context. This example finds the nearest common
+                ancestor of all the nodes supplied in the list, or null if no such common
+                ancestor exists.
+                </para>
+                <para id="paraN1D00C1">An extremely simple example of a stateless processor may be found in
+                the convert module, in the 
+                <phrase id="phrsN1D00C6">GenXDM</phrase>
+                source tree.<literal id="cdphN1D00CC">StaticConverter</literal> has a single, static method, with
+                the signature:
+                </para>
+                <para id="paraN1D00D3">
+                    <programlisting id="cdblkN1D00D8">&lt;Nsrc, Ntrg&gt; Ntrg convert(Cursor&lt;Nsrc&gt; cursor, FragmentBuilder&lt;Ntrg&gt; builder)</programlisting>
+                </para>
+                <para id="paraN1D00E0">This stateless processor transforms a copy from one tree model
+                representation to another using the supplied Cursor and 
+                <literal id="cdphN1D00E5">FragmentBuilder</literal>, from one or two different bridges. If
+                the 
+                <literal id="cdphN1D00EB">Cursor</literal> and 
+                <literal id="cdphN1D00F1">FragmentBuilder</literal> are supplied by the same bridge, this
+                is simply a copy
+                </para>
+                <para id="paraN1D00F8">A more complex example may be found in the same module: 
+                <literal id="cdphN1D00FD">Converter</literal> mixes the stateful and stateless styles. It
+                is instantiated with a (source) processing context; it is then able, on
+                request, to convert to any supplied target processing context—retaining type
+                information where possible. Note that if both source and target bridges
+                advertise themselves as schema-aware, it uses 
+                <literal id="cdphN1D0103">SequenceBuilder</literal> and the atom-aware 
+                <literal id="cdphN1D0109">stream()</literal> method in 
+                <literal id="cdphN1D010F">TypedModel</literal> rather than the untyped 
+                <literal id="cdphN1D0115">FragmentBuilder</literal> and 
+                <literal id="cdphN1D011B">Model</literal>. 
+                </para>
+            </sidebar>
+        </section>
+    </section>
+
+    <section id="concept_bridges">
+        <title id="ttlN1F000D">Bridges</title>
+        <para id="p_24E5066FD80247B2A464EFAEF09CF37E">A bridge, as an implementation
+        of the <phrase id="phrsN1F001E">GenXDM</phrase>
+        handles, connects the <phrase id="phrsN1F0024">GenXDM</phrase>
+        API to the underlying Data Model. The bridge provides the abstraction over
+        which applications and processors operate, including the model, input/output,
+        and a context that associates related tree-specific functions. 
+        </para>
+        <para id="paraN1F002B">Bridges are provided for: 
+        </para>
+        <itemizedlist id="ul_528F485868F34091AFC16A5297F246D0">
+            <listitem id="li_4CE378B0075A42CEBD3851DB82917DE6">
+                <para>
+                    <emphasis role="bold" id="bN1F003D">Document Object Model (DOM)</emphasis>
+                </para>
+            </listitem>
+            <listitem id="li_CED3C62BC0934C7DBBAFB3B0FD819E55">
+                <para>
+                    <emphasis role="bold" id="bN1F0049">Axis Object Model (AxiOM)</emphasis>
+                </para>
+            </listitem>
+            <listitem id="li_B342085AC75F47C1A8CFB7B2F7284214">
+                <para><emphasis role="bold" id="bN1F0055">Cx</emphasis> This simple
+                reference model can be used to develop additional custom bridges. 
+                </para>
+            </listitem>
+        </itemizedlist>
+        <para id="paraN1F005D">These bridges, included in the 
+        <phrase id="phrsN1F0062">GenXDM</phrase>
+        source tree, provide examples of finished bridges. The development process is
+        easily described. Note, however, that most tree models present unique
+        challenges when adapted to the XQuery Data Model. Development time may be
+        primarily consumed in handling these impedance mismatches. 
+        </para>
+        <section id="task_bridges">
+            <title id="ttlN20000D">Building Bridges</title>
+            <para id="paraN20001E">Before creating a new bridge, review the existing bridges,
+            particularly the Cx bridge. The Cx reference bridge was created specifically to
+            provide an example for bridge developers.
+            </para>
+            <para id="paraN200024">To create a new base bridge (untyped, immutable) for an as-yet
+            unsupported tree model: 
+            </para>
+            <orderedlist id="steps_bridges">
+                <listitem id="step_bridges-context">
+                    <para><phrase id="phrsN200037">Implement 
+                    <literal id="cdphN20003C">ProcessingContext</literal> and Model. Decide what the node
+                    abstraction must be. 
+                    </phrase>
+                    </para>
+                    <para>For instance: the DOM defines &lt;N&gt; as 
+                    <literal id="cdphN200048">Node</literal>. AxiOM defines it as 
+                    <literal id="cdphN20004E">Object</literal> (AxiOM does not have a single base interface
+                    that marks all node types). The Cx reference model bridge uses 
+                    <literal id="cdphN200054">XmlNode</literal>. 
+                    </para>
+                </listitem>
+                <listitem id="step_52FF356EE0B645129AA14C02D4080559">
+                    <para><phrase id="phrsN200062">Use the bridgekit module to get a simple, generic implementation
+                    of <literal id="cdphN200067">Cursor</literal> (over the custom 
+                    <literal id="cdphN20006D">Model</literal>). 
+                    </phrase>
+                    </para>
+                    <para>The bridgekit module is a collection of utilities intended to
+                    help bridge developers. It includes, for instance, an implementation of the XML
+                    Schema model (<literal id="cdphN200079">SmSchema</literal>) and the 
+                    <literal id="cdphN20007F">XmlAtom</literal> typed-value implementation, as well as the 
+                    <literal id="cdphN200085">CursorOnModel</literal> helper. 
+                    </para>
+                </listitem>
+                <listitem id="step_DC32DD137D7D486BA7020075CEB3039D">
+                    <para><phrase id="phrsN200093">Implement <literal id="cdphN200098">FragmentBuilder.</literal></phrase>
+                    </para>
+                    <para>The 
+                    <literal id="cdphN2000A4">FragmentBuilder</literal> interface has five methods for
+                    creating Text, Attribute, Namespace, Comment, and Processing Instruction node
+                    types, and an additional two each (start and end) for the container node types,
+                    Element and Document. 
+                    </para>
+                </listitem>
+                <listitem id="step_28BDAA65D7E44ACAA19550D475A808AD">
+                    <para><phrase id="phrsN2000B2">Use the generic implementation of 
+                    <literal id="cdphN2000B7">DocumentHandler</literal> from the 
+                    <literal id="cdphN2000BD">input-output</literal> processor.</phrase>
+                    </para>
+                    <para>The generic 
+                    <literal id="cdphN2000C9">DocumentHandler</literal> in the 
+                    <literal id="cdphN2000CF">input-output</literal> module is not terribly mature or
+                    robust, but can do the job for an initial implementation. 
+                    </para>
+                </listitem>
+                <listitem id="step_2B3C5CFC2B004520B0C1FE954576DB42">
+                    <para><phrase id="phrsN2000DD">If desired, implement mutability or schema awareness.</phrase>
+                    </para>
+                    <para>See 
+                    <ulink type="task" url="t_Mutability.xml#task_mutabilty" id="linkN2000E8">Adding Mutability</ulink> and 
+                    <ulink type="task" url="t_Adding_Schema_Awareness.xml#task_schema-awareness" id="linkN2000F2">Adding Schema Awareness</ulink> for details. 
+                    </para>
+                </listitem>
+                <listitem id="step_4E067E3306954B588E6EE175ED285B8E">
+                    <para><phrase id="phrsN200104">Use the bridgetest module to verify equivalence with existing
+                    bridges.</phrase>
+                    </para>
+                    <para>The bridgetest module is designed to make implementation easy;
+                    enabling each test requires only that the bridge implement the single abstract
+                    method, which returns the bridge's implementation of 
+                    <literal id="cdphN20010F">ProcessingContext</literal> (from which all other abstractions
+                    can be reached). Adding a test implementation is thus mostly a mechanical task.
+                    </para>
+                </listitem>
+            </orderedlist>
+            <section id="task_mutability">
+                <title id="ttlN21000D">Adding Mutability</title>
+                <note id="noteN21001E">
+                    <para>The <phrase id="phrsN210023">GenXDM</phrase>
+                    approach to mutability is more restricted than most current tree APIs. For
+                    example, the <phrase id="phrsN210029">GenXDM</phrase>
+                    mutable API does not support changing the value of a text or attribute node.
+                    Leaf nodes remain immutable; container nodes (document and element) are mutable
+                    in content (contained nodes) only. 
+                    </para>
+                </note>
+                <para id="paraN210030">To add support for mutability: 
+                </para>
+                <orderedlist id="steps_mutability">
+                    <listitem id="step_mutability-context">
+                        <para><phrase id="phrsN210043">Implement 
+                         <literal id="cdphN210048">MutableContext</literal> and return it from 
+                         <literal id="cdphN21004E">ProcessingContext</literal> instead of null. 
+                        </phrase>
+                        </para>
+                        <para><literal id="cdphN210059">MutableContext</literal> provides access to the 
+                        <literal id="cdphN21005F">NodeFactory</literal>, 
+                        <literal id="cdphN210065">MutableModel</literal>, and 
+                        <literal id="cdphN21006B">MutableCursor</literal> implementations. 
+                        </para>
+                    </listitem>
+                    <listitem id="step_630E04D885A144059E5E3E4673ACCE05">
+                        <para><phrase id="phrsN210079">Implement 
+                        <literal id="cdphN21007E">MutableModel</literal> as an extension of the base 
+                        <literal id="cdphN210084">Model</literal> from the bridge created previously. 
+                        </phrase>
+                        </para>
+                        <para><literal id="cdphN21008F">MutableModel</literal> adds methods to set attributes and
+                        namespaces, to add, remove, and replace children. 
+                        </para>
+                    </listitem>
+                    <listitem id="step_6323B8DC613D4755B320D159AC600235">
+                        <para><phrase id="phrsN21009D">Use the bridgekit module to base the bridge's 
+                        <literal id="cdphN2100A2">MutableCursor</literal> on its 
+                        <literal id="cdphN2100A8">MutableModel</literal>. 
+                        </phrase>
+                        </para>
+                        <para>The bridgekit implementations are reasonable starting points,
+                        though optimization is likely to require a custom implementation. 
+                        </para>
+                    </listitem>
+                    <listitem id="step_8A8D27CB01504B32B995E23F3BC66700">
+                        <para><phrase id="phrsN2100BC">Implement 
+                        <literal id="cdphN2100C1">NodeFactory</literal>. 
+                        </phrase>
+                        </para>
+                        <para><literal id="cdphN2100CC">NodeFactory</literal> contains methods to create each node
+                        type, where 
+                        <literal id="cdphN2100D2">MutableModel</literal> establishes the relationships between
+                        nodes. 
+                        </para>
+                    </listitem>
+                    <listitem id="step_82014EB1D71B4E62ABDDF06D37E31C6C">
+                        <para><phrase id="phrsN2100E0">Add tests from the bridgetest module.</phrase>
+                        </para>
+                    </listitem>
+                </orderedlist>
+            </section>
+            <section id="task_schema-awareness">
+                <title id="ttlN22000D">Adding Schema Awareness</title>
+                <para id="paraN22001E">To add support for schema-awareness: 
+                </para>
+                <orderedlist id="steps_schema-awareness">
+                    <listitem id="step_typed-context">
+                        <para><phrase id="phrsN220031">Implement 
+                        <literal id="cdphN220036">TypedContext</literal> and return it from 
+                        <literal id="cdphN22003C">ProcessingContext</literal> instead of null; note that
+                        TypedContext is-a SmSchema. Decide what the &lt;A&gt; (atom) abstraction must
+                        be. 
+                        </phrase>
+                        </para>
+                        <para>Current implementations all define &lt;A&gt; as 
+                        <literal id="cdphN220048">XmlAtom</literal>. This is not required. 
+                        </para>
+                    </listitem>
+                    <listitem id="step_B93CC94997F645B3934D6ED686700E1A">
+                        <para><phrase id="phrsN220056">Implement 
+                        <literal id="cdphN22005B">TypedModel</literal> as an extension of the base 
+                        <literal id="cdphN220061">Model</literal> from the bridge created previously.
+                        </phrase>
+                        </para>
+                        <para>The 
+                        <literal id="cdphN22006D">TypedModel</literal> interface adds only five methods to 
+                        <literal id="cdphN220073">Model</literal>, all related to the introduction of type names
+                        and typed values. Ensuring that the type annotations and typed values are
+                        associated with the nodes in the tree is one of the most challenging tasks in
+                        implementation. 
+                        </para>
+                    </listitem>
+                    <listitem id="step_E9FC5D45881E4E0E80643E79683BE44E">
+                        <para><phrase id="phrsN220081">Use the bridgekit module to base the bridge's 
+                        <literal id="cdphN220086">TypedCursor</literal> on its 
+                        <literal id="cdphN22008C">TypedModel</literal>. 
+                        </phrase>
+                        </para>
+                        <para><literal id="cdphN220097">CursorOnTypedModel</literal> extends 
+                        <literal id="cdphN22009D">CursorOnModel</literal> as expected. 
+                        </para>
+                    </listitem>
+                    <listitem id="step_F96C72623F4244C096A839941CFAF044">
+                        <para><phrase id="phrsN2200AB">Implement or reuse from the bridgekit module an 
+                        <literal id="cdphN2200B0">AtomBridge</literal> (typed value support).</phrase>
+                        </para>
+                        <para>If the chosen &lt;A&gt;tom is 
+                        <literal id="cdphN2200BC">XmlAtom</literal>, the 
+                        <literal id="cdphN2200C2">XmlAtomBridge</literal> already exists. 
+                        </para>
+                    </listitem>
+                    <listitem id="step_E8CD9C37D6CF47D09F27ABF6F4EB7B67">
+                        <para><phrase id="phrsN2200D0">Implement or reuse from the bridgekit module a 
+                        <literal id="cdphN2200D5">MetaBridge</literal> (type support).</phrase>
+                        </para>
+                        <para>Again, if the &lt;A&gt;tom is 
+                        <literal id="cdphN2200E1">XmlAtom</literal>, a 
+                        <literal id="cdphN2200E7">MetaBridge</literal> exists in the bridgekit. 
+                        </para>
+                    </listitem>
+                    <listitem id="step_83FAEE855F7849189005A0694A3215C0">
+                        <para><phrase id="phrsN2200F5">Implement 
+                        <literal id="cdphN2200FA">SequenceBuilder</literal> as an extension of the 
+                        <literal id="cdphN220100">FragmentBuilder</literal> from above.</phrase>
+                        </para>
+                        <para><literal id="cdphN22010B">SequenceBuilder</literal> adds overrides for the 
+                        <literal id="cdphN220111">attribute()</literal>, 
+                        <literal id="cdphN220117">startElement()</literal>, and 
+                        <literal id="cdphN22011D">text()</literal> methods (adding type names and typed values),
+                        plus methods to create an atom and to start and end a sequence. 
+                        </para>
+                    </listitem>
+                    <listitem id="step_1A1AB39534444D7EBA6D3F6030C874EC">
+                        <para><phrase id="phrsN22012B">Add the typed tests from the bridgetest module.</phrase>
+                        </para>
+                        <para>As with the standard tests, these are easy to implement,
+                        following the same pattern. 
+                        </para>
+                    </listitem>
+                </orderedlist>
+            </section>
+        </section>
+    </section>
+
+    <section id="concept_model">
+        <title id="ttlN25000D">Model</title>
+        <para id="paraN250018">The core of the <phrase id="phrsN25001D">GenXDM</phrase>
+        paradigm is an abstraction called 
+        <literal id="cdphN250023">Model</literal>. Because this is an example of the Handle/Body
+        design pattern (and is stateless), only one instance of 
+        <literal id="cdphN250029">Model</literal> is needed for navigation and investigation for any
+        and all instances of the XML tree model for which the particular 
+        <literal id="cdphN25002F">Model</literal> is specialized. 
+        </para>
+        <para id="paraN250036"><literal id="cdphN25003A">Model</literal> is composed from three interfaces, reflecting
+        three different forms of information that might be obtained from an XQuery Data
+        Model:
+        </para>
+        <itemizedlist id="ul_690BEFD36B78404ABAC0FD26F25285A0">
+            <listitem id="li_7AE071EDA14C46BABED003179A7E4D29">
+                <para><literal id="cdphN25004D">NodeInformer</literal> reports information about the
+                content/state of a particular node in context.
+                </para>
+            </listitem>
+            <listitem id="li_BEDE1A0D94FC44529445361609802363">
+                <para><literal id="cdphN250059">NodeNavigator</literal> permits
+                one to obtain a different node given a particular starting node.
+                </para>
+            </listitem>
+            <listitem id="li_7D980DC5532944D3BED28F359CC688F7">
+                <para><literal id="cdphN250065">AxisNavigator</literal>
+                supplies iteration over the standard XPath/XQuery axes, starting from a
+                particular origin node.
+                </para>
+            </listitem>
+        </itemizedlist>
+        <para id="paraN25006D">
+<programlisting id="cdblkN250072">public interface Model&lt;N&gt;
+    extends Comparator&lt;N&gt;, NodeInformer&lt;N&gt;, NodeNavigator&lt;N&gt;, AxisNavigator&lt;N&gt; {
+    void stream(N node, boolean copyNamespaces, ContentHandler handler) throws GxmlException;
+}
+
+public interface NodeInformer&lt;N&gt; {
+    Iterable&lt;QName&gt; getAttributeNames(N node, boolean orderCanonical);
+
+    String getAttributeStringValue(N parent, String namespaceURI, String localName);
+
+    URI getBaseURI(N node);
+
+    URI getDocumentURI(N node);
+
+    String getLocalName(N node);
+
+    Iterable&lt;NamespaceBinding&gt; getNamespaceBindings(N node);
+
+    String getNamespaceForPrefix(N node, String prefix);
+    
+    Iterable&lt;String&gt; getNamespaceNames(N node, boolean orderCanonical);
+
+    String getNamespaceURI(N node);
+
+    Object getNodeId(N node);
+
+    NodeKind getNodeKind(N node);
+
+    String getPrefix(N node);
+
+    String getStringValue(N node);
+
+    boolean hasAttributes(N node);
+
+    boolean hasChildren(N node);
+
+    boolean hasNamespaces(N node);
+
+    boolean hasNextSibling(N node);
+
+    boolean hasParent(N node);
+
+    boolean hasPreviousSibling(N node);
+
+    boolean isAttribute(N node);
+
+    boolean isElement(N node);
+
+    boolean isId(N node);
+
+    boolean isIdRefs(N node);
+
+    boolean isNamespace(N node);
+
+    boolean isText(N node);
+
+    boolean matches(N node, NodeKind nodeKind, String namespaceURI, String localName);
+
+    boolean matches(N node, String namespaceURI, String localName);
+}
+
+public interface NodeNavigator&lt;N&gt; {
+    N getAttribute(N node, String namespaceURI, String localName);
+
+    N getElementById(N context, String id);
+
+    N getFirstChild(N origin);
+
+    N getFirstChildElement(N node);
+
+    N getFirstChildElementByName(N node, String namespaceURI, String localName);
+
+    N getLastChild(N node);
+
+    N getNextSibling(N node);
+
+    N getNextSiblingElement(N node);
+
+    N getNextSiblingElementByName(N node, String namespaceURI, String localName);
+
+    N getParent(N origin);
+
+    N getPreviousSibling(N node);
+
+    N getRoot(N node);
+}
+
+public interface AxisNavigator&lt;N&gt; {
+    Iterable&lt;N&gt; getAncestorAxis(N node);
+
+    Iterable&lt;N&gt; getAncestorOrSelfAxis(N node);
+
+    Iterable&lt;N&gt; getAttributeAxis(N node, boolean inherit);
+
+    Iterable&lt;N&gt; getChildAxis(N node);
+
+    Iterable&lt;N&gt; getChildElements(N node);
+
+    Iterable&lt;N&gt; getChildElementsByName(N node, String namespaceURI, String localName);
+
+    Iterable&lt;N&gt; getDescendantAxis(N node);
+
+    Iterable&lt;N&gt; getDescendantOrSelfAxis(N node);
+
+    Iterable&lt;N&gt; getFollowingAxis(N node);
+
+    Iterable&lt;N&gt; getFollowingSiblingAxis(N node);
+
+    Iterable&lt;N&gt; getNamespaceAxis(N node, boolean inherit);
+
+    Iterable&lt;N&gt; getPrecedingAxis(N node);
+
+    Iterable&lt;N&gt; getPrecedingSiblingAxis(N node);
+}
+</programlisting>
+        </para>
+    </section>
+</article>
