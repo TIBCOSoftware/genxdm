@@ -7,6 +7,9 @@
    * (In process) Introduction to the API
    * [GenXdmReleases Release Information]
  * [GenXdmProposal GenXDM Overview (from Apache Proposal)]
+ * Contributors
+  * [Prerequisites Prerequisite Software]
+  * [OSGi OSGi Resources and Best Practices]
  * Administrative
    * [ReleaseProcess The Release Process]
    * [Governance]

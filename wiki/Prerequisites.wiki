@@ -1,0 +1,16 @@
+#summary How to get started as a contributor
+#sidebar TableOfContents
+
+= Command Line =
+
+(information on how to build with maven goes here)
+
+Short version: Maven 2, JDK 1.6, and everything should Just Work.
+
+= Eclipse =
+
+Short version: Eclipse 3.7, Maven2Eclipse, Subversive, BndTools.
+
+== Configuring BndTools ==
+
+(explain the creation/move of cnf, mostly)
