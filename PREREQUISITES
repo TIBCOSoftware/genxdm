@@ -1,12 +1,20 @@
 You must install Maven 2.
 
-You must have at least 1.5 JDK.
+You must have at least J2SE 1.6.
 
 You should be familiar with Maven's "goals" and usage.  As this is a
 multi-module project, "mvn compile" will not work.  "mvn install" is the
 "standard" command for builds.  If tests have broken, try
 "mvn install -Dmaven.test.skip=true".
 
-For Eclipse integration, you must install Maven2Eclipse:
-    http://m2eclipse.sonatype.org/update/
+For the IDE, if you're using Eclipse, Eclipse 3.7 minimum is required. Install
+Maven2Eclipse (m2e) from the Eclipse repository. Also install Bndtools;
+instructions for doing so are here: http://bndtools.org/installation.html .
+You want subversive as well, in all likelihood (the Eclipse subversion
+plugin found in the Eclipse repository).
 
+Bndtools must be configured before you can import the maven projects. See
+the section "Contributors" in the Wiki for details.
+
+If you are using something that isn't Eclipse, dunno. If you work it out,
+share what you've done on the mailing list.

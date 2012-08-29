@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <project>
+    <version position="right" />
     <body>
         <menu ref="parent" />
-        <menu ref="modules" />
         <menu ref="reports" />
     </body>
 </project>

@@ -1,0 +1,2 @@
+Bundle-Version: 0.10.0
+Export-Package: org.genxdm.processor.convert;version=0.10.0

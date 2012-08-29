@@ -1,0 +1,3 @@
+Bundle-Version: 0.3.0
+Export-Package: org.genxdm.processor.w3c.xs.validationtest;version=0.3.0,\
+	org.genxdm.processor.w3c.xs.validationtest.xsts;version=0.3.0

@@ -1,0 +1,3 @@
+Export-Package: org.genxdm.bridge.axiom;version=0.10.0,\
+	org.genxdm.bridge.axiom.enhanced;version=0.10.0
+Bundle-Version: 0.10.0
