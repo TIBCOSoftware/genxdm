@@ -20,3 +20,4 @@ Export-Package: org.genxdm;version=0.14.0,\
 	org.genxdm.xs.facets;version=0.14.0,\
 	org.genxdm.xs.resolve;version=0.14.0,\
 	org.genxdm.xs.types;version=0.14.0
+-runee: JavaSE-1.6

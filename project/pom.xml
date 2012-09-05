@@ -216,6 +216,11 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <instructions>
+                        <Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
+                    </instructions>
+                </configuration>
             </plugin>
         </plugins>
         <extensions>
