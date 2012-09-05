@@ -8,3 +8,4 @@ Export-Package: org.genxdm.bridgetest;version=0.7.0,\
 	org.genxdm.bridgetest.typed.types;version=0.7.0
 Bundle-Version: 0.7.0
 Private-Package: org.genxdm.bridgetest.utilities
+-runee: JavaSE-1.6
