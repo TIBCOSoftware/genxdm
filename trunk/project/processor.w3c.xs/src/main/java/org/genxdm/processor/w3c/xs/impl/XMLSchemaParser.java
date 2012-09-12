@@ -5577,6 +5577,10 @@ final class XMLSchemaParser extends XMLRepresentation
             throw new AssertionError("catalog required for include, import or redefine.");
         }
         final URI catalogURI = m_catalog.resolveNamespaceAndSchemaLocation(parent.getSystemId(), namespace, schemaLocation);
+
+        // If the catalogURI is null, we will not parse (obviously), and we will not raise an error.
+        // If the missing schema is a problem, that problem will be evident during component resolution,
+        // where an error will be raised.
         if (catalogURI != null)
         {
             try
@@ -5616,10 +5620,6 @@ final class XMLSchemaParser extends XMLRepresentation
             {
                 // Do nothing. It's not an error.
             }
-        }
-        else
-        {
-            m_errors.error(new SmNoSchemaForNamespaceException(schemaLocation, new SrcFrozenLocation(location)));
         }
     }
 
