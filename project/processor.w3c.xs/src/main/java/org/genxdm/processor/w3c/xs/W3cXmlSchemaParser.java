@@ -37,6 +37,8 @@ public final class W3cXmlSchemaParser
 {
     public W3cXmlSchemaParser()
     {
+        this.catalog =  new DefaultSchemaCatalog(new DefaultCatalog());
+        this.resolver = DefaultCatalogResolver.SINGLETON;
         this.regexc = DEFAULT_REGEX_COMPILER;
     }
     
