@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.genxdm.xs.facets.RegExPattern;
 
-import org.genxdm.processor.w3c.xs.regex.impl.string.StringRegExPattern;
-import org.genxdm.processor.w3c.xs.regex.impl.string.StringRegExPatternTerm;
+import org.genxdm.processor.w3c.xs.regex.string.StringRegExPattern;
+import org.genxdm.processor.w3c.xs.regex.string.StringRegExPatternTerm;
 
 final class RegExPatternXSDL
     implements RegExPattern

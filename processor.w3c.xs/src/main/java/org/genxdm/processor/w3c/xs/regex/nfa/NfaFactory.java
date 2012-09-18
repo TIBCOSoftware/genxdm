@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2009-2010 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,25 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.regex.impl.nfa;
+package org.genxdm.processor.w3c.xs.regex.nfa;
 
-/**
- * MatchState is the implementation of a state in the
- * state machine.  The state machine is nothing but a collection
- * of states, and is completely defined by the initial state.
- * <p/>
- * Each state contains a list of possible next states and a
- * term that must be matched to exit the state.
- */
-class NfaMatchState<E> extends Vertex<E, NfaMatchState<E>>
+import org.genxdm.exceptions.PreCondition;
+import org.genxdm.processor.w3c.xs.regex.api.RegExBridge;
+import org.genxdm.processor.w3c.xs.regex.api.RegExFactory;
+import org.genxdm.processor.w3c.xs.regex.api.RegExPattern;
+
+public class NfaFactory<E, T> implements RegExFactory<E, T>
 {
-    NfaMatchState(final E term)
-    {
-        super(term);
-    }
+	public RegExPattern<E, T> newPattern(final E term, RegExBridge<E, T> bridge)
+	{
+		PreCondition.assertArgumentNotNull(term, "term");
+		PreCondition.assertArgumentNotNull(bridge, "bridge");
 
-    boolean isAll()
-    {
-        return false;
-    }
+		return NfaPattern.newPattern(term, bridge);
+	}
 }
