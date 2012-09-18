@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.regex.impl.string;
+package org.genxdm.processor.w3c.xs.regex.string;
 
 import java.util.List;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.regex.api.RegExFactory;
 import org.genxdm.processor.w3c.xs.regex.api.RegExPattern;
-import org.genxdm.processor.w3c.xs.regex.impl.nfa.NfaFactory;
+import org.genxdm.processor.w3c.xs.regex.nfa.NfaFactory;
 
 
 public final class StringRegExPattern
