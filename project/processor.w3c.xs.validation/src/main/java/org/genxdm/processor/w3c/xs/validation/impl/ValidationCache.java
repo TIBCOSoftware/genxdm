@@ -26,7 +26,7 @@ import org.genxdm.processor.w3c.xs.regex.api.RegExBridge;
 import org.genxdm.processor.w3c.xs.regex.api.RegExFactory;
 import org.genxdm.processor.w3c.xs.regex.api.RegExMachine;
 import org.genxdm.processor.w3c.xs.regex.api.RegExPattern;
-import org.genxdm.processor.w3c.xs.regex.impl.nfa.NfaFactory;
+import org.genxdm.processor.w3c.xs.regex.nfa.NfaFactory;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.ParticleTerm;
 import org.genxdm.xs.components.SchemaParticle;

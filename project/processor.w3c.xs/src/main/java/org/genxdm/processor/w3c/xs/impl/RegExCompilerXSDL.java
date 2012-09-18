@@ -4,8 +4,8 @@ import org.genxdm.xs.exceptions.SchemaRegExCompileException;
 import org.genxdm.xs.facets.RegExPattern;
 import org.genxdm.xs.facets.SchemaRegExCompiler;
 
-import org.genxdm.processor.w3c.xs.regex.impl.string.StringRegExException;
-import org.genxdm.processor.w3c.xs.regex.impl.string.StringRegExPattern;
+import org.genxdm.processor.w3c.xs.regex.string.StringRegExException;
+import org.genxdm.processor.w3c.xs.regex.string.StringRegExPattern;
 
 public final class RegExCompilerXSDL implements SchemaRegExCompiler
 {

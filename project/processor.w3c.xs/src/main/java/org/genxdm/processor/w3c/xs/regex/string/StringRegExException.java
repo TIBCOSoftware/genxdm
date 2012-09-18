@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.regex.impl.string;
+package org.genxdm.processor.w3c.xs.regex.string;
 
 import org.genxdm.exceptions.PreCondition;
 

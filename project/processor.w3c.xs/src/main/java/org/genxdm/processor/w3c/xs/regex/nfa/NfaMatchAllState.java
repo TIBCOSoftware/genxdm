@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.regex.impl.nfa;
+package org.genxdm.processor.w3c.xs.regex.nfa;
 
 
 import java.util.ArrayList;
