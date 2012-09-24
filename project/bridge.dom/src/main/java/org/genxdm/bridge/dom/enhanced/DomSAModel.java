@@ -142,56 +142,6 @@ class DomSAModel
         return null;
     }
 
-//  public List<XmlAtom> getValue(final Node node)
-//  {
-//      switch (getNodeKind(node))
-//      {
-//          case ATTRIBUTE:
-//          case ELEMENT:
-//          {
-//              final AtomBridge<XmlAtom> atomBridge = m_metaBridge.getAtomBridge();
-//              final QName typeName = DomSupport.getAnnotationType(node, m_metaBridge);
-//              final Type<XmlAtom> type = pcx.getTypeDefinition(typeName);
-//              if (type instanceof SimpleType<?>)
-//              {
-//                  final SimpleType<XmlAtom> simpleType = (SimpleType<XmlAtom>)type;
-//                  final String stringValue = getStringValue(node);
-//                  try
-//                  {
-//                      return simpleType.validate(stringValue);
-//                  }
-//                  catch (final DatatypeException e)
-//                  {
-//                      throw new GxmlException(e);
-//                  }
-//              }
-//              else
-//              {
-//                  final String stringValue = getStringValue(node);
-//                  return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
-//              }
-//          }
-//          case DOCUMENT:
-//          case TEXT:
-//          {
-//              final AtomBridge<XmlAtom> atomBridge = m_metaBridge.getAtomBridge();
-//              final String stringValue = getStringValue(node);
-//              return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
-//          }
-//          case NAMESPACE:
-//          case COMMENT:
-//          case PROCESSING_INSTRUCTION:
-//          {
-//              final AtomBridge<XmlAtom> atomBridge = m_metaBridge.getAtomBridge();
-//              return atomBridge.wrapAtom(atomBridge.createString(getStringValue(node)));
-//          }
-//          default:
-//          {
-//              throw new AssertionError(getNodeKind(node));
-//          }
-//      }
-//  }
-
     public final void stream(final Node origin, final SequenceHandler<XmlAtom> handler) throws GenXDMException
     {
         switch (getNodeKind(origin))
@@ -246,7 +196,19 @@ class DomSAModel
             break;
             case TEXT:
             {
-                handler.text(origin.getNodeValue());
+                boolean typed = false;
+                if (hasParent(origin))
+                {
+                    final QName typeName = getTypeName(getParent(origin));
+                    final Type type = provider.getTypeDefinition(typeName);
+                    if (type instanceof SimpleType)
+                    {
+                        handler.text(getValue(getParent(origin)));
+                        typed = true;
+                    }
+                }
+                if (!typed)
+                    handler.text(origin.getNodeValue());
             }
             break;
             case DOCUMENT:
