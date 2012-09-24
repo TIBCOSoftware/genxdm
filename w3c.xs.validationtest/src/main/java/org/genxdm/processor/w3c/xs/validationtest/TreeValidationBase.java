@@ -20,6 +20,7 @@ import org.genxdm.typed.ValidationHandler;
 import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.Schema;
 import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.exceptions.SchemaExceptionCatcher;
 import org.genxdm.xs.exceptions.SchemaExceptionThrower;
 import org.genxdm.xs.resolve.CatalogResolver;
@@ -76,6 +77,8 @@ public abstract class TreeValidationBase<N, A>
 
         N typed = cache.validate(untyped, validator, URI.create(""));
         assertNotNull(typed);
+        for (SchemaException ex : catcher)
+            ex.printStackTrace();
         assertEquals(0, catcher.size());
         
         POVerifier.verifyTyped(typed, cache.getModel());
