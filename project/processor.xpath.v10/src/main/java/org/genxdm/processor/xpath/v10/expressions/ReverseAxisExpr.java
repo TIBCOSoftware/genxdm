@@ -25,9 +25,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.genxdm.Model;
+import org.genxdm.Precursor;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.iterators.ListNodeIterator;
+import org.genxdm.processor.xpath.v10.iterators.ListTraverser;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
 
 /**
@@ -45,14 +49,19 @@ abstract class ReverseAxisExpr
 	{
 		return new ConvertibleNodeSetExprImpl()
 		{
-			public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException
-			{
+            @Override
+			public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
 				return reverse(expr.nodeIterator(model, node, dynEnv), model);
 			}
+
+            @Override
+            public Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return reverse(expr.traverseNodes(contextNode, dynEnv));
+            }
 		};
 	}
 
-	private static <N> NodeIterator<N> reverse(final NodeIterator<N> iter, final Model<N> model) throws ExprException
+	private static <N> NodeIterator<N> reverse(final NodeIterator<N> iter, final Model<N> model)
 	{
 	    List<N> list = new ArrayList<N>(10);
 		for (;;)
@@ -65,4 +74,15 @@ abstract class ReverseAxisExpr
 		Collections.reverse(list);
 		return new ListNodeIterator<N>(list);
 	}
+
+    private static Traverser reverse(final Traverser iter)
+    {
+        List<Precursor> list = new ArrayList<Precursor>();
+        for (;iter.moveToNext();) {
+            Precursor cursor = iter.newPrecursor();
+            list.add(cursor);
+        }
+        Collections.reverse(list);
+        return new ListTraverser(list);
+    }
 }

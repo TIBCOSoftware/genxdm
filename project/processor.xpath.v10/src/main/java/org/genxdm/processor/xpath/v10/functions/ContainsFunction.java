@@ -21,11 +21,12 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleBooleanExpr;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
@@ -45,10 +46,15 @@ public final class ContainsFunction
 
 		return new ConvertibleBooleanExpr()
 		{
-			public <N> boolean booleanFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException
-			{
+            @Override
+			public <N> boolean booleanFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
 				return se1.stringFunction(model, node, dynEnv).indexOf(se2.stringFunction(model, node, dynEnv)) >= 0;
 			}
+
+            @Override
+            public boolean booleanFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return se1.stringFunction(contextNode, dynEnv).indexOf(se2.stringFunction(contextNode, dynEnv)) >= 0;
+            }
 		};
 	}
 }

@@ -20,13 +20,12 @@
  */
 package org.genxdm.processor.xpath.v10.variants;
 
-import org.genxdm.xpath.v10.Converter;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.Variant;
 
-public abstract class VariantBase<N> 
+public abstract class VariantBase<N> extends VariantCoreBase
     implements Variant<N>
 {
 	public Variant<N> makePermanent() throws ExprException
@@ -34,38 +33,14 @@ public abstract class VariantBase<N>
 		return this;
 	}
 
-	public NodeIterator<N> convertToNodeSet() throws ExprException
+	public NodeIterator<N> convertToNodeSet()
 	{
-		throw new ExprException("cannot convert to node-set");
+		throw new RuntimeException("cannot convert to node-set");
 	}
 
-	public double convertToNumber() throws ExprException
-	{
-		return Converter.toNumber(convertToString());
-	}
-
-	public boolean convertToPredicate(final ExprContextDynamic<N> context) throws ExprException
+	public boolean convertToPredicate(final ExprContextDynamic<N> context)
 	{
 		return convertToBoolean();
 	}
 
-	public boolean isBoolean()
-	{
-		return false;
-	}
-
-	public boolean isNumber()
-	{
-		return false;
-	}
-
-	public boolean isString()
-	{
-		return false;
-	}
-
-	public boolean isNodeSet()
-	{
-		return false;
-	}
 }

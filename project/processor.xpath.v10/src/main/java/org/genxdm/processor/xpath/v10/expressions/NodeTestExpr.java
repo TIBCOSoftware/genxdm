@@ -21,9 +21,12 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
+import org.genxdm.nodes.TraversingInformerDelegate;
 import org.genxdm.processor.xpath.v10.patterns.Pattern;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
 
 /**
@@ -42,12 +45,12 @@ final class NodeTestExpr
 		this.nodeTest = nodeTest;
 	}
 
-	public <N> NodeIterator<N> nodeIterator(final Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException
-	{
+	@Override
+	public <N> NodeIterator<N> nodeIterator(final Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
 		final NodeIterator<N> iter = expr.nodeIterator(model, node, dynEnv);
 		return new NodeIterator<N>()
 		{
-			public N next() throws ExprException
+			public N next()
 			{
 				for (;;)
 				{
@@ -66,7 +69,13 @@ final class NodeTestExpr
 		};
 	}
 
-	@Override
+    @Override
+    public Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+        final Traverser iter = expr.traverseNodes(contextNode, dynEnv);
+        return new MatchingTraverser(nodeTest, dynEnv, iter);
+    }
+
+    @Override
 	public int getOptimizeFlags()
 	{
 		return expr.getOptimizeFlags();
@@ -80,4 +89,41 @@ final class NodeTestExpr
 		}
 		return null;
 	}
+
+	private static class MatchingTraverser extends TraversingInformerDelegate implements Traverser {
+
+        private Traverser iter;
+        private final Pattern nodeTest;
+        private TraverserDynamicContext dynEnv;
+        
+        public MatchingTraverser(Pattern nodeTest, TraverserDynamicContext dynEnv, Traverser iter) {
+            super(iter);
+            this.nodeTest = nodeTest;
+            this.iter = iter;
+            this.dynEnv = dynEnv;
+        }
+        
+        @Override
+        public boolean moveToNext() {
+            for (;;)
+            {
+                if (iter.moveToNext()) {
+                    if (nodeTest.matches(iter, dynEnv)) {
+                        return true;
+                    }
+                }
+                else {
+                    setInformer(null);
+                    return false;
+                }
+            }
+        }
+
+        @Override
+        public boolean isFinished() {
+            return getInformer() == null;
+        }
+        
+    }
+
 }

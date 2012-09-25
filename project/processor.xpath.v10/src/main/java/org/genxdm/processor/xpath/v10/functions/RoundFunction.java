@@ -21,11 +21,12 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleNumberExpr;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NumberExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
@@ -40,16 +41,26 @@ public final class RoundFunction
 
 		return new ConvertibleNumberExpr()
 		{
-			public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
-			{
+			public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 				double n = ne.numberFunction(model, contextNode, dynEnv);
-				double r = Math.floor(n + 0.5);
-				if (r == 0.0 && n < 0.0)
-				{
-					return -r; // round(-0.2) returns -0 not 0
-				}
-				return r;
+				return computeRound(n);
 			}
+
+            @Override
+            public double numberFunction(TraversingInformer contextNode,
+                    TraverserDynamicContext dynEnv) {
+                double n = ne.numberFunction(contextNode, dynEnv);
+                return computeRound(n);
+            }
 		};
 	}
+
+    private static double computeRound(double n) {
+        double r = Math.floor(n + 0.5);
+        if (r == 0.0 && n < 0.0)
+        {
+        	return -r; // round(-0.2) returns -0 not 0
+        }
+        return r;
+    }
 }

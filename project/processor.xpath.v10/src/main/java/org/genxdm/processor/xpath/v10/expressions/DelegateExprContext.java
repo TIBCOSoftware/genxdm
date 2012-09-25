@@ -23,7 +23,6 @@ package org.genxdm.processor.xpath.v10.expressions;
 import javax.xml.namespace.QName;
 
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExtensionContext;
 import org.genxdm.xpath.v10.Variant;
 
@@ -39,7 +38,7 @@ import org.genxdm.xpath.v10.Variant;
 public abstract class DelegateExprContext<N> 
     implements ExprContextDynamic<N>
 {
-	protected final ExprContextDynamic<N> origContext;
+    protected final ExprContextDynamic<N> origContext;
 
 	/**
 	 * wrap around an existing ExprContext
@@ -49,13 +48,11 @@ public abstract class DelegateExprContext<N>
 		origContext = context;
 	}
 
-	public ExtensionContext<N> getExtensionContext(final String namespace) throws ExprException
-	{
+	public ExtensionContext getExtensionContext(final String namespace) {
 		return origContext.getExtensionContext(namespace);
 	}
 
-	public Variant<N> getVariableValue(final QName name) throws ExprException
-	{
+	public Variant<N> getVariableValue(final QName name) {
 		return origContext.getVariableValue(name);
 	}
 

@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.genxdm.Model;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
 
 /**
@@ -43,7 +42,7 @@ final public class MergeNodeIterator<N> implements NodeIterator<N>
 	 * @param length
 	 *            the number of slots in the array which really have NodeIterators for us
 	 */
-	public MergeNodeIterator(NodeIterator<N>[] iters, int length, final Model<N> model) throws ExprException
+	public MergeNodeIterator(NodeIterator<N>[] iters, int length, final Model<N> model)
 	{
 		this.length = length;
 		this.iters = iters;
@@ -155,8 +154,7 @@ final public class MergeNodeIterator<N> implements NodeIterator<N>
 	/**
 	 * finds and returns the next node (in document(s) order?)
 	 */
-	public N next() throws ExprException
-	{
+	public N next() {
 		if (length == 0)
 		{
 			return null;

@@ -25,8 +25,10 @@ import java.lang.reflect.Array;
 import javax.xml.namespace.QName;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
+import org.genxdm.xpath.v10.TraverserVariant;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.Variant;
 import org.genxdm.xpath.v10.VariantExpr;
 
@@ -43,7 +45,8 @@ final class ExtensionFunctionCallExpr
 		this.args = args;
 	}
 
-	public <N> Variant<N> evaluateAsVariant(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
+	@Override
+	public <N> Variant<N> evaluateAsVariant(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv)
 	{
 		@SuppressWarnings("unchecked")
 		final Variant<N>[] argValues = (Variant<N>[])Array.newInstance(Variant.class, args.length);
@@ -51,6 +54,17 @@ final class ExtensionFunctionCallExpr
 		{
 			argValues[i] = args[i].evaluateAsVariant(model, contextNode, dynEnv);
 		}
-		return dynEnv.getExtensionContext(name.getNamespaceURI()).call(name.getLocalPart(), contextNode, argValues);
+		return dynEnv.getExtensionContext(name.getNamespaceURI()).call(model, name.getLocalPart(), contextNode, argValues);
 	}
+
+    @Override
+    public TraverserVariant evaluateAsVariant(TraversingInformer contextNode,
+            TraverserDynamicContext dynEnv) {
+        final TraverserVariant[] argValues = (TraverserVariant[])Array.newInstance(TraverserVariant.class, args.length);
+        for (int i = 0; i < args.length; i++)
+        {
+            argValues[i] = args[i].evaluateAsVariant(contextNode, dynEnv);
+        }
+        return dynEnv.getExtensionContext(name.getNamespaceURI()).call(name.getLocalPart(), contextNode, argValues);
+    }
 }

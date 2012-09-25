@@ -23,11 +23,13 @@ package org.genxdm.processor.xpath.v10.functions;
 import javax.xml.XMLConstants;
 
 import org.genxdm.Model;
+import org.genxdm.Precursor;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleBooleanExpr;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
@@ -91,15 +93,36 @@ public final class LangFunction
 		return false;
 	}
 
+    private boolean lang(final TraversingInformer start, final String lang)
+    {
+        Precursor node = start.newPrecursor();
+        
+        while (node != null)
+        {
+            final String nodeLang = node.getAttributeStringValue(XML_NS_URI, LANG);
+            if (nodeLang != null)
+            {
+                return isSubLanguage(lang, nodeLang);
+            }
+            node.moveToParent();
+        }
+        return false;
+    }
+
 	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		final StringExpr se = e.makeStringExpr(statEnv);
 		return new ConvertibleBooleanExpr()
 		{
-			public <N> boolean booleanFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
-			{
+            @Override
+			public <N> boolean booleanFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 				return lang(model, contextNode, se.stringFunction(model, contextNode, dynEnv));
 			}
+
+            @Override
+            public boolean booleanFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return lang(contextNode, se.stringFunction(contextNode, dynEnv));
+            }
 		};
 	}
 }

@@ -16,6 +16,8 @@
 package org.genxdm.xpath.v10;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.Informer;
+import org.genxdm.nodes.Traverser;
 
 public final class Converter
 {
@@ -35,7 +37,12 @@ public final class Converter
         }
     }
 
-    public static <N> double toNumber(final NodeIterator<N> iter, final Model<N> model) throws ExprException
+    public static double toNumber(final Traverser iter)
+    {
+        return toNumber(toStringFromTraverser(iter));
+    }
+
+    public static <N> double toNumber(final NodeIterator<N> iter, final Model<N> model)
     {
         return toNumber(toString(iter, model));
     }
@@ -55,19 +62,35 @@ public final class Converter
         return num != 0.0 && !Double.isNaN(num);
     }
 
-    public static <N> boolean toBoolean(NodeIterator<N> iter) throws ExprException
+    public static boolean toBooleanFromTraverser(Traverser iter)
+    {
+        return iter.moveToNext();
+    }
+
+    public static <N> boolean toBoolean(NodeIterator<N> iter)
     {
         return iter.next() != null;
     }
 
-    public static <N> String toString(final NodeIterator<N> iter, final Model<N> model) throws ExprException
+    public static String toStringFromTraverser(final Traverser iter)
+    {
+        iter.moveToNext();
+        return iter.isFinished() ? "" : toString(iter);
+    }
+
+    public static <N> String toString(final NodeIterator<N> iter, final Model<N> model)
     {
         return toString(iter.next(), model);
     }
 
-    public static <N> String toString(final N node, final Model<N> model) throws ExprException
+    public static <N> String toString(final N node, final Model<N> model)
     {
         return model.getStringValue(node);
+    }
+
+    public static String toString(final Informer node)
+    {
+        return node.getStringValue();
     }
 
     public static String toString(double num)
@@ -121,7 +144,12 @@ public final class Converter
         return b ? "true" : "false";
     }
 
-    public static <N> boolean positionToBoolean(double d, ExprContextDynamic<N> context) throws ExprException
+    public static <N> boolean positionToBoolean(double d, DynamicContextBase context)
+    {
+        return context.getContextPosition() == d;
+    }
+    
+    public static <N> boolean positionToBoolean(double d, TraverserDynamicContext context)
     {
         return context.getContextPosition() == d;
     }

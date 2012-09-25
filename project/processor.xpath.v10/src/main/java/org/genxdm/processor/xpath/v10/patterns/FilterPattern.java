@@ -20,14 +20,21 @@
  */
 package org.genxdm.processor.xpath.v10.patterns;
 
+import javax.xml.namespace.QName;
+
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
+import org.genxdm.Precursor;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.DelegateExprContext;
 import org.genxdm.processor.xpath.v10.iterators.NodeIteratorOnIterator;
 import org.genxdm.xpath.v10.BooleanExpr;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
+import org.genxdm.xpath.v10.ExtensionContext;
 import org.genxdm.xpath.v10.NodeIterator;
+import org.genxdm.xpath.v10.TraverserVariant;
 
 /**
  * a pattern that has a predicate to eliminate some nodes
@@ -48,8 +55,8 @@ final class FilterPattern
 		this.inheritNamespaces = inheritNamespaces;
 	}
 
-	public <N> boolean matches(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException
-	{
+    @Override
+	public <N> boolean matches(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
 		if (!pattern.matches(model, node, dynEnv))
 		{
 			return false;
@@ -57,21 +64,34 @@ final class FilterPattern
 		return predicate.booleanFunction(model, node, new Context<N>(model, node, dynEnv));
 	}
 
-	public int getDefaultPriority()
+    @Override
+    public boolean matches(TraversingInformer node, TraverserDynamicContext dynEnv) {
+        if (!pattern.matches(node, dynEnv))
+        {
+            return false;
+        }
+        return predicate.booleanFunction(node, new CursorContext(node, dynEnv));
+    }
+
+    @Override
+    public int getDefaultPriority()
 	{
 		return 1;
 	}
 
+    @Override
 	public String getMatchNamespaceURI()
 	{
 		return pattern.getMatchNamespaceURI();
 	}
 
+    @Override
 	public String getMatchLocalName()
 	{
 		return pattern.getMatchLocalName();
 	}
 
+    @Override
 	public NodeKind getMatchNodeType()
 	{
 		return pattern.getMatchNodeType();
@@ -96,8 +116,7 @@ final class FilterPattern
 			this.model = model;
 		}
 
-		public int getContextPosition() throws ExprException
-		{
+		public int getContextPosition() {
 			if (position != 0)
 			{
 				return position;
@@ -134,8 +153,7 @@ final class FilterPattern
 			return position;
 		}
 
-		public int getContextSize() throws ExprException
-		{
+		public int getContextSize() {
 			if (lastPosition != 0)
 			{
 				return lastPosition;
@@ -174,4 +192,124 @@ final class FilterPattern
 			return lastPosition;
 		}
 	}
+
+    // ////////////////////////////////////////
+    //  
+    // the context changes a bit from our caller's context to reflect a
+    // different way of tracking position()
+    //
+    class CursorContext implements TraverserDynamicContext
+    {
+        TraversingInformer node;
+        int position = 0;
+        int lastPosition = 0;
+        TraverserDynamicContext origCtx;
+
+        CursorContext(TraversingInformer node, final TraverserDynamicContext context)
+        {
+            origCtx = context;
+            this.node = node;
+        }
+
+        public int getContextPosition()
+        {
+            if (position != 0)
+            {
+                return position;
+            }
+            Traverser iter;
+            NodeKind nodeKind = node.getNodeKind();
+            if (nodeKind == NodeKind.DOCUMENT) {
+                position = 1;
+                return 1;
+            }
+            Precursor parent = node.newPrecursor();
+            parent.moveToParent();
+            switch (nodeKind)
+            {
+                case ATTRIBUTE:
+                    iter = parent.traverseAttributeAxis(inheritAttributes);
+                    break;
+                case NAMESPACE:
+                    iter = parent.traverseNamespaceAxis(inheritNamespaces);
+                    break;
+                default:
+                    iter = parent.traverseChildAxis();
+                    break;
+            }
+            position = 1;
+            while(iter.moveToNext())
+            {
+                if (iter.equals(node))
+                {
+                    break;
+                }
+                if (pattern.matches(iter, origCtx))
+                {
+                    position++;
+                }
+            }
+            return position;
+        }
+
+        public int getContextSize()
+        {
+            if (lastPosition != 0)
+            {
+                return lastPosition;
+            }
+            
+            Traverser iter;
+            NodeKind nodeKind = node.getNodeKind();
+            switch (nodeKind)
+            {
+                case DOCUMENT:
+                    lastPosition = 1;
+                    return 1;
+                case ATTRIBUTE:
+                    Precursor parent = node.newPrecursor();
+                    parent.moveToParent();
+                    iter = parent.traverseAttributeAxis(inheritAttributes);
+                    lastPosition = 0;
+                    break;
+                case NAMESPACE:
+                    Precursor nsParent = node.newPrecursor();
+                    nsParent.moveToParent();
+                    iter = nsParent.traverseNamespaceAxis(inheritNamespaces);
+                    lastPosition = 0;
+                break;
+                default:
+                    iter = node.traverseFollowingSiblingAxis();
+                    lastPosition = position;
+                break;
+            }
+            while (iter.moveToNext()) {
+                if (pattern.matches(iter, origCtx))
+                {
+                    lastPosition++;
+                }
+            }
+            return lastPosition;
+        }
+
+        @Override
+        public TraverserVariant getVariableValue(QName name) {
+            return origCtx.getVariableValue(name); 
+        }
+
+        @Override
+        public ExtensionContext getExtensionContext(String namespace) {
+            return origCtx.getExtensionContext(namespace);
+        }
+
+        @Override
+        public boolean getInheritAttributes() {
+            return origCtx.getInheritAttributes();
+        }
+
+        @Override
+        public boolean getInheritNamespaces() {
+            return origCtx.getInheritNamespaces();
+        }
+    }
 }

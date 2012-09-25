@@ -29,5 +29,5 @@ public interface NodeIterator<N>
     /**
      * return the next Node in the list
      */
-    N next() throws ExprException;
+    N next();
 }

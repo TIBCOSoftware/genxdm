@@ -21,11 +21,15 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.iterators.NodeIteratorOnIterator;
 import org.genxdm.processor.xpath.v10.iterators.SequenceComposeNodeIterator;
+import org.genxdm.processor.xpath.v10.iterators.SequenceComposeTraverser;
 import org.genxdm.processor.xpath.v10.iterators.UnionNodeIterator;
+import org.genxdm.processor.xpath.v10.iterators.UnionNodeTraverser;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
 
 /**
@@ -49,11 +53,18 @@ final class SubtreeExpr
 		return STAYS_IN_SUBTREE;
 	}
 
-	public <N> NodeIterator<N> nodeIterator(Model<N> model, final N contextNode, ExprContextDynamic<N> dynEnv) throws ExprException
+    @Override
+	public <N> NodeIterator<N> nodeIterator(Model<N> model, final N contextNode, ExprContextDynamic<N> dynEnv)
 	{
 		return new UnionNodeIterator<N>(expr.nodeIterator(model, contextNode, dynEnv),
 				new SequenceComposeNodeIterator<N>(
 						model, new NodeIteratorOnIterator<N>(
 										model.getChildAxis(contextNode).iterator()), this, dynEnv), model);
 	}
+
+    @Override
+    public Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+        return new UnionNodeTraverser(expr.traverseNodes(contextNode, dynEnv),
+                new SequenceComposeTraverser(contextNode.traverseChildAxis(), this, dynEnv));
+    }
 }

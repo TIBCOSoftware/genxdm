@@ -21,6 +21,8 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 
 final class LiteralExpr
@@ -34,14 +36,20 @@ final class LiteralExpr
 		this.literal = literal;
 	}
 
-	public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv)
-	{
+    @Override
+	public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
 		return literal;
 	}
 
+    @Override
+    public String stringFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+        return literal;
+    }
+    
 	@Override
 	public String constantValue()
 	{
 		return literal;
 	}
+
 }

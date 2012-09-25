@@ -22,7 +22,6 @@ package org.genxdm.processor.xpath.v10.iterators;
 
 import org.genxdm.Model;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.NodeSetExpr;
 
@@ -43,8 +42,8 @@ public final class SequenceComposeNodeIterator<N> implements NodeIterator<N>
 		this.iter2 = new NullNodeIterator<N>();
 	}
 
-	public N next() throws ExprException
-	{
+	@Override
+	public N next() {
 		for (;;)
 		{
 			N node = iter2.next();

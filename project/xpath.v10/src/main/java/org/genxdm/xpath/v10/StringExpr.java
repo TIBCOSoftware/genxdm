@@ -21,13 +21,16 @@
 package org.genxdm.xpath.v10;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
 
 /**
  * an XPath expression which evaluates to a String
  */
 public interface StringExpr
 {
-    <N> String stringFunction(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv) throws ExprException;
+    <N> String stringFunction(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv);
+
+    String stringFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv);
 
     String constantValue();
 }

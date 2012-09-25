@@ -23,8 +23,9 @@ package org.genxdm.processor.xpath.v10.patterns;
 import java.lang.reflect.Array;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 
 /**
  * represents an "OR" (union) of match patterns
@@ -47,14 +48,20 @@ class AlternativesPattern
 	/**
 	 * evaluate to a boolean
 	 */
-	public <N> boolean matches(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException
-	{
+	@Override
+	public <N> boolean matches(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
 		return pattern1.matches(model, node, dynEnv) || pattern2.matches(model, node, dynEnv);
 	}
 
-	/**
+    @Override
+    public boolean matches(TraversingInformer node, TraverserDynamicContext dynEnv) {
+        return pattern1.matches(node, dynEnv) || pattern2.matches(node, dynEnv);
+    }
+
+    /**
 	 * @return an array of all the alternative PathPatterns
 	 */
+    @Override
 	public PathPattern[] getAlternatives()
 	{
 		// we decompose a backwards sort of lisp-like list
@@ -64,4 +71,5 @@ class AlternativesPattern
 		result[result.length - 1] = pattern2;
 		return result;
 	}
+
 }

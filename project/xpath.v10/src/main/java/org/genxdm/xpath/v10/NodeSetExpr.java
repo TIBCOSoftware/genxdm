@@ -21,6 +21,8 @@
 package org.genxdm.xpath.v10;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
 
 /**
  * A NodeSetExpr (compiled XPath), when evaluated with a contextNode and an ExpressionContext, yields a NodeIterator
@@ -31,5 +33,7 @@ public interface NodeSetExpr
      * evaluate the expression with a context item and expression context
      * @param model TODO
      */
-    <N> NodeIterator<N> nodeIterator(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv) throws ExprException;
+    <N> NodeIterator<N> nodeIterator(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv);
+
+    Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv);
 }

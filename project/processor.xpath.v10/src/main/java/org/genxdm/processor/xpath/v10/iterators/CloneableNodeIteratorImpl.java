@@ -50,7 +50,7 @@ public final class CloneableNodeIteratorImpl<N> implements CloneableNodeIterator
 		this.i = i;
 	}
 
-	public N next() throws ExprException
+	public N next()
 	{
 		N tem = list.nodeAt(i);
 		if (tem != null)
@@ -77,7 +77,7 @@ public final class CloneableNodeIteratorImpl<N> implements CloneableNodeIterator
 			this.model = model;
 		}
 
-		N nodeAt(int i) throws ExprException
+		N nodeAt(int i)
 		{
 			if (i >= len)
 			{

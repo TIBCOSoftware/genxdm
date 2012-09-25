@@ -21,10 +21,11 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.relations.Relation;
 import org.genxdm.xpath.v10.BooleanExpr;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 
 final class BooleanRelationalExpr 
     extends ConvertibleBooleanExpr
@@ -41,8 +42,13 @@ final class BooleanRelationalExpr
 		this.expr2 = expr2;
 	}
 
-	public <N> boolean booleanFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException
-	{
+    @Override
+	public <N> boolean booleanFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
 		return rel.relate(expr1.booleanFunction(model, node, dynEnv), expr2.booleanFunction(model, node, dynEnv));
 	}
+
+    @Override
+    public boolean booleanFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+        return rel.relate(expr1.booleanFunction(contextNode, dynEnv), expr2.booleanFunction(contextNode, dynEnv));
+    }
 }

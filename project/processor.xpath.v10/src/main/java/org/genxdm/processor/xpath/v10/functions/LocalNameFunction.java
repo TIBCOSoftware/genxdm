@@ -21,11 +21,13 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleStringExpr;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NodeSetExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
@@ -40,8 +42,8 @@ public final class LocalNameFunction
 
 		return new ConvertibleStringExpr()
 		{
-			public <N> String stringFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
-			{
+            @Override
+			public <N> String stringFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 				final N node = nse.nodeIterator(model, contextNode, dynEnv).next();
 				if (node != null)
 				{
@@ -53,6 +55,20 @@ public final class LocalNameFunction
 				}
 				return "";
 			}
+
+            @Override
+            public String stringFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                Traverser node = nse.traverseNodes(contextNode, dynEnv);
+                if (node.moveToNext())
+                {
+                    final String localName = node.getLocalName();
+                    if (localName != null)
+                    {
+                        return localName;
+                    }
+                }
+                return "";
+            }
 		};
 	}
 }
