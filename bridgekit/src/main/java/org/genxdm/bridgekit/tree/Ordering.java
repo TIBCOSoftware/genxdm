@@ -16,6 +16,7 @@
 package org.genxdm.bridgekit.tree;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
 
 /**
  * Generic utility to calculate the relative order of nodes.
@@ -320,6 +321,15 @@ public final class Ordering
                 return second == null;
         }
         return false; // generally only if model is null
+    }
+
+    public static boolean isSameNode(TraversingInformer one, TraversingInformer two)
+    {
+        if (one == two)
+            return true;
+        Object first = one.getNodeId();
+        Object second = two.getNodeId();
+        return first.equals(second);
     }
 
     private static <N> N getRoot(final N node, final Model<N> core)

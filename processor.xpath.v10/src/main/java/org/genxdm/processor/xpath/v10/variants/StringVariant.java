@@ -21,9 +21,13 @@
 package org.genxdm.processor.xpath.v10.variants;
 
 import org.genxdm.exceptions.IllegalNullArgumentException;
+import org.genxdm.nodes.Traverser;
 import org.genxdm.xpath.v10.Converter;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
+import org.genxdm.xpath.v10.TraverserVariant;
+import org.genxdm.xpath.v10.ExprException;
 
-public final class StringVariant<N> extends VariantBase<N>
+public final class StringVariant<N> extends VariantBase<N> implements TraverserVariant
 {
 	private final String str;
 
@@ -32,11 +36,13 @@ public final class StringVariant<N> extends VariantBase<N>
 		this.str = IllegalNullArgumentException.check(str, "str");
 	}
 
+    @Override
 	public String convertToString()
 	{
 		return str;
 	}
 
+    @Override
 	public boolean convertToBoolean()
 	{
 		return Converter.toBoolean(str);
@@ -49,8 +55,22 @@ public final class StringVariant<N> extends VariantBase<N>
 	}
 
 	@Override
-	public boolean isString()
-	{
+	public boolean isString() {
 		return true;
 	}
+
+    @Override
+    public Traverser convertToTraverser() {
+        throw new RuntimeException("cannot convert to traverser");
+    }
+
+    @Override
+    public boolean convertToPredicate(TraverserDynamicContext context) {
+        return convertToBoolean();
+    }
+
+    @Override
+    public TraverserVariant makePermanentCursor() throws ExprException {
+        return this;
+    }
 }

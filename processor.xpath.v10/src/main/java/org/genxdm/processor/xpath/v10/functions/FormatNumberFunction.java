@@ -23,11 +23,12 @@ package org.genxdm.processor.xpath.v10.functions;
 import java.text.DecimalFormat;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleStringExpr;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NumberExpr;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
@@ -43,17 +44,25 @@ public final class FormatNumberFunction
 
 		return new ConvertibleStringExpr()
 		{
-			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> context) throws ExprException
-			{
-				try
-				{
+            @Override
+			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> context) {
+				try {
 					return new DecimalFormat(se.stringFunction(model, node, context)).format(ne.numberFunction(model, node, context));
 				}
-				catch (final IllegalArgumentException e)
-				{
-					throw new ExprException("invalid format pattern");
+				catch (final IllegalArgumentException e) {
+					throw new RuntimeException("invalid format pattern");
 				}
 			}
+
+            @Override
+            public String stringFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                try {
+                    return new DecimalFormat(se.stringFunction(contextNode, dynEnv)).format(ne.numberFunction(contextNode, dynEnv));
+                }
+                catch (final IllegalArgumentException e) {
+                    throw new RuntimeException("invalid format pattern", e);
+                }
+            }
 		};
 	}
 }

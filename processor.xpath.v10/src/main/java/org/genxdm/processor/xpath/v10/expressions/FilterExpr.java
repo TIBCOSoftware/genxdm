@@ -21,10 +21,13 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.iterators.FilterNodeIterator;
+import org.genxdm.processor.xpath.v10.iterators.FilterTraverser;
 import org.genxdm.xpath.v10.BooleanExpr;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.extend.ConvertibleNodeSetExpr;
 
@@ -41,16 +44,21 @@ final class FilterExpr
 		this.predicate = predicate;
 	}
 
-	public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException
-	{
+    @Override
+	public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
 		return new FilterNodeIterator<N>(model, expr.nodeIterator(model, node, dynEnv), dynEnv, predicate);
 	}
 
-	/*
+    public Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+        return new FilterTraverser(expr.traverseNodes(contextNode, dynEnv), dynEnv, predicate);
+    }
+
+    /*
 	 * OPT: if the expr is of the form position()=n, then SINGLE_LEVEL must be true
 	 */
 	public int getOptimizeFlags()
 	{
 		return expr.getOptimizeFlags();
 	}
+
 }

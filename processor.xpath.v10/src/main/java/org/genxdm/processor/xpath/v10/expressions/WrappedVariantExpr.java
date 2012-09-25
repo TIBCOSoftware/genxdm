@@ -16,8 +16,10 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
+import org.genxdm.xpath.v10.TraverserVariant;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.Variant;
 import org.genxdm.xpath.v10.VariantExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
@@ -41,9 +43,15 @@ public class WrappedVariantExpr extends ConvertibleVariantExpr {
 	
 	@Override
 	public <N> Variant<N> evaluateAsVariant(Model<N> model, N contextNode,
-			ExprContextDynamic<N> dynEnv) throws ExprException {
+			ExprContextDynamic<N> dynEnv) {
 		return m_expr.evaluateAsVariant(model, contextNode, dynEnv);
 	}
 
 	private VariantExpr m_expr;
+
+    @Override
+    public TraverserVariant evaluateAsVariant(TraversingInformer contextNode,
+            TraverserDynamicContext dynEnv) {
+        return m_expr.evaluateAsVariant(contextNode, dynEnv);
+    }
 }

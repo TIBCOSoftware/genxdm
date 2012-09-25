@@ -21,11 +21,12 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleNumberExpr;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NumberExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
@@ -45,11 +46,16 @@ public final class CeilingFunction
 
 		return new ConvertibleNumberExpr()
 		{
+            @Override
 			// oddly uses a double instead of an int
-			public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
-			{
+			public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 				return Math.ceil(ne.numberFunction(model, contextNode, dynEnv));
 			}
+
+            @Override
+            public double numberFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return Math.ceil(ne.numberFunction(contextNode, dynEnv));
+            }
 		};
 	}
 }

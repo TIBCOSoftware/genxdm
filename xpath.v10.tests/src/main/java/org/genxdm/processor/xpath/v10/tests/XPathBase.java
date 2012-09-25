@@ -34,7 +34,6 @@ import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextDynamicArgs;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.NodeSetExpr;
@@ -283,18 +282,10 @@ public abstract class XPathBase<N>
 
         final ExprContextDynamic<N> dynEnv = dargs.build();
 
-        try
-        {
-            final double x = numberExpr.numberFunction(pcx.getModel(), null,
-                    dynEnv);
+        final double x = numberExpr.numberFunction(pcx.getModel(), null,
+                dynEnv);
 
-            assertEquals(7.0, x, 0.1d);
-        } 
-        catch (final ExprException e)
-        {
-            fail(e.getMessage());
-            return;
-        }
+        assertEquals(7.0, x, 0.1d);
     }
 
     @Test
@@ -380,41 +371,33 @@ public abstract class XPathBase<N>
 
         if (pcx.isSupported(Feature.NAMESPACE_AXIS))
         {
-            try
+            final NodeIterator<N> x = expr.nodeIterator(model, barElement,
+                    dynEnv);
+
+            final HashMap<String, String> mappings = new HashMap<String, String>();
+            final ArrayList<N> nodes = new ArrayList<N>();
+
+            N namespace = x.next();
+            while (null != namespace)
             {
-                final NodeIterator<N> x = expr.nodeIterator(model, barElement,
-                        dynEnv);
+                final String prefix = model.getLocalName(namespace);
+                final String uri = model.getStringValue(namespace);
+                // TODO: This should be reinstated...
+                // assertTrue("The element must be the parent of the namespace node.",
+                // model.isSameNode(barElement,
+                // model.getParent(namespace)));
+                assertNotNull("prefix", prefix);
+                assertNotNull("uri", uri);
 
-                final HashMap<String, String> mappings = new HashMap<String, String>();
-                final ArrayList<N> nodes = new ArrayList<N>();
-
-                N namespace = x.next();
-                while (null != namespace)
-                {
-                    final String prefix = model.getLocalName(namespace);
-                    final String uri = model.getStringValue(namespace);
-                    // TODO: This should be reinstated...
-                    // assertTrue("The element must be the parent of the namespace node.",
-                    // model.isSameNode(barElement,
-                    // model.getParent(namespace)));
-                    assertNotNull("prefix", prefix);
-                    assertNotNull("uri", uri);
-
-                    mappings.put(prefix, uri);
-                    nodes.add(namespace);
-                    namespace = x.next();
-                }
-                assertEquals(3, mappings.size());
-                assertEquals(mappings.size(), nodes.size());
-                assertNotNull(mappings.get("n0"));
-                assertNotNull(mappings.get("n1"));
-                assertNotNull(mappings.get("xml"));
-            } 
-            catch (final ExprException e)
-            {
-                fail(e.getMessage());
-                return;
+                mappings.put(prefix, uri);
+                nodes.add(namespace);
+                namespace = x.next();
             }
+            assertEquals(3, mappings.size());
+            assertEquals(mappings.size(), nodes.size());
+            assertNotNull(mappings.get("n0"));
+            assertNotNull(mappings.get("n1"));
+            assertNotNull(mappings.get("xml"));
         }
     }
 
@@ -452,19 +435,10 @@ public abstract class XPathBase<N>
 
         final ExprContextDynamic<N> dynEnv = dargs.build();
 
-        try
-        {
-            final double x = numberExpr.numberFunction(pcx.getModel(),
-                    contextNode, dynEnv);
+        final double x = numberExpr.numberFunction(pcx.getModel(),
+                contextNode, dynEnv);
 
-            assertEquals(5.0, x, 0.1d);
-        } 
-        catch (final ExprException e)
-        {
-            e.printStackTrace();
-            fail(e.getMessage());
-            return;
-        }
+        assertEquals(5.0, x, 0.1d);
     }
 
     @Test
@@ -505,17 +479,9 @@ public abstract class XPathBase<N>
 
         final ExprContextDynamic<N> dynEnv = dargs.build();
 
-        try
-        {
-            final String s = stringExpr.stringFunction(pcx.getModel(),
-                    contextNode, dynEnv);
+        final String s = stringExpr.stringFunction(pcx.getModel(),
+                contextNode, dynEnv);
 
-            assertEquals("Hello, World!", s);
-        } 
-        catch (final ExprException e)
-        {
-            fail(e.getMessage());
-            return;
-        }
+        assertEquals("Hello, World!", s);
     }
 }

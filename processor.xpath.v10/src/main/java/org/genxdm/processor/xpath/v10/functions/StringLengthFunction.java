@@ -21,11 +21,12 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleNumberExpr;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
@@ -38,10 +39,15 @@ public final class StringLengthFunction
 		final StringExpr se = e.makeStringExpr(statEnv);
 		return new ConvertibleNumberExpr()
 		{
-			public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
-			{
+            @Override
+			public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 				return stringLength(se.stringFunction(model, contextNode, dynEnv));
 			}
+
+            @Override
+            public double numberFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return stringLength(se.stringFunction(contextNode, dynEnv));
+            }
 		};
 	}
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2011 TIBCO Software Inc.
+ * Copyright (c) 2009-2012 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import org.genxdm.nodes.Bookmark;
  * to the properties of its underlying node.</p>
  */
 public interface Cursor<N>
-    extends Precursor, Repositioner<N>, Comparable<Cursor<N>>
+    extends Precursor, Repositioner<N>
 {
     /**
      * Obtain a fixed-location marker initialized with the current node.

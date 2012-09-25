@@ -22,7 +22,6 @@ package org.genxdm.processor.xpath.v10.iterators;
 
 import java.util.Iterator;
 
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
 
 public final class NodeIteratorOnIterator<N> implements NodeIterator<N>
@@ -34,8 +33,8 @@ public final class NodeIteratorOnIterator<N> implements NodeIterator<N>
 		this.it = it;
 	}
 
-	public N next() throws ExprException
-	{
+	@Override
+	public N next() {
 		if (it.hasNext())
 		{
 			return it.next();

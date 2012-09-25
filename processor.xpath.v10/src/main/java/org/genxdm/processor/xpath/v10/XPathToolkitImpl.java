@@ -79,11 +79,11 @@ import org.genxdm.processor.xpath.v10.relations.GreaterThanRelation;
 import org.genxdm.processor.xpath.v10.relations.NotEqualsRelation;
 import org.genxdm.processor.xpath.v10.relations.Relation;
 import org.genxdm.xpath.v10.BooleanExpr;
-import org.genxdm.xpath.v10.ExprContextDynamicArgs;
 import org.genxdm.xpath.v10.ExprContextStatic;
 import org.genxdm.xpath.v10.NodeSetExpr;
 import org.genxdm.xpath.v10.NumberExpr;
 import org.genxdm.xpath.v10.StringExpr;
+import org.genxdm.xpath.v10.TraverserDynamicContextBuilder;
 import org.genxdm.xpath.v10.VariantExpr;
 import org.genxdm.xpath.v10.XPathCompiler;
 import org.genxdm.xpath.v10.extend.Function;
@@ -155,21 +155,30 @@ final class XPathToolkitImpl
 		relationTable.put(">", new GreaterThanRelation());
 	}
 
+    @Override
 	public XPathCompiler newXPathCompiler()
 	{
 		return new XPathCompilerImpl(axisTable, functionTable, relationTable);
 	}
 
-	public <N> ExprContextDynamicArgs<N> newExprContextDynamicArgs()
+    @Override
+	public <N> ExprContextDynamicArgsImpl<N> newExprContextDynamicArgs()
 	{
 		return new ExprContextDynamicArgsImpl<N>();
 	}
 
-	public ExprContextStatic newExprContextStaticArgs()
+	@Override
+    public TraverserDynamicContextBuilder newTraverserDynamicContextBuilder() {
+        return new TraverserDynamicContextBuilderImpl();
+    }
+
+    @Override
+    public ExprContextStatic newExprContextStaticArgs()
 	{
 		return new ExprContextStaticImpl();
 	}
 
+    @Override
 	public Function declareFunction(String name, Function newFunction) {
 		return functionTable.put(name, newFunction);
 	}

@@ -21,26 +21,34 @@
 package org.genxdm.processor.xpath.v10.relations;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.Traverser;
 import org.genxdm.processor.xpath.v10.iterators.CloneableNodeIterator;
 import org.genxdm.processor.xpath.v10.iterators.CloneableNodeIteratorImpl;
+import org.genxdm.processor.xpath.v10.iterators.CloneableTraverserImpl;
 import org.genxdm.xpath.v10.Converter;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
+import org.genxdm.xpath.v10.TraverserVariant;
 import org.genxdm.xpath.v10.Variant;
+import org.genxdm.xpath.v10.VariantCore;
 
 public abstract class Relation 
 {
 
 	public abstract boolean relate(boolean b1, boolean b2);
 
-	<N> boolean relate(boolean b, NodeIterator<N> iter) throws ExprException
+	<N> boolean relate(boolean b, NodeIterator<N> iter)
 	{
 		return relate(b, iter.next() != null);
 	}
 
+    boolean relate(boolean b, Traverser iter)
+    {
+        return relate(b, iter.moveToNext() );
+    }
+
 	public abstract boolean relate(double d1, double d2);
 
-	<N> boolean relate(double d, NodeIterator<N> iter, final Model<N> model) throws ExprException
+	<N> boolean relate(double d, NodeIterator<N> iter, final Model<N> model)
 	{
 		for (;;)
 		{
@@ -53,12 +61,27 @@ public abstract class Relation
 		return false;
 	}
 
-	<N> boolean relate(NodeIterator<N> iter, boolean b) throws ExprException
+    boolean relate(double d, Traverser iter)
+    {
+        for (;iter.moveToNext();)
+        {
+            if (relate(d, Converter.toNumber(Converter.toString(iter))))
+                return true;
+        }
+        return false;
+    }
+
+	<N> boolean relate(NodeIterator<N> iter, boolean b)
 	{
 		return relate(iter.next() != null, b);
 	}
 
-	<N> boolean relate(NodeIterator<N> iter, double d, final Model<N> model) throws ExprException
+    boolean relate(Traverser iter, boolean b)
+    {
+        return relate(iter.moveToNext(), b);
+    }
+
+	<N> boolean relate(NodeIterator<N> iter, double d, final Model<N> model)
 	{
 		for (;;)
 		{
@@ -71,8 +94,20 @@ public abstract class Relation
 		return false;
 	}
 
+    boolean relate(Traverser iter, double d)
+    {
+        for (;;)
+        {
+            if (!iter.moveToNext())
+                break;
+            if (relate(Converter.toNumber(Converter.toString(iter)), d))
+                return true;
+        }
+        return false;
+    }
+
 	@SuppressWarnings("unchecked")
-	<N> boolean relate(final NodeIterator<N> iter1, NodeIterator<N> iter2, final Model<N> model) throws ExprException
+	<N> boolean relate(final NodeIterator<N> iter1, NodeIterator<N> iter2, final Model<N> model)
 	{
 		if (!(iter2 instanceof CloneableNodeIterator))
 			iter2 = new CloneableNodeIteratorImpl<N>(iter2, model);
@@ -95,7 +130,24 @@ public abstract class Relation
 		return false;
 	}
 
-	<N> boolean relate(NodeIterator<N> iter, String s, final Model<N> model) throws ExprException
+    boolean relate(final Traverser iter1, Traverser iter2)
+    {
+        if (!(iter2 instanceof CloneableTraverserImpl))
+            iter2 = new CloneableTraverserImpl(iter2);
+        for (;iter1.moveToNext();)
+        {
+            String s1 = Converter.toString(iter1);
+            Traverser tem = (Traverser)((CloneableTraverserImpl)iter2).clone();
+            for (;tem.moveToNext();)
+            {
+                if (relate(s1, Converter.toString(tem)))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+	<N> boolean relate(NodeIterator<N> iter, String s, final Model<N> model)
 	{
 		for (;;)
 		{
@@ -108,7 +160,17 @@ public abstract class Relation
 		return false;
 	}
 
-	<N> boolean relate(String s, NodeIterator<N> iter, final Model<N> model) throws ExprException
+	boolean relate(Traverser iter, String s)
+    {
+        for (;iter.moveToNext();)
+        {
+            if (relate(Converter.toString(iter), s))
+                return true;
+        }
+        return false;
+    }
+
+	<N> boolean relate(String s, NodeIterator<N> iter, final Model<N> model)
 	{
 		for (;;)
 		{
@@ -121,9 +183,19 @@ public abstract class Relation
 		return false;
 	}
 
+    boolean relate(String s, Traverser iter)
+    {
+        for (;iter.moveToNext();)
+        {
+            if (relate(s, Converter.toString(iter)))
+                return true;
+        }
+        return false;
+    }
+
 	public abstract boolean relate(String s1, String s2);
 
-	public <N> boolean relate(final Variant<N> obj1, final Variant<N> obj2, final Model<N> model) throws ExprException
+	public <N> boolean relate(final Variant<N> obj1, final Variant<N> obj2, final Model<N> model)
 	{
 		if (obj1.isNodeSet())
 		{
@@ -150,7 +222,34 @@ public abstract class Relation
 		return relateAtomic(obj1, obj2);
 	}
 
-	<N> boolean relateAtomic(final Variant<N> obj1, final Variant<N> obj2) throws ExprException
+    public boolean relate(final TraverserVariant obj1, final TraverserVariant obj2)
+    {
+        if (obj1.isNodeSet())
+        {
+            if (obj2.isNodeSet())
+                return relate(obj1.convertToTraverser(), obj2.convertToTraverser());
+            if (obj2.isNumber())
+                return relate(obj1.convertToTraverser(), obj2.convertToNumber());
+            if (obj2.isBoolean())
+                return relate(obj1.convertToTraverser(), obj2.convertToBoolean());
+            return relate(obj1.convertToTraverser(), obj2.convertToString());
+        }
+        if (obj2.isNodeSet())
+        {
+            if (obj1.isNumber())
+            {
+                return relate(obj1.convertToNumber(), obj2.convertToTraverser());
+            }
+            if (obj1.isBoolean())
+            {
+                return relate(obj1.convertToBoolean(), obj2.convertToTraverser());
+            }
+            return relate(obj1.convertToString(), obj2.convertToTraverser());
+        }
+        return relateAtomic(obj1, obj2);
+    }
+
+	<N> boolean relateAtomic(final VariantCore obj1, final VariantCore obj2)
 	{
 		if (obj1.isBoolean() || obj2.isBoolean())
 		{
@@ -162,4 +261,5 @@ public abstract class Relation
 		}
 		return relate(obj1.convertToString(), obj2.convertToString());
 	}
+
 }

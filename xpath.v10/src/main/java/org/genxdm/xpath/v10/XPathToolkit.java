@@ -24,4 +24,5 @@ public interface XPathToolkit
 
     <N> ExprContextDynamicArgs<N> newExprContextDynamicArgs();
     
+    TraverserDynamicContextBuilder newTraverserDynamicContextBuilder();
 }

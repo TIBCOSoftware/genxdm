@@ -24,8 +24,10 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.Model;
 import org.genxdm.exceptions.IllegalNullArgumentException;
+import org.genxdm.nodes.TraversingInformer;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
+import org.genxdm.xpath.v10.TraverserVariant;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.Variant;
 
 final class VariableRefExpr
@@ -39,8 +41,8 @@ final class VariableRefExpr
 		this.name = IllegalNullArgumentException.check(name, "name");
 	}
 
-	public <N> Variant<N> evaluateAsVariant(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
-	{
+    @Override
+	public <N> Variant<N> evaluateAsVariant(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 		final Variant<N> value = dynEnv.getVariableValue(name);
 		if (null != value)
 		{
@@ -48,13 +50,28 @@ final class VariableRefExpr
 		}
 		else
 		{
-			throw new ExprException("dynEnv |- " + this + " => nothing");
+			throw new RuntimeException("dynEnv |- " + this + " => nothing");
 		}
 	}
 
-	@Override
+    @Override
+    public TraverserVariant evaluateAsVariant(TraversingInformer contextNode,
+            TraverserDynamicContext dynEnv) {
+        final TraverserVariant value = dynEnv.getVariableValue(name);
+        if (null != value)
+        {
+            return value;
+        }
+        else
+        {
+            throw new RuntimeException("dynEnv |- " + this + " => nothing");
+        }
+    }
+
+    @Override
 	public String toString()
 	{
 		return "$" + name;
 	}
+
 }

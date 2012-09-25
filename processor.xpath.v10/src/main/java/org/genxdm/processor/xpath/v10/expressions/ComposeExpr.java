@@ -23,11 +23,16 @@ package org.genxdm.processor.xpath.v10.expressions;
 import java.lang.reflect.Array;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.iterators.MergeNodeIterator;
+import org.genxdm.processor.xpath.v10.iterators.MergeNodeTraverser;
 import org.genxdm.processor.xpath.v10.iterators.NullNodeIterator;
+import org.genxdm.processor.xpath.v10.iterators.NullNodeTraverser;
 import org.genxdm.processor.xpath.v10.iterators.UnionNodeIterator;
+import org.genxdm.processor.xpath.v10.iterators.UnionNodeTraverser;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.extend.ConvertibleNodeSetExpr;
 
@@ -54,8 +59,7 @@ final class ComposeExpr
 	 * evaluate with a context node and an expression context
 	 */
 	@SuppressWarnings("unchecked")
-	public <N> NodeIterator<N> nodeIterator(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
-	{
+	public <N> NodeIterator<N> nodeIterator(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 		NodeIterator<N> iter = expr1.nodeIterator(model, contextNode, dynEnv);
 		NodeIterator<N>[] iters = (NodeIterator<N>[])Array.newInstance(NodeIterator.class, 10);
 		int length = 0;
@@ -99,7 +103,45 @@ final class ComposeExpr
 		return new MergeNodeIterator<N>(iters, length, model);
 	}
 
-	/**
+    @Override
+    public Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+        Traverser iter = expr1.traverseNodes(contextNode, dynEnv);
+        Traverser[] iters = (Traverser[])Array.newInstance(Traverser.class, 10);
+        int length = 0;
+        for (;iter.moveToNext();)
+        {
+            // for each node in the first expression
+            // we build a NodeIterator for the second expression
+            if (length == iters.length)
+            {
+                // we need a bigger array
+                Traverser[] oldIters = iters;
+                iters = (Traverser[])Array.newInstance(Traverser.class, oldIters.length * 2);
+                System.arraycopy(oldIters, 0, iters, 0, oldIters.length);
+            }
+            iters[length++] = expr2.traverseNodes(iter.newPrecursor(), dynEnv);
+        }
+
+        // so, how many iterators did we build?
+        switch (length)
+        {
+            case 0:
+            {
+                return new NullNodeTraverser();
+            }
+            case 1:
+            {
+                return iters[0];
+            }
+            case 2:
+            {
+                return new UnionNodeTraverser(iters[0], iters[1]);
+            }
+        }
+        return new MergeNodeTraverser(iters, length);
+    }
+
+    /**
      *
      */
 	@Override
@@ -107,4 +149,5 @@ final class ComposeExpr
 	{
 		return expr1.getOptimizeFlags() & expr2.getOptimizeFlags();
 	}
+
 }

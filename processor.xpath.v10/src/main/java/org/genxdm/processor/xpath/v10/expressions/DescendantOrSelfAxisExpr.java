@@ -22,7 +22,10 @@ package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.iterators.NodeIteratorOnIterator;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.NodeIterator;
 
@@ -45,8 +48,13 @@ public final class DescendantOrSelfAxisExpr
 		return NodeKind.ELEMENT;
 	}
 
-	public <N> NodeIterator<N> nodeIterator(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv)
-	{
+    @Override
+	public <N> NodeIterator<N> nodeIterator(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv) {
 		return new NodeIteratorOnIterator<N>(model.getDescendantOrSelfAxis(contextNode).iterator());
 	}
+
+    @Override
+    public Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+        return contextNode.traverseDescendantOrSelfAxis();
+    }
 }
