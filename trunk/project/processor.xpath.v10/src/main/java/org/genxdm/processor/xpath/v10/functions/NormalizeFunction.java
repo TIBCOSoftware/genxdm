@@ -23,11 +23,12 @@ package org.genxdm.processor.xpath.v10.functions;
 import java.util.StringTokenizer;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleStringExpr;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
@@ -45,10 +46,14 @@ final class NormalizeFunction
 		final StringExpr se = expr.makeStringExpr(statEnv);
 		return new ConvertibleStringExpr()
 		{
-			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException
-			{
+			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
 				return normalize(se.stringFunction(model, node, dynEnv));
 			}
+
+            @Override
+            public String stringFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return normalize(se.stringFunction(contextNode, dynEnv));
+            }
 		};
 	}
 

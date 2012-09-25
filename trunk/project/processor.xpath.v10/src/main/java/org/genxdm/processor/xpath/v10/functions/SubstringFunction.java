@@ -21,11 +21,12 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleStringExpr;
 import org.genxdm.processor.xpath.v10.expressions.NumberConstantExpr;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NumberExpr;
 import org.genxdm.xpath.v10.StringExpr;
@@ -80,12 +81,19 @@ public final class SubstringFunction
 
 		return new ConvertibleStringExpr()
 		{
-			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException
-			{
+            @Override
+			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
 				return substring(se.stringFunction(model, node, dynEnv),
 						ne1.numberFunction(model, node, dynEnv),
 						ne2.numberFunction(model, node, dynEnv));
 			}
+
+            @Override
+            public String stringFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return substring(se.stringFunction(contextNode, dynEnv),
+                        ne1.numberFunction(contextNode, dynEnv),
+                        ne2.numberFunction(contextNode, dynEnv));
+            }
 		};
 	}
 

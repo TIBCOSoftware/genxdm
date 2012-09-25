@@ -15,10 +15,15 @@
  */
 package org.genxdm.xpath.v10;
 
+import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
 
-public interface ExtensionContext<N>
+public interface ExtensionContext
 {
     boolean available(String name);
 
-    Variant<N> call(String name, N contextItem, Variant<N>[] args) throws ExprException;
+    <N> Variant<N> call(Model<N> model, String name, N contextItem, Variant<N>[] args);
+    
+    TraverserVariant call(String name, TraversingInformer contextItem, TraverserVariant[] args);
+
 }

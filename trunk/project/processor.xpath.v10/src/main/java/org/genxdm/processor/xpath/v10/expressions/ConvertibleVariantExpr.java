@@ -21,10 +21,13 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.BooleanExpr;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
+import org.genxdm.xpath.v10.TraverserVariant;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.Variant;
@@ -47,10 +50,15 @@ public abstract class ConvertibleVariantExpr
 	{
 		return new ConvertibleBooleanExpr( )
 		{
-			public <N> boolean booleanFunction(Model<N> model, final N node, ExprContextDynamic<N> context) throws ExprException
-			{
+		    @Override
+			public <N> boolean booleanFunction(Model<N> model, final N node, ExprContextDynamic<N> context) {
 				return ConvertibleVariantExpr.this.evaluateAsVariant(model, node, context).convertToPredicate(context);
 			}
+
+            @Override
+            public boolean booleanFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return ConvertibleVariantExpr.this.evaluateAsVariant(contextNode, dynEnv).convertToPredicate(dynEnv);
+            }
 		};
 	}
 
@@ -58,10 +66,15 @@ public abstract class ConvertibleVariantExpr
 	{
 		return new ConvertibleBooleanExpr()
 		{
-			public <N> boolean booleanFunction(Model<N> model, final N node, ExprContextDynamic<N> dynEnv) throws ExprException
-			{
+            @Override
+			public <N> boolean booleanFunction(Model<N> model, final N node, ExprContextDynamic<N> dynEnv) {
 				return ConvertibleVariantExpr.this.evaluateAsVariant(model, node, dynEnv).convertToBoolean();
 			}
+
+            @Override
+            public boolean booleanFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return ConvertibleVariantExpr.this.evaluateAsVariant(contextNode, dynEnv).convertToBoolean();
+            }
 		};
 	}
 
@@ -70,10 +83,14 @@ public abstract class ConvertibleVariantExpr
 	{
 		return new ConvertibleNumberExpr()
 		{
-			public <N> double numberFunction(Model<N> model, N contextNode, ExprContextDynamic<N> context) throws ExprException
-			{
+			public <N> double numberFunction(Model<N> model, N contextNode, ExprContextDynamic<N> context) {
 				return ConvertibleVariantExpr.this.evaluateAsVariant(model, contextNode, context).convertToNumber();
 			}
+
+            @Override
+            public double numberFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return ConvertibleVariantExpr.this.evaluateAsVariant(contextNode, dynEnv).convertToNumber();
+            }
 		};
 	}
 
@@ -81,8 +98,7 @@ public abstract class ConvertibleVariantExpr
 	{
 		return new ConvertibleStringExpr()
 		{
-			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> context) throws ExprException
-			{
+			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> context) {
 				final Variant<N> variant = ConvertibleVariantExpr.this.evaluateAsVariant(model, node, context);
 				if (null != variant)
 				{
@@ -93,6 +109,19 @@ public abstract class ConvertibleVariantExpr
 					throw new AssertionError(ConvertibleVariantExpr.this + " => " + variant);
 				}
 			}
+
+            @Override
+            public String stringFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                final TraverserVariant variant = ConvertibleVariantExpr.this.evaluateAsVariant(contextNode, dynEnv);
+                if (null != variant)
+                {
+                    return variant.convertToString();
+                }
+                else
+                {
+                    throw new AssertionError(ConvertibleVariantExpr.this + " => " + variant);
+                }
+            }
 		};
 	}
 
@@ -101,10 +130,14 @@ public abstract class ConvertibleVariantExpr
 	{
 		return new ConvertibleNodeSetExprImpl()
 		{
-			public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, ExprContextDynamic<N> context) throws ExprException
-			{
+			public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, ExprContextDynamic<N> context) {
 				return ConvertibleVariantExpr.this.evaluateAsVariant(model, node, context).convertToNodeSet();
 			}
+
+            @Override
+            public Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return ConvertibleVariantExpr.this.evaluateAsVariant(contextNode, dynEnv).convertToTraverser();
+            }
 		};
 	}
 }

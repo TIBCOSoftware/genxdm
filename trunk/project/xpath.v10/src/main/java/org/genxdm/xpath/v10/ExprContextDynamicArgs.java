@@ -18,19 +18,11 @@ package org.genxdm.xpath.v10;
 import javax.xml.namespace.QName;
 
 
-public interface ExprContextDynamicArgs<N> 
+public interface ExprContextDynamicArgs<N> extends DynamicContextBuilderBase
 {
+    void reset();
+
     void bindVariableValue(QName name, Variant<N> value);
 
     ExprContextDynamic<N> build();
-
-    void reset();
-
-    void setContextPosition(int position);
-
-    void setContextSize(int size);
-
-    void setInheritAttributes(boolean inheritAttributes);
-
-    void setInheritNamespaces(boolean inheritNamespaces);
 }

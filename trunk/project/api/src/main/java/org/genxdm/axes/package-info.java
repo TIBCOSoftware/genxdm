@@ -20,9 +20,9 @@ with the origin node).  Taken together with the informational abstractions in
 the <code>nodes</code> package, defines the bulk of functionality in the central
 {@link org.genxdm.Model} and {@link org.genxdm.Cursor} abstractions.</p>
 
-<p>There are four significant abstractions, but only three are actually implemented
-and used: {@link org.genxdm.axes.Navigator}, {@link org.genxdm.axes.NodeNavigator}, {@link org.genxdm.axes.AxisNodeNavigator},
-and (unused) {@link org.genxdm.axes.AxisNavigator}. In addition, <code>Navigator</code> has had
+<p>There are four significant abstractions: {@link org.genxdm.axes.Navigator},
+{@link org.genxdm.axes.NodeNavigator}, {@link org.genxdm.axes.AxisNodeNavigator},
+and {@link org.genxdm.axes.AxisNavigator}. In addition, <code>Navigator</code> has had
 its single N-specialized method moved into a separate interface, {@link org.genxdm.axes.Repositioner}.
 {@link org.genxdm.Cursor} actually implements <code>Repositioner</code> rather than the
 <code>Navigator</code> base interface, however.</p>

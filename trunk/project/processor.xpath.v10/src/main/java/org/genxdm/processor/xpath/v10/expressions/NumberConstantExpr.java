@@ -21,6 +21,8 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 
 public final class NumberConstantExpr 
@@ -34,8 +36,13 @@ public final class NumberConstantExpr
 		this.number = number;
 	}
 
-	public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv)
-	{
+    @Override
+	public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 		return number;
 	}
+
+    @Override
+    public double numberFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+        return number;
+    }
 }

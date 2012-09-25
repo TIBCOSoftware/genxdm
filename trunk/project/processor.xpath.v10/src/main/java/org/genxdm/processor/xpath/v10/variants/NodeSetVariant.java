@@ -37,23 +37,27 @@ public final class NodeSetVariant<N> extends VariantBase<N>
 		this.model = model;
 	}
 
+	public Model<N> getModel() {
+	    return model;
+	}
+	
 	public NodeIterator<N> convertToNodeSet()
 	{
 		return iter;
 	}
 
-	public String convertToString() throws ExprException
+	public String convertToString()
 	{
 		return Converter.toString(iter, model);
 	}
 
-	public boolean convertToBoolean() throws ExprException
+	public boolean convertToBoolean()
 	{
 		return Converter.toBoolean(iter);
 	}
 
 	@Override
-	public double convertToNumber() throws ExprException
+	public double convertToNumber()
 	{
 		return Converter.toNumber(iter, model);
 	}

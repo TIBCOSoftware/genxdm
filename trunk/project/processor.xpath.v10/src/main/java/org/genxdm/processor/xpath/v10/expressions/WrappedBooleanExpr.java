@@ -16,9 +16,10 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.BooleanExpr;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 public class WrappedBooleanExpr extends ConvertibleBooleanExpr {
@@ -38,10 +39,14 @@ public class WrappedBooleanExpr extends ConvertibleBooleanExpr {
 	
 	@Override
 	public <N> boolean booleanFunction(Model<N> model, N contextNode,
-			ExprContextDynamic<N> dynEnv) throws ExprException {
-		// TODO Auto-generated method stub
+			ExprContextDynamic<N> dynEnv) {
 		return m_wrappedExpr.booleanFunction(model, contextNode, dynEnv);
 	}
 
+    @Override
+    public boolean booleanFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+        return m_wrappedExpr.booleanFunction(contextNode, dynEnv);
+    }
+    
 	private final BooleanExpr m_wrappedExpr;
 }

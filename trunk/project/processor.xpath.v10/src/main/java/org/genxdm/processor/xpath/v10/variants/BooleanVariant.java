@@ -20,12 +20,16 @@
  */
 package org.genxdm.processor.xpath.v10.variants;
 
+import org.genxdm.nodes.Traverser;
 import org.genxdm.xpath.v10.Converter;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
+import org.genxdm.xpath.v10.TraverserVariant;
+import org.genxdm.xpath.v10.ExprException;
 
 /**
  * a boolean which can provide its value as a String, Number or Object
  */
-public final class BooleanVariant<N> extends VariantBase<N>
+public final class BooleanVariant<N> extends VariantBase<N> implements TraverserVariant
 {
 	private final boolean b;
 
@@ -34,19 +38,16 @@ public final class BooleanVariant<N> extends VariantBase<N>
 		this.b = b;
 	}
 
-	public String convertToString()
-	{
+	public String convertToString() {
 		return Converter.toString(b);
 	}
 
-	public boolean convertToBoolean()
-	{
+	public boolean convertToBoolean() {
 		return b;
 	}
 
 	@Override
-	public double convertToNumber()
-	{
+	public double convertToNumber() {
 		return Converter.toNumber(b);
 	}
 
@@ -55,4 +56,19 @@ public final class BooleanVariant<N> extends VariantBase<N>
 	{
 		return true;
 	}
+
+    @Override
+    public boolean convertToPredicate(TraverserDynamicContext context) {
+        return convertToBoolean();
+    }
+
+    @Override
+    public Traverser convertToTraverser() {
+        throw new RuntimeException("cannot convert to traverser");
+    }
+
+    @Override
+    public TraverserVariant makePermanentCursor() throws ExprException {
+        return this;
+    }
 }

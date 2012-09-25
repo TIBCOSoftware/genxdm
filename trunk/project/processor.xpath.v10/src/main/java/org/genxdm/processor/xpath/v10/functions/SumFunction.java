@@ -21,12 +21,14 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleNumberExpr;
 import org.genxdm.xpath.v10.Converter;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.NodeSetExpr;
@@ -35,8 +37,7 @@ import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 public final class SumFunction 
     extends Function1
 {
-	static private final <N> double sum(final NodeIterator<N> iter, final Model<N> model) throws ExprException
-	{
+	static private final <N> double sum(final NodeIterator<N> iter, final Model<N> model) {
 		double n = 0.0;
 		for (;;)
 		{
@@ -50,16 +51,31 @@ public final class SumFunction
 		return n;
 	}
 
+    static private final <N> double sum(final Traverser iter)
+    {
+        double n = 0.0;
+        while(iter.moveToNext())
+        {
+            n += Converter.toNumber(Converter.toString(iter));
+        }
+        return n;
+    }
+
 	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
 	{
 		final NodeSetExpr nse = e.makeNodeSetExpr(statEnv);
 
 		return new ConvertibleNumberExpr()
 		{
-			public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
-			{
+			public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 				return sum(nse.nodeIterator(model, contextNode, dynEnv), model);
 			}
+
+            @Override
+            public double numberFunction(TraversingInformer contextNode,
+                    TraverserDynamicContext dynEnv) {
+                return sum(nse.traverseNodes(contextNode, dynEnv));
+            }
 		};
 	}
 }

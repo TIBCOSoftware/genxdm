@@ -24,7 +24,6 @@ import org.genxdm.Model;
 import org.genxdm.processor.xpath.v10.expressions.DelegateExprContext;
 import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
 
 public final class FilterNodeIterator<N> 
@@ -45,7 +44,7 @@ public final class FilterNodeIterator<N>
 		this.predicate = predicate;
 	}
 
-	public N next() throws ExprException
+	public N next()
 	{
 		for (;;)
 		{
@@ -71,8 +70,7 @@ public final class FilterNodeIterator<N>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public int getContextSize() throws ExprException
-	{
+	public int getContextSize() {
 		if (lastPos == 0)
 		{
 			CloneableNodeIterator<N> cloneIter;

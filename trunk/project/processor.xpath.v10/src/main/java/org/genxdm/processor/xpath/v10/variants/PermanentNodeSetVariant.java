@@ -53,18 +53,18 @@ final class PermanentNodeSetVariant<N> extends VariantBase<N>
 		return (NodeIterator<N>)iter.clone();
 	}
 
-	public String convertToString() throws ExprException
+	public String convertToString()
 	{
 		return Converter.toString(convertToNodeSet(), model);
 	}
 
-	public boolean convertToBoolean() throws ExprException
+	public boolean convertToBoolean()
 	{
 		return Converter.toBoolean(convertToNodeSet());
 	}
 
 	@Override
-	public double convertToNumber() throws ExprException
+	public double convertToNumber()
 	{
 		return Converter.toNumber(convertToNodeSet(), model);
 	}

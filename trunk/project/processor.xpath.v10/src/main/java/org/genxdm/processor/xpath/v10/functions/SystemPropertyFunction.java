@@ -21,11 +21,13 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleVariantExpr;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExprParseException;
+import org.genxdm.xpath.v10.TraverserVariant;
 import org.genxdm.xpath.v10.Variant;
 import org.genxdm.xpath.v10.extend.Function;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
@@ -48,13 +50,18 @@ public final class SystemPropertyFunction
 
 		return new ConvertibleVariantExpr()
 		{
-			public <N> Variant<N> evaluateAsVariant(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
-			{
+            @Override
+			public <N> Variant<N> evaluateAsVariant(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 				return null;
 				// final String qname = se.eval(node, context);
 				// final QName name = QNameExpander.expandElementName(qname, statEnv.getInScopeNamespaces());
 				// return context.getSystemProperty(name);
 			}
+
+            @Override
+            public TraverserVariant evaluateAsVariant(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return null;
+            }
 		};
 	}
 }

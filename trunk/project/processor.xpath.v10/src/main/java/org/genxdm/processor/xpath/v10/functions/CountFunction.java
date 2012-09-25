@@ -21,11 +21,13 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleNumberExpr;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.NodeSetExpr;
@@ -39,8 +41,7 @@ import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 public final class CountFunction 
     extends Function1
 {
-	private static final <N> int count(final NodeIterator<N> iter) throws ExprException
-	{
+	private static final <N> int count(final NodeIterator<N> iter) {
 		int n = 0;
 		while (iter.next() != null)
 		{
@@ -49,6 +50,16 @@ public final class CountFunction
 		return n;
 	}
 
+    private static final <N> int count(final Traverser iter) {
+        int n = 0;
+        while (iter.moveToNext())
+        {
+            n++;
+        }
+        return n;
+    }
+
+
 
 	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
 	{
@@ -56,10 +67,15 @@ public final class CountFunction
 
 		return new ConvertibleNumberExpr()
 		{
-			public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
-			{
+            @Override
+			public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 				return count(nse.nodeIterator(model, contextNode, dynEnv));
 			}
+
+            @Override
+            public double numberFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return count(nse.traverseNodes(contextNode, dynEnv));
+            }
 		};
 	}
 }

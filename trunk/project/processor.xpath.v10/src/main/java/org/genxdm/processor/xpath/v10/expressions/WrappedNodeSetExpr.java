@@ -16,15 +16,19 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
+import org.genxdm.processor.xpath.v10.variants.TraverserVariantImpl;
 import org.genxdm.processor.xpath.v10.variants.NodeSetVariant;
 import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.Converter;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.NodeSetExpr;
 import org.genxdm.xpath.v10.StringExpr;
+import org.genxdm.xpath.v10.TraverserVariant;
 import org.genxdm.xpath.v10.Variant;
 import org.genxdm.xpath.v10.VariantExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleNodeSetExpr;
@@ -46,36 +50,54 @@ public class WrappedNodeSetExpr extends ConvertibleNodeSetExprImpl {
 	
 	@Override
 	public <N> NodeIterator<N> nodeIterator(Model<N> model, N contextNode,
-			ExprContextDynamic<N> dynEnv) throws ExprException {
+			ExprContextDynamic<N> dynEnv) {
 		return m_nodeSetExpr.nodeIterator(model, contextNode, dynEnv);
 	}
+
+    @Override
+    public Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+        return m_nodeSetExpr.traverseNodes(contextNode, dynEnv);
+    }
 
 	@Override
 	public StringExpr makeStringExpr(ExprContextStatic statEnv) {
 		return new ConvertibleStringExpr() {
-			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv)
-			throws ExprException {
+			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
 				return Converter.toString(m_nodeSetExpr.nodeIterator(model, node, dynEnv), model);
 			}
+
+            @Override
+            public String stringFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return Converter.toString(m_nodeSetExpr.traverseNodes(contextNode, dynEnv));
+            }
 		};
 	}
 
 	@Override
 	public BooleanExpr makeBooleanExpr(ExprContextStatic statEnv) {
 		return new ConvertibleBooleanExpr( ) {
-			public <N> boolean booleanFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException {
+			public <N> boolean booleanFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
 				return Converter.toBoolean(m_nodeSetExpr.nodeIterator(model, node, dynEnv));
 			}
+
+            @Override
+            public boolean booleanFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return Converter.toBooleanFromTraverser(m_nodeSetExpr.traverseNodes(contextNode, dynEnv));
+            }
 		};
 	}
 
 	@Override
 	public VariantExpr makeVariantExpr(ExprContextStatic statEnv) {
 		return new ConvertibleVariantExpr() {
-			public <N> Variant<N> evaluateAsVariant(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv)
-			throws ExprException {
+			public <N> Variant<N> evaluateAsVariant(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 				return new NodeSetVariant<N>(m_nodeSetExpr.nodeIterator(model, contextNode, dynEnv), model);
 			}
+
+            @Override
+            public TraverserVariant evaluateAsVariant(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return new TraverserVariantImpl(m_nodeSetExpr.traverseNodes(contextNode, dynEnv));
+            }
 		};
 	}
 

@@ -22,7 +22,12 @@ package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
+import org.genxdm.Precursor;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.iterators.SingleNodeIterator;
+import org.genxdm.processor.xpath.v10.iterators.SingleTraverser;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.NodeIterator;
 
@@ -31,18 +36,24 @@ public final class ParentAxisExpr
 {
 
 	@Override
-	public int getOptimizeFlags()
-	{
+	public int getOptimizeFlags() {
 		return SINGLE_LEVEL;
 	}
 
-	public NodeKind getPrincipalNodeKind()
-	{
+    @Override
+	public NodeKind getPrincipalNodeKind() {
 		return NodeKind.ELEMENT;
 	}
 
-	public <N> NodeIterator<N> nodeIterator(final Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv)
-	{
+    @Override
+	public <N> NodeIterator<N> nodeIterator(final Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 		return new SingleNodeIterator<N>(model.getParent(contextNode));
 	}
+
+    @Override
+    public Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+        Precursor pc = contextNode.newPrecursor();
+        pc.moveToParent();
+        return new SingleTraverser(pc);
+    }
 }

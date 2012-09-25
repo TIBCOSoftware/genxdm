@@ -18,12 +18,13 @@ package org.genxdm.bridgekit.tree;
 import org.genxdm.Cursor;
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
+import org.genxdm.Precursor;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.nodes.Bookmark;
 
 public class CursorOnModel<N>
-    extends InformerOnModel<N>
+    extends TraversingInformerOnModel<N>
     implements Cursor<N>
 {
     
@@ -38,11 +39,6 @@ public class CursorOnModel<N>
         return new BookmarkOnModel<N>(node, model);
     }
     
-    public int compareTo(final Cursor<N> other)
-    {
-        return model.compare(node, other.bookmark().getNode());
-    }
-
     public void moveTo(final N bookmark)
     {
         setCurrentNode(PreCondition.assertArgumentNotNull(bookmark, "bookmark"));
@@ -142,4 +138,9 @@ public class CursorOnModel<N>
     }
     
     protected NodeKind nodeType;
+
+    @Override
+    public Precursor newPrecursor() {
+        return new CursorOnModel<N>(node, model);
+    }
 }

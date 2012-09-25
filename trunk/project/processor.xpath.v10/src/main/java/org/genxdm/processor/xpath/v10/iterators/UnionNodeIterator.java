@@ -21,7 +21,6 @@
 package org.genxdm.processor.xpath.v10.iterators;
 
 import org.genxdm.Model;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
 
 public final class UnionNodeIterator<N> implements NodeIterator<N>
@@ -32,7 +31,7 @@ public final class UnionNodeIterator<N> implements NodeIterator<N>
 	private N node1;
 	private N node2;
 
-	public UnionNodeIterator(final NodeIterator<N> iter1, final NodeIterator<N> iter2, final Model<N> model) throws ExprException
+	public UnionNodeIterator(final NodeIterator<N> iter1, final NodeIterator<N> iter2, final Model<N> model)
 	{
 		this.iter1 = iter1;
 		this.iter2 = iter2;
@@ -41,8 +40,8 @@ public final class UnionNodeIterator<N> implements NodeIterator<N>
 		this.node2 = iter2.next();
 	}
 
-	public N next() throws ExprException
-	{
+	@Override
+	public N next() {
 		if (node1 == null)
 		{
 			N tem = node2;

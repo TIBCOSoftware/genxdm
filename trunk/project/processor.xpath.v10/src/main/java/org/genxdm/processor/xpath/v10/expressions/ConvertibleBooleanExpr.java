@@ -21,12 +21,14 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.variants.BooleanVariant;
 import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.Converter;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
+import org.genxdm.xpath.v10.TraverserVariant;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.Variant;
 import org.genxdm.xpath.v10.VariantExpr;
@@ -43,10 +45,15 @@ public abstract class ConvertibleBooleanExpr
 	{
 		return new ConvertibleStringExpr()
 		{
-			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> context) throws ExprException
-			{
+            @Override
+			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> context) {
 				return Converter.toString(ConvertibleBooleanExpr.this.booleanFunction(model, node, context));
 			}
+
+            @Override
+            public String stringFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return Converter.toString(ConvertibleBooleanExpr.this.booleanFunction(contextNode, dynEnv));
+            }
 		};
 	}
 
@@ -55,10 +62,15 @@ public abstract class ConvertibleBooleanExpr
 	{
 		return new ConvertibleNumberExpr()
 		{
-			public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> context) throws ExprException
-			{
+            @Override
+			public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> context) {
 				return Converter.toNumber(ConvertibleBooleanExpr.this.booleanFunction(model, contextNode, context));
 			}
+
+            @Override
+            public double numberFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return Converter.toNumber(ConvertibleBooleanExpr.this.booleanFunction(contextNode, dynEnv));
+            }
 		};
 	}
 
@@ -71,10 +83,15 @@ public abstract class ConvertibleBooleanExpr
 	{
 		return new ConvertibleVariantExpr()
 		{
-			public <N> Variant<N> evaluateAsVariant(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
-			{
+            @Override
+			public <N> Variant<N> evaluateAsVariant(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 				return new BooleanVariant<N>(ConvertibleBooleanExpr.this.booleanFunction(model, contextNode, dynEnv));
 			}
+
+            @Override
+            public TraverserVariant evaluateAsVariant(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return new BooleanVariant<Object>(ConvertibleBooleanExpr.this.booleanFunction(contextNode, dynEnv));
+            }
 		};
 	}
 }

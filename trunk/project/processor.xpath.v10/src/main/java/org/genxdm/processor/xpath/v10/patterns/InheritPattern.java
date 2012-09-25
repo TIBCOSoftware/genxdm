@@ -21,8 +21,10 @@
 package org.genxdm.processor.xpath.v10.patterns;
 
 import org.genxdm.Model;
+import org.genxdm.Precursor;
+import org.genxdm.nodes.TraversingInformer;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 
 final class InheritPattern 
     implements Pattern
@@ -34,8 +36,8 @@ final class InheritPattern
 		this.p = p;
 	}
 
-	public <N> boolean matches(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
-	{
+	@Override
+	public <N> boolean matches(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 		N node = contextNode;
 		do
 		{
@@ -48,4 +50,21 @@ final class InheritPattern
 		while (node != null);
 		return false;
 	}
+
+    @Override
+    public boolean matches(TraversingInformer node, TraverserDynamicContext dynEnv) {
+        Precursor someAncestor = node.newPrecursor();
+        do
+        {
+            if (p.matches(someAncestor, dynEnv))
+            {
+                return true;
+            }
+            if (!someAncestor.moveToParent()) {
+                someAncestor = null;
+            }
+        }
+        while (someAncestor != null);
+        return false;
+    }
 }

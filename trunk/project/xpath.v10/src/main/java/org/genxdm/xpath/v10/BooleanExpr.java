@@ -21,8 +21,11 @@
 package org.genxdm.xpath.v10;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
 
 public interface BooleanExpr
 {
-    <N> boolean booleanFunction(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv) throws ExprException;
+    <N> boolean booleanFunction(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv);
+
+    boolean booleanFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv);
 }

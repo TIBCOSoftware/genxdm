@@ -22,7 +22,7 @@ import org.genxdm.Model;
 import org.genxdm.exceptions.PreCondition;
 
 
-final class IteratorAncestorOrSelfAxis<N> implements Iterator<N>
+public final class IteratorAncestorOrSelfAxis<N> implements Iterator<N>
 {
     private N m_pending;
     private final Model<N> m_model;

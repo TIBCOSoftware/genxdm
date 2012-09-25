@@ -21,8 +21,9 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NumberExpr;
 
 final class NegateExpr
@@ -36,8 +37,13 @@ final class NegateExpr
 		this.expr = expr;
 	}
 
-	public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
-	{
+    @Override
+	public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 		return -expr.numberFunction(model, contextNode, dynEnv);
 	}
+
+    @Override
+    public double numberFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+        return -expr.numberFunction(contextNode, dynEnv);
+    }
 }
