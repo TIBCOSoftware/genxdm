@@ -15,7 +15,11 @@
  */
 package org.genxdm.bridge.cx.tree;
 
+import java.util.List;
+
+import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.io.ContentHandler;
+import org.genxdm.typed.io.SequenceHandler;
 
 public final class Walker
 {
@@ -74,6 +78,90 @@ public final class Walker
                     while (child != null)
                     {
                         walk(child, handler);
+                        child = child.nextSibling;
+                    }
+                }
+                finally
+                {
+                    handler.endDocument();
+                }
+                break;
+            }
+            case NAMESPACE:
+            {
+                handler.namespace(node.localName, node.getStringValue());
+                break;
+            }
+            case COMMENT:
+            {
+                handler.comment(node.getStringValue());
+                break;
+            }
+            case PROCESSING_INSTRUCTION:
+            {
+                handler.processingInstruction(node.localName, node.getStringValue());
+                break;
+            }
+            default:
+            {
+                throw new AssertionError(node.getNodeKind());
+            }
+        }
+    }
+    
+    public static final void walk(final XmlNode node, SequenceHandler<XmlAtom> handler, boolean bogus)
+    {
+        switch (node.getNodeKind())
+        {
+            case ELEMENT:
+            {
+                handler.startElement(node.namespaceURI, node.localName, node.prefixHint, node.getTypeName());
+                try
+                {
+                    XmlNamespaceNode namespace = ((XmlElementNode)node).firstNamespace;
+                    while (namespace != null)
+                    {
+                        walk(namespace, handler, false);
+                        namespace = (XmlNamespaceNode)namespace.nextSibling;
+                    }
+                    XmlAttributeNode attribute = ((XmlElementNode)node).firstAttribute;
+                    while (attribute != null)
+                    {
+                        walk(attribute, handler, false);
+                        attribute = (XmlAttributeNode)attribute.nextSibling;
+                    }
+                    XmlNode child = ((XmlContainerNode)node).firstChild;
+                    while (child != null)
+                    {
+                        walk(child, handler, false);
+                        child = child.nextSibling;
+                    }
+                }
+                finally
+                {
+                    handler.endElement();
+                }
+                break;
+            }
+            case ATTRIBUTE:
+            {
+                handler.attribute(node.namespaceURI, node.localName, node.prefixHint, (List<? extends XmlAtom>)node.getValue(), node.getTypeName());
+                break;
+            }
+            case TEXT:
+            {
+                handler.text((List<? extends XmlAtom>)node.getValue());
+                break;
+            }
+            case DOCUMENT:
+            {
+                handler.startDocument(((XmlRootNode)node).documentURI, ((XmlRootNode)node).docTypeDecl);
+                try
+                {
+                    XmlNode child = ((XmlContainerNode)node).firstChild;
+                    while (child != null)
+                    {
+                        walk(child, handler, false);
                         child = child.nextSibling;
                     }
                 }

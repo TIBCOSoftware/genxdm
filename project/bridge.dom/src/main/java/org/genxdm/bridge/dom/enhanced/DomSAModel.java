@@ -142,7 +142,8 @@ class DomSAModel
         return null;
     }
 
-    public final void stream(final Node origin, final SequenceHandler<XmlAtom> handler) throws GenXDMException
+    @Override
+    public final void stream(final Node origin, final SequenceHandler<XmlAtom> handler, boolean bogus) throws GenXDMException
     {
         switch (getNodeKind(origin))
         {
@@ -166,7 +167,7 @@ class DomSAModel
                                 final Node namespace = mixed.item(i);
                                 if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespace.getNamespaceURI()))
                                 {
-                                    deepCopyNamespace(namespace, handler);
+                                    stream(namespace, handler, false);
                                 }
                             }
 
@@ -176,12 +177,17 @@ class DomSAModel
                                 final Node attribute = mixed.item(i);
                                 if (!XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attribute.getNamespaceURI()))
                                 {
-                                    deepCopyAttribute(attribute, true, handler);
+                                    stream(attribute, handler, false);
                                 }
                             }
                         }
                     }
-                    deepCopyChildren(origin, true, handler);
+                    Node child = origin.getFirstChild();
+                    while (null != child)
+                    {
+                        stream(child, handler, false);
+                        child = child.getNextSibling();
+                    }
                 }
                 finally
                 {
@@ -191,7 +197,8 @@ class DomSAModel
             break;
             case ATTRIBUTE:
             {
-                deepCopyAttribute(origin, true, handler);
+                final String prefix = getAttributePrefix(origin);
+                handler.attribute(getNamespaceURI(origin), getLocalName(origin), prefix, getValue(origin), getTypeName(origin));
             }
             break;
             case TEXT:
@@ -216,7 +223,12 @@ class DomSAModel
                 handler.startDocument(getDocumentURI(origin), null);
                 try
                 {
-                    deepCopyChildren(origin, true, handler);
+                    Node child = origin.getFirstChild();
+                    while (null != child)
+                    {
+                        stream(child, handler, false);
+                        child = child.getNextSibling();
+                    }
                 }
                 finally
                 {
@@ -226,7 +238,9 @@ class DomSAModel
             break;
             case NAMESPACE:
             {
-                deepCopyNamespace(origin, handler);
+                final String prefix = DomSupport.getLocalNameAsString(origin);
+                final String uri = origin.getNodeValue();
+                handler.namespace(prefix, uri);
             }
             break;
             case COMMENT:
@@ -284,25 +298,6 @@ class DomSAModel
 //        }
 //    }
 
-    private void deepCopyAttribute(final Node attribute, final boolean copyTypeAnnotations, final SequenceHandler<XmlAtom> handler) throws GenXDMException
-    {
-        final String prefix = getAttributePrefix(attribute);
-        handler.attribute(getNamespaceURI(attribute), getLocalName(attribute), prefix, attribute.getNodeValue(), null);
-    }
-
-    /**
-     * An optimized child axis traversal for that avoids intermediate {@link Iterable} creation.
-     */
-    private void deepCopyChildren(final Node origin, final boolean copyTypeAnnotations, final SequenceHandler<XmlAtom> handler) throws GenXDMException
-    {
-        Node child = origin.getFirstChild();
-        while (null != child)
-        {
-            stream(child, handler);
-            child = child.getNextSibling();
-        }
-    }
-
     @SuppressWarnings("unused")
     private final Node getNamespace(final Node node, final String prefix)
     {
@@ -324,13 +319,6 @@ class DomSAModel
         {
             return null;
         }
-    }
-
-    private void deepCopyNamespace(final Node namespace, final SequenceHandler<XmlAtom> handler) throws GenXDMException
-    {
-        final String prefix = DomSupport.getLocalNameAsString(namespace);
-        final String uri = namespace.getNodeValue();
-        handler.namespace(prefix, uri);
     }
 
     private final AtomBridge<XmlAtom> atomBridge;

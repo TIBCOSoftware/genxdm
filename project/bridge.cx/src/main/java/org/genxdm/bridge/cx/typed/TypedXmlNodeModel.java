@@ -87,7 +87,8 @@ public class TypedXmlNodeModel
         }
     }
 
-    public void stream(XmlNode node, SequenceHandler<XmlAtom> handler)
+    @Override
+    public void stream(XmlNode node, SequenceHandler<XmlAtom> handler, boolean bogus)
         throws GenXDMException
     {
         switch (node.getNodeKind())
@@ -100,17 +101,17 @@ public class TypedXmlNodeModel
                     Iterable<XmlNode> namespaces = getNamespaceAxis(node, false);
                     for (XmlNode namespace : namespaces)
                     {
-                        stream(namespace, handler);
+                        stream(namespace, handler, bogus);
                     }
                     Iterable<XmlNode> attributes = getAttributeAxis(node, false);
                     for (XmlNode attribute : attributes)
                     {
-                        stream(attribute, handler);
+                        stream(attribute, handler, bogus);
                     }
                     Iterable<XmlNode> children = getChildAxis(node);
                     for (XmlNode child : children)
                     {
-                        stream(child, handler);
+                        stream(child, handler, bogus);
                     }
                 }
                 finally
@@ -140,7 +141,7 @@ public class TypedXmlNodeModel
                     Iterable<XmlNode> children = getChildAxis(node);
                     for (XmlNode child : children)
                     {
-                        stream(child, handler);
+                        stream(child, handler, bogus);
                     }
                 }
                 finally
