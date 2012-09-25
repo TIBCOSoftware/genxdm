@@ -17,6 +17,7 @@ import org.genxdm.processor.w3c.xs.DefaultSchemaCatalog;
 import org.genxdm.processor.w3c.xs.W3cXmlSchemaParser;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.ValidationHandler;
+import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.Schema;
 import org.genxdm.xs.exceptions.AbortException;
@@ -82,6 +83,9 @@ public abstract class TreeValidationBase<N, A>
         assertEquals(0, catcher.size());
         
         POVerifier.verifyTyped(typed, cache.getModel());
+        // this is a means of testing sequence handler output, which had problems.
+//        SequenceHandler<A> handler = new SequenceHandlerEmitter<A>(cache.getAtomBridge());
+//        cache.getModel().stream(typed, handler, false);
     }
     
 }
