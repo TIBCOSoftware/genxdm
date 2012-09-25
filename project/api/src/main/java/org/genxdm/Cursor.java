@@ -16,10 +16,7 @@
 package org.genxdm;
 
 import org.genxdm.axes.Repositioner;
-import org.genxdm.exceptions.GenXDMException;
-import org.genxdm.io.ContentHandler;
 import org.genxdm.nodes.Bookmark;
-import org.genxdm.nodes.Informer;
 
 /**
  * A cursor provides the XQuery Data Model interface with the addition of the
