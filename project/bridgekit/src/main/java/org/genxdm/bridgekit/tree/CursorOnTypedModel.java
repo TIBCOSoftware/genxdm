@@ -64,7 +64,8 @@ public final class CursorOnTypedModel<N, A>
         return tmodel.getValue(node);
     }
 
-    public void write(N node, SequenceHandler<A> handler)
+    @Override
+    public void write(SequenceHandler<A> handler)
         throws GenXDMException
     {
         tmodel.stream(node, handler);
