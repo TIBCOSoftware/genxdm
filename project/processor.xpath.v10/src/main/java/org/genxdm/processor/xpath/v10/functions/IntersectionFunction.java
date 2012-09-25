@@ -21,12 +21,15 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleNodeSetExprImpl;
 import org.genxdm.processor.xpath.v10.iterators.IntersectionNodeIterator;
+import org.genxdm.processor.xpath.v10.iterators.IntersectionTraverser;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.ExprContextStatic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.NodeSetExpr;
@@ -47,11 +50,17 @@ final class IntersectionFunction
 
 		return new ConvertibleNodeSetExprImpl()
 		{
-			public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) throws ExprException
-			{
+            @Override
+			public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
 				return new IntersectionNodeIterator<N>(nse1.nodeIterator(model, node, dynEnv),
 						nse2.nodeIterator(model, node, dynEnv), model);
 			}
+
+            @Override
+            public Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+                return new IntersectionTraverser(nse1.traverseNodes(contextNode, dynEnv),
+                        nse2.traverseNodes(contextNode, dynEnv));
+            }
 		};
 	}
 }

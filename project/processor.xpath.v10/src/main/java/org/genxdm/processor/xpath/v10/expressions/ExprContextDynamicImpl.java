@@ -21,61 +21,22 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
-import org.genxdm.xpath.v10.ExtensionContext;
 import org.genxdm.xpath.v10.Variant;
 
-final class ExprContextDynamicImpl<N> 
+final class ExprContextDynamicImpl<N> extends DynamicContextBaseImpl
     implements ExprContextDynamic<N>
 {
-	private boolean m_inheritAttributes;
-	
-	private boolean m_inheritNamespaces;
-	
-	private final int position;
-	private final int size;
 	private final Map<QName, Variant<N>> variables;
 
 	public ExprContextDynamicImpl(final int position, final int size,
 			final Map<? extends QName, ? extends Variant<N>> variables,
 					boolean inheritAttributes, boolean inheritNamespaces)
 	{
-		this.position = position;
-		this.size = size;
+	    super(position, size, inheritAttributes, inheritNamespaces);
 		this.variables = new HashMap<QName, Variant<N>>(variables);
-		this.m_inheritAttributes = inheritAttributes;
-		this.m_inheritNamespaces = inheritNamespaces;
 	}
 
-	public int getContextPosition()
-	{
-		return position;
-	}
-
-	public int getContextSize() throws ExprException
-	{
-		return size;
-	}
-
-	public ExtensionContext<N> getExtensionContext(final String namespace) throws ExprException
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Variant<N> getVariableValue(final QName name) throws ExprException
-	{
+	public Variant<N> getVariableValue(final QName name) {
 		return variables.get(name);
 	}
-
-	@Override
-	public boolean getInheritAttributes() {
-		return m_inheritAttributes;
-	}
-
-	@Override
-	public boolean getInheritNamespaces() {
-		return m_inheritNamespaces;
-	}
-
 }

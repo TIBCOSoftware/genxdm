@@ -22,7 +22,6 @@ package org.genxdm.processor.xpath.v10.iterators;
 
 import org.genxdm.Model;
 import org.genxdm.bridgekit.tree.Ordering;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
 
 /*
@@ -40,8 +39,7 @@ final class UniqueNodeIterator<N> implements NodeIterator<N>
 		this.model = model;
 	}
 
-	public N next() throws ExprException
-	{
+	public N next() {
 		// loop till we find a node that isn't the same as the last one
 		for (;;)
 		{

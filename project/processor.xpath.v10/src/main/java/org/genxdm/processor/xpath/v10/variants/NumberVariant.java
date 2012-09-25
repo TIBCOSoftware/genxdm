@@ -20,11 +20,14 @@
  */
 package org.genxdm.processor.xpath.v10.variants;
 
+import org.genxdm.nodes.Traverser;
 import org.genxdm.xpath.v10.Converter;
 import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
+import org.genxdm.xpath.v10.TraverserVariant;
 import org.genxdm.xpath.v10.ExprException;
 
-public final class NumberVariant<N> extends VariantBase<N>
+public final class NumberVariant<N> extends VariantBase<N> implements TraverserVariant
 {
 	private final double num;
 
@@ -50,8 +53,7 @@ public final class NumberVariant<N> extends VariantBase<N>
 	}
 
 	@Override
-	public boolean convertToPredicate(final ExprContextDynamic<N> context) throws ExprException
-	{
+	public boolean convertToPredicate(final ExprContextDynamic<N> context) {
 		return Converter.positionToBoolean(num, context);
 	}
 
@@ -60,4 +62,19 @@ public final class NumberVariant<N> extends VariantBase<N>
 	{
 		return true;
 	}
+
+    @Override
+    public Traverser convertToTraverser() {
+        throw new RuntimeException("cannot convert to node-set");
+    }
+
+    @Override
+    public boolean convertToPredicate(TraverserDynamicContext context) {
+        return Converter.positionToBoolean(num, context);
+    }
+
+    @Override
+    public TraverserVariant makePermanentCursor() throws ExprException {
+        return this;
+    }
 }

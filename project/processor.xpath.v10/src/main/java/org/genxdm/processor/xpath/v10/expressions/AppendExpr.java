@@ -21,8 +21,9 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.StringExpr;
 
 /**
@@ -47,8 +48,13 @@ public final class AppendExpr
 	/**
 	 * evaluate each of the two sub-expressions with the given context Node and given context, return the concatenation of the results of each evaluation
 	 */
-	public <N> String stringFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
-	{
+    @Override
+	public <N> String stringFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 		return expr1.stringFunction(model, contextNode, dynEnv).concat(expr2.stringFunction(model, contextNode, dynEnv));
 	}
+
+    @Override
+    public String stringFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+        return expr1.stringFunction(contextNode, dynEnv).concat(expr2.stringFunction(contextNode, dynEnv));
+    }
 }

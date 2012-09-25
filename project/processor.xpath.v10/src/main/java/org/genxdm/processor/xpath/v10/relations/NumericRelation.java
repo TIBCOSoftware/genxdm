@@ -21,26 +21,26 @@
 package org.genxdm.processor.xpath.v10.relations;
 
 import org.genxdm.xpath.v10.Converter;
-import org.genxdm.xpath.v10.ExprException;
-import org.genxdm.xpath.v10.Variant;
+import org.genxdm.xpath.v10.VariantCore;
 
 public abstract class NumericRelation 
     extends Relation
 {
 
+    @Override
 	public boolean relate(final boolean b1, final boolean b2)
 	{
 		return relate(b1 ? 1.0 : 0.0, b2 ? 1.0 : 0.0);
 	}
 
+    @Override
 	public boolean relate(final String s1, final String s2)
 	{
 		return relate(Converter.toNumber(s1), Converter.toNumber(s2));
 	}
 
 	@Override
-	<N> boolean relateAtomic(final Variant<N> obj1, final Variant<N> obj2) throws ExprException
-	{
+	<N> boolean relateAtomic(final VariantCore obj1, final VariantCore obj2) {
 		return relate(obj1.convertToNumber(), obj2.convertToNumber());
 	}
 }

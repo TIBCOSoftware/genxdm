@@ -21,25 +21,12 @@
 package org.genxdm.xpath.v10;
 
 
-public interface Variant<N>
+public interface Variant<N> extends VariantCore
 {
-    boolean convertToBoolean() throws ExprException;
+    NodeIterator<N> convertToNodeSet();
 
-    NodeIterator<N> convertToNodeSet() throws ExprException;
+    boolean convertToPredicate(ExprContextDynamic<N> context);
 
-    double convertToNumber() throws ExprException;
-
-    boolean convertToPredicate(ExprContextDynamic<N> context) throws ExprException;
-
-    String convertToString() throws ExprException;
-
-    boolean isBoolean();
-
-    boolean isNodeSet();
-
-    boolean isNumber();
-
-    boolean isString();
-
+    // TODO - makePermanent no longer appears to be used?
     Variant<N> makePermanent() throws ExprException;
 }

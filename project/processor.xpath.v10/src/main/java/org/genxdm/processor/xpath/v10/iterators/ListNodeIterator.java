@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
 
 public class ListNodeIterator<N>
@@ -35,9 +34,7 @@ public class ListNodeIterator<N>
         this.it = PreCondition.assertNotNull(list, "list").iterator();
     }
 
-    public N next()
-        throws ExprException
-    {
+    public N next() {
         if (it.hasNext())
             return it.next();
         return null;

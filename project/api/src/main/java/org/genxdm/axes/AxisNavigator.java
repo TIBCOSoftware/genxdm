@@ -16,6 +16,7 @@
 package org.genxdm.axes;
 
 import org.genxdm.nodes.Informer;
+import org.genxdm.nodes.Traverser;
 
 /**
  * Provides the various "axes" by which nodes can be traversed, as defined by
@@ -40,16 +41,16 @@ public interface AxisNavigator
     /**
      * Returns the nodes along the ancestor axis using this node as the origin.
      * 
-     * @return an iterable of Informer-s for the axis.
+     * @return A Traverser for the axis.
      */
-    Iterable<Informer> getAncestorAxis();
+    Traverser traverseAncestorAxis();
 
     /**
      * Returns the nodes along the ancestor-or-self axis using this node as the origin.
      * 
-     * @return an iterable of Informer-s for the axis.
+     * @return  A Traverser for the axis.
      */
-    Iterable<Informer> getAncestorOrSelfAxis();
+    Traverser traverseAncestorOrSelfAxis();
 
     /**
      * Returns the nodes along the attribute axis using this node as the origin.
@@ -62,9 +63,9 @@ public interface AxisNavigator
      *            parameter is <code>false</code>.
      * 
      * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-attributes">XDM attributes accessor</a>
-     * @return an iterable of Informer-s for the axis.
+     * @return  A Traverser for the axis.
      */
-    Iterable<Informer> getAttributeAxis(boolean inherit);
+    Traverser traverseAttributeAxis(boolean inherit);
 
     /**
      * Returns the nodes along the child axis using this node as the origin.
@@ -74,16 +75,16 @@ public interface AxisNavigator
      * 
      * 
      * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-children">XDM dm:children accessor</a>
-     * @return an iterable of Informer-s for the axis.
+     * @return  A Traverser for the axis.
      */
-    Iterable<Informer> getChildAxis();
+    Traverser traverseChildAxis();
 
     /**
      * Returns all the elements along the child axis.
      * 
-     * @return an iterable of Informer-s for the axis.
+     * @return  A Traverser for the axis.
      */
-    Iterable<Informer> getChildElements();
+    Traverser traverseChildElements();
 
     /**
      * Returns all the elements along the child axis whose names match the arguments supplied.
@@ -92,37 +93,37 @@ public interface AxisNavigator
      *            The namespace-uri to be matched.
      * @param localName
      *            The local-name to be matched.
-     * @return an iterable of Informer-s for the axis.
+     * @return  A Traverser for the axis.
      */
-    Iterable<Informer> getChildElementsByName(String namespaceURI, String localName);
+    Traverser traverseChildElementsByName(String namespaceURI, String localName);
 
     /**
      * Returns the nodes along the descendant axis using this node as the origin.
      * 
-     * @return an iterable of Informer-s for the axis.
+     * @return  A Traverser for the axis.
      */
-    Iterable<Informer> getDescendantAxis();
+    Traverser traverseDescendantAxis();
 
     /**
      * Returns the nodes along the descendant-or-self axis using this node as the origin.
      * 
-     * @return an iterable of Informer-s for the axis.
+     * @return  A Traverser for the axis.
      */
-    Iterable<Informer> getDescendantOrSelfAxis();
+    Traverser traverseDescendantOrSelfAxis();
 
     /**
      * Returns the nodes along the following axis using this node as the origin.
      * 
-     * @return an iterable of Informer-s for the axis.
+     * @return  A Traverser for the axis.
      */
-    Iterable<Informer> getFollowingAxis();
+    Traverser traverseFollowingAxis();
 
     /**
      * Returns the nodes along the following-sibling axis using this node as the origin.
      * 
-     * @return an iterable of Informer-s for the axis.
+     * @return A Traverser for the axis.
      */
-    Iterable<Informer> getFollowingSiblingAxis();
+    Traverser traverseFollowingSiblingAxis();
 
     /**
      * Returns the nodes along the namespace axis using this node as the origin.
@@ -138,22 +139,22 @@ public interface AxisNavigator
      *            this parameter is <code>true</code>.
      * 
      * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-nodes">XDM dm:namespace-nodes</a>
-     * @return an iterable of Informer-s for the axis.
+     * @return  A Traverser for the axis.
      */
-    Iterable<Informer> getNamespaceAxis(boolean inherit);
+    Traverser traverseNamespaceAxis(boolean inherit);
 
     /**
      * Returns the nodes along the preceding axis using this node as the origin.
      * 
-     * @return an iterable of Informer-s for the axis.
+     * @return  A Traverser for the axis.
      */
-    Iterable<Informer> getPrecedingAxis();
+    Traverser traversePrecedingAxis();
 
     /**
      * Returns the nodes along the preceding-sibling axis using this node as the origin.
      * 
-     * @return an iterable of Informer-s for the axis.
+     * @return  A Traverser for the axis.
      */
-    Iterable<Informer> getPrecedingSiblingAxis();
+    Traverser traversePrecedingSiblingAxis();
 
 }

@@ -21,7 +21,11 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.iterators.SingleNodeIterator;
+import org.genxdm.processor.xpath.v10.iterators.SingleTraverser;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 import org.genxdm.xpath.v10.NodeIterator;
 
@@ -44,4 +48,12 @@ final class NodeConstantExpr<CN>
 		// safety that it is the same node as when you started.
 		return new SingleNodeIterator<N>( (N) node);
 	}
+
+    @Override
+    public Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+        // TODO - this appears to be untested - There doesn't seem to be a way
+        // that one could compile to a constant node, and then guarantee via type
+        // safety that it is the same node as when you started.
+        return new SingleTraverser(contextNode);
+    }
 }

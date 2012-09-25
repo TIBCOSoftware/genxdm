@@ -22,7 +22,9 @@ package org.genxdm.processor.xpath.v10.tests;
 
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
+import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.patterns.PathPatternBase;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
 
 public final class AttributeTest 
@@ -42,7 +44,12 @@ public final class AttributeTest
 		return model.matches(node, NodeKind.ATTRIBUTE, namespaceURI, localName);
 	}
 
-	public String getMatchNamespaceURI()
+    @Override
+    public boolean matches(TraversingInformer node, TraverserDynamicContext dynEnv) {
+        return node.matches(NodeKind.ATTRIBUTE, namespaceURI, localName);
+    }
+
+    public String getMatchNamespaceURI()
 	{
 		return namespaceURI;
 	}
@@ -61,4 +68,5 @@ public final class AttributeTest
 	{
 		return 0;
 	}
+
 }

@@ -22,8 +22,10 @@ package org.genxdm.processor.xpath.v10.patterns;
 
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
+import org.genxdm.Precursor;
+import org.genxdm.nodes.TraversingInformer;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 
 /**
  * represents the concatenation of step patterns, right to left in a LocationPathPattern
@@ -49,8 +51,8 @@ class ParentPattern
 	/**
 	 * if the rightmost step matches, and our parentPattern's matches() returns true for this node's parent then we have a winner!
 	 */
-	public <N> boolean matches(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) throws ExprException
-	{
+	@Override
+	public <N> boolean matches(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
 		if (!childPattern.matches(model, contextNode, dynEnv))
 		{
 			return false;
@@ -64,6 +66,22 @@ class ParentPattern
 		return parentPattern.matches(model, node, dynEnv);
 	}
 
+    @Override
+    public boolean matches(TraversingInformer node, TraverserDynamicContext dynEnv) {
+        if (!childPattern.matches(node, dynEnv))
+        {
+            return false;
+        }
+        Precursor parent = node.newPrecursor();
+        if (!parent.moveToParent())
+        {
+            // we ran out of ancestors before we ran out of StepPatterns
+            return false;
+        }
+        return parentPattern.matches(parent, dynEnv);
+    }
+
+    @Override
 	public int getDefaultPriority()
 	{
 		return 1;
@@ -72,11 +90,13 @@ class ParentPattern
 	/**
 	 * gets the rightmost (final) step's matchNodeType
 	 */
+    @Override
 	public String getMatchNamespaceURI()
 	{
 		return childPattern.getMatchNamespaceURI();
 	}
 
+    @Override
 	public String getMatchLocalName()
 	{
 		return childPattern.getMatchLocalName();
@@ -85,8 +105,10 @@ class ParentPattern
 	/**
 	 * gets the rightmost (final) step's matchNodeType
 	 */
+    @Override
 	public NodeKind getMatchNodeType()
 	{
 		return childPattern.getMatchNodeType();
 	}
+
 }

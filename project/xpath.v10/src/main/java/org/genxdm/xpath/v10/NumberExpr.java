@@ -21,8 +21,11 @@
 package org.genxdm.xpath.v10;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
 
 public interface NumberExpr
 {
-    <N> double numberFunction(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv) throws ExprException;
+    <N> double numberFunction(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv);
+
+    double numberFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv);
 }

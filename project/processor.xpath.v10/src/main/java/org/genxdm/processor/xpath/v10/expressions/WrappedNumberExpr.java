@@ -16,8 +16,9 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
+import org.genxdm.nodes.TraversingInformer;
+import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NumberExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
@@ -38,9 +39,14 @@ public class WrappedNumberExpr extends ConvertibleNumberExpr {
 	
 	@Override
 	public <N> double numberFunction(Model<N> model, N contextNode,
-			ExprContextDynamic<N> dynEnv) throws ExprException {
+			ExprContextDynamic<N> dynEnv) {
 		return m_wrappedExpr.numberFunction(model, contextNode, dynEnv);
 	}
 
+    @Override
+    public double numberFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
+        return m_wrappedExpr.numberFunction(contextNode, dynEnv);
+    }
+    
 	private final NumberExpr m_wrappedExpr;
 }
