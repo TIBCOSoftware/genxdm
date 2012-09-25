@@ -344,8 +344,10 @@ final class AxiomSAModel implements TypedModel<Object, XmlAtom>
         delegate.stream(node, handler); 
     }
     
-    public void stream(Object node, SequenceHandler<XmlAtom> handler) throws GenXDMException
+    @Override
+    public void stream(Object node, SequenceHandler<XmlAtom> handler, boolean bogus) throws GenXDMException
     {
+        throw new AssertionError();
     }
 
 //    public Iterable<Object> getNamespaces(final Object node)
