@@ -16,7 +16,9 @@
 package org.genxdm.typed;
 
 import org.genxdm.Model;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.nodes.TypedNodeInformer;
+import org.genxdm.typed.io.SequenceHandler;
 
 /**
  * Aspect of the data model interface providing typed access to the XQuery Data Model tree.
@@ -34,4 +36,6 @@ import org.genxdm.nodes.TypedNodeInformer;
 public interface TypedModel<N, A> 
     extends Model<N>, TypedNodeInformer<N, A>
 {
+	void stream(N node, SequenceHandler<A> handler)
+		throws GenXDMException;
 }
