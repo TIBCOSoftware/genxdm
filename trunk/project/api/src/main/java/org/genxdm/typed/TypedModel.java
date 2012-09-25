@@ -36,6 +36,6 @@ import org.genxdm.typed.io.SequenceHandler;
 public interface TypedModel<N, A> 
     extends Model<N>, TypedNodeInformer<N, A>
 {
-	void stream(N node, SequenceHandler<A> handler)
+	void stream(N node, SequenceHandler<A> handler, boolean bogus)
 		throws GenXDMException;
 }

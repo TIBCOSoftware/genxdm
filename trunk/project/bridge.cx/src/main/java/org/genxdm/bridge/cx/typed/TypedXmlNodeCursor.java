@@ -18,10 +18,13 @@ package org.genxdm.bridge.cx.typed;
 import javax.xml.namespace.QName;
 
 import org.genxdm.bridge.cx.base.XmlNodeCursor;
+import org.genxdm.bridge.cx.tree.Walker;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.TypedCursor;
+import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
 
 public class TypedXmlNodeCursor
@@ -85,6 +88,13 @@ public class TypedXmlNodeCursor
                 throw new AssertionError(node.getNodeKind());
             }
         }
+    }
+    
+    @Override
+    public void write(SequenceHandler<XmlAtom> handler, boolean bogus)
+        throws GenXDMException
+    {
+        Walker.walk(node, handler, bogus);
     }
 
     private final TypedXmlNodeContext context;

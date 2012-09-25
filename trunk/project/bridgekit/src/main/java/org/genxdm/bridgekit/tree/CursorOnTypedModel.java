@@ -64,8 +64,8 @@ public final class CursorOnTypedModel<N, A>
         return tmodel.getValue(node);
     }
 
-    // stupid eclipse can't figure out that @Override here means TypedCursor. grr.
-    public void write(SequenceHandler<A> handler)
+    @Override
+    public void write(SequenceHandler<A> handler, boolean bogus)
         throws GenXDMException
     {
         tmodel.stream(node, handler);
