@@ -30,7 +30,6 @@ import org.genxdm.bridge.dom.enhanced.DomSAProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.filters.FilteredFragmentBuilder;
 import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
-import org.genxdm.bridgekit.tree.BookmarkOnModel;
 import org.genxdm.bridgekit.tree.CursorOnModel;
 import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
@@ -39,7 +38,6 @@ import org.genxdm.io.FragmentBuilder;
 import org.genxdm.mutable.MutableContext;
 import org.genxdm.mutable.MutableCursor;
 import org.genxdm.mutable.MutableModel;
-import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.xs.Schema;
 import org.w3c.dom.Node;
@@ -77,11 +75,6 @@ public class DomProcessingContext
         
     }
     
-    public Bookmark<Node> bookmark(Node node)
-    {
-        return new BookmarkOnModel<Node>(node, model);
-    }
-
     public Model<Node> getModel()
     {
         return model;
@@ -134,7 +127,7 @@ public class DomProcessingContext
         return tc;
     }
 
-    public Cursor<Node> newCursor(Node node)
+    public Cursor newCursor(Node node)
     {
         return new CursorOnModel<Node>(node, model);
     }

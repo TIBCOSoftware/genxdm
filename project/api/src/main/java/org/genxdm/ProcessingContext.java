@@ -18,7 +18,6 @@ package org.genxdm;
 import org.genxdm.io.DocumentHandlerFactory;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.mutable.MutableContext;
-import org.genxdm.nodes.Bookmark;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.xs.Schema;
 
@@ -31,17 +30,6 @@ import org.genxdm.xs.Schema;
  */
 public interface ProcessingContext<N> extends DocumentHandlerFactory<N> 
 {
-    /** Provide a wrapper around a node.
-     * 
-     * This abstraction is provided to allow applications and processors to contain
-     * stateful references to nodes associated with a processing context (without
-     * maintaining references to both N and ProcessingContext<... N ...>).
-     * 
-     * @param node the node for which a reference is desired.
-     * @return a bookmark containing a reference to the supplied node.
-     */
-    Bookmark<N> bookmark(N node);
-    
     /**
      * Returns a {@link Model} for navigating an XDM model.
      */
@@ -105,7 +93,7 @@ public interface ProcessingContext<N> extends DocumentHandlerFactory<N>
      * @param node
      *            The node over which the cursor is initially positioned. Cannot be <code>null</code>.
      */
-    Cursor<N> newCursor(N node);
+    Cursor newCursor(N node);
 
 
     /**

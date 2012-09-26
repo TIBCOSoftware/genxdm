@@ -23,7 +23,7 @@ package org.genxdm.processor.xpath.v10.functions;
 import javax.xml.XMLConstants;
 
 import org.genxdm.Model;
-import org.genxdm.Precursor;
+import org.genxdm.Cursor;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleBooleanExpr;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
@@ -95,7 +95,7 @@ public final class LangFunction
 
     private boolean lang(final TraversingInformer start, final String lang)
     {
-        Precursor node = start.newPrecursor();
+        Cursor node = start.newPrecursor();
         
         while (node != null)
         {

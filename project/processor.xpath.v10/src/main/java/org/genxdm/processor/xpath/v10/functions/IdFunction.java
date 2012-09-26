@@ -21,7 +21,7 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.Model;
-import org.genxdm.Precursor;
+import org.genxdm.Cursor;
 import org.genxdm.nodes.Traverser;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
@@ -77,7 +77,7 @@ public final class IdFunction
     {
         // TODO - review:
         // The following seems a little to simplistic - it just always returns the node with the given ID?
-        Precursor result = node.newPrecursor();
+        Cursor result = node.newPrecursor();
         result.moveToElementById(str);
         return new SingleTraverser(result);
     }

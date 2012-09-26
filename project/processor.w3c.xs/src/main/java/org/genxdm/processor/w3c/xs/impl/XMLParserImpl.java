@@ -18,7 +18,7 @@ package org.genxdm.processor.w3c.xs.impl;
 import java.io.InputStream;
 import java.net.URI;
 
-import org.genxdm.Precursor;
+import org.genxdm.Cursor;
 import org.genxdm.bridgekit.xs.ComponentBagImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLComponentLocator;
@@ -43,7 +43,7 @@ final public class XMLParserImpl implements SchemaParser
     }
 
     @Override
-    public ComponentBag parse(final URI schemaLocation, final Precursor tree,
+    public ComponentBag parse(final URI schemaLocation, final Cursor tree,
             final URI systemId, final SchemaExceptionHandler errors)
         throws AbortException
     {

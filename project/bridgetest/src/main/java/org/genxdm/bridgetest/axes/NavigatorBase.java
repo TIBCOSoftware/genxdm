@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 import javax.xml.XMLConstants;
 
 import org.genxdm.Cursor;
-import org.genxdm.Feature;
 import org.genxdm.NodeKind;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridgetest.TestBase;
@@ -48,7 +47,7 @@ public abstract class NavigatorBase<N>
         N doc = createComplexTestDocument(builder);
 
         assertNotNull(doc);
-        Cursor<N> cursor = context.newCursor(doc);
+        Cursor cursor = context.newCursor(doc);
         assertNotNull(cursor);
         
         boolean isMoved = cursor.moveToFirstChildElement(); // project element
@@ -96,7 +95,7 @@ public abstract class NavigatorBase<N>
         N doc = createComplexTestDocument(builder);
         
         assertNotNull(doc);
-        Cursor<N> cursor = context.newCursor(doc);
+        Cursor cursor = context.newCursor(doc);
         assertNotNull(cursor);
         
         boolean isMoved = cursor.moveToLastChild();
@@ -129,7 +128,7 @@ public abstract class NavigatorBase<N>
         N doc = createComplexTestDocument(builder);
         
         assertNotNull(doc);
-        Cursor<N> cursor = context.newCursor(doc);
+        Cursor cursor = context.newCursor(doc);
         assertNotNull(cursor);
         
         boolean isMoved = cursor.moveToFirstChildElement();
@@ -174,9 +173,9 @@ public abstract class NavigatorBase<N>
         N doc = createComplexTestDocument(builder);
         
         assertNotNull(doc);
-        Cursor<N> cursor = context.newCursor(doc);
+        Cursor cursor = context.newCursor(doc);
         
-        Cursor<N> cursor2 = context.newCursor(doc);
+        Cursor cursor2 = context.newCursor(doc);
         
         assertNotNull(cursor);
         
@@ -243,17 +242,19 @@ public abstract class NavigatorBase<N>
         isMoved = cursor.moveToPreviousSibling();
         assertFalse(isMoved);
 
+        // TODO: removed moveTo, which killed moveToNamespace hack.
+        // figure out a way to test this without that hack.
         //namespace
-        if (context.isSupported(Feature.NAMESPACE_AXIS))
-        {
-            N nstest = context.getModel().getChildElementsByName(context.getModel().getFirstChild(doc), "http://www.genxdm.org/nonsense", "nstest").iterator().next();
-            cursor.moveTo(getNamespaceNode(context.getModel(), nstest, "gue"));
-            assertEquals(NodeKind.NAMESPACE, cursor.getNodeKind());
-            assertFalse(cursor.hasNextSibling());
-            assertFalse(cursor.moveToNextSibling());
-            assertFalse(cursor.hasPreviousSibling());
-            assertFalse(cursor.moveToPreviousSibling());
-        }
+//        if (context.isSupported(Feature.NAMESPACE_AXIS))
+//        {
+//            N nstest = context.getModel().getChildElementsByName(context.getModel().getFirstChild(doc), "http://www.genxdm.org/nonsense", "nstest").iterator().next();
+//            cursor.moveTo(getNamespaceNode(context.getModel(), nstest, "gue"));
+//            assertEquals(NodeKind.NAMESPACE, cursor.getNodeKind());
+//            assertFalse(cursor.hasNextSibling());
+//            assertFalse(cursor.moveToNextSibling());
+//            assertFalse(cursor.hasPreviousSibling());
+//            assertFalse(cursor.moveToPreviousSibling());
+//        }
     }
 
     @Test
@@ -264,8 +265,8 @@ public abstract class NavigatorBase<N>
         N doc = createComplexTestDocument(builder);
         
         assertNotNull(doc);
-        Cursor<N> cursor = context.newCursor(doc);
-        Cursor<N> cursor2 = context.newCursor(doc);
+        Cursor cursor = context.newCursor(doc);
+        Cursor cursor2 = context.newCursor(doc);
         assertNotNull(cursor);
         
         // document node
@@ -316,17 +317,18 @@ public abstract class NavigatorBase<N>
         assertTrue(cursor.moveToParent());
         cursor.moveToRoot();
         assertEquals(cursor.getNodeId(), cursor2.getNodeId());
-        
+
+        // TODO: removed moveTo, so this doesn't work. find a different way.
         //namespace
-        if (context.isSupported(Feature.NAMESPACE_AXIS))
-        {
-            N nstest = context.getModel().getChildElementsByName(context.getModel().getFirstChild(doc), "http://www.genxdm.org/nonsense", "nstest").iterator().next();
-            cursor.moveTo(getNamespaceNode(context.getModel(), nstest, "gue"));
-            assertEquals(NodeKind.NAMESPACE, cursor.getNodeKind());
-            assertTrue(cursor.moveToParent());
-            cursor.moveToRoot();
-            assertTrue(cursor.getNodeId().equals(cursor2.getNodeId()));
-        }
+//        if (context.isSupported(Feature.NAMESPACE_AXIS))
+//        {
+//            N nstest = context.getModel().getChildElementsByName(context.getModel().getFirstChild(doc), "http://www.genxdm.org/nonsense", "nstest").iterator().next();
+//            cursor.moveTo(getNamespaceNode(context.getModel(), nstest, "gue"));
+//            assertEquals(NodeKind.NAMESPACE, cursor.getNodeKind());
+//            assertTrue(cursor.moveToParent());
+//            cursor.moveToRoot();
+//            assertTrue(cursor.getNodeId().equals(cursor2.getNodeId()));
+//        }
 
         // element node
         assertTrue(cursor.moveToFirstChildElement());

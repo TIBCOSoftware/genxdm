@@ -21,7 +21,7 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
-import org.genxdm.Precursor;
+import org.genxdm.Cursor;
 import org.genxdm.nodes.Traverser;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
@@ -56,7 +56,7 @@ final class RootExpr
 
     @Override
     public Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
-        Precursor pc = contextNode.newPrecursor();
+        Cursor pc = contextNode.newPrecursor();
         pc.moveToRoot();
         return expr.traverseNodes(pc, dynEnv);
     }
