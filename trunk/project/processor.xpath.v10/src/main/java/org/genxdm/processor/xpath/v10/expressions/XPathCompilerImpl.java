@@ -20,7 +20,7 @@ import java.util.HashMap;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.xpath.v10.relations.Relation;
 import org.genxdm.xpath.v10.BooleanExpr;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NodeSetExpr;
 import org.genxdm.xpath.v10.NumberExpr;
@@ -43,7 +43,7 @@ public final class XPathCompilerImpl
 		this.relationTable = relationTable;
 	}
 
-	public VariantExpr compile(final String expression, final ExprContextStatic statEnv) throws ExprParseException
+	public VariantExpr compile(final String expression, final StaticContext statEnv) throws ExprParseException
 	{
 		PreCondition.assertArgumentNotNull(expression, "expression");
 		PreCondition.assertArgumentNotNull(statEnv, "statEnv");
@@ -51,7 +51,7 @@ public final class XPathCompilerImpl
 		return new ExprParser(expression, statEnv, axisTable, functionTable, relationTable).parseExpr().makeVariantExpr(statEnv);
 	}
 
-	public BooleanExpr compileBooleanExpr(final String expression, final ExprContextStatic statEnv) throws ExprParseException
+	public BooleanExpr compileBooleanExpr(final String expression, final StaticContext statEnv) throws ExprParseException
 	{
 		PreCondition.assertArgumentNotNull(expression, "expression");
 		PreCondition.assertArgumentNotNull(statEnv, "statEnv");
@@ -59,7 +59,7 @@ public final class XPathCompilerImpl
 		return new ExprParser(expression, statEnv, axisTable, functionTable, relationTable).parseExpr().makeBooleanExpr(statEnv);
 	}
 
-	public NodeSetExpr compileNodeSetExpr(final String expression, final ExprContextStatic statEnv) throws ExprParseException
+	public NodeSetExpr compileNodeSetExpr(final String expression, final StaticContext statEnv) throws ExprParseException
 	{
 		PreCondition.assertArgumentNotNull(expression, "expression");
 		PreCondition.assertArgumentNotNull(statEnv, "statEnv");
@@ -67,7 +67,7 @@ public final class XPathCompilerImpl
 		return new ExprParser(expression, statEnv, axisTable, functionTable, relationTable).parseExpr().makeNodeSetExpr(statEnv);
 	}
 
-	public NumberExpr compileNumberExpr(final String expression, final ExprContextStatic statEnv) throws ExprParseException
+	public NumberExpr compileNumberExpr(final String expression, final StaticContext statEnv) throws ExprParseException
 	{
 		PreCondition.assertArgumentNotNull(expression, "expression");
 		PreCondition.assertArgumentNotNull(statEnv, "statEnv");
@@ -75,7 +75,7 @@ public final class XPathCompilerImpl
 		return new ExprParser(expression, statEnv, axisTable, functionTable, relationTable).parseExpr().makeNumberExpr(statEnv);
 	}
 
-	public StringExpr compileStringExpr(final String expression, final ExprContextStatic statEnv) throws ExprParseException
+	public StringExpr compileStringExpr(final String expression, final StaticContext statEnv) throws ExprParseException
 	{
 		PreCondition.assertArgumentNotNull(expression, "expression");
 		PreCondition.assertArgumentNotNull(statEnv, "statEnv");

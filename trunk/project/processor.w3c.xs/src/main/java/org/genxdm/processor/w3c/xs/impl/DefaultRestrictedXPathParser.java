@@ -203,7 +203,7 @@ final class DefaultRestrictedXPathParser implements RestrictedXPathParser
 
     private static  String ensureNCName(final String initialValue, final ComponentProvider bootstrap) throws SimpleTypeException
     {
-        final SimpleType atomicType = bootstrap.getAtomicType(NativeType.NCNAME);
+//        final SimpleType atomicType = bootstrap.getAtomicType(NativeType.NCNAME);
         // the technique here is to create an atom and then stringify it.
         // TODO: find a different way (drvl?)
 //      try

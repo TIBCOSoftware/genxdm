@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.nodes;
+package org.genxdm.bridgekit.tree;
 
 import org.genxdm.Cursor;
+import org.genxdm.nodes.Traverser;
+import org.genxdm.nodes.TraversingInformer;
 
 /**
  * Standard "delegating" pattern for implementing a {@link TraversingInformer} by
@@ -109,9 +111,9 @@ public class TraversingInformerDelegate extends InformerDelegate implements Trav
     }
 
     @Override
-    public Cursor newPrecursor() {
+    public Cursor newCursor() {
         // TODO Auto-generated method stub
-        return m_delegate.newPrecursor();
+        return m_delegate.newCursor();
     }
 
     private TraversingInformer m_delegate;

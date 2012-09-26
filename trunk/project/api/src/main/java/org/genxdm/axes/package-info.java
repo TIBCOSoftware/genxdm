@@ -22,7 +22,7 @@ the <code>nodes</code> package, defines the bulk of functionality in the central
 
 <p>There are four significant abstractions: {@link org.genxdm.axes.Navigator},
 {@link org.genxdm.axes.NodeNavigator}, {@link org.genxdm.axes.AxisNodeNavigator},
-and {@link org.genxdm.axes.AxisNavigator}. In addition, <code>Navigator</code> has had
+and {@link org.genxdm.axes.AxisTraverser}. In addition, <code>Navigator</code> has had
 its single N-specialized method moved into a separate interface, {@link org.genxdm.axes.Repositioner}.
 {@link org.genxdm.Cursor} actually implements <code>Repositioner</code> rather than the
 <code>Navigator</code> base interface, however.</p>

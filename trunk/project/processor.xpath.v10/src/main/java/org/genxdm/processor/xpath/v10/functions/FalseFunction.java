@@ -22,7 +22,7 @@ package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.FalseExpr;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.StaticContext;
 
 /**
  * a function of 0 arguments that returns false
@@ -31,7 +31,7 @@ public final class FalseFunction
     extends Function0
 {
 
-	ConvertibleExprImpl makeCallExpr(final ExprContextStatic statEnv)
+	ConvertibleExprImpl makeCallExpr(final StaticContext statEnv)
 	{
 		return new FalseExpr();
 	}

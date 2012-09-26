@@ -22,7 +22,7 @@ public interface ExtensionContext
 {
     boolean available(String name);
 
-    <N> Variant<N> call(Model<N> model, String name, N contextItem, Variant<N>[] args);
+    <N> NodeVariant<N> call(Model<N> model, String name, N contextItem, NodeVariant<N>[] args);
     
     TraverserVariant call(String name, TraversingInformer contextItem, TraverserVariant[] args);
 

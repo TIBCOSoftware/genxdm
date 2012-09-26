@@ -27,8 +27,8 @@ import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleNumberExpr;
 import org.genxdm.xpath.v10.Converter;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.NodeSetExpr;
@@ -61,13 +61,13 @@ public final class SumFunction
         return n;
     }
 
-	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
+	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e, final StaticContext statEnv) throws ExprParseException
 	{
 		final NodeSetExpr nse = e.makeNodeSetExpr(statEnv);
 
 		return new ConvertibleNumberExpr()
 		{
-			public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
+			public <N> double numberFunction(Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv) {
 				return sum(nse.nodeIterator(model, contextNode, dynEnv), model);
 			}
 

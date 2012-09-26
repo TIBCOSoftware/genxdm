@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.nodes;
+package org.genxdm.bridgekit.tree;
 
 import java.net.URI;
 
@@ -21,6 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
 import org.genxdm.names.NamespaceBinding;
+import org.genxdm.nodes.Informer;
 
 /**
  * Standard "delegate" pattern for implementing an {@link Informer} by delegating

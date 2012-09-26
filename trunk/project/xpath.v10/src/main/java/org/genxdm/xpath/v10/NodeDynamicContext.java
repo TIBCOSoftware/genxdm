@@ -17,14 +17,10 @@ package org.genxdm.xpath.v10;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.names.PrefixResolver;
-
-public interface ExprContextStatic extends PrefixResolver
+/**
+ * packages up the context available to the XSLT engine when evaluating XPath expressions
+ */
+public interface NodeDynamicContext<N> extends DynamicContextBase
 {
-    boolean containsVariable(final QName name);
-
-    void declareNamespace(String prefix, String namespace);
-
-    void declareVariable(QName name);
-
+    NodeVariant<N> getVariableValue(QName name);
 }

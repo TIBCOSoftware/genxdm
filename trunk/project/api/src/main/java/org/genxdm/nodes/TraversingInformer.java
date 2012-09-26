@@ -16,7 +16,7 @@
 package org.genxdm.nodes;
 
 import org.genxdm.Cursor;
-import org.genxdm.axes.AxisNavigator;
+import org.genxdm.axes.AxisTraverser;
 
 /**
  * The base interface for looking at an underlying data structure using a "cursor"
@@ -24,12 +24,12 @@ import org.genxdm.axes.AxisNavigator;
  * as well as the ability to get a new (and separate) {@link Cursor} to navigate to a new
  * location. 
  */
-public interface TraversingInformer extends AxisNavigator, Informer, Comparable<TraversingInformer> {
+public interface TraversingInformer extends AxisTraverser, Informer, Comparable<TraversingInformer> {
 
     /**
      * Allow navigation of the tree where this informer is positioned.
      * 
      * @return a Precursor positioned at the contained node.
      */
-    Cursor newPrecursor();
+    Cursor newCursor();
 }

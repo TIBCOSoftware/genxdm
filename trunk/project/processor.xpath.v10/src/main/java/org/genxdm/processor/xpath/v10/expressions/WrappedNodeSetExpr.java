@@ -23,13 +23,13 @@ import org.genxdm.processor.xpath.v10.variants.NodeSetVariant;
 import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.Converter;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.NodeSetExpr;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.TraverserVariant;
-import org.genxdm.xpath.v10.Variant;
+import org.genxdm.xpath.v10.NodeVariant;
 import org.genxdm.xpath.v10.VariantExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleNodeSetExpr;
 
@@ -50,7 +50,7 @@ public class WrappedNodeSetExpr extends ConvertibleNodeSetExprImpl {
 	
 	@Override
 	public <N> NodeIterator<N> nodeIterator(Model<N> model, N contextNode,
-			ExprContextDynamic<N> dynEnv) {
+			NodeDynamicContext<N> dynEnv) {
 		return m_nodeSetExpr.nodeIterator(model, contextNode, dynEnv);
 	}
 
@@ -60,9 +60,9 @@ public class WrappedNodeSetExpr extends ConvertibleNodeSetExprImpl {
     }
 
 	@Override
-	public StringExpr makeStringExpr(ExprContextStatic statEnv) {
+	public StringExpr makeStringExpr(StaticContext statEnv) {
 		return new ConvertibleStringExpr() {
-			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
+			public <N> String stringFunction(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv) {
 				return Converter.toString(m_nodeSetExpr.nodeIterator(model, node, dynEnv), model);
 			}
 
@@ -74,9 +74,9 @@ public class WrappedNodeSetExpr extends ConvertibleNodeSetExprImpl {
 	}
 
 	@Override
-	public BooleanExpr makeBooleanExpr(ExprContextStatic statEnv) {
+	public BooleanExpr makeBooleanExpr(StaticContext statEnv) {
 		return new ConvertibleBooleanExpr( ) {
-			public <N> boolean booleanFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
+			public <N> boolean booleanFunction(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv) {
 				return Converter.toBoolean(m_nodeSetExpr.nodeIterator(model, node, dynEnv));
 			}
 
@@ -88,9 +88,9 @@ public class WrappedNodeSetExpr extends ConvertibleNodeSetExprImpl {
 	}
 
 	@Override
-	public VariantExpr makeVariantExpr(ExprContextStatic statEnv) {
+	public VariantExpr makeVariantExpr(StaticContext statEnv) {
 		return new ConvertibleVariantExpr() {
-			public <N> Variant<N> evaluateAsVariant(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
+			public <N> NodeVariant<N> evaluateAsVariant(Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv) {
 				return new NodeSetVariant<N>(m_nodeSetExpr.nodeIterator(model, contextNode, dynEnv), model);
 			}
 

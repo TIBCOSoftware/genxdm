@@ -29,7 +29,7 @@ import org.genxdm.processor.xpath.v10.iterators.SequenceComposeTraverser;
 import org.genxdm.processor.xpath.v10.iterators.UnionNodeIterator;
 import org.genxdm.processor.xpath.v10.iterators.UnionNodeTraverser;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.NodeIterator;
 
 /**
@@ -54,7 +54,7 @@ final class SubtreeExpr
 	}
 
     @Override
-	public <N> NodeIterator<N> nodeIterator(Model<N> model, final N contextNode, ExprContextDynamic<N> dynEnv)
+	public <N> NodeIterator<N> nodeIterator(Model<N> model, final N contextNode, NodeDynamicContext<N> dynEnv)
 	{
 		return new UnionNodeIterator<N>(expr.nodeIterator(model, contextNode, dynEnv),
 				new SequenceComposeNodeIterator<N>(

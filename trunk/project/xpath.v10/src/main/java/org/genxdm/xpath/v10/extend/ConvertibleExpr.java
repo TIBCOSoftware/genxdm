@@ -16,7 +16,7 @@
 package org.genxdm.xpath.v10.extend;
 
 import org.genxdm.xpath.v10.BooleanExpr;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NumberExpr;
 import org.genxdm.xpath.v10.StringExpr;
@@ -27,35 +27,35 @@ public interface ConvertibleExpr {
     /**
      * cast it as a String expression
      */
-    public StringExpr makeStringExpr(final ExprContextStatic statEnv);
+    public StringExpr makeStringExpr(final StaticContext statEnv);
 
     /**
      * cast it as a boolean expression
      */
     public BooleanExpr makeBooleanExpr(
-            final ExprContextStatic statEnv);
+            final StaticContext statEnv);
 
     /**
      * cast it as a Variant (a variable or param you can bind to a name) expression
      */
     public VariantExpr makeVariantExpr(
-            final ExprContextStatic statEnv);
+            final StaticContext statEnv);
 
     /**
      * cast it as a NodeSet expression
      */
     public ConvertibleNodeSetExpr makeNodeSetExpr(
-            final ExprContextStatic statEnv) throws ExprParseException;
+            final StaticContext statEnv) throws ExprParseException;
 
     /**
      * cast it as a Number expression
      */
-    public NumberExpr makeNumberExpr(final ExprContextStatic statEnv);
+    public NumberExpr makeNumberExpr(final StaticContext statEnv);
 
     /**
      * cast it as a Predicate expression
      */
     public BooleanExpr makePredicateExpr(
-            final ExprContextStatic statEnv);
+            final StaticContext statEnv);
 
 }

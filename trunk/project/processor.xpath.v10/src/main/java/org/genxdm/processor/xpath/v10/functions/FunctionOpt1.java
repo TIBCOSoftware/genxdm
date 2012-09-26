@@ -21,7 +21,7 @@
 package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.processor.xpath.v10.expressions.SelfAxisExpr;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.extend.Function;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
@@ -30,9 +30,9 @@ abstract class FunctionOpt1
     implements Function
 {
 
-	abstract ConvertibleExpr makeCallExpr(ConvertibleExpr e, ExprContextStatic statEnv) throws ExprParseException;
+	abstract ConvertibleExpr makeCallExpr(ConvertibleExpr e, StaticContext statEnv) throws ExprParseException;
 
-	public ConvertibleExpr makeCallExpr(final ConvertibleExpr[] e, final ExprContextStatic statEnv) throws ExprParseException
+	public ConvertibleExpr makeCallExpr(final ConvertibleExpr[] e, final StaticContext statEnv) throws ExprParseException
 	{
 		if (e.length > 1)
 		{

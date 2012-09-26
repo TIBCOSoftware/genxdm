@@ -23,14 +23,14 @@ package org.genxdm.processor.xpath.v10.expressions;
 import org.genxdm.Model;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 
 public final class FalseExpr
     extends ConvertibleBooleanExpr
 {
 
     @Override
-	public <N> boolean booleanFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
+	public <N> boolean booleanFunction(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv) {
 		return false;
 	}
 

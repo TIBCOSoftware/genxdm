@@ -20,9 +20,9 @@ public interface XPathToolkit
 {
     XPathCompiler newXPathCompiler();
 
-    ExprContextStatic newExprContextStaticArgs();
+    StaticContext newExprContextStaticArgs();
 
-    <N> ExprContextDynamicArgs<N> newExprContextDynamicArgs();
+    <N> NodeDynamicContextBuilder<N> newExprContextDynamicArgs();
     
     TraverserDynamicContextBuilder newTraverserDynamicContextBuilder();
 }

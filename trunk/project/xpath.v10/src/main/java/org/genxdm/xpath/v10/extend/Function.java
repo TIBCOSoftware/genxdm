@@ -20,7 +20,7 @@
  */
 package org.genxdm.xpath.v10.extend;
 
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.ExprParseException;
 
 /**
@@ -28,5 +28,5 @@ import org.genxdm.xpath.v10.ExprParseException;
  */
 public interface Function
 {
-    ConvertibleExpr makeCallExpr(ConvertibleExpr[] args, ExprContextStatic statEnv) throws ExprParseException;
+    ConvertibleExpr makeCallExpr(ConvertibleExpr[] args, StaticContext statEnv) throws ExprParseException;
 }

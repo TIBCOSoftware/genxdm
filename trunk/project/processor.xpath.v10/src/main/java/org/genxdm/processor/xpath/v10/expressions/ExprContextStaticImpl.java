@@ -22,10 +22,10 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.StaticContext;
 
 public final class ExprContextStaticImpl 
-    implements ExprContextStatic
+    implements StaticContext
 {
 	private final Set<QName> variables = new HashSet<QName>();
 	private final Map<String, String> namespaces = new HashMap<String, String>();

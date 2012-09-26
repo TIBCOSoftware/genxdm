@@ -25,7 +25,7 @@ import org.genxdm.nodes.TraversingInformer;
 
 public interface NumberExpr
 {
-    <N> double numberFunction(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv);
+    <N> double numberFunction(Model<N> model, N contextNode, NodeDynamicContext<N> dynEnv);
 
     double numberFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv);
 }

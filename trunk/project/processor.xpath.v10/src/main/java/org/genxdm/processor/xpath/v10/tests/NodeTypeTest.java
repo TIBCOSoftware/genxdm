@@ -25,7 +25,7 @@ import org.genxdm.NodeKind;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.patterns.PathPatternBase;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 
 /**
  * Simply tests if a node is of a given type e.g. "text()"
@@ -47,7 +47,7 @@ public class NodeTypeTest
 	 * return true if this represents the "node()" test, else return true if the node's type matches the test
 	 */
     @Override
-	public <N> boolean matches(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv)
+	public <N> boolean matches(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv)
 	{
 		return type == null ? true : model.getNodeKind(node) == type;
 	}

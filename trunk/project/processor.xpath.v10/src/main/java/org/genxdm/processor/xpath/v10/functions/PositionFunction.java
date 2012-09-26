@@ -25,8 +25,8 @@ import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleNumberExpr;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
+import org.genxdm.xpath.v10.StaticContext;
 
 /**
  * implements the XPath position() function, which evaluates to the current node's position in the current node set
@@ -35,12 +35,12 @@ public final class PositionFunction
     extends Function0
 {
 
-	ConvertibleExprImpl makeCallExpr(final ExprContextStatic statEnv)
+	ConvertibleExprImpl makeCallExpr(final StaticContext statEnv)
 	{
 		return new ConvertibleNumberExpr()
 		{
             @Override
-			public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
+			public <N> double numberFunction(Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv) {
 				return dynEnv.getContextPosition();
 			}
 

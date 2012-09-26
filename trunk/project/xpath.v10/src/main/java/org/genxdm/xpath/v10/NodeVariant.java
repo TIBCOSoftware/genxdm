@@ -1,5 +1,10 @@
 /*
- * Copyright (c) 2009-2011 TIBCO Software Inc.
+ * Portions copyright (c) 1998-1999, James Clark : see copyingjc.txt for
+ * license details
+ * Portions copyright (c) 2002, Bill Lindsey : see copying.txt for license
+ * details
+ * 
+ * Portions copyright (c) 2009-2011 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +20,13 @@
  */
 package org.genxdm.xpath.v10;
 
-import javax.xml.namespace.QName;
 
-
-public interface ExprContextDynamicArgs<N> extends DynamicContextBuilderBase
+public interface NodeVariant<N> extends VariantCore
 {
-    void reset();
+    NodeIterator<N> convertToNodeSet();
 
-    void bindVariableValue(QName name, Variant<N> value);
+    boolean convertToPredicate(NodeDynamicContext<N> context);
 
-    ExprContextDynamic<N> build();
+    // TODO - makePermanent no longer appears to be used?
+    NodeVariant<N> makePermanent() throws ExprException;
 }

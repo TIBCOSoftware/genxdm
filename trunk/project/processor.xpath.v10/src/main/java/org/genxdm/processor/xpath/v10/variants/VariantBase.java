@@ -20,15 +20,15 @@
  */
 package org.genxdm.processor.xpath.v10.variants;
 
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
-import org.genxdm.xpath.v10.Variant;
+import org.genxdm.xpath.v10.NodeVariant;
 
 public abstract class VariantBase<N> extends VariantCoreBase
-    implements Variant<N>
+    implements NodeVariant<N>
 {
-	public Variant<N> makePermanent() throws ExprException
+	public NodeVariant<N> makePermanent() throws ExprException
 	{
 		return this;
 	}
@@ -38,7 +38,7 @@ public abstract class VariantBase<N> extends VariantCoreBase
 		throw new RuntimeException("cannot convert to node-set");
 	}
 
-	public boolean convertToPredicate(final ExprContextDynamic<N> context)
+	public boolean convertToPredicate(final NodeDynamicContext<N> context)
 	{
 		return convertToBoolean();
 	}

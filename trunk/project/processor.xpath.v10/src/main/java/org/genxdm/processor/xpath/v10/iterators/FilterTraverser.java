@@ -17,8 +17,8 @@ package org.genxdm.processor.xpath.v10.iterators;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.tree.TraversingInformerDelegate;
 import org.genxdm.nodes.Traverser;
-import org.genxdm.nodes.TraversingInformerDelegate;
 import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.TraverserVariant;

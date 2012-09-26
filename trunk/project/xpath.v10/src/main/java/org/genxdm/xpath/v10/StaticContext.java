@@ -1,10 +1,5 @@
 /*
- * Portions copyright (c) 1998-1999, James Clark : see copyingjc.txt for
- * license details
- * Portions copyright (c) 2002, Bill Lindsey : see copying.txt for license
- * details
- * 
- * Portions copyright (c) 2009-2011 TIBCO Software Inc.
+ * Copyright (c) 2009-2011 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +15,16 @@
  */
 package org.genxdm.xpath.v10;
 
+import javax.xml.namespace.QName;
 
-public interface Variant<N> extends VariantCore
+import org.genxdm.names.PrefixResolver;
+
+public interface StaticContext extends PrefixResolver
 {
-    NodeIterator<N> convertToNodeSet();
+    boolean containsVariable(final QName name);
 
-    boolean convertToPredicate(ExprContextDynamic<N> context);
+    void declareNamespace(String prefix, String namespace);
 
-    // TODO - makePermanent no longer appears to be used?
-    Variant<N> makePermanent() throws ExprException;
+    void declareVariable(QName name);
+
 }
