@@ -26,22 +26,22 @@ import org.genxdm.processor.xpath.v10.expressions.ConvertibleBooleanExpr;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 public final class NotFunction 
     extends Function1
 {
 
-	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e, final ExprContextStatic statEnv)
+	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e, final StaticContext statEnv)
 	{
 		final BooleanExpr be = e.makeBooleanExpr(statEnv);
 
 		return new ConvertibleBooleanExpr()
 		{
             @Override
-			public <N> boolean booleanFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
+			public <N> boolean booleanFunction(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv) {
 				return !be.booleanFunction(model, node, dynEnv);
 			}
 

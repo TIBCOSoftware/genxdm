@@ -29,14 +29,14 @@ import org.genxdm.processor.xpath.v10.expressions.ConvertibleNodeSetExprImpl;
 import org.genxdm.processor.xpath.v10.iterators.SingleNodeIterator;
 import org.genxdm.processor.xpath.v10.iterators.SingleTraverser;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.NodeSetExpr;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.TraverserVariant;
-import org.genxdm.xpath.v10.Variant;
+import org.genxdm.xpath.v10.NodeVariant;
 import org.genxdm.xpath.v10.VariantExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
@@ -77,12 +77,12 @@ public final class IdFunction
     {
         // TODO - review:
         // The following seems a little to simplistic - it just always returns the node with the given ID?
-        Cursor result = node.newPrecursor();
+        Cursor result = node.newCursor();
         result.moveToElementById(str);
         return new SingleTraverser(result);
     }
 
-	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
+	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e, final StaticContext statEnv) throws ExprParseException
 	{
 		if (e instanceof NodeSetExpr)
 		{
@@ -90,7 +90,7 @@ public final class IdFunction
 			return new ConvertibleNodeSetExprImpl()
 			{
                 @Override
-				public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
+				public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv) {
 					return id(node, nse.nodeIterator(model, node, dynEnv));
 				}
 
@@ -105,8 +105,8 @@ public final class IdFunction
 			final VariantExpr ve = (VariantExpr)e;
 			return new ConvertibleNodeSetExprImpl() {
                 @Override
-				public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
-					Variant<N> v = ve.evaluateAsVariant(model, node, dynEnv);
+				public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv) {
+					NodeVariant<N> v = ve.evaluateAsVariant(model, node, dynEnv);
 					if (v.isNodeSet())
 					{
 						return id(node, v.convertToNodeSet());
@@ -138,7 +138,7 @@ public final class IdFunction
 			return new ConvertibleNodeSetExprImpl()
 			{
                 @Override
-				public <N> NodeIterator<N> nodeIterator(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
+				public <N> NodeIterator<N> nodeIterator(Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv) {
 					return id(model, contextNode, se.stringFunction(model, contextNode, dynEnv));
 				}
 

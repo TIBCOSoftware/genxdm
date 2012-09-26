@@ -25,7 +25,7 @@ import org.genxdm.Cursor;
 import org.genxdm.nodes.Traverser;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.NodeSetExpr;
 
@@ -50,13 +50,13 @@ final class RootExpr
 	 * evaluate the sub-expression with the context node's root node
 	 */
     @Override
-	public <N> NodeIterator<N> nodeIterator(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
+	public <N> NodeIterator<N> nodeIterator(Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv) {
 		return expr.nodeIterator(model, model.getRoot(contextNode), dynEnv);
 	}
 
     @Override
     public Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
-        Cursor pc = contextNode.newPrecursor();
+        Cursor pc = contextNode.newCursor();
         pc.moveToRoot();
         return expr.traverseNodes(pc, dynEnv);
     }

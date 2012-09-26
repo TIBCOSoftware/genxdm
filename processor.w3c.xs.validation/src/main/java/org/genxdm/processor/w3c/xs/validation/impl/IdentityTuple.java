@@ -44,7 +44,6 @@ final class IdentityTuple
 		return m_keys.size();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(final Object obj)
 	{

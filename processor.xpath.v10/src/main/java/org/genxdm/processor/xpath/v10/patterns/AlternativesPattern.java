@@ -25,7 +25,7 @@ import java.lang.reflect.Array;
 import org.genxdm.Model;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 
 /**
  * represents an "OR" (union) of match patterns
@@ -49,7 +49,7 @@ class AlternativesPattern
 	 * evaluate to a boolean
 	 */
 	@Override
-	public <N> boolean matches(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
+	public <N> boolean matches(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv) {
 		return pattern1.matches(model, node, dynEnv) || pattern2.matches(model, node, dynEnv);
 	}
 

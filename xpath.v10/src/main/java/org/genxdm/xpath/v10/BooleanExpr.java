@@ -25,7 +25,7 @@ import org.genxdm.nodes.TraversingInformer;
 
 public interface BooleanExpr
 {
-    <N> boolean booleanFunction(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv);
+    <N> boolean booleanFunction(Model<N> model, N contextNode, NodeDynamicContext<N> dynEnv);
 
     boolean booleanFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv);
 }

@@ -31,7 +31,7 @@ import org.genxdm.processor.xpath.v10.expressions.DelegateExprContext;
 import org.genxdm.processor.xpath.v10.iterators.NodeIteratorOnIterator;
 import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.ExtensionContext;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.TraverserVariant;
@@ -56,7 +56,7 @@ final class FilterPattern
 	}
 
     @Override
-	public <N> boolean matches(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
+	public <N> boolean matches(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv) {
 		if (!pattern.matches(model, node, dynEnv))
 		{
 			return false;
@@ -109,7 +109,7 @@ final class FilterPattern
 		int position = 0;
 		int lastPosition = 0;
 
-		Context(Model<N> model, final N node, final ExprContextDynamic<N> context)
+		Context(Model<N> model, final N node, final NodeDynamicContext<N> context)
 		{
 			super(context);
 			this.node = node;
@@ -223,7 +223,7 @@ final class FilterPattern
                 position = 1;
                 return 1;
             }
-            Cursor parent = node.newPrecursor();
+            Cursor parent = node.newCursor();
             parent.moveToParent();
             switch (nodeKind)
             {
@@ -267,13 +267,13 @@ final class FilterPattern
                     lastPosition = 1;
                     return 1;
                 case ATTRIBUTE:
-                    Cursor parent = node.newPrecursor();
+                    Cursor parent = node.newCursor();
                     parent.moveToParent();
                     iter = parent.traverseAttributeAxis(inheritAttributes);
                     lastPosition = 0;
                     break;
                 case NAMESPACE:
-                    Cursor nsParent = node.newPrecursor();
+                    Cursor nsParent = node.newCursor();
                     nsParent.moveToParent();
                     iter = nsParent.traverseNamespaceAxis(inheritNamespaces);
                     lastPosition = 0;

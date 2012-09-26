@@ -23,7 +23,7 @@ package org.genxdm.processor.xpath.v10.iterators;
 import org.genxdm.Model;
 import org.genxdm.processor.xpath.v10.expressions.DelegateExprContext;
 import org.genxdm.xpath.v10.BooleanExpr;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.NodeIterator;
 
 public final class FilterNodeIterator<N> 
@@ -36,7 +36,7 @@ public final class FilterNodeIterator<N>
 	private final Model<N> m_model;
 	private final BooleanExpr predicate;
 
-	public FilterNodeIterator(Model<N> model, final NodeIterator<N> iter, final ExprContextDynamic<N> dynEnv, final BooleanExpr predicate)
+	public FilterNodeIterator(Model<N> model, final NodeIterator<N> iter, final NodeDynamicContext<N> dynEnv, final BooleanExpr predicate)
 	{
 		super(dynEnv);
 		this.iter = iter;

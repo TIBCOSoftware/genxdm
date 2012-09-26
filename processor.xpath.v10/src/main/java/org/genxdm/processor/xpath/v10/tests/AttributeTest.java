@@ -25,7 +25,7 @@ import org.genxdm.NodeKind;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.patterns.PathPatternBase;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 
 public final class AttributeTest 
     extends PathPatternBase
@@ -39,7 +39,7 @@ public final class AttributeTest
 		this.localName = localName;
 	}
 
-	public <N> boolean matches(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv)
+	public <N> boolean matches(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv)
 	{
 		return model.matches(node, NodeKind.ATTRIBUTE, namespaceURI, localName);
 	}

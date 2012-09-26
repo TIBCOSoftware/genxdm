@@ -46,7 +46,7 @@ import org.genxdm.Cursor;
  * of the underlying nodes. This allows for efficient processing when intermediate
  * results do not need to be stored. Should a client need to store the intermediate
  * results, that can be accomplished by looping over the locations of the Traverser,
- * and invoking {@link TraversingInformer#newPrecursor()}</p>
+ * and invoking {@link TraversingInformer#newCursor()}</p>
  * 
  * @see Cursor
  */

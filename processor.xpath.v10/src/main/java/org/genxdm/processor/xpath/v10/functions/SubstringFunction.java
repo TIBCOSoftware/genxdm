@@ -25,8 +25,8 @@ import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleStringExpr;
 import org.genxdm.processor.xpath.v10.expressions.NumberConstantExpr;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NumberExpr;
 import org.genxdm.xpath.v10.StringExpr;
@@ -69,7 +69,7 @@ public final class SubstringFunction
 		return "";
 	}
 
-	public ConvertibleExpr makeCallExpr(final ConvertibleExpr[] args, final ExprContextStatic statEnv) throws ExprParseException
+	public ConvertibleExpr makeCallExpr(final ConvertibleExpr[] args, final StaticContext statEnv) throws ExprParseException
 	{
 		if (args.length < 2 || args.length > 3)
 		{
@@ -82,7 +82,7 @@ public final class SubstringFunction
 		return new ConvertibleStringExpr()
 		{
             @Override
-			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
+			public <N> String stringFunction(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv) {
 				return substring(se.stringFunction(model, node, dynEnv),
 						ne1.numberFunction(model, node, dynEnv),
 						ne2.numberFunction(model, node, dynEnv));

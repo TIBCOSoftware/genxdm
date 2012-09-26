@@ -24,7 +24,7 @@ import org.genxdm.Model;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.relations.Relation;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.StringExpr;
 
 final class StringRelationalExpr 
@@ -43,7 +43,7 @@ final class StringRelationalExpr
 	}
 
     @Override
-	public <N> boolean booleanFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
+	public <N> boolean booleanFunction(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv) {
 		return rel.relate(expr1.stringFunction(model, node, dynEnv), expr2.stringFunction(model, node, dynEnv));
 	}
 

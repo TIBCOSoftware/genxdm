@@ -17,10 +17,12 @@ package org.genxdm.xpath.v10;
 
 import javax.xml.namespace.QName;
 
-/**
- * packages up the context available to the XSLT engine when evaluating XPath expressions
- */
-public interface ExprContextDynamic<N> extends DynamicContextBase
+
+public interface NodeDynamicContextBuilder<N> extends DynamicContextBuilderBase
 {
-    Variant<N> getVariableValue(QName name);
+    void reset();
+
+    void bindVariableValue(QName name, NodeVariant<N> value);
+
+    NodeDynamicContext<N> build();
 }

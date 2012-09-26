@@ -18,7 +18,7 @@ package org.genxdm.processor.xpath.v10.expressions;
 import org.genxdm.Model;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
@@ -39,7 +39,7 @@ public class WrappedStringExpr extends ConvertibleStringExpr {
 	
 	@Override
 	public <N> String stringFunction(Model<N> model, N contextNode,
-			ExprContextDynamic<N> dynEnv) {
+			NodeDynamicContext<N> dynEnv) {
 		return m_wrappedExpr.stringFunction(model, contextNode, dynEnv);
 	}
 

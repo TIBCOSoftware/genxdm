@@ -18,13 +18,13 @@ package org.genxdm.xpath.v10;
 
 public interface XPathCompiler
 {
-    VariantExpr compile(String expression, final ExprContextStatic statEnv) throws ExprParseException;
+    VariantExpr compile(String expression, final StaticContext statEnv) throws ExprParseException;
 
-    BooleanExpr compileBooleanExpr(String expression, final ExprContextStatic statEnv) throws ExprParseException;
+    BooleanExpr compileBooleanExpr(String expression, final StaticContext statEnv) throws ExprParseException;
 
-    NodeSetExpr compileNodeSetExpr(String expression, final ExprContextStatic statEnv) throws ExprParseException;
+    NodeSetExpr compileNodeSetExpr(String expression, final StaticContext statEnv) throws ExprParseException;
 
-    NumberExpr compileNumberExpr(String expression, final ExprContextStatic statEnv) throws ExprParseException;
+    NumberExpr compileNumberExpr(String expression, final StaticContext statEnv) throws ExprParseException;
 
-    StringExpr compileStringExpr(String expression, final ExprContextStatic statEnv) throws ExprParseException;
+    StringExpr compileStringExpr(String expression, final StaticContext statEnv) throws ExprParseException;
 }

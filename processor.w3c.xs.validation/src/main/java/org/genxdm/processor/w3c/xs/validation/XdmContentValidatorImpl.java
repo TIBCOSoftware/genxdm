@@ -202,11 +202,9 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
     @Override
     public void setSequenceHandler(SequenceHandler<A> handler)
     {
-        this.handler = handler;
         kernel.setOutputHandler(new OutputAdapter<A>(handler));
     }
 
-    private SequenceHandler<A> handler;
     private SchemaExceptionHandler errors;
     private VxValidator<A> kernel;
 

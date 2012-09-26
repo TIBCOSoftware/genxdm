@@ -22,9 +22,9 @@ package org.genxdm.processor.xpath.v10.expressions;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.ExtensionContext;
-import org.genxdm.xpath.v10.Variant;
+import org.genxdm.xpath.v10.NodeVariant;
 
 /**
  * an abstract base class for ExprContext classes that override some methods of an
@@ -36,14 +36,14 @@ import org.genxdm.xpath.v10.Variant;
  * </p>
  */
 public abstract class DelegateExprContext<N> 
-    implements ExprContextDynamic<N>
+    implements NodeDynamicContext<N>
 {
-    protected final ExprContextDynamic<N> origContext;
+    protected final NodeDynamicContext<N> origContext;
 
 	/**
 	 * wrap around an existing ExprContext
 	 */
-	protected DelegateExprContext(final ExprContextDynamic<N> context)
+	protected DelegateExprContext(final NodeDynamicContext<N> context)
 	{
 		origContext = context;
 	}
@@ -52,7 +52,7 @@ public abstract class DelegateExprContext<N>
 		return origContext.getExtensionContext(namespace);
 	}
 
-	public Variant<N> getVariableValue(final QName name) {
+	public NodeVariant<N> getVariableValue(final QName name) {
 		return origContext.getVariableValue(name);
 	}
 

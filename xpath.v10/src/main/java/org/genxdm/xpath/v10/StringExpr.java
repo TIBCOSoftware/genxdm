@@ -28,7 +28,7 @@ import org.genxdm.nodes.TraversingInformer;
  */
 public interface StringExpr
 {
-    <N> String stringFunction(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv);
+    <N> String stringFunction(Model<N> model, N contextNode, NodeDynamicContext<N> dynEnv);
 
     String stringFunction(TraversingInformer contextNode, TraverserDynamicContext dynEnv);
 

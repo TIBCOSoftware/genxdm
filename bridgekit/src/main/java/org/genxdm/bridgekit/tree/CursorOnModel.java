@@ -127,7 +127,7 @@ public class CursorOnModel<N>
     protected NodeKind nodeType;
 
     @Override
-    public Cursor newPrecursor() {
+    public Cursor newCursor() {
         return new CursorOnModel<N>(node, model);
     }
 }

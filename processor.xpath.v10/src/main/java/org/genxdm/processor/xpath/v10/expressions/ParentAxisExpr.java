@@ -28,7 +28,7 @@ import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.iterators.SingleNodeIterator;
 import org.genxdm.processor.xpath.v10.iterators.SingleTraverser;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.NodeIterator;
 
 public final class ParentAxisExpr 
@@ -46,13 +46,13 @@ public final class ParentAxisExpr
 	}
 
     @Override
-	public <N> NodeIterator<N> nodeIterator(final Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
+	public <N> NodeIterator<N> nodeIterator(final Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv) {
 		return new SingleNodeIterator<N>(model.getParent(contextNode));
 	}
 
     @Override
     public Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
-        Cursor pc = contextNode.newPrecursor();
+        Cursor pc = contextNode.newCursor();
         pc.moveToParent();
         return new SingleTraverser(pc);
     }

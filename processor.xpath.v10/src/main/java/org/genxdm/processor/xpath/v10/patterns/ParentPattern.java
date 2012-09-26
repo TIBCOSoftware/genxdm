@@ -25,7 +25,7 @@ import org.genxdm.NodeKind;
 import org.genxdm.Cursor;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 
 /**
  * represents the concatenation of step patterns, right to left in a LocationPathPattern
@@ -52,7 +52,7 @@ class ParentPattern
 	 * if the rightmost step matches, and our parentPattern's matches() returns true for this node's parent then we have a winner!
 	 */
 	@Override
-	public <N> boolean matches(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
+	public <N> boolean matches(Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv) {
 		if (!childPattern.matches(model, contextNode, dynEnv))
 		{
 			return false;
@@ -72,7 +72,7 @@ class ParentPattern
         {
             return false;
         }
-        Cursor parent = node.newPrecursor();
+        Cursor parent = node.newCursor();
         if (!parent.moveToParent())
         {
             // we ran out of ancestors before we ran out of StepPatterns
