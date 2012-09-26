@@ -566,6 +566,7 @@ public final class XMLSchemaConverter
             }
             if (m_existingCache.hasAttribute(name))
             {
+                m_inCache.m_attributesUnresolved.remove(name);
                 return m_existingCache.getAttributeDeclaration(name);
             }
             if (m_cycles.attributes.contains(xmlAttribute))
@@ -629,6 +630,7 @@ public final class XMLSchemaConverter
             }
             if (m_existingCache.hasAttributeGroup(agName))
             {
+                m_inCache.m_attributeGroupsUnresolved.remove(agName);
                 return m_existingCache.getAttributeGroup(agName);
             }
             if (m_cycles.attributeGroups.contains(xmlAttributeGroup))
@@ -692,6 +694,11 @@ public final class XMLSchemaConverter
         {
             try
             {
+                QName name = source.getName();
+                if(m_existingCache.getAttributeGroup(name) != null)
+                {
+                    m_inCache.m_attributeGroupsUnresolved.remove(name);
+                }
                 convertAttributeGroup(source);
             }
             catch (final SchemaException e)
@@ -707,6 +714,11 @@ public final class XMLSchemaConverter
         {
             try
             {
+                QName name = source.getName();
+                if(m_existingCache.getAttributeDeclaration(name) != null)
+                {
+                    m_inCache.m_attributesUnresolved.remove(name);
+                }
                 convertAttribute(source);
             }
             catch (final SchemaException e)
@@ -758,6 +770,7 @@ public final class XMLSchemaConverter
             }
             if (m_existingCache.hasComplexType(outName))
             {
+                m_inCache.m_typesUnresolved.remove(outName);
                 return m_existingCache.getComplexType(outName);
             }
             if (m_cycles.types.contains(xmlComplexType))
@@ -998,6 +1011,7 @@ public final class XMLSchemaConverter
             }
             if (m_existingCache.hasElement(name))
             {
+                m_inCache.m_elementsUnresolved.remove(name);
                 return m_existingCache.getElementDeclaration(name);
             }
             if (m_cycles.elements.contains(xmlElement))
@@ -1128,6 +1142,11 @@ public final class XMLSchemaConverter
         {
             try
             {
+                QName name = source.getName();
+                if(m_existingCache.getElementDeclaration(name) != null)
+                {
+                    m_inCache.m_elementsUnresolved.remove(name);
+                }
                 convertElement(source);
             }
             catch (final SchemaException e)
@@ -1199,6 +1218,7 @@ public final class XMLSchemaConverter
         }
         if (m_existingCache.hasIdentityConstraint(name))
         {
+            m_inCache.m_constraintsUnresolved.remove(name);
             return m_existingCache.getIdentityConstraint(name);
         }
         if (m_cycles.constraints.contains(xmlConstraint))
@@ -1236,6 +1256,11 @@ public final class XMLSchemaConverter
         {
             try
             {
+                QName name = source.getName();
+                if(m_existingCache.getIdentityConstraint(name) != null)
+                {
+                    m_inCache.m_constraintsUnresolved.remove(name);
+                }
                 convertIdentityConstraint(source);
             }
             catch (final SchemaException e)
@@ -1298,6 +1323,7 @@ public final class XMLSchemaConverter
             }
             if (m_existingCache.hasModelGroup(name))
             {
+                m_inCache.m_modelGroupsUnresolved.remove(name);
                 return m_existingCache.getModelGroup(name);
             }
             if (m_cycles.groups.contains(xmlModelGroup))
@@ -1369,6 +1395,11 @@ public final class XMLSchemaConverter
         {
             try
             {
+                QName name = source.getName();
+                if(m_existingCache.getModelGroup(name) != null)
+                {
+                    m_inCache.m_modelGroupsUnresolved.remove(name);
+                }
                 convertModelGroup(source);
             }
             catch (final SchemaException e)
@@ -1410,6 +1441,11 @@ public final class XMLSchemaConverter
     {
         for (final XMLNotation source : m_inCache.m_notations.values())
         {
+            QName name = source.getName();
+            if(m_existingCache.getNotationDeclaration(name) != null)
+            {
+                m_inCache.m_notationsUnresolved.remove(name);
+            }
             convertNotation(source);
         }
     }
@@ -1437,6 +1473,7 @@ public final class XMLSchemaConverter
             }
             if (m_existingCache.hasSimpleType(name))
             {
+                m_inCache.m_typesUnresolved.remove(name);
                 return m_existingCache.getSimpleType(name);
             }
             if (m_cycles.types.contains(xmlSimpleType))
@@ -1578,6 +1615,18 @@ public final class XMLSchemaConverter
     {
         if (typeRef.isGlobal())
         {
+            QName name = typeRef.getName();
+            if(m_existingCache.hasComplexType(name))
+            {
+                m_inCache.m_typesUnresolved.remove(name);
+                return m_existingCache.getComplexType(name);
+            }
+            if(m_existingCache.hasSimpleType(name))
+            {
+                m_inCache.m_typesUnresolved.remove(name);
+                return m_existingCache.getSimpleType(name);
+            }
+            
             return convertType(typeRef.getName(), false);
         }
         else
@@ -1595,7 +1644,12 @@ public final class XMLSchemaConverter
             final boolean isAnonymous = false;
             try
             {
-                if (sourceType.isComplex())
+                if(m_existingCache.getComplexType(name) != null || m_existingCache.getSimpleType(name) != null)
+                {
+                    m_inCache.m_typesUnresolved.remove(name);
+                    return;
+                }
+                else if (sourceType.isComplex())
                 {
                     convertComplexType(name, isAnonymous, sourceType);
                 }

@@ -108,6 +108,10 @@ final public class XMLParserImpl implements SchemaParser
      */
     private Pair<ComponentBagImpl, XMLComponentLocator> convert(final XMLSchemaCache cache, final SchemaExceptionHandler errors) throws AbortException
     {
+        // Convert the schema before checking for unresolved references.  That way, during the
+        // conversion from XML model to SCHEMA model, we can peer into the SmComponentProvider to
+        // see if any of the desired components are there.
+        Pair<ComponentBagImpl, XMLComponentLocator> retval = XMLSchemaConverter.convert(m_regexc, this.cache, cache, errors);      
         try
         {
             cache.checkReferences();
@@ -118,7 +122,7 @@ final public class XMLParserImpl implements SchemaParser
             return null;
         }
 
-        return XMLSchemaConverter.convert(m_regexc, this.cache, cache, errors);
+        return retval;
     }
 
     private void reportErrors(final SchemaExceptionCatcher caught, final SchemaExceptionHandler errors) throws AbortException
