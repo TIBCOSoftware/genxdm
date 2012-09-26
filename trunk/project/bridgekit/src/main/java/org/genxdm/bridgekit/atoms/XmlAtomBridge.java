@@ -30,7 +30,7 @@ import org.genxdm.names.NameSource;
 import org.genxdm.names.PrefixResolver;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
@@ -44,15 +44,15 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     private static final QName FORG0001 = new QName("http://www.w3.org/2005/xqt-errors/", "FORG0001", "err");
 
     private final NameSource nameBridge;
-    private Schema schema;
+    private SchemaComponentCache schema;
 
-    public XmlAtomBridge(final Schema schema)
+    public XmlAtomBridge(final SchemaComponentCache schema)
     {
         this.schema = PreCondition.assertNotNull(schema, "schema");
         this.nameBridge = NameSource.SINGLETON;
     }
 
-    public void setProcessingContext(final Schema schema)
+    public void setProcessingContext(final SchemaComponentCache schema)
     {
         this.schema = PreCondition.assertArgumentNotNull(schema, "schema");
     }

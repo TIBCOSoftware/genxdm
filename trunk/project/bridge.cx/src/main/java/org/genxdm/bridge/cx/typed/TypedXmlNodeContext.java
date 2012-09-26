@@ -41,13 +41,13 @@ import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.TypesBridge;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 
 public class TypedXmlNodeContext
     implements TypedContext<XmlNode, XmlAtom>
 {
 
-    public TypedXmlNodeContext(XmlNodeContext context, Schema schema)
+    public TypedXmlNodeContext(XmlNodeContext context, SchemaComponentCache schema)
     {
         this.context = PreCondition.assertNotNull(context, "context");
         if (schema == null)
@@ -73,7 +73,7 @@ public class TypedXmlNodeContext
         return types;
     }
 
-    public Schema getSchema()
+    public SchemaComponentCache getSchema()
     {
     	return schema;
     }
@@ -137,5 +137,5 @@ public class TypedXmlNodeContext
     private final TypedXmlNodeModel model;
     private final XmlAtomBridge atoms;
     private final TypesBridge types;
-    private final Schema schema;
+    private final SchemaComponentCache schema;
 }

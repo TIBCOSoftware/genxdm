@@ -43,7 +43,7 @@ import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.io.TypedDocumentHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.TypesBridge;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 
 public final class AxiomSAProcessingContext 
     implements TypedContext<Object, XmlAtom>
@@ -71,7 +71,7 @@ public final class AxiomSAProcessingContext
 		return metaBridge;
 	}
 
-    public Schema getSchema()
+    public SchemaComponentCache getSchema()
     {
     	return cache;
     }
@@ -118,7 +118,7 @@ public final class AxiomSAProcessingContext
     
     private final AxiomProcessingContext context;
 	private final AtomBridge<XmlAtom> atomBridge;
-	private final Schema cache;
+	private final SchemaComponentCache cache;
 	
 	@SuppressWarnings("unused")
 	private boolean locked;

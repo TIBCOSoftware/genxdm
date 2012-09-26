@@ -16,7 +16,7 @@
 package org.genxdm.typed;
 
 import org.genxdm.typed.io.SequenceHandler;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
 /** Validator provides an interface for preparing a validation processor.
@@ -47,7 +47,7 @@ public interface Validator<A>
      * 
      * @param cache the cache of schema components, accessible by name.
      */
-    void setSchema(Schema cache);
+    void setSchema(SchemaComponentCache cache);
     
     /** Provide the schema exception handler.  As a rule, the user
      * supplies this handler before passing the validator to a validation

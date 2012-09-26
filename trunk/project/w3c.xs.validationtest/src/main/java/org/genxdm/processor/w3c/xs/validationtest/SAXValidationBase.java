@@ -17,7 +17,7 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.io.SAXValidator;
 import org.genxdm.typed.io.TypedDocumentHandler;
 import org.genxdm.xs.ComponentProvider;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionCatcher;
 import org.genxdm.xs.exceptions.SchemaExceptionThrower;
@@ -28,7 +28,7 @@ import org.junit.Test;
 public abstract class SAXValidationBase<N, A>
     extends ValidatorTestBase<N, A>
 {
-    public void loadSchema(Schema cache)
+    public void loadSchema(SchemaComponentCache cache)
         throws AbortException
     {
         W3cXmlSchemaParser parser = new W3cXmlSchemaParser();

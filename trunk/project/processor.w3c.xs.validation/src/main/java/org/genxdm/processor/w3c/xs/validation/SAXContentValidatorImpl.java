@@ -27,7 +27,7 @@ import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
 import org.genxdm.typed.io.SAXValidator;
 import org.genxdm.typed.io.SequenceHandler;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
@@ -192,7 +192,7 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
     }
 
     @Override
-    public void setSchema(Schema cache)
+    public void setSchema(SchemaComponentCache cache)
     {
         m_kernel.setComponentProvider(cache.getComponentProvider());
     }
