@@ -33,7 +33,7 @@ public interface NodeSetExpr
      * evaluate the expression with a context item and expression context
      * @param model TODO
      */
-    <N> NodeIterator<N> nodeIterator(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv);
+    <N> NodeIterator<N> nodeIterator(Model<N> model, N contextNode, NodeDynamicContext<N> dynEnv);
 
     Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv);
 }

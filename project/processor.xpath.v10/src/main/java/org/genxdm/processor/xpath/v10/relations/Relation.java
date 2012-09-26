@@ -28,7 +28,7 @@ import org.genxdm.processor.xpath.v10.iterators.CloneableTraverserImpl;
 import org.genxdm.xpath.v10.Converter;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.TraverserVariant;
-import org.genxdm.xpath.v10.Variant;
+import org.genxdm.xpath.v10.NodeVariant;
 import org.genxdm.xpath.v10.VariantCore;
 
 public abstract class Relation 
@@ -195,7 +195,7 @@ public abstract class Relation
 
 	public abstract boolean relate(String s1, String s2);
 
-	public <N> boolean relate(final Variant<N> obj1, final Variant<N> obj2, final Model<N> model)
+	public <N> boolean relate(final NodeVariant<N> obj1, final NodeVariant<N> obj2, final Model<N> model)
 	{
 		if (obj1.isNodeSet())
 		{

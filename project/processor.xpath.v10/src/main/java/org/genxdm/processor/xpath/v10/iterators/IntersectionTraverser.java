@@ -15,8 +15,8 @@
  */
 package org.genxdm.processor.xpath.v10.iterators;
 
+import org.genxdm.bridgekit.tree.TraversingInformerDelegate;
 import org.genxdm.nodes.Traverser;
-import org.genxdm.nodes.TraversingInformerDelegate;
 
 public class IntersectionTraverser extends TraversingInformerDelegate implements Traverser {
 

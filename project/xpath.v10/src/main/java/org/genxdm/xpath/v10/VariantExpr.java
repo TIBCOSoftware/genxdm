@@ -28,7 +28,7 @@ import org.genxdm.nodes.TraversingInformer;
  */
 public interface VariantExpr
 {
-    <N> Variant<N> evaluateAsVariant(Model<N> model, N contextNode, ExprContextDynamic<N> dynEnv);
+    <N> NodeVariant<N> evaluateAsVariant(Model<N> model, N contextNode, NodeDynamicContext<N> dynEnv);
 
     TraverserVariant evaluateAsVariant(TraversingInformer contextNode, TraverserDynamicContext dynEnv);
 }

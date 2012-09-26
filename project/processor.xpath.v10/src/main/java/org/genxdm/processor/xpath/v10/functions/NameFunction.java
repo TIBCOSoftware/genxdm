@@ -26,8 +26,8 @@ import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleStringExpr;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NodeSetExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
@@ -36,13 +36,13 @@ public final class NameFunction
     extends FunctionOpt1
 {
 
-	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr expr, final ExprContextStatic statEnv) throws ExprParseException
+	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr expr, final StaticContext statEnv) throws ExprParseException
 	{
 		final NodeSetExpr nse = expr.makeNodeSetExpr(statEnv);
 
 		return new ConvertibleStringExpr()
 		{
-			public <N> String stringFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
+			public <N> String stringFunction(Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv) {
 				final N node = nse.nodeIterator(model, contextNode, dynEnv).next();
 				String result = "";
 				if (node != null)

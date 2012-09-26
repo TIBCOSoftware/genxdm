@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.genxdm.Cursor;
+import org.genxdm.bridgekit.tree.TraversingInformerDelegate;
 import org.genxdm.nodes.Traverser;
-import org.genxdm.nodes.TraversingInformerDelegate;
 
 public class MergeNodeTraverser extends TraversingInformerDelegate implements Traverser
 {
@@ -52,7 +52,7 @@ public class MergeNodeTraverser extends TraversingInformerDelegate implements Tr
             }
             if (iters[j].moveToNext())
             {
-                nodes.add(iters[j].newPrecursor());
+                nodes.add(iters[j].newCursor());
                 j++;
             }
         }
@@ -165,7 +165,7 @@ public class MergeNodeTraverser extends TraversingInformerDelegate implements Tr
             }
             else
             {
-                nodes.set(0, iters[0].newPrecursor());
+                nodes.set(0, iters[0].newCursor());
             }
             heapify(0);
         }

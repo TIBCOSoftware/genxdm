@@ -51,7 +51,6 @@ final class IdentityKey
 		return 0;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(final Object obj)
 	{

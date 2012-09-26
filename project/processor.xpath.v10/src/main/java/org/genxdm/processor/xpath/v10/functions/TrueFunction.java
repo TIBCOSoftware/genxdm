@@ -22,13 +22,13 @@ package org.genxdm.processor.xpath.v10.functions;
 
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.TrueExpr;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.StaticContext;
 
 public final class TrueFunction 
     extends Function0
 {
 
-	ConvertibleExprImpl makeCallExpr(final ExprContextStatic statEnv)
+	ConvertibleExprImpl makeCallExpr(final StaticContext statEnv)
 	{
 		return new TrueExpr();
 	}

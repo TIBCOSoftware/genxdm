@@ -18,9 +18,9 @@ package org.genxdm.processor.xpath.v10.iterators;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.genxdm.bridgekit.tree.TraversingInformerDelegate;
 import org.genxdm.nodes.Traverser;
 import org.genxdm.nodes.TraversingInformer;
-import org.genxdm.nodes.TraversingInformerDelegate;
 import org.genxdm.xpath.v10.ExprException;
 
 public class CloneableTraverserImpl extends TraversingInformerDelegate implements CloneableTraverser
@@ -84,7 +84,7 @@ public class CloneableTraverserImpl extends TraversingInformerDelegate implement
                 // Have i < nodes.length
                 for (; iter.moveToNext() && len <= i; len++)
                 {
-                    nodes.add(iter.newPrecursor());
+                    nodes.add(iter.newCursor());
                 }
                 
                 // clear the iterator so that we don't try to keep scanning.

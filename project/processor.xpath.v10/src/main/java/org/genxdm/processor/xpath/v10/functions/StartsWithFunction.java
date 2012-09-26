@@ -25,8 +25,8 @@ import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleBooleanExpr;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
@@ -35,14 +35,14 @@ public final class StartsWithFunction
     extends Function2
 {
 
-	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e1, final ConvertibleExpr e2, final ExprContextStatic statEnv) throws ExprParseException
+	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e1, final ConvertibleExpr e2, final StaticContext statEnv) throws ExprParseException
 	{
 		final StringExpr se1 = e1.makeStringExpr(statEnv);
 		final StringExpr se2 = e2.makeStringExpr(statEnv);
 
 		return new ConvertibleBooleanExpr()
 		{
-			public <N> boolean booleanFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv)
+			public <N> boolean booleanFunction(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv)
 			{
 				return se1.stringFunction(model, node, dynEnv).startsWith(se2.stringFunction(model, node, dynEnv));
 			}

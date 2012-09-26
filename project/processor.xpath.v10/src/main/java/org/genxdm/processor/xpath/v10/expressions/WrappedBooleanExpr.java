@@ -19,7 +19,7 @@ import org.genxdm.Model;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
 public class WrappedBooleanExpr extends ConvertibleBooleanExpr {
@@ -39,7 +39,7 @@ public class WrappedBooleanExpr extends ConvertibleBooleanExpr {
 	
 	@Override
 	public <N> boolean booleanFunction(Model<N> model, N contextNode,
-			ExprContextDynamic<N> dynEnv) {
+			NodeDynamicContext<N> dynEnv) {
 		return m_wrappedExpr.booleanFunction(model, contextNode, dynEnv);
 	}
 

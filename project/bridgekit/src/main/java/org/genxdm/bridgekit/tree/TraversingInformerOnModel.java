@@ -33,7 +33,7 @@ public class TraversingInformerOnModel<N> extends InformerOnModel<N> implements 
     }
 
     @Override
-    public Cursor newPrecursor() {
+    public Cursor newCursor() {
         return new CursorOnModel<N>(node, model);
     }
 

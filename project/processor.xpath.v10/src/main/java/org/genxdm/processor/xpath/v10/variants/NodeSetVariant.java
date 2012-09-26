@@ -24,7 +24,7 @@ import org.genxdm.Model;
 import org.genxdm.xpath.v10.Converter;
 import org.genxdm.xpath.v10.ExprException;
 import org.genxdm.xpath.v10.NodeIterator;
-import org.genxdm.xpath.v10.Variant;
+import org.genxdm.xpath.v10.NodeVariant;
 
 public final class NodeSetVariant<N> extends VariantBase<N>
 {
@@ -63,7 +63,7 @@ public final class NodeSetVariant<N> extends VariantBase<N>
 	}
 
 	@Override
-	public Variant<N> makePermanent() throws ExprException
+	public NodeVariant<N> makePermanent() throws ExprException
 	{
 		return new PermanentNodeSetVariant<N>(iter, model);
 	}

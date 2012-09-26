@@ -22,7 +22,7 @@ import org.genxdm.nodes.Traverser;
  * or by {@link Traverser}, this interface defines the core set of
  * methods shared by both concepts.
  *
- * @see Variant
+ * @see NodeVariant
  * @see TraverserVariant
  */
 public interface VariantCore {

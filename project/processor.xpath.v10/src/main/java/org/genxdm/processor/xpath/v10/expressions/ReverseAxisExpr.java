@@ -31,7 +31,7 @@ import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.iterators.ListNodeIterator;
 import org.genxdm.processor.xpath.v10.iterators.ListTraverser;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.NodeIterator;
 
 /**
@@ -50,7 +50,7 @@ abstract class ReverseAxisExpr
 		return new ConvertibleNodeSetExprImpl()
 		{
             @Override
-			public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
+			public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv) {
 				return reverse(expr.nodeIterator(model, node, dynEnv), model);
 			}
 
@@ -79,7 +79,7 @@ abstract class ReverseAxisExpr
     {
         List<Cursor> list = new ArrayList<Cursor>();
         for (;iter.moveToNext();) {
-            Cursor cursor = iter.newPrecursor();
+            Cursor cursor = iter.newCursor();
             list.add(cursor);
         }
         Collections.reverse(list);

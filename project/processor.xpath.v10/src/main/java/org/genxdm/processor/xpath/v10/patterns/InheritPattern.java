@@ -24,7 +24,7 @@ import org.genxdm.Model;
 import org.genxdm.Cursor;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 
 final class InheritPattern 
     implements Pattern
@@ -37,7 +37,7 @@ final class InheritPattern
 	}
 
 	@Override
-	public <N> boolean matches(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
+	public <N> boolean matches(Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv) {
 		N node = contextNode;
 		do
 		{
@@ -53,7 +53,7 @@ final class InheritPattern
 
     @Override
     public boolean matches(TraversingInformer node, TraverserDynamicContext dynEnv) {
-        Cursor someAncestor = node.newPrecursor();
+        Cursor someAncestor = node.newCursor();
         do
         {
             if (p.matches(someAncestor, dynEnv))

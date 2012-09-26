@@ -28,8 +28,8 @@ import org.genxdm.Model;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.TraverserVariant;
-import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.Variant;
+import org.genxdm.xpath.v10.NodeDynamicContext;
+import org.genxdm.xpath.v10.NodeVariant;
 import org.genxdm.xpath.v10.VariantExpr;
 
 final class ExtensionFunctionCallExpr 
@@ -46,10 +46,10 @@ final class ExtensionFunctionCallExpr
 	}
 
 	@Override
-	public <N> Variant<N> evaluateAsVariant(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv)
+	public <N> NodeVariant<N> evaluateAsVariant(Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv)
 	{
 		@SuppressWarnings("unchecked")
-		final Variant<N>[] argValues = (Variant<N>[])Array.newInstance(Variant.class, args.length);
+		final NodeVariant<N>[] argValues = (NodeVariant<N>[])Array.newInstance(NodeVariant.class, args.length);
 		for (int i = 0; i < args.length; i++)
 		{
 			argValues[i] = args[i].evaluateAsVariant(model, contextNode, dynEnv);

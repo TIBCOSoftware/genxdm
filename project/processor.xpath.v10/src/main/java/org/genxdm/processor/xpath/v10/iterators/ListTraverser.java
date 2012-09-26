@@ -19,9 +19,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.genxdm.Cursor;
+import org.genxdm.bridgekit.tree.TraversingInformerDelegate;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.nodes.Traverser;
-import org.genxdm.nodes.TraversingInformerDelegate;
 
 public class ListTraverser extends TraversingInformerDelegate implements Traverser {
 

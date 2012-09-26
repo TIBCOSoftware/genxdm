@@ -26,7 +26,7 @@ import org.genxdm.nodes.Traverser;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.iterators.NodeIteratorOnIterator;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.NodeIterator;
 
 public final class NamespaceAxisExpr 
@@ -45,7 +45,7 @@ public final class NamespaceAxisExpr
 	}
 
     @Override
-	public <N> NodeIterator<N> nodeIterator(final Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
+	public <N> NodeIterator<N> nodeIterator(final Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv) {
 		return new NodeIteratorOnIterator<N>(model.getNamespaceAxis(contextNode, dynEnv.getInheritNamespaces()).iterator());
 	}
 

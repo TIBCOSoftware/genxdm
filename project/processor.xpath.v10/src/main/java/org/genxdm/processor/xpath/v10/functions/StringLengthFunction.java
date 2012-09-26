@@ -25,8 +25,8 @@ import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleNumberExpr;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
 
@@ -34,13 +34,13 @@ public final class StringLengthFunction
     extends FunctionOpt1
 {
 
-	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e, final ExprContextStatic statEnv)
+	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e, final StaticContext statEnv)
 	{
 		final StringExpr se = e.makeStringExpr(statEnv);
 		return new ConvertibleNumberExpr()
 		{
             @Override
-			public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
+			public <N> double numberFunction(Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv) {
 				return stringLength(se.stringFunction(model, contextNode, dynEnv));
 			}
 

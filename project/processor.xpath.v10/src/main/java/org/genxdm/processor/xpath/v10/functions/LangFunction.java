@@ -28,8 +28,8 @@ import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleBooleanExpr;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
@@ -95,7 +95,7 @@ public final class LangFunction
 
     private boolean lang(final TraversingInformer start, final String lang)
     {
-        Cursor node = start.newPrecursor();
+        Cursor node = start.newCursor();
         
         while (node != null)
         {
@@ -109,13 +109,13 @@ public final class LangFunction
         return false;
     }
 
-	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e, final ExprContextStatic statEnv) throws ExprParseException
+	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e, final StaticContext statEnv) throws ExprParseException
 	{
 		final StringExpr se = e.makeStringExpr(statEnv);
 		return new ConvertibleBooleanExpr()
 		{
             @Override
-			public <N> boolean booleanFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
+			public <N> boolean booleanFunction(Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv) {
 				return lang(model, contextNode, se.stringFunction(model, contextNode, dynEnv));
 			}
 

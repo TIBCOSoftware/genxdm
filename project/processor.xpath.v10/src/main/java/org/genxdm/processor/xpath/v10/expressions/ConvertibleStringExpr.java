@@ -27,10 +27,10 @@ import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.Converter;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.TraverserVariant;
-import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.StringExpr;
-import org.genxdm.xpath.v10.Variant;
+import org.genxdm.xpath.v10.NodeVariant;
 import org.genxdm.xpath.v10.VariantExpr;
 
 public abstract class ConvertibleStringExpr 
@@ -38,17 +38,17 @@ public abstract class ConvertibleStringExpr
     implements StringExpr
 {
 
-	public StringExpr makeStringExpr(final ExprContextStatic statEnv)
+	public StringExpr makeStringExpr(final StaticContext statEnv)
 	{
 		return this;
 	}
 
-	public BooleanExpr makeBooleanExpr(final ExprContextStatic statEnv)
+	public BooleanExpr makeBooleanExpr(final StaticContext statEnv)
 	{
 		return new ConvertibleBooleanExpr()
 		{
             @Override
-			public <N> boolean booleanFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
+			public <N> boolean booleanFunction(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv) {
 				return Converter.toBoolean(ConvertibleStringExpr.this.stringFunction(model, node, dynEnv));
 			}
 
@@ -59,12 +59,12 @@ public abstract class ConvertibleStringExpr
 		};
 	}
 
-	public VariantExpr makeVariantExpr(final ExprContextStatic statEnv)
+	public VariantExpr makeVariantExpr(final StaticContext statEnv)
 	{
 		return new ConvertibleVariantExpr()
 		{
             @Override
-			public <N> Variant<N> evaluateAsVariant(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv)  {
+			public <N> NodeVariant<N> evaluateAsVariant(Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv)  {
 				return new StringVariant<N>(ConvertibleStringExpr.this.stringFunction(model, contextNode, dynEnv));
 			}
 
@@ -76,12 +76,12 @@ public abstract class ConvertibleStringExpr
 	}
 
 	@Override
-	public ConvertibleNumberExpr makeNumberExpr(final ExprContextStatic statEnv)
+	public ConvertibleNumberExpr makeNumberExpr(final StaticContext statEnv)
 	{
 		return new ConvertibleNumberExpr()
 		{
             @Override
-			public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> context)  {
+			public <N> double numberFunction(Model<N> model, final N contextNode, final NodeDynamicContext<N> context)  {
 				return Converter.toNumber(ConvertibleStringExpr.this.stringFunction(model, contextNode, context));
 			}
 

@@ -79,7 +79,7 @@ import org.genxdm.processor.xpath.v10.relations.GreaterThanRelation;
 import org.genxdm.processor.xpath.v10.relations.NotEqualsRelation;
 import org.genxdm.processor.xpath.v10.relations.Relation;
 import org.genxdm.xpath.v10.BooleanExpr;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.NodeSetExpr;
 import org.genxdm.xpath.v10.NumberExpr;
 import org.genxdm.xpath.v10.StringExpr;
@@ -173,7 +173,7 @@ final class XPathToolkitImpl
     }
 
     @Override
-    public ExprContextStatic newExprContextStaticArgs()
+    public StaticContext newExprContextStaticArgs()
 	{
 		return new ExprContextStaticImpl();
 	}
