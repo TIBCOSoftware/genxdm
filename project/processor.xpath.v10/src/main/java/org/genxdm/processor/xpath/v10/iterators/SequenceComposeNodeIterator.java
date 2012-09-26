@@ -21,7 +21,7 @@
 package org.genxdm.processor.xpath.v10.iterators;
 
 import org.genxdm.Model;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.NodeSetExpr;
 
@@ -31,9 +31,9 @@ public final class SequenceComposeNodeIterator<N> implements NodeIterator<N>
 	private NodeIterator<N> iter2;
 	private final NodeSetExpr expr;
 	private Model<N> m_model;
-	private final ExprContextDynamic<N> context;
+	private final NodeDynamicContext<N> context;
 
-	public SequenceComposeNodeIterator(Model<N> model, final NodeIterator<N> iter, final NodeSetExpr expr, final ExprContextDynamic<N> context)
+	public SequenceComposeNodeIterator(Model<N> model, final NodeIterator<N> iter, final NodeSetExpr expr, final NodeDynamicContext<N> context)
 	{
 		this.iter1 = iter;
 		this.m_model = model;

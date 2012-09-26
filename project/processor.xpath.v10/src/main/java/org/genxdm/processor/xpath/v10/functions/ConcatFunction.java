@@ -26,8 +26,8 @@ import org.genxdm.Model;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleStringExpr;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.extend.Function;
@@ -42,7 +42,7 @@ public final class ConcatFunction
     implements Function
 {
 
-	public ConvertibleExpr makeCallExpr(final ConvertibleExpr[] args, final ExprContextStatic statEnv) throws ExprParseException
+	public ConvertibleExpr makeCallExpr(final ConvertibleExpr[] args, final StaticContext statEnv) throws ExprParseException
 	{
 		final StringExpr[] se = (StringExpr[])Array.newInstance(StringExpr.class, args.length);
 		for (int i = 0; i < se.length; i++)
@@ -52,7 +52,7 @@ public final class ConcatFunction
 
 		return new ConvertibleStringExpr()
 		{
-			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
+			public <N> String stringFunction(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv) {
 				final StringBuilder buf = new StringBuilder();
 				for (int i = 0; i < se.length; i++)
 				{

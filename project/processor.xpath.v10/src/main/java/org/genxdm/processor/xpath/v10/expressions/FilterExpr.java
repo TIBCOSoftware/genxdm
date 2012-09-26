@@ -27,7 +27,7 @@ import org.genxdm.processor.xpath.v10.iterators.FilterNodeIterator;
 import org.genxdm.processor.xpath.v10.iterators.FilterTraverser;
 import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.extend.ConvertibleNodeSetExpr;
 
@@ -45,7 +45,7 @@ final class FilterExpr
 	}
 
     @Override
-	public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
+	public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv) {
 		return new FilterNodeIterator<N>(model, expr.nodeIterator(model, node, dynEnv), dynEnv, predicate);
 	}
 

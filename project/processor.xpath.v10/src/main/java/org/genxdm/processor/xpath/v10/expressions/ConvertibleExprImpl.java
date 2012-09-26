@@ -21,7 +21,7 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.xpath.v10.BooleanExpr;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NumberExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
@@ -35,7 +35,7 @@ public abstract class ConvertibleExprImpl implements ConvertibleExpr
 	 * @see org.genxdm.xpath.v10.expressions.IConvertibleExpr#makeNodeSetExpr(org.genxdm.xpath.v10.expressions.ExprContextStatic)
 	 */
 	@Override
-	public ConvertibleNodeSetExprImpl makeNodeSetExpr(final ExprContextStatic statEnv) throws ExprParseException
+	public ConvertibleNodeSetExprImpl makeNodeSetExpr(final StaticContext statEnv) throws ExprParseException
 	{
 		throw new ExprParseException("value of expression cannot be converted to a node-set");
 	}
@@ -44,7 +44,7 @@ public abstract class ConvertibleExprImpl implements ConvertibleExpr
 	 * @see org.genxdm.xpath.v10.expressions.IConvertibleExpr#makeNumberExpr(org.genxdm.xpath.v10.expressions.ExprContextStatic)
 	 */
 	@Override
-	public NumberExpr makeNumberExpr(final ExprContextStatic statEnv)
+	public NumberExpr makeNumberExpr(final StaticContext statEnv)
 	{
 		return WrappedStringExpr.wrap(makeStringExpr(statEnv)).makeNumberExpr(statEnv);
 	}
@@ -53,7 +53,7 @@ public abstract class ConvertibleExprImpl implements ConvertibleExpr
 	 * @see org.genxdm.xpath.v10.expressions.IConvertibleExpr#makePredicateExpr(org.genxdm.xpath.v10.expressions.ExprContextStatic)
 	 */
 	@Override
-	public BooleanExpr makePredicateExpr(final ExprContextStatic statEnv)
+	public BooleanExpr makePredicateExpr(final StaticContext statEnv)
 	{
 		return makeBooleanExpr(statEnv);
 	}

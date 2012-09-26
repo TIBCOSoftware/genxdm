@@ -23,7 +23,7 @@ package org.genxdm.processor.xpath.v10.expressions;
 import org.genxdm.Model;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 
 final class LiteralExpr
     extends ConvertibleStringExpr
@@ -37,7 +37,7 @@ final class LiteralExpr
 	}
 
     @Override
-	public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
+	public <N> String stringFunction(Model<N> model, final N node, final NodeDynamicContext<N> dynEnv) {
 		return literal;
 	}
 

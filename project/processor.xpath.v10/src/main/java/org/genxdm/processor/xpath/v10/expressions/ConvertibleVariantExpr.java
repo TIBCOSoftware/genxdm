@@ -26,11 +26,11 @@ import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.TraverserVariant;
-import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.StringExpr;
-import org.genxdm.xpath.v10.Variant;
+import org.genxdm.xpath.v10.NodeVariant;
 import org.genxdm.xpath.v10.VariantExpr;
 
 /**
@@ -40,18 +40,18 @@ public abstract class ConvertibleVariantExpr
     extends ConvertibleExprImpl implements VariantExpr
 {
 
-	public VariantExpr makeVariantExpr(final ExprContextStatic statEnv)
+	public VariantExpr makeVariantExpr(final StaticContext statEnv)
 	{
 		return this;
 	}
 
 	@Override
-	public BooleanExpr makePredicateExpr(final ExprContextStatic statEnv)
+	public BooleanExpr makePredicateExpr(final StaticContext statEnv)
 	{
 		return new ConvertibleBooleanExpr( )
 		{
 		    @Override
-			public <N> boolean booleanFunction(Model<N> model, final N node, ExprContextDynamic<N> context) {
+			public <N> boolean booleanFunction(Model<N> model, final N node, NodeDynamicContext<N> context) {
 				return ConvertibleVariantExpr.this.evaluateAsVariant(model, node, context).convertToPredicate(context);
 			}
 
@@ -62,12 +62,12 @@ public abstract class ConvertibleVariantExpr
 		};
 	}
 
-	public BooleanExpr makeBooleanExpr(final ExprContextStatic statEnv)
+	public BooleanExpr makeBooleanExpr(final StaticContext statEnv)
 	{
 		return new ConvertibleBooleanExpr()
 		{
             @Override
-			public <N> boolean booleanFunction(Model<N> model, final N node, ExprContextDynamic<N> dynEnv) {
+			public <N> boolean booleanFunction(Model<N> model, final N node, NodeDynamicContext<N> dynEnv) {
 				return ConvertibleVariantExpr.this.evaluateAsVariant(model, node, dynEnv).convertToBoolean();
 			}
 
@@ -79,11 +79,11 @@ public abstract class ConvertibleVariantExpr
 	}
 
 	@Override
-	public ConvertibleNumberExpr makeNumberExpr(final ExprContextStatic statEnv)
+	public ConvertibleNumberExpr makeNumberExpr(final StaticContext statEnv)
 	{
 		return new ConvertibleNumberExpr()
 		{
-			public <N> double numberFunction(Model<N> model, N contextNode, ExprContextDynamic<N> context) {
+			public <N> double numberFunction(Model<N> model, N contextNode, NodeDynamicContext<N> context) {
 				return ConvertibleVariantExpr.this.evaluateAsVariant(model, contextNode, context).convertToNumber();
 			}
 
@@ -94,12 +94,12 @@ public abstract class ConvertibleVariantExpr
 		};
 	}
 
-	public StringExpr makeStringExpr(final ExprContextStatic statEnv)
+	public StringExpr makeStringExpr(final StaticContext statEnv)
 	{
 		return new ConvertibleStringExpr()
 		{
-			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> context) {
-				final Variant<N> variant = ConvertibleVariantExpr.this.evaluateAsVariant(model, node, context);
+			public <N> String stringFunction(Model<N> model, final N node, final NodeDynamicContext<N> context) {
+				final NodeVariant<N> variant = ConvertibleVariantExpr.this.evaluateAsVariant(model, node, context);
 				if (null != variant)
 				{
 					return variant.convertToString();
@@ -126,11 +126,11 @@ public abstract class ConvertibleVariantExpr
 	}
 
 	@Override
-	public ConvertibleNodeSetExprImpl makeNodeSetExpr(final ExprContextStatic statEnv)
+	public ConvertibleNodeSetExprImpl makeNodeSetExpr(final StaticContext statEnv)
 	{
 		return new ConvertibleNodeSetExprImpl()
 		{
-			public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, ExprContextDynamic<N> context) {
+			public <N> NodeIterator<N> nodeIterator(Model<N> model, final N node, NodeDynamicContext<N> context) {
 				return ConvertibleVariantExpr.this.evaluateAsVariant(model, node, context).convertToNodeSet();
 			}
 

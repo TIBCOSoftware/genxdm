@@ -31,9 +31,9 @@ import org.genxdm.processor.xpath.v10.variants.BooleanVariant;
 import org.genxdm.processor.xpath.v10.variants.NumberVariant;
 import org.genxdm.processor.xpath.v10.variants.StringVariant;
 import org.genxdm.xpath.v10.BooleanExpr;
-import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprContextDynamicArgs;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
+import org.genxdm.xpath.v10.NodeDynamicContextBuilder;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.NodeSetExpr;
@@ -67,7 +67,7 @@ public abstract class XPathBase<N>
 
         final XPathCompiler compiler = tools.newXPathCompiler();
 
-        final ExprContextStatic sargs = tools.newExprContextStaticArgs();
+        final StaticContext sargs = tools.newExprContextStaticArgs();
 
         try
         {
@@ -103,7 +103,7 @@ public abstract class XPathBase<N>
 
         final XPathCompiler compiler = tools.newXPathCompiler();
 
-        final ExprContextStatic sargs = tools.newExprContextStaticArgs();
+        final StaticContext sargs = tools.newExprContextStaticArgs();
 
         final N contextNode = null;
 
@@ -113,13 +113,13 @@ public abstract class XPathBase<N>
         final StringExpr stringExpr = compiler.compileStringExpr(
                 "concat('Hello',', ',$p:x,'!')", sargs);
 
-        final ExprContextDynamicArgs<N> dargs = tools
+        final NodeDynamicContextBuilder<N> dargs = tools
                 .newExprContextDynamicArgs();
 
         dargs.bindVariableValue(new QName("http://www.example.com", "x"),
                 new BooleanVariant<N>(true));
 
-        final ExprContextDynamic<N> dynEnv = dargs.build();
+        final NodeDynamicContext<N> dynEnv = dargs.build();
 
         final String s = stringExpr.stringFunction(pcx.getModel(), contextNode,
                 dynEnv);
@@ -138,7 +138,7 @@ public abstract class XPathBase<N>
 
         final XPathCompiler compiler = tools.newXPathCompiler();
 
-        final ExprContextStatic sargs = tools.newExprContextStaticArgs();
+        final StaticContext sargs = tools.newExprContextStaticArgs();
 
         sargs.declareVariable(new QName("http://www.example.com", "x"));
         sargs.declareNamespace("p", "http://www.example.com");
@@ -146,13 +146,13 @@ public abstract class XPathBase<N>
         final BooleanExpr compiledExpr = compiler.compileBooleanExpr("$p:x",
                 sargs);
 
-        final ExprContextDynamicArgs<N> dargs = tools
+        final NodeDynamicContextBuilder<N> dargs = tools
                 .newExprContextDynamicArgs();
 
         dargs.bindVariableValue(new QName("http://www.example.com", "x"),
                 new BooleanVariant<N>(true));
 
-        final ExprContextDynamic<N> dynEnv = dargs.build();
+        final NodeDynamicContext<N> dynEnv = dargs.build();
 
         final boolean value = compiledExpr.booleanFunction(pcx.getModel(),
                 null, dynEnv);
@@ -171,7 +171,7 @@ public abstract class XPathBase<N>
 
         final XPathCompiler compiler = tools.newXPathCompiler();
 
-        final ExprContextStatic sargs = tools.newExprContextStaticArgs();
+        final StaticContext sargs = tools.newExprContextStaticArgs();
 
         sargs.declareVariable(new QName("http://www.example.com", "x"));
         sargs.declareNamespace("p", "http://www.example.com");
@@ -179,13 +179,13 @@ public abstract class XPathBase<N>
         final StringExpr stringExpr = compiler.compileStringExpr(
                 "concat('Hello',', ',$p:x,'!')", sargs);
 
-        final ExprContextDynamicArgs<N> dargs = tools
+        final NodeDynamicContextBuilder<N> dargs = tools
                 .newExprContextDynamicArgs();
 
         dargs.bindVariableValue(new QName("http://www.example.com", "x"),
                 new StringVariant<N>("World"));
 
-        final ExprContextDynamic<N> dynEnv = dargs.build();
+        final NodeDynamicContext<N> dynEnv = dargs.build();
 
         final String s = stringExpr
                 .stringFunction(pcx.getModel(), null, dynEnv);
@@ -204,7 +204,7 @@ public abstract class XPathBase<N>
 
         final XPathCompiler compiler = tools.newXPathCompiler();
 
-        final ExprContextStatic sargs = tools.newExprContextStaticArgs();
+        final StaticContext sargs = tools.newExprContextStaticArgs();
 
         sargs.declareVariable(new QName("http://www.example.com", "x"));
         sargs.declareNamespace("p", "http://www.example.com");
@@ -212,13 +212,13 @@ public abstract class XPathBase<N>
         final StringExpr stringExpr = compiler.compileStringExpr(
                 "concat('Hello',', ',$p:x,'!')", sargs);
 
-        final ExprContextDynamicArgs<N> dargs = tools
+        final NodeDynamicContextBuilder<N> dargs = tools
                 .newExprContextDynamicArgs();
 
         dargs.bindVariableValue(new QName("http://www.example.com", "x"),
                 new NumberVariant<N>(23));
 
-        final ExprContextDynamic<N> dynEnv = dargs.build();
+        final NodeDynamicContext<N> dynEnv = dargs.build();
 
         final String s = stringExpr
                 .stringFunction(pcx.getModel(), null, dynEnv);
@@ -238,14 +238,14 @@ public abstract class XPathBase<N>
 
         final XPathCompiler compiler = tools.newXPathCompiler();
 
-        final ExprContextStatic sargs = tools.newExprContextStaticArgs();
+        final StaticContext sargs = tools.newExprContextStaticArgs();
 
         final NumberExpr expr = compiler.compileNumberExpr("1 + 2 * 3", sargs);
 
-        final ExprContextDynamicArgs<N> dargs = tools
+        final NodeDynamicContextBuilder<N> dargs = tools
                 .newExprContextDynamicArgs();
 
-        final ExprContextDynamic<N> dynEnv = dargs.build();
+        final NodeDynamicContext<N> dynEnv = dargs.build();
 
         final double result = expr.numberFunction(pcx.getModel(), null, dynEnv);
         assertEquals(7.0d, result, 0.1d);
@@ -261,7 +261,7 @@ public abstract class XPathBase<N>
 
         final XPathCompiler compiler = tools.newXPathCompiler();
 
-        final ExprContextStatic sargs = tools.newExprContextStaticArgs();
+        final StaticContext sargs = tools.newExprContextStaticArgs();
 
         final NumberExpr numberExpr;
         try
@@ -275,12 +275,12 @@ public abstract class XPathBase<N>
             return;
         }
 
-        final ExprContextDynamicArgs<N> dargs = tools
+        final NodeDynamicContextBuilder<N> dargs = tools
                 .newExprContextDynamicArgs();
 
         dargs.setContextSize(7);
 
-        final ExprContextDynamic<N> dynEnv = dargs.build();
+        final NodeDynamicContext<N> dynEnv = dargs.build();
 
         final double x = numberExpr.numberFunction(pcx.getModel(), null,
                 dynEnv);
@@ -346,7 +346,7 @@ public abstract class XPathBase<N>
 
         final XPathCompiler compiler = tools.newXPathCompiler();
 
-        final ExprContextStatic sargs = tools.newExprContextStaticArgs();
+        final StaticContext sargs = tools.newExprContextStaticArgs();
 
         sargs.declareNamespace("nsb", "http://b.example");
 
@@ -362,12 +362,12 @@ public abstract class XPathBase<N>
             return;
         }
 
-        final ExprContextDynamicArgs<N> dargs = tools
+        final NodeDynamicContextBuilder<N> dargs = tools
                 .newExprContextDynamicArgs();
 
         dargs.setContextPosition(5);
 
-        final ExprContextDynamic<N> dynEnv = dargs.build();
+        final NodeDynamicContext<N> dynEnv = dargs.build();
 
         if (pcx.isSupported(Feature.NAMESPACE_AXIS))
         {
@@ -411,7 +411,7 @@ public abstract class XPathBase<N>
 
         final XPathCompiler compiler = tools.newXPathCompiler();
 
-        final ExprContextStatic sargs = tools.newExprContextStaticArgs();
+        final StaticContext sargs = tools.newExprContextStaticArgs();
 
         final N contextNode = null;
 
@@ -427,13 +427,13 @@ public abstract class XPathBase<N>
             return;
         }
 
-        final ExprContextDynamicArgs<N> dargs = tools
+        final NodeDynamicContextBuilder<N> dargs = tools
                 .newExprContextDynamicArgs();
 
         dargs.setContextPosition(5);
         dargs.setContextSize(10);
 
-        final ExprContextDynamic<N> dynEnv = dargs.build();
+        final NodeDynamicContext<N> dynEnv = dargs.build();
 
         final double x = numberExpr.numberFunction(pcx.getModel(),
                 contextNode, dynEnv);
@@ -453,7 +453,7 @@ public abstract class XPathBase<N>
 
         final XPathCompiler compiler = tools.newXPathCompiler();
 
-        final ExprContextStatic sargs = tools.newExprContextStaticArgs();
+        final StaticContext sargs = tools.newExprContextStaticArgs();
 
         sargs.declareVariable(new QName("http://www.example.com", "x"));
         sargs.declareNamespace("p", "http://www.example.com");
@@ -471,13 +471,13 @@ public abstract class XPathBase<N>
             return;
         }
 
-        final ExprContextDynamicArgs<N> dargs = tools
+        final NodeDynamicContextBuilder<N> dargs = tools
                 .newExprContextDynamicArgs();
 
         dargs.bindVariableValue(new QName("http://www.example.com", "x"),
                 new StringVariant<N>("World"));
 
-        final ExprContextDynamic<N> dynEnv = dargs.build();
+        final NodeDynamicContext<N> dynEnv = dargs.build();
 
         final String s = stringExpr.stringFunction(pcx.getModel(),
                 contextNode, dynEnv);

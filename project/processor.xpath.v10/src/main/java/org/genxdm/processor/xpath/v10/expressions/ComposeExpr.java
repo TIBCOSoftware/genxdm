@@ -32,7 +32,7 @@ import org.genxdm.processor.xpath.v10.iterators.NullNodeTraverser;
 import org.genxdm.processor.xpath.v10.iterators.UnionNodeIterator;
 import org.genxdm.processor.xpath.v10.iterators.UnionNodeTraverser;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.extend.ConvertibleNodeSetExpr;
 
@@ -59,7 +59,7 @@ final class ComposeExpr
 	 * evaluate with a context node and an expression context
 	 */
 	@SuppressWarnings("unchecked")
-	public <N> NodeIterator<N> nodeIterator(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
+	public <N> NodeIterator<N> nodeIterator(Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv) {
 		NodeIterator<N> iter = expr1.nodeIterator(model, contextNode, dynEnv);
 		NodeIterator<N>[] iters = (NodeIterator<N>[])Array.newInstance(NodeIterator.class, 10);
 		int length = 0;
@@ -119,7 +119,7 @@ final class ComposeExpr
                 iters = (Traverser[])Array.newInstance(Traverser.class, oldIters.length * 2);
                 System.arraycopy(oldIters, 0, iters, 0, oldIters.length);
             }
-            iters[length++] = expr2.traverseNodes(iter.newPrecursor(), dynEnv);
+            iters[length++] = expr2.traverseNodes(iter.newCursor(), dynEnv);
         }
 
         // so, how many iterators did we build?

@@ -27,8 +27,8 @@ import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleExprImpl;
 import org.genxdm.processor.xpath.v10.expressions.ConvertibleStringExpr;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.NumberExpr;
 import org.genxdm.xpath.v10.StringExpr;
 import org.genxdm.xpath.v10.extend.ConvertibleExpr;
@@ -37,7 +37,7 @@ public final class FormatNumberFunction
     extends Function2
 {
 
-	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e1, final ConvertibleExpr e2, ExprContextStatic statEnv)
+	ConvertibleExprImpl makeCallExpr(final ConvertibleExpr e1, final ConvertibleExpr e2, StaticContext statEnv)
 	{
 		final NumberExpr ne = e1.makeNumberExpr(statEnv);
 		final StringExpr se = e2.makeStringExpr(statEnv);
@@ -45,7 +45,7 @@ public final class FormatNumberFunction
 		return new ConvertibleStringExpr()
 		{
             @Override
-			public <N> String stringFunction(Model<N> model, final N node, final ExprContextDynamic<N> context) {
+			public <N> String stringFunction(Model<N> model, final N node, final NodeDynamicContext<N> context) {
 				try {
 					return new DecimalFormat(se.stringFunction(model, node, context)).format(ne.numberFunction(model, node, context));
 				}

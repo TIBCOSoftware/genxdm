@@ -28,15 +28,9 @@ import org.genxdm.nodes.Traverser;
  * {@link org.genxdm.nodes.NodeInformer}, or more generally, as {@link org.genxdm.Cursor} corresponds to
  * {@link org.genxdm.Model}.</p> 
  *
- * <p>Note that this interface is not currently implemented, and should be
- * regarded as experimental.  In theory, it could add axis navigation to the
- * {@link org.genxdm.Cursor} abstraction, but it would do so by (conceptually) wrapping
- * each returned node in an {@link Informer} wrapper. It is left here so that
- * it can be implemented, but no bridge currently implements it.</p>
- * 
  * @see <a href="http://www.w3.org/TR/xpath20/#axes">XPath 2.0 - Axes </a>
  */
-public interface AxisNavigator
+public interface AxisTraverser
 {
     /**
      * Returns the nodes along the ancestor axis using this node as the origin.

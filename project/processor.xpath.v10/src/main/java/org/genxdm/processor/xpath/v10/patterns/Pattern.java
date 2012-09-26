@@ -23,7 +23,7 @@ package org.genxdm.processor.xpath.v10.patterns;
 import org.genxdm.Model;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 
 /**
  * an XPath (XSLT) match pattern
@@ -34,7 +34,7 @@ public interface Pattern
 	 * return true if the given node matches this pattern when evaluated in the given ExpressionContext
 	 * @param model TODO
 	 */
-	<N> boolean matches(Model<N> model, N node, ExprContextDynamic<N> dynEnv);
+	<N> boolean matches(Model<N> model, N node, NodeDynamicContext<N> dynEnv);
 	
 	boolean matches(TraversingInformer node, TraverserDynamicContext dynEnv);
 

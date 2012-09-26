@@ -21,12 +21,12 @@
 package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
+import org.genxdm.bridgekit.tree.TraversingInformerDelegate;
 import org.genxdm.nodes.Traverser;
 import org.genxdm.nodes.TraversingInformer;
-import org.genxdm.nodes.TraversingInformerDelegate;
 import org.genxdm.processor.xpath.v10.patterns.Pattern;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.NodeIterator;
 
 /**
@@ -46,7 +46,7 @@ final class NodeTestExpr
 	}
 
 	@Override
-	public <N> NodeIterator<N> nodeIterator(final Model<N> model, final N node, final ExprContextDynamic<N> dynEnv) {
+	public <N> NodeIterator<N> nodeIterator(final Model<N> model, final N node, final NodeDynamicContext<N> dynEnv) {
 		final NodeIterator<N> iter = expr.nodeIterator(model, node, dynEnv);
 		return new NodeIterator<N>()
 		{

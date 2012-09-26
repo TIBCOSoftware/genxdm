@@ -251,7 +251,7 @@ public class XmlNodeTraversingInformer implements TraversingInformer {
     }
 
     @Override
-    public Cursor newPrecursor() {
+    public Cursor newCursor() {
         return new XmlNodeCursor(node);
     }
 

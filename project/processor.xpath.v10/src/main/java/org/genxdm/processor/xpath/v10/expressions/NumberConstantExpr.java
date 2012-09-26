@@ -23,7 +23,7 @@ package org.genxdm.processor.xpath.v10.expressions;
 import org.genxdm.Model;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 
 public final class NumberConstantExpr 
     extends ConvertibleNumberExpr
@@ -37,7 +37,7 @@ public final class NumberConstantExpr
 	}
 
     @Override
-	public <N> double numberFunction(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
+	public <N> double numberFunction(Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv) {
 		return number;
 	}
 

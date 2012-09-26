@@ -26,7 +26,7 @@ import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.iterators.SequenceComposeNodeIterator;
 import org.genxdm.processor.xpath.v10.iterators.SequenceComposeTraverser;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.NodeIterator;
 import org.genxdm.xpath.v10.extend.ConvertibleNodeSetExpr;
 
@@ -47,7 +47,7 @@ final class SequenceComposeExpr
 	}
 
     @Override
-	public <N> NodeIterator<N> nodeIterator(Model<N> model, final N contextNode, final ExprContextDynamic<N> dynEnv) {
+	public <N> NodeIterator<N> nodeIterator(Model<N> model, final N contextNode, final NodeDynamicContext<N> dynEnv) {
 		return new SequenceComposeNodeIterator<N>(model, expr1.nodeIterator(model, contextNode, dynEnv), expr2, dynEnv);
 	}
 

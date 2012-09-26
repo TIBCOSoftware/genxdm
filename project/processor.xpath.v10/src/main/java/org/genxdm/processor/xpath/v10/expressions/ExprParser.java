@@ -38,7 +38,7 @@ import org.genxdm.processor.xpath.v10.tests.NodeTypeTest;
 import org.genxdm.processor.xpath.v10.tests.ProcessingInstructionTest;
 import org.genxdm.xpath.v10.BooleanExpr;
 import org.genxdm.xpath.v10.Converter;
-import org.genxdm.xpath.v10.ExprContextStatic;
+import org.genxdm.xpath.v10.StaticContext;
 import org.genxdm.xpath.v10.ExprParseException;
 import org.genxdm.xpath.v10.NodeSetExpr;
 import org.genxdm.xpath.v10.NumberExpr;
@@ -53,12 +53,12 @@ import org.genxdm.xpath.v10.extend.ConvertibleNodeSetExpr;
 final class ExprParser 
     extends ExprTokenizer
 {
-	private final ExprContextStatic statEnv;
+	private final StaticContext statEnv;
 	private final HashMap<String, AxisExpr> axisTable;
 	private final HashMap<String, Function> functionTable;
 	private final HashMap<String, Relation> relationTable;
 
-	public ExprParser(final String expr, final ExprContextStatic statEnv, final HashMap<String, AxisExpr> axisTable, final HashMap<String, Function> functionTable,
+	public ExprParser(final String expr, final StaticContext statEnv, final HashMap<String, AxisExpr> axisTable, final HashMap<String, Function> functionTable,
 			final HashMap<String, Relation> relationTable)
 	{
 		super(expr);

@@ -22,7 +22,7 @@ package org.genxdm.processor.xpath.v10.variants;
 
 import org.genxdm.nodes.Traverser;
 import org.genxdm.xpath.v10.Converter;
-import org.genxdm.xpath.v10.ExprContextDynamic;
+import org.genxdm.xpath.v10.NodeDynamicContext;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.TraverserVariant;
 import org.genxdm.xpath.v10.ExprException;
@@ -53,7 +53,7 @@ public final class NumberVariant<N> extends VariantBase<N> implements TraverserV
 	}
 
 	@Override
-	public boolean convertToPredicate(final ExprContextDynamic<N> context) {
+	public boolean convertToPredicate(final NodeDynamicContext<N> context) {
 		return Converter.positionToBoolean(num, context);
 	}
 
