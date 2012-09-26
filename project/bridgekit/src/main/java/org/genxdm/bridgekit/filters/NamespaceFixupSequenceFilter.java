@@ -21,7 +21,7 @@ import org.genxdm.names.NamespaceBinding;
 import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.types.Type;
 
@@ -248,7 +248,7 @@ public class NamespaceFixupSequenceFilter<A>
     }
     
     @Override
-    public void setSchema(Schema schema)
+    public void setSchema(SchemaComponentCache schema)
     {
     	this.schema = PreCondition.assertNotNull(schema);
     }
@@ -413,7 +413,7 @@ public class NamespaceFixupSequenceFilter<A>
     private int counter = 0;
     private SequenceHandler<A> output;
     private AtomBridge<A> atoms;
-    private Schema schema;
+    private SchemaComponentCache schema;
     private Set<DerivationMethod> methods = new HashSet<DerivationMethod>(3);
     
 }

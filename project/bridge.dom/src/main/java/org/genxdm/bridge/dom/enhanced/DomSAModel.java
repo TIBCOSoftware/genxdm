@@ -31,7 +31,7 @@ import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.ComponentProvider;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.Type;
@@ -260,7 +260,7 @@ class DomSAModel
         }
     }
 
-    private QName getAnnotationType(final Node node, final Schema metaBridge)
+    private QName getAnnotationType(final Node node, final SchemaComponentCache metaBridge)
     {
         PreCondition.assertArgumentNotNull(node, "node");
         if (DomSupport.supportsCoreLevel3(node))
@@ -323,7 +323,7 @@ class DomSAModel
 
     private final AtomBridge<XmlAtom> atomBridge;
 
-    private final Schema schema;
+    private final SchemaComponentCache schema;
     
     private final ComponentProvider provider;
 

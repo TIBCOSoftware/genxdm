@@ -14,7 +14,7 @@ import org.genxdm.bridgetest.TestBase;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.TypesBridge;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.AttributeUse;
 import org.genxdm.xs.enums.DerivationMethod;
@@ -30,7 +30,7 @@ public abstract class TypedTestBase<N, A>
     { 
         SIMPLEST
         {
-            public void initializeSchema(Schema schema)
+            public void initializeSchema(SchemaComponentCache schema)
             {
                 // dead simple: it has a single empty element called "doc"
                 // of course, that turns out not to be so simple, because an
@@ -69,7 +69,7 @@ public abstract class TypedTestBase<N, A>
         
         TEXTMARKUP
         {
-            public void initializeSchema(Schema schema)
+            public void initializeSchema(SchemaComponentCache schema)
             {
                 // still very simple, basically a simple structured document.
                 // doc { 
@@ -87,7 +87,7 @@ public abstract class TypedTestBase<N, A>
         
         PO
         {
-            public void initializeSchema(Schema schema)
+            public void initializeSchema(SchemaComponentCache schema)
             {
                 // more complex, and using some basic types.
                 // purchaseorder {
@@ -107,7 +107,7 @@ public abstract class TypedTestBase<N, A>
         
         SOAPYMESS
         {
-            public void initializeSchema(Schema schema)
+            public void initializeSchema(SchemaComponentCache schema)
             {
                 // dunno about doing a genuine soap message; that really would
                 // be a mess.  let's try for just the body, or something.
@@ -120,13 +120,13 @@ public abstract class TypedTestBase<N, A>
             }
         };
         
-        public abstract void initializeSchema(Schema schema);
+        public abstract void initializeSchema(SchemaComponentCache schema);
         
         public abstract <N, A> N buildTypedDocument(SequenceBuilder<N, A> builder, TypesBridge schema);
     };
     
     // convenience method for testing typed context variants
-    protected TypedContext<N, A> getTypedContext(Schema schema)
+    protected TypedContext<N, A> getTypedContext(SchemaComponentCache schema)
     {
         return context.getTypedContext(schema);
     }

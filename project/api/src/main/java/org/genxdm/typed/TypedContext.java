@@ -22,7 +22,7 @@ import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.TypedDocumentHandlerFactory;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.TypesBridge;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 
 /**
  * A context for schema-related processing and state.
@@ -51,7 +51,7 @@ public interface TypedContext<N, A>
      * existing schema components.
      * @return the schema cache associated with this context
      */
-    Schema getSchema();
+    SchemaComponentCache getSchema();
     
     /**
      * Returns the bridge used for type interaction.  Types means both

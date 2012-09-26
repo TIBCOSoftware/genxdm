@@ -34,7 +34,7 @@ import org.genxdm.xs.types.SimpleType;
  * See ComponentProvider for methods that access components by name.
  *
  */
-public interface Schema
+public interface SchemaComponentCache
 {
     void declareAttribute(final AttributeDefinition attribute);
 

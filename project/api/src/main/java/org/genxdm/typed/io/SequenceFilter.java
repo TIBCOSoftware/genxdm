@@ -1,7 +1,7 @@
 package org.genxdm.typed.io;
 
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 
 public interface SequenceFilter<A>
     extends SequenceHandler<A>
@@ -10,5 +10,5 @@ public interface SequenceFilter<A>
     
     void setAtomBridge(AtomBridge<A> bridge);
     
-    void setSchema(Schema schema);
+    void setSchema(SchemaComponentCache schema);
 }

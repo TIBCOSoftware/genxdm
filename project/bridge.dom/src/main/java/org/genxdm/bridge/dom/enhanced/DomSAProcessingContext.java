@@ -41,13 +41,13 @@ import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.TypesBridge;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 import org.w3c.dom.Node;
 
 public final class DomSAProcessingContext 
     implements TypedContext<Node, XmlAtom>
 {
-    public DomSAProcessingContext(DomProcessingContext parent, Schema schema)
+    public DomSAProcessingContext(DomProcessingContext parent, SchemaComponentCache schema)
     {
         if (schema == null)
         {
@@ -75,7 +75,7 @@ public final class DomSAProcessingContext
         return typesBridge;
     }
     @Override
-    public Schema getSchema()
+    public SchemaComponentCache getSchema()
     {
         return schema;
     }
@@ -139,7 +139,7 @@ public final class DomSAProcessingContext
     private final DomProcessingContext parent;
     private final XmlAtomBridge atomBridge;
     private final TypesBridge typesBridge;
-    private final Schema schema;
+    private final SchemaComponentCache schema;
 
     private final DomSAModel m_model;
 }

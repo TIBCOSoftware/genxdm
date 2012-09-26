@@ -2066,43 +2066,43 @@ final class SchemaConstraintChecker
         }
     }
 
-    private String getDisplayString(final List<XmlAtom> value)
-    {
-        final Iterator<XmlAtom> atoms = value.iterator();
-
-        if (atoms.hasNext())
-        {
-            final XmlAtom first = atoms.next();
-
-            if (atoms.hasNext())
-            {
-                final StringBuilder buffer = new StringBuilder();
-
-                buffer.append('(');
-
-                append(first, buffer);
-
-                while (atoms.hasNext())
-                {
-                    buffer.append(", ");
-
-                    append(atoms.next(), buffer);
-                }
-
-                buffer.append(')');
-
-                return buffer.toString();
-            }
-            else
-            {
-                return getDisplayString(first);
-            }
-        }
-        else
-        {
-            return "()";
-        }
-    }
+//    private String getDisplayString(final List<XmlAtom> value)
+//    {
+//        final Iterator<XmlAtom> atoms = value.iterator();
+//
+//        if (atoms.hasNext())
+//        {
+//            final XmlAtom first = atoms.next();
+//
+//            if (atoms.hasNext())
+//            {
+//                final StringBuilder buffer = new StringBuilder();
+//
+//                buffer.append('(');
+//
+//                append(first, buffer);
+//
+//                while (atoms.hasNext())
+//                {
+//                    buffer.append(", ");
+//
+//                    append(atoms.next(), buffer);
+//                }
+//
+//                buffer.append(')');
+//
+//                return buffer.toString();
+//            }
+//            else
+//            {
+//                return getDisplayString(first);
+//            }
+//        }
+//        else
+//        {
+//            return "()";
+//        }
+//    }
 
     /**
      * Searches up the inheritance tree and returns to first facet of the requested kind, or null if no such facet is inherited

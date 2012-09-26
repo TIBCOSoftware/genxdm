@@ -39,7 +39,7 @@ import org.genxdm.mutable.MutableContext;
 import org.genxdm.mutable.MutableCursor;
 import org.genxdm.mutable.MutableModel;
 import org.genxdm.typed.TypedContext;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 import org.w3c.dom.Node;
 
 public class DomProcessingContext
@@ -103,7 +103,7 @@ public class DomProcessingContext
     }
 
     @SuppressWarnings("unchecked")
-    public TypedContext<Node, XmlAtom> getTypedContext(Schema cache)
+    public TypedContext<Node, XmlAtom> getTypedContext(SchemaComponentCache cache)
     {
         DomSAProcessingContext tc = null;
         if (cache != null)
@@ -193,6 +193,6 @@ public class DomProcessingContext
     
     private final DomModel model = new DomModel();
     private MutantContext mutantContext;
-    private Map<Schema, DomSAProcessingContext> typedContexts = new HashMap<Schema, DomSAProcessingContext>();
-    private Schema defaultCache;
+    private Map<SchemaComponentCache, DomSAProcessingContext> typedContexts = new HashMap<SchemaComponentCache, DomSAProcessingContext>();
+    private SchemaComponentCache defaultCache;
 }
