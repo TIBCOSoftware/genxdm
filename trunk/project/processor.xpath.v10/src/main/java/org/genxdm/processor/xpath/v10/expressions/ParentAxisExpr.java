@@ -22,7 +22,7 @@ package org.genxdm.processor.xpath.v10.expressions;
 
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
-import org.genxdm.Precursor;
+import org.genxdm.Cursor;
 import org.genxdm.nodes.Traverser;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.iterators.SingleNodeIterator;
@@ -52,7 +52,7 @@ public final class ParentAxisExpr
 
     @Override
     public Traverser traverseNodes(TraversingInformer contextNode, TraverserDynamicContext dynEnv) {
-        Precursor pc = contextNode.newPrecursor();
+        Cursor pc = contextNode.newPrecursor();
         pc.moveToParent();
         return new SingleTraverser(pc);
     }

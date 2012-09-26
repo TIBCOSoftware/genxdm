@@ -24,20 +24,14 @@ import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridgekit.tree.Ordering;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
-import org.genxdm.nodes.Bookmark;
 
 public class XmlNodeCursor extends XmlNodeTraversingInformer
-    implements Cursor<XmlNode>
+    implements Cursor
 {
     public XmlNodeCursor(final XmlNode node)
     {
         super(node);
         this.node = PreCondition.assertNotNull(node, "node");
-    }
-
-    public Bookmark<XmlNode> bookmark()
-    {
-        return new XmlNodeMarker(node, null);
     }
 
     public void write(ContentHandler writer)
@@ -49,15 +43,6 @@ public class XmlNodeCursor extends XmlNodeTraversingInformer
             if (!moveToNextSibling())
                 moveToParent();
         }
-    }
-
-    public void moveTo(XmlNode bookmark)
-    {
-        // TODO: we ought not let a cursor move from one document to
-        // another, which is possible using this method.  so we ought
-        // to verify the precondition that bookmark is in the same document
-        // as the current node.
-        moveToNode(bookmark);
     }
 
     public boolean moveToAttribute(String namespaceURI, String localName)
@@ -128,7 +113,7 @@ public class XmlNodeCursor extends XmlNodeTraversingInformer
         moveToNode(node.getRoot());
     }
 
-    public int compareTo(Cursor<XmlNode> arg0)
+    public int compareTo(Cursor arg0)
     {
         XmlNodeModel model = new XmlNodeModel();
         return Ordering.compareNodes(node, ((XmlNodeCursor)arg0).node, model);

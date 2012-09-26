@@ -41,29 +41,6 @@ public abstract class ContextBase<N>
 {
     
     @Test
-    public void bookmark()
-    {
-        // a bookmark *must* be created.
-        // the supplied node *must not* be null (bridge should assert)
-        // further testing of the bookmark is up to the bookmark test.
-        ProcessingContext<N> context = newProcessingContext();
-        
-        N testDoc = createSimpleAllKindsDocument(context.newFragmentBuilder()); 
-        assertNotNull(testDoc);
-        
-        assertNotNull(context.bookmark(testDoc));
-        try
-        {
-            context.bookmark(null);
-            fail();
-        }
-        catch (AssertionError err)
-        {
-            // all correct.
-        }
-    }
-    
-    @Test
     public void model()
     {
         // the model *must* be accessible.
@@ -87,7 +64,7 @@ public abstract class ContextBase<N>
         N testDoc = createSimpleAllKindsDocument(context.newFragmentBuilder());
         assertNotNull(testDoc);
         
-        Cursor<N> cursor = context.newCursor(testDoc);
+        Cursor cursor = context.newCursor(testDoc);
         assertNotNull(cursor); // never null
                 
         // now, we should be able to start two cursors from the same position,

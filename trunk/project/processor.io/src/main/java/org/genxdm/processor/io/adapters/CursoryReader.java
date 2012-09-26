@@ -24,7 +24,7 @@ public class CursoryReader<N>
      * @param cursor the cursor over which the reader operates, initialized
      * to the desired starting position; may not be null.
      */
-    public CursoryReader(Cursor<N> cursor)
+    public CursoryReader(Cursor cursor)
     {
         this.cursor = PreCondition.assertNotNull(cursor, "cursor");
         originId = cursor.getNodeId();
@@ -37,7 +37,7 @@ public class CursoryReader<N>
      * to the desired starting position; may not be null.
      * @param lock the object on which to synchronize; may not be null.
      */
-    public CursoryReader(Cursor<N> cursor, Object lock)
+    public CursoryReader(Cursor cursor, Object lock)
     {
         super(lock);
         this.cursor = PreCondition.assertNotNull(cursor, "cursor");
@@ -185,7 +185,7 @@ public class CursoryReader<N>
         return localName;
     }
 
-    private final Cursor<N> cursor;
+    private final Cursor cursor;
     private final Object originId;
     private final StringBuilder builder = new StringBuilder();
     private final XmlEncoder encoder = new XmlEncoder();

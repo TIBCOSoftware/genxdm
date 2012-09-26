@@ -45,7 +45,7 @@ public abstract class CursorBase<N>
         N doc = createComplexTestDocument(matcher);
         assertNotNull(doc);
 
-        Cursor<N> cursor = context.newCursor(doc);
+        Cursor cursor = context.newCursor(doc);
         assertNotNull(cursor);
 
         matcher.match();

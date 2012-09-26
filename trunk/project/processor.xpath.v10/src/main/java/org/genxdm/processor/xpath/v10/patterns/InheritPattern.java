@@ -21,7 +21,7 @@
 package org.genxdm.processor.xpath.v10.patterns;
 
 import org.genxdm.Model;
-import org.genxdm.Precursor;
+import org.genxdm.Cursor;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
@@ -53,7 +53,7 @@ final class InheritPattern
 
     @Override
     public boolean matches(TraversingInformer node, TraverserDynamicContext dynEnv) {
-        Precursor someAncestor = node.newPrecursor();
+        Cursor someAncestor = node.newPrecursor();
         do
         {
             if (p.matches(someAncestor, dynEnv))

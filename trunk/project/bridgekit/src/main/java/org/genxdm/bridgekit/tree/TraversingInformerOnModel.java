@@ -16,7 +16,7 @@
 package org.genxdm.bridgekit.tree;
 
 import org.genxdm.Model;
-import org.genxdm.Precursor;
+import org.genxdm.Cursor;
 import org.genxdm.nodes.Traverser;
 import org.genxdm.nodes.TraversingInformer;
 
@@ -33,7 +33,7 @@ public class TraversingInformerOnModel<N> extends InformerOnModel<N> implements 
     }
 
     @Override
-    public Precursor newPrecursor() {
+    public Cursor newPrecursor() {
         return new CursorOnModel<N>(node, model);
     }
 

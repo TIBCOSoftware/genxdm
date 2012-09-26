@@ -21,7 +21,7 @@ import java.util.Iterator;
 import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
-import org.genxdm.Precursor;
+import org.genxdm.Cursor;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridgekit.axes.IteratorAncestorAxis;
 import org.genxdm.bridgekit.axes.IteratorAncestorOrSelfAxis;
@@ -251,7 +251,7 @@ public class XmlNodeTraversingInformer implements TraversingInformer {
     }
 
     @Override
-    public Precursor newPrecursor() {
+    public Cursor newPrecursor() {
         return new XmlNodeCursor(node);
     }
 

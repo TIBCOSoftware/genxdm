@@ -30,7 +30,7 @@ import org.genxdm.typed.io.SequenceHandler;
  *            The atom handle.
  */
 public interface TypedCursor<N, A> 
-    extends Cursor<N>, TypeInformer<A>
+    extends Cursor, TypeInformer<A>
 {
 	void write(SequenceHandler<A> handler, boolean bogus)
 		throws GenXDMException;

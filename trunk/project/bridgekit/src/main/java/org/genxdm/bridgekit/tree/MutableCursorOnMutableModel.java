@@ -92,7 +92,7 @@ public class MutableCursorOnMutableModel<N>
     {
         N old = tmodel.replace(node, newNode);
         if (old != null)
-            moveTo(newNode);
+            setCurrentNode(newNode);
         return old;
     }
     
