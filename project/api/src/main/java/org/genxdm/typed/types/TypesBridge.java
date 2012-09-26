@@ -25,7 +25,6 @@ import org.genxdm.xs.types.DocumentNodeType;
 import org.genxdm.xs.types.ElementNodeType;
 import org.genxdm.xs.types.EmptyType;
 import org.genxdm.xs.types.NamespaceNodeType;
-import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.NoneType;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.ProcessingInstructionNodeType;

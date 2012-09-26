@@ -28,7 +28,7 @@ import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.io.SequenceBuilder;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 import org.genxdm.xs.types.Type;
 
 public class TypedXmlNodeBuilder
@@ -99,5 +99,5 @@ public class TypedXmlNodeBuilder
         endNodeProcessing();
     }
     
-    private final Schema cache;
+    private final SchemaComponentCache cache;
 }

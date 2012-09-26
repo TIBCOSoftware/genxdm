@@ -34,7 +34,7 @@ import org.genxdm.io.FragmentBuilder;
 import org.genxdm.io.Resolver;
 import org.genxdm.mutable.MutableContext;
 import org.genxdm.processor.io.DefaultDocumentHandler;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 
 public final class XmlNodeContext
     implements ProcessingContext<XmlNode>
@@ -55,7 +55,7 @@ public final class XmlNodeContext
     }
 
     @SuppressWarnings("unchecked")
-    public TypedXmlNodeContext getTypedContext(Schema cache)
+    public TypedXmlNodeContext getTypedContext(SchemaComponentCache cache)
     {
         TypedXmlNodeContext tc;
         if (cache != null)
@@ -151,8 +151,8 @@ public final class XmlNodeContext
     
     private final XmlNodeModel model = new XmlNodeModel();
     private final XmlNodeMutableContext mutant;
-    private Map<Schema, TypedXmlNodeContext> typedContexts = new HashMap<Schema, TypedXmlNodeContext>();
-    private Schema defaultCache;
+    private Map<SchemaComponentCache, TypedXmlNodeContext> typedContexts = new HashMap<SchemaComponentCache, TypedXmlNodeContext>();
+    private SchemaComponentCache defaultCache;
     private XMLReporter reporter;
     private Resolver resolver;
 }

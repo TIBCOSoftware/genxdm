@@ -19,7 +19,7 @@ import org.genxdm.io.DocumentHandlerFactory;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.mutable.MutableContext;
 import org.genxdm.typed.TypedContext;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 
 /**
  * The processing context is a factory for new XML documents and adapters.
@@ -65,7 +65,7 @@ public interface ProcessingContext<N> extends DocumentHandlerFactory<N>
      * supplied TypesBridge, or null if no such context is available. If the ProcessingContext does not support schema-aware
      * processing, null will be returned.
      */
-    <A> TypedContext<N, A> getTypedContext(Schema cache);
+    <A> TypedContext<N, A> getTypedContext(SchemaComponentCache cache);
     
     /**
      * Determines whether the item is a node (an instance of the bridge's
