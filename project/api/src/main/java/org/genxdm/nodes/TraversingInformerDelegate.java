@@ -15,7 +15,7 @@
  */
 package org.genxdm.nodes;
 
-import org.genxdm.Precursor;
+import org.genxdm.Cursor;
 
 /**
  * Standard "delegating" pattern for implementing a {@link TraversingInformer} by
@@ -109,7 +109,7 @@ public class TraversingInformerDelegate extends InformerDelegate implements Trav
     }
 
     @Override
-    public Precursor newPrecursor() {
+    public Cursor newPrecursor() {
         // TODO Auto-generated method stub
         return m_delegate.newPrecursor();
     }

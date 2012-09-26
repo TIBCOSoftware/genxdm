@@ -33,7 +33,6 @@ import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.io.Resolver;
 import org.genxdm.mutable.MutableContext;
-import org.genxdm.nodes.Bookmark;
 import org.genxdm.processor.io.DefaultDocumentHandler;
 import org.genxdm.xs.Schema;
 
@@ -43,11 +42,6 @@ public final class XmlNodeContext
     public XmlNodeContext()
     {
          mutant = new XmlNodeMutableContext(this);
-    }
-
-    public Bookmark<XmlNode> bookmark(XmlNode node)
-    {
-        return new XmlNodeMarker(node, model);
     }
 
     public Model<XmlNode> getModel()
@@ -102,7 +96,7 @@ public final class XmlNodeContext
         return false;
     }
 
-    public Cursor<XmlNode> newCursor(XmlNode node)
+    public Cursor newCursor(XmlNode node)
     {
         return new XmlNodeCursor(node);
     }

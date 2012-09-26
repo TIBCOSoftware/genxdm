@@ -23,7 +23,7 @@ package org.genxdm.axes;
  * which it is commonly paired, it can be used over a tree which does not have
  * a "node" abstraction easily conformant to the design of GenXDM.</p>
  * 
- * <p>See {@link org.genxdm.Precursor} for an example of a node-free abstraction
+ * <p>See {@link org.genxdm.Cursor} for an example of a node-free abstraction
  * that combines navigation and information.</p>
  */
 public interface Navigator

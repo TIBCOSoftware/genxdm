@@ -15,7 +15,7 @@
  */
 package org.genxdm.nodes;
 
-import org.genxdm.Precursor;
+import org.genxdm.Cursor;
 
 /**
  * A key lynchpin of a "cursor" oriented API comes from this interface, which follows
@@ -35,7 +35,7 @@ import org.genxdm.Precursor;
  * </ul>
  * </p>
  * 
- * <p>The Traverser operates in contrast to the {@link Precursor}. A Precursor can
+ * <p>The Traverser operates in contrast to the {@link Cursor}. A Precursor can
  * be moved in arbitrary directions to a new location in the underlying "tree" of data.
  * In contrast, the Traverser proceeds to the next entry it its intended set.
  * The Traverser works for returning any sort of sequence of locations, and
@@ -48,7 +48,7 @@ import org.genxdm.Precursor;
  * results, that can be accomplished by looping over the locations of the Traverser,
  * and invoking {@link TraversingInformer#newPrecursor()}</p>
  * 
- * @see Precursor
+ * @see Cursor
  */
 public interface Traverser extends TraversingInformer {
 

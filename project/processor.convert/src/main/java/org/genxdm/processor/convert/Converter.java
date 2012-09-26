@@ -82,7 +82,7 @@ public class Converter<N, A>
     {
         builder.reset();
         // I like cursor.  :-)  besides, we use the model below.
-        Cursor<N> cursor = context.newCursor(source);
+        Cursor cursor = context.newCursor(source);
         cursor.write(builder);
         List<Ntrg> nodeList = builder.getNodes();
         if (nodeList.size() != 1)

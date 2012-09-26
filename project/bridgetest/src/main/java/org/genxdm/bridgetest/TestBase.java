@@ -20,13 +20,11 @@ import java.net.URISyntaxException;
 
 import javax.xml.XMLConstants;
 
-import org.genxdm.Cursor;
 import org.genxdm.Model;
 import org.genxdm.bridgekit.ProcessingContextFactory;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.io.FragmentBuilder;
-import org.genxdm.nodes.Bookmark;
 
 /** Base class for deriving contract-based test cases.
  *
@@ -324,16 +322,6 @@ a lot of interesting namespace fun.  It's also got the text nodes.
                 return namespace;
         }
         return null;
-    }
-    
-    protected void moveToNamespace(Cursor<N> cursor, String prefix)
-    {
-        PreCondition.assertNotNull(cursor);
-        PreCondition.assertTrue(cursor.isElement());
-        Bookmark<N> bm = cursor.bookmark();
-        // should we fail somehow if the namespace does not exist?
-        // well, we'll get a null node, and the cursor.moveTo will blow chunks.
-        cursor.moveTo(getNamespaceNode(bm.getModel(), bm.getNode(), prefix));
     }
     
     protected static final String URI_PREFIX = "http://www.genxdm.org/sample/";

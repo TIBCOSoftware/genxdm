@@ -126,7 +126,7 @@ abstract public class RoundTripBase<N>
     private void checkUglyDocument(ProcessingContext<N> context, N document)
     {
         assertNotNull(document);
-        Cursor<N> cursor = context.newCursor(document);
+        Cursor cursor = context.newCursor(document);
 
         assertEquals(NodeKind.DOCUMENT, cursor.getNodeKind());
         assertTrue(cursor.hasChildren());

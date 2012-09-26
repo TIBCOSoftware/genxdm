@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.genxdm.Model;
-import org.genxdm.Precursor;
+import org.genxdm.Cursor;
 import org.genxdm.nodes.Traverser;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.iterators.ListNodeIterator;
@@ -77,9 +77,9 @@ abstract class ReverseAxisExpr
 
     private static Traverser reverse(final Traverser iter)
     {
-        List<Precursor> list = new ArrayList<Precursor>();
+        List<Cursor> list = new ArrayList<Cursor>();
         for (;iter.moveToNext();) {
-            Precursor cursor = iter.newPrecursor();
+            Cursor cursor = iter.newPrecursor();
             list.add(cursor);
         }
         Collections.reverse(list);
