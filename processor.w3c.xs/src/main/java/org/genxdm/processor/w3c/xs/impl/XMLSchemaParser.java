@@ -53,7 +53,6 @@ import org.genxdm.processor.w3c.xs.exception.sm.SmImportNotWellFormedException;
 import org.genxdm.processor.w3c.xs.exception.sm.SmInclusionNamespaceMismatchException;
 import org.genxdm.processor.w3c.xs.exception.sm.SmInclusionNotWellFormedException;
 import org.genxdm.processor.w3c.xs.exception.sm.SmMissingAttributeException;
-import org.genxdm.processor.w3c.xs.exception.sm.SmNoSchemaForNamespaceException;
 import org.genxdm.processor.w3c.xs.exception.sm.SmRedefineTypeSelfReferenceException;
 import org.genxdm.processor.w3c.xs.exception.sm.SmRedefinitionNamespaceMismatchException;
 import org.genxdm.processor.w3c.xs.exception.sm.SmRedefinitionNotWellFormedException;
@@ -118,8 +117,8 @@ import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 import org.genxdm.xs.exceptions.SimpleTypeException;
 import org.genxdm.xs.facets.FacetKind;
-import org.genxdm.xs.resolve.SchemaCatalog;
 import org.genxdm.xs.resolve.CatalogResolver;
+import org.genxdm.xs.resolve.SchemaCatalog;
 import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
 

@@ -25,7 +25,7 @@ import org.genxdm.bridgekit.xs.complex.CommentNodeTypeImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.ComponentProvider;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
 import org.genxdm.xs.components.ComponentKind;
@@ -45,7 +45,7 @@ import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.SimpleUrType;
 import org.genxdm.xs.types.Type;
 
-final class SchemaCacheImpl implements Schema
+final class SchemaCacheImpl implements SchemaComponentCache
 {
     public SchemaCacheImpl()
     {

@@ -30,7 +30,7 @@ import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.Emulation;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
@@ -187,7 +187,7 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
     }
 
     @Override
-    public void setSchema(Schema cache)
+    public void setSchema(SchemaComponentCache cache)
     {
         kernel.setComponentProvider(cache.getComponentProvider());
     }

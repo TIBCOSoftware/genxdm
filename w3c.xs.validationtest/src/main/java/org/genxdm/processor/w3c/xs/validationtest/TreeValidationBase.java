@@ -19,7 +19,7 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.xs.ComponentProvider;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaException;
 import org.genxdm.xs.exceptions.SchemaExceptionCatcher;
@@ -32,7 +32,7 @@ public abstract class TreeValidationBase<N, A>
     extends ValidatorTestBase<N, A>
 {
 
-    public void loadSchema(Schema cache)
+    public void loadSchema(SchemaComponentCache cache)
         throws AbortException
     {
         // TODO: load po.xsd

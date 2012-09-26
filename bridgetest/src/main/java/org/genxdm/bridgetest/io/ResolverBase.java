@@ -15,17 +15,10 @@
  */
 package org.genxdm.bridgetest.io;
 
-import java.net.URI;
-
 import org.genxdm.bridgetest.TestBase;
-import org.genxdm.io.Resolved;
 import org.genxdm.io.Resolver;
-
-import org.junit.Test;
 import org.junit.Ignore;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 
 /** Test the contract of Resolver and Resolved.
  *
@@ -74,14 +67,14 @@ abstract public class ResolverBase<N>
     {
     }
     
-    private <E> void sharedResolvedTest(Resolved<E> totest, URI loc, URI systemId, E resource)
-    {
-        assertNotNull("Resolved to test", totest);
-        assertNotNull("location URI", loc);
-        assertNotNull("system ID URI", systemId);
-        assertNotNull("resource", resource);
-        assertEquals("location eq totest.getLocation", loc, totest.getLocation());
-        assertEquals("systemId eq totest.getSystemId", systemId, totest.getSystemId());
-        assertEquals("resource eq totest.getResource", resource, totest.getResource());
-    }
+//    private <E> void sharedResolvedTest(Resolved<E> totest, URI loc, URI systemId, E resource)
+//    {
+//        assertNotNull("Resolved to test", totest);
+//        assertNotNull("location URI", loc);
+//        assertNotNull("system ID URI", systemId);
+//        assertNotNull("resource", resource);
+//        assertEquals("location eq totest.getLocation", loc, totest.getLocation());
+//        assertEquals("systemId eq totest.getSystemId", systemId, totest.getSystemId());
+//        assertEquals("resource eq totest.getResource", resource, totest.getResource());
+//    }
 }

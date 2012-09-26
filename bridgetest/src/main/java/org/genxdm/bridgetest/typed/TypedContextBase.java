@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.genxdm.ProcessingContext;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.typed.TypedContext;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 import org.junit.Test;
 
 public abstract class TypedContextBase<N, A>
@@ -22,7 +22,7 @@ public abstract class TypedContextBase<N, A>
         assertNotNull(context.getTypesBridge());
         TypedContext<N, A> c2 = getTypedContext(null);
         assertTrue(context == c2);
-        Schema schema = context.getSchema();
+        SchemaComponentCache schema = context.getSchema();
         c2 = getTypedContext(schema);
         assertTrue(context == c2);
     }

@@ -15,14 +15,14 @@
  */
 package org.genxdm.bridgekit.xs;
 
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 
 /**
  * A factory for the schema model metadata bridge.
  */
 public final class SchemaCacheFactory
 {
-    public Schema newSchemaCache()
+    public SchemaComponentCache newSchemaCache()
     {
         return new SchemaCacheImpl();
     }

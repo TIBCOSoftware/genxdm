@@ -37,7 +37,7 @@ import org.genxdm.mutable.MutableModel;
 import org.genxdm.mutable.NodeFactory;
 import org.genxdm.processor.io.DefaultDocumentHandler;
 import org.genxdm.typed.TypedContext;
-import org.genxdm.xs.Schema;
+import org.genxdm.xs.SchemaComponentCache;
 
 /** ProcessingContext to support abstraction of the AxiOM LLOM tree model.
  *
@@ -134,7 +134,7 @@ public class AxiomProcessingContext
     }
     
     @SuppressWarnings("unchecked")
-    public TypedContext<Object, XmlAtom> getTypedContext(Schema cache)
+    public TypedContext<Object, XmlAtom> getTypedContext(SchemaComponentCache cache)
     {
         return null; //TODO: implement properly; change this and isSupported. 
 //        if (saContext == null)
