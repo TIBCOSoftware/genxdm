@@ -18,14 +18,14 @@ package org.genxdm.processor.xpath.v10.iterators;
 import java.util.Iterator;
 import java.util.List;
 
-import org.genxdm.Precursor;
+import org.genxdm.Cursor;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.nodes.Traverser;
 import org.genxdm.nodes.TraversingInformerDelegate;
 
 public class ListTraverser extends TraversingInformerDelegate implements Traverser {
 
-    public ListTraverser(List<Precursor> list)
+    public ListTraverser(List<Cursor> list)
     {
         super(null);
         PreCondition.assertNotNull(list, "list");
@@ -35,7 +35,7 @@ public class ListTraverser extends TraversingInformerDelegate implements Travers
     @Override
     public boolean moveToNext() {
         if (it.hasNext()) {
-            Precursor nextLoc = it.next();
+            Cursor nextLoc = it.next();
             setInformer(nextLoc);
             return true;
         }
@@ -51,5 +51,5 @@ public class ListTraverser extends TraversingInformerDelegate implements Travers
         return !it.hasNext() && getInformer() != null;
     }
 
-    private final Iterator<Precursor> it;
+    private final Iterator<Cursor> it;
 }

@@ -6,7 +6,7 @@ import java.io.InputStream;
 import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
-import org.genxdm.Precursor;
+import org.genxdm.Cursor;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.output.XmlEncoder;
 
@@ -18,7 +18,7 @@ public class CursoryInputStream
      * @param cursor the cursor over which the reader operates, initialized
      * to the desired starting position; may not be null.
      */
-    public CursoryInputStream(Precursor cursor, String encoding)
+    public CursoryInputStream(Cursor cursor, String encoding)
     {
         this.cursor = PreCondition.assertNotNull(cursor, "cursor");
         this.encoding = ( (encoding == null) || (encoding.trim().length() == 0) ) ? "UTF-8" : encoding; 
@@ -171,7 +171,7 @@ public class CursoryInputStream
         return localName;
     }
 
-    private final Precursor cursor;
+    private final Cursor cursor;
     private final String encoding;
     private final Object originId;
     private final StringBuilder builder = new StringBuilder();

@@ -24,7 +24,7 @@ import org.genxdm.Cursor;
  * @param <N> the node abstraction
  */
 public interface MutableCursor<N>
-    extends Cursor<N>
+    extends Cursor
 {
 
     /**

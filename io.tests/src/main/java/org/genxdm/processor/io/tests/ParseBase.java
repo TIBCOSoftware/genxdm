@@ -80,7 +80,7 @@ abstract public class ParseBase<N>
         // comment next?
         // comment next?
             assertNotNull("Document is null", document);
-            Cursor<N> cursor = context.newCursor(document);
+            Cursor cursor = context.newCursor(document);
             assertNull("System ID is non-null", cursor.getDocumentURI());
             assertEquals("Not a document node", NodeKind.DOCUMENT, cursor.getNodeKind());
             assertTrue("No children?", cursor.hasChildren());

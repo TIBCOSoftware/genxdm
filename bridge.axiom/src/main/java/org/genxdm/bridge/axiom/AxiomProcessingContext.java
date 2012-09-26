@@ -25,7 +25,6 @@ import org.genxdm.ProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.filters.FilteredFragmentBuilder;
 import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
-import org.genxdm.bridgekit.tree.BookmarkOnModel;
 import org.genxdm.bridgekit.tree.CursorOnModel;
 import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
@@ -36,7 +35,6 @@ import org.genxdm.mutable.MutableContext;
 import org.genxdm.mutable.MutableCursor;
 import org.genxdm.mutable.MutableModel;
 import org.genxdm.mutable.NodeFactory;
-import org.genxdm.nodes.Bookmark;
 import org.genxdm.processor.io.DefaultDocumentHandler;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.xs.Schema;
@@ -77,11 +75,6 @@ public class AxiomProcessingContext
         this.omfactory = factory;
     }
     
-    public Bookmark<Object> bookmark(Object node)
-    {
-        return new BookmarkOnModel<Object>(node, model);
-    }
-
     public DocumentHandler<Object> newDocumentHandler()
     {
         DocumentHandler<Object> handler = new DefaultDocumentHandler<Object>(this);
@@ -184,7 +177,7 @@ public class AxiomProcessingContext
         return false;
     }
 
-    public Cursor<Object> newCursor(Object node)
+    public Cursor newCursor(Object node)
     {
         return new CursorOnModel<Object>(node, model);
     }

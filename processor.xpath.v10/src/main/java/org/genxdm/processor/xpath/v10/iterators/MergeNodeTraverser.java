@@ -18,14 +18,14 @@ package org.genxdm.processor.xpath.v10.iterators;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.genxdm.Precursor;
+import org.genxdm.Cursor;
 import org.genxdm.nodes.Traverser;
 import org.genxdm.nodes.TraversingInformerDelegate;
 
 public class MergeNodeTraverser extends TraversingInformerDelegate implements Traverser
 {
     private Traverser[] iters;
-    private List<Precursor> nodes;
+    private List<Cursor> nodes;
     private int length;
 
     /**
@@ -39,7 +39,7 @@ public class MergeNodeTraverser extends TraversingInformerDelegate implements Tr
         super(null);
         this.length = length;
         this.iters = iters;
-        nodes = new ArrayList<Precursor>(length);
+        nodes = new ArrayList<Cursor>(length);
         int j = 0;
         for (int i = 0; i < length; i++)
         {
@@ -118,7 +118,7 @@ public class MergeNodeTraverser extends TraversingInformerDelegate implements Tr
     private final void exchange(int i, int j)
     {
         {
-            Precursor tem = nodes.get(i);
+            Cursor tem = nodes.get(i);
             nodes.set(i, nodes.get(j));
             nodes.set(j, tem);
         }
@@ -153,7 +153,7 @@ public class MergeNodeTraverser extends TraversingInformerDelegate implements Tr
             setInformer(null);
             return false;
         }
-        Precursor max = nodes.get(0);
+        Cursor max = nodes.get(0);
         do
         {
             if (!iters[0].moveToNext())

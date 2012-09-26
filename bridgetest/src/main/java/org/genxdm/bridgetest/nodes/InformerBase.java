@@ -53,7 +53,7 @@ public abstract class InformerBase<N>
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc); 
-        Cursor<N> cursor = context.newCursor(doc); // Create new Cursor from the Context
+        Cursor cursor = context.newCursor(doc); // Create new Cursor from the Context
         assertNotNull(cursor); 
         
         assertTrue(cursor.getNodeKind() == NodeKind.DOCUMENT);
@@ -96,7 +96,7 @@ public abstract class InformerBase<N>
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
-        Cursor<N> cursor = context.newCursor(doc);
+        Cursor cursor = context.newCursor(doc);
         assertNotNull(cursor);
 
         // in this part, test that the same node accessed in different
@@ -109,7 +109,7 @@ public abstract class InformerBase<N>
         
         builder.reset();
         N doc2 = createSimpleAllKindsDocument(builder);
-        Cursor<N> cursor2 = context.newCursor(doc2);
+        Cursor cursor2 = context.newCursor(doc2);
         
         assertTrue( cursor.getNodeKind().equals( cursor2.getNodeKind()));
         assertFalse(cursor.getNodeId().equals(cursor2.getNodeId()));
@@ -161,7 +161,7 @@ public abstract class InformerBase<N>
         N doc = createIdsAndRefsTestDocument(builder);
         
         assertNotNull(doc);
-        Cursor<N> cursor = context.newCursor(doc);
+        Cursor cursor = context.newCursor(doc);
         assertNotNull(cursor);
         
         cursor.moveToFirstChildElement();
@@ -203,7 +203,7 @@ public abstract class InformerBase<N>
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
-        Cursor<N> cursor = context.newCursor(doc);
+        Cursor cursor = context.newCursor(doc);
         assertNotNull(cursor);
         
         Iterable<QName> attributes = cursor.getAttributeNames(true);
@@ -251,7 +251,7 @@ public abstract class InformerBase<N>
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
-        Cursor<N> cursor = context.newCursor(doc);
+        Cursor cursor = context.newCursor(doc);
         assertNotNull(cursor);
         
         cursor.moveToFirstChildElement();
@@ -276,7 +276,7 @@ public abstract class InformerBase<N>
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
-        Cursor<N> cursor = context.newCursor(doc);
+        Cursor cursor = context.newCursor(doc);
         assertNotNull(cursor);
         
         assertFalse(cursor.hasAttributes());
@@ -351,7 +351,7 @@ public abstract class InformerBase<N>
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
-        Cursor<N> cursor = context.newCursor(doc);
+        Cursor cursor = context.newCursor(doc);
         assertNotNull(cursor);
         
         // docs have no name
@@ -412,7 +412,7 @@ public abstract class InformerBase<N>
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
-        Cursor<N> cursor = context.newCursor(doc);
+        Cursor cursor = context.newCursor(doc);
         assertNotNull(cursor);
         
         final String text = "text";
@@ -450,7 +450,7 @@ public abstract class InformerBase<N>
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
-        Cursor<N> cursor = context.newCursor(doc);
+        Cursor cursor = context.newCursor(doc);
         assertNotNull(cursor);
         
         URI docURI = null;
@@ -505,7 +505,7 @@ public abstract class InformerBase<N>
         N doc = createSimpleAllKindsDocument(builder);
         
         assertNotNull(doc);
-        Cursor<N> cursor = context.newCursor(doc);
+        Cursor cursor = context.newCursor(doc);
         assertNotNull(cursor);
         
         // a document does not have a name.

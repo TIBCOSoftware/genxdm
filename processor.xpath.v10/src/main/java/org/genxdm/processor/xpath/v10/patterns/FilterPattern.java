@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
-import org.genxdm.Precursor;
+import org.genxdm.Cursor;
 import org.genxdm.nodes.Traverser;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.processor.xpath.v10.expressions.DelegateExprContext;
@@ -223,7 +223,7 @@ final class FilterPattern
                 position = 1;
                 return 1;
             }
-            Precursor parent = node.newPrecursor();
+            Cursor parent = node.newPrecursor();
             parent.moveToParent();
             switch (nodeKind)
             {
@@ -267,13 +267,13 @@ final class FilterPattern
                     lastPosition = 1;
                     return 1;
                 case ATTRIBUTE:
-                    Precursor parent = node.newPrecursor();
+                    Cursor parent = node.newPrecursor();
                     parent.moveToParent();
                     iter = parent.traverseAttributeAxis(inheritAttributes);
                     lastPosition = 0;
                     break;
                 case NAMESPACE:
-                    Precursor nsParent = node.newPrecursor();
+                    Cursor nsParent = node.newPrecursor();
                     nsParent.moveToParent();
                     iter = nsParent.traverseNamespaceAxis(inheritNamespaces);
                     lastPosition = 0;

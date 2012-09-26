@@ -22,7 +22,7 @@ package org.genxdm.processor.xpath.v10.patterns;
 
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
-import org.genxdm.Precursor;
+import org.genxdm.Cursor;
 import org.genxdm.nodes.TraversingInformer;
 import org.genxdm.xpath.v10.TraverserDynamicContext;
 import org.genxdm.xpath.v10.ExprContextDynamic;
@@ -72,7 +72,7 @@ class ParentPattern
         {
             return false;
         }
-        Precursor parent = node.newPrecursor();
+        Cursor parent = node.newPrecursor();
         if (!parent.moveToParent())
         {
             // we ran out of ancestors before we ran out of StepPatterns

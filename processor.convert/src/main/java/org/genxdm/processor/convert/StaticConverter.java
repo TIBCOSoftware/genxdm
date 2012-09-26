@@ -21,7 +21,7 @@ import org.genxdm.io.FragmentBuilder;
 
 public class StaticConverter
 {
-    public static <Nsrc, Ntrg> Ntrg convert(Cursor<Nsrc> cursor, FragmentBuilder<Ntrg> builder)
+    public static <Ntrg> Ntrg convert(Cursor cursor, FragmentBuilder<Ntrg> builder)
         throws GenXDMException
     {
         builder.reset();
