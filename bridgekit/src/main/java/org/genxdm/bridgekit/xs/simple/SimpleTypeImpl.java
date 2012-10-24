@@ -131,7 +131,7 @@ public abstract class SimpleTypeImpl extends TypeImpl implements SimpleType
                     catch (final FacetException e)
                     {
                         final String literal = atomBridge.getC14NString(actualValue);
-                        throw new DatatypeException(literal, currentType);
+                        throw new DatatypeException(literal, currentType, e);
                     }
                 }
             }

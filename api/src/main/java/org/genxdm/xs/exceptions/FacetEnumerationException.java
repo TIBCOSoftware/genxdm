@@ -34,4 +34,9 @@ public final class FacetEnumerationException extends FacetException
     {
         return "Input, '" + m_input + "', does not match enumeration facets.";
     }
+    
+    public String getInput()
+    {
+        return m_input;
+    }
 }

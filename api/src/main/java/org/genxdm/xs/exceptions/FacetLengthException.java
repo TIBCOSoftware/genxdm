@@ -39,4 +39,14 @@ public final class FacetLengthException extends FacetException
     {
         return "The expected length(" + expectLength.getValue() + ") does not match the actual length (" + actualLength + ").";
     }
+    
+    public int getExpectedLength()
+    {
+        return expectLength.getValue();
+    }
+    
+    public int getActualLength()
+    {
+        return actualLength;
+    }
 }
