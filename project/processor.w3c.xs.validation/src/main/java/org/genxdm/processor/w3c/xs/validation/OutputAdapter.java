@@ -38,7 +38,7 @@ public class OutputAdapter<A> implements VxOutputHandler<A>
 
 	public void attribute(final QName name, final List<? extends A> value, final SimpleType type)
 	{
-		handler.attribute(name.getNamespaceURI(), name.getLocalPart(), name.getPrefix(), value, type.getName());
+		handler.attribute(name.getNamespaceURI(), name.getLocalPart(), name.getPrefix(), value, type == null ? null : type.getName());
 	}
 
 	public void attribute(final QName name, final String value)
@@ -70,7 +70,7 @@ public class OutputAdapter<A> implements VxOutputHandler<A>
 	{
 //System.out.println("QName is " + name);
 //System.out.println("Type is " + type);
-		handler.startElement(name.getNamespaceURI(), name.getLocalPart(), name.getPrefix(), type.getName());
+		handler.startElement(name.getNamespaceURI(), name.getLocalPart(), name.getPrefix(), type == null ? null : type.getName());
 	}
 
 	public void text(final List<? extends A> value)
