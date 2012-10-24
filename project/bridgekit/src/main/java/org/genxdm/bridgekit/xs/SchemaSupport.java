@@ -104,7 +104,7 @@ public final class SchemaSupport
 
         while (true)
         {
-            if (namespace == currentType.getTargetNamespace() && localName == currentType.getLocalName())
+            if (namespace.equals(currentType.getTargetNamespace()) && localName.equals(currentType.getLocalName()))
             {
                 return true;
             }
