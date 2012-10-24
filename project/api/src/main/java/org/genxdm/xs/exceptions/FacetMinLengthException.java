@@ -74,4 +74,19 @@ public final class FacetMinLengthException extends FacetException
         message.append(localMessage);
         return message.toString();
     }
+    
+    public String getUnitOfMeasure()
+    {
+        return uom.toString();
+    }
+    
+    public int getMinLength()
+    {
+        return minLength.getMinLength();
+    }
+    
+    public int getActualLength()
+    {
+        return actualLength;
+    }
 }

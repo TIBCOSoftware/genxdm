@@ -68,4 +68,14 @@ public final class SimpleTypeException extends SchemaException
             return false;
         }
     }
+    
+    public SimpleType getType()
+    {
+        return type;
+    }
+    
+    public String getInput()
+    {
+        return initialValue;
+    }
 }

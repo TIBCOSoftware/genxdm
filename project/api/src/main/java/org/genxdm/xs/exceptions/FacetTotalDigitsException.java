@@ -41,4 +41,19 @@ public final class FacetTotalDigitsException extends FacetException
     {
         return "The total number of digits(" + actualValue + ") in '" + displayString + "' exceeds the number allowed for the type(" + expectedValue.getTotalDigits() + ").";
     }
+    
+    public int getActualValue()
+    {
+        return actualValue;
+    }
+    
+    public int getExpectedValue()
+    {
+        return expectedValue.getTotalDigits();
+    }
+    
+    public String getInput()
+    {
+        return displayString;
+    }
 }
