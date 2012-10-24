@@ -37,4 +37,14 @@ public final class FacetFractionDigitsException extends FacetException
     {
         return "The fraction number of digits(" + fractionDigits.getFractionDigits() + ") in '" + value + "' exceeds the number allowed for the type.";
     }
+    
+    public FractionDigits getFractionFigits()
+    {
+        return fractionDigits;
+    }
+    
+    public String getInput()
+    {
+        return value;
+    }
 }
