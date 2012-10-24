@@ -45,6 +45,7 @@ import org.genxdm.bridgekit.xs.complex.ParticleWithWildcardTerm;
 import org.genxdm.bridgekit.xs.complex.UnionTypeImpl;
 import org.genxdm.bridgekit.xs.complex.WildcardImpl;
 import org.genxdm.bridgekit.xs.constraint.AttributeUseImpl;
+import org.genxdm.bridgekit.xs.constraint.FacetEnumerationImpl;
 import org.genxdm.bridgekit.xs.constraint.FacetFractionDigitsImpl;
 import org.genxdm.bridgekit.xs.constraint.FacetLengthImpl;
 import org.genxdm.bridgekit.xs.constraint.FacetMaxLengthImpl;
@@ -1789,13 +1790,13 @@ public final class XMLSchemaConverter
             if (baseType.getName().equals(notationType.getName()) || baseType.derivedFromType(notationType, EnumSet.of(DerivationMethod.Restriction)))
             {
                 final PrefixResolver resolver = sourceEnum.getPrefixResolver();
-                final List<XmlAtom> value = baseType.validate(sourceEnum.getValue(), resolver, m_atoms);
-                return new FacetEnumerationImpl(atomListToStringList(value));
+                baseType.validate(sourceEnum.getValue(), resolver, m_atoms);
+                return new FacetEnumerationImpl(sourceEnum.getValue(), baseType, resolver);
             }
             else
             {
-                final List<XmlAtom> value = baseType.validate(sourceEnum.getValue(), m_atoms);
-                return new FacetEnumerationImpl(atomListToStringList(value));
+                baseType.validate(sourceEnum.getValue(), m_atoms);
+                return new FacetEnumerationImpl(sourceEnum.getValue(), baseType, null);
             }
         }
         catch (final DatatypeException dte)
