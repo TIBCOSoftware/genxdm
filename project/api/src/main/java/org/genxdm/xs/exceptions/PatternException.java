@@ -48,4 +48,14 @@ public final class PatternException extends SchemaException
         message.append(localMessage);
         return message.toString();
     }
+    
+    public String getPattern()
+    {
+        return regexp.getValue();
+    }
+    
+    public String getInput()
+    {
+        return literal;
+    }
 }

@@ -74,4 +74,19 @@ public final class FacetMaxLengthException extends FacetException
         message.append(localMessage);
         return message.toString();
     }
+    
+    public String getUnitOfMeasure()
+    {
+        return uom.toString();
+    }
+    
+    public int getMaxLength()
+    {
+        return maxLength.getMaxLength();
+    }
+    
+    public int getActualLength()
+    {
+        return actualLength;
+    }
 }

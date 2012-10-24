@@ -52,6 +52,16 @@ public final class FacetMinMaxException extends FacetException
         message.append(localMessage);
         return message.toString();
     }
+    
+    public Limit getLimit()
+    {
+        return limit;
+    }
+    
+    public String getInput()
+    {
+        return actual;
+    }
 
     private static ValidationOutcome getOutcome(final FacetKind opcode)
     {
