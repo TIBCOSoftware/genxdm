@@ -15,6 +15,7 @@
  */
 package org.genxdm.bridgekit.xs.complex;
 
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
 import org.genxdm.bridgekit.xs.SchemaSupport;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.Quantifier;
@@ -23,7 +24,9 @@ import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-public final class ZChoiceType implements ChoiceType
+public final class ZChoiceType
+    extends ForeignAttributesImpl
+    implements ChoiceType
 {
     public static  SequenceType choice(final SequenceType lhs, final SequenceType rhs)
     {

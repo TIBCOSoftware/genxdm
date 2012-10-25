@@ -30,7 +30,9 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-public final class AttributeNodeTypeImpl extends AbstractPrimeExcludingNoneType implements AttributeNodeType
+public final class AttributeNodeTypeImpl 
+    extends AbstractPrimeExcludingNoneType 
+    implements AttributeNodeType
 {
     private final QName name;
     private final SequenceType m_type;

@@ -19,6 +19,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
+import org.genxdm.bridgekit.xs.ForeignAttributesSink;
 import org.genxdm.bridgekit.xs.complex.NamedComponentImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.constraints.IdentityConstraint;
@@ -26,13 +28,10 @@ import org.genxdm.xs.constraints.IdentityConstraintKind;
 import org.genxdm.xs.constraints.RestrictedXPath;
 import org.genxdm.xs.enums.ScopeExtent;
 
-public final class IdentityConstraintImpl extends NamedComponentImpl implements IdentityConstraint
+public final class IdentityConstraintImpl 
+    extends NamedComponentImpl 
+    implements IdentityConstraint, ForeignAttributesSink
 {
-    private final IdentityConstraintKind m_category;
-    private final List<RestrictedXPath> m_fields;
-    private final IdentityConstraint m_keyConstraint;
-    private final QName m_name;
-    private final RestrictedXPath m_selector;
 
     public IdentityConstraintImpl(final QName name, final IdentityConstraintKind category, final RestrictedXPath selector, final List<RestrictedXPath> fields, final IdentityConstraint keyConstraint)
     {
@@ -44,21 +43,25 @@ public final class IdentityConstraintImpl extends NamedComponentImpl implements 
         m_keyConstraint = keyConstraint;
     }
 
+    @Override
     public IdentityConstraintKind getCategory()
     {
         return m_category;
     }
 
+    @Override
     public List<RestrictedXPath> getFields()
     {
         return m_fields;
     }
 
+    @Override
     public IdentityConstraint getKeyConstraint()
     {
         return m_keyConstraint;
     }
 
+    @Override
     public RestrictedXPath getSelector()
     {
         return m_selector;
@@ -86,4 +89,29 @@ public final class IdentityConstraintImpl extends NamedComponentImpl implements 
         sb.append(m_name);
         return sb.toString();
     }
+
+    @Override
+    public Iterable<QName> getForeignAttributeNames()
+    {
+        return forAtts.getForeignAttributeNames();
+    }
+
+    @Override
+    public String getForeignAttributeValue(QName name)
+    {
+        return forAtts.getForeignAttributeValue(name);
+    }
+
+    @Override
+    public void putForeignAttribute(QName name, String value)
+    {
+        forAtts.putForeignAttribute(name, value);
+    }
+
+    private ForeignAttributesImpl forAtts = new ForeignAttributesImpl();
+    private final IdentityConstraintKind m_category;
+    private final List<RestrictedXPath> m_fields;
+    private final IdentityConstraint m_keyConstraint;
+    private final QName m_name;
+    private final RestrictedXPath m_selector;
 }

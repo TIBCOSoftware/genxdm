@@ -19,20 +19,23 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.NodeKind;
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.constraints.IdentityConstraint;
 import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.xs.enums.DerivationMethod;
-import org.genxdm.NodeKind;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.Type;
 
-public final class ElementDeclWithParentAxisType implements ElementDefinition
+public final class ElementDeclWithParentAxisType
+    extends ForeignAttributesImpl
+    implements ElementDefinition
 {
     private final ElementDefinition m_element;
 

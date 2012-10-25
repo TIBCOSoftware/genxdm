@@ -17,6 +17,7 @@ package org.genxdm.bridgekit.xs.constraint;
 
 import java.util.List;
 
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.PrefixResolver;
 import org.genxdm.typed.types.AtomBridge;
@@ -24,7 +25,9 @@ import org.genxdm.xs.components.EnumerationDefinition;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.SimpleType;
 
-public final class FacetEnumerationImpl implements EnumerationDefinition
+public final class FacetEnumerationImpl
+    extends ForeignAttributesImpl
+    implements EnumerationDefinition
 {
     public FacetEnumerationImpl(final String value, final SimpleType type, final PrefixResolver resolver)
     {

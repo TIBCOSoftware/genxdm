@@ -15,6 +15,7 @@
  */
 package org.genxdm.bridgekit.xs.complex;
 
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
 import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.types.NodeUrType;
 import org.genxdm.xs.types.PrimeType;
@@ -22,7 +23,9 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-final class NodeUrTypeImpl implements NodeUrType
+final class NodeUrTypeImpl
+    extends ForeignAttributesImpl
+    implements NodeUrType
 {
     public NodeUrTypeImpl()
     {
@@ -78,4 +81,5 @@ final class NodeUrTypeImpl implements NodeUrType
     {
         visitor.visit(this);
     }
+
 }
