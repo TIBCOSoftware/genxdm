@@ -15,6 +15,7 @@
  */
 package org.genxdm.bridgekit.xs.complex;
 
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.types.InterleaveType;
@@ -22,7 +23,9 @@ import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-public final class ZInterleaveType implements InterleaveType
+public final class ZInterleaveType
+    extends ForeignAttributesImpl
+    implements InterleaveType
 {
     public static  SequenceType interleave(final SequenceType lhs, final SequenceType rhs)
     {

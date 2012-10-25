@@ -15,23 +15,49 @@
  */
 package org.genxdm.bridgekit.xs.constraint;
 
+import javax.xml.namespace.QName;
+
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
+import org.genxdm.bridgekit.xs.ForeignAttributesSink;
 import org.genxdm.bridgekit.xs.complex.LockableImpl;
 import org.genxdm.xs.facets.Facet;
 
 /**
  * Abstract base class for implementations of {@link Facet}
  */
-abstract class FacetImpl extends LockableImpl implements Facet
+abstract class FacetImpl 
+    extends LockableImpl 
+    implements Facet, ForeignAttributesSink
 {
-    private final boolean isFixed;
-
     public FacetImpl(final boolean isFixed)
     {
         this.isFixed = isFixed;
     }
 
+    @Override
     public final boolean isFixed()
     {
         return isFixed;
     }
+
+    @Override
+    public Iterable<QName> getForeignAttributeNames()
+    {
+        return forAtts.getForeignAttributeNames();
+    }
+
+    @Override
+    public String getForeignAttributeValue(QName name)
+    {
+        return forAtts.getForeignAttributeValue(name);
+    }
+
+    @Override
+    public void putForeignAttribute(QName name, String value)
+    {
+        forAtts.putForeignAttribute(name, value);
+    }
+
+    private final boolean isFixed;
+    private ForeignAttributesImpl forAtts = new ForeignAttributesImpl();
 }

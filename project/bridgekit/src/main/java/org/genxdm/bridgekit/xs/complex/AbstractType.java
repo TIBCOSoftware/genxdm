@@ -15,9 +15,11 @@
  */
 package org.genxdm.bridgekit.xs.complex;
 
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
 import org.genxdm.xs.types.SequenceType;
 
-// TODO: why is this here?  AbstractPrimeExcludingNoneType?
-public abstract class AbstractType implements SequenceType
+public abstract class AbstractType
+    extends ForeignAttributesImpl
+    implements SequenceType
 {
 }

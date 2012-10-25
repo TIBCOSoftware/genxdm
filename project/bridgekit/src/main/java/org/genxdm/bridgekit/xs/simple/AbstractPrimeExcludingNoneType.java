@@ -15,11 +15,17 @@
  */
 package org.genxdm.bridgekit.xs.simple;
 
+import javax.xml.namespace.QName;
+
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
+import org.genxdm.bridgekit.xs.ForeignAttributesSink;
 import org.genxdm.bridgekit.xs.complex.AbstractType;
 import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.types.PrimeType;
 
-public abstract class AbstractPrimeExcludingNoneType extends AbstractType implements PrimeType
+public abstract class AbstractPrimeExcludingNoneType 
+    extends AbstractType 
+    implements PrimeType, ForeignAttributesSink
 {
     public final boolean isNone()
     {
@@ -30,4 +36,24 @@ public abstract class AbstractPrimeExcludingNoneType extends AbstractType implem
     {
         return Quantifier.EXACTLY_ONE;
     }
+    
+    @Override
+    public Iterable<QName> getForeignAttributeNames()
+    {
+        return forAtts.getForeignAttributeNames();
+    }
+
+    @Override
+    public String getForeignAttributeValue(QName name)
+    {
+        return forAtts.getForeignAttributeValue(name);
+    }
+
+    @Override
+    public void putForeignAttribute(QName name, String value)
+    {
+        forAtts.putForeignAttribute(name, value);
+    }
+
+    private ForeignAttributesImpl forAtts = new ForeignAttributesImpl();
 }

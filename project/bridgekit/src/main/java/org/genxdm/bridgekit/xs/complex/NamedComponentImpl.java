@@ -17,15 +17,16 @@ package org.genxdm.bridgekit.xs.complex;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
+import org.genxdm.bridgekit.xs.ForeignAttributesSink;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.components.SchemaComponent;
 import org.genxdm.xs.enums.ScopeExtent;
 
-public abstract class NamedComponentImpl extends LockableImpl implements SchemaComponent
+public abstract class NamedComponentImpl 
+    extends LockableImpl 
+    implements SchemaComponent, ForeignAttributesSink
 {
-    private final boolean isAnonymous;
-    private final QName name;
-    private final ScopeExtent scope;
 
     public NamedComponentImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope)
     {
@@ -41,28 +42,56 @@ public abstract class NamedComponentImpl extends LockableImpl implements SchemaC
         this.scope = PreCondition.assertArgumentNotNull(scope, "scope");
     }
 
+    @Override
     public final String getLocalName()
     {
         return name.getLocalPart();
     }
 
+    @Override
     public final QName getName()
     {
         return name;
     }
 
+    @Override
     public final ScopeExtent getScopeExtent()
     {
         return scope;
     }
 
+    @Override
     public final String getTargetNamespace()
     {
         return name.getNamespaceURI();
     }
 
+    @Override
     public final boolean isAnonymous()
     {
         return isAnonymous;
     }
+
+    @Override
+    public Iterable<QName> getForeignAttributeNames()
+    {
+        return forAtts.getForeignAttributeNames();
+    }
+
+    @Override
+    public String getForeignAttributeValue(QName name)
+    {
+        return forAtts.getForeignAttributeValue(name);
+    }
+
+    @Override
+    public void putForeignAttribute(QName name, String value)
+    {
+        forAtts.putForeignAttribute(name, value);
+    }
+
+    private ForeignAttributesImpl forAtts = new ForeignAttributesImpl();
+    private final boolean isAnonymous;
+    private final QName name;
+    private final ScopeExtent scope;
 }

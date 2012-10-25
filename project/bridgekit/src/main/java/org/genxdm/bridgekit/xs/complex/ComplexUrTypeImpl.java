@@ -23,6 +23,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.xs.ForeignAttributesSink;
 import org.genxdm.bridgekit.xs.simple.AbstractPrimeExcludingNoneType;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.components.ModelGroup;
@@ -44,11 +45,10 @@ import org.genxdm.xs.types.Type;
 /**
  * xs:anyType
  */
-public final class ComplexUrTypeImpl extends AbstractPrimeExcludingNoneType implements ComplexUrType
+public final class ComplexUrTypeImpl 
+    extends AbstractPrimeExcludingNoneType 
+    implements ComplexUrType, ForeignAttributesSink
 {
-    private final SchemaWildcard attributeWildcard;
-    private final ContentType contentType;
-    private final QName name;
 
     public ComplexUrTypeImpl(final String W3C_XML_SCHEMA_NS_URI)
     {
@@ -252,4 +252,7 @@ public final class ComplexUrTypeImpl extends AbstractPrimeExcludingNoneType impl
     {
         return getName().toString();
     }
+    private final SchemaWildcard attributeWildcard;
+    private final ContentType contentType;
+    private final QName name;
 }

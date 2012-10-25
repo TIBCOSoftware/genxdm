@@ -18,6 +18,7 @@ package org.genxdm.bridgekit.xs.complex;
 import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.components.AttributeDefinition;
@@ -29,7 +30,9 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.SimpleType;
 
-public final class AttributeDeclWithParentAxisType implements AttributeDefinition
+public final class AttributeDeclWithParentAxisType
+    extends ForeignAttributesImpl
+    implements AttributeDefinition
 {
     private final AttributeDefinition m_attribute;
 

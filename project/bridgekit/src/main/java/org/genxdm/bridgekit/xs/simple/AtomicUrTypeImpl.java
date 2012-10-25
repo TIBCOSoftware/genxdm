@@ -21,6 +21,8 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
+import org.genxdm.bridgekit.xs.ForeignAttributesSink;
 import org.genxdm.bridgekit.xs.SchemaSupport;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.PrefixResolver;
@@ -42,7 +44,9 @@ import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.SimpleUrType;
 import org.genxdm.xs.types.Type;
 
-public final class AtomicUrTypeImpl extends AbstractPrimeExcludingNoneType implements AtomicUrType
+public final class AtomicUrTypeImpl 
+    extends AbstractPrimeExcludingNoneType 
+    implements AtomicUrType
 {
     private final SimpleUrType m_baseType;
     private final QName m_name;

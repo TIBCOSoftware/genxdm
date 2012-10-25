@@ -18,6 +18,7 @@ package org.genxdm.xs.facets;
 import java.util.List;
 
 import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.xs.components.ForeignAttributes;
 import org.genxdm.xs.exceptions.FacetException;
 import org.genxdm.xs.types.SimpleType;
 
@@ -25,6 +26,7 @@ import org.genxdm.xs.types.SimpleType;
  * Common interface for all facets excluding xs:enumeration and xs:pattern.
  */
 public interface Facet
+    extends ForeignAttributes
 {
     /**
      * Determines whether the facet is fixed.

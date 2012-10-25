@@ -15,6 +15,7 @@
  */
 package org.genxdm.bridgekit.xs.complex;
 
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
 import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.types.EmptyType;
 import org.genxdm.xs.types.PrimeType;
@@ -22,7 +23,9 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-public final class ZEmptyType implements EmptyType
+public final class ZEmptyType
+    extends ForeignAttributesImpl
+    implements EmptyType
 {
     public ZEmptyType()
     {
