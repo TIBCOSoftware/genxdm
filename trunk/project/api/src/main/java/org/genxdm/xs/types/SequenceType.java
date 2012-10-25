@@ -16,12 +16,14 @@
 package org.genxdm.xs.types;
 
 import org.genxdm.typed.types.Quantifier;
+import org.genxdm.xs.components.ForeignAttributes;
 
 /**
  * Root interface for a hierarchy of sequence types.
  * 
  */
 public interface SequenceType
+    extends ForeignAttributes
 {
     /**
      * Implementation of the visitor design pattern.

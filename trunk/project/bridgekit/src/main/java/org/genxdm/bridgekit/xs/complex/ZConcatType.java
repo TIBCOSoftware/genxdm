@@ -15,6 +15,7 @@
  */
 package org.genxdm.bridgekit.xs.complex;
 
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.types.ConcatType;
@@ -22,7 +23,9 @@ import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-public final class ZConcatType implements ConcatType
+public final class ZConcatType
+    extends ForeignAttributesImpl
+    implements ConcatType
 {
     public static  SequenceType concat(final SequenceType lhs, final SequenceType rhs)
     {
