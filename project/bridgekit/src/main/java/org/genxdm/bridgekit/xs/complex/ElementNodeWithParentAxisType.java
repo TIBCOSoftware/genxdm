@@ -17,10 +17,11 @@ package org.genxdm.bridgekit.xs.complex;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.NodeKind;
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.components.ElementDefinition;
-import org.genxdm.NodeKind;
 import org.genxdm.xs.enums.ScopeExtent;
 import org.genxdm.xs.types.ElementNodeType;
 import org.genxdm.xs.types.PrimeType;
@@ -28,7 +29,9 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceType;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 
-public final class ElementNodeWithParentAxisType implements ElementNodeType
+public final class ElementNodeWithParentAxisType
+    extends ForeignAttributesImpl
+    implements ElementNodeType
 {
     private final ElementNodeType m_element;
 

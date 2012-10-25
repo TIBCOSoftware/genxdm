@@ -20,6 +20,8 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
+import org.genxdm.bridgekit.xs.ForeignAttributesSink;
 import org.genxdm.bridgekit.xs.SchemaSupport;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
@@ -33,7 +35,9 @@ import org.genxdm.xs.types.PrimeType;
 import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.Type;
 
-abstract class AbstractAtomType implements AtomicType
+abstract class AbstractAtomType
+    extends ForeignAttributesImpl
+    implements AtomicType
 {
     /**
      * Removes leading and trailing whitespace, and any leading plus sign provided it is followed by a digit (0 through 9).
@@ -280,4 +284,5 @@ abstract class AbstractAtomType implements AtomicType
             }
         }
     }
+
 }

@@ -27,7 +27,9 @@ import org.genxdm.xs.types.PrimeTypeKind;
 import org.genxdm.xs.types.SequenceTypeVisitor;
 import org.genxdm.xs.types.SimpleType;
 
-public final class AttributeDeclTypeImpl extends DataComponentImpl implements AttributeDefinition
+public final class AttributeDeclTypeImpl 
+    extends DataComponentImpl 
+    implements AttributeDefinition
 {
     private SimpleType m_type;
 
