@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.xmlrep;
+package org.genxdm.processor.w3c.xs.xmlrep.exceptions;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.exceptions.SchemaException;
 
 @SuppressWarnings("serial")
-final class XMLEnumerationException extends Exception
+public final class XMLNotationException extends Exception
 {
-    public XMLEnumerationException(final SchemaException cause)
+    public XMLNotationException(final SchemaException cause)
     {
         super(PreCondition.assertArgumentNotNull(cause, "cause"));
     }

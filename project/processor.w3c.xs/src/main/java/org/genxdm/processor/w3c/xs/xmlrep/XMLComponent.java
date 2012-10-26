@@ -22,6 +22,7 @@ import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 
 abstract class XMLComponent extends XMLTag
 {
+    public FAMap foreignAttributes = new FAMap();
     private final XMLScope scope;
 
     public XMLComponent(final XMLScope scope)
