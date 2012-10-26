@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.xmlrep;
+package org.genxdm.processor.w3c.xs.xmlrep.exceptions;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.exception.scc.SccLocationException;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLComponentLocator;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
 import org.genxdm.xs.components.ElementDefinition;

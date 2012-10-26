@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.xmlrep;
+package org.genxdm.processor.w3c.xs.xmlrep.exceptions;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.exceptions.SchemaException;
 
 @SuppressWarnings("serial")
-public final class XMLCompositorOutsideGroupException extends Exception
+public final class XMLSimpleTypeException extends Exception
 {
-    public XMLCompositorOutsideGroupException(final SchemaException cause)
+    public XMLSimpleTypeException(final SchemaException cause)
     {
         super(PreCondition.assertArgumentNotNull(cause, "cause"));
     }
