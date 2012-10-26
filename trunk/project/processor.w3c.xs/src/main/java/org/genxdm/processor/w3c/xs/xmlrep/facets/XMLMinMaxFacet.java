@@ -13,22 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.xmlrep;
-
-import javax.xml.namespace.QName;
+package org.genxdm.processor.w3c.xs.xmlrep.facets;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLType;
+import org.genxdm.xs.facets.FacetKind;
 
-public final class XMLAttribute extends XMLDeclaration
+public final class XMLMinMaxFacet extends XMLFacet
 {
-    public XMLAttribute(final QName name, final XMLScope scope, final XMLTypeRef anySimpleType, final SrcFrozenLocation location)
+    private final FacetKind m_kind;
+    public final String elementName;
+    public boolean fixed = false;
+    public String value;
+
+    public XMLMinMaxFacet(final FacetKind kind, final String elementName, final XMLType simpleType, final SrcFrozenLocation location)
     {
-        super(PreCondition.assertArgumentNotNull(name, "name"), scope, anySimpleType, location);
+        super(simpleType, location);
+        this.m_kind = PreCondition.assertArgumentNotNull(kind);
+        this.elementName = PreCondition.assertArgumentNotNull(elementName);
     }
 
-    public XMLAttribute(final QName name, final XMLScope scope, final XMLTypeRef anySimpleType)
+    public FacetKind getOperator()
     {
-        super(PreCondition.assertArgumentNotNull(name, "name"), scope, anySimpleType);
+        return m_kind;
     }
 }

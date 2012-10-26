@@ -1,4 +1,4 @@
-package org.genxdm.processor.w3c.xs.xmlrep;
+package org.genxdm.processor.w3c.xs.xmlrep.util;
 
 import java.util.HashMap;
 

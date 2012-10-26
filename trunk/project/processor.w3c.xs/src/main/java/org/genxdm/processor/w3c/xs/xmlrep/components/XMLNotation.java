@@ -13,32 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.xmlrep;
+package org.genxdm.processor.w3c.xs.xmlrep.components;
 
-import java.util.LinkedList;
+import java.net.URI;
 
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
-import org.genxdm.xs.constraints.IdentityConstraintKind;
-import org.genxdm.xs.constraints.RestrictedXPath;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLScope;
 
-public final class XMLIdentityConstraint extends XMLComponent
+public final class XMLNotation extends XMLComponent
 {
     private final QName name;
-    public IdentityConstraintKind category;
-    public RestrictedXPath selector;
-    public XMLIdentityConstraint keyConstraint;
-    public final LinkedList<RestrictedXPath> fields = new LinkedList<RestrictedXPath>();
+    private String publicId;
+    private URI systemId;
 
-    public XMLIdentityConstraint(final QName name, final XMLScope global)
-    {
-        super(global);
-        this.name = PreCondition.assertArgumentNotNull(name);
-    }
-
-    public XMLIdentityConstraint(final QName name, final XMLScope global, final SrcFrozenLocation location)
+    public XMLNotation(final QName name, final XMLScope global, final SrcFrozenLocation location)
     {
         super(global, location);
         this.name = PreCondition.assertArgumentNotNull(name);
@@ -47,5 +38,25 @@ public final class XMLIdentityConstraint extends XMLComponent
     public QName getName()
     {
         return name;
+    }
+    
+    public String getPublicId()
+    {
+        return publicId;
+    }
+    
+    public void setPublicId(String id)
+    {
+        publicId = id;
+    }
+    
+    public URI getSystemId()
+    {
+        return systemId;
+    }
+    
+    public void setSystemId(URI id)
+    {
+        systemId = id;
     }
 }

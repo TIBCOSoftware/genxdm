@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.xmlrep;
+package org.genxdm.processor.w3c.xs.xmlrep.components;
 
 import java.util.EnumSet;
 import java.util.LinkedList;
@@ -22,6 +22,9 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLParticleTerm;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLScope;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLTypeRef;
 import org.genxdm.xs.enums.DerivationMethod;
 
 public final class XMLElement extends XMLDeclaration implements XMLParticleTerm
