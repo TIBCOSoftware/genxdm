@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.xmlrep;
+package org.genxdm.processor.w3c.xs.xmlrep.particles;
 
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLParticleTerm;
+import org.genxdm.processor.w3c.xs.xmlrep.util.FAMap;
 import org.genxdm.xs.constraints.NamespaceConstraint;
 import org.genxdm.xs.enums.ProcessContentsMode;
 

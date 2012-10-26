@@ -13,9 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.xmlrep;
+package org.genxdm.processor.w3c.xs.xmlrep.util;
 
 import java.util.Stack;
+
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLAttribute;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLAttributeGroup;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLElement;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLIdentityConstraint;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLModelGroup;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLType;
 
 /**
  * Used to keep track of where we have been in order to detect cycles. <br/>

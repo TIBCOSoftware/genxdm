@@ -15,6 +15,6 @@
  */
 package org.genxdm.processor.w3c.xs.xmlrep;
 
-interface XMLParticleTerm
+public interface XMLParticleTerm
 {
 }

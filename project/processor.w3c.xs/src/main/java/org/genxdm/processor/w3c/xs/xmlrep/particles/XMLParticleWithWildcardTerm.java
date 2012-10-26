@@ -13,28 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.xmlrep;
+package org.genxdm.processor.w3c.xs.xmlrep.particles;
 
-import org.genxdm.exceptions.PreCondition;
+import java.math.BigInteger;
+
 import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
-import org.genxdm.xs.facets.FacetKind;
 
-public final class XMLMinMaxFacet extends XMLFacet
+public final class XMLParticleWithWildcardTerm extends XMLParticle
 {
-    private final FacetKind m_kind;
-    public final String elementName;
-    public boolean fixed = false;
-    public String value;
-
-    public XMLMinMaxFacet(final FacetKind kind, final String elementName, final XMLType simpleType, final SrcFrozenLocation location)
+    public XMLParticleWithWildcardTerm(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLWildcard wildcard, final SrcFrozenLocation location)
     {
-        super(simpleType, location);
-        this.m_kind = PreCondition.assertArgumentNotNull(kind);
-        this.elementName = PreCondition.assertArgumentNotNull(elementName);
+        super(minOccurs, maxOccurs, wildcard, location);
     }
 
-    public FacetKind getOperator()
+    public XMLWildcard getTerm()
     {
-        return m_kind;
+        return (XMLWildcard)super.getTerm();
     }
 }

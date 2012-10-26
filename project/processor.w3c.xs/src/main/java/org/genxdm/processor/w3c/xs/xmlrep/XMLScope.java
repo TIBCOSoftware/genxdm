@@ -16,6 +16,11 @@
 package org.genxdm.processor.w3c.xs.xmlrep;
 
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLAttribute;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLAttributeGroup;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLElement;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLModelGroup;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLType;
 
 public final class XMLScope
 {
