@@ -169,24 +169,47 @@ public abstract class SimpleTypeImpl extends TypeImpl implements SimpleType
             {
                 if (currentType.hasPatterns())
                 {
-                    int size = 0;
-                    int pass = 0;
-                    for (final Pattern pattern : currentType.getPatterns())
+                    // in the simple case, there's only one pattern at a derivation step,
+                    // so it's the only thing that we can match (or fail). special case it,
+                    // so that we can provide better reporting.
+                    if (countIterable(currentType.getPatterns()) == 1)
                     {
-                        size++;
                         try
                         {
-                            pattern.validate(normalizedValue);
-                            pass++;
+                            currentType.getPatterns().iterator().next().validate(normalizedValue);
                         }
-                        catch (final PatternException e)
+                        catch (final PatternException pe)
                         {
-                            // Ignore.
+                            throw new DatatypeException(normalizedValue, simpleType, pe);
                         }
                     }
-                    if (size > 0 && pass == 0)
+                    else
                     {
-                        throw new DatatypeException(normalizedValue, simpleType);
+                        int size = 0;
+                        int pass = 0;
+                        for (final Pattern pattern : currentType.getPatterns())
+                        {
+                            size++;
+                            try
+                            {
+                                pattern.validate(normalizedValue);
+                                pass++;
+                            }
+                            catch (final PatternException e)
+                            {
+                                // Ignore.
+                                // TODO: figure out how to accumulate usefully.
+                            }
+                        }
+                        if (size > 0 && pass == 0)
+                        {
+                            // that is, we've never completed a pass, and we've made more than
+                            // one (which is pretty much guaranteed ... we're inside hasPatterns(),
+                            // so the whole size parameter is pretty useless, I think). we've looked
+                            // at all the patterns, and none have matched. because we can't pass all
+                            // the exceptions (failure indicators), don't pass any.
+                            throw new DatatypeException(normalizedValue, simpleType);
+                        }
                     }
                 }
                 final Type baseType = currentType.getBaseType();
@@ -472,5 +495,13 @@ public abstract class SimpleTypeImpl extends TypeImpl implements SimpleType
         checkValueSpaceFacets(actualValue, this, atomBridge);
 
         return actualValue;
+    }
+    
+    private static <X> int countIterable(Iterable<X> iterable)
+    {
+        int count = 0;
+        for (X x : iterable)
+            count++;
+        return count;
     }
 }
