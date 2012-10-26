@@ -21,6 +21,7 @@ import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 abstract class XMLTag
 {
     public String id;
+    public FAMap foreignAttributes = new FAMap();
     private SrcFrozenLocation m_location;
 
     public XMLTag()
