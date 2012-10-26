@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.impl;
+package org.genxdm.processor.w3c.xs.xmlrep;
 
 import java.net.URI;
 import java.util.EnumSet;
@@ -32,40 +32,26 @@ import org.genxdm.xs.enums.DerivationMethod;
 /**
  * The physical schema module.
  */
-final class XMLSchemaModule
+public final class XMLSchemaModule
 {
-    private enum ModuleKind
+    enum ModuleKind
     {
         Import, Include, Redefine
     }
 
-    boolean attributeQualified = false;
-    final EnumSet<DerivationMethod> blockDefault = EnumSet.noneOf(DerivationMethod.class);
+    public boolean attributeQualified = false;
+    public boolean elementQualified = false;
 
-    boolean elementQualified = false;
-
-    final EnumSet<DerivationMethod> finalDefault = EnumSet.noneOf(DerivationMethod.class);
-
-    private final EnumSet<ModuleKind> m_flags = EnumSet.noneOf(ModuleKind.class);
-    String m_id;
-    /**
-     * The following is used to check for uniqueness of identity constraint names.
-     */
-    final HashSet<QName> m_identityConstraints = new HashSet<QName>();
+    public final EnumSet<DerivationMethod> blockDefault = EnumSet.noneOf(DerivationMethod.class);
+    public final EnumSet<DerivationMethod> finalDefault = EnumSet.noneOf(DerivationMethod.class);
 
     /**
      * The following is used to check for uniqueness of id attributes.
      */
-    final HashSet<String> m_ids = new HashSet<String>();
-
-    String m_lang;
-    private final XMLSchemaModule m_parentModule;
-    private final URI m_schemaLocation;
-    private final URI m_systemId;
-
-    private URI m_targetNamespace;
-
-    String m_version;
+    public final HashSet<String> m_ids = new HashSet<String>();
+    public String m_id;
+    public String m_version;
+    public String m_lang;
 
     public XMLSchemaModule(final XMLSchemaModule parentModule, final URI schemaLocation, final URI systemId)
     {
@@ -173,4 +159,16 @@ final class XMLSchemaModule
     {
         m_targetNamespace = PreCondition.assertArgumentNotNull(targetNamespace, "targetNamespace");
     }
+
+    private final EnumSet<ModuleKind> m_flags = EnumSet.noneOf(ModuleKind.class);
+    /**
+     * The following is used to check for uniqueness of identity constraint names.
+     */
+    private final HashSet<QName> m_identityConstraints = new HashSet<QName>();
+
+    private final XMLSchemaModule m_parentModule;
+    private final URI m_schemaLocation;
+    private final URI m_systemId;
+
+    private URI m_targetNamespace;
 }
