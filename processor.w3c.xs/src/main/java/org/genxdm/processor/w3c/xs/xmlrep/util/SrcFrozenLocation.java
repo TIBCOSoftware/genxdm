@@ -17,6 +17,8 @@ package org.genxdm.processor.w3c.xs.xmlrep.util;
 
 import java.util.HashMap;
 
+import javax.xml.stream.Location;
+
 import org.genxdm.xs.resolve.LocationInSchema;
 
 public final class SrcFrozenLocation implements LocationInSchema
@@ -34,6 +36,26 @@ public final class SrcFrozenLocation implements LocationInSchema
         m_characterOffset = characterOffset;
         m_publicId = publicId;
         m_systemId = systemId;
+    }
+
+    public SrcFrozenLocation(final Location location)
+    {
+        if (null != location)
+        {
+            m_lineNumber = location.getLineNumber();
+            m_columnNumber = location.getColumnNumber();
+            m_characterOffset = location.getCharacterOffset();
+            m_publicId = location.getPublicId();
+            m_systemId = location.getSystemId();
+        }
+        else
+        {
+            m_lineNumber = -1;
+            m_columnNumber = -1;
+            m_characterOffset = -1;
+            m_publicId = null;
+            m_systemId = null;
+        }
     }
 
     public int getLineNumber()

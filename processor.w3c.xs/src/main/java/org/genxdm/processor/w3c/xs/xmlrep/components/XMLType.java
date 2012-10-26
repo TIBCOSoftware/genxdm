@@ -23,7 +23,6 @@ import java.util.LinkedList;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLAttributeUse;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLContentTypeKind;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLScope;
@@ -36,6 +35,7 @@ import org.genxdm.processor.w3c.xs.xmlrep.facets.XMLPatternFacet;
 import org.genxdm.processor.w3c.xs.xmlrep.facets.XMLTotalDigitsFacet;
 import org.genxdm.processor.w3c.xs.xmlrep.particles.XMLParticleWithModelGroupTerm;
 import org.genxdm.processor.w3c.xs.xmlrep.particles.XMLWildcard;
+import org.genxdm.processor.w3c.xs.xmlrep.util.SrcFrozenLocation;
 import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.WhiteSpacePolicy;

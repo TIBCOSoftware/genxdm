@@ -20,8 +20,8 @@ import java.net.URI;
 
 import org.genxdm.Cursor;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.processor.w3c.xs.impl.RegExCompilerXSDL;
 import org.genxdm.processor.w3c.xs.impl.XMLParserImpl;
+import org.genxdm.processor.w3c.xs.regex.RegExCompilerXSDL;
 import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.SchemaLoadOptions;
