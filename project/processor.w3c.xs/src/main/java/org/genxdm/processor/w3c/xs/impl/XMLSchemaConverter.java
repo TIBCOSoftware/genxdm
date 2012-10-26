@@ -99,6 +99,7 @@ import org.genxdm.processor.w3c.xs.xmlrep.particles.XMLParticleWithElementTerm;
 import org.genxdm.processor.w3c.xs.xmlrep.particles.XMLParticleWithModelGroupTerm;
 import org.genxdm.processor.w3c.xs.xmlrep.particles.XMLParticleWithWildcardTerm;
 import org.genxdm.processor.w3c.xs.xmlrep.particles.XMLWildcard;
+import org.genxdm.processor.w3c.xs.xmlrep.util.SrcFrozenLocation;
 import org.genxdm.processor.w3c.xs.xmlrep.util.XMLComponentLocator;
 import org.genxdm.processor.w3c.xs.xmlrep.util.XMLCycles;
 import org.genxdm.xs.ComponentProvider;

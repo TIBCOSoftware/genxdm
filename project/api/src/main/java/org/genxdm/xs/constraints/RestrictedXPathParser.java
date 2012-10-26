@@ -13,23 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.impl;
+package org.genxdm.xs.constraints;
+
+import org.genxdm.names.PrefixResolver;
+import org.genxdm.xs.exceptions.SimpleTypeException;
 
 /**
- * A resolver for serialization.
+ * A parser of restricted XPath expressions.
  * 
  */
-interface NamespaceResolver
+public interface RestrictedXPathParser
 {
-    /**
-     * Given a namespace-uri, get a corresponding prefix.
-     * 
-     * @param namespaceURI
-     *            The namespace-uri, cannot be <code>null</code>.
-     * @param prefixHint
-     *            The prefix hint, cannot be <code>null</code>.
-     * @param mayUseDefaultMapping
-     *            Determines whether the default namespace mapping, if it exists, may be used.
-     */
-    String getPrefix(String namespaceURI, String prefixHint, boolean mayUseDefaultMapping);
+    RestrictedXPath parseXPath(final String xpath, final PrefixResolver prefixes) throws SimpleTypeException;
 }

@@ -25,6 +25,7 @@ import org.genxdm.names.PrefixResolver;
 import org.genxdm.processor.w3c.xs.exception.src.SrcPrefixNotFoundException;
 import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.constraints.RestrictedXPath;
+import org.genxdm.xs.constraints.RestrictedXPathParser;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.exceptions.SimpleTypeException;
 

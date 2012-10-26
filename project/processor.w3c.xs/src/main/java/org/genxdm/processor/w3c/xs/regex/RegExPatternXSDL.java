@@ -1,4 +1,4 @@
-package org.genxdm.processor.w3c.xs.impl;
+package org.genxdm.processor.w3c.xs.regex;
 
 import java.util.ArrayList;
 
