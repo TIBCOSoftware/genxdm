@@ -16,10 +16,10 @@
 package org.genxdm.processor.w3c.xs.xmlrep.facets;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLTag;
 import org.genxdm.processor.w3c.xs.xmlrep.components.XMLType;
 import org.genxdm.processor.w3c.xs.xmlrep.util.FAMap;
+import org.genxdm.processor.w3c.xs.xmlrep.util.SrcFrozenLocation;
 
 abstract class XMLFacet extends XMLTag
 {

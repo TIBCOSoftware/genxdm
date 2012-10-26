@@ -15,8 +15,8 @@
  */
 package org.genxdm.processor.w3c.xs.xmlrep.facets;
 
-import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 import org.genxdm.processor.w3c.xs.xmlrep.components.XMLType;
+import org.genxdm.processor.w3c.xs.xmlrep.util.SrcFrozenLocation;
 
 public final class XMLPatternFacet extends XMLFacet
 {

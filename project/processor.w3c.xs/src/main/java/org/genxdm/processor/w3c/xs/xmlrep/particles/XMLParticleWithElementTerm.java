@@ -17,9 +17,9 @@ package org.genxdm.processor.w3c.xs.xmlrep.particles;
 
 import java.math.BigInteger;
 
-import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLValueConstraint;
 import org.genxdm.processor.w3c.xs.xmlrep.components.XMLElement;
+import org.genxdm.processor.w3c.xs.xmlrep.util.SrcFrozenLocation;
 
 public final class XMLParticleWithElementTerm extends XMLParticle
 {

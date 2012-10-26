@@ -17,7 +17,7 @@ package org.genxdm.processor.w3c.xs.xmlrep.particles;
 
 import java.math.BigInteger;
 
-import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
+import org.genxdm.processor.w3c.xs.xmlrep.util.SrcFrozenLocation;
 
 public final class XMLParticleWithWildcardTerm extends XMLParticle
 {

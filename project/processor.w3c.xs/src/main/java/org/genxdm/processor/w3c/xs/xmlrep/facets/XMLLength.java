@@ -17,8 +17,8 @@ package org.genxdm.processor.w3c.xs.xmlrep.facets;
 
 import java.math.BigInteger;
 
-import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 import org.genxdm.processor.w3c.xs.xmlrep.components.XMLType;
+import org.genxdm.processor.w3c.xs.xmlrep.util.SrcFrozenLocation;
 
 public final class XMLLength extends XMLFacet
 {

@@ -20,8 +20,8 @@ import java.net.URI;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLScope;
+import org.genxdm.processor.w3c.xs.xmlrep.util.SrcFrozenLocation;
 
 public final class XMLNotation extends XMLComponent
 {
