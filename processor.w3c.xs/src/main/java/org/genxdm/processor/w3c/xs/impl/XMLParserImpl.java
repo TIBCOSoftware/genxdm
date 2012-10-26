@@ -22,7 +22,7 @@ import org.genxdm.Cursor;
 import org.genxdm.bridgekit.xs.ComponentBagImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLComponentLocator;
-import org.genxdm.processor.w3c.xs.xmlrep.XMLSccExceptionAdapter;
+import org.genxdm.processor.w3c.xs.xmlrep.exceptions.XMLSccExceptionAdapter;
 import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.SchemaLoadOptions;
