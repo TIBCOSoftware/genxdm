@@ -43,6 +43,7 @@ import org.genxdm.processor.w3c.xs.xmlrep.components.XMLIdentityConstraint;
 import org.genxdm.processor.w3c.xs.xmlrep.components.XMLModelGroup;
 import org.genxdm.processor.w3c.xs.xmlrep.components.XMLNotation;
 import org.genxdm.processor.w3c.xs.xmlrep.components.XMLType;
+import org.genxdm.processor.w3c.xs.xmlrep.util.SrcFrozenLocation;
 import org.genxdm.xs.constraints.IdentityConstraintKind;
 import org.genxdm.xs.exceptions.SchemaException;
 

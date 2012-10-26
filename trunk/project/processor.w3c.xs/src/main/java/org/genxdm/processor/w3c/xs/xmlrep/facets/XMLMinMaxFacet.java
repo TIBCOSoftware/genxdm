@@ -16,8 +16,8 @@
 package org.genxdm.processor.w3c.xs.xmlrep.facets;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 import org.genxdm.processor.w3c.xs.xmlrep.components.XMLType;
+import org.genxdm.processor.w3c.xs.xmlrep.util.SrcFrozenLocation;
 import org.genxdm.xs.facets.FacetKind;
 
 public final class XMLMinMaxFacet extends XMLFacet

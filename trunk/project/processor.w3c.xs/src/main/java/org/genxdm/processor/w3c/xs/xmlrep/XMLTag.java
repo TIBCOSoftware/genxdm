@@ -16,7 +16,7 @@
 package org.genxdm.processor.w3c.xs.xmlrep;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
+import org.genxdm.processor.w3c.xs.xmlrep.util.SrcFrozenLocation;
 
 public abstract class XMLTag
 {
