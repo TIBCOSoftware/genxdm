@@ -27,8 +27,6 @@ import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.constraints.RestrictedXPath;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.exceptions.SimpleTypeException;
-import org.genxdm.xs.types.NativeType;
-import org.genxdm.xs.types.SimpleType;
 
 
 final class DefaultRestrictedXPathParser implements RestrictedXPathParser
