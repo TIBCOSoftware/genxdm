@@ -22,6 +22,7 @@ import org.genxdm.xs.enums.ProcessContentsMode;
 public final class XMLWildcard implements XMLParticleTerm
 {
     public String id;
+    public FAMap foreignAttributes = new FAMap();
     private ProcessContentsMode m_processContents;
     private NamespaceConstraint m_namespaceConstraint;
 
