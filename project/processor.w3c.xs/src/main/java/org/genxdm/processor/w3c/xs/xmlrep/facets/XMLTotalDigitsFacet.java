@@ -13,24 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.xmlrep;
+package org.genxdm.processor.w3c.xs.xmlrep.facets;
 
 import java.math.BigInteger;
 
 import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLType;
 
-public final class XMLParticleWithElementTerm extends XMLParticle
+public final class XMLTotalDigitsFacet extends XMLFacet
 {
-    public final XMLValueConstraint valueConstraint;
+    public boolean fixed = false;
+    public BigInteger value = null;
 
-    public XMLParticleWithElementTerm(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLElement element, final XMLValueConstraint valueConstraint, final SrcFrozenLocation location)
+    public XMLTotalDigitsFacet(final XMLType simpleType, final SrcFrozenLocation location)
     {
-        super(minOccurs, maxOccurs, element, location);
-        this.valueConstraint = valueConstraint;
-    }
-
-    public XMLElement getTerm()
-    {
-        return (XMLElement)super.getTerm();
+        super(simpleType, location);
     }
 }

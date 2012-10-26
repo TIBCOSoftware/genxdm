@@ -16,6 +16,8 @@
 package org.genxdm.processor.w3c.xs.xmlrep;
 
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLType;
+import org.genxdm.processor.w3c.xs.xmlrep.particles.XMLParticleWithModelGroupTerm;
 import org.genxdm.xs.types.ContentTypeKind;
 
 final class XMLContentType

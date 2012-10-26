@@ -13,19 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.xmlrep;
+package org.genxdm.processor.w3c.xs.xmlrep.facets;
 
 import java.math.BigInteger;
 
 import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLType;
 
-public final class XMLTotalDigitsFacet extends XMLFacet
+public final class XMLLength extends XMLFacet
 {
+    public BigInteger minLength = null;
+    public BigInteger maxLength = null;
     public boolean fixed = false;
-    public BigInteger value = null;
 
-    public XMLTotalDigitsFacet(final XMLType simpleType, final SrcFrozenLocation location)
+    public XMLLength(final XMLType type, final SrcFrozenLocation location)
     {
-        super(simpleType, location);
+        super(type, location);
     }
 }

@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.xmlrep;
+package org.genxdm.processor.w3c.xs.xmlrep.facets;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLTag;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLType;
+import org.genxdm.processor.w3c.xs.xmlrep.util.FAMap;
 
 abstract class XMLFacet extends XMLTag
 {
