@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.processor.w3c.xs.xmlrep.SrcFrozenLocation;
+import org.genxdm.processor.w3c.xs.xmlrep.util.SrcFrozenLocation;
 import org.genxdm.xs.resolve.LocationInSchema;
 
 

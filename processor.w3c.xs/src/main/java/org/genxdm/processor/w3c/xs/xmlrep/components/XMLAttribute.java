@@ -13,21 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.xmlrep;
+package org.genxdm.processor.w3c.xs.xmlrep.components;
 
-import java.math.BigInteger;
+import javax.xml.namespace.QName;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLScope;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLTypeRef;
 
-public final class XMLParticleWithModelGroupTerm extends XMLParticle
+public final class XMLAttribute extends XMLDeclaration
 {
-    public XMLParticleWithModelGroupTerm(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLModelGroup modelGroup, final SrcFrozenLocation location)
+    public XMLAttribute(final QName name, final XMLScope scope, final XMLTypeRef anySimpleType, final SrcFrozenLocation location)
     {
-        super(minOccurs, maxOccurs, modelGroup, location);
+        super(PreCondition.assertArgumentNotNull(name, "name"), scope, anySimpleType, location);
     }
 
-    public XMLModelGroup getTerm()
+    public XMLAttribute(final QName name, final XMLScope scope, final XMLTypeRef anySimpleType)
     {
-        return (XMLModelGroup)super.getTerm();
+        super(PreCondition.assertArgumentNotNull(name, "name"), scope, anySimpleType);
     }
 }

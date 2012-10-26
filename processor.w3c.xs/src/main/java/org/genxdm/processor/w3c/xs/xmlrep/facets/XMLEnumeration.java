@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.xmlrep;
+package org.genxdm.processor.w3c.xs.xmlrep.facets;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.PrefixResolver;
 import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLType;
 
 public final class XMLEnumeration extends XMLFacet
 {

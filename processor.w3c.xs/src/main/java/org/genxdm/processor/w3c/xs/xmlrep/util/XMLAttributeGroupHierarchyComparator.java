@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.xmlrep;
+package org.genxdm.processor.w3c.xs.xmlrep.util;
 
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Stack;
+
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLAttributeGroup;
 
 final class XMLAttributeGroupHierarchyComparator implements Comparator<XMLAttributeGroup>
 {

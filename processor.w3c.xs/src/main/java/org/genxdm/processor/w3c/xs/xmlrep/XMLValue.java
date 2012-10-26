@@ -16,6 +16,7 @@
 package org.genxdm.processor.w3c.xs.xmlrep;
 
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.processor.w3c.xs.xmlrep.util.SrcFrozenLocation;
 
 /**
  * XML representation of a value. <br/>

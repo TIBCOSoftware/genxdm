@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.xmlrep;
+package org.genxdm.processor.w3c.xs.xmlrep.particles;
 
 import java.math.BigInteger;
 
 import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
+import org.genxdm.processor.w3c.xs.xmlrep.components.XMLModelGroup;
 
-public final class XMLParticleWithWildcardTerm extends XMLParticle
+public final class XMLParticleWithModelGroupTerm extends XMLParticle
 {
-    public XMLParticleWithWildcardTerm(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLWildcard wildcard, final SrcFrozenLocation location)
+    public XMLParticleWithModelGroupTerm(final BigInteger minOccurs, final BigInteger maxOccurs, final XMLModelGroup modelGroup, final SrcFrozenLocation location)
     {
-        super(minOccurs, maxOccurs, wildcard, location);
+        super(minOccurs, maxOccurs, modelGroup, location);
     }
 
-    public XMLWildcard getTerm()
+    public XMLModelGroup getTerm()
     {
-        return (XMLWildcard)super.getTerm();
+        return (XMLModelGroup)super.getTerm();
     }
 }
