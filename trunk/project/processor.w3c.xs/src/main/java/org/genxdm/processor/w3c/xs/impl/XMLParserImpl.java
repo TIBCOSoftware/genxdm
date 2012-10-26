@@ -21,8 +21,8 @@ import java.net.URI;
 import org.genxdm.Cursor;
 import org.genxdm.bridgekit.xs.ComponentBagImpl;
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLComponentLocator;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLSccExceptionAdapter;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLComponentLocator;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLSccExceptionAdapter;
 import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.SchemaLoadOptions;
@@ -177,6 +177,7 @@ final public class XMLParserImpl implements SchemaParser
     private SchemaCatalog m_catalog;
     private CatalogResolver m_resolver;
     private SchemaRegExCompiler m_regexc;
+    @SuppressWarnings("unused")
     private SchemaLoadOptions m_options;
 
 }
