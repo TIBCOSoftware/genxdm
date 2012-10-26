@@ -69,6 +69,8 @@ import org.genxdm.processor.w3c.xs.xmlrep.XMLAttributeUse;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLCardinality;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLContentTypeKind;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLRepresentation;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLSchemaCache;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLSchemaModule;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLScope;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLTypeRef;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLValueConstraint;
@@ -102,6 +104,7 @@ import org.genxdm.processor.w3c.xs.xmlrep.particles.XMLParticleWithElementTerm;
 import org.genxdm.processor.w3c.xs.xmlrep.particles.XMLParticleWithModelGroupTerm;
 import org.genxdm.processor.w3c.xs.xmlrep.particles.XMLParticleWithWildcardTerm;
 import org.genxdm.processor.w3c.xs.xmlrep.particles.XMLWildcard;
+import org.genxdm.processor.w3c.xs.xmlrep.util.FAMap;
 import org.genxdm.processor.w3c.xs.xmlrep.util.SrcFrozenLocation;
 import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.components.ModelGroup;
@@ -364,6 +367,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
+                // ignore foreign attributes?
                 // {any attributes with non-schema namespace}
             }
         }
@@ -480,7 +484,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -541,7 +545,10 @@ final class XMLSchemaParser extends XMLRepresentation
                 }
             }
         }
-        return new XMLWildcard(processContents, namespaceConstraint);
+        XMLWildcard result = new XMLWildcard(processContents, namespaceConstraint);
+        result.foreignAttributes.putAll(foreignAttributes);
+        foreignAttributes.clear();
+        return result;
     }
 
     /**
@@ -607,7 +614,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -669,6 +676,8 @@ final class XMLSchemaParser extends XMLRepresentation
             }
         }
         final XMLWildcard wildcard = new XMLWildcard(processContents, namespaceConstraint);
+        wildcard.foreignAttributes.putAll(foreignAttributes);
+        foreignAttributes.clear();
         return new XMLParticleWithWildcardTerm(minOccurs, maxOccurs, wildcard, getFrozenLocation(reader.getLocation()));
     }
 
@@ -720,6 +729,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
+                // foreign attributes not allowed on appinfo (I think)
                 // {any attributes with non-schema namespace}
             }
         }
@@ -813,7 +823,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -827,6 +837,8 @@ final class XMLSchemaParser extends XMLRepresentation
             skipTag(reader);
             throw new XMLAttributeGroupException(e);
         }
+        attributeGroup.foreignAttributes.putAll(foreignAttributes);
+        foreignAttributes.clear();
         boolean firstElement = true;
         boolean done = false;
         while (!done)
@@ -969,7 +981,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                attributeGroup.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -1195,7 +1207,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -1226,6 +1238,8 @@ final class XMLSchemaParser extends XMLRepresentation
             skipTag(reader);
             return;
         }
+        attribute.foreignAttributes.putAll(foreignAttributes);
+        foreignAttributes.clear();
         attribute.id = id;
         if (null != type)
         {
@@ -1408,7 +1422,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                attribute.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -1634,6 +1648,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
+                // complex content tag disappears on parse, so no foreign attributes remain.
                 // {any attributes with non-schema namespace}
             }
         }
@@ -1972,7 +1987,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                complexType.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -2034,7 +2049,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                complexType.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -2117,7 +2132,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                group.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -2271,7 +2286,8 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                // this promotes the attributes ... hmmm.
+                group.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -2741,6 +2757,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
+                // foreign attributes not allowed on documentation tag
                 // {any attributes with non-schema namespace}
             }
         }
@@ -3039,7 +3056,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -3053,6 +3070,8 @@ final class XMLSchemaParser extends XMLRepresentation
             skipTag(reader);
             throw new XMLElementException(e);
         }
+        element.foreignAttributes.putAll(foreignAttributes);
+        foreignAttributes.clear();
 
         element.setNillableFlag(nillable);
         element.getBlock().addAll(block);
@@ -3226,7 +3245,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                element.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -3366,7 +3385,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -3380,6 +3399,8 @@ final class XMLSchemaParser extends XMLRepresentation
             skipTag(reader);
             throw new XMLElementException(e);
         }
+        element.foreignAttributes.putAll(foreignAttributes);
+        foreignAttributes.clear();
 
         element.setNillableFlag(nillable);
         element.getBlock().addAll(block);
@@ -3444,7 +3465,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                enumeration.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -3644,7 +3665,8 @@ final class XMLSchemaParser extends XMLRepresentation
                 }
                 else
                 {
-                    // {any attributes with non-schema namespace}
+                    // this promotes them to the parent, which may not be right.
+                    complexType.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
                 }
             }
 
@@ -3851,7 +3873,8 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                // this is a promotion to the containing type tag
+                complexType.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -3979,6 +4002,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
+                // ignore foreign attributes (probably the right thing)
                 // {any attributes with non-schema namespace}
             }
         }
@@ -4100,7 +4124,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                facet.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -4216,6 +4240,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
+                // don't think we should modify the thing referred to ...
                 // {any attributes with non-schema namespace}
             }
         }
@@ -4353,7 +4378,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                modelGroup.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -4502,6 +4527,8 @@ final class XMLSchemaParser extends XMLRepresentation
                 }
                 else
                 {
+                    // at the moment, we don't have a way to report these, unless we change XMLSchemaModule to also have
+                    // an FAMap, and anyway these will get discarded on transition to the formal schema model.
                     // {any attributes with non-schema namespace}
                 }
             }
@@ -4583,6 +4610,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
+                // same issue as with import tag: no way to let foreign attributes persist.
                 // {any attributes with non-schema namespace}
             }
         }
@@ -4716,7 +4744,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                keyref.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -4859,7 +4887,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                constraint.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -5021,7 +5049,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                length.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -5134,6 +5162,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
+                // I don't think we want foreign attributes here, do we?
                 // {any attributes with non-schema namespace}
             }
         }
@@ -5286,7 +5315,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                minmax.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -5524,7 +5553,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                notation.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -5657,7 +5686,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                pattern.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -5813,6 +5842,8 @@ final class XMLSchemaParser extends XMLRepresentation
                 }
                 else
                 {
+                    // like import and include, there's no way to expose these in the end.
+                    // we might reconsider if we want to have the modules available somehow.
                     // {any attributes with non-schema namespace}
                 }
             }
@@ -6140,7 +6171,8 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attribute with non-schema namespace}
+                // this moves the attributes up to the type, which may or may not be right.
+                complexType.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -6329,7 +6361,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                complexType.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -6597,6 +6629,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
+                // i'm pretty sure we don't want this. ?
                 // {any attributes with non-schema namespace}
             }
         }
@@ -6928,6 +6961,8 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
+                // sadly, because this is a module, it's the same problem as for
+                // import and include and redefine, so we can't report foreign attributes usefully.
                 // {any attributes with non-schema namespace}
             }
         }
@@ -7158,6 +7193,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
+                // nowhere to put foreign attributes.
                 // {any attributes with non-schema namespace}
             }
         }
@@ -7251,7 +7287,8 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                // this promotes the attributes up to the container
+                complexType.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -7501,7 +7538,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                simpleType.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -7545,7 +7582,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                simpleType.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -7668,7 +7705,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                facet.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -7818,7 +7855,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                unionType.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -7931,7 +7968,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // {any attributes with non-schema namespace}
+                unique.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
@@ -8113,6 +8150,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
+                // pointless to preserve; there's no place to surface these.
                 // {any attributes with non-schema namespace}
             }
         }
@@ -8578,6 +8616,7 @@ final class XMLSchemaParser extends XMLRepresentation
     private static final ContentModelTable<String> restrictionInSimpleContentTable = makeRestrictionInSimpleContentTable();
     private static final ContentModelTable<String> simpleContentTable = makeSimpleContentTable();
 
+    private final FAMap foreignAttributes = new FAMap();
 
     private final XMLTypeRef ANY_SIMPLE_TYPE;
     private final XMLTypeRef ANY_TYPE;

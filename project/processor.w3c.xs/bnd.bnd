@@ -5,6 +5,7 @@ Export-Package: org.genxdm.processor.w3c.xs;version=0.11.0,\
 	org.genxdm.processor.w3c.xs.exception.scc;version=0.11.0,\
 	org.genxdm.processor.w3c.xs.exception.sm;version=0.11.0,\
 	org.genxdm.processor.w3c.xs.exception.src;version=0.11.0,\
+	org.genxdm.processor.w3c.xs.regex;version=0.11.0,\
 	org.genxdm.processor.w3c.xs.regex.api;version=0.11.0,\
 	org.genxdm.processor.w3c.xs.regex.nfa;version=0.11.0,\
 	org.genxdm.processor.w3c.xs.regex.string;version=0.11.0,\

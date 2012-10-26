@@ -78,6 +78,7 @@ import org.genxdm.processor.w3c.xs.exception.src.SrcBaseTypeMustBeComplexTypeExc
 import org.genxdm.processor.w3c.xs.exception.src.SrcSimpleTypeAmongChildrenOfRestrictionException;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLAttributeUse;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLRepresentation;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLSchemaCache;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLScope;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLTypeRef;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLValueConstraint;

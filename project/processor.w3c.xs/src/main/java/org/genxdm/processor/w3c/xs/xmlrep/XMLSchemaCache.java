@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.impl;
+package org.genxdm.processor.w3c.xs.xmlrep;
 
 import java.net.URI;
 import java.util.Collections;
@@ -34,8 +34,6 @@ import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateModelGroupException;
 import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateNotationException;
 import org.genxdm.processor.w3c.xs.exception.sm.SmDuplicateTypeException;
 import org.genxdm.processor.w3c.xs.exception.sm.SmUndeclaredReferenceException;
-import org.genxdm.processor.w3c.xs.xmlrep.XMLScope;
-import org.genxdm.processor.w3c.xs.xmlrep.XMLTypeRef;
 import org.genxdm.processor.w3c.xs.xmlrep.components.XMLAttribute;
 import org.genxdm.processor.w3c.xs.xmlrep.components.XMLAttributeGroup;
 import org.genxdm.processor.w3c.xs.xmlrep.components.XMLElement;
@@ -54,29 +52,29 @@ import org.genxdm.xs.exceptions.SchemaException;
  */
 public final class XMLSchemaCache
 {
-    final Map<QName, XMLElement> m_elements = new HashMap<QName, XMLElement>();
-    final Map<QName, SrcFrozenLocation> m_elementsUnresolved = new HashMap<QName, SrcFrozenLocation>();
+    public final Map<QName, XMLElement> m_elements = new HashMap<QName, XMLElement>();
+    public final Map<QName, SrcFrozenLocation> m_elementsUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
-    final Map<QName, XMLAttribute> m_attributes = new HashMap<QName, XMLAttribute>();
-    final Map<QName, SrcFrozenLocation> m_attributesUnresolved = new HashMap<QName, SrcFrozenLocation>();
+    public final Map<QName, XMLAttribute> m_attributes = new HashMap<QName, XMLAttribute>();
+    public final Map<QName, SrcFrozenLocation> m_attributesUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
     public final Map<QName, XMLType> m_globalTypes = new HashMap<QName, XMLType>();
-    final Map<QName, SrcFrozenLocation> m_typesUnresolved = new HashMap<QName, SrcFrozenLocation>();
+    public final Map<QName, SrcFrozenLocation> m_typesUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
-    final Map<QName, XMLModelGroup> m_modelGroups = new HashMap<QName, XMLModelGroup>();
-    final Map<QName, SrcFrozenLocation> m_modelGroupsUnresolved = new HashMap<QName, SrcFrozenLocation>();
+    public final Map<QName, XMLModelGroup> m_modelGroups = new HashMap<QName, XMLModelGroup>();
+    public final Map<QName, SrcFrozenLocation> m_modelGroupsUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
-    final Map<QName, XMLAttributeGroup> m_attributeGroups = new HashMap<QName, XMLAttributeGroup>();
-    final Map<QName, SrcFrozenLocation> m_attributeGroupsUnresolved = new HashMap<QName, SrcFrozenLocation>();
+    public final Map<QName, XMLAttributeGroup> m_attributeGroups = new HashMap<QName, XMLAttributeGroup>();
+    public final Map<QName, SrcFrozenLocation> m_attributeGroupsUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
-    final Map<QName, XMLIdentityConstraint> m_constraints = new HashMap<QName, XMLIdentityConstraint>();
-    final Map<QName, SrcFrozenLocation> m_constraintsUnresolved = new HashMap<QName, SrcFrozenLocation>();
+    public final Map<QName, XMLIdentityConstraint> m_constraints = new HashMap<QName, XMLIdentityConstraint>();
+    public final Map<QName, SrcFrozenLocation> m_constraintsUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
-    final Map<QName, XMLNotation> m_notations = new HashMap<QName, XMLNotation>();
-    final Map<QName, SrcFrozenLocation> m_notationsUnresolved = new HashMap<QName, SrcFrozenLocation>();
+    public final Map<QName, XMLNotation> m_notations = new HashMap<QName, XMLNotation>();
+    public final Map<QName, SrcFrozenLocation> m_notationsUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
-    final HashSet<URI> m_seenNamespaces = new HashSet<URI>();
-    final HashSet<URI> m_seenSystemIds = new HashSet<URI>();
+    public final HashSet<URI> m_seenNamespaces = new HashSet<URI>();
+    public final HashSet<URI> m_seenSystemIds = new HashSet<URI>();
 
     private final XMLScope GLOBAL = new XMLScope();
     private final XMLTypeRef ANY_SIMPLE_TYPE;
