@@ -21,6 +21,8 @@ import java.net.URI;
 import org.genxdm.Cursor;
 import org.genxdm.bridgekit.xs.ComponentBagImpl;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLSchemaCache;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLSchemaModule;
 import org.genxdm.processor.w3c.xs.xmlrep.exceptions.XMLSccExceptionAdapter;
 import org.genxdm.processor.w3c.xs.xmlrep.util.XMLComponentLocator;
 import org.genxdm.xs.ComponentBag;

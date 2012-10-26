@@ -23,7 +23,7 @@ import java.util.Stack;
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
-import org.genxdm.processor.w3c.xs.impl.XMLSchemaCache;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLSchemaCache;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLTypeRef;
 import org.genxdm.processor.w3c.xs.xmlrep.components.XMLType;
 
