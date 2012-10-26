@@ -16,7 +16,6 @@
 package org.genxdm.processor.w3c.xs.impl;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -77,31 +76,31 @@ import org.genxdm.processor.w3c.xs.exception.src.SrcBaseContentTypeCannotBeSimpl
 import org.genxdm.processor.w3c.xs.exception.src.SrcBaseMustHaveSimpleOrMixedContentTypeComplexTypeException;
 import org.genxdm.processor.w3c.xs.exception.src.SrcBaseTypeMustBeComplexTypeException;
 import org.genxdm.processor.w3c.xs.exception.src.SrcSimpleTypeAmongChildrenOfRestrictionException;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLAttribute;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLAttributeGroup;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLAttributeUse;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLComponentLocator;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLCycles;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLElement;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLEnumeration;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLFractionDigitsFacet;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLIdentityConstraint;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLLength;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLMinMaxFacet;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLModelGroup;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLNotation;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLParticle;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLParticleWithElementTerm;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLParticleWithModelGroupTerm;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLParticleWithWildcardTerm;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLPatternFacet;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLRepresentation;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLScope;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLTotalDigitsFacet;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLType;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLTypeRef;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLValueConstraint;
-import org.genxdm.processor.w3c.xs.impl.xmlrep.XMLWildcard;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLAttribute;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLAttributeGroup;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLAttributeUse;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLComponentLocator;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLCycles;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLElement;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLEnumeration;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLFractionDigitsFacet;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLIdentityConstraint;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLLength;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLMinMaxFacet;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLModelGroup;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLNotation;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLParticle;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLParticleWithElementTerm;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLParticleWithModelGroupTerm;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLParticleWithWildcardTerm;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLPatternFacet;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLRepresentation;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLScope;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLTotalDigitsFacet;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLType;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLTypeRef;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLValueConstraint;
+import org.genxdm.processor.w3c.xs.xmlrep.XMLWildcard;
 import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
@@ -1843,16 +1842,6 @@ public final class XMLSchemaConverter
         return new FacetFractionDigitsImpl(getIntValue(xmlFacet.value), xmlFacet.fixed);
     }
     
-    private List<String> atomListToStringList(Iterable<XmlAtom> initial)
-    {
-        List<String> result = new ArrayList<String>();
-        for (XmlAtom atom : initial)
-        {
-            result.add(m_atoms.getC14NForm(atom));
-        }
-        return result;
-    }
-
     /**
      * Converts a BigInteger value to an int value
      * 
