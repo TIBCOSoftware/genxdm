@@ -20,6 +20,7 @@ import org.genxdm.processor.w3c.xs.impl.SrcFrozenLocation;
 
 abstract class XMLFacet extends XMLTag
 {
+    public FAMap foreignAttributes = new FAMap();
     private final XMLType simpleType;
 
     public XMLFacet(final XMLType simpleType, final SrcFrozenLocation location)
