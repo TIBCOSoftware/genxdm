@@ -15,12 +15,15 @@
  */
 package org.genxdm.bridgekit.xs.constraint;
 
+import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.exceptions.PatternException;
 import org.genxdm.xs.facets.Pattern;
 import org.genxdm.xs.facets.RegExPattern;
 
-public final class FacetPatternImpl implements Pattern
+public final class FacetPatternImpl
+    extends ForeignAttributesImpl
+    implements Pattern
 {
     private final RegExPattern pattern;
     private final String regex;

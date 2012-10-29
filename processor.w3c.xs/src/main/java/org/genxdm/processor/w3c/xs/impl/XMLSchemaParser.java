@@ -2286,8 +2286,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // this promotes the attributes ... hmmm.
-                group.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
+                // the only place to put these attributes is on the parent. we don't do that; discard.
             }
         }
 
@@ -3070,8 +3069,9 @@ final class XMLSchemaParser extends XMLRepresentation
             skipTag(reader);
             throw new XMLElementException(e);
         }
-        element.foreignAttributes.putAll(foreignAttributes);
-        foreignAttributes.clear();
+        if ( (name != null) || (ref == null) )  // not an element reference; new definition 
+            element.foreignAttributes.putAll(foreignAttributes);
+        foreignAttributes.clear(); // clear regardless.
 
         element.setNillableFlag(nillable);
         element.getBlock().addAll(block);
@@ -3665,8 +3665,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 }
                 else
                 {
-                    // this promotes them to the parent, which may not be right.
-                    complexType.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
+                    // the only place to put foreign atts is on the parent. we don't do that; discard.
                 }
             }
 
@@ -7287,8 +7286,7 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                // this promotes the attributes up to the container
-                complexType.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
+                // the only place to put foreign attributes is the parent. we don't do that; discard.
             }
         }
 
