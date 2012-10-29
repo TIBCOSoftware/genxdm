@@ -31,6 +31,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.xs.ComponentBagImpl;
+import org.genxdm.bridgekit.xs.ForeignAttributesSink;
 import org.genxdm.bridgekit.xs.complex.AttributeDeclTypeImpl;
 import org.genxdm.bridgekit.xs.complex.AttributeGroupImpl;
 import org.genxdm.bridgekit.xs.complex.ComplexTypeImpl;
@@ -46,6 +47,7 @@ import org.genxdm.bridgekit.xs.complex.WildcardImpl;
 import org.genxdm.bridgekit.xs.constraint.AttributeUseImpl;
 import org.genxdm.bridgekit.xs.constraint.FacetEnumerationImpl;
 import org.genxdm.bridgekit.xs.constraint.FacetFractionDigitsImpl;
+import org.genxdm.bridgekit.xs.constraint.FacetImpl;
 import org.genxdm.bridgekit.xs.constraint.FacetLengthImpl;
 import org.genxdm.bridgekit.xs.constraint.FacetMaxLengthImpl;
 import org.genxdm.bridgekit.xs.constraint.FacetMinLengthImpl;
@@ -100,6 +102,7 @@ import org.genxdm.processor.w3c.xs.xmlrep.particles.XMLParticleWithElementTerm;
 import org.genxdm.processor.w3c.xs.xmlrep.particles.XMLParticleWithModelGroupTerm;
 import org.genxdm.processor.w3c.xs.xmlrep.particles.XMLParticleWithWildcardTerm;
 import org.genxdm.processor.w3c.xs.xmlrep.particles.XMLWildcard;
+import org.genxdm.processor.w3c.xs.xmlrep.util.FAMap;
 import org.genxdm.processor.w3c.xs.xmlrep.util.SrcFrozenLocation;
 import org.genxdm.processor.w3c.xs.xmlrep.util.XMLComponentLocator;
 import org.genxdm.processor.w3c.xs.xmlrep.util.XMLCycles;
@@ -617,6 +620,7 @@ public final class XMLSchemaConverter
                 m_errors.error(e);
             }
         }
+        copyForeignAttributes(xmlAttribute.foreignAttributes, attribute);
         return attribute;
     }
 
@@ -679,6 +683,7 @@ public final class XMLSchemaConverter
                 m_outBag.add(attributeGroup);
             }
             m_locations.m_attributeGroupLocations.put(attributeGroup, xmlAttributeGroup.getLocation());
+            copyForeignAttributes(xmlAttributeGroup.foreignAttributes, (AttributeGroupImpl)attributeGroup);
             return attributeGroup;
         }
         finally
@@ -824,7 +829,7 @@ public final class XMLSchemaConverter
                     throw new AssertionError(derivation);
                 }
             }
-
+            copyForeignAttributes(xmlComplexType.foreignAttributes, complexType);
             return complexType;
         }
         finally
@@ -1134,6 +1139,8 @@ public final class XMLSchemaConverter
 
         // {annotation} we don't care about.
 
+        // foreign attributes
+        copyForeignAttributes(xmlElement.foreignAttributes, element);
         // We're done!
         return element;
     }
@@ -1375,6 +1382,7 @@ public final class XMLSchemaConverter
                 }
             }
             final ModelGroup modelGroup = new ModelGroupImpl(compositor, particles, name, isAnonymous, scope);
+            copyForeignAttributes(xmlModelGroup.foreignAttributes, (ModelGroupImpl)modelGroup);
             if (modelGroup.getScopeExtent() == ScopeExtent.Global)
             {
                 m_outBag.add(modelGroup);
@@ -1434,6 +1442,7 @@ public final class XMLSchemaConverter
     private NotationDefinition convertNotation(final XMLNotation xmlNotation)
     {
         final NotationDefinition notation = new NotationImpl(xmlNotation.getName(), xmlNotation.getPublicId(), xmlNotation.getSystemId());
+        copyForeignAttributes(xmlNotation.foreignAttributes, (NotationImpl)notation);
         m_outBag.add(notation);
         m_locations.m_notationLocations.put(notation, xmlNotation.getLocation());
         return notation;
@@ -1530,6 +1539,7 @@ public final class XMLSchemaConverter
             computePatterns(xmlSimpleType.getPatternFacets(), simpleType);
             computeFacets(simpleBaseType, xmlSimpleType, simpleType);
             computeEnumerations(simpleBaseType, xmlSimpleType, simpleType);
+            copyForeignAttributes(xmlSimpleType.foreignAttributes, simpleType);
             return simpleType;
         }
         finally
@@ -1788,17 +1798,20 @@ public final class XMLSchemaConverter
         try
         {
             final SimpleType notationType = m_existingCache.getAtomicType(NativeType.NOTATION);
+            final FacetEnumerationImpl impl;
             if (baseType.getName().equals(notationType.getName()) || baseType.derivedFromType(notationType, EnumSet.of(DerivationMethod.Restriction)))
             {
                 final PrefixResolver resolver = sourceEnum.getPrefixResolver();
                 baseType.validate(sourceEnum.getValue(), resolver, m_atoms);
-                return new FacetEnumerationImpl(sourceEnum.getValue(), baseType, resolver);
+                impl = new FacetEnumerationImpl(sourceEnum.getValue(), baseType, resolver);
             }
             else
             {
                 baseType.validate(sourceEnum.getValue(), m_atoms);
-                return new FacetEnumerationImpl(sourceEnum.getValue(), baseType, null);
+                impl = new FacetEnumerationImpl(sourceEnum.getValue(), baseType, null);
             }
+            copyForeignAttributes(sourceEnum.foreignAttributes, impl);
+            return impl;
         }
         catch (final DatatypeException dte)
         {
@@ -1841,7 +1854,9 @@ public final class XMLSchemaConverter
 
     private Facet fractionDigits(final XMLFractionDigitsFacet xmlFacet) throws SicOversizedIntegerException
     {
-        return new FacetFractionDigitsImpl(getIntValue(xmlFacet.value), xmlFacet.fixed);
+        final FacetFractionDigitsImpl impl = new FacetFractionDigitsImpl(getIntValue(xmlFacet.value), xmlFacet.fixed);
+        copyForeignAttributes(xmlFacet.foreignAttributes, impl);
+        return impl;
     }
     
     /**
@@ -1868,13 +1883,14 @@ public final class XMLSchemaConverter
 
     private Facet length(final XMLLength xmlFacet) throws SicOversizedIntegerException
     {
+        final FacetImpl impl;
         if (xmlFacet.minLength != null)
         {
             if (xmlFacet.maxLength != null)
             {
                 if (xmlFacet.minLength.equals(xmlFacet.maxLength))
                 {
-                    return new FacetLengthImpl(getIntValue(xmlFacet.minLength), xmlFacet.fixed);
+                    impl = new FacetLengthImpl(getIntValue(xmlFacet.minLength), xmlFacet.fixed);
                 }
                 else
                 {
@@ -1883,20 +1899,22 @@ public final class XMLSchemaConverter
             }
             else
             {
-                return new FacetMinLengthImpl(getIntValue(xmlFacet.minLength), xmlFacet.fixed);
+                impl = new FacetMinLengthImpl(getIntValue(xmlFacet.minLength), xmlFacet.fixed);
             }
         }
         else
         {
             if (xmlFacet.maxLength != null)
             {
-                return new FacetMaxLengthImpl(getIntValue(xmlFacet.maxLength), xmlFacet.fixed);
+                impl = new FacetMaxLengthImpl(getIntValue(xmlFacet.maxLength), xmlFacet.fixed);
             }
             else
             {
                 throw new AssertionError();
             }
         }
+        copyForeignAttributes(xmlFacet.foreignAttributes, impl);
+        return impl;
     }
 
     private Limit limit(final String value, final SimpleType simpleType, final FacetKind kind, final boolean isFixed)
@@ -1975,7 +1993,9 @@ public final class XMLSchemaConverter
             try
             {
                 final RegExPattern regexp = regexc.compile(regex);
-                return new FacetPatternImpl(regexp, regex);
+                final FacetPatternImpl impl = new FacetPatternImpl(regexp, regex);
+                copyForeignAttributes(pattern.foreignAttributes, impl);
+                return impl;
             }
             catch (final SchemaRegExCompileException e)
             {
@@ -2016,7 +2036,17 @@ public final class XMLSchemaConverter
 
     private Facet totalDigits(final XMLTotalDigitsFacet xmlFacet) throws SicOversizedIntegerException
     {
-        return new FacetTotalDigitsImpl(getIntValue(xmlFacet.value), xmlFacet.fixed);
+        final FacetTotalDigitsImpl impl = new FacetTotalDigitsImpl(getIntValue(xmlFacet.value), xmlFacet.fixed);
+        copyForeignAttributes(xmlFacet.foreignAttributes, impl);
+        return impl;
+    }
+    
+    private void copyForeignAttributes(FAMap source, ForeignAttributesSink target)
+    {
+        for (QName name : source.keySet())
+        {
+            target.putForeignAttribute(name, source.get(name));
+        }
     }
 
     public static  Pair<ComponentBagImpl, XMLComponentLocator> convert(final SchemaRegExCompiler regexc, final ComponentProvider rtmCache, final XMLSchemaCache xmlCache, final SchemaExceptionHandler errors) throws AbortException
