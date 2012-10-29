@@ -25,7 +25,7 @@ import org.genxdm.xs.facets.Facet;
 /**
  * Abstract base class for implementations of {@link Facet}
  */
-abstract class FacetImpl 
+public abstract class FacetImpl 
     extends LockableImpl 
     implements Facet, ForeignAttributesSink
 {
