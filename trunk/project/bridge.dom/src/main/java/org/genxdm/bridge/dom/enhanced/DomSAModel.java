@@ -33,6 +33,7 @@ import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.SchemaComponentCache;
 import org.genxdm.xs.exceptions.DatatypeException;
+import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.Type;
 import org.w3c.dom.NamedNodeMap;
@@ -69,11 +70,6 @@ class DomSAModel
         {
             switch (getNodeKind(node))
             {
-                case TEXT:
-                {
-                    final String stringValue = getStringValue(node);
-                    return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
-                }
                 case ELEMENT:
                 case ATTRIBUTE:
                 {
@@ -95,6 +91,7 @@ class DomSAModel
                     final String stringValue = getStringValue(node);
                     return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
                 }
+                case TEXT:
                 case DOCUMENT:
                 {
                     return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(getStringValue(node)));
@@ -327,6 +324,6 @@ class DomSAModel
     
     private final ComponentProvider provider;
 
-    private static final QName xsUntyped = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "untyped");
-    private static final QName xsUntypedAtomic = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "untypedAtomic");
+    private static final QName xsUntyped = NativeType.UNTYPED.toQName();
+    private static final QName xsUntypedAtomic = NativeType.UNTYPED_ATOMIC.toQName();
 }

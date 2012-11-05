@@ -279,6 +279,12 @@ public class AxiomFragmentBuilder
     {
         return factory;
     }
+    
+    public Object lastNodeId()
+    {
+        // TODO: assign to nodeId; examine AxiomModel to see how to do it.
+        return nodeId;
+    }
 
     private void epilog()
     {
@@ -309,6 +315,7 @@ public class AxiomFragmentBuilder
     protected final OMFactory factory;
     protected ArrayList<Object> nodes = new ArrayList<Object>();
     protected Object currentNode;
+    protected Object nodeId;
     protected OMDocument documentNode;
     protected boolean ignoreComments;
 }
