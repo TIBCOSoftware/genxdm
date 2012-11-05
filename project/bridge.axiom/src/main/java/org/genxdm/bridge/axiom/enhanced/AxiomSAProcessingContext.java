@@ -15,17 +15,15 @@
  */
 package org.genxdm.bridge.axiom.enhanced;
 
+import java.io.IOException;
 import java.net.URI;
-import java.util.EnumSet;
 
 import javax.xml.stream.XMLReporter;
 
 import org.genxdm.bridge.axiom.AxiomProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XmlAtomBridge;
-import org.genxdm.bridgekit.filters.FilteredSequenceBuilder;
-import org.genxdm.bridgekit.filters.NamespaceFixupSequenceFilter;
-import org.genxdm.bridgekit.tree.CoreModelDecoration;
+import org.genxdm.bridgekit.filters.FilteredFragmentBuilder;
 import org.genxdm.bridgekit.tree.CoreModelDecorator;
 import org.genxdm.bridgekit.tree.CursorOnTypedModel;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
@@ -39,7 +37,6 @@ import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.io.SAXValidator;
 import org.genxdm.typed.io.SequenceBuilder;
-import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.io.TypedDocumentHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.TypesBridge;
@@ -48,17 +45,17 @@ import org.genxdm.xs.SchemaComponentCache;
 public final class AxiomSAProcessingContext 
     implements TypedContext<Object, XmlAtom>
 {
-    public AxiomSAProcessingContext(final AxiomProcessingContext context)
+    public AxiomSAProcessingContext(final AxiomProcessingContext context, final SchemaComponentCache schema)
 	{
 	    this.context = PreCondition.assertNotNull(context, "context");
-		final SchemaCacheFactory cacheFactory = new SchemaCacheFactory();
-		this.cache = cacheFactory.newSchemaCache();
+        if (schema == null)
+            this.cache = new SchemaCacheFactory().newSchemaCache();
+        else
+            this.cache = schema;
+	    
 		this.metaBridge = new TypesBridgeImpl();
         this.atomBridge = new XmlAtomBridge(this.cache);
-		EnumSet<CoreModelDecoration> delegations = EnumSet.noneOf(CoreModelDecoration.class);
-		delegations.add(CoreModelDecoration.CHILD_AXIS);
-		delegations.add(CoreModelDecoration.CHILD_ELEMENTS);
-		this.model = new CoreModelDecorator<Object, XmlAtom>(delegations, new AxiomSAModel(new org.genxdm.bridge.axiom.AxiomModel(), atomBridge), atomBridge);
+        this.model = new CoreModelDecorator<Object, XmlAtom>(context.getModel(), atomBridge, cache);
 	}
 	
 	public AtomBridge<XmlAtom> getAtomBridge()
@@ -92,28 +89,33 @@ public final class AxiomSAProcessingContext
 
     public SequenceBuilder<Object, XmlAtom> newSequenceBuilder()
     {
-        // TODO: this is temporary; it enables namespace fixup that we
-        // need, but does so by piling on the virtual calls.  fix is
-        // either combining the filter and the wrapper, or pulling the
-        // implementation into here.
-        SequenceFilter<XmlAtom> filter = new NamespaceFixupSequenceFilter<XmlAtom>();
-        filter.setSchema(cache);
-        filter.setAtomBridge(atomBridge);
-	    return new FilteredSequenceBuilder<Object, XmlAtom>(filter, new AxiomSequenceBuilder(this, context.getOMFactory(), true));
+	    return new AxiomSequenceBuilder((FilteredFragmentBuilder<Object>)context.newFragmentBuilder(), atomBridge, context.getOMFactory(), model, true);
     }
     
     @Override
     public TypedDocumentHandler<Object, XmlAtom> newDocumentHandler(SAXValidator<XmlAtom> validator, XMLReporter reporter, Resolver resolver)
     {
-        // TODO Auto-generated method stub
         return new ValidatingDocumentHandler<Object, XmlAtom>(this, validator, reporter, resolver);
     }
 
     @Override
     public Object validate(Object source, ValidationHandler<XmlAtom> validator, URI namespace)
     {
-        // TODO: implement
-        throw new UnsupportedOperationException();
+        SequenceBuilder<Object, XmlAtom> builder = newSequenceBuilder();
+        validator.setSchema(this.getSchema());
+        validator.setSequenceHandler(builder);
+        model.stream(source, validator);
+        try 
+        {
+            validator.flush();
+        }
+        catch (IOException ioe)
+        {
+            // oh, get real
+            throw new RuntimeException(ioe);
+        }
+
+        return builder.getNode();
     }
     
     private final AxiomProcessingContext context;
@@ -123,5 +125,5 @@ public final class AxiomSAProcessingContext
 	@SuppressWarnings("unused")
 	private boolean locked;
 	private final TypesBridge metaBridge;
-	private final TypedModel<Object, XmlAtom> model;
+	private final CoreModelDecorator<Object, XmlAtom> model;
 }

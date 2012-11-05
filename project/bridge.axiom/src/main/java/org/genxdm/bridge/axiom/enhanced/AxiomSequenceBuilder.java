@@ -22,26 +22,30 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMFactory;
+import org.genxdm.bridge.axiom.AxiomFragmentBuilder;
 import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.bridgekit.filters.FilteredFragmentBuilder;
+import org.genxdm.bridgekit.tree.TypeAnnotator;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;
-import org.genxdm.io.FragmentBuilder;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.types.AtomBridge;
 
 final class AxiomSequenceBuilder 
     implements SequenceBuilder<Object, XmlAtom>
 {
-    public AxiomSequenceBuilder(final AxiomSAProcessingContext pcx, final OMFactory factory, final boolean ignoreComments)
+    public AxiomSequenceBuilder(final FilteredFragmentBuilder<Object> base, final AtomBridge<XmlAtom> bridge, final OMFactory factory, final TypeAnnotator annotator, final boolean ignoreComments)
     {
-		this.pcx = pcx;
-		this.base = pcx.getProcessingContext().newFragmentBuilder();
+		this.base = base;
+		this.bridge = bridge;
+		this.types = annotator;
 	}
 	
 	public void attribute(final String namespaceURI, final String localName, final String prefix, final List<? extends XmlAtom> value, final QName type)
 	{
-        final AtomBridge<XmlAtom> atomBridge = pcx.getAtomBridge();
-	    attribute(namespaceURI, localName, prefix, atomBridge.getC14NString(value), /*map from schema to dtd?*/ DtdAttributeKind.CDATA);
+	    attribute(namespaceURI, localName, prefix, bridge.getC14NString(value), /*map from schema to dtd?*/ DtdAttributeKind.CDATA);
+	    types.annotate(((AxiomFragmentBuilder)base.getBaseBuilder()).lastNodeId(), type);
+	    
 	}
 	
 	public void attribute(final String namespaceURI, final String localName, final String prefix, final String value, DtdAttributeKind type) throws GenXDMException
@@ -114,11 +118,12 @@ final class AxiomSequenceBuilder
 	public void startElement(final String namespaceURI, final String localName, final String prefix, final QName type)
 	{
 	    startElement(namespaceURI, localName, prefix);
+	    types.annotate(((AxiomFragmentBuilder)base.getBaseBuilder()).lastNodeId(), type);
 	}
 
 	public void text(final List<? extends XmlAtom> value)
 	{
-	    base.text(pcx.getAtomBridge().getC14NString(value));
+	    base.text(bridge.getC14NString(value));
 	}
 
 	public void text(final String value) throws GenXDMException
@@ -126,6 +131,7 @@ final class AxiomSequenceBuilder
 	    base.text(value);
 	}
 
-    private final AxiomSAProcessingContext pcx;
-	private final FragmentBuilder<Object> base;
+	private final FilteredFragmentBuilder<Object> base;
+	private final AtomBridge<XmlAtom> bridge;
+	private final TypeAnnotator types;
 }

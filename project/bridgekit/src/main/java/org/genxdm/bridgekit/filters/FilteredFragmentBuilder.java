@@ -122,6 +122,11 @@ public class FilteredFragmentBuilder<N>
     {
         builder.reset();
     }
+    
+    public FragmentBuilder<N> getBaseBuilder()
+    {
+        return builder;
+    }
 
     private final ContentFilter filter;
     private final FragmentBuilder<N> builder;
