@@ -145,6 +145,7 @@ public class ContentWriter
         String qname = getQName(prefix, localName);
         try
         {
+            finishStart();
             output.write(LT + qname);
         }
         catch (IOException ioe)
