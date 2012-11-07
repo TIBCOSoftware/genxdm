@@ -3465,7 +3465,9 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                enumeration.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
+                // the api schema model collapses all of the enumerations into a list.
+                // at least, i think it does. if not, then this should get turned back on.
+//                enumeration.foreignAttributes.put(reader.getAttributeName(i), reader.getAttributeValue(i));
             }
         }
 
