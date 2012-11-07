@@ -1810,7 +1810,9 @@ public final class XMLSchemaConverter
                 baseType.validate(sourceEnum.getValue(), m_atoms);
                 impl = new FacetEnumerationImpl(sourceEnum.getValue(), baseType, null);
             }
-            copyForeignAttributes(sourceEnum.foreignAttributes, impl);
+            // we've removed foreign attributes, on the theory that the api for enumeration represents
+            // all the possible values, not just one of them. if that's wrong, restore this.
+//            copyForeignAttributes(sourceEnum.foreignAttributes, impl);
             return impl;
         }
         catch (final DatatypeException dte)

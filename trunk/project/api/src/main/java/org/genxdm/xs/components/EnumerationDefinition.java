@@ -23,7 +23,6 @@ import org.genxdm.typed.types.AtomBridge;
  * A list of atomic values specified by an xs:enumeration.
  */
 public interface EnumerationDefinition
-    extends ForeignAttributes
 {
     /**
      * A set of values from the value space of the base type definition.
