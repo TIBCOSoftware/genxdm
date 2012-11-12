@@ -346,17 +346,20 @@ public final class CoreModelDecorator<N, A>
     @Override
     public QName getTypeName(N node)
     {
+//System.out.println("Types map contains " + typesMap.size() + " entries");
         QName defaultType = null;
         switch (getNodeKind(node))
         {
             case ELEMENT:
             {
                 defaultType = NativeType.UNTYPED.toQName();
+//System.out.println("Getting type name for element {" + getNamespaceURI(node) + "}" + getLocalName(node));
+//System.out.println("Node id is " + getNodeId(node));
             }
             case ATTRIBUTE:
             {
-                if (defaultType == null)
-                    defaultType = NativeType.UNTYPED_ATOMIC.toQName();
+                if (defaultType == null) //{ System.out.println("Getting type name for attribute " + getNodeId(node)); 
+                    defaultType = NativeType.UNTYPED_ATOMIC.toQName(); //}
                 QName type = typesMap.get(getNodeId(node));
                 if (type == null)
                     type = defaultType;
@@ -566,6 +569,8 @@ public final class CoreModelDecorator<N, A>
     @Override 
     public void annotate(Object nodeId, QName type)
     {
+//System.out.println("Adding annotation for type " + type.toString());
+//System.out.println("Node id is " + nodeId.toString());
         typesMap.put(nodeId, type);
     }
     
