@@ -20,10 +20,10 @@ import java.net.URI;
 
 import javax.xml.stream.XMLReporter;
 
-import org.genxdm.bridge.axiom.AxiomFragmentBuilder;
 import org.genxdm.bridge.axiom.AxiomProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XmlAtomBridge;
+import org.genxdm.bridgekit.filters.FilteredFragmentBuilder;
 import org.genxdm.bridgekit.tree.CoreModelDecorator;
 import org.genxdm.bridgekit.tree.CursorOnTypedModel;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
@@ -89,7 +89,7 @@ public final class AxiomSAProcessingContext
 
     public SequenceBuilder<Object, XmlAtom> newSequenceBuilder()
     {
-	    return new AxiomSequenceBuilder((AxiomFragmentBuilder)context.newFragmentBuilder(), atomBridge, context.getOMFactory(), model, true);
+	    return new AxiomSequenceBuilder((FilteredFragmentBuilder<Object>)context.newFragmentBuilder(), atomBridge, context.getOMFactory(), model, true);
     }
     
     @Override
