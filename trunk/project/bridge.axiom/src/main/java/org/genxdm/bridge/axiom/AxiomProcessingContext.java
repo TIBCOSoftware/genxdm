@@ -15,6 +15,9 @@
  */
 package org.genxdm.bridge.axiom;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.xml.stream.XMLReporter;
 
 import org.apache.axiom.om.OMFactory;
@@ -22,9 +25,7 @@ import org.genxdm.Cursor;
 import org.genxdm.Feature;
 import org.genxdm.Model;
 import org.genxdm.ProcessingContext;
-import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.genxdm.bridgekit.filters.FilteredFragmentBuilder;
-import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
+import org.genxdm.bridge.axiom.enhanced.AxiomSAProcessingContext;
 import org.genxdm.bridgekit.tree.CursorOnModel;
 import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
@@ -36,7 +37,6 @@ import org.genxdm.mutable.MutableCursor;
 import org.genxdm.mutable.MutableModel;
 import org.genxdm.mutable.NodeFactory;
 import org.genxdm.processor.io.DefaultDocumentHandler;
-import org.genxdm.typed.TypedContext;
 import org.genxdm.xs.SchemaComponentCache;
 
 /** ProcessingContext to support abstraction of the AxiOM LLOM tree model.
@@ -75,6 +75,7 @@ public class AxiomProcessingContext
         this.omfactory = factory;
     }
     
+    @Override
     public DocumentHandler<Object> newDocumentHandler()
     {
         DocumentHandler<Object> handler = new DefaultDocumentHandler<Object>(this);
@@ -86,6 +87,7 @@ public class AxiomProcessingContext
         return handler;
     }
 
+    @Override
     public DocumentHandler<Object> newDocumentHandler(XMLReporter aReporter, Resolver aResolver)
     {
         DocumentHandler<Object> handler = new DefaultDocumentHandler<Object>(this);
@@ -101,31 +103,37 @@ public class AxiomProcessingContext
         return handler;
     }
     
+    @Override
     public XMLReporter getDefaultReporter()
     {
         return reporter;
     }
     
+    @Override
     public Resolver getDefaultResolver()
     {
         return resolver;
     }
 
+    @Override
     public void setDefaultReporter(XMLReporter reporter)
     {
         this.reporter = reporter;
     }
     
+    @Override
     public void setDefaultResolver(Resolver resolver)
     {
         this.resolver = resolver;
     }
 
+    @Override
     public Model<Object> getModel()
     {
         return model;
     }
 
+    @Override
     public MutableContext<Object> getMutableContext()
     {
         if (mutableContext == null)
@@ -133,15 +141,33 @@ public class AxiomProcessingContext
         return mutableContext;
     }
     
+    @Override
     @SuppressWarnings("unchecked")
-    public TypedContext<Object, XmlAtom> getTypedContext(SchemaComponentCache cache)
+    public AxiomSAProcessingContext getTypedContext(SchemaComponentCache cache)
     {
-        return null; //TODO: implement properly; change this and isSupported. 
-//        if (saContext == null)
-//            saContext = new AxiomSAProcessingContext(this);
-//        return saContext;
+        AxiomSAProcessingContext tc;
+        if (cache != null)
+            tc = typedContexts.get(cache);
+        else
+        {
+            if (defaultCache != null)
+                tc = typedContexts.get(defaultCache);
+            else
+            {
+                tc = new AxiomSAProcessingContext(this, null);
+                defaultCache = tc.getSchema();
+                typedContexts.put(defaultCache, tc);
+            }
+        }
+        if (tc == null) // only happens when cache != null, first time seen.
+        {
+            tc = new AxiomSAProcessingContext(this, cache);
+            typedContexts.put(cache, tc);
+        }
+        return tc;
     }
     
+    @Override
     public boolean isNode(Object item)
     {
         if (null != item)
@@ -154,13 +180,17 @@ public class AxiomProcessingContext
         }
     }
 
+    @Override
     public boolean isSupported(final String feature)
     {
         PreCondition.assertNotNull(feature, "feature");
         if (feature.startsWith(Feature.PREFIX))
         {
             if (feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT) ||
-                feature.equals(Feature.MUTABILITY) )
+                feature.equals(Feature.MUTABILITY) ||
+                feature.equals(Feature.TYPED) ||
+                feature.equals(Feature.TYPE_ANNOTATION) ||
+                feature.equals(Feature.TYPED_VALUE) )
                 return true;
             // Axiom does not support document uri retrieval or xml:base.
             // disable namespace axis until we can figure out if we can
@@ -169,24 +199,29 @@ public class AxiomProcessingContext
                 feature.equals(Feature.BASE_URI) ||
                 feature.equals(Feature.NAMESPACE_AXIS) )
                 return false;
-            // at the moment, neither of the following are supported.
-            // however, they will be.
-            if (feature.equals(Feature.TYPED) )
-                return false;
         }
         return false;
     }
 
+    @Override
     public Cursor newCursor(Object node)
     {
         return new CursorOnModel<Object>(node, model);
     }
 
+    @Override
     public FragmentBuilder<Object> newFragmentBuilder()
     {
-        return new FilteredFragmentBuilder<Object>(new NamespaceFixupFilter(), new AxiomFragmentBuilder(omfactory, false));
+        // TODO: we've disabled namespace fixups (for axiom) in order to enable typing.
+        // the issue here is that namespace fixups delays the firing of events to the
+        // underlying fragment builder, which means that we don't have the node identity and
+        // the type name for attributes at the same time. bad. the long term solution is to
+        // do something a good deal smaller; the namespace fixup mess is a kludge anyway.
+        return new AxiomFragmentBuilder(omfactory, false);
+//        return new FilteredFragmentBuilder<Object>(new NamespaceFixupFilter(), new AxiomFragmentBuilder(omfactory, false));
     }
 
+    @Override
     public Object node(Object item)
     {
         if (isNode(item))
@@ -194,6 +229,7 @@ public class AxiomProcessingContext
         return null;
     }
 
+    @Override
     public Object[] nodeArray(int size)
     {
         if (size < 0)
@@ -244,5 +280,6 @@ public class AxiomProcessingContext
     private MutableContext<Object> mutableContext;
     private Resolver resolver;
     private XMLReporter reporter;
-//    private AxiomSAProcessingContext saContext;
+    private SchemaComponentCache defaultCache;
+    private Map<SchemaComponentCache, AxiomSAProcessingContext> typedContexts = new HashMap<SchemaComponentCache, AxiomSAProcessingContext>();
 }
