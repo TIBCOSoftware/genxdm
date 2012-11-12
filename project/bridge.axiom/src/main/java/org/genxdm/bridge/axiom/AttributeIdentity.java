@@ -26,6 +26,7 @@ public class AttributeIdentity
     }
 
     // this is the reason for this to exist
+    // we change the semantics of equality
     @Override
     public boolean equals(Object o)
     {
@@ -36,8 +37,13 @@ public class AttributeIdentity
         return false;
     }
     
-    // by the rules, we need to override hashcode, too.
-    // however, we *want* the Object hashcode.
+    // we also need hashcode semantics, but we need it to be object equality
+    // at the attribute level.
+    @Override
+    public int hashCode()
+    {
+        return ((Object)attribute).hashCode();
+    }
 
     private final OMAttribute attribute;
 }
