@@ -55,7 +55,7 @@ public class AxiomFragmentBuilder
         PreCondition.assertNotNull(prefix, "prefix");
         PreCondition.assertNotNull(value, "value");
 
-        if (currentNode != null)
+        if (null != currentNode)
         {
             final OMElement element = AxiomSupport.dynamicDowncastElement(currentNode);
             OMNamespace namespace = element.findNamespace(namespaceURI, prefix);
@@ -74,7 +74,6 @@ public class AxiomFragmentBuilder
             }
                 
             element.addAttribute(attribute);
-            nodeId = /*new AttributeIdentity(*/(Object)attribute/*)*/;
         }
         else
         {
@@ -218,7 +217,6 @@ public class AxiomFragmentBuilder
             
             currentNode = element;
         }
-        nodeId = currentNode;
     }
 
     public void text(String data)
@@ -284,6 +282,7 @@ public class AxiomFragmentBuilder
     
     public Object lastNodeId()
     {
+        // TODO: assign to nodeId; examine AxiomModel to see how to do it.
         return nodeId;
     }
 
