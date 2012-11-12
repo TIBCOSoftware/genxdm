@@ -25,10 +25,10 @@ public abstract class SequenceBuilderBase<N, A>
         assertNotNull(docDoc);
         N current = model.getFirstChild(docDoc);
         assertNotNull(current);
-        assertEquals(model.getNamespaceURI(current), NSCOM);
-        assertEquals(model.getLocalName(current), "doc");
+        assertEquals(NSCOM, model.getNamespaceURI(current));
+        assertEquals("doc", model.getLocalName(current));
         QName typeName = new QName(NSCOM, "docType");
-        assertEquals(model.getTypeName(current), typeName);
+        assertEquals(typeName, model.getTypeName(current));
     }
     
     @Test

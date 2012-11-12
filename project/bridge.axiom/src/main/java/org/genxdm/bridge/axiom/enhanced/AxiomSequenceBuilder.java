@@ -24,7 +24,6 @@ import javax.xml.namespace.QName;
 import org.apache.axiom.om.OMFactory;
 import org.genxdm.bridge.axiom.AxiomFragmentBuilder;
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.genxdm.bridgekit.filters.FilteredFragmentBuilder;
 import org.genxdm.bridgekit.tree.TypeAnnotator;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;
@@ -34,7 +33,7 @@ import org.genxdm.typed.types.AtomBridge;
 final class AxiomSequenceBuilder 
     implements SequenceBuilder<Object, XmlAtom>
 {
-    public AxiomSequenceBuilder(final FilteredFragmentBuilder<Object> base, final AtomBridge<XmlAtom> bridge, final OMFactory factory, final TypeAnnotator annotator, final boolean ignoreComments)
+    public AxiomSequenceBuilder(final AxiomFragmentBuilder base, final AtomBridge<XmlAtom> bridge, final OMFactory factory, final TypeAnnotator annotator, final boolean ignoreComments)
     {
 		this.base = base;
 		this.bridge = bridge;
@@ -44,7 +43,7 @@ final class AxiomSequenceBuilder
 	public void attribute(final String namespaceURI, final String localName, final String prefix, final List<? extends XmlAtom> value, final QName type)
 	{
 	    attribute(namespaceURI, localName, prefix, bridge.getC14NString(value), /*map from schema to dtd?*/ DtdAttributeKind.CDATA);
-	    types.annotate(((AxiomFragmentBuilder)base.getBaseBuilder()).lastNodeId(), type);
+	    types.annotate(base.lastNodeId(), type);
 	    
 	}
 	
@@ -118,7 +117,7 @@ final class AxiomSequenceBuilder
 	public void startElement(final String namespaceURI, final String localName, final String prefix, final QName type)
 	{
 	    startElement(namespaceURI, localName, prefix);
-	    types.annotate(((AxiomFragmentBuilder)base.getBaseBuilder()).lastNodeId(), type);
+	    types.annotate(base.lastNodeId(), type);
 	}
 
 	public void text(final List<? extends XmlAtom> value)
@@ -131,7 +130,7 @@ final class AxiomSequenceBuilder
 	    base.text(value);
 	}
 
-	private final FilteredFragmentBuilder<Object> base;
+	private final AxiomFragmentBuilder base;
 	private final AtomBridge<XmlAtom> bridge;
 	private final TypeAnnotator types;
 }
