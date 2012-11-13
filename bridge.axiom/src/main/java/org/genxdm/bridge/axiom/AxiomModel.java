@@ -48,6 +48,8 @@ import org.genxdm.bridgekit.axes.IterableFollowingAxis;
 import org.genxdm.bridgekit.axes.IterableFollowingSiblingAxis;
 import org.genxdm.bridgekit.axes.IterablePrecedingAxis;
 import org.genxdm.bridgekit.axes.IterablePrecedingSiblingAxis;
+import org.genxdm.bridgekit.misc.AbstractReferenceMap;
+import org.genxdm.bridgekit.misc.ReferenceIdentityMap;
 import org.genxdm.bridgekit.names.QNameComparator;
 import org.genxdm.bridgekit.tree.Ordering;
 import org.genxdm.exceptions.GenXDMException;
@@ -1229,7 +1231,10 @@ public class AxiomModel
     public Object getNodeId(final Object node)
     {
         if (node instanceof OMAttribute)
-            return new AttributeIdentity((OMAttribute)node);
+        {
+            final OMAttribute attr = (OMAttribute)node;
+            return attributeIdentity(attr);
+        }
         if (node instanceof OMNamespace)
             return new NamespaceIdentity((OMNamespace)node);
         return node;
@@ -1382,6 +1387,18 @@ public class AxiomModel
                 }
         }
     }
+    
+    // done as static so that the fragmentbuilder can use the only map that we want to have around.
+    static AttributeIdentity attributeIdentity(OMAttribute attr)
+    {
+        AttributeIdentity id = attributes.get(attr);
+        if (id == null)
+        {
+            id = new AttributeIdentity(attr);
+            attributes.put(attr, id);
+        }
+        return id;
+    }
 
     /**
      * Determines whether the cancellation, xmlns="", is required to ensure correct semantics.
@@ -1463,4 +1480,5 @@ public class AxiomModel
         return true;
     }
 
+    private static final Map<OMAttribute, AttributeIdentity> attributes = new ReferenceIdentityMap<OMAttribute, AttributeIdentity>(AbstractReferenceMap.ReferenceStrength.WEAK, AbstractReferenceMap.ReferenceStrength.HARD);
 }

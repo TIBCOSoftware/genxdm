@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 TIBCO Software Inc.
+ * Copyright (c) 2011-12 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package org.genxdm.bridge.axiom;
 
+import java.lang.ref.WeakReference;
+
 import org.apache.axiom.om.OMAttribute;
 
 public class AttributeIdentity
@@ -22,22 +24,30 @@ public class AttributeIdentity
     
     AttributeIdentity(OMAttribute attribute)
     {
-        this.attribute = attribute;
+        this.attribute = new WeakReference<OMAttribute>(attribute);
     }
 
     // this is the reason for this to exist
+    // we change the semantics of equality back to object identity.
     @Override
     public boolean equals(Object o)
     {
-        if (o instanceof AttributeIdentity)
-            return ((AttributeIdentity)o).attribute == attribute;
+        if (o instanceof AttributeIdentity) 
+            return hashCode() == o.hashCode();
         else if (o instanceof OMAttribute)
-            return (OMAttribute)o == attribute;
+            return hashCode() == System.identityHashCode(o);
         return false;
     }
     
-    // by the rules, we need to override hashcode, too.
-    // however, we *want* the Object hashcode.
+    // we also need hashcode semantics, but we need it to be object equality
+    // at the attribute level. There's a method for that!
+    @Override
+    public int hashCode()
+    {
+        return System.identityHashCode(attribute.get());
+    }
 
-    private final OMAttribute attribute;
+    // hold the attribute as a weak reference to avoid memory loss, when
+    // we happen to have a strong reference to an attribute identity somewhere.
+    private final WeakReference<OMAttribute> attribute;
 }
