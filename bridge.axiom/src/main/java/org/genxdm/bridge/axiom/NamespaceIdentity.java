@@ -15,13 +15,15 @@
  */
 package org.genxdm.bridge.axiom;
 
+import java.lang.ref.WeakReference;
+
 import org.apache.axiom.om.OMNamespace;
 
 public class NamespaceIdentity
 {
     NamespaceIdentity(OMNamespace ns)
     {
-        this.namespace = ns;
+        this.namespace = new WeakReference<OMNamespace>(ns);
     }
     
     // this is the reason for this to exist
@@ -29,15 +31,20 @@ public class NamespaceIdentity
     public boolean equals(Object o)
     {
         if (o instanceof NamespaceIdentity)
-            return ((NamespaceIdentity)o).namespace == namespace;
+            return hashCode() == o.hashCode();
         else if (o instanceof OMNamespace)
-            return (OMNamespace)o == namespace;
+            return hashCode() == System.identityHashCode(o);
         return false;
     }
     
     // by the rules, we need to override hashcode, too.
     // however, we *want* the Object hashcode.
+    @Override
+    public int hashCode()
+    {
+        return System.identityHashCode(namespace.get());
+    }
 
-    private final OMNamespace namespace;
+    private final WeakReference<OMNamespace> namespace;
 
 }
