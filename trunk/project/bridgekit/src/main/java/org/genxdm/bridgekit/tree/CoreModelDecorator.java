@@ -353,13 +353,13 @@ public final class CoreModelDecorator<N, A>
             case ELEMENT:
             {
                 defaultType = NativeType.UNTYPED.toQName();
-System.out.println("Getting type name for element {" + getNamespaceURI(node) + "}" + getLocalName(node));
-System.out.println("Node id is " + getNodeId(node));
+//System.out.println("Getting type name for element {" + getNamespaceURI(node) + "}" + getLocalName(node));
+//System.out.println("Node id is " + getNodeId(node));
             }
             case ATTRIBUTE:
             {
-                if (defaultType == null) { System.out.println("Getting type name for attribute " + getNodeId(node)); 
-                    defaultType = NativeType.UNTYPED_ATOMIC.toQName(); }
+                if (defaultType == null) //{ System.out.println("Getting type name for attribute " + getNodeId(node)); 
+                    defaultType = NativeType.UNTYPED_ATOMIC.toQName(); //}
                 QName type = typesMap.get(getNodeId(node));
                 if (type == null)
                     type = defaultType;
@@ -569,8 +569,8 @@ System.out.println("Node id is " + getNodeId(node));
     @Override 
     public void annotate(Object nodeId, QName type)
     {
-System.out.println("Adding annotation for type " + type.toString());
-System.out.println("Node id is " + nodeId.toString());
+//System.out.println("Adding annotation for type " + type.toString());
+//System.out.println("Node id is " + nodeId.toString());
         typesMap.put(nodeId, type);
     }
     
