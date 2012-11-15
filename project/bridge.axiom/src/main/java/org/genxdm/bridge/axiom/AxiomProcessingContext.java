@@ -15,11 +15,14 @@
  */
 package org.genxdm.bridge.axiom;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import javax.xml.stream.XMLReporter;
 
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.genxdm.Cursor;
 import org.genxdm.Feature;
@@ -274,6 +277,8 @@ public class AxiomProcessingContext
         private final AxiomFactory factory;
         private final AxiomMutableModel mmodel;
     }
+    
+    static Map<OMDocument, URI> docURIs = new WeakHashMap<OMDocument, URI>();
     
     private final AxiomModel model = new AxiomModel();
     private final OMFactory omfactory;
