@@ -16,14 +16,15 @@
  */
 package org.genxdm.bridgekit.misc;
 
+import java.util.NoSuchElementException;
+
 /** 
  * Provides an implementation of an empty map iterator.
  *
  * @since 3.1
- * @version $Id: EmptyMapIterator.java 1369925 2012-08-06 19:11:31Z tn $
  */
-public class EmptyMapIterator<K, V> extends AbstractEmptyMapIterator<K, V> implements
-        MapIterator<K, V>, ResettableIterator<K> {
+public class EmptyMapIterator<K, V> implements MapIterator<K, V>, ResettableIterator<K> 
+{
 
     /**
      * Singleton instance of the iterator.
@@ -49,4 +50,54 @@ public class EmptyMapIterator<K, V> extends AbstractEmptyMapIterator<K, V> imple
         super();
     }
 
+    public boolean hasNext() {
+        return false;
+    }
+
+    public K next() {
+        throw new NoSuchElementException("Iterator contains no elements");
+    }
+
+    public boolean hasPrevious() {
+        return false;
+    }
+
+    public K previous() {
+        throw new NoSuchElementException("Iterator contains no elements");
+    }
+
+    public int nextIndex() {
+        return 0;
+    }
+
+    public int previousIndex() {
+        return -1;
+    }
+
+    public void add(K obj) {
+        throw new UnsupportedOperationException("add() not supported for empty Iterator");
+    }
+
+    public void set(K obj) {
+        throw new IllegalStateException("Iterator contains no elements");
+    }
+
+    public void remove() {
+        throw new IllegalStateException("Iterator contains no elements");
+    }
+
+    public void reset() {
+        // do nothing
+    }
+    public K getKey() {
+        throw new IllegalStateException("Iterator contains no elements");
+    }
+
+    public V getValue() {
+        throw new IllegalStateException("Iterator contains no elements");
+    }
+
+    public V setValue(V value) {
+        throw new IllegalStateException("Iterator contains no elements");
+    }
 }
