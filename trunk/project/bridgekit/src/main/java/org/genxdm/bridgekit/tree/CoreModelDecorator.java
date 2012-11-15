@@ -516,11 +516,14 @@ public final class CoreModelDecorator<N, A>
                 if (hasParent(node))
                 {
                     final QName typeName = getTypeName(getParent(node));
-                    final Type type = schemas.getComponentProvider().getTypeDefinition(typeName);
-                    if (type instanceof SimpleType)
+                    if (typeName != null)
                     {
-                        handler.text(iterableToList(getValue(getParent(node))));
-                        typed = true;
+                        final Type type = schemas.getComponentProvider().getTypeDefinition(typeName);
+                        if (type instanceof SimpleType)
+                        {
+                            handler.text(iterableToList(getValue(getParent(node))));
+                            typed = true;
+                        }
                     }
                 }
                 if (!typed)

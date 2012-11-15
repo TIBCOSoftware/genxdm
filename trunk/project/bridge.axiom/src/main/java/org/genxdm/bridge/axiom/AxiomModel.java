@@ -242,7 +242,9 @@ public class AxiomModel
 
     public URI getDocumentURI(final Object node)
     {
-        // TODO: resolve missing axiom functionality
+        OMDocument doc = AxiomSupport.dynamicDowncastDocument(node);
+        if (doc != null)
+            return AxiomProcessingContext.docURIs.get(doc);
         return null;
     }
     
@@ -402,8 +404,14 @@ public class AxiomModel
         if (null != element)
         {
             /**
-             * Axiom's getAllDeclaredNamespaces method returns only those prefix mappings that are declared locally. This is what we want for this method. However, it also returns a prefix mapping, ""=>"", even if this has not been explicitly declared. There is no way
-             * of telling whether it is explicitly declared or implicitly added by the Axiom implementation. We can remove it but should also check first to see if it is being added as a cancellation. The alternative may be to have all implementations return this
+             * Axiom's getAllDeclaredNamespaces method returns only those prefix
+             * mappings that are declared locally. This is what we want for this
+             * method. However, it also returns a prefix mapping, ""=>"", even
+             * if this has not been explicitly declared. There is no way of
+             * telling whether it is explicitly declared or implicitly added by
+             * the Axiom implementation. We can remove it but should also check
+             * first to see if it is being added as a cancellation. The
+             * alternative may be to have all implementations return this
              * mapping if the element is in the global namespace.
              */
             @SuppressWarnings("unchecked")
@@ -437,19 +445,20 @@ public class AxiomModel
                     }
                     else
                     {
-                        names.add(new NamespaceBinding()
-                        {
-
-                            public String getNamespaceURI()
+                        if (!namespace.getPrefix().equals("xml"))
+                            names.add(new NamespaceBinding()
                             {
-                                return uri;
-                            }
-
-                            public String getPrefix()
-                            {
-                                return prefix;
-                            }
-                        });
+    
+                                public String getNamespaceURI()
+                                {
+                                    return uri;
+                                }
+    
+                                public String getPrefix()
+                                {
+                                    return prefix;
+                                }
+                            });
                     }
                 }
                 return names;
@@ -798,7 +807,7 @@ public class AxiomModel
     {
         {
             final OMContainer container = AxiomSupport.dynamicDowncastContainer(node);
-            if (null != container)
+            if (container != null)
             {
                 @SuppressWarnings("unchecked")
                 final Iterator<OMNode> children = container.getChildren();
@@ -819,6 +828,7 @@ public class AxiomModel
                         }
                         break;
                         case COMMENT:
+                        case PROCESSING_INSTRUCTION:
                         {
                             // Ignore
                         }
