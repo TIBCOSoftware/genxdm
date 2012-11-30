@@ -60,6 +60,7 @@ import org.genxdm.xs.types.AttributeNodeType;
 import org.genxdm.xs.types.ChoiceType;
 import org.genxdm.xs.types.CommentNodeType;
 import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.ComplexUrType;
 import org.genxdm.xs.types.ContentType;
 import org.genxdm.xs.types.DocumentNodeType;
 import org.genxdm.xs.types.ElementNodeType;
@@ -108,6 +109,15 @@ public final class TypesBridgeImpl implements TypesBridge
             {
                 throw new AssertionError("TODO");
             }
+        }
+        else if (type instanceof ComplexUrType)
+        {
+        	visitor.complexUrType(type);
+        }
+        else if (type instanceof ComplexType)
+        {
+        	final ComplexType complexType = (ComplexType)type;
+        	visitor.complexType(complexType, complexType.getName(), complexType.getBaseType());
         }
         else if (type instanceof AttributeNodeType)
         {
