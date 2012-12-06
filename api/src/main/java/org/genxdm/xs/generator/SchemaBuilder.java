@@ -7,6 +7,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.SchemaComponentCache;
+import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.exceptions.AbortException;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
 
@@ -57,6 +58,11 @@ public interface SchemaBuilder
     
     SimpleTypeBuilder buildSimpleTypeByRestriction(String name, QName base);
     
+    SimpleContentBuilder buildComplexTypeWithSimpleContent(String name, QName base, DerivationMethod derivation, boolean mixed);
+    
+    ComplexTypeBuilder buildComplexTypeWithComplexContent(String name, QName base, boolean mixed);
+    
+    // build by composition
     ComplexTypeBuilder buildComplexType(String name, boolean mixed);
     
     void element(String name, QName type);
