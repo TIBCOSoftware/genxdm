@@ -1671,7 +1671,8 @@ public final class XMLSchemaConverter
                 }
                 else
                 {
-                    throw new AssertionError(sourceType);
+                    convertType(name, isAnonymous);
+                    //throw new AssertionError(sourceType);
                 }
             }
             catch (final SchemaException e)
