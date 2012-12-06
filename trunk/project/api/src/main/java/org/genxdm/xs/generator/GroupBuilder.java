@@ -10,23 +10,28 @@ public interface GroupBuilder
     // the SchemaBuilder selects the outermost container.
     // reference only
     void group(QName ref, int minOccurs, int maxOccurs);
+
     // for element, we're not going to support local definitions, except by reference to a type.
     void element(QName ref, int minOccurs, int maxOccurs);
-    
     void element(String name, QName type, int minOccurs, int maxOccurs);
 
     // wildcard may appear in choice and sequence
     void any(ProcessContentsMode processContents, Iterable<String> namespaces, int minOccurs, int maxOccurs);
 
-    void startAll(boolean optional);
+    void startAllParticle(boolean optional);
     // only contains element*
-    void endAll();
     
-    void startChoice(int minOccurs, int maxOccurs);
+    void startChoiceParticle(int minOccurs, int maxOccurs);
     // element | group | choice | sequence | any
-    void endChoice();
 
-    void startSequence(int minOccurs, int maxOccurs);
+    void startSequenceParticle(int minOccurs, int maxOccurs);
     // element | group | choice | sequence | any
-    void endSequence();
+
+    /** Signal the end of content for a given particle.
+     *
+     * For every startAllParticle, startChoiceParticle, startSequenceParticle in this
+     * interface, endParticle must be invoked to indicate the end
+     * of content for that particle. Note that there is only a single method to be used.
+     */
+    void endParticle();
 }
