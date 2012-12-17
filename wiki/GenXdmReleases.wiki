@@ -11,10 +11,40 @@ Only the latest two releases will be generally available for download, prior
 to the 1.0 release.
 
  * 20101111 : Initial release (no longer available)
- * 20110415 : Tax Day release (deprecated)
- * 20110627 : Independence Day release (deprecated)
- * 20110906 : Labor Day release
- * 20111111 : "Turn it up to eleven!" release
+ * 20110415 : Tax Day release (no longer available)
+ * 20110627 : Independence Day release (no longer available)
+ * 20110906 : Labor Day release (no longer available)
+ * 20111111 : "Turn it up to eleven!" release (no longer available)
+ * 20120222 : Leap day release (deprecated)
+ * 20120426 : May day release (deprecated)
+ * 20120606 : "Dozens" release
+ * 20121221 : "End of the World" release
+
+== "End of the World" Release ==
+
+Since the world is set to end on 21 December 2012, we thought we ought to release the software, one last time. :-)
+
+First release of the OSGi-native builds. GenXDM artifacts are created as OSGi bundles, using the tools specified elsewhere. In addition, we have improvements to the typed API, and have added type-awareness (typed API support) to the Axiom bridge. Numerous bug fixes. Increasing stability; we can actually contemplate the idea of a 1.0 release (though still, perhaps, faint and far off).
+
+Tag 430 (actually, 427, plus required updates 429 and 430). Tag genxdm-20121221.
+
+== "Dozens" Release ==
+
+So named for the numbers in the release (a dozen and two half dozens). Further information not currently available, alas; we've done a poor job of documenting the releases here.
+
+Revision unknown. Tag genxdm-20120606.
+
+== May Day Release ==
+
+No information available.
+
+Revision unknown. Tag genxdm-20120426.
+
+== Leap Day Release ==
+
+No information available (*sigh*).
+
+Revision unknown. Tag genxdm-20120222.
 
 == "Turn it up to eleven!" Release ==
 
