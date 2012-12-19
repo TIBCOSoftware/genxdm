@@ -411,10 +411,10 @@ final class AttributeManager<A>
 				final QName attributeName = mapping.getKey();
 				final String data = mapping.getValue();
 
-				if (W3C_XML_SCHEMA_INSTANCE_NS_URI == attributeName.getNamespaceURI())
+				if (W3C_XML_SCHEMA_INSTANCE_NS_URI.equals(attributeName.getNamespaceURI()))
 				{
 					final String localName = attributeName.getLocalPart();
-					if (XSI_TYPE == localName)
+					if (XSI_TYPE.equals(localName))
 					{
 						final AttributeDefinition attribute = metaBridge.getAttributeDeclaration(attributeName);
 						final SimpleType attributeType = (SimpleType)attribute.getType();
@@ -438,7 +438,7 @@ final class AttributeManager<A>
 							errors.error(new SmAttributeUseException(elementName, attributeName, locatable.getLocation(), ste));
 						}
 					}
-					else if (XSI_NIL == localName)
+					else if (XSI_NIL.equals(localName))
 					{
 						final AttributeDefinition attribute = metaBridge.getAttributeDeclaration(attributeName);
 						final SimpleType attributeType = (SimpleType)attribute.getType();
@@ -454,7 +454,7 @@ final class AttributeManager<A>
 							errors.error(new SmAttributeUseException(elementName, attributeName, locatable.getLocation(), ste));
 						}
 					}
-					else if (XSI_SCHEMA_LOCATION == localName)
+					else if (XSI_SCHEMA_LOCATION.equals(localName))
 					{
 						final AttributeDefinition attribute = metaBridge.getAttributeDeclaration(attributeName);
 						final SimpleType attributeType = (SimpleType)attribute.getType();
@@ -489,7 +489,7 @@ final class AttributeManager<A>
 							errors.error(new SmAttributeUseException(elementName, attributeName, locatable.getLocation(), ste));
 						}
 					}
-					else if (XSI_NO_NAMESPACE_SCHEMA_LOCATION == localName)
+					else if (XSI_NO_NAMESPACE_SCHEMA_LOCATION.equals(localName))
 					{
 						final AttributeDefinition attribute = metaBridge.getAttributeDeclaration(attributeName);
 						final SimpleType attributeType = (SimpleType)attribute.getType();
