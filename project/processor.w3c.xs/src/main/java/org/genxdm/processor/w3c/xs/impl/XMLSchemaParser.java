@@ -3073,10 +3073,10 @@ final class XMLSchemaParser extends XMLRepresentation
             element.foreignAttributes.putAll(foreignAttributes);
         foreignAttributes.clear(); // clear regardless.
 
-        element.setNillableFlag(nillable);
-        element.getBlock().addAll(block);
         if (null == ref)
         {
+            element.setNillableFlag(nillable);
+            element.getBlock().addAll(block);
             element.m_valueConstraint = valueConstraint;
             elementContent(element, ref, module, cache, reader, redefine, targetNamespace, (null != typeRef));
             return new XMLParticleWithElementTerm(minOccurs, maxOccurs, element, null, getFrozenLocation(reader.getLocation()));
