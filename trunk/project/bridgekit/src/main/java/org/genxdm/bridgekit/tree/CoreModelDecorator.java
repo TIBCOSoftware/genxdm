@@ -96,6 +96,7 @@ public final class CoreModelDecorator<N, A>
     @Override
     public Iterable<? extends A> getAttributeValue(final N parent, final String namespaceURI, final String localName)
     {
+        PreCondition.assertNotNull(parent, "node");
         final N attribute = getAttribute(parent, namespaceURI, localName);
         if (attribute != null)
             return getValue(attribute);
@@ -105,6 +106,7 @@ public final class CoreModelDecorator<N, A>
     @Override
     public QName getAttributeTypeName(final N parent, final String namespaceURI, final String localName)
     {
+        PreCondition.assertNotNull(parent, "node");
         final N attribute = getAttribute(parent, namespaceURI, localName);
         if (attribute != null)
             return typesMap.get(getNodeId(attribute));
@@ -305,6 +307,7 @@ public final class CoreModelDecorator<N, A>
     @Override
     public Iterable<? extends A> getValue(final N node)
     {
+        PreCondition.assertNotNull(node, "node");
         switch (getNodeKind(node))
         {
             case ELEMENT:
@@ -347,6 +350,7 @@ public final class CoreModelDecorator<N, A>
     public QName getTypeName(N node)
     {
 //System.out.println("Types map contains " + typesMap.size() + " entries");
+        PreCondition.assertNotNull(node, "node");
         QName defaultType = null;
         switch (getNodeKind(node))
         {
@@ -469,8 +473,9 @@ public final class CoreModelDecorator<N, A>
     }
 
     @Override
-    public void stream(final N node,final SequenceHandler<A> handler, boolean bogus) throws GenXDMException
+    public void stream(final N node, final SequenceHandler<A> handler, boolean bogus) throws GenXDMException
     {
+        PreCondition.assertNotNull(node, "node");
         switch (getNodeKind(node))
         {
             case ELEMENT:
@@ -574,6 +579,7 @@ public final class CoreModelDecorator<N, A>
     {
 //System.out.println("Adding annotation for type " + type.toString());
 //System.out.println("Node id is " + nodeId.toString());
+        PreCondition.assertNotNull(nodeId, "nodeId");
         typesMap.put(nodeId, type);
     }
     
