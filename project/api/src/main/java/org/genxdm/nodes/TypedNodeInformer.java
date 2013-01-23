@@ -66,8 +66,7 @@ public interface TypedNodeInformer<N, A>
      * <p>Returns <code>null</code> for all other node kinds.</p>
      * 
      * @param node
-     *            The node for which the type name is required.  If null is
-     *            supplied, null is returned.
+     *            The node for which the type name is required.  May not be null.
      * 
      * @return the type name for the node, if it is valid and is an element
      * or attribute. An invalid or partially-validated node should return
@@ -87,8 +86,7 @@ public interface TypedNodeInformer<N, A>
      * <p>If the node argument is <code>null</code>, then <code>null</code> is returned.</p>
      * 
      * @param node
-     *            The node for which dm:typed-value is required.  If null is supplied,
-     *            null is returned.
+     *            The node for which dm:typed-value is required.  May not be null.
      *
      * @return a sequence of atoms representing the typed-value of the supplied
      * node, for document, element, and attribute nodes. For namespace, comment,

@@ -34,7 +34,7 @@ public interface NodeInformer<N>
      * <p>This method does not inherit attribute names in the reserved XML namespace.</p>
      * 
      * @param node
-     *            The node for which the attribute names are required.
+     *            The node for which the attribute names are required. May not be null.
      * @param orderCanonical
      *            Determines whether the names will be returned in canonical order (lexicographically by namespace
      *            URI,local name).
@@ -49,13 +49,14 @@ public interface NodeInformer<N>
      * <p>This is equivalent to retrieving the attribute node and then its string value.</p>
      * 
      * @param parent
-     *            The node that is the parent of the attribute node.
+     *            The node that is the parent of the attribute node. May not be null.
      * @param namespaceURI
      *            The namespace-uri part of the attribute name.
      * @param localName
      *            The local-name part of the attribute name.
      * @return the string value of the designated attribute, if it exists;
-     * null if it does not.
+     * null if it does not. Note that null values for namespace or local name match nothing,
+     * so return null.
      */
     String getAttributeStringValue(N parent, String namespaceURI, String localName);
 
@@ -66,6 +67,7 @@ public interface NodeInformer<N>
      * dm:base-uri</a> accessor in the XDM.  Defined
      * for all node types except namespace.</p>
      * 
+     * @param node The node for which the base uri is required; may not be null.
      * @return the absolute value of the base-uri property, if it is available,
      * or null if it is not.
      * 
@@ -79,6 +81,7 @@ public interface NodeInformer<N>
      * <p>Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-document-uri">
      * dm:document-uri</a> accessor in the XDM.</p>
      * 
+     * @param node The node for which the document uri is requested; may not be null.
      * @return the absolute URI of the resource from which the Document Node was
      *         constructed, if the absolute URI is available; f there is no URI
      *         available, or if it cannot be made absolute when the Document
@@ -102,7 +105,7 @@ public interface NodeInformer<N>
      * will be returned in that particular case.</p>
      *  
      * @param node
-     *            The node for which the node local-name is required.
+     *            The node for which the node local-name is required. May not be null.
      * 
      * @return the name of the node.
      *            
@@ -118,7 +121,7 @@ public interface NodeInformer<N>
      * <p>Only includes prefix mappings which are explicit and local to the node.</p>
      * 
      * @param node
-     *            The node under consideration.
+     *            The node under consideration. May not be null.
      * 
      * @return an iterable of {@link NamespaceBinding}s for namespaces declared
      * in this element node (which may be empty); null for non-element nodes
@@ -130,7 +133,7 @@ public interface NodeInformer<N>
     /** Only reports on namespace declarations for the target node,
      * not namespaces in scope for that node.
      * 
-     * @param node the target node on which the namespace is declared.
+     * @param node the target node on which the namespace is declared. May not be null.
      * @param prefix the prefix (namespace name) for which the URI is desired.
      * 
      * @return the namespace URI declared for this prefix, or null if no such prefix
@@ -143,6 +146,7 @@ public interface NodeInformer<N>
      * 
      * <p>This refers to the prefix mappings which are explicit and local to the node.</p>
      * 
+     * @param node The node for which the list of prefixes is desired. May not be null.
      * @param orderCanonical
      *            Determines whether the names will be returned in canonical order (lexicographically by local name).
      * @return an iterable of namespace prefixes declared on this element node (which
@@ -158,7 +162,7 @@ public interface NodeInformer<N>
      * 
      * <p>Other node types should never return <code>null</code>.</p>
      * @param node
-     *            The node for which the node namespace-uri is required.
+     *            The node for which the node namespace-uri is required. May not be null.
      * 
      * @return the namespace-uri associated with this node.
      * 
@@ -178,7 +182,7 @@ public interface NodeInformer<N>
      * for node identity.  Nodes in an instance are equal to themselves and to no
      * other node; they are never equal across instances.</p>
      * 
-     * @param node the node for which an ID object is required.
+     * @param node the node for which an ID object is required. May not be null.
      * 
      * @return a bridge-defined object which obeys the constraints specified.
      */
@@ -192,7 +196,7 @@ public interface NodeInformer<N>
      * dm:node-kind</a> accessor in the XDM.</p>
      * 
      * @param node
-     *            The node for which the node-kind is required.
+     *            The node for which the node-kind is required. May not be null.
      *            
      * @return a {@link NodeKind}; if node is null, returns null.
      * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-kind">XDM dm:node-kind accessor</a>
@@ -208,7 +212,7 @@ public interface NodeInformer<N>
      * <p>This is just a hint because it usually contains the prefix of the original document. The prefix will not be
      * updated to reflect in scope namespaces.</p>
      * @param node
-     *            The node for which the node prefix hint is required.
+     *            The node for which the node prefix hint is required. May not be null.
      * @return the prefix associated with the namespace of this node, if there
      * is one.
      */
@@ -219,7 +223,7 @@ public interface NodeInformer<N>
      * dm:string-value</a> property of the node. Applies to all node kinds.
      * 
      * @param node
-     *            The node for which the dm:string-value is required.
+     *            The node for which the dm:string-value is required. May not be null.
      * 
      * @return the string value of this node.
      * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-string-value">XDM dm:string-value accessor</a>
@@ -230,7 +234,7 @@ public interface NodeInformer<N>
      * Determines whether there are nodes on the attribute axis for this node.
      * 
      * @param node
-     *            The node under consideration.
+     *            The node under consideration. May not be null.
      * @return true if this is an element node and it does contain attributes,
      * false otherwise.
      */
@@ -240,7 +244,7 @@ public interface NodeInformer<N>
      * Determines whether there are nodes on the child axis for this node.
      * 
      * @param node
-     *            The node under consideration.
+     *            The node under consideration. May not be null.
      * @return true if the node is a document or element node which contains
      * one or more child nodes; false otherwise.
      */
@@ -250,7 +254,7 @@ public interface NodeInformer<N>
      * Determines whether there are prefix-to-namespace mappings for this node.
      * 
      * @param node
-     *            The node under consideration.
+     *            The node under consideration. May not be null.
      * @return true if this is an element node that contains namespace declarations;
      * false otherwise.
      */
@@ -260,7 +264,7 @@ public interface NodeInformer<N>
      * Determines whether the node has a following sibling.
      * 
      * @param node
-     *            The node under consideration.
+     *            The node under consideration. May not be null.
      * @return true if this is a child node which has a (parent and a) following
      * sibling; false otherwise.
      */
@@ -270,7 +274,7 @@ public interface NodeInformer<N>
      * Determines whether there are nodes on the parent axis for this node.
      * 
      * @param node
-     *            The node under consideration.
+     *            The node under consideration. May not be null.
      * @return true if this is a child node which has a parent; false otherwise.
      */
     boolean hasParent(N node);
@@ -279,7 +283,7 @@ public interface NodeInformer<N>
      * Determines whether the node has a preceding sibling.
      * 
      * @param node
-     *            The node under consideration.
+     *            The node under consideration. May not be null.
      * @return true if this is a child node which has a (parent and a) previous
      * sibling; false otherwise.
      */
@@ -289,7 +293,7 @@ public interface NodeInformer<N>
      * Determines whether the specified node is an attribute node.
      * 
      * @param node
-     *            The node under consideration.
+     *            The node under consideration. May not be null.
      * @return true if this is an attribute node; false otherwise.
      */
     boolean isAttribute(N node);
@@ -298,7 +302,7 @@ public interface NodeInformer<N>
      * Determines whether the specified node is an element node.
      * 
      * @param node
-     *            The node under consideration.
+     *            The node under consideration. May not be null.
      * @return true if this is an element node; false otherwise.
      */
     boolean isElement(N node);
@@ -309,7 +313,7 @@ public interface NodeInformer<N>
      * dm:is-id</a> accessor.  Valid for element and attribute nodes.
      * </p>
      * 
-     * @param node the node under consideration
+     * @param node the node under consideration. May not be null.
      * @return true if the node is an attribute named xml:id, if it has a PSVI
      * type derived from xs:ID, or if it is an attribute with a DTD-defined type of ID,
      * otherwise false.  Elements that contain attributes that return true also
@@ -324,7 +328,7 @@ public interface NodeInformer<N>
      * Corresponds to the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-is-idrefs">
      * dm:is-idrefs</a> accessor.  Valid for element and attribute nodes.
      * 
-     * @param node the node under consideration
+     * @param node the node under consideration. May not be null.
      * @return true if the node is an element or attribute with at least one atomic value
      * derived from xs:IDREF or xs:IDREFS, or if it is an attribute with a DTD-defined
      * type of IDREF or IDREFS.
@@ -337,7 +341,7 @@ public interface NodeInformer<N>
      * Determines whether the specified node is a namespace node.
      * 
      * @param node
-     *            The node under consideration.
+     *            The node under consideration. May not be null.
      * @return true if this is a namespace node; false otherwise.
      */
     boolean isNamespace(N node);
@@ -346,7 +350,7 @@ public interface NodeInformer<N>
      * Determines whether the specified node is a text node.
      * 
      * @param node
-     *            The node under consideration.
+     *            The node under consideration. May not be null.
      * @return true if this is a text node; otherwise false.
      */
     boolean isText(N node);
@@ -355,7 +359,7 @@ public interface NodeInformer<N>
      * Determines whether the specified node matches the arguments.
      * 
      * @param node
-     *            The node to test.
+     *            The node to test. May not be null.
      * @param nodeKind
      *            The node kind to match; if null, match regardless of node kind
      * @param namespaceURI
@@ -374,7 +378,7 @@ public interface NodeInformer<N>
      * second argument.</p>
      * 
      * @param node
-     *            The node being tested.
+     *            The node being tested. May not be null.
      * @param namespaceURI
      *            The namespace-uri to match; if null, ignore namespace matching
      * @param localName

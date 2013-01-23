@@ -36,6 +36,14 @@ import org.genxdm.typed.io.SequenceHandler;
 public interface TypedModel<N, A> 
     extends Model<N>, TypedNodeInformer<N, A>
 {
+    /** Stream to a type-aware handler.
+     * 
+     * @param node The starting point for streaming. May not be null.
+     * @param handler The handler which is to process the nodes. May not be null.
+     * @param bogus A bogus argument which is ignored; it serves to distinguish this
+     *              method from the stream method of the superinterface.
+     * @throws GenXDMException
+     */
 	void stream(N node, SequenceHandler<A> handler, boolean bogus)
 		throws GenXDMException;
 }

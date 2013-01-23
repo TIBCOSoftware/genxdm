@@ -38,24 +38,32 @@ public class TypedXmlNodeModel
     {
         this.bridge = PreCondition.assertNotNull(bridge, "atomBridge");
     }
-    
+
+    @Override
     public QName getAttributeTypeName(XmlNode parent, String namespaceURI, String localName)
     {
+        PreCondition.assertNotNull(parent, "node");
         return parent.getAttributeTypeName(namespaceURI, localName);
     }
 
+    @Override
     public Iterable<? extends XmlAtom> getAttributeValue(XmlNode parent, String namespaceURI, String localName)
     {
+        PreCondition.assertNotNull(parent, "node");
         return parent.getAttributeValue(namespaceURI, localName);
     }
 
+    @Override
     public QName getTypeName(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getTypeName();
     }
 
+    @Override
     public Iterable<? extends XmlAtom> getValue(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         switch (node.getNodeKind())
         {
             case ATTRIBUTE :
@@ -91,6 +99,7 @@ public class TypedXmlNodeModel
     public void stream(XmlNode node, SequenceHandler<XmlAtom> handler, boolean bogus)
         throws GenXDMException
     {
+        PreCondition.assertNotNull(node, "node");
         switch (node.getNodeKind())
         {
             case ELEMENT:
