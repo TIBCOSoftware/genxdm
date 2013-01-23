@@ -40,7 +40,7 @@ public interface Model<N>
      * Support for streaming a node to a {@link ContentHandler}.
      * 
      * @param node
-     *            The node to be streamed.
+     *            The node to be streamed. May not be null.
      * @param handler
      *            The handler for events generated.
      */
