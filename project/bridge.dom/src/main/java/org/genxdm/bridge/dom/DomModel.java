@@ -59,45 +59,32 @@ public class DomModel
     implements Model<Node>
 {
 
+    @Override
     public int compare(Node one, Node two)
     {
         return Ordering.compareNodes(one, two, this);
     }
 
+    @Override
     public Iterable<Node> getAncestorAxis(Node node)
     {
-        if (null != node)
-        {
-            if (null != DomSupport.getParentNode(node))
-            {
-                return new IterableAncestorAxis<Node>(node, this);
-            }
-            else
-            {
-                return Collections.emptyList();
-            }
-        }
-        else
-        {
-            return Collections.emptyList();
-        }
+        PreCondition.assertNotNull(node, "node");
+        if (DomSupport.getParentNode(node) != null)
+            return new IterableAncestorAxis<Node>(node, this);
+        return Collections.emptyList();
     }
 
+    @Override
     public Iterable<Node> getAncestorOrSelfAxis(Node node)
     {
-        if (null != node)
-        {
-            return new IterableAncestorOrSelfAxis<Node>(node, this);
-        }
-        else
-        {
-            return Collections.emptyList();
-        }
+        PreCondition.assertNotNull(node, "node");
+        return new IterableAncestorOrSelfAxis<Node>(node, this);
     }
 
+    @Override
     public Node getAttribute(Node node, String namespaceURI, String localName)
     {
-        PreCondition.assertArgumentNotNull(node, "node");
+        PreCondition.assertNotNull(node, "node");
 
         // Checking to see if there are any attributes saves the creation of {@link NamedNodeMap}.
         if (node.hasAttributes())
@@ -126,9 +113,11 @@ public class DomModel
         }
     }
 
+    @Override
     public Iterable<Node> getAttributeAxis(Node origin, boolean inherit)
     {
-        if (origin != null && origin instanceof Element)
+        PreCondition.assertNotNull(origin, "node");
+        if (origin instanceof Element)
         {
             final Element element = (Element)origin;
             if (inherit)
@@ -138,9 +127,7 @@ public class DomModel
                 while (null != currentNode)
                 {
                     if (currentNode.hasAttributes())
-                    {
                         scopes.addFirst(currentNode);
-                    }
                     currentNode = getParent(currentNode);
                 }
                 final HashMap<String, Node> mappings = new HashMap<String, Node>();
@@ -208,30 +195,17 @@ public class DomModel
                                 return axis;
                             }
                         }
-                        else
-                        {
-                            return Collections.emptyList();
-                        }
                     }
-                    else
-                    {
-                        return Collections.emptyList();
-                    }
-                }
-                else
-                {
-                    return Collections.emptyList();
                 }
             }
         }
-        else
-        {
-            return Collections.emptyList();
-        }
+        return Collections.emptyList();
     }
 
+    @Override
     public Iterable<QName> getAttributeNames(Node node, boolean orderCanonical)
     {
+        PreCondition.assertNotNull(node, "node");
         if (hasAttributes(node))
         {
             final List<QName> names = new LinkedList<QName>();
@@ -249,102 +223,80 @@ public class DomModel
         }
         if (node instanceof Element)
             return Collections.emptyList();
-        else
-            return null;
+        return null;
     }
 
+    @Override
     public String getAttributeStringValue(Node parent, String namespaceURI, String localName)
     {
-        return getStringValue(getAttribute(parent, namespaceURI, localName));
+        PreCondition.assertNotNull(parent, "node");
+        Node att = getAttribute(parent, namespaceURI, localName);
+        if (att != null)
+            return getStringValue(getAttribute(parent, namespaceURI, localName));
+        return null;
     }
 
+    @Override
     public URI getBaseURI(final Node node)
     {
+        PreCondition.assertNotNull(node, "node");
         // TODO: implement; currently Feature.BASE_URI marked unsupported.
         return null;//DomSupport.getBaseURI(node);
     }
     
+    @Override
     public Iterable<Node> getChildAxis(Node node)
     {
-        if (null != node)
+        PreCondition.assertNotNull(node, "node");
+        switch (node.getNodeType())
         {
-            switch (node.getNodeType())
+            case Node.ELEMENT_NODE:
+            case Node.DOCUMENT_FRAGMENT_NODE:
+            case Node.DOCUMENT_NODE:
             {
-                case Node.ELEMENT_NODE:
-                case Node.DOCUMENT_FRAGMENT_NODE:
-                case Node.DOCUMENT_NODE:
-                {
-                    return new IterableChildAxis<Node>(node, this);
-                }
-                default:
-                {
-                    return Collections.emptyList();
-                }
+                return new IterableChildAxis<Node>(node, this);
             }
-        }
-        else
-        {
-            return Collections.emptyList();
-        }
-    }
-
-    public Iterable<Node> getChildElements(Node origin)
-    {
-        if (null != origin)
-        {
-            if (null != getFirstChild(origin))
-            {
-                return new IterableChildAxisElements<Node>(origin, this);
-            }
-            else
+            default:
             {
                 return Collections.emptyList();
             }
         }
-        else
-        {
-            return Collections.emptyList();
-        }
     }
 
+    @Override
+    public Iterable<Node> getChildElements(Node origin)
+    {
+        PreCondition.assertNotNull(origin, "node");
+        if (getFirstChild(origin) != null)
+            return new IterableChildAxisElements<Node>(origin, this);
+        return Collections.emptyList();
+    }
+
+    @Override
     public Iterable<Node> getChildElementsByName(Node origin, String namespaceURI, String localName)
     {
-        if (origin != null)
-        {
-            return new IterableChildAxisElementsByName<Node>(origin, namespaceURI, localName, this);
-        }
-        else
-        {
-            return Collections.emptyList();
-        }
+        PreCondition.assertNotNull(origin, "node");
+        return new IterableChildAxisElementsByName<Node>(origin, namespaceURI, localName, this);
     }
 
+    @Override
     public Iterable<Node> getDescendantAxis(Node node)
     {
-        if (null != node)
-        {
-            return new IterableDescendantAxis<Node>(node, this);
-        }
-        else
-        {
-            return Collections.emptyList();
-        }
+        PreCondition.assertNotNull(node, "node");
+        return new IterableDescendantAxis<Node>(node, this);
     }
 
+    @Override
     public Iterable<Node> getDescendantOrSelfAxis(Node node)
     {
-        if (null != node)
-        {
-            return new IterableDescendantOrSelfAxis<Node>(node, this);
-        }
-        else
-        {
-            return Collections.emptyList();
-        }
+        PreCondition.assertNotNull(node, "node");
+        return new IterableDescendantOrSelfAxis<Node>(node, this);
     }
 
+    @Override
     public URI getDocumentURI(Node node)
     {
+        PreCondition.assertNotNull(node, "node");
         final Document owner = DomSupport.getOwner(node);
         if ( (node == owner) || node.isSameNode(owner) )
         {
@@ -383,92 +335,73 @@ public class DomModel
         return null;
     }
 
+    @Override
     public Node getFirstChild(Node origin)
     {
-        if (origin != null)
+        PreCondition.assertNotNull(origin, "node");
+        if (isParentNode(origin.getNodeType()))
         {
-            if (isParentNode(origin.getNodeType()))
+            Node candidate = origin.getFirstChild();
+            while (null != candidate)
             {
-                Node candidate = origin.getFirstChild();
-                while (null != candidate)
+                if (null != DomSupport.getNodeKind(candidate))
                 {
-                    if (null != DomSupport.getNodeKind(candidate))
-                    {
-                        return candidate;
-                    }
-                    else
-                    {
-                        candidate = candidate.getNextSibling();
-                    }
+                    return candidate;
+                }
+                else
+                {
+                    candidate = candidate.getNextSibling();
                 }
             }
         }
         return null;
     }
 
+    @Override
     public Node getFirstChildElement(Node origin)
     {
-        if (origin != null)
+        PreCondition.assertNotNull(origin, "node");
+        Node child = getFirstChild(origin);
+        while (child != null)
         {
-            Node child = getFirstChild(origin);
-            while (child != null)
-            {
-                if (Node.ELEMENT_NODE == child.getNodeType())
-                    return child;
-                child = child.getNextSibling();
-            }
-            return null;
+            if (Node.ELEMENT_NODE == child.getNodeType())
+                return child;
+            child = child.getNextSibling();
         }
         return null;
     }
 
+    @Override
     public Node getFirstChildElementByName(Node origin, String namespaceURI, String localName)
     {
+        PreCondition.assertNotNull(origin, "node");
         final short nodeType = origin.getNodeType();
 
         if (nodeType == Node.ELEMENT_NODE || nodeType == Node.DOCUMENT_NODE)
-        {
             return NamedSiblingIterator.findNextMatch(origin.getFirstChild(), namespaceURI, localName);
-        }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
+    @Override
     public Iterable<Node> getFollowingAxis(Node node)
     {
-        if (null != node)
-        {
-            return new IterableFollowingAxis<Node>(node, this);
-        }
-        else
-        {
-            return Collections.emptyList();
-        }
+        PreCondition.assertNotNull(node, "node");
+        return new IterableFollowingAxis<Node>(node, this);
     }
 
+    @Override
     public Iterable<Node> getFollowingSiblingAxis(Node node)
     {
-        if (null != node)
-        {
-            if (null != node.getNextSibling())
-            {
-                return new IterableFollowingSiblingAxis<Node>(node, this);
-            }
-            else
-            {
-                return Collections.emptyList();
-            }
-        }
-        else
-        {
-            return Collections.emptyList();
-        }
+        PreCondition.assertNotNull(node, "node");
+        if (node.getNextSibling() != null)
+            return new IterableFollowingSiblingAxis<Node>(node, this);
+        return Collections.emptyList();
     }
 
+    @Override
     public Node getLastChild(Node origin)
     {
+        PreCondition.assertNotNull(origin, "node");
         switch (getNodeKind(origin))
         {
             case ATTRIBUTE:
@@ -483,23 +416,23 @@ public class DomModel
         }
     }
 
+    @Override
     public String getLocalName(Node node)
     {
+        PreCondition.assertNotNull(node, "node");
         return DomSupport.getLocalNameAsString(node);
     }
 
+    @Override
     public Iterable<Node> getNamespaceAxis(Node node, boolean inherit)
     {
+        PreCondition.assertNotNull(node, "node");
         if (inherit)
-        {
             return getNamespacesInScope(node);
-        }
-        else
-        {
-            return getNamespaces(node);
-        }
+        return getNamespaces(node);
     }
 
+    @Override
     public Iterable<NamespaceBinding> getNamespaceBindings(Node origin)
     {
         PreCondition.assertArgumentNotNull(origin, "origin");
@@ -536,8 +469,10 @@ public class DomModel
         return Collections.emptyList();
     }
     
+    @Override
     public String getNamespaceForPrefix(final Node node, final String prefix)
     {
+        PreCondition.assertNotNull(node, "node");
         for (NamespaceBinding binding : getNamespaceBindings(node))
         {
             if (binding.getPrefix().equals(prefix))
@@ -546,6 +481,7 @@ public class DomModel
         return null;
     }
 
+    @Override
     public Iterable<String> getNamespaceNames(Node node, boolean orderCanonical)
     {
         PreCondition.assertArgumentNotNull(node, "node");
@@ -585,13 +521,17 @@ public class DomModel
         return Collections.emptyList();
     }
 
+    @Override
     public String getNamespaceURI(Node node)
     {
+        PreCondition.assertNotNull(node, "node");
         return getNamespaceURIAsString(node);
     }
 
+    @Override
     public Node getNextSibling(Node origin)
     {
+        PreCondition.assertNotNull(origin, "node");
         Node candidate = origin.getNextSibling();
 
         while (candidate != null)
@@ -603,76 +543,62 @@ public class DomModel
         return null;
     }
 
+    @Override
     public Node getNextSiblingElement(Node node)
     {
+        PreCondition.assertNotNull(node, "node");
         return getNextSiblingElementByName(node, null, null);
     }
 
+    @Override
     public Node getNextSiblingElementByName(Node node, String namespaceURI, String localName)
     {
+        PreCondition.assertNotNull(node, "node");
         final Node current = getNextSibling(node);
-        if (null != current)
+        if (current != null)
         {
             if (matches(current, NodeKind.ELEMENT, namespaceURI, localName))
-            {
                 return current;
-            }
-            else
-            {
-                return getNextSiblingElementByName(current, namespaceURI, localName);
-            }
+            return getNextSiblingElementByName(current, namespaceURI, localName);
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
+    @Override
     public NodeKind getNodeKind(Node node)
     {
         PreCondition.assertArgumentNotNull(node, "node");
         return DomSupport.getNodeKind(node);
     }
 
+    @Override
     public Node getParent(Node origin)
     {
+        PreCondition.assertNotNull(origin, "node");
         // Use DOM Support here because attribute nodes require special handling.
         return DomSupport.getParentNode(origin);
     }
 
+    @Override
     public Iterable<Node> getPrecedingAxis(Node node)
     {
-        if (null != node)
-        {
-            return new IterablePrecedingAxis<Node>(node, this);
-        }
-        else
-        {
-            return Collections.emptyList();
-        }
+        PreCondition.assertNotNull(node, "node");
+        return new IterablePrecedingAxis<Node>(node, this);
     }
 
+    @Override
     public Iterable<Node> getPrecedingSiblingAxis(Node node)
     {
-        if (null != node)
-        {
-            if (null != node.getPreviousSibling())
-            {
-                return new IterablePrecedingSiblingAxis<Node>(node, this);
-            }
-            else
-            {
-                return Collections.emptyList();
-            }
-        }
-        else
-        {
-            return Collections.emptyList();
-        }
+        PreCondition.assertNotNull(node, "node");
+        if (null != node.getPreviousSibling())
+            return new IterablePrecedingSiblingAxis<Node>(node, this);
+        return Collections.emptyList();
     }
 
+    @Override
     public String getPrefix(Node node)
     {
+        PreCondition.assertNotNull(node, "node");
         switch (node.getNodeType())
         {
             case Node.ELEMENT_NODE:
@@ -701,13 +627,17 @@ public class DomModel
         }
     }
 
+    @Override
     public Node getPreviousSibling(Node origin)
     {
+        PreCondition.assertNotNull(origin, "node");
         return origin.getPreviousSibling();
     }
 
+    @Override
     public Node getRoot(Node node)
     {
+        PreCondition.assertNotNull(node, "node");
         Node current = node;
         Node parentNode = DomSupport.getParentNode(current);
         while (null != parentNode)
@@ -718,20 +648,17 @@ public class DomModel
         return current;
     }
 
+    @Override
     public String getStringValue(Node node)
     {
-        if (null != node)
-        {
-            return DomSupport.getStringValue(node, DomSupport.DEFAULT_ATOM_SEPARATOR, DomSupport.DEFAULT_EMULATION);
-        }
-        else
-        {
-            return null;
-        }
+        PreCondition.assertNotNull(node, "node");
+        return DomSupport.getStringValue(node, DomSupport.DEFAULT_ATOM_SEPARATOR, DomSupport.DEFAULT_EMULATION);
     }
 
+    @Override
     public boolean hasAttributes(Node node)
     {
+        PreCondition.assertNotNull(node, "node");
         if (node.hasAttributes())
         {
             final NamedNodeMap namespacesAndAttributes = node.getAttributes();
@@ -745,8 +672,10 @@ public class DomModel
         return false;
     }
 
+    @Override
     public boolean hasChildren(Node node)
     {
+        PreCondition.assertNotNull(node, "node");
         switch (getNodeKind(node))
         {
             case ATTRIBUTE:
@@ -761,58 +690,64 @@ public class DomModel
         }
     }
 
+    @Override
     public boolean hasNamespaces(Node origin)
     {
         PreCondition.assertArgumentNotNull(origin, "origin");
         if (origin.hasAttributes())
         {
             final NamedNodeMap mixed = origin.getAttributes();
-            if (null != mixed)
-            {
+            if (mixed != null)
                 return namespaceCount(mixed) > 0;
-            }
         }
         return false;
     }
 
+    @Override
     public boolean hasNextSibling(Node node)
     {
-        return null != getNextSibling(node);
+        PreCondition.assertNotNull(node, "node");
+        return getNextSibling(node) != null;
     }
 
+    @Override
     public boolean hasParent(Node node)
     {
-        return null != getParent(node);
+        PreCondition.assertNotNull(node, "node");
+        return getParent(node) != null;
     }
 
+    @Override
     public boolean hasPreviousSibling(Node node)
     {
-        return null != getPreviousSibling(node);
+        PreCondition.assertNotNull(node, "node");
+        return getPreviousSibling(node) != null;
     }
 
+    @Override
     public boolean isAttribute(Node node)
     {
-        if (null != node)
+        PreCondition.assertNotNull(node, "node");
+        final short nodeType = node.getNodeType();
+        if (nodeType == Node.ATTRIBUTE_NODE)
         {
-            final short nodeType = node.getNodeType();
-            if (nodeType == Node.ATTRIBUTE_NODE)
-            {
-                final String namespaceURI = node.getNamespaceURI();
-                return XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI) ? false : true;
-            }
+            final String namespaceURI = node.getNamespaceURI();
+            return XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI) ? false : true;
         }
         return false;
     }
 
+    @Override
     public boolean isElement(Node node)
     {
-        if (node != null)
-            return node.getNodeType() == Node.ELEMENT_NODE;
-        return false;
+        PreCondition.assertNotNull(node, "node");
+        return node.getNodeType() == Node.ELEMENT_NODE;
     }
     
+    @Override
     public boolean isId(Node node)
     {
+        PreCondition.assertNotNull(node, "node");
         if (isAttribute(node))
         {
             Attr attr = (Attr)node;
@@ -833,8 +768,10 @@ public class DomModel
         return false;
     }
     
+    @Override
     public boolean isIdRefs(Node node)
     {
+        PreCondition.assertNotNull(node, "node");
         if (isAttribute(node))
         {
             Attr attr = (Attr)node;
@@ -852,48 +789,47 @@ public class DomModel
         return false;
     }
 
+    @Override
     public boolean isNamespace(Node node)
     {
-        if (null != node)
+        PreCondition.assertNotNull(node, "node");
+        final short nodeType = node.getNodeType();
+        if (nodeType == Node.ATTRIBUTE_NODE)
         {
-            final short nodeType = node.getNodeType();
-            if (nodeType == Node.ATTRIBUTE_NODE)
-            {
-                final String namespaceURI = node.getNamespaceURI();
-                return XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI) ? true : false;
-            }
+            final String namespaceURI = node.getNamespaceURI();
+            return XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI) ? true : false;
         }
         return false;
     }
 
+    @Override
     public DomNID getNodeId(Node node)
     {
+        PreCondition.assertNotNull(node, "node");
         return new DomNID(node);
     }
 
+    @Override
     public boolean isText(Node node)
     {
-        if (node != null)
-        {
-            final short nodeType = node.getNodeType();
-            return nodeType == Node.TEXT_NODE || nodeType == Node.CDATA_SECTION_NODE;
-        }
-        return false;
+        PreCondition.assertNotNull(node, "node");
+        final short nodeType = node.getNodeType();
+        return nodeType == Node.TEXT_NODE || nodeType == Node.CDATA_SECTION_NODE;
     }
 
+    @Override
     public boolean matches(Node node, NodeKind nodeKind, String namespaceURI, String localName)
     {
         PreCondition.assertArgumentNotNull(node, "node");
-        if (null != nodeKind)
+        if (nodeKind != null)
         {
             if (DomSupport.getNodeKind(node) != nodeKind)
-            {
                 return false;
-            }
         }
         return matches(node, namespaceURI, localName);
     }
 
+    @Override
     public boolean matches(Node node, String namespaceURI, String localName)
     {
         PreCondition.assertArgumentNotNull(node, "node");
@@ -902,24 +838,22 @@ public class DomModel
             final String namespace = getNamespaceURI(node);
             // We'd like to compare using ==, but there is no guarantee that we have a symbol!
             if (!namespaceURI.equals(namespace))
-            {
                 return false;
-            }
         }
         if (localName != null)
         {
             final String lName = getLocalName(node);
             if (!localName.equals(lName))
-            {
                 return false;
-            }
         }
         return true;
     }
 
+    @Override
     public void stream(Node node, ContentHandler handler)
         throws GenXDMException
     {
+        PreCondition.assertNotNull(node, "node");
         switch (getNodeKind(node))
         {
             case ELEMENT:
@@ -1036,8 +970,10 @@ public class DomModel
         }
     }
     
+    @Override
     public Node getElementById(final Node context, final String id)
     {
+        PreCondition.assertNotNull(context, "node");
         Document doc = DomSupport.getOwner(context);
         return doc.getElementById(id);
     }
@@ -1167,6 +1103,7 @@ public class DomModel
         }
     }
 
+    // TODO: why suppress warnings? if it's unused, why not get rid of it?
     @SuppressWarnings("unused")
     private final Node getNamespace(final Node node, final String prefix)
     {
