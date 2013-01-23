@@ -16,6 +16,7 @@
 package org.genxdm.bridgekit.tree;
 
 import org.genxdm.Model;
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.nodes.TraversingInformer;
 
 /**
@@ -309,6 +310,8 @@ public final class Ordering
 
     public static <N> boolean isSameNode(final N one, final N two, final Model<N> navigator)
     {
+        PreCondition.assertNotNull(one, "first");
+        PreCondition.assertNotNull(two, "second");
         if (one == two)
             return true;
         if (navigator != null)
@@ -325,6 +328,8 @@ public final class Ordering
 
     public static boolean isSameNode(TraversingInformer one, TraversingInformer two)
     {
+        PreCondition.assertNotNull(one, "first");
+        PreCondition.assertNotNull(two, "second");
         if (one == two)
             return true;
         Object first = one.getNodeId();
