@@ -62,39 +62,40 @@ public class AxiomModel
     implements Model<Object>
 {
 
+    @Override
     public int compare(Object one, Object two)
     {
         return Ordering.compareNodes(one, two, this);
     }
 
+    @Override
     public Iterable<Object> getAncestorAxis(Object node)
     {
-        PreCondition.assertNotNull(node);
+        PreCondition.assertNotNull(node, "node");
         return new IterableAncestorAxis<Object>(node, this);
     }
 
+    @Override
     public Iterable<Object> getAncestorOrSelfAxis(Object node)
     {
-        PreCondition.assertNotNull(node);
+        PreCondition.assertNotNull(node, "node");
         return new IterableAncestorOrSelfAxis<Object>(node, this);
     }
 
+    @Override
     public OMAttribute getAttribute(final Object parent, final String namespaceURI, final String localName)
     {
+        PreCondition.assertNotNull(parent, "node");
         final OMElement element = AxiomSupport.dynamicDowncastElement(parent);
-        if (null != element)
-        {
+        if (element != null)
             return element.getAttribute(new QName(namespaceURI.toString(), localName.toString()));
-        }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
+    @Override
     public Iterable<Object> getAttributeAxis(final Object node, final boolean inherit)
     {
-        PreCondition.assertNotNull(node);
+        PreCondition.assertNotNull(node, "node");
         final OMElement element = AxiomSupport.dynamicDowncastElement(node);
         if (element != null)
         {
@@ -164,8 +165,10 @@ public class AxiomModel
         return Collections.emptyList();
     }
 
+    @Override
     public Iterable<QName> getAttributeNames(final Object node, final boolean orderCanonical)
     {
+        PreCondition.assertNotNull(node, "node");
         final OMElement element = AxiomSupport.dynamicDowncastElement(node);
         if (element != null)
         {
@@ -185,71 +188,74 @@ public class AxiomModel
         return null;
     }
 
+    @Override
     public String getAttributeStringValue(Object parent, String namespaceURI, String localName)
     {
+        PreCondition.assertNotNull(parent, "node");
         OMAttribute attribute = getAttribute(parent, namespaceURI, localName);
         if (attribute != null)
             return attribute.getAttributeValue();
         return null;
     }
     
+    @Override
     public URI getBaseURI(final Object node)
     {
+        PreCondition.assertNotNull(node, "node");
         // TODO: resolve this problem.
         // axiom doesn't support XML:Base, it appears.
         return null;
     }
 
+    @Override
     public Iterable<Object> getChildAxis(Object node)
     {
-        if (node != null)
-            return new IterableChildAxis<Object>(node, this);
-        return null;
+        PreCondition.assertNotNull(node, "node");
+        return new IterableChildAxis<Object>(node, this);
     }
 
+    @Override
     public Iterable<Object> getChildElements(Object node)
     {
-        if (node != null)
-            return new IterableChildAxisElements<Object>(node, this);
-        return null;
+        PreCondition.assertNotNull(node, "node");
+        return new IterableChildAxisElements<Object>(node, this);
     }
 
+    @Override
     public Iterable<Object> getChildElementsByName(final Object node, final String namespaceURI, final String localName)
     {
-        if (null != node)
-        {
-            return new IterableChildAxisElementsByName<Object>(node, namespaceURI, localName, this);
-        }
-        else
-        {
-            return Collections.emptyList();
-        }
+        PreCondition.assertNotNull(node, "node");
+        return new IterableChildAxisElementsByName<Object>(node, namespaceURI, localName, this);
     }
 
+    @Override
     public Iterable<Object> getDescendantAxis(Object node)
     {
-        if (node != null)
-            return new IterableDescendantAxis<Object>(node, this);
-        return null;
+        PreCondition.assertNotNull(node, "node");
+        return new IterableDescendantAxis<Object>(node, this);
     }
 
+    @Override
     public Iterable<Object> getDescendantOrSelfAxis(Object node)
     {
-        if (node != null)
-            return new IterableDescendantOrSelfAxis<Object>(node, this);
-        return null;
+        PreCondition.assertNotNull(node, "node");
+        return new IterableDescendantOrSelfAxis<Object>(node, this);
     }
 
+    @Override
     public URI getDocumentURI(final Object node)
     {
+        PreCondition.assertNotNull(node, "node");
         OMDocument doc = AxiomSupport.dynamicDowncastDocument(node);
         if (doc != null)
             return AxiomProcessingContext.docURIs.get(doc);
         return null;
     }
     
+    @Override
     public OMElement getElementById(final Object context, final String id)
     {
+        PreCondition.assertNotNull(context, "node");
         // note: this depends upon the map having been initialized.
         // TODO: check the size of the map? if it's empty, we might want
         // to try to look through the document for ids.  barf-puke, but eh.
@@ -257,41 +263,38 @@ public class AxiomModel
         return idMap.get(id);
     }
 
+    @Override
     public OMNode getFirstChild(final Object origin)
     {
+        PreCondition.assertNotNull(origin, "node");
         final OMContainer container = AxiomSupport.dynamicDowncastContainer(origin);
-        if (null != container)
-        {
+        if (container != null)
             return container.getFirstOMChild();
-        }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
+    @Override
     public OMElement getFirstChildElement(final Object origin)
     {
+        PreCondition.assertNotNull(origin, "node");
         // it's probably an element container
         final OMElement element = AxiomSupport.dynamicDowncastElement(origin);
         if (element != null)
-        {
             return element.getFirstElement();
-        }
         else
         {
             // but it might be a document (nothing but documents and elements contain elements)
             final OMDocument document = AxiomSupport.dynamicDowncastDocument(origin);
             if (document != null)
-            {
                 return document.getOMDocumentElement();
-            }
         }
         return null;
     }
 
+    @Override
     public OMElement getFirstChildElementByName(Object node, String namespaceURI, String localName)
     {
+        PreCondition.assertNotNull(node, "node");
         final OMContainer container = AxiomSupport.dynamicDowncastContainer(node);
         if (container != null)
         {
@@ -301,24 +304,26 @@ public class AxiomModel
         return null;
     }
 
-    public Iterable<Object> getFollowingAxis(Object node)
+    @Override
+   public Iterable<Object> getFollowingAxis(Object node)
     {
-        if (node != null)
-            return new IterableFollowingAxis<Object>(node, this);
-        return null;
+        PreCondition.assertNotNull(node, "node");
+        return new IterableFollowingAxis<Object>(node, this);
     }
 
+    @Override
     public Iterable<Object> getFollowingSiblingAxis(Object node)
     {
-        if (node != null)
-            return new IterableFollowingSiblingAxis<Object>(node, this);
-        return null;
+        PreCondition.assertNotNull(node, "node");
+        return new IterableFollowingSiblingAxis<Object>(node, this);
     }
 
+    @Override
     public OMNode getLastChild(final Object origin)
     {
+        PreCondition.assertNotNull(origin, "node");
         final OMContainer container = AxiomSupport.dynamicDowncastContainer(origin);
-        if (null != container)
+        if (container != null)
         {
             Object lastChild = null;
             final Iterator<?> children = container.getChildren();
@@ -328,14 +333,14 @@ public class AxiomModel
             }
             return ((OMNode)lastChild);
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
+    @Override
     public String getLocalName(Object node)
     {
+        PreCondition.assertNotNull(node, "node");
+        // TODO: this is a really *weird* technique, dammit.
         {
             final OMElement element = AxiomSupport.dynamicDowncastElement(node);
             if (null != element)
@@ -379,9 +384,10 @@ public class AxiomModel
         }
     }
 
+    @Override
     public Iterable<Object> getNamespaceAxis(final Object node, final boolean inherit)
     {
-        PreCondition.assertNotNull(node);
+        PreCondition.assertNotNull(node, "node");
         final OMElement origin = AxiomSupport.dynamicDowncastElement(node);
         if (origin != null)
         {
@@ -397,8 +403,10 @@ public class AxiomModel
         return Collections.emptyList();
     }
 
+    @Override
     public Iterable<NamespaceBinding> getNamespaceBindings(final Object node)
     {
+        PreCondition.assertNotNull(node, "node");
         // TODO: review this for correctness?
         final OMElement element = AxiomSupport.dynamicDowncastElement(node);
         if (null != element)
@@ -474,8 +482,10 @@ public class AxiomModel
         }
     }
 
+    @Override
     public String getNamespaceForPrefix(final Object node, final String prefix)
     {
+        PreCondition.assertNotNull(node, "node");
         for (NamespaceBinding binding : getNamespaceBindings(node))
         {
             if (binding.getPrefix().equals(prefix))
@@ -484,10 +494,12 @@ public class AxiomModel
         return null;
     }
 
+    @Override
     public Iterable<String> getNamespaceNames(final Object node, final boolean orderCanonical)
     {
+        PreCondition.assertNotNull(node, "node");
         final OMElement element = AxiomSupport.dynamicDowncastElement(node);
-        if (null != element)
+        if (element != null)
         {
             final ArrayList<String> names = new ArrayList<String>();
             for (Object ns : getNamespaces(element))
@@ -590,8 +602,11 @@ public class AxiomModel
         return namespaces.values();
     }
 
+    @Override
     public String getNamespaceURI(Object node)
     {
+        PreCondition.assertNotNull(node, "node");
+        // TODO: this is the same strange method used in getLocalName. why?
         {
             final OMElement element = AxiomSupport.dynamicDowncastElement(node);
             if (null != element)
@@ -644,28 +659,29 @@ public class AxiomModel
         return null;
     }
 
+    @Override
     public OMNode getNextSibling(final Object origin)
     {
+        PreCondition.assertNotNull(origin, "node");
         final OMNode node = AxiomSupport.dynamicDowncastNode(origin);
-        if (null != node)
-        {
+        if (node != null)
             return node.getNextOMSibling();
-        }
-        else
-        {
-            // It could be document, attribute or namespace which aren't OMNode
-            // and also don't have the concept of siblings.
-            return null;
-        }
+        // It could be document, attribute or namespace which aren't OMNode
+        // and also don't have the concept of siblings.
+        return null;
     }
 
+    @Override
     public OMElement getNextSiblingElement(Object node)
     {
+        PreCondition.assertNotNull(node, "node");
         return getNextSiblingElementByName(node, null, null);
     }
 
+    @Override
     public OMElement getNextSiblingElementByName(Object node, String namespaceURI, String localName)
     {
+        PreCondition.assertNotNull(node, "node");
         OMNode nodely = AxiomSupport.dynamicDowncastNode(node);
         if (nodely != null)
         {
@@ -683,32 +699,39 @@ public class AxiomModel
         return null;
     }
 
+    @Override
     public NodeKind getNodeKind(final Object origin)
     {
+        PreCondition.assertNotNull(origin, "node");
         return AxiomSupport.getNodeKind(origin);
     }
 
+    @Override
     public OMContainer getParent(final Object origin)
     {
+        PreCondition.assertNotNull(origin, "node");
         return AxiomSupport.getParent(origin);
     }
 
+    @Override
     public Iterable<Object> getPrecedingAxis(Object node)
     {
-        if (node != null)
-            return new IterablePrecedingAxis<Object>(node, this);
-        return null;
+        PreCondition.assertNotNull(node, "node");
+        return new IterablePrecedingAxis<Object>(node, this);
     }
 
+    @Override
     public Iterable<Object> getPrecedingSiblingAxis(Object node)
     {
-        if (node != null)
-            return new IterablePrecedingSiblingAxis<Object>(node, this);
-        return null;
+        PreCondition.assertNotNull(node, "node");
+        return new IterablePrecedingSiblingAxis<Object>(node, this);
     }
 
+    @Override
     public String getPrefix(final Object node)
     {
+        PreCondition.assertNotNull(node, "node");
+        // TODO: same weirdnes as in localname and namespace accessors. why, why, why??
         {
             final OMElement element = AxiomSupport.dynamicDowncastElement(node);
             if (null != element)
@@ -758,13 +781,13 @@ public class AxiomModel
         }
     }
 
+    @Override
     public OMNode getPreviousSibling(final Object origin)
     {
+        PreCondition.assertNotNull(origin, "node");
         final OMDocument document = AxiomSupport.dynamicDowncastDocument(origin);
-        if (null != document)
-        {
+        if (document != null)
             return null;
-        }
         else
         {
             final OMNode node = AxiomSupport.dynamicDowncastNode(origin);
@@ -781,30 +804,27 @@ public class AxiomModel
                     return previous;
                 }
             }
-            else
-            {
-                // It could be attribute or namespace which aren't OMNode
-                // and also don't have the concept of siblings.
-                return null;
-            }
         }
+        // It could be attribute or namespace which aren't OMNode
+        // and also don't have the concept of siblings.
+        return null;
     }
 
+    @Override
     public Object getRoot(final Object origin)
     {
+        PreCondition.assertNotNull(origin, "node");
         final OMContainer x = AxiomSupport.getParent(origin);
         if (x == null)
-        {
             return origin;
-        }
         else
-        {
             return getRoot(x);
-        }
     }
 
+    @Override
     public String getStringValue(final Object node)
     {
+        PreCondition.assertNotNull(node, "node");
         {
             final OMContainer container = AxiomSupport.dynamicDowncastContainer(node);
             if (container != null)
@@ -918,36 +938,32 @@ public class AxiomModel
         throw new AssertionError("getStringValue(" + node + ")");
     }
 
+    @Override
     public boolean hasAttributes(final Object node)
     {
+        PreCondition.assertNotNull(node, "node");
         final OMElement element = AxiomSupport.dynamicDowncastElement(node);
-        if (null != element)
-        {
+        if (element != null)
             return element.getAllAttributes().hasNext();
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
+    @Override
     public boolean hasChildren(final Object node)
     {
+        PreCondition.assertNotNull(node, "node");
         final OMContainer container = AxiomSupport.dynamicDowncastContainer(node);
-        if (null != container)
-        {
+        if (container != null)
             return container.getChildren().hasNext();
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
+    @Override
     public boolean hasNamespaces(final Object node)
     {
+        PreCondition.assertNotNull(node, "node");
         final OMElement element = AxiomSupport.dynamicDowncastElement(node);
-        if (null != element)
+        if (element != null)
         {
             @SuppressWarnings("unchecked")
             final Iterator<OMNamespace> namespaces = element.getAllDeclaredNamespaces();
@@ -961,14 +977,13 @@ public class AxiomModel
             }
             return false;
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
+    @Override
     public boolean hasNextSibling(final Object node)
     {
+        PreCondition.assertNotNull(node, "node");
         {
             final OMElement element = AxiomSupport.dynamicDowncastElement(node);
             {
@@ -1035,8 +1050,10 @@ public class AxiomModel
         throw new AssertionError("hasNextSibling(" + node + ")");
     }
 
+    @Override
     public boolean hasParent(final Object node)
     {
+        PreCondition.assertNotNull(node, "node");
         {
             final OMElement element = AxiomSupport.dynamicDowncastElement(node);
             if (null != element)
@@ -1095,8 +1112,10 @@ public class AxiomModel
         throw new AssertionError("hasParent(" + node + ")");
     }
 
+    @Override
     public boolean hasPreviousSibling(final Object node)
     {
+        PreCondition.assertNotNull(node, "node");
         {
             final OMElement element = AxiomSupport.dynamicDowncastElement(node);
             {
@@ -1163,44 +1182,37 @@ public class AxiomModel
         throw new AssertionError("hasPreviousSibling(" + node + ")");
     }
 
+    @Override
     public boolean isAttribute(final Object node)
     {
-        if (null != AxiomSupport.dynamicDowncastAttribute(node))
-        {
+        PreCondition.assertNotNull(node, "node");
+        if (AxiomSupport.dynamicDowncastAttribute(node) != null)
             return true;
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
+    @Override
     public boolean isElement(final Object node)
     {
-        if (null != AxiomSupport.dynamicDowncastElement(node))
-        {
+        PreCondition.assertNotNull(node, "node");
+        if (AxiomSupport.dynamicDowncastElement(node) != null)
             return true;
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
+    @Override
     public boolean isNamespace(final Object node)
     {
-        if (null != AxiomSupport.dynamicDowncastNamespace(node))
-        {
+        PreCondition.assertNotNull(node, "node");
+        if (AxiomSupport.dynamicDowncastNamespace(node) != null)
             return true;
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
     
+    @Override
     public boolean isId(final Object node)
     {
+        PreCondition.assertNotNull(node, "node");
         if (isAttribute(node))
         {
             OMAttribute att = AxiomSupport.dynamicDowncastAttribute(node);
@@ -1221,8 +1233,10 @@ public class AxiomModel
         return false;
     }
     
+    @Override
     public boolean isIdRefs(final Object node)
     {
+        PreCondition.assertNotNull(node, "node");
         if (isAttribute(node))
         {
             OMAttribute att = AxiomSupport.dynamicDowncastAttribute(node);
@@ -1238,8 +1252,10 @@ public class AxiomModel
         return false;
     }
 
+    @Override
     public Object getNodeId(final Object node)
     {
+        PreCondition.assertNotNull(node, "node");
         if (node instanceof OMAttribute)
         {
             final OMAttribute attr = (OMAttribute)node;
@@ -1250,20 +1266,19 @@ public class AxiomModel
         return node;
     }
 
+    @Override
     public boolean isText(final Object node)
     {
-        if (null != AxiomSupport.dynamicDowncastText(node))
-        {
+        PreCondition.assertNotNull(node, "node");
+        if (AxiomSupport.dynamicDowncastText(node) != null)
             return true;
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
+    @Override
     public boolean matches(Object node, NodeKind nodeKind, String namespaceURI, String localName)
     {
+        PreCondition.assertNotNull(node, "node");
         if (nodeKind != null)
         {
             if (getNodeKind(node) != nodeKind)
@@ -1274,8 +1289,10 @@ public class AxiomModel
         return matches(node, namespaceURI, localName);
     }
 
+    @Override
     public boolean matches(final Object node, final String namespaceArg, final String localNameArg)
     {
+        PreCondition.assertNotNull(node, "node");
         if (namespaceArg != null)
         {
             final String namespace = getNamespaceURI(node);
@@ -1314,6 +1331,7 @@ public class AxiomModel
     public void stream(Object node, ContentHandler handler)
         throws GenXDMException
     {
+        PreCondition.assertNotNull(node, "node");
         switch (getNodeKind(node))
         {
             case ELEMENT:
