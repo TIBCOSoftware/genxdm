@@ -48,6 +48,7 @@ import org.genxdm.bridgekit.axes.IterablePrecedingSiblingAxis;
 import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.bridgekit.tree.Ordering;
 import org.genxdm.exceptions.GenXDMException;
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.names.NamespaceBinding;
 
@@ -55,238 +56,316 @@ public class XmlNodeModel
     implements Model<XmlNode>
 {
 
+    @Override
     public void stream(final XmlNode node, final ContentHandler handler)
         throws GenXDMException
     {
+        PreCondition.assertNotNull(node, "node");
         Walker.walk(node, handler);
     }
 
+    @Override
     public int compare(final XmlNode n1, final XmlNode n2)
     {
         return Ordering.compareNodes(n1, n2, this);
     }
 
+    @Override
     public Iterable<QName> getAttributeNames(XmlNode node, boolean orderCanonical)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getAttributeNames(orderCanonical);
     }
 
+    @Override
     public String getAttributeStringValue(XmlNode parent, String namespaceURI, String localName)
     {
+        PreCondition.assertNotNull(parent, "node");
         return parent.getAttributeStringValue(namespaceURI, localName);
    }
 
+    @Override
     public URI getBaseURI(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getBaseURI();
     }
 
+    @Override
     public URI getDocumentURI(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getDocumentURI();
     }
 
+    @Override
     public String getLocalName(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getLocalName();
     }
 
+    @Override
     public Iterable<NamespaceBinding> getNamespaceBindings(final XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getNamespaceBindings();
     }
     
+    @Override
     public String getNamespaceForPrefix(final XmlNode node, final String prefix)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getNamespaceForPrefix(prefix);
     }
 
+    @Override
     public Iterable<String> getNamespaceNames(final XmlNode node, final boolean orderCanonical)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getNamespaceNames(orderCanonical);
     }
 
+    @Override
     public String getNamespaceURI(final XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getNamespaceURI();
     }
     
+    @Override
     public XmlNode getNodeId(final XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getNodeId();
     }
 
+    @Override
     public NodeKind getNodeKind(final XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getNodeKind();
     }
 
+    @Override
     public String getPrefix(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getPrefix();
     }
 
+    @Override
     public String getStringValue(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getStringValue();
     }
 
+    @Override
     public boolean hasAttributes(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.hasAttributes();
     }
 
+    @Override
     public boolean hasChildren(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.hasChildren();
     }
 
+    @Override
     public boolean hasNamespaces(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.hasNamespaces();
     }
 
+    @Override
     public boolean hasNextSibling(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.hasNextSibling();
     }
 
+    @Override
     public boolean hasParent(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.hasParent();
     }
 
+    @Override
     public boolean hasPreviousSibling(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.hasPreviousSibling();
     }
 
+    @Override
     public boolean isAttribute(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.isAttribute();
     }
 
+    @Override
     public boolean isElement(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.isElement();
     }
 
+    @Override
     public boolean isId(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.isId();
     }
 
+    @Override
     public boolean isIdRefs(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.isIdRefs();
     }
 
+    @Override
     public boolean isNamespace(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.isNamespace();
     }
 
-    public boolean isSameNode(XmlNode one, XmlNode two)
-    {
-        return one.isSameNode(two);
-    }
-
+    @Override
     public boolean isText(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.isText();
     }
 
+    @Override
     public boolean matches(XmlNode node, NodeKind nodeKind, String namespaceURI, String localName)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.matches(nodeKind, namespaceURI, localName);
     }
 
+    @Override
     public boolean matches(XmlNode node, String namespaceURI, String localName)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.matches(namespaceURI, localName);
     }
 
+    @Override
     public XmlNode getAttribute(XmlNode node, String namespaceURI, String localName)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getAttribute(namespaceURI, localName);
     }
 
+    @Override
     public XmlNode getElementById(XmlNode context, String id)
     {
+        PreCondition.assertNotNull(context, "node");
         return context.getElementById(id);
     }
 
+    @Override
     public XmlNode getFirstChild(XmlNode origin)
     {
+        PreCondition.assertNotNull(origin, "node");
         return origin.getFirstChild();
     }
 
+    @Override
     public XmlNode getFirstChildElement(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getFirstChildElement();
     }
 
+    @Override
     public XmlNode getFirstChildElementByName(XmlNode node, String namespaceURI, String localName)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getFirstChildElementByName(namespaceURI, localName);
     }
 
+    @Override
     public XmlNode getLastChild(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getLastChild();
     }
 
+    @Override
     public XmlNode getNextSibling(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         if (node.isAttribute() || node.isNamespace())
             return null;
         return node.getNextSibling();
     }
 
+    @Override
     public XmlNode getNextSiblingElement(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getNextSiblingElement();
     }
 
+    @Override
     public XmlNode getNextSiblingElementByName(XmlNode node, String namespaceURI, String localName)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getNextSiblingElementByName(namespaceURI, localName);
     }
 
+    @Override
     public XmlNode getParent(XmlNode origin)
     {
+        PreCondition.assertNotNull(origin, "node");
         return origin.getParent();
     }
 
+    @Override
     public XmlNode getPreviousSibling(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         if (node.isAttribute() || node.isNamespace())
             return null;
         return node.getPreviousSibling();
     }
 
+    @Override
     public XmlNode getRoot(XmlNode node)
     {
+        PreCondition.assertNotNull(node, "node");
         return node.getRoot();
     }
 
+    @Override
     public Iterable<XmlNode> getAncestorAxis(final XmlNode node)
     {
-        if (node == null)
-            return new UnaryIterable<XmlNode>(null);
+        PreCondition.assertNotNull(node, "node");
         return new IterableAncestorAxis<XmlNode>(node, this);
     }
 
+    @Override
     public Iterable<XmlNode> getAncestorOrSelfAxis(final XmlNode node)
     {
-        if (node == null)
-            return new UnaryIterable<XmlNode>(null);
+        PreCondition.assertNotNull(node, "node");
         return new IterableAncestorOrSelfAxis<XmlNode>(node, this);
     }
 
+    @Override
     public Iterable<XmlNode> getAttributeAxis(XmlNode node, boolean inherit)
     {
-        if ( (node != null) && node.isElement())
+        PreCondition.assertNotNull(node, "node");
+        if (node.isElement())
         {
             if (!inherit)
                 return new NodeIterable((XmlElementNode)node, false);
@@ -338,58 +417,60 @@ public class XmlNodeModel
         return new UnaryIterable<XmlNode>(null);
     }
 
+    @Override
     public Iterable<XmlNode> getChildAxis(final XmlNode node)
     {
-        if (node == null)
-            return new UnaryIterable<XmlNode>(null);
+        PreCondition.assertNotNull(node, "node");
         return new IterableChildAxis<XmlNode>(node, this);
     }
 
+    @Override
     public Iterable<XmlNode> getChildElements(final XmlNode node)
     {
-        if (node == null)
-            return new UnaryIterable<XmlNode>(null);
+        PreCondition.assertNotNull(node, "node");
         return new IterableChildAxisElements<XmlNode>(node, this);
     }
 
+    @Override
     public Iterable<XmlNode> getChildElementsByName(final XmlNode node, final String namespaceURI, final String localName)
     {
-        if (node == null)
-            return new UnaryIterable<XmlNode>(null);
+        PreCondition.assertNotNull(node, "node");
         return new IterableChildAxisElementsByName<XmlNode>(node, namespaceURI, localName, this);
     }
 
+    @Override
     public Iterable<XmlNode> getDescendantAxis(final XmlNode node)
     {
-        if (node == null)
-            return new UnaryIterable<XmlNode>(null);
+        PreCondition.assertNotNull(node, "node");
         return new IterableDescendantAxis<XmlNode>(node, this);
     }
 
+    @Override
     public Iterable<XmlNode> getDescendantOrSelfAxis(final XmlNode node)
     {
-        if (node == null)
-            return new UnaryIterable<XmlNode>(null);
+        PreCondition.assertNotNull(node, "node");
         return new IterableDescendantOrSelfAxis<XmlNode>(node, this);
     }
 
+    @Override
     public Iterable<XmlNode> getFollowingAxis(final XmlNode node)
     {
-        if (node == null)
-            return new UnaryIterable<XmlNode>(null);
+        PreCondition.assertNotNull(node, "node");
         return new IterableFollowingAxis<XmlNode>(node, this);
     }
 
+    @Override
     public Iterable<XmlNode> getFollowingSiblingAxis(final XmlNode node)
     {
-        if (node == null)
-            return new UnaryIterable<XmlNode>(null);
+        PreCondition.assertNotNull(node, "node");
         return new IterableFollowingSiblingAxis<XmlNode>(node, this);
     }
 
+    @Override
     public Iterable<XmlNode> getNamespaceAxis(XmlNode node, boolean inherit)
     {
-        if ( (node != null) && node.isElement() )
+        PreCondition.assertNotNull(node, "node");
+        if ( node.isElement() )
         {
             if (!inherit)
                 return new NodeIterable((XmlElementNode)node, true);
@@ -446,17 +527,17 @@ public class XmlNodeModel
         return new UnaryIterable<XmlNode>(null);
     }
 
+    @Override
     public Iterable<XmlNode> getPrecedingAxis(final XmlNode node)
     {
-        if (node == null)
-            return new UnaryIterable<XmlNode>(null);
+        PreCondition.assertNotNull(node, "node");
         return new IterablePrecedingAxis<XmlNode>(node, this);
     }
 
+    @Override
     public Iterable<XmlNode> getPrecedingSiblingAxis(final XmlNode node)
     {
-        if (node == null)
-            return new UnaryIterable<XmlNode>(null);
+        PreCondition.assertNotNull(node, "node");
         return new IterablePrecedingSiblingAxis<XmlNode>(node, this);
     }
 
