@@ -54,87 +54,85 @@ class DomSAModel
         this.provider = schema.getComponentProvider();
     }
 
+    @Override
     public List<XmlAtom> getAttributeValue(final Node parent, final String namespaceURI, final String localName)
     {
+        PreCondition.assertNotNull(parent, "node");
         return getValue(getAttribute(parent, namespaceURI, localName));
     }
 
+    @Override
     public QName getAttributeTypeName(final Node parent, final String namespaceURI, final String localName)
     {
+        PreCondition.assertNotNull(parent, "node");
         return getTypeName(getAttribute(parent, namespaceURI, localName));
     }
     
+    @Override
     public final List<XmlAtom> getValue(final Node node)
     {
-        if (null != node)
+        PreCondition.assertNotNull(node, "node");
+        switch (getNodeKind(node))
         {
-            switch (getNodeKind(node))
+            case ELEMENT:
+            case ATTRIBUTE:
             {
-                case ELEMENT:
-                case ATTRIBUTE:
+                final QName typeName = getTypeName(node);
+                final Type type = provider.getTypeDefinition(typeName);
+                if (type instanceof SimpleType)
                 {
-                    final QName typeName = getTypeName(node);
-                    final Type type = provider.getTypeDefinition(typeName);
-                    if (type instanceof SimpleType)
-                    {
-                        final SimpleType simpleType = (SimpleType)type;
-                        final String stringValue = getStringValue(node);
-                        try
-                        {
-                            return simpleType.validate(stringValue, atomBridge);
-                        }
-                        catch (final DatatypeException e)
-                        {
-                            throw new GenXDMException(e);
-                        }
-                    }
+                    final SimpleType simpleType = (SimpleType)type;
                     final String stringValue = getStringValue(node);
-                    return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
+                    try
+                    {
+                        return simpleType.validate(stringValue, atomBridge);
+                    }
+                    catch (final DatatypeException e)
+                    {
+                        throw new GenXDMException(e);
+                    }
                 }
-                case TEXT:
-                case DOCUMENT:
-                {
-                    return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(getStringValue(node)));
-                }
-                case NAMESPACE:
-                case COMMENT:
-                case PROCESSING_INSTRUCTION:
-                {
-                    return atomBridge.wrapAtom(atomBridge.createString(getStringValue(node)));
-                }
-                default:
-                {
-                    throw new AssertionError(node.getNodeType());
-                }
+                final String stringValue = getStringValue(node);
+                return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(stringValue));
             }
-        }
-        else
-        {
-            return null;
+            case TEXT:
+            case DOCUMENT:
+            {
+                return atomBridge.wrapAtom(atomBridge.createUntypedAtomic(getStringValue(node)));
+            }
+            case NAMESPACE:
+            case COMMENT:
+            case PROCESSING_INSTRUCTION:
+            {
+                return atomBridge.wrapAtom(atomBridge.createString(getStringValue(node)));
+            }
+            default:
+            {
+                throw new AssertionError(node.getNodeType());
+            }
         }
     }
 
+    @Override
     public final QName getTypeName(final Node node)
     {
-        if (node != null)
+        PreCondition.assertNotNull(node, "node");
+        final QName annotation = getAnnotationType(node, schema); 
+        switch (getNodeKind(node))
         {
-            final QName annotation = getAnnotationType(node, schema); 
-            switch (getNodeKind(node))
-            {
-                case ATTRIBUTE:
-                    if (annotation == null)
-                        return xsUntypedAtomic;
-                    return annotation;
-                case ELEMENT:
-                    if (annotation == null)
-                        return xsUntyped;
-                    return annotation;
-                case TEXT:
+            case ATTRIBUTE:
+                if (annotation == null)
                     return xsUntypedAtomic;
-                // for document, namespace, comment, and pi, fall through
+                return annotation;
+            case ELEMENT:
+                if (annotation == null)
+                    return xsUntyped;
+                return annotation;
+            case TEXT:
+                return xsUntypedAtomic;
+            // for document, namespace, comment, and pi, fall through
 //                default : 
 //                    return null;
-            }
         }
         return null;
     }
@@ -142,6 +140,7 @@ class DomSAModel
     @Override
     public final void stream(final Node origin, final SequenceHandler<XmlAtom> handler, boolean bogus) throws GenXDMException
     {
+        PreCondition.assertNotNull(origin, "node");
         switch (getNodeKind(origin))
         {
             case ELEMENT:
@@ -277,51 +276,9 @@ class DomSAModel
         return null;
     }
 
-//    private String correctBaseURI(final Node node, final TypedModel<Node, XmlAtom> model)
-//    {
-//        final Node attribute = model.getAttribute(node, XMLConstants.XML_NS_URI, "base");
-//        if (null != attribute)
-//        {
-//            return attribute.getNodeValue();
-//        }
-//        final Node parent = model.getParent(node);
-//        if (null != parent)
-//        {
-//            return correctBaseURI(parent, model);
-//        }
-//        else
-//        {
-//            return model.getDocumentURI(node).toString();
-//        }
-//    }
-
-    @SuppressWarnings("unused")
-    private final Node getNamespace(final Node node, final String prefix)
-    {
-        PreCondition.assertArgumentNotNull(prefix, "prefix");
-
-        if (node.hasAttributes())
-        {
-            final NamedNodeMap attributes = node.getAttributes();
-            if (0 == prefix.length())
-            {
-                return attributes.getNamedItemNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns");
-            }
-            else
-            {
-                return attributes.getNamedItemNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, prefix);
-            }
-        }
-        else
-        {
-            return null;
-        }
-    }
 
     private final AtomBridge<XmlAtom> atomBridge;
-
     private final SchemaComponentCache schema;
-    
     private final ComponentProvider provider;
 
     private static final QName xsUntyped = NativeType.UNTYPED.toQName();
