@@ -80,17 +80,17 @@ public final class Converter
 
     public static <N> String toString(final NodeIterator<N> iter, final Model<N> model)
     {
-        return toString(iter.next(), model);
+        return iter != null ? toString(iter.next(), model) : "";
     }
 
     public static <N> String toString(final N node, final Model<N> model)
     {
-        return model.getStringValue(node);
+    	return node != null ? model.getStringValue(node) : "";
     }
 
     public static String toString(final Informer node)
     {
-        return node.getStringValue();
+    	return node != null ? node.getStringValue() : "";
     }
 
     public static String toString(double num)
