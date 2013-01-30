@@ -1659,7 +1659,6 @@ public final class XMLSchemaConverter
                 if(m_existingCache.getComplexType(name) != null || m_existingCache.getSimpleType(name) != null)
                 {
                     m_inCache.m_typesUnresolved.remove(name);
-                    return;
                 }
                 else if (sourceType.isComplex())
                 {
