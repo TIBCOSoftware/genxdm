@@ -17,6 +17,8 @@ package org.genxdm.bridgekit.xs;
 
 import java.util.Set;
 
+import javax.xml.namespace.QName;
+
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.Quantifier;
 import org.genxdm.xs.enums.DerivationMethod;
@@ -41,7 +43,12 @@ public final class SchemaSupport
             Type currentType = lhs;
             while (true)
             {
-                if (currentType == rhs)
+            	QName currentName = currentType.getName();
+            	if(currentName == null)
+            	{
+            		return false;
+            	}
+            	else if (currentName.equals(rhs.getName()))
                 {
                     return true;
                 }
