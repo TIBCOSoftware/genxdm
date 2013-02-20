@@ -185,6 +185,7 @@ public class AxiomFragmentBuilder
             documentNode = factory.createOMDocument();
             AxiomProcessingContext.docURIs.put(documentNode, documentURI);
             currentNode = documentNode;
+            docNode = documentNode;
         }
         else
         {
@@ -287,6 +288,11 @@ public class AxiomFragmentBuilder
     {
         return nodeId;
     }
+    
+    public OMDocument docNode()
+    {
+        return docNode;
+    }
 
     private void epilog()
     {
@@ -317,6 +323,7 @@ public class AxiomFragmentBuilder
     protected final OMFactory factory;
     protected ArrayList<Object> nodes = new ArrayList<Object>();
     protected Object currentNode;
+    protected OMDocument docNode;
     protected Object nodeId;
     protected OMDocument documentNode;
     protected boolean ignoreComments;
