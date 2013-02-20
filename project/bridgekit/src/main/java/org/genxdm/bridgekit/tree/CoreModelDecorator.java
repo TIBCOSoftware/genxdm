@@ -42,13 +42,15 @@ import org.genxdm.xs.types.Type;
  * 
  */
 public final class CoreModelDecorator<N, A> 
-    implements TypedModel<N, A>, TypeAnnotator
+    implements TypedModel<N, A>, TypeAnnotator<N>
 {
     public CoreModelDecorator(final Model<N> model, final AtomBridge<A> atomBridge, final SchemaComponentCache cache)
     {
         this.model = PreCondition.assertNotNull(model, "model");
         this.atomBridge = PreCondition.assertNotNull(atomBridge, "atomBridge");
         this.schemas = PreCondition.assertNotNull(cache, "schemas");
+        // may not want initialcapacity here
+        mapOfTypesMaps = new WeakHashMap<Object, Map<Object, QName>>(initialCapacity);
     }
 
     @Override
@@ -109,7 +111,7 @@ public final class CoreModelDecorator<N, A>
         PreCondition.assertNotNull(parent, "node");
         final N attribute = getAttribute(parent, namespaceURI, localName);
         if (attribute != null)
-            return typesMap.get(getNodeId(attribute));
+            return getTypeName(attribute);
         return NativeType.UNTYPED_ATOMIC.toQName();
     }
 
@@ -364,7 +366,10 @@ public final class CoreModelDecorator<N, A>
             {
                 if (defaultType == null) //{ System.out.println("Getting type name for attribute " + getNodeId(node)); 
                     defaultType = NativeType.UNTYPED_ATOMIC.toQName(); //}
-                QName type = typesMap.get(getNodeId(node));
+                Map<Object, QName> localTypesMap = mapOfTypesMaps.get(getNodeId(getRoot(node)));
+                QName type = null;
+                if (localTypesMap != null)
+                    type = localTypesMap.get(getNodeId(node));
                 if (type == null)
                     type = defaultType;
                 return type;
@@ -575,12 +580,18 @@ public final class CoreModelDecorator<N, A>
     }
     
     @Override 
-    public void annotate(Object nodeId, QName type)
+    public void annotate(N document, Object nodeId, QName type)
     {
 //System.out.println("Adding annotation for type " + type.toString());
 //System.out.println("Node id is " + nodeId.toString());
         PreCondition.assertNotNull(nodeId, "nodeId");
-        typesMap.put(nodeId, type);
+        Map<Object, QName> localTypesMap = mapOfTypesMaps.get(getNodeId(document));
+        if (localTypesMap == null)
+        {
+            localTypesMap = new WeakHashMap<Object, QName>(initialCapacity);
+            mapOfTypesMaps.put(getNodeId(document), localTypesMap);
+        }
+        localTypesMap.put(nodeId, type);
     }
     
     private List<? extends A> iterableToList(Iterable<? extends A> able)
@@ -592,10 +603,17 @@ public final class CoreModelDecorator<N, A>
         }
         return list;
     }
+    
+    public static void setInitialCapacity(int cap)
+    {
+        initialCapacity = cap;
+    }
+    
+    private static int initialCapacity = 16;
 
     private final Model<N> model;
     private final AtomBridge<A> atomBridge;
     private final SchemaComponentCache schemas;
-    private final Map<Object, QName> typesMap = new WeakHashMap<Object, QName>();
+    private final Map<Object, Map<Object, QName>> mapOfTypesMaps;
 
 }
