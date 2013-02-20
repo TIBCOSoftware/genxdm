@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.genxdm</groupId>
         <artifactId>project</artifactId>
-        <version>0.14.0</version>
+        <version>0.15.0</version>
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
