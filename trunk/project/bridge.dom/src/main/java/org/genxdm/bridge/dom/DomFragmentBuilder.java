@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -40,7 +41,14 @@ public class DomFragmentBuilder
 {
 
     public DomFragmentBuilder(DocumentBuilderFactory dbf) {
-        m_dbf = ( dbf == null ? DomProcessingContext.sm_dbf : dbf );
+        try
+        {
+			m_db = ( dbf == null ? DomProcessingContext.sm_db : dbf.newDocumentBuilder() );
+		}
+        catch (ParserConfigurationException pce)
+        {
+            throw new RuntimeException(pce);
+        }
     }
     
     public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
@@ -272,15 +280,7 @@ public class DomFragmentBuilder
 
     private Document newDocument(final URI documentURI)
     {
-        final Document document;
-        try
-        {
-            document = m_dbf.newDocumentBuilder().newDocument();
-        }
-        catch (ParserConfigurationException pce)
-        {
-            throw new RuntimeException(pce);
-        }
+        final Document document = m_db.newDocument();
 
         if (null != documentURI)
         {
@@ -355,7 +355,7 @@ public class DomFragmentBuilder
         }
     }
 
-    private final DocumentBuilderFactory m_dbf;
+    private final DocumentBuilder m_db;
     
     protected int m_depth;
     protected Node m_current;

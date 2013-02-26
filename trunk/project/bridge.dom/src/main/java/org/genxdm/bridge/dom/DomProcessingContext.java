@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -181,11 +182,13 @@ public class DomProcessingContext
     }
 
     static DocumentBuilderFactory sm_dbf;
+    static DocumentBuilder sm_db;
     static {
         sm_dbf = DocumentBuilderFactory.newInstance();
         sm_dbf.setNamespaceAware(true);
         try {
             sm_dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            sm_db = sm_dbf.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
             // TODO - this failure really should be logged.
         }
