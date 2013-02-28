@@ -28,12 +28,10 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.sax.SAXSource;
 
 import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMCloneOptions;
 import org.apache.axiom.om.OMContainer;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMInformationItem;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMOutputFormat;
@@ -540,18 +538,12 @@ public class FauxElement
 	    return null;
 	}
 	
-    @Override
-    public OMInformationItem clone(OMCloneOptions arg0)
-    {
-        // will not be implemented.
-        return null;
-    }
+    private final OMContainer root;
 
     @Override
-    public void removeChildren()
+    public void buildNext()
     {
-        // will not implement.
+        // will not implement
+        
     }
-    
-    private final OMContainer root;
 }
