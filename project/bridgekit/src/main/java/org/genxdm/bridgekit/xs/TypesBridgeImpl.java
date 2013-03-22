@@ -1182,7 +1182,9 @@ public final class TypesBridgeImpl implements TypesBridge
     private SequenceType elementUseType(final ElementUse elementUse, final ElementDefinition parentDecl)
     {
         final int minOccurs = elementUse.getMinOccurs();
-        final int maxOccurs = elementUse.getMaxOccurs();
+        // Use Integer.MAX_VALUE to represent unbounded; okay in this case because call to Quantifier.approximate
+        // only acts upon values of 0, 1, or > 1
+        final int maxOccurs = elementUse.isMaxOccursUnbounded() ? Integer.MAX_VALUE : elementUse.getMaxOccurs();
         final ElementDefinition elementDecl = elementUse.getTerm();
         if (null != parentDecl)
         {
@@ -1216,7 +1218,9 @@ public final class TypesBridgeImpl implements TypesBridge
     private SequenceType modelGroupUseType(final ModelGroupUse modelGroupUse, final ElementDefinition parentDecl)
     {
         final int minOccurs = modelGroupUse.getMinOccurs();
-        final int maxOccurs = modelGroupUse.getMaxOccurs();
+        // Use Integer.MAX_VALUE to represent unbounded; okay in this case because call to Quantifier.approximate
+        // only acts upon values of 0, 1, or > 1
+        final int maxOccurs = modelGroupUse.isMaxOccursUnbounded() ? Integer.MAX_VALUE : modelGroupUse.getMaxOccurs();
         final ModelGroup modelGroup = modelGroupUse.getTerm();
         final ModelGroup.SmCompositor compositor = modelGroup.getCompositor();
 
@@ -1289,7 +1293,9 @@ public final class TypesBridgeImpl implements TypesBridge
     private SequenceType wildcardUseType(final WildcardUse wildcardUse, final ElementDefinition parentDecl)
     {
         final int minOccurs = wildcardUse.getMinOccurs();
-        final int maxOccurs = wildcardUse.getMaxOccurs();
+        // Use Integer.MAX_VALUE to represent unbounded; okay in this case because call to Quantifier.approximate
+        // only acts upon values of 0, 1, or > 1
+        final int maxOccurs = wildcardUse.isMaxOccursUnbounded() ? Integer.MAX_VALUE : wildcardUse.getMaxOccurs();
         final SchemaWildcard term = wildcardUse.getTerm();
         // final ProcessContentsMode processContents = term.getProcessContents();
         final NamespaceConstraint namespaceConstraint = term.getNamespaceConstraint();

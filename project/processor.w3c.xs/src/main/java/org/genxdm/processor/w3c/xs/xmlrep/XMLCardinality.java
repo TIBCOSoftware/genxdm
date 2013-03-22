@@ -131,6 +131,10 @@ public final class XMLCardinality
      */
     public static  XMLCardinality create(final SchemaParticle particle)
     {
+    	if(particle.isMaxOccursUnbounded())
+    	{
+    		return create(particle.getMinOccurs(), UNBOUNDED, true);
+    	}
         return create(particle.getMinOccurs(), particle.getMaxOccurs(), true);
     }
 

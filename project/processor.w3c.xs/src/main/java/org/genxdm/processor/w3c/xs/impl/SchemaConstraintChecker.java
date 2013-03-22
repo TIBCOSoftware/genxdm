@@ -2241,9 +2241,12 @@ final class SchemaConstraintChecker
     private boolean isValidParticleExtension(final ModelGroupUse E, final ModelGroupUse B)
     {
         final int minOccurs = E.getMinOccurs();
-        final int maxOccurs = E.getMaxOccurs();
+        
+        // Use Integer.MIN_VALUE to represent unbounded; okay in this case because we're only comparing values
+        final int maxOccurs = E.isMaxOccursUnbounded() ? Integer.MIN_VALUE : E.getMaxOccurs();
+        final int maxOccursB = B.isMaxOccursUnbounded() ? Integer.MIN_VALUE : B.getMaxOccurs();
 
-        if (minOccurs == B.getMinOccurs() && maxOccurs == B.getMaxOccurs() && (E.getTerm() == B.getTerm()))
+        if (minOccurs == B.getMinOccurs() && maxOccurs == maxOccursB && (E.getTerm() == B.getTerm()))
         {
             // It's the same particle.
             return true;
@@ -2383,7 +2386,10 @@ final class SchemaConstraintChecker
         }
         else
         {
-            if (one.getMinOccurs() == two.getMinOccurs() && one.getMaxOccurs() == two.getMaxOccurs())
+            // Use Integer.MIN_VALUE to represent unbounded; okay in this case because we're only comparing values
+            final int maxOccursOne = one.isMaxOccursUnbounded() ? Integer.MIN_VALUE : one.getMaxOccurs();
+            final int maxOccursTwo = two.isMaxOccursUnbounded() ? Integer.MIN_VALUE : two.getMaxOccurs();
+            if (one.getMinOccurs() == two.getMinOccurs() && maxOccursOne == maxOccursTwo)
             {
                 return recursivelyIdenticalModelGroups(one.getTerm(), two.getTerm());
             }
@@ -2402,7 +2408,10 @@ final class SchemaConstraintChecker
         }
         else
         {
-            if (one.getMinOccurs() == two.getMinOccurs() && one.getMaxOccurs() == two.getMaxOccurs())
+            // Use Integer.MIN_VALUE to represent unbounded; okay in this case because we're only comparing values
+            final int maxOccursOne = one.isMaxOccursUnbounded() ? Integer.MIN_VALUE : one.getMaxOccurs();
+            final int maxOccursTwo = two.isMaxOccursUnbounded() ? Integer.MIN_VALUE : two.getMaxOccurs();
+            if (one.getMinOccurs() == two.getMinOccurs() && maxOccursOne == maxOccursTwo)
             {
                 return recursivelyIdenticalParticleTerms(one.getTerm(), two.getTerm());
             }
