@@ -1,0 +1,4 @@
+Bundle-Version: 0.13.0
+Export-Package: org.genxdm.bridge.dom;version=0.13.0,\
+	org.genxdm.bridge.dom.enhanced;version=0.13.0
+-runee: JavaSE-1.6
