@@ -366,7 +366,11 @@ public final class CoreModelDecorator<N, A>
             {
                 if (defaultType == null) //{ System.out.println("Getting type name for attribute " + getNodeId(node)); 
                     defaultType = NativeType.UNTYPED_ATOMIC.toQName(); //}
-                Map<Object, QName> localTypesMap = mapOfTypesMaps.get(getNodeId(getRoot(node)));
+                N doc = getRoot(node);
+                Object documentId = (doc == null) ? dummyId : getNodeId(doc);
+                if (documentId == null)
+                    documentId = dummyId;
+                Map<Object, QName> localTypesMap = mapOfTypesMaps.get(documentId);
                 QName type = null;
                 if (localTypesMap != null)
                     type = localTypesMap.get(getNodeId(node));
@@ -585,11 +589,14 @@ public final class CoreModelDecorator<N, A>
 //System.out.println("Adding annotation for type " + type.toString());
 //System.out.println("Node id is " + nodeId.toString());
         PreCondition.assertNotNull(nodeId, "nodeId");
-        Map<Object, QName> localTypesMap = mapOfTypesMaps.get(getNodeId(document));
+        Object documentId = getNodeId(document);
+        if (documentId == null)
+            documentId = dummyId;
+        Map<Object, QName> localTypesMap = mapOfTypesMaps.get(documentId);
         if (localTypesMap == null)
         {
             localTypesMap = new WeakHashMap<Object, QName>(initialCapacity);
-            mapOfTypesMaps.put(getNodeId(document), localTypesMap);
+            mapOfTypesMaps.put(documentId, localTypesMap);
         }
         localTypesMap.put(nodeId, type);
     }
@@ -615,5 +622,6 @@ public final class CoreModelDecorator<N, A>
     private final AtomBridge<A> atomBridge;
     private final SchemaComponentCache schemas;
     private final Map<Object, Map<Object, QName>> mapOfTypesMaps;
+    private final Object dummyId = new Object();
 
 }
