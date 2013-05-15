@@ -20,6 +20,7 @@ import java.net.URI;
 
 import javax.xml.stream.XMLReporter;
 
+import org.genxdm.Cursor;
 import org.genxdm.bridge.axiom.AxiomFragmentBuilder;
 import org.genxdm.bridge.axiom.AxiomProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
@@ -118,6 +119,26 @@ public final class AxiomSAProcessingContext
         return builder.getNode();
     }
     
+    @Override
+    public Object validate(Cursor source, ValidationHandler<XmlAtom> validator, URI schemaNamespace)
+    {
+        SequenceBuilder<Object, XmlAtom> builder = newSequenceBuilder();
+        validator.setSchema(this.getSchema());
+        validator.setSequenceHandler(builder);
+        source.write(validator);
+        try 
+        {
+            validator.flush();
+        }
+        catch (IOException ioe)
+        {
+            // oh, get real
+            throw new RuntimeException(ioe);
+        }
+
+        return builder.getNode();
+    }
+
     private final AxiomProcessingContext context;
 	private final AtomBridge<XmlAtom> atomBridge;
 	private final SchemaComponentCache cache;

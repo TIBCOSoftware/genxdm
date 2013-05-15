@@ -35,16 +35,14 @@ public final class Ordering
     public static <N> int compareNodes(final N lhsNode, final N rhsNode, final Model<N> model)
     {
         if (isSameNode(lhsNode, rhsNode, model))
-        {
             return EQUAL;
-        }
 
         final int depthLhs = getDepth(lhsNode, model);
         final int depthRhs = getDepth(rhsNode, model);
 
         final int depthOfCommonAncestorOrSelf = getCommonAncestorOrSelfDepth(lhsNode, depthLhs, rhsNode, depthRhs, model);
 
-        if (-1 == depthOfCommonAncestorOrSelf)
+        if (depthOfCommonAncestorOrSelf == -1)
         {
             // We provide a default implementation here, but we should be
             // dealing with disparate trees in the host.
@@ -52,18 +50,12 @@ public final class Ordering
             final int hR = getRoot(rhsNode, model).hashCode();
 
             if (hL > hR)
-            {
                 return AFTER;
-            }
             else if (hL < hR)
-            {
                 return BEFORE;
-            }
             else
-            {
                 // Can't get here if the nodes belong to different trees.
                 throw new RuntimeException();
-            }
         }
         else
         {
@@ -72,14 +64,10 @@ public final class Ordering
             if (depthLhs == depthOfCommonAncestorOrSelf)
             {
                 if (depthRhs == depthOfCommonAncestorOrSelf)
-                {
                     return EQUAL;
-                }
                 else
-                {
                     assert (depthRhs > depthOfCommonAncestorOrSelf);
                     return BEFORE;
-                }
             }
             else if (depthRhs == depthOfCommonAncestorOrSelf)
             {
@@ -98,16 +86,12 @@ public final class Ordering
                 N lhsProxy = lhsNode;
 
                 for (int i = depthLhs - (depthOfCommonAncestorOrSelf + 1); i > 0; i--)
-                {
                     lhsProxy = model.getParent(lhsProxy);
-                }
 
                 N rhsProxy = rhsNode;
 
                 for (int i = depthRhs - (depthOfCommonAncestorOrSelf + 1); i > 0; i--)
-                {
                     rhsProxy = model.getParent(rhsProxy);
-                }
 
                 return compareKindred(lhsProxy, rhsProxy, model);
             }
@@ -132,13 +116,9 @@ public final class Ordering
         {
             currentNode = model.getParent(currentNode);
             if (null != currentNode)
-            {
                 level++;
-            }
             else
-            {
                 break;
-            }
         }
 
         return level;
@@ -189,13 +169,9 @@ public final class Ordering
             a2 = model.getParent(a2);
 
             if ((a1 != null) && (a2 != null))
-            {
                 commonLevel = commonLevel - 1;
-            }
             else
-            {
                 return -1;
-            }
         }
 
         return commonLevel;
@@ -283,24 +259,20 @@ public final class Ordering
     {
         {
             N current = model.getNextSibling(n1);
-            while (null != current)
+            while (current != null)
             {
                 if (isSameNode(current, n2, model))
-                {
                     return BEFORE;
-                }
                 current = model.getNextSibling(current);
             }
         }
 
         {
             N current = model.getPreviousSibling(n1);
-            while (null != current)
+            while (current != null)
             {
                 if (isSameNode(current, n2, model))
-                {
                     return AFTER;
-                }
                 current = model.getPreviousSibling(current);
             }
         }
@@ -320,8 +292,7 @@ public final class Ordering
             Object second = navigator.getNodeId(two);
             if (first != null)
                 return first.equals(second);
-            else
-                return second == null;
+            return second == null;
         }
         return false; // generally only if model is null
     }
@@ -340,13 +311,8 @@ public final class Ordering
     private static <N> N getRoot(final N node, final Model<N> core)
     {
         final N parent = core.getParent(node);
-        if (null != parent)
-        {
-            return getRoot(node, core);
-        }
-        else
-        {
-            return node;
-        }
+        if (parent != null)
+            return getRoot(parent, core);
+        return node;
     }
 }
