@@ -20,6 +20,7 @@ import java.net.URI;
 
 import javax.xml.stream.XMLReporter;
 
+import org.genxdm.Cursor;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.cx.base.XmlNodeContext;
 import org.genxdm.bridge.cx.tree.XmlNode;
@@ -127,6 +128,25 @@ public class TypedXmlNodeContext
         catch (IOException ioe)
         {
             // oh, get real
+            throw new RuntimeException(ioe);
+        }
+
+        return builder.getNode();
+    }
+
+    @Override
+    public XmlNode validate(Cursor source, ValidationHandler<XmlAtom> validator, URI schemaNamespace)
+    {
+        SequenceBuilder<XmlNode, XmlAtom> builder = newSequenceBuilder();
+        validator.setSchema(this.getSchema());
+        validator.setSequenceHandler(builder);
+        source.write(validator);
+        try 
+        {
+            validator.flush();
+        }
+        catch (IOException ioe)
+        {
             throw new RuntimeException(ioe);
         }
 
