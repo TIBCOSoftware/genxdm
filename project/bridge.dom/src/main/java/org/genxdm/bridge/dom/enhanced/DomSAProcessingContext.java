@@ -20,6 +20,7 @@ import java.net.URI;
 
 import javax.xml.stream.XMLReporter;
 
+import org.genxdm.Cursor;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.dom.DomProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
@@ -130,6 +131,25 @@ public final class DomSAProcessingContext
         catch (IOException ioe)
         {
             // oh, get real
+            throw new RuntimeException(ioe);
+        }
+        
+        return builder.getNode();
+    }
+
+    @Override
+    public Node validate(Cursor source, ValidationHandler<XmlAtom> validator, URI schemaNamespace)
+    {
+        SequenceBuilder<Node, XmlAtom> builder = newSequenceBuilder();
+        validator.setSchema(schema);
+        validator.setSequenceHandler(builder);
+        source.write(validator);
+        try 
+        {
+            validator.flush();
+        }
+        catch (IOException ioe)
+        {
             throw new RuntimeException(ioe);
         }
         
