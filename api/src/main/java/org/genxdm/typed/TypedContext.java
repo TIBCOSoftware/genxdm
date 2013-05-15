@@ -17,6 +17,7 @@ package org.genxdm.typed;
 
 import java.net.URI;
 
+import org.genxdm.Cursor;
 import org.genxdm.ProcessingContext;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.TypedDocumentHandlerFactory;
@@ -101,7 +102,7 @@ public interface TypedContext<N, A>
      * @param validator the (partially-initialized) validation handler to be
      * used; must not be null.
      * @param schemaNamespace the URI of the schema namespace to be used for
-     * validation; may not be null, but may be the empty string (global namespace).
+     * validation. May be null (the processor may or may not use it).
      * @return a node representing the equivalent to the supplied source node,
      * as the base of a validated (type-annotated and type-valued) tree; never
      * null.  If validation has failed, the tree may not be typed.  The returned
@@ -112,5 +113,22 @@ public interface TypedContext<N, A>
      * type annotations and typed values.
      */
     N validate(N source, ValidationHandler<A> validator, URI schemaNamespace);
-
+    
+    /** Validate or revalidate a tree in memory. This form of validation can be
+     * used to convert a foreign tree (typed or untyped) to this bridge's
+     * tree model.
+     * 
+     * @param source the starting point for validation; must not be null. Not
+     * required to be the Cursor associated with this bridge. <em>Should</em> be
+     * positioned at the document, if possible.
+     * @param validator the (partially-initialized) validation handler to be
+     * used; must not be null.
+     * @param schemaNamespace the URI of the schema namespace to be used for
+     * validation. May be null (the processor may or may not use it).
+     * @return a node representing the equivalent to the supplied source cursor,
+     * as the base of a validated (type-annotated and type-valued) tree; never
+     * null. If validation has failed, the tree may not be typed. Will <em>not</em>
+     * be the same tree (object) supplied as an argument. 
+     */
+    N validate(Cursor source, ValidationHandler<A> validator, URI schemaNamespace);
 }
