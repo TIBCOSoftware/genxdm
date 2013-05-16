@@ -1,5 +1,5 @@
-Export-Package: org.genxdm.processor.xpath.v10;version=0.10.0
-Bundle-Version: 0.10.0
+Export-Package: org.genxdm.processor.xpath.v10;version=0.11.0
+Bundle-Version: 0.11.0
 Private-Package: org.genxdm.processor.xpath.v10.expressions,\
 	org.genxdm.processor.xpath.v10.functions,\
 	org.genxdm.processor.xpath.v10.iterators,\
