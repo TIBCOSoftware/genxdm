@@ -589,9 +589,7 @@ public final class CoreModelDecorator<N, A>
 //System.out.println("Adding annotation for type " + type.toString());
 //System.out.println("Node id is " + nodeId.toString());
         PreCondition.assertNotNull(nodeId, "nodeId");
-        Object documentId = getNodeId(document);
-        if (documentId == null)
-            documentId = dummyId;
+        Object documentId = (document == null) ? dummyId : getNodeId(document);
         Map<Object, QName> localTypesMap = mapOfTypesMaps.get(documentId);
         if (localTypesMap == null)
         {
