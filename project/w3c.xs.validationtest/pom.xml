@@ -31,7 +31,7 @@
     <artifactId>processor.w3c.xs.validationtest</artifactId>
     <version>0.4.0</version>
     <name>GenXDM Validation Test Kit</name>
-    <url>http://www.genxdm.org/w3c.xs.validationtest/</url>
+    <url>http://www.genxdm.org/processor.w3c.xs.validationtest/</url>
 
     <reporting>
         <plugins>

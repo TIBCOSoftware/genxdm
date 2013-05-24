@@ -31,7 +31,7 @@
     <artifactId>processor.convert</artifactId>
     <version>0.12.0</version>
     <name>GenXDM Conversion Processor</name>
-    <url>http://www.genxdm.org/processor/processor.convert/</url>
+    <url>http://www.genxdm.org/processor.convert/</url>
 
     <reporting>
         <plugins>

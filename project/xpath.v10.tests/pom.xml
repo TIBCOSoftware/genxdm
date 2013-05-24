@@ -33,7 +33,7 @@
     <artifactId>processor.xpath.v10.tests</artifactId>
     <version>0.7.0</version>
     <name>GenXDM XPath 1.0 Conformance tests</name>
-    <url>http://www.genxdm.org/xpath.v10.tests/</url>
+    <url>http://www.genxdm.org/processor.xpath.v10.tests/</url>
 
     <reporting>
         <plugins>
