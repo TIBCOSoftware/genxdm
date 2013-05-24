@@ -31,7 +31,7 @@
     <artifactId>bridge.cx</artifactId>
     <version>0.15.0</version>
     <name>GenXDM Cx (reference) Bridge</name>
-    <url>http://www.genxdm.org/bridge/bridge.cx/</url>
+    <url>http://www.genxdm.org/bridge.cx/</url>
 
     <reporting>
         <plugins>

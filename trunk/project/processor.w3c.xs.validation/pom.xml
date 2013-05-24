@@ -31,7 +31,7 @@
     <artifactId>processor.w3c.xs.validation</artifactId>
     <version>0.12.0</version>
     <name>GenXDM W3C XML Schema Validator</name>
-    <url>http://www.genxdm.org/processor/processor.w3c.xs.validation/</url>
+    <url>http://www.genxdm.org/processor.w3c.xs.validation/</url>
 
     <scm>
         <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/processor.w3c.xs.validation</connection>
