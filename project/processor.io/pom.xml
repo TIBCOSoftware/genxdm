@@ -31,7 +31,7 @@
     <artifactId>processor.io</artifactId>
     <version>0.13.0</version>
     <name>GenXDM Input/Output Processor</name>
-    <url>http://www.genxdm.org/processor/processor.io/</url>
+    <url>http://www.genxdm.org/processor.io/</url>
 
     <reporting>
         <plugins>

@@ -34,7 +34,7 @@
          date for the processor that it's exercising.  This needs to be
          revisited when bridgetest revisions are complete. -->
     <name>GenXDM Input/Output Processor Tests</name>
-    <url>http://www.genxdm.org/io.tests/</url>
+    <url>http://www.genxdm.org/processor.io.tests/</url>
 
     <reporting>
         <plugins>

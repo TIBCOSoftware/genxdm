@@ -31,7 +31,7 @@
     <artifactId>xpath.v10</artifactId>
     <version>0.14.0</version>
     <name>GenXDM XPath 1.0 API</name>
-    <url>http://www.genxdm.org/apis/xpath.v10/</url>
+    <url>http://www.genxdm.org/xpath.v10/</url>
     <description>The GenXDM XPath 1.0 API module is based on an abstraction of the XPath processing developed by James Clark and Bill Lindsey for XT (with their permission; see copying.txt and copyingjc.txt for their licenses).</description>
 
     <reporting>

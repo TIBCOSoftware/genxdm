@@ -31,7 +31,7 @@
     <artifactId>bridge.dom</artifactId>
     <version>0.14.0</version>
     <name>GenXDM Document Object Model Bridge</name>
-    <url>http://www.genxdm.org/bridge/bridge.dom/</url>
+    <url>http://www.genxdm.org/bridge.dom/</url>
 
     <reporting>
         <plugins>
