@@ -31,7 +31,7 @@
     <artifactId>processor.w3c.xs</artifactId>
     <version>0.13.0</version>
     <name>GenXDM W3C XML Schema Parser</name>
-    <url>http://www.genxdm.org/processor/processor.w3c.xs/</url>
+    <url>http://www.genxdm.org/processor.w3c.xs/</url>
 
     <reporting>
         <plugins>

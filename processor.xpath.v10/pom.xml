@@ -33,7 +33,7 @@
     <artifactId>processor.xpath.v10</artifactId>
     <version>0.11.0</version>
     <name>GenXDM XPath 1.0 Implementation</name>
-    <url>http://www.genxdm.org/processor/processor.xpath.v10/</url>
+    <url>http://www.genxdm.org/processor.xpath.v10/</url>
 
     <reporting>
         <plugins>
