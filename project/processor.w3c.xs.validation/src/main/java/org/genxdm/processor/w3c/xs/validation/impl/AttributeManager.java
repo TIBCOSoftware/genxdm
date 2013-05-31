@@ -420,8 +420,8 @@ final class AttributeManager<A>
 						final SimpleType attributeType = (SimpleType)attribute.getType();
 						try
 						{
-							final A actualValue = attributeType.validate(data, atomBridge).get(0);
-							final QName typeName = resolveXsiType(atomBridge.getLocalNameFromQName(actualValue), atomBridge.getPrefixFromQName(actualValue), p2n);
+							final A actualValue = attributeType.validate(data, p2n, atomBridge).get(0);
+							final QName typeName = atomBridge.getQName(actualValue);
 							m_localType = metaBridge.getTypeDefinition(typeName);
 							if (null != m_localType)
 							{
@@ -526,35 +526,6 @@ final class AttributeManager<A>
 		m_localType = null;
 		m_localNil = null;
 	}
-
-	private QName resolveXsiType(final String localName, final String prefix, final PrefixResolver p2n)
-	{
-		if (prefix.length() > 0)
-		{
-			final String namespaceURI = p2n.getNamespace(prefix);
-			if (null != namespaceURI)
-			{
-				return new QName(namespaceURI, localName, prefix);
-			}
-			else
-			{
-				throw new AssertionError("Unable to resolve prefix: '" + prefix + "'");
-			}
-		}
-		else
-		{
-			final String namespaceURI = p2n.getNamespace(prefix);
-			if (null != namespaceURI)
-			{
-				return new QName(namespaceURI, localName, prefix);
-			}
-			else
-			{
-				return new QName("", localName, prefix);
-			}
-		}
-	}
-
 	/**
 	 * Validates the collection of attributes for the element information item, augmented using defaults, and sent
 	 * downstream.
