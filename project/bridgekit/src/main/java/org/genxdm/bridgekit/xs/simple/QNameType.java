@@ -21,6 +21,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.PrefixResolver;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.EnumerationDefinition;
@@ -151,9 +152,43 @@ public final class QNameType extends AbstractAtomType
         }
     }
 
-    public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
+    public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> atomBridge) throws DatatypeException
     {
-        // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+    	PreCondition.assertArgumentNotNull(resolver, "resolver");
+    	
+    	String prefix;
+    	String localName;
+    	String ns;
+    	
+        final String qualifiedName = normalize(initialValue);
+        final int index = qualifiedName.indexOf(':');
+        if (index == -1)
+        {
+            prefix = "";
+            localName = NCNameType.castAsNCName(qualifiedName, this);
+            ns = resolver.getNamespace("");
+            if(ns == null)
+            {
+        		ns = "";
+            }
+        }
+        else
+        {
+            prefix = NCNameType.castAsNCName(qualifiedName.substring(0, index), this);
+            localName = NCNameType.castAsNCName(qualifiedName.substring(index + 1), this);
+            ns = resolver.getNamespace(prefix);
+            if(ns == null)
+            {
+            	if(prefix != null && prefix.length() == 0)
+            	{
+            		ns = "";
+            	}
+            	else
+            	{
+    				throw new AssertionError("Unable to resolve prefix: '" + prefix + "'");
+            	}
+            }
+        }
+        return atomBridge.wrapAtom(atomBridge.createQName(ns, localName, prefix));
     }
 }
