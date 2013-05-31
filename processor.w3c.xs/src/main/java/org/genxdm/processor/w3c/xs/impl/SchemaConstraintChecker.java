@@ -158,6 +158,10 @@ final class SchemaConstraintChecker
         // TODO: This has the hallmark of a helper function?
         switch (targetType)
         {
+            case INTEGER:
+            {
+                return atomBridge.createInteger(atomBridge.getInteger(sourceAtom));
+            }
             case FLOAT:
             {
                 return atomBridge.createFloat(atomBridge.getFloat(sourceAtom));
