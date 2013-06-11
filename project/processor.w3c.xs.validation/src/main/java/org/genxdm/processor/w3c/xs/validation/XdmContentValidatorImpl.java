@@ -91,7 +91,22 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 
 	public void flush()
 	{
-		if (null != m_elementName)
+        if ( (m_elementType != null) && (m_elementName != null) )
+        {
+            try
+            {
+                kernel.startElement(m_elementName, m_namespaces, m_attributes, m_elementType);
+            }
+            catch (final Exception e)
+            {
+                throw new GenXDMException(e);
+            }
+            m_elementType = null;
+            m_elementName = null;
+            m_namespaces.clear();
+            m_attributes.clear();
+        }
+	    else if (m_elementName != null)
 		{
 			try
 			{
@@ -204,6 +219,13 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
     {
         kernel.setOutputHandler(new OutputAdapter<A>(handler));
     }
+    
+    @Override
+    public void setInitialElementType(QName name)
+    {
+        m_elementType = name;
+    }
+
 
     private SchemaExceptionHandler errors;
     private VxValidator<A> kernel;
@@ -213,6 +235,7 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
     // The name of the element that has yet to be passed to the validation kernel
     // because we are buffering namespace and attribute events.
     private QName m_elementName = null;
+    private QName m_elementType = null; // only used once!
     private final LinkedList<VxMapping<String, String>> m_namespaces = new LinkedList<VxMapping<String, String>>();
 
 }

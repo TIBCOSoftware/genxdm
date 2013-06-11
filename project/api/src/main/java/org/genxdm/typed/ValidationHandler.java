@@ -15,6 +15,8 @@
  */
 package org.genxdm.typed;
 
+import javax.xml.namespace.QName;
+
 import org.genxdm.typed.io.SequenceHandler;
 
 /** Standard interface for validating or re-validating trees in memory.
@@ -24,4 +26,5 @@ import org.genxdm.typed.io.SequenceHandler;
 public interface ValidationHandler<A>
     extends SequenceHandler<A>, Validator<A>
 {
+    void setInitialElementType(QName name);
 }
