@@ -576,6 +576,64 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		m_nodeIndex = m_attributes.attributes(m_currentPSVI, m_currentItem, attributes, m_downstream, m_errors, m_idm, m_icm);
 	}
 
+    public void startElement(final QName elementName, final LinkedList<VxMapping<String, String>> namespaces, final LinkedList<VxMapping<QName, String>> attributes, final QName elementType) throws IOException, AbortException
+    {
+        // TODO: the only difference here is that we're getting the element type from an argument,
+        // rather than from an xsi:type attribute. we should refactor.
+        if (elementType == null)
+        {
+            startElement(elementName, namespaces, attributes);
+            return;
+        }
+        m_text.setLength(0);
+
+        final ValidationItem parentItem = m_currentItem;
+        // TODO: Supply a location?
+        m_currentItem = parentItem.push(++m_nodeIndex);
+
+        // Maintain prefix mapping information.
+        m_namespaces.pushContext();
+        if (namespaces.size() > 0) // Optimization.
+        {
+            for (final VxMapping<String, String> mapping : namespaces)
+            {
+                m_namespaces.declarePrefix(mapping.getKey(), mapping.getValue());
+            }
+        }
+
+        // Digest the attributes from the XMLSchema-instance namespace.
+        m_attributes.initialize(elementName, m_currentItem, attributes, m_namespaces, documentURI, m_errors, sdl);
+        // ignore xsi:type; we're using the argument passed in, instead.
+        // TODO: if localType is null, throw.
+        final Type localType = m_provider.getTypeDefinition(elementType);
+        final Boolean explicitNil = m_attributes.getLocalNil();
+
+        // save the existing process contents mode so it can be reset.
+        // if we call m_mac.startElement with process contents set to strict, we'll error out.
+        ProcessContentsMode saved = m_currentPSVI.getProcessContents();
+        m_currentPSVI.setProcessContents(ProcessContentsMode.Lax);
+        m_currentPSVI = m_mac.startElement(elementName, localType, explicitNil);
+        // this is actually a different ModelPSVI; should we reset it on the parent?
+        m_currentPSVI.setProcessContents(saved);
+        // on the parent would look like: m_currentPSVI.getParent().setProcessContents(saved);
+
+        m_icm.startElement(m_currentPSVI, m_currentItem, m_errors);
+
+        if (m_downstream != null)
+        {
+            m_downstream.startElement(elementName, m_currentPSVI.getType());
+
+            for (final VxMapping<String, String> mapping : namespaces)
+            {
+                m_downstream.namespace(mapping.getKey(), mapping.getValue());
+            }
+        }
+
+        // The attribute manager validates the attributes and sends them downstream, returning the index of the last
+        // attribute.
+        m_nodeIndex = m_attributes.attributes(m_currentPSVI, m_currentItem, attributes, m_downstream, m_errors, m_idm, m_icm);
+    }
+
 	public void text(final List<? extends A> initialValue) throws IOException, AbortException
 	{
 		m_nodeIndex++;
@@ -730,6 +788,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
     private AttributeManager<A> m_attributes;
     private ValidationItem m_currentItem;
     private ModelPSVI m_currentPSVI;
+    private ComponentProvider m_provider;
 
     private final ValidationItem m_documentItem;
     private ModelPSVI m_documentPSVI;

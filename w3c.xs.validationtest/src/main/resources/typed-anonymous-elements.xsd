@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tns.genxdm.org/"
+            targetNamespace="http://tns.genxdm.org/" elementFormDefault="qualified">
+
+<xsd:simpleType name="randomSimpleType">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="\d{3}-[A-Z]{2}"/>
+    </xsd:restriction>
+</xsd:simpleType>
+
+<xsd:complexType name="randomComplexType">
+    <xsd:sequence>
+        <xsd:element name="rst-element" type="tns:randomSimpleType" />
+        <xsd:element name="str-element" type="xsd:string" />
+    </xsd:sequence>
+    <xsd:attribute name="rst-attr" type="tns:randomSimpleType" />
+</xsd:complexType>
+
+</xsd:schema>
