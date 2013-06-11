@@ -17,6 +17,8 @@ package org.genxdm.typed;
 
 import java.net.URI;
 
+import javax.xml.namespace.QName;
+
 import org.genxdm.Cursor;
 import org.genxdm.ProcessingContext;
 import org.genxdm.typed.io.SequenceBuilder;
@@ -131,4 +133,29 @@ public interface TypedContext<N, A>
      * be the same tree (object) supplied as an argument. 
      */
     N validate(Cursor source, ValidationHandler<A> validator, URI schemaNamespace);
+    
+    /** Validate or revalidate a tree in memory. This form of validation is
+     * typically used only for odd situations in which the type of the root
+     * element is known, but its name is not (don't laugh ... or don't laugh
+     * at us; laugh at wsdl 1.1).
+     * 
+     * @param source the starting point for validation; must not be null.
+     * For this form of validation, the supplied node <em>must</em> be an
+     * element.
+     * @param validator the (partially-initialized) validation handler to be
+     * used; must not be null.
+     * @param initialType the QName of the element node passed as the 'source'
+     * parameter. If null, the bridge will fall back to the overload of this
+     * method with URI as third argument (which is determinate, whereas a null
+     * QName would not be).
+     * @return a node representing the equivalent to the supplied source node,
+     * as the base of a validated (type-annotated and type-valued) tree; never
+     * null.  If validation has failed, the tree may not be typed.  The returned
+     * node <em>may</em>, but is not required to be the same node supplied as an
+     * argument, suitably modified with type annotations and typed values, if
+     * the bridge supports this form of mutation; otherwise, the bridge may
+     * create and return a tree comparable to the supplied tree, with added
+     * type annotations and typed values.
+     */
+    N validate(N source, ValidationHandler<A> validator, QName initialType);
 }
