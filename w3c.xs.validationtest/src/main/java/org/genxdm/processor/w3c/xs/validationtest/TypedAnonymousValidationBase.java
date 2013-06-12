@@ -37,7 +37,6 @@ public abstract class TypedAnonymousValidationBase<N, A>
     public void loadSchema(SchemaComponentCache cache)
         throws AbortException
     {
-        // TODO: load po.xsd
         W3cXmlSchemaParser parser = new W3cXmlSchemaParser();
         
         Catalog cat = new DefaultCatalog();
@@ -77,11 +76,23 @@ public abstract class TypedAnonymousValidationBase<N, A>
             ex.printStackTrace();
         assertEquals(0, catcher.size());
 
+        N untypedInvalidSimple = generateInvalidSimple(context);
+        assertNotNull(untypedInvalidSimple);
+    
+        validator = getValidationHandler();
+        catcher = new SchemaExceptionCatcher();
+        validator.setSchemaExceptionHandler(catcher);
+    
+        N notreallyTypedSimple = cache.validate(untypedInvalidSimple, validator, TNS_RST);
+        assertNotNull(notreallyTypedSimple);
+        for (SchemaException ex : catcher)
+            ex.printStackTrace();
+        assertEquals(1, catcher.size());
+
         N untypedComplex = generateComplex(context);
         assertNotNull(untypedComplex);
         
         validator = getValidationHandler();
-        // the validate method *should* set the sequence handler and schema.
         catcher = new SchemaExceptionCatcher();
         validator.setSchemaExceptionHandler(catcher);
     
@@ -97,19 +108,29 @@ public abstract class TypedAnonymousValidationBase<N, A>
         FragmentBuilder<N> builder = context.newFragmentBuilder();
         builder.startElement(TNS, generateRandomName(), TNSP);
         builder.namespace(TNSP, TNS);
-        builder.text("123AZ");
+        builder.text("123-AZ");
         builder.endElement();
         return builder.getNode();
     }
     
+    private N generateInvalidSimple(ProcessingContext<N> context)
+    {
+        FragmentBuilder<N> builder = context.newFragmentBuilder();
+        builder.startElement(TNS, generateRandomName(), TNSP);
+        builder.namespace(TNSP, TNS);
+        builder.text("xyzzy"); // will fail because it doesn't match the pattern nnn-xx
+        builder.endElement();
+        return builder.getNode();
+    }
+
     private N generateComplex(ProcessingContext<N> context)
     {
         FragmentBuilder<N> builder = context.newFragmentBuilder();
         builder.startElement(TNS, generateRandomName(), TNSP);
         builder.namespace(TNSP, TNS);
-        builder.attribute("", "rst-attr", "", "456BY", DtdAttributeKind.CDATA);
+        builder.attribute("", "rst-attr", "", "456-BY", DtdAttributeKind.CDATA);
         builder.startElement(TNS, "rst-element", TNSP);
-        builder.text("789CX");
+        builder.text("789-CX");
         builder.endElement();
         builder.startElement(TNS, "str-element", TNSP);
         builder.text(generateRandomName());
