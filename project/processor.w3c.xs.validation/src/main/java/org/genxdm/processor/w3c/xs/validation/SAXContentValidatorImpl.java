@@ -187,8 +187,7 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
     @Override
     public SchemaExceptionHandler getSchemaExceptionHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return errors;
     }
 
     @Override
@@ -200,7 +199,8 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
     @Override
     public void setSchemaExceptionHandler(SchemaExceptionHandler errors)
     {
-        m_kernel.setExceptionHandler(errors);
+        this.errors = errors;
+        m_kernel.setExceptionHandler(this.errors);
     }
 
     @Override
@@ -257,6 +257,7 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
     private final LinkedList<VxMapping<QName, String>> m_attributes = new LinkedList<VxMapping<QName, String>>();
     private final VxValidator<A> m_kernel;
     private Locator m_locator;
+    private SchemaExceptionHandler errors;
 
     private final LinkedList<VxMapping<String, String>> m_namespaces = new LinkedList<VxMapping<String, String>>();
 

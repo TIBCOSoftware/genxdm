@@ -74,58 +74,6 @@ import org.genxdm.xs.types.UnionSimpleType;
  */
 final class ModelPSVI implements VxPSVI, Locatable
 {
-	private ModelPSVI m_parentItem;
-
-	public ModelPSVI getParent()
-	{
-		return m_parentItem;
-	}
-
-	private final ValidationCache cache;
-	private final ComponentProvider metaBridge;
-
-	private ModelPSVI m_childItem; // for recycling
-
-	private final NodeKind m_nodeKind;
-
-	// The name of the element information item.
-	private QName m_elementName;
-
-	public QName getName()
-	{
-		return m_elementName;
-	}
-
-	private int m_lineNumber;
-	private int m_columnNumber;
-	private int m_characterOffset;
-	private String m_publicId;
-	private String m_systemId;
-
-	public LocationInSchema getLocation()
-	{
-		return new SrcFrozenLocation(m_lineNumber, m_columnNumber, m_characterOffset, m_publicId, m_systemId);
-	}
-
-	private Type m_type;
-	private SmContentFiniteStateMachine m_machine;
-
-	private ProcessContentsMode m_processContents;
-
-	// The XML Schema specification does not specify what a validating processor should do after
-	// it encounters an error. It is not obliged to report more than the first error.
-	private boolean m_suspendChecking;
-
-	private ElementDefinition m_elementDecl;
-
-	// Did the instance use xsi:nil="true"?
-	private boolean m_nilled;
-
-	/**
-	 * Identity scopes may exist for an element information item.
-	 */
-	public final ArrayList<IdentityScope> m_identityScopes = new ArrayList<IdentityScope>();
-	public final HashMap<IdentityConstraint, IdentityScope> m_keyScopes = new HashMap<IdentityConstraint, IdentityScope>();
 
 	private ModelPSVI(final ModelPSVI parent, final NodeKind nodeKind, final ProcessContentsMode processContents, final ComponentProvider metaBridge, final ValidationCache cache)
 	{
@@ -162,6 +110,21 @@ final class ModelPSVI implements VxPSVI, Locatable
 
 		return m_childItem;
 	}
+
+    public ModelPSVI getParent()
+    {
+        return m_parentItem;
+    }
+
+    public QName getName()
+    {
+        return m_elementName;
+    }
+
+    public LocationInSchema getLocation()
+    {
+        return new SrcFrozenLocation(m_lineNumber, m_columnNumber, m_characterOffset, m_publicId, m_systemId);
+    }
 
 	public boolean declExists()
 	{
@@ -803,4 +766,40 @@ final class ModelPSVI implements VxPSVI, Locatable
 		}
 		return true;
 	}
+    private ModelPSVI m_parentItem;
+    private final ValidationCache cache;
+    private final ComponentProvider metaBridge;
+
+    private ModelPSVI m_childItem; // for recycling
+
+    private final NodeKind m_nodeKind;
+
+    // The name of the element information item.
+    private QName m_elementName;
+    private int m_lineNumber;
+    private int m_columnNumber;
+    private int m_characterOffset;
+    private String m_publicId;
+    private String m_systemId;
+
+    private Type m_type;
+    private SmContentFiniteStateMachine m_machine;
+
+    private ProcessContentsMode m_processContents;
+
+    // The XML Schema specification does not specify what a validating processor should do after
+    // it encounters an error. It is not obliged to report more than the first error.
+    private boolean m_suspendChecking;
+
+    private ElementDefinition m_elementDecl;
+
+    // Did the instance use xsi:nil="true"?
+    private boolean m_nilled;
+
+    /**
+     * Identity scopes may exist for an element information item.
+     */
+    public final ArrayList<IdentityScope> m_identityScopes = new ArrayList<IdentityScope>();
+    public final HashMap<IdentityConstraint, IdentityScope> m_keyScopes = new HashMap<IdentityConstraint, IdentityScope>();
+
 }

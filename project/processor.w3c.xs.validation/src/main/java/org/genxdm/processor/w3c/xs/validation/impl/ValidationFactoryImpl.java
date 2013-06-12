@@ -19,26 +19,22 @@ import org.genxdm.processor.w3c.xs.validation.api.VxSchemaDocumentLocationStrate
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidatorFactory;
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.ElementDefinition;
 
 
 public final class ValidationFactoryImpl implements VxValidatorFactory
 {
-    private VxSchemaDocumentLocationStrategy sdl;
-
+    @Override
 	public <A> VxValidator<A> newValidator(final AtomBridge<A> atoms)
 	{
         return new ValidationKernel<A>(atoms, sdl);
 	}
 
-	public <A> VxValidator<A> newValidator(final AtomBridge<A> atoms, final ElementDefinition elementDeclaration)
-	{
-	    // TODO: why is there an override with ElementDeclaration?
-        return new ValidationKernel<A>(atoms, sdl);
-	}
-
+    @Override
 	public void setSchemaDocumentLocationStrategy(final VxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy)
 	{
 		this.sdl = schemaDocumentLocationStrategy;
 	}
+
+    private VxSchemaDocumentLocationStrategy sdl;
+
 }
