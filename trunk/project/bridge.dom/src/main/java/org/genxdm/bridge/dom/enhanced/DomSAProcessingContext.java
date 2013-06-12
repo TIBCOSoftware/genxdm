@@ -18,6 +18,7 @@ package org.genxdm.bridge.dom.enhanced;
 import java.io.IOException;
 import java.net.URI;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLReporter;
 
 import org.genxdm.Cursor;
@@ -150,6 +151,30 @@ public final class DomSAProcessingContext
         }
         catch (IOException ioe)
         {
+            throw new RuntimeException(ioe);
+        }
+        
+        return builder.getNode();
+    }
+
+    @Override
+    public Node validate(Node source, ValidationHandler<XmlAtom> validator, QName initialType)
+    {
+        if (initialType == null)
+            return validate(source, validator, (URI)null);
+        PreCondition.assertTrue(m_model.isElement(source));
+        SequenceBuilder<Node, XmlAtom> builder = newSequenceBuilder();
+        validator.setSchema(schema);
+        validator.setInitialElementType(initialType);
+        validator.setSequenceHandler(builder);
+        m_model.stream(source, validator);
+        try 
+        {
+            validator.flush();
+        }
+        catch (IOException ioe)
+        {
+            // oh, get real
             throw new RuntimeException(ioe);
         }
         

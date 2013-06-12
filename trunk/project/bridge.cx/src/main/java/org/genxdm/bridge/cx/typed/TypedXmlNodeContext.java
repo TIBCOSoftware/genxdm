@@ -18,6 +18,7 @@ package org.genxdm.bridge.cx.typed;
 import java.io.IOException;
 import java.net.URI;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLReporter;
 
 import org.genxdm.Cursor;
@@ -147,6 +148,30 @@ public class TypedXmlNodeContext
         }
         catch (IOException ioe)
         {
+            throw new RuntimeException(ioe);
+        }
+
+        return builder.getNode();
+    }
+
+    @Override
+    public XmlNode validate(XmlNode source, ValidationHandler<XmlAtom> validator, QName initialType)
+    {
+        if (initialType == null)
+            return validate(source, validator, (URI)null);
+        PreCondition.assertTrue(model.isElement(source));
+        SequenceBuilder<XmlNode, XmlAtom> builder = newSequenceBuilder();
+        validator.setSchema(this.getSchema());
+        validator.setInitialElementType(initialType);
+        validator.setSequenceHandler(builder);
+        model.stream(source, validator);
+        try 
+        {
+            validator.flush();
+        }
+        catch (IOException ioe)
+        {
+            // oh, get real
             throw new RuntimeException(ioe);
         }
 

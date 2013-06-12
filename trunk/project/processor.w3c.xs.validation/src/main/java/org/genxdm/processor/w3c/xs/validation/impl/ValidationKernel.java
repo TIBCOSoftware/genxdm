@@ -29,6 +29,7 @@ import org.genxdm.processor.w3c.xs.exception.cvc.CvcElementUnexpectedChildInNill
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcUnexpectedTextInEmptyContentException;
 import org.genxdm.processor.w3c.xs.exception.sm.SmExceptionSupplier;
+import org.genxdm.processor.w3c.xs.exception.sm.SmUndeclaredReferenceException;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
 import org.genxdm.processor.w3c.xs.validation.api.VxOutputHandler;
 import org.genxdm.processor.w3c.xs.validation.api.VxPSVI;
@@ -540,7 +541,6 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		m_text.setLength(0);
 
 		final ValidationItem parentItem = m_currentItem;
-		// TODO: Supply a location?
 		m_currentItem = parentItem.push(++m_nodeIndex);
 
 		// Maintain prefix mapping information.
@@ -580,16 +580,20 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
     public void startElement(final QName elementName, final LinkedList<VxMapping<String, String>> namespaces, final LinkedList<VxMapping<QName, String>> attributes, final QName elementType) throws IOException, AbortException
     {
         // TODO: the only difference here is that we're getting the element type from an argument,
-        // rather than from an xsi:type attribute. we should refactor.
-        if (elementType == null)
+        // rather than from an xsi:type attribute. we should refactor. right now, this is copy
+        // and paste from the original, with minimal changes.
+        if (elementType == null) // note the precondition: if we're given a null, we use the base form
         {
             startElement(elementName, namespaces, attributes);
             return;
         }
+        final Type localType = m_provider.getTypeDefinition(elementType);
+        // if the provider don't know from elementType, just stop; we can't do anything.
+        if (localType == null)
+            throw new AbortException(new SmUndeclaredReferenceException(elementType, null));
         m_text.setLength(0);
 
         final ValidationItem parentItem = m_currentItem;
-        // TODO: Supply a location?
         m_currentItem = parentItem.push(++m_nodeIndex);
 
         // Maintain prefix mapping information.
@@ -605,8 +609,6 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
         // Digest the attributes from the XMLSchema-instance namespace.
         m_attributes.initialize(elementName, m_currentItem, attributes, m_namespaces, documentURI, m_errors, sdl);
         // ignore xsi:type; we're using the argument passed in, instead.
-        // TODO: if localType is null, throw.
-        final Type localType = m_provider.getTypeDefinition(elementType);
         final Boolean explicitNil = m_attributes.getLocalNil();
 
         // save the existing process contents mode so it can be reset.
