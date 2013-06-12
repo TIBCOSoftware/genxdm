@@ -57,6 +57,8 @@ public abstract class TypedAnonymousValidationBase<N, A>
     public void validateTypedAnonymousElements()
         throws AbortException, IOException
     {
+        // TODO: it would be kind of nice to actually see the fragments, or to have
+        // the option, at least.
         ProcessingContext<N> context = newProcessingContext();
 
         TypedContext<N, A> cache = context.getTypedContext(null);
@@ -85,6 +87,10 @@ public abstract class TypedAnonymousValidationBase<N, A>
     
         N notreallyTypedSimple = cache.validate(untypedInvalidSimple, validator, TNS_RST);
         assertNotNull(notreallyTypedSimple);
+        // TODO: rather than splattering this out, we really should check that it's the
+        // expected validation error. in this case, a SimpleTypeException wraps a
+        // DataTypeException (cvc-datatype-valid.? (the question mark is weird)), which
+        // wraps a PatternException (cvc-pattern-valid.1).
         for (SchemaException ex : catcher)
             ex.printStackTrace();
         assertEquals(1, catcher.size());
@@ -101,6 +107,10 @@ public abstract class TypedAnonymousValidationBase<N, A>
         for (SchemaException ex : catcher)
             ex.printStackTrace();
         assertEquals(0, catcher.size());
+        
+        // TODO: we should also check invalid complex forms:
+        // invalid structure (extra or missing children, extra or missing attributes)
+        // invalid content (child invalid as to type, attribute invalid as to type)
     }
 
     private N generateSimple(ProcessingContext<N> context)

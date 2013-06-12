@@ -16,13 +16,10 @@
 package org.genxdm.processor.w3c.xs.validation.api;
 
 import org.genxdm.typed.types.AtomBridge;
-import org.genxdm.xs.components.ElementDefinition;
 
 public interface VxValidatorFactory
 {
 	<A> VxValidator<A> newValidator(AtomBridge<A> atoms);
-
-	<A> VxValidator<A> newValidator(AtomBridge<A> atoms, ElementDefinition elementDeclaration);
 
 	void setSchemaDocumentLocationStrategy(final VxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy);
 }
