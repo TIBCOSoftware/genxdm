@@ -495,11 +495,12 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 	
 	public void setComponentProvider(ComponentProvider provider)
 	{
+	    m_provider = provider;
 	    ValidationCache cache = new ValidationCache();
-        m_attributes = new AttributeManager<A>(provider, m_atomBridge);
-        m_currentPSVI = m_documentPSVI = new ModelPSVI(ProcessContentsMode.Strict, provider, cache);
+        m_attributes = new AttributeManager<A>(m_provider, m_atomBridge);
+        m_currentPSVI = m_documentPSVI = new ModelPSVI(ProcessContentsMode.Strict, m_provider, cache);
 
-        m_mac = new ModelAnalyzerImpl(provider, cache);
+        m_mac = new ModelAnalyzerImpl(m_provider, cache);
         if (m_errors != null)
             m_mac.setExceptionHandler(m_errors);
 	}
