@@ -18,6 +18,7 @@ package org.genxdm.bridge.axiom.enhanced;
 import java.io.IOException;
 import java.net.URI;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLReporter;
 
 import org.genxdm.Cursor;
@@ -126,6 +127,30 @@ public final class AxiomSAProcessingContext
         validator.setSchema(this.getSchema());
         validator.setSequenceHandler(builder);
         source.write(validator);
+        try 
+        {
+            validator.flush();
+        }
+        catch (IOException ioe)
+        {
+            // oh, get real
+            throw new RuntimeException(ioe);
+        }
+
+        return builder.getNode();
+    }
+    
+    @Override
+    public Object validate(Object source, ValidationHandler<XmlAtom> validator, QName initialType)
+    {
+        if (initialType == null)
+            return validate(source, validator, (URI)null);
+        PreCondition.assertTrue(model.isElement(source));
+        SequenceBuilder<Object, XmlAtom> builder = newSequenceBuilder();
+        validator.setSchema(this.getSchema());
+        validator.setInitialElementType(initialType);
+        validator.setSequenceHandler(builder);
+        model.stream(source, validator);
         try 
         {
             validator.flush();
