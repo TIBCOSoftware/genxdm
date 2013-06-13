@@ -15,9 +15,6 @@
  */
 package org.genxdm.bridge.cx.typed;
 
-import java.io.IOException;
-import java.net.URI;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLReporter;
 
@@ -29,6 +26,7 @@ import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XmlAtomBridge;
 import org.genxdm.bridgekit.filters.FilteredSequenceBuilder;
 import org.genxdm.bridgekit.filters.NamespaceFixupSequenceFilter;
+import org.genxdm.bridgekit.validation.GenericValidator;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
 import org.genxdm.bridgekit.xs.TypesBridgeImpl;
 import org.genxdm.exceptions.PreCondition;
@@ -63,6 +61,7 @@ public class TypedXmlNodeContext
         this.types = new TypesBridgeImpl();
         this.atoms = new XmlAtomBridge(this.schema);
         this.model = new TypedXmlNodeModel(atoms);
+        gator = new GenericValidator<XmlNode, XmlAtom>(this);
     }
     
     public AtomBridge<XmlAtom> getAtomBridge()
@@ -114,68 +113,15 @@ public class TypedXmlNodeContext
     }
 
     @Override
-    public XmlNode validate(XmlNode source, ValidationHandler<XmlAtom> validator, URI namespace)
+    public XmlNode validate(Cursor source, ValidationHandler<XmlAtom> validator, QName initialType)
     {
-        SequenceBuilder<XmlNode, XmlAtom> builder = newSequenceBuilder();
-        // TODO: this assumes building a new tree and returning it.
-        // can we instead provide a tool that walks the existing tree and modifies it?
-        validator.setSchema(this.getSchema());
-        validator.setSequenceHandler(builder);
-        model.stream(source, validator);
-        try 
-        {
-            validator.flush();
-        }
-        catch (IOException ioe)
-        {
-            // oh, get real
-            throw new RuntimeException(ioe);
-        }
-
-        return builder.getNode();
-    }
-
-    @Override
-    public XmlNode validate(Cursor source, ValidationHandler<XmlAtom> validator, URI schemaNamespace)
-    {
-        SequenceBuilder<XmlNode, XmlAtom> builder = newSequenceBuilder();
-        validator.setSchema(this.getSchema());
-        validator.setSequenceHandler(builder);
-        source.write(validator);
-        try 
-        {
-            validator.flush();
-        }
-        catch (IOException ioe)
-        {
-            throw new RuntimeException(ioe);
-        }
-
-        return builder.getNode();
+        return gator.validate(source, validator, initialType);
     }
 
     @Override
     public XmlNode validate(XmlNode source, ValidationHandler<XmlAtom> validator, QName initialType)
     {
-        if (initialType == null)
-            return validate(source, validator, (URI)null);
-        PreCondition.assertTrue(model.isElement(source));
-        SequenceBuilder<XmlNode, XmlAtom> builder = newSequenceBuilder();
-        validator.setSchema(this.getSchema());
-        validator.setInitialElementType(initialType);
-        validator.setSequenceHandler(builder);
-        model.stream(source, validator);
-        try 
-        {
-            validator.flush();
-        }
-        catch (IOException ioe)
-        {
-            // oh, get real
-            throw new RuntimeException(ioe);
-        }
-
-        return builder.getNode();
+        return gator.validate(source, validator, initialType);
     }
 
     private final XmlNodeContext context;
@@ -183,4 +129,5 @@ public class TypedXmlNodeContext
     private final XmlAtomBridge atoms;
     private final TypesBridge types;
     private final SchemaComponentCache schema;
+    private final GenericValidator<XmlNode, XmlAtom> gator;
 }

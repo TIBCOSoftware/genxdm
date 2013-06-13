@@ -15,8 +15,6 @@
  */
 package org.genxdm.typed;
 
-import java.net.URI;
-
 import javax.xml.namespace.QName;
 
 import org.genxdm.Cursor;
@@ -101,53 +99,15 @@ public interface TypedContext<N, A>
     /** Validate or revalidate a tree in memory.
      * 
      * @param source the starting point for validation; must not be null.
+     *        If the initialType argument is non-null, then this node <em>must</em>
+     *        be an element (of the type specified by the type-name).
      * @param validator the (partially-initialized) validation handler to be
-     * used; must not be null.
-     * @param schemaNamespace the URI of the schema namespace to be used for
-     * validation. May be null (the processor may or may not use it).
-     * @return a node representing the equivalent to the supplied source node,
-     * as the base of a validated (type-annotated and type-valued) tree; never
-     * null.  If validation has failed, the tree may not be typed.  The returned
-     * node <em>may</em>, but is not required to be the same node supplied as an
-     * argument, suitably modified with type annotations and typed values, if
-     * the bridge supports this form of mutation; otherwise, the bridge may
-     * create and return a tree comparable to the supplied tree, with added
-     * type annotations and typed values.
-     */
-    N validate(N source, ValidationHandler<A> validator, URI schemaNamespace);
-    
-    /** Validate or revalidate a tree in memory. This form of validation can be
-     * used to convert a foreign tree (typed or untyped) to this bridge's
-     * tree model.
-     * 
-     * @param source the starting point for validation; must not be null. Not
-     * required to be the Cursor associated with this bridge. <em>Should</em> be
-     * positioned at the document, if possible.
-     * @param validator the (partially-initialized) validation handler to be
-     * used; must not be null.
-     * @param schemaNamespace the URI of the schema namespace to be used for
-     * validation. May be null (the processor may or may not use it).
-     * @return a node representing the equivalent to the supplied source cursor,
-     * as the base of a validated (type-annotated and type-valued) tree; never
-     * null. If validation has failed, the tree may not be typed. Will <em>not</em>
-     * be the same tree (object) supplied as an argument. 
-     */
-    N validate(Cursor source, ValidationHandler<A> validator, URI schemaNamespace);
-    
-    /** Validate or revalidate a tree in memory. This form of validation is
-     * typically used only for odd situations in which the type of the root
-     * element is known, but its name is not (don't laugh ... or don't laugh
-     * at us; laugh at wsdl 1.1).
-     * 
-     * @param source the starting point for validation; must not be null.
-     * For this form of validation, the supplied node <em>must</em> be an
-     * element.
-     * @param validator the (partially-initialized) validation handler to be
-     * used; must not be null.
+     *        used; must not be null.
      * @param initialType the QName of the element node passed as the 'source'
-     * parameter. If null, the bridge will fall back to the overload of this
-     * method with URI as third argument (which is determinate, whereas a null
-     * QName would not be).
+     *        parameter. This argument should <em>usually</em> be null; supplying
+     *        an initial type argument tells the validator to ignore the name
+     *        of the supplied element, and to validate it based solely on its
+     *        content, without looking for an element declaration.
      * @return a node representing the equivalent to the supplied source node,
      * as the base of a validated (type-annotated and type-valued) tree; never
      * null.  If validation has failed, the tree may not be typed.  The returned
@@ -158,4 +118,28 @@ public interface TypedContext<N, A>
      * type annotations and typed values.
      */
     N validate(N source, ValidationHandler<A> validator, QName initialType);
+    
+    /** Validate or revalidate a tree in memory. This form of validation can be
+     * used to convert a foreign tree (typed or untyped) to this bridge's
+     * tree model.
+     * 
+     * @param source the starting point for validation; must not be null. Not
+     *        required to be the Cursor associated with this bridge. <em>Should</em> be
+     *        positioned at the document, if possible, unless the initialType
+     *        argument is non-null, in which case it <em>must</em> be positioned
+     *        on the element for which initialType indicates the type name to
+     *        be used during validation.
+     * @param validator the (partially-initialized) validation handler to be
+     *        used; must not be null.
+     * @param initialType the QName of the element node that the 'source'
+     *        parameter is positioned on. This argument should <em>usually</em> be null; supplying
+     *        an initial type argument tells the validator to ignore the name
+     *        of the initial element, and to validate it based solely on its
+     *        content, without looking for an element declaration.
+     * @return a node representing the equivalent to the supplied source cursor,
+     * as the base of a validated (type-annotated and type-valued) tree; never
+     * null. If validation has failed, the tree may not be typed. Will <em>not</em>
+     * be the same tree (object) supplied as an argument. 
+     */
+    N validate(Cursor source, ValidationHandler<A> validator, QName initialType);
 }
