@@ -536,8 +536,18 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		}
 	}
 
-	public void startElement(final QName elementName, final LinkedList<VxMapping<String, String>> namespaces, final LinkedList<VxMapping<QName, String>> attributes) throws IOException, AbortException
+	public void startElement(final QName elementName, final LinkedList<VxMapping<String, String>> namespaces, final LinkedList<VxMapping<QName, String>> attributes, QName elementType) throws IOException, AbortException
 	{
+	    Type localType = null;
+	    if (elementType != null)
+	    {
+	        localType = m_provider.getTypeDefinition(elementType);
+	        // if a specified type has been provided by the caller, but the provider cannot resolve
+	        // the type, we need to simply stop, because things are not going to work predictably.
+	        // a non-null elementType *requires* that we end up with non-null localType right here.
+	        if (localType == null)
+	            throw new AbortException(new SmUndeclaredReferenceException(elementType, null));
+	    }
 		m_text.setLength(0);
 
 		final ValidationItem parentItem = m_currentItem;
@@ -553,12 +563,31 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 			}
 		}
 
+		// before dealing with attributes, which may make the localType non-null,
+		// tweak processContents in the 'parent' (which may be a phantom) of the
+		// current element's PSVI to lax. use null in savedPC as a sentinel when
+		// restoring, later.
+		ProcessContentsMode savedPC = null;
+		if (localType != null)
+		{
+		    savedPC = m_currentPSVI.getProcessContents();
+		    // set m_currentPSVI process contents to lax, because we have an element type override
+		    // which means that there probably is no element declaration for this element's name.
+		    // unless it's lax, this will cause an error.
+		    m_currentPSVI.setProcessContents(ProcessContentsMode.Lax);
+		}
+		
 		// Digest the attributes from the XMLSchema-instance namespace.
 		m_attributes.initialize(elementName, m_currentItem, attributes, m_namespaces, documentURI, m_errors, sdl);
-		final Type localType = m_attributes.getLocalType();
+		// if we're not operating in caller-overrides-type mode, get the xsi:type override
+		if (m_attributes.getLocalType() != null)
+		    localType = m_attributes.getLocalType();
 		final Boolean explicitNil = m_attributes.getLocalNil();
 
 		m_currentPSVI = m_mac.startElement(elementName, localType, explicitNil);
+		// reset processContents in the child, if we relaxed it above, signalled by non-null savedPC
+		if (savedPC != null)
+		    m_currentPSVI.setProcessContents(savedPC); // actually a different ModelPSVI than the one we set lax above
 
 		m_icm.startElement(m_currentPSVI, m_currentItem, m_errors);
 
@@ -576,66 +605,6 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		// attribute.
 		m_nodeIndex = m_attributes.attributes(m_currentPSVI, m_currentItem, attributes, m_downstream, m_errors, m_idm, m_icm);
 	}
-
-    public void startElement(final QName elementName, final LinkedList<VxMapping<String, String>> namespaces, final LinkedList<VxMapping<QName, String>> attributes, final QName elementType) throws IOException, AbortException
-    {
-        // TODO: the only difference here is that we're getting the element type from an argument,
-        // rather than from an xsi:type attribute. we should refactor. right now, this is copy
-        // and paste from the original, with minimal changes.
-        if (elementType == null) // note the precondition: if we're given a null, we use the base form
-        {
-            startElement(elementName, namespaces, attributes);
-            return;
-        }
-        final Type localType = m_provider.getTypeDefinition(elementType);
-        // if the provider don't know from elementType, just stop; we can't do anything.
-        if (localType == null)
-            throw new AbortException(new SmUndeclaredReferenceException(elementType, null));
-        m_text.setLength(0);
-
-        final ValidationItem parentItem = m_currentItem;
-        m_currentItem = parentItem.push(++m_nodeIndex);
-
-        // Maintain prefix mapping information.
-        m_namespaces.pushContext();
-        if (namespaces.size() > 0) // Optimization.
-        {
-            for (final VxMapping<String, String> mapping : namespaces)
-            {
-                m_namespaces.declarePrefix(mapping.getKey(), mapping.getValue());
-            }
-        }
-
-        // Digest the attributes from the XMLSchema-instance namespace.
-        m_attributes.initialize(elementName, m_currentItem, attributes, m_namespaces, documentURI, m_errors, sdl);
-        // ignore xsi:type; we're using the argument passed in, instead.
-        final Boolean explicitNil = m_attributes.getLocalNil();
-
-        // save the existing process contents mode so it can be reset.
-        // if we call m_mac.startElement with process contents set to strict, we'll error out.
-        ProcessContentsMode saved = m_currentPSVI.getProcessContents();
-        m_currentPSVI.setProcessContents(ProcessContentsMode.Lax);
-        m_currentPSVI = m_mac.startElement(elementName, localType, explicitNil);
-        // this is actually a different ModelPSVI; should we reset it on the parent?
-        m_currentPSVI.setProcessContents(saved);
-        // on the parent would look like: m_currentPSVI.getParent().setProcessContents(saved);
-
-        m_icm.startElement(m_currentPSVI, m_currentItem, m_errors);
-
-        if (m_downstream != null)
-        {
-            m_downstream.startElement(elementName, m_currentPSVI.getType());
-
-            for (final VxMapping<String, String> mapping : namespaces)
-            {
-                m_downstream.namespace(mapping.getKey(), mapping.getValue());
-            }
-        }
-
-        // The attribute manager validates the attributes and sends them downstream, returning the index of the last
-        // attribute.
-        m_nodeIndex = m_attributes.attributes(m_currentPSVI, m_currentItem, attributes, m_downstream, m_errors, m_idm, m_icm);
-    }
 
 	public void text(final List<? extends A> initialValue) throws IOException, AbortException
 	{

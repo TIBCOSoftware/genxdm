@@ -91,35 +91,23 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 
 	public void flush()
 	{
-        if ( (m_elementType != null) && (m_elementName != null) )
+        if (m_elementName != null)
         {
             try
             {
+                // if m_elementType is non-null, do an ignore-the-element-name validation
                 kernel.startElement(m_elementName, m_namespaces, m_attributes, m_elementType);
             }
             catch (final Exception e)
             {
                 throw new GenXDMException(e);
             }
-            m_elementType = null;
-            m_elementName = null;
-            m_namespaces.clear();
-            m_attributes.clear();
+            m_elementType = null; // usually null anyway
+            m_elementName = null; // reset for next in doc orde
+            m_namespaces.clear(); // done with these
+            m_attributes.clear(); // done with these, too
         }
-	    else if (m_elementName != null)
-		{
-			try
-			{
-				kernel.startElement(m_elementName, m_namespaces, m_attributes);
-			}
-			catch (final Exception e)
-			{
-				throw new GenXDMException(e);
-			}
-			m_elementName = null;
-			m_namespaces.clear();
-			m_attributes.clear();
-		}
+        // if we have an element without a name, we should prolly become quite angry
 	}
 
 	public void namespace(final String prefix, final String namespaceURI) throws GenXDMException
