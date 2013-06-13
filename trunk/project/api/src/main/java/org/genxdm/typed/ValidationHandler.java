@@ -26,5 +26,12 @@ import org.genxdm.typed.io.SequenceHandler;
 public interface ValidationHandler<A>
     extends SequenceHandler<A>, Validator<A>
 {
+    /** Set the QName of the initial element type, when validating a fragment
+     * rooted at a single element of arbitrary name.
+     * 
+     * See {@link org.genxdm.typed.TypedContext.validate(N, ValidationHandler, QName)}
+     * 
+     * @param name the name of the type for the element (if null, equivalent to unsetting)
+     */
     void setInitialElementType(QName name);
 }
