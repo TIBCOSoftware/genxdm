@@ -165,7 +165,7 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 		}
 		try
 		{
-			m_kernel.startElement(new QName(ns, name, getPrefix(qName)), m_namespaces, m_attributes);
+			m_kernel.startElement(new QName(ns, name, getPrefix(qName)), m_namespaces, m_attributes, null);
 		}
 		catch (final Exception e)
 		{

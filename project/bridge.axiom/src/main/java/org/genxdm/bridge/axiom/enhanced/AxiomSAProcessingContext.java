@@ -15,9 +15,6 @@
  */
 package org.genxdm.bridge.axiom.enhanced;
 
-import java.io.IOException;
-import java.net.URI;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLReporter;
 
@@ -28,6 +25,7 @@ import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XmlAtomBridge;
 import org.genxdm.bridgekit.tree.CoreModelDecorator;
 import org.genxdm.bridgekit.tree.CursorOnTypedModel;
+import org.genxdm.bridgekit.validation.GenericValidator;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
 import org.genxdm.bridgekit.xs.TypesBridgeImpl;
 import org.genxdm.exceptions.PreCondition;
@@ -58,6 +56,7 @@ public final class AxiomSAProcessingContext
 		this.metaBridge = new TypesBridgeImpl();
         this.atomBridge = new XmlAtomBridge(this.cache);
         this.model = new CoreModelDecorator<Object, XmlAtom>(context.getModel(), atomBridge, cache);
+        genvalid = new GenericValidator<Object, XmlAtom>(this);
 	}
 	
 	public AtomBridge<XmlAtom> getAtomBridge()
@@ -101,72 +100,21 @@ public final class AxiomSAProcessingContext
     }
 
     @Override
-    public Object validate(Object source, ValidationHandler<XmlAtom> validator, URI namespace)
+    public Object validate(Cursor source, ValidationHandler<XmlAtom> validator, QName initialType)
     {
-        SequenceBuilder<Object, XmlAtom> builder = newSequenceBuilder();
-        validator.setSchema(this.getSchema());
-        validator.setSequenceHandler(builder);
-        model.stream(source, validator);
-        try 
-        {
-            validator.flush();
-        }
-        catch (IOException ioe)
-        {
-            // oh, get real
-            throw new RuntimeException(ioe);
-        }
-
-        return builder.getNode();
-    }
-    
-    @Override
-    public Object validate(Cursor source, ValidationHandler<XmlAtom> validator, URI schemaNamespace)
-    {
-        SequenceBuilder<Object, XmlAtom> builder = newSequenceBuilder();
-        validator.setSchema(this.getSchema());
-        validator.setSequenceHandler(builder);
-        source.write(validator);
-        try 
-        {
-            validator.flush();
-        }
-        catch (IOException ioe)
-        {
-            // oh, get real
-            throw new RuntimeException(ioe);
-        }
-
-        return builder.getNode();
+        return genvalid.validate(source, validator, initialType);
     }
     
     @Override
     public Object validate(Object source, ValidationHandler<XmlAtom> validator, QName initialType)
     {
-        if (initialType == null)
-            return validate(source, validator, (URI)null);
-        PreCondition.assertTrue(model.isElement(source));
-        SequenceBuilder<Object, XmlAtom> builder = newSequenceBuilder();
-        validator.setSchema(this.getSchema());
-        validator.setInitialElementType(initialType);
-        validator.setSequenceHandler(builder);
-        model.stream(source, validator);
-        try 
-        {
-            validator.flush();
-        }
-        catch (IOException ioe)
-        {
-            // oh, get real
-            throw new RuntimeException(ioe);
-        }
-
-        return builder.getNode();
+        return genvalid.validate(source, validator, initialType);
     }
 
     private final AxiomProcessingContext context;
 	private final AtomBridge<XmlAtom> atomBridge;
 	private final SchemaComponentCache cache;
+	private final GenericValidator<Object, XmlAtom> genvalid;
 	
 	@SuppressWarnings("unused")
 	private boolean locked;

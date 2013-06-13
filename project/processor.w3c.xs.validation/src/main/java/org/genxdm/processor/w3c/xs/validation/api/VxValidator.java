@@ -43,8 +43,6 @@ public interface VxValidator<A>
     void setOutputHandler(VxOutputHandler<A> handler);
 
     void startDocument(URI documentURI) throws IOException, AbortException;
-
-    void startElement(final QName elementName, final LinkedList<VxMapping<String, String>> namespaces, final LinkedList<VxMapping<QName, String>> attributes) throws IOException, AbortException;
     
     void startElement(final QName elementName, final LinkedList<VxMapping<String, String>> namespaces, final LinkedList<VxMapping<QName, String>> attributes, final QName elementType) throws IOException, AbortException;
 
