@@ -6861,7 +6861,7 @@ final class XMLSchemaParser extends XMLRepresentation
                     try
                     {
                         module.setTargetNamespace(anyURI(reader.getAttributeValue(i)));
-                        if (!m_processRepeatedNamespaces && cache.m_seenNamespaces.contains(module.getTargetNamespace()))
+                        if (!module.isInclude() && !m_processRepeatedNamespaces && cache.m_seenNamespaces.contains(module.getTargetNamespace()))
                         {
                             // Ignore this schema.
                             skipTag(reader);

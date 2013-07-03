@@ -21,6 +21,7 @@ import java.net.URI;
 import org.genxdm.Cursor;
 import org.genxdm.bridgekit.xs.ComponentBagImpl;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.processor.w3c.xs.LoadOptions;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLSchemaCache;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLSchemaModule;
 import org.genxdm.processor.w3c.xs.xmlrep.exceptions.XMLSccExceptionAdapter;
@@ -37,7 +38,7 @@ import org.genxdm.xs.facets.SchemaRegExCompiler;
 import org.genxdm.xs.resolve.CatalogResolver;
 import org.genxdm.xs.resolve.SchemaCatalog;
 
-final public class XMLParserImpl implements SchemaParser
+final public class XMLParserImpl implements SchemaParser, LoadOptions
 {
     public XMLParserImpl(final ComponentProvider cache)
     {
@@ -72,7 +73,7 @@ final public class XMLParserImpl implements SchemaParser
         final SchemaExceptionCatcher caught = new SchemaExceptionCatcher();
 
         // Delegate the parsing into an XML representation
-        final XMLSchemaParser parser = new XMLSchemaParser(this.cache, caught, m_catalog, m_resolver, true);
+        final XMLSchemaParser parser = new XMLSchemaParser(this.cache, caught, m_catalog, m_resolver, m_processRepeatedNamespaces);
 
         parser.parse(systemId, istream, schemaCache, module);
         
@@ -103,6 +104,17 @@ final public class XMLParserImpl implements SchemaParser
     public void setSchemaLoadOptions(final SchemaLoadOptions options)
     {
         m_options = options;
+        if (options != null)
+        {
+            String prn = m_options.getOption(OPTION_REPEAT_NS);
+            if (prn != null)
+            {
+                if (prn.trim().equals(TRUE) || prn.trim().equals(YES))
+                    m_processRepeatedNamespaces = true;
+                else
+                    m_processRepeatedNamespaces = false;
+            }
+        }
     }
 
     /**
@@ -181,5 +193,6 @@ final public class XMLParserImpl implements SchemaParser
     private SchemaRegExCompiler m_regexc;
     @SuppressWarnings("unused")
     private SchemaLoadOptions m_options;
+    private boolean m_processRepeatedNamespaces = false;
 
 }
