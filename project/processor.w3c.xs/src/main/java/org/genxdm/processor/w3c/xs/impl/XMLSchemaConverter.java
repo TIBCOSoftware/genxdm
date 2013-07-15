@@ -1307,6 +1307,10 @@ public final class XMLSchemaConverter
         {
             return (ListSimpleType)memberType;
         }
+        else if (memberType instanceof UnionSimpleType)
+        {
+        	return (UnionSimpleType)memberType;
+        }
         else if (memberType instanceof SimpleType)
         {
             if (memberType.isSimpleUrType())
