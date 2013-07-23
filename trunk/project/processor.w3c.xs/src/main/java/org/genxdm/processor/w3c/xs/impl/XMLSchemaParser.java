@@ -8139,6 +8139,21 @@ final class XMLSchemaParser extends XMLRepresentation
                         throw new SmAttributeUseException(reader.getName(), reader.getAttributeName(i), getFrozenLocation(reader.getLocation()), ste);
                     }
                 }
+                else if (LN_FIXED.equals(localName))
+                {
+                    // TODO: how can we handle the 'fixed' attribute on the whitespace facet
+                    // in the architecture of schema model that defines it as an enumeration?
+                    // a completely correct solution would check all ancestor types when encountering
+                    // a whitespace policy change in a subtype, and would mandate creation of three
+                    // additional values for the WhitespacePolicy enum (preserve_fixed, replace_fixed,
+                    // collapse_fixed).
+                    // All of that work would be useful once in a few million encounters of the
+                    // whitespace tag. The shorter way to 'fix' this is to ignore the fixed attribute:
+                    // neither throwing an exception, nor paying attention when it's been set to fixed,
+                    // nor checking whether ancestors have a fixed whitespace policy.
+                    //
+                    // Which is what this empty block now achieves. Win?
+                }
                 else
                 {
                     reportAttributeInGlobalNamespace(reader.getName(), reader.getAttributeName(i), getFrozenLocation(reader.getLocation()));
