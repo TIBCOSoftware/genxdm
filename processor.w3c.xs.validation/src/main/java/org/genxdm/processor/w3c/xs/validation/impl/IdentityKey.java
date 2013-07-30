@@ -54,16 +54,11 @@ final class IdentityKey
 	@Override
 	public boolean equals(final Object obj)
 	{
-	    // TODO: fix it, dammit.
-	    return false;
-//		if (obj instanceof IdentityKey)
-//		{
-//			final IdentityKey other = (IdentityKey)obj;
-//			return ValidationSupport.equalValues(getTypedValue(), other.getTypedValue());
-//		}
-//		else
-//		{
-//			return false;
-//		}
+		if (obj instanceof IdentityKey)
+		{
+			final IdentityKey other = (IdentityKey)obj;
+			return m_value == null ? other.m_value == null : m_value.equals(other.m_value);
+		}
+		return false;
 	}
 }
