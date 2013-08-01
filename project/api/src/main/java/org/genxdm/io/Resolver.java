@@ -27,14 +27,36 @@ import java.net.URI;
 public interface Resolver
 {
     /**
-     * Resolves a {@link URI} into an {@link InputStream} and a systemID.
+     * Resolves a {@link String} into an {@link InputStream} and a systemID.
      * 
      * @param location
-     *            The {@link URI} to be resolved.
+     *            A {@link String} to be used in resolution. This represents the 'expected'
+     *            or 'canonical' location for the target. May be null if the namespace argument
+     *            is non-null.
+     * @param namespace
+     *            A {@link String} to be used in resolution. This represents the 'identifier'
+     *            for the target, such as the target namespace for a schema-like document.
+     *            May be null if the location argument is non-null.
+     * @return the resolved document, or null if the document cannot be resolved. 
      * @throws IOException
      *             if an exception occurs while opening the {@link InputStream}.
      */
-    Resolved<InputStream> resolveInputStream(URI location) throws IOException;
+    Resolved<InputStream> resolveInputStream(String location, String namespace) throws IOException;
     
-    Resolved<Reader> resolveReader(URI location) throws IOException;
+    /**
+     * Resolves a {@link String} into an {@link InputStream} and a systemID.
+     * 
+     * @param location
+     *            A {@link String} to be used in resolution. This represents the 'expected'
+     *            or 'canonical' location for the target. May be null if the namespace argument
+     *            is non-null.
+     * @param namespace
+     *            A {@link String} to be used in resolution. This represents the 'identifier'
+     *            for the target, such as the target namespace for a schema-like document.
+     *            May be null if the location argument is non-null.
+     * @return the resolved document, or null if the document cannot be resolved. 
+     * @throws IOException
+     *             if an exception occurs while opening the {@link InputStream}.
+     */
+    Resolved<Reader> resolveReader(String location, String namespace) throws IOException;
 }

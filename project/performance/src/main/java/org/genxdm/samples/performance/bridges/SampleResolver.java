@@ -34,21 +34,22 @@ public final class SampleResolver implements Resolver
 	 *            the URI to resolve; must not be null
 	 * @return a pair of InputStream and resolved URI.
 	 */
-	public Resolved<InputStream> resolveInputStream(final URI location) throws IOException
+	public Resolved<InputStream> resolveInputStream(final String location, final String namespace) throws IOException
 	{
 		PreCondition.assertArgumentNotNull(location, "uri");
-		if (location.isAbsolute())
+		URI loc = URI.create(location);
+		if (loc.isAbsolute())
 		{
-			return retrieve(location, location);
+			return retrieve(loc, loc);
 		}
 		else
 		{
 			PreCondition.assertArgumentNotNull(baseURI, "baseURI");
 
 			final URI base = baseURI.normalize();
-			final URI resolved = base.resolve(location);
+			final URI resolved = base.resolve(loc);
 
-			return retrieve(location, resolved);
+			return retrieve(loc, resolved);
 		}
 	}
 
@@ -87,7 +88,7 @@ public final class SampleResolver implements Resolver
 			throw new AssertionError(e);
 		}
 	}
-	public Resolved<Reader> resolveReader(URI location) throws IOException {
+	public Resolved<Reader> resolveReader(String location, String namespace) throws IOException {
 		throw new UnsupportedOperationException("resolverReader");
 	}
 }
