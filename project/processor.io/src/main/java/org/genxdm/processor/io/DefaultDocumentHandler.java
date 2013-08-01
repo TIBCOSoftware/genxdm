@@ -145,7 +145,7 @@ public class DefaultDocumentHandler<N>
         {
             // TODO: this might break, actually.
             // also, this indicates that we're being lame with the resolver.
-            Resolved<Reader> rdr = resolver.resolveReader(URI.create(source.getSystemId())); 
+            Resolved<Reader> rdr = resolver.resolveReader(source.getSystemId(), null); 
             return parse(rdr.getResource(), systemId);
         }
         return null;
