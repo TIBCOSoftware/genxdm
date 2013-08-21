@@ -782,7 +782,8 @@ final class ModelPSVI implements VxPSVI, Locatable
     private String m_publicId;
     private String m_systemId;
 
-    private Type m_type;
+    // package access so that we can do some dirty tweaking for ignores.
+    Type m_type;
     private SmContentFiniteStateMachine m_machine;
 
     private ProcessContentsMode m_processContents;

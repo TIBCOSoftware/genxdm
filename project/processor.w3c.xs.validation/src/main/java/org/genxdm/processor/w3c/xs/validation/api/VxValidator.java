@@ -39,6 +39,8 @@ public interface VxValidator<A>
     void setExceptionHandler(final SchemaExceptionHandler handler);
     
     void setComponentProvider(final ComponentProvider provider);
+    
+    void setIgnoredElements(final Iterable<QName> elements);
 
     void setOutputHandler(VxOutputHandler<A> handler);
 
