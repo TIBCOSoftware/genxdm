@@ -15,6 +15,8 @@
  */
 package org.genxdm.typed;
 
+import javax.xml.namespace.QName;
+
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.xs.SchemaComponentCache;
 import org.genxdm.xs.exceptions.SchemaExceptionHandler;
@@ -38,6 +40,16 @@ public interface Validator<A>
      * well.
      */
     void reset();
+    
+    /** Allows a caller to provide a list of elements, by QName, which are to
+     * be treated as if their type definitions were annotated, in the schema,
+     * with processContents='skip'. This is primarily useful for handling, e.g.
+     * attachments in the form of XOP, where base64Binary text nodes are replaced
+     * by child elements.
+     * 
+     * @param elementNames the QNames of the elements to be ignored.
+     */
+    void setIgnores(Iterable<QName> elementNames);
     
     // TODO: should this be componentprovider instead of schema?
     /** Provide the schema component provider which is used during validation.

@@ -41,6 +41,7 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 		m_kernel = kernel;
 	}
 
+    @Override
 	public void characters(final char ch[], final int start, final int length) throws SAXException
 	{
 		try
@@ -53,6 +54,7 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 		}
 	}
 
+    @Override
 	public void endDocument() throws SAXException
 	{
 		try
@@ -65,6 +67,7 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 		}
 	}
 
+    @Override
 	public void endElement(final String uri, final String localName, final String qName) throws SAXException
 	{
 		try
@@ -78,34 +81,47 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 		}
 	}
 
+    @Override
 	public void endPrefixMapping(final String prefix)
 	{
 	}
 
+    @Override
 	public void ignorableWhitespace(final char ch[], final int start, final int length)
 	{
 		// Ignore
 	}
 
+    @Override
 	public void processingInstruction(final String target, final String data)
 	{
 		// Ignore
 	}
 
+    @Override
 	public void reset()
 	{
 		m_kernel.reset();
 	}
 
+    @Override
 	public void setDocumentLocator(final Locator locator)
 	{
 		m_locator = locator;
 	}
+	
+	@Override
+	public void setIgnores(Iterable<QName> elementNames)
+	{
+	    m_kernel.setIgnoredElements(elementNames);
+	}
 
+    @Override
 	public void skippedEntity(final String name)
 	{
 	}
 
+    @Override
 	public void startDocument() throws SAXException
 	{
 //System.out.println("Here's a document.");
@@ -129,6 +145,7 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 		}
 	}
 
+    @Override
 	public void startElement(final String uri, final String localName, final String qName, final Attributes attributes) throws SAXException
 	{
         // here's an interesting factoid:
@@ -179,6 +196,7 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 		}
 	}
 
+    @Override
 	public void startPrefixMapping(final String prefix, final String uri)
 	{
 		m_namespaces.add(new VxMapping<String, String>(prefix, uri));
@@ -220,7 +238,7 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
      * @throws IllegalArgumentException
      *             If the qname is null.
      */
-    public static boolean isNamespaceAttribute(final String qname) throws IllegalArgumentException
+    private static boolean isNamespaceAttribute(final String qname) throws IllegalArgumentException
     {
         PreCondition.assertArgumentNotNull(qname, "qname");
         if (XMLConstants.XMLNS_ATTRIBUTE.equals(qname))
