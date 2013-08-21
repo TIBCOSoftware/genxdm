@@ -43,6 +43,7 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 		this.atomBridge = atomBridge;
 	}
 
+    @Override
 	public void attribute(final String namespaceURI, final String localName, final String prefix, final List<? extends A> data, final QName ignoreMe) throws GenXDMException
 	{
 		// TODO: We don't want to throw the value away.
@@ -50,20 +51,24 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 		m_attributes.add(new VxMapping<QName, String>(new QName(namespaceURI, localName, prefix), strval));
 	}
 	
+    @Override
 	public void attribute(final String namespaceURI, final String localName, final String prefix, final String untypedAtomic, final DtdAttributeKind type) throws GenXDMException
 	{
 		m_attributes.add(new VxMapping<QName, String>(new QName(namespaceURI, localName, prefix), untypedAtomic));
 	}
 
+    @Override
 	public void close() throws IOException
 	{
 	}
 
+    @Override
 	public void comment(final String value) throws GenXDMException
 	{
 		// Ignore. Comments must not interfere with validation.
 	}
 
+    @Override
 	public void endDocument() throws GenXDMException
 	{
 		try
@@ -76,6 +81,7 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 		}
 	}
 
+    @Override
 	public void endElement() throws GenXDMException
 	{
 		flush();
@@ -89,6 +95,7 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 		}
 	}
 
+    @Override
 	public void flush()
 	{
         if (m_elementName != null)
@@ -110,21 +117,25 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
         // if we have an element without a name, we should prolly become quite angry
 	}
 
+    @Override
 	public void namespace(final String prefix, final String namespaceURI) throws GenXDMException
 	{
 		m_namespaces.add(new VxMapping<String, String>(prefix, namespaceURI));
 	}
 
+    @Override
 	public void processingInstruction(final String target, final String data) throws GenXDMException
 	{
 		// Ignore. Processing instructions must not interfere with validation.
 	}
 
+    @Override
 	public void reset()
 	{
 		kernel.reset();
 	}
 
+    @Override
 	public void startDocument(final URI documentURI, final String docTypeDecl) 
 	    throws GenXDMException
 	{
@@ -138,17 +149,20 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 		}
 	}
 
+    @Override
 	public void startElement(final String namespaceURI, final String localName, final String prefix, final QName ignoreMe) throws GenXDMException
 	{
 	    startElement(namespaceURI, localName, prefix);
 	}
 
+    @Override
     public void startElement(final String namespaceURI, final String localName, final String prefix) throws GenXDMException
     {
         flush();
         m_elementName = new QName(namespaceURI, localName, prefix);
     }
 
+    @Override
 	public void text(final List<? extends A> value) throws GenXDMException
 	{
 		flush();
@@ -166,6 +180,7 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 		}
 	}
 
+    @Override
 	public void text(final String untypedAtomic) throws GenXDMException
 	{
 		flush();
@@ -187,6 +202,12 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
     public SchemaExceptionHandler getSchemaExceptionHandler()
     {
         return errors;
+    }
+    
+    @Override
+    public void setIgnores(Iterable<QName> elementNames)
+    {
+        kernel.setIgnoredElements(elementNames);
     }
 
     @Override
