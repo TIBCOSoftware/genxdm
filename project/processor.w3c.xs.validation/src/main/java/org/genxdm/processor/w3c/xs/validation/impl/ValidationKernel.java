@@ -632,7 +632,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		    // this little bit is how we convince the attribute manager to ignore the attributes
 		    // in this type. they'll be passed through as untypedAtomic (potentially a problem if
 		    // there are attributes that shouldn't be ignored, but we have to do it this way or rewrite
-		    // attribute manager, which is currently out of scope).
+		    // attribute manager, which is currently out of scope). the trick is to have the elementype null
 		    Type savedType = m_currentPSVI.getType();
 		    m_currentPSVI.m_type = null;
 		    m_nodeIndex = m_attributes.attributes(m_currentPSVI, m_currentItem, attributes, m_downstream, m_errors, m_idm, m_icm);
