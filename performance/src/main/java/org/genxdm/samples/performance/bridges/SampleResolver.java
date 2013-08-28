@@ -92,14 +92,7 @@ public final class SampleResolver implements Resolver
 		{
 			throw new FileNotFoundException(toRetrieve.toString());
 		}
-		try
-		{
-			return new Resolved<InputStream>(location, stream, toRetrieve.toURI());
-		}
-		catch (final URISyntaxException e)
-		{
-			throw new AssertionError(e);
-		}
+		return new Resolved<InputStream>(location.toString(), stream, toRetrieve.toString());
 	}
 	public Resolved<Reader> resolveReader(String baseURI, String location, String namespace) throws IOException {
 		throw new UnsupportedOperationException("resolverReader");

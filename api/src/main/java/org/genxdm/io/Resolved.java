@@ -15,9 +15,7 @@
  */
 package org.genxdm.io;
 
-import java.net.URI;
-
-import org.genxdm.exceptions.IllegalNullArgumentException;
+import org.genxdm.exceptions.PreCondition;
 
 
 /**
@@ -30,9 +28,9 @@ import org.genxdm.exceptions.IllegalNullArgumentException;
  */
 public final class Resolved<E>
 {
-    private final URI location;
+    private final String location;
     private final E resource;
-    private final URI systemId;
+    private final String systemId;
 
     /**
      * Initializer.
@@ -42,19 +40,19 @@ public final class Resolved<E>
      * @param resource
      *            The resource that has been resolved.
      * @param systemId
-     *            The systemId of the resolved resource.
+     *            The systemId of the resolved resource. May be null.
      */
-    public Resolved(final URI location, final E resource, final URI systemId)
+    public Resolved(final String location, final E resource, final String systemId)
     {
-        this.location = IllegalNullArgumentException.check(location, "location");
-        this.resource = IllegalNullArgumentException.check(resource, "resource");
-        this.systemId = IllegalNullArgumentException.check(systemId, "systemId");
+        this.location = PreCondition.assertNotNull(location, "location");
+        this.resource = PreCondition.assertNotNull(resource, "resource");
+        this.systemId = systemId;
     }
 
     /**
      * Returns the original location specified for the resource.
      */
-    public URI getLocation()
+    public String getLocation()
     {
         return location;
     }
@@ -71,7 +69,7 @@ public final class Resolved<E>
      * Returns the systemId of the resolved resource. This may be used as a base-uri for resolving nested resource
      * references.
      */
-    public URI getSystemId()
+    public String getSystemId()
     {
         return systemId;
     }
