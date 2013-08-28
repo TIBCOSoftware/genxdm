@@ -152,7 +152,7 @@ public class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 		
 		for (final Resolved<InputStream> resource : resources)
 		{
-			ComponentBag scBag = parser.parse(resource.getLocation(), resource.getResource(), resource.getSystemId(), errors);
+			ComponentBag scBag = parser.parse(new URI(resource.getLocation()), resource.getResource(), new URI(resource.getSystemId()), errors);
 			if(!errors.isEmpty())
 			{
 				for(SchemaException error : errors)
