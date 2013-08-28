@@ -141,7 +141,7 @@ public class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 	{
 		// Load a top-level schema into the processing context.
 		final List<Resolved<InputStream>> resources = new LinkedList<Resolved<InputStream>>();
-		resources.add(getResolver().resolveInputStream(uri.toString(), null));
+		resources.add(getResolver().resolveInputStream(null, uri.toString(), null));
 
 		final SchemaExceptionCatcher errors = new SchemaExceptionCatcher();
 //		final SchemaLoadOptions args = new SchemaLoadOptions();
@@ -196,7 +196,7 @@ public class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 		@Override
 		public InputStream resolveInputStream(URI catalogURI)
 				throws IOException {
-			Resolved<InputStream> resolved = getResolver().resolveInputStream(catalogURI.toString(), null);
+			Resolved<InputStream> resolved = getResolver().resolveInputStream(null, catalogURI.toString(), null);
 			return resolved.getResource();
 		}
 	}

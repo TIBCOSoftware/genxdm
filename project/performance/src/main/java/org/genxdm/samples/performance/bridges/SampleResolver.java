@@ -15,11 +15,11 @@ import org.genxdm.io.Resolver;
 
 public final class SampleResolver implements Resolver
 {
-	final URI baseURI;
+	final URI m_baseURI;
 
 	public SampleResolver(final URI baseURI)
 	{
-		this.baseURI = PreCondition.assertArgumentNotNull(baseURI, "baseURI");
+		this.m_baseURI = PreCondition.assertArgumentNotNull(baseURI, "baseURI");
 	}
 
 	/**
@@ -29,12 +29,12 @@ public final class SampleResolver implements Resolver
 	 * the input source (which may involve network access).
 	 * 
 	 * @param baseURI
-	 *            the base URI against which the target is to be resolved; must not be null
+	 *            the base URI against which the target is to be resolved
 	 * @param location
 	 *            the URI to resolve; must not be null
 	 * @return a pair of InputStream and resolved URI.
 	 */
-	public Resolved<InputStream> resolveInputStream(final String location, final String namespace) throws IOException
+	public Resolved<InputStream> resolveInputStream(final String baseURI, final String location, final String namespace) throws IOException
 	{
 		PreCondition.assertArgumentNotNull(location, "uri");
 		URI loc = URI.create(location);
@@ -46,9 +46,22 @@ public final class SampleResolver implements Resolver
 		{
 			PreCondition.assertArgumentNotNull(baseURI, "baseURI");
 
-			final URI base = baseURI.normalize();
+			URI base = null;
+			if(baseURI != null)
+			{
+				try {
+					base = new URI(baseURI).normalize();
+				}
+				catch (URISyntaxException e) 
+				{
+					throw new IOException("Invalid baseURI: " + baseURI, e);
+				}
+			}
+			else
+			{
+				base = m_baseURI.normalize();
+			}
 			final URI resolved = base.resolve(loc);
-
 			return retrieve(loc, resolved);
 		}
 	}
@@ -88,7 +101,15 @@ public final class SampleResolver implements Resolver
 			throw new AssertionError(e);
 		}
 	}
-	public Resolved<Reader> resolveReader(String location, String namespace) throws IOException {
+	public Resolved<Reader> resolveReader(String baseURI, String location, String namespace) throws IOException {
 		throw new UnsupportedOperationException("resolverReader");
+	}
+	public Resolved<InputStream> resolveInputStream(final String location, final String namespace) throws IOException
+	{
+		return resolveInputStream(null, location, namespace);
+	}
+	
+	public Resolved<Reader> resolveReader(String location, String namespace) throws IOException {
+		return resolveReader(null, location, namespace);
 	}
 }
