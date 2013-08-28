@@ -18,7 +18,6 @@ package org.genxdm.io;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.net.URI;
 
 
 /**
@@ -29,6 +28,10 @@ public interface Resolver
     /**
      * Resolves a {@link String} into an {@link InputStream} and a systemID.
      * 
+     * @param baseURI
+     *            A {@link String} to be used in resolution. This represents the base URI from
+     *            which relative URIs are resolved.  May be null if location is null or if location
+     *            is absolute.
      * @param location
      *            A {@link String} to be used in resolution. This represents the 'expected'
      *            or 'canonical' location for the target. May be null if the namespace argument
@@ -41,11 +44,15 @@ public interface Resolver
      * @throws IOException
      *             if an exception occurs while opening the {@link InputStream}.
      */
-    Resolved<InputStream> resolveInputStream(String location, String namespace) throws IOException;
+    Resolved<InputStream> resolveInputStream(String baseURI, String location, String namespace) throws IOException;
     
     /**
      * Resolves a {@link String} into an {@link InputStream} and a systemID.
      * 
+     * @param baseURI
+     *            A {@link String} to be used in resolution. This represents the base URI from
+     *            which relative URIs are resolved.  May be null if location is null or if location
+     *            is absolute.
      * @param location
      *            A {@link String} to be used in resolution. This represents the 'expected'
      *            or 'canonical' location for the target. May be null if the namespace argument
@@ -58,5 +65,5 @@ public interface Resolver
      * @throws IOException
      *             if an exception occurs while opening the {@link InputStream}.
      */
-    Resolved<Reader> resolveReader(String location, String namespace) throws IOException;
+    Resolved<Reader> resolveReader(String baseURI, String location, String namespace) throws IOException;
 }
