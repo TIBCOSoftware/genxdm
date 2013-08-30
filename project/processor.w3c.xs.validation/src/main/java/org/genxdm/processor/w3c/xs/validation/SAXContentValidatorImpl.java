@@ -16,12 +16,12 @@
 package org.genxdm.processor.w3c.xs.validation;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.LinkedList;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.misc.StringToURIParser;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
 import org.genxdm.processor.w3c.xs.validation.api.VxValidator;
@@ -128,9 +128,9 @@ public final class SAXContentValidatorImpl<A> implements SAXValidator<A>
 		final URI documentURI;
 		try
 		{
-			documentURI = (m_locator != null) ? ((m_locator.getSystemId() != null) ? new URI(m_locator.getSystemId()) : null) : null;
+			documentURI = (m_locator != null) ? ((m_locator.getSystemId() != null) ? StringToURIParser.parse(m_locator.getSystemId()) : null) : null;
 		}
-		catch (final URISyntaxException e)
+		catch (final IllegalArgumentException e)
 		{
 			throw new SAXException(e);
 		}
