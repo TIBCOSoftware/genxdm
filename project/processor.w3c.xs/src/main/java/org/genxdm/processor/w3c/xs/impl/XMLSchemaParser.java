@@ -168,36 +168,41 @@ final class XMLSchemaParser extends XMLRepresentation
 
         final XMLInputFactory factory = XMLInputFactory.newInstance();
 
-        final XMLStreamReader reader;
-        // TODO: this is potentially a problem.
-        // while it won't read schemas recursively (which is good),
-        // it uses a different 'xml schema cache' for every instantiation
-        // of this parser (both the schema cache and this parser are
-        // instantiated and called from xmlparserimpl.parse()).
-        // this means that it is trivially easy to read the same
-        // schema over and over and over, and it is not at all clear
-        // what sort of action should happen when this occurs.
-        try
+        // this pattern of instantiation will catch the idiotic cases in which
+        // an implementation of XMLInputFactory attempts to turn a supplied URI
+        // into a URL, which is not always possible (for instance, urn-s).
+        XMLStreamReader reader = null;
+        boolean tryNull = (systemId == null);
+        if (systemId != null)
         {
-            if (null != systemId)
+            try
             {
                 reader = factory.createXMLStreamReader(systemId.toString(), istream);
             }
-            else
+            catch (final XMLStreamException xse)
+            {
+                // ignore it this time around; try again:
+                tryNull = true;
+            }
+        }
+        if (tryNull)
+        {
+            try
             {
                 reader = factory.createXMLStreamReader(null, istream);
             }
+            catch (final XMLStreamException xse)
+            {
+                // TODO: figure out what happens.  following comment was in received code.
+                // I'm not sure what has happened here, but it doesn't fit into the
+                // category of not
+                // being well formed XML. Perhaps it's not XML at all. We'll throw
+                // this assertion and deal
+                // with it more accurately when we know more.
+                throw new AssertionError(xse);
+            }
         }
-        catch (final XMLStreamException e)
-        {
-            // TODO: figure out what happens.  following comment was in received code.
-            // I'm not sure what has happened here, but it doesn't fit into the
-            // category of not
-            // being well formed XML. Perhaps it's not XML at all. We'll throw
-            // this assertion and deal
-            // with it more accurately when we know more.
-            throw new AssertionError(e);
-        }
+        
         try
         {
             boolean done = false;
