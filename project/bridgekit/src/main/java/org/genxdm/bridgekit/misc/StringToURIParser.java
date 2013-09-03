@@ -27,11 +27,6 @@ public class StringToURIParser
                 return new URI(null, input, null); // a really stupid (but legal) relative URI.
             Matcher matcher = URI_PATTERN.matcher(input);
             matcher.matches();
-            scheme = matcher.group(2);
-            authority = matcher.group(4);
-            path = matcher.group(5);
-            query = matcher.group(7);
-            fragment = matcher.group(9);
             // remove all of the encoding in the components, because otherwise the URI
             // constructor will replace each '%' with %25, which is beyond stupid.
             // here, we also treat '+' as an encoding in the query and fragment parts.
@@ -39,6 +34,31 @@ public class StringToURIParser
             // (an encoded '/' in a path component) ought to be left encoded, but ...
             // that won't work, so far as I can tell (URI() will turn it into %252f,
             // but won't turn '/' into %2f). So ... this is as right as I can get it, for now
+            scheme = matcher.group(2);
+            authority = decode(matcher.group(4), false);
+            path = decode(matcher.group(5), false);
+            query = decode(matcher.group(7), true);
+            fragment = decode(matcher.group(9), true);
+            // if scheme is non-null, then path *must* start with a slash for hierarchical
+            if ( (scheme != null) && (path != null) && !path.startsWith(SLASH) ) // not hierarchical
+            {
+                // if authority is non-null and non-empty, this is supposed to be
+                // hierarchical, but is broken beyond retrieval. we don't know how
+                // to put together the pieces here for a schema-specific part.
+                if ( (authority != null) && (authority.length() > 0) )
+                    throw new IllegalArgumentException("Invalid hierarchical URI: "+input);
+                // otherwise (no need for else because that throw implies it), we treat
+                // path + query as the schema-specific part. non-null query is weird, here, but
+                // wtf, eh?
+                String schemeSpecific = (query == null) ? path : path + QUERY + query;
+                return new URI(scheme, schemeSpecific, fragment);
+            }
+            // again, else is implied because it returns or throws. we either
+            // have no scheme (which must be relative, which must be hierarchical),
+            // or we have scheme and authority and a path starting with a slash.
+            // query and fragment we care less about, so long as they don't
+            // cause the uselessly fragile URI constructors to puke on our
+            // shoes.
             return new URI(scheme, decode(authority, false), decode(path, false), decode(query, true), decode(fragment, true));
         }
         catch (Exception e)
@@ -121,6 +141,8 @@ public class StringToURIParser
     private static final String URI_REGEX = "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?";
 //  match group start positions:              12            3  4          5       6   7        8 9
     // constants for use in replacement (probably safe to use literals, but clearer-perhaps to use constants)
+    private static final String SLASH = "/";
+    private static final char QUERY = '?';
     private static final char PERCENT = '%';
     private static final char PLUS = '+';
     private static final char SPACE = ' ';
