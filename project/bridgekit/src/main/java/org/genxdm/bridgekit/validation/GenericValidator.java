@@ -43,6 +43,7 @@ public class GenericValidator<N, A>
     public N validate(Cursor source, ValidationHandler<A> handler, QName type)
     {
         PreCondition.assertNotNull(source, "source cursor");
+        // if we didn't do this check, we could change the source argument to contentwriter
         if (type != null)
             PreCondition.assertTrue(source.isElement());
         SequenceBuilder<N, A> builder = context.newSequenceBuilder();

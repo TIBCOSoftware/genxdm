@@ -19,8 +19,7 @@ import java.util.Comparator;
 
 import org.genxdm.axes.AxisNodeNavigator;
 import org.genxdm.axes.NodeNavigator;
-import org.genxdm.exceptions.GenXDMException;
-import org.genxdm.io.ContentHandler;
+import org.genxdm.io.ContentStreamer;
 import org.genxdm.nodes.NodeInformer;
 
 /**
@@ -34,15 +33,6 @@ import org.genxdm.nodes.NodeInformer;
  * @param <N> Corresponds to the base type for all members of the underlying tree API.
  */
 public interface Model<N>
-    extends Comparator<N>, NodeInformer<N>, NodeNavigator<N>, AxisNodeNavigator<N>
+    extends Comparator<N>, NodeInformer<N>, NodeNavigator<N>, AxisNodeNavigator<N>, ContentStreamer<N>
 {
-    /**
-     * Support for streaming a node to a {@link ContentHandler}.
-     * 
-     * @param node
-     *            The node to be streamed. May not be null.
-     * @param handler
-     *            The handler for events generated.
-     */
-    void stream(N node, ContentHandler handler) throws GenXDMException;
 }
