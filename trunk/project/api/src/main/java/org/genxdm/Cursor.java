@@ -1,8 +1,8 @@
 package org.genxdm;
 
 import org.genxdm.axes.Navigator;
-import org.genxdm.exceptions.GenXDMException;
-import org.genxdm.io.ContentHandler;
+import org.genxdm.io.ContentWriter;
+import org.genxdm.nodes.Traverser;
 import org.genxdm.nodes.TraversingInformer;
 
 /** A &lt;N>ode-free cursor-light abstraction.
@@ -20,15 +20,6 @@ import org.genxdm.nodes.TraversingInformer;
  * @see TraversingInformer
  */
 public interface Cursor
-    extends TraversingInformer, Navigator
+    extends TraversingInformer, Navigator, ContentWriter
 {
-    /**
-     * Support for streaming the current node to a {@link ContentHandler}.
-     * 
-     * @param writer
-     *            The handler for events generated.
-     * 
-     * @throws GenXDMException
-     */
-    void write(ContentHandler writer) throws GenXDMException;
 }
