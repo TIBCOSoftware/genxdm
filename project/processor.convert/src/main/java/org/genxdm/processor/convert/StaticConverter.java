@@ -15,13 +15,13 @@
  */
 package org.genxdm.processor.convert;
 
-import org.genxdm.Cursor;
 import org.genxdm.exceptions.GenXDMException;
+import org.genxdm.io.ContentWriter;
 import org.genxdm.io.FragmentBuilder;
 
 public class StaticConverter
 {
-    public static <Ntrg> Ntrg convert(Cursor cursor, FragmentBuilder<Ntrg> builder)
+    public static <Ntrg> Ntrg convert(ContentWriter cursor, FragmentBuilder<Ntrg> builder)
         throws GenXDMException
     {
         builder.reset();

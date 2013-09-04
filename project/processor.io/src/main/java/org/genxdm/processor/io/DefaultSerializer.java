@@ -10,9 +10,9 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.genxdm.Model;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.exceptions.XdmMarshalException;
+import org.genxdm.io.ContentStreamer;
 import org.genxdm.processor.output.ContentHandlerOnXmlStreamWriter;
 
 /** This is a simple mixin, though that isn't really possible in Java.
@@ -22,13 +22,13 @@ import org.genxdm.processor.output.ContentHandlerOnXmlStreamWriter;
  */
 abstract class DefaultSerializer<N>
 {
-    protected DefaultSerializer(final Model<N> model)
+    protected DefaultSerializer(final ContentStreamer<N> model)
     {
         this.model = model;
         opf = XMLOutputFactory.newInstance();
     }
     
-    protected DefaultSerializer(final XMLOutputFactory factory, final Model<N> model)
+    protected DefaultSerializer(final XMLOutputFactory factory, final ContentStreamer<N> model)
     {
         this.model = model;
         if (factory == null)
@@ -80,6 +80,6 @@ abstract class DefaultSerializer<N>
     }
 
     protected final XMLOutputFactory opf;
-    protected final Model<N> model;
+    protected final ContentStreamer<N> model;
 
 }
