@@ -1,7 +1,7 @@
 package org.genxdm;
 
 import org.genxdm.axes.Navigator;
-import org.genxdm.io.ContentWriter;
+import org.genxdm.io.ContentGenerator;
 import org.genxdm.nodes.Traverser;
 import org.genxdm.nodes.TraversingInformer;
 
@@ -20,6 +20,6 @@ import org.genxdm.nodes.TraversingInformer;
  * @see TraversingInformer
  */
 public interface Cursor
-    extends TraversingInformer, Navigator, ContentWriter
+    extends TraversingInformer, Navigator, ContentGenerator
 {
 }
