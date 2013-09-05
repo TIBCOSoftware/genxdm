@@ -2,7 +2,7 @@ package org.genxdm.io;
 
 import org.genxdm.exceptions.GenXDMException;
 
-public interface ContentWriter
+public interface ContentGenerator
 {
     /**
      * Support for streaming the current node to a {@link ContentHandler}.
