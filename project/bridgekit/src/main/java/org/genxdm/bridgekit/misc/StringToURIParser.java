@@ -56,10 +56,13 @@ public class StringToURIParser
             // again, else is implied because it returns or throws. we either
             // have no scheme (which must be relative, which must be hierarchical),
             // or we have scheme and authority and a path starting with a slash.
+            // or we have scheme and authority and a null path, which requires that
+            // we replace the null path with an empty path, because the constructor
+            // is too stupid to handle even so bloody simple a bloody case.
             // query and fragment we care less about, so long as they don't
             // cause the uselessly fragile URI constructors to puke on our
             // shoes.
-            return new URI(scheme, decode(authority, false), decode(path, false), decode(query, true), decode(fragment, true));
+            return new URI(scheme, authority, (path == null) ? "" : path, query, fragment);
         }
         catch (Exception e)
         {
