@@ -14,4 +14,10 @@ public interface ContentGenerator
      */
     void write(ContentHandler writer) throws GenXDMException;
 
+    /**
+     * Test whether this node is an element node.
+     * 
+     * @return true for element nodes, false for all other node types.
+     */
+    boolean isElement();
 }

@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.Cursor;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.ContentGenerator;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.io.SequenceBuilder;
@@ -40,10 +40,9 @@ public class GenericValidator<N, A>
         return builder.getNode();
     }
 
-    public N validate(Cursor source, ValidationHandler<A> handler, QName type)
+    public N validate(ContentGenerator source, ValidationHandler<A> handler, QName type)
     {
         PreCondition.assertNotNull(source, "source cursor");
-        // if we didn't do this check, we could change the source argument to contentwriter
         if (type != null)
             PreCondition.assertTrue(source.isElement());
         SequenceBuilder<N, A> builder = context.newSequenceBuilder();
