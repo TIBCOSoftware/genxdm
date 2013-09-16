@@ -17,8 +17,8 @@ package org.genxdm.typed;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.Cursor;
 import org.genxdm.ProcessingContext;
+import org.genxdm.io.ContentGenerator;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.TypedDocumentHandlerFactory;
 import org.genxdm.typed.types.AtomBridge;
@@ -141,5 +141,5 @@ public interface TypedContext<N, A>
      * null. If validation has failed, the tree may not be typed. Will <em>not</em>
      * be the same tree (object) supplied as an argument. 
      */
-    N validate(Cursor source, ValidationHandler<A> validator, QName initialType);
+    N validate(ContentGenerator source, ValidationHandler<A> validator, QName initialType);
 }

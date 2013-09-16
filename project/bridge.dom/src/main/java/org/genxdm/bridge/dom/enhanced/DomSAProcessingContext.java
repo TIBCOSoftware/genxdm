@@ -18,7 +18,6 @@ package org.genxdm.bridge.dom.enhanced;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLReporter;
 
-import org.genxdm.Cursor;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.dom.DomProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
@@ -30,6 +29,7 @@ import org.genxdm.bridgekit.validation.GenericValidator;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
 import org.genxdm.bridgekit.xs.TypesBridgeImpl;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.ContentGenerator;
 import org.genxdm.io.Resolver;
 import org.genxdm.processor.io.ValidatingDocumentHandler;
 import org.genxdm.typed.TypedContext;
@@ -118,7 +118,7 @@ public final class DomSAProcessingContext
     }
 
     @Override
-    public Node validate(Cursor source, ValidationHandler<XmlAtom> validator, QName initialType)
+    public Node validate(ContentGenerator source, ValidationHandler<XmlAtom> validator, QName initialType)
     {
         return gentour.validate(source, validator, initialType);
     }

@@ -18,7 +18,6 @@ package org.genxdm.bridge.cx.typed;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLReporter;
 
-import org.genxdm.Cursor;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.cx.base.XmlNodeContext;
 import org.genxdm.bridge.cx.tree.XmlNode;
@@ -30,6 +29,7 @@ import org.genxdm.bridgekit.validation.GenericValidator;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
 import org.genxdm.bridgekit.xs.TypesBridgeImpl;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.ContentGenerator;
 import org.genxdm.io.Resolver;
 import org.genxdm.processor.io.ValidatingDocumentHandler;
 import org.genxdm.typed.TypedContext;
@@ -113,7 +113,7 @@ public class TypedXmlNodeContext
     }
 
     @Override
-    public XmlNode validate(Cursor source, ValidationHandler<XmlAtom> validator, QName initialType)
+    public XmlNode validate(ContentGenerator source, ValidationHandler<XmlAtom> validator, QName initialType)
     {
         return gator.validate(source, validator, initialType);
     }
