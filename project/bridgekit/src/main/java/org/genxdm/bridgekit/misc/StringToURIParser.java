@@ -35,10 +35,15 @@ public class StringToURIParser
             // that won't work, so far as I can tell (URI() will turn it into %252f,
             // but won't turn '/' into %2f). So ... this is as right as I can get it, for now
             scheme = matcher.group(2);
+//System.out.println("Scheme: \"" + scheme + "\"");
             authority = decode(matcher.group(4), false);
+//System.out.println("Authority: \"" + authority + "\"");
             path = decode(matcher.group(5), false);
+//System.out.println("Path: \"" + path + "\"");
             query = decode(matcher.group(7), true);
+//System.out.println("Query: \"" + query + "\"");
             fragment = decode(matcher.group(9), true);
+//System.out.println("Fragment: \"" + fragment + "\"");
             // if scheme is non-null, then path *must* start with a slash for hierarchical
             if ( (scheme != null) && (path != null) && !path.startsWith(SLASH) ) // not hierarchical
             {
@@ -76,10 +81,10 @@ public class StringToURIParser
         // to pretty much go perform anatomically unlikely acts upon themselves.
         if (component == null)
             return component;
-        if (component.indexOf(PERCENT) == -1)
-            return component;
         if (component.length() == 0)
             return null;
+        if (component.indexOf(PERCENT) == -1)
+            return component;
         
         StringBuilder builder = new StringBuilder();
         int bytePattern, sumOfBytes = 0;
