@@ -17,6 +17,7 @@ package org.genxdm.processor.w3c.xs.exception.sm;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.enums.ValidationOutcome;
 import org.genxdm.xs.resolve.LocationInSchema;
 
@@ -24,8 +25,16 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmDuplicateElementException extends SmLocationException
 {
+    private final QName m_elementName;
+    
     public SmDuplicateElementException(final QName name, final LocationInSchema location)
     {
         super(ValidationOutcome.TODO, "?", location);
+        m_elementName = PreCondition.assertArgumentNotNull(name, "name");
+  }
+    @Override
+    public String getMessage()
+    {
+        return "Duplicate definition of element " + m_elementName + ": " + getLocation();
     }
 }
