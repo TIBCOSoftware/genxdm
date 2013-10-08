@@ -2140,21 +2140,22 @@ public final class XMLSchemaConverter
             Type currentType = lhs;
             while (true)
             {
-                if (currentType == rhs)
-                {
-                    return true;
-                }
-                else
-                {
-                    if (!currentType.isComplexUrType())
-                    {
-                        currentType = currentType.getBaseType();
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
+            	if(currentType == rhs)
+            	{
+            		return true;
+            	}
+            	if(currentType.getName().equals(rhs.getName()))
+            	{
+            		return true;
+            	}
+            	if (!currentType.isComplexUrType())
+            	{
+            		currentType = currentType.getBaseType();
+            	}
+            	else
+            	{
+            		return false;
+            	}
             }
         }
         else
