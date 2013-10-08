@@ -90,13 +90,15 @@ final class NfaCompiler
             {
                 // 0 to max number of occurrences
                 NfaMatchState<E> join = new NfaMatchState<E>(null);
-                start.addNext(join);    // possibly 0 occurrences
+                
+                NfaMatchState<E> originalStart = start;
                 while (max > 0)
                 {
                     start = compileOne(prime, bridge, start);
                     start.addNext(join);
                     max -= 1;
                 }
+                originalStart.addNext(join);                
                 return join;
             }
             else
@@ -122,7 +124,6 @@ final class NfaCompiler
      */
     private static <E,T> NfaMatchState<E> compileOne(final E term, final RegExBridge<E, T> bridge, final NfaMatchState<E> start)
     {
-//      System.out.println("compileOne: " + term.toString());
         if (bridge.isSequence(term))
         {
             // must match all of the subterms in sequence
