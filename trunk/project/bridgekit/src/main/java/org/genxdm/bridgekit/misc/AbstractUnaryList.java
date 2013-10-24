@@ -59,10 +59,15 @@ public abstract class AbstractUnaryList<T> implements List<T>
         }
     }
 
+    @SuppressWarnings("unchecked")
     public final boolean containsAll(final Collection<?> c)
     {
-        // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        if ( (c != null) && (c.size() == 1) )
+        {
+            for (Object o : (Collection<Object>)c)
+                return contains(o);
+        }
+        return false;
     }
 
     public final int indexOf(final Object object)
@@ -87,14 +92,14 @@ public abstract class AbstractUnaryList<T> implements List<T>
 
     public final ListIterator<T> listIterator()
     {
-        // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        return new UnaryListIterator<T>(this.get(0));
     }
 
     public final ListIterator<T> listIterator(final int index)
     {
-        // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        if (index != 0)
+            throw new ArrayIndexOutOfBoundsException(index);
+        return listIterator();
     }
 
     public final T remove(final int arg0)
@@ -129,8 +134,11 @@ public abstract class AbstractUnaryList<T> implements List<T>
 
     public final List<T> subList(final int fromIndex, final int toIndex)
     {
-        // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        if (fromIndex != 0)
+            throw new ArrayIndexOutOfBoundsException(fromIndex);
+        if (toIndex != 1)
+            throw new ArrayIndexOutOfBoundsException(toIndex);
+        return this;
     }
 
     public final Object[] toArray()

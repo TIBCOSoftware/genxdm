@@ -15,6 +15,8 @@
  */
 package org.genxdm.processor.w3c.xs.regex.api;
 
+import org.genxdm.exceptions.PreCondition;
+
 @SuppressWarnings("serial")
 public final class StringRegExException extends Exception
 {

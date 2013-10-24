@@ -21,7 +21,6 @@ final class ValidationSupport
 {
 	private ValidationSupport()
 	{
-		throw new AssertionError();
 	}
 
 	public static <A> boolean equalValues(final List<? extends A> expect, final List<? extends A> actual)

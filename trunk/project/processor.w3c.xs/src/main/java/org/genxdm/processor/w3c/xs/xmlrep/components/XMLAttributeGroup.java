@@ -68,10 +68,7 @@ public final class XMLAttributeGroup extends XMLComponent
         {
             return name;
         }
-        else
-        {
-            throw new AssertionError();
-        }
+        return null;
     }
 
     public LinkedList<XMLAttributeUse> getAttributeUses()

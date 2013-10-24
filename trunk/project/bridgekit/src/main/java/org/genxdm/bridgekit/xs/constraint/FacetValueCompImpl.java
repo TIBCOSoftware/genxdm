@@ -34,6 +34,7 @@ import org.genxdm.bridgekit.xs.operations.OpXMLSchemaCompareLong;
 import org.genxdm.bridgekit.xs.operations.OpXMLSchemaCompareShort;
 import org.genxdm.bridgekit.xs.operations.ValueComparator;
 import org.genxdm.exceptions.AtomCastException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
@@ -70,7 +71,8 @@ public final class FacetValueCompImpl extends FacetImpl implements Limit
     }
 
     @Override
-    public <A> void validate(final List<? extends A> actualValue, final SimpleType simpleType, AtomBridge<A> bridge) throws FacetException
+    public <A> void validate(final List<? extends A> actualValue, final SimpleType simpleType, AtomBridge<A> bridge) 
+            throws FacetException
     {
         PreCondition.assertArgumentNotNull(simpleType, "simpleType");
         for (final A atom : actualValue)
@@ -81,7 +83,15 @@ public final class FacetValueCompImpl extends FacetImpl implements Limit
             // another
             SimpleType uberType = baseType.getNativeTypeDefinition();
     
-            final A rhsAtom = castAsUberType(getLimit(bridge), uberType.getName(), bridge);
+            final A rhsAtom;
+            try
+            {
+                rhsAtom = castAsUberType(getLimit(bridge), uberType.getName(), bridge);
+            }
+            catch (AtomCastException ace)
+            {
+                throw new GenXDMException(ace);
+            }
             ValueComparator<A> comparator = calculateComparator(rhsAtom, m_kind, uberType.getNativeType(), bridge);
             
             try
@@ -202,15 +212,9 @@ public final class FacetValueCompImpl extends FacetImpl implements Limit
     }
 
     private <A> A castAsUberType(final A atom, final QName uberType, final AtomBridge<A> atomBridge)
+        throws AtomCastException
     {
-        try
-        {
-            return atomBridge.castAs(atom, uberType, castingContext);
-        }
-        catch (final AtomCastException e)
-        {
-            throw new AssertionError(e);
-        }
+         return atomBridge.castAs(atom, uberType, castingContext);
     }
     
     // TODO: this is quick and dirty, just to make it compile.
