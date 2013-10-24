@@ -656,7 +656,7 @@ public class CanonicalAtomBridge
         else
         {
             PreCondition.assertArgumentNotNull(atom, "atom");
-            throw new AssertionError("TODO: getDouble(" + atom.getClass() + ")");
+            throw new AssertionError("getDouble(" + atom.getClass() + ")");
         }
     }
 

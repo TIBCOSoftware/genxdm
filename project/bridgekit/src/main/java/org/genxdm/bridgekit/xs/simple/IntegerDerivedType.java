@@ -54,19 +54,19 @@ public class IntegerDerivedType extends AbstractAtomType
     public void accept(SequenceTypeVisitor visitor)
     {
         // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        throw new UnsupportedOperationException("TODO");
     }
 
     public boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
     {
         // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        throw new UnsupportedOperationException("TODO");
     }
 
     public Iterable<EnumerationDefinition> getEnumerations()
     {
         // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        throw new UnsupportedOperationException("TODO");
     }
 
     public Facet getFacetOfKind(final FacetKind facetKind)
@@ -92,13 +92,13 @@ public class IntegerDerivedType extends AbstractAtomType
     public Iterable<Pattern> getPatterns()
     {
         // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        throw new UnsupportedOperationException("TODO");
     }
 
     public ScopeExtent getScopeExtent()
     {
         // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        throw new UnsupportedOperationException("TODO");
     }
 
     public WhiteSpacePolicy getWhiteSpacePolicy()
@@ -252,7 +252,6 @@ public class IntegerDerivedType extends AbstractAtomType
 
     public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
     {
-        // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        return validate(initialValue, bridge);
     }
 }

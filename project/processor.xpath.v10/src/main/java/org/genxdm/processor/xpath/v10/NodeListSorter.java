@@ -36,7 +36,6 @@ public class NodeListSorter
 {
 	private NodeListSorter()
 	{
-		throw new AssertionError();
 	}
 
 	static public <N> NodeIterator<N> sort(final NodeIterator<N> iter, final Model<N> model) throws ExprException

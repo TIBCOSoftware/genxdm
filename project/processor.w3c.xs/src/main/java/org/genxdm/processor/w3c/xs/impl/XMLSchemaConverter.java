@@ -825,7 +825,6 @@ public final class XMLSchemaConverter
                 }
                 else
                 {
-                    // TODO: use a better exception
                     throw new AssertionError(derivation);
                 }
             }
@@ -1212,8 +1211,7 @@ public final class XMLSchemaConverter
                     return new ValueConstraint(xmlValueConstraint.kind, m_existingCache.getSimpleType(NativeType.UNTYPED_ATOMIC), initialValue);
                 }
             }
-            // TODO: better exception? does this ever actually happen?
-            throw new AssertionError(type); // neither simple nor complex?
+            throw new AssertionError(type); // neither simple nor complex; should not happen
         }
         return null;
     }

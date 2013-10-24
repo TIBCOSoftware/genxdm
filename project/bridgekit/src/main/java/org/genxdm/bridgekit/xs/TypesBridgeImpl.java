@@ -107,7 +107,8 @@ public final class TypesBridgeImpl implements TypesBridge
             }
             else
             {
-                throw new AssertionError("TODO");
+                // TODO: handle the case of accept for a list simple type, i guess.
+                throw new UnsupportedOperationException();
             }
         }
         else if (type instanceof ComplexUrType)
@@ -437,6 +438,9 @@ public final class TypesBridgeImpl implements TypesBridge
         }
         else
         {
+            // TODO: errr ... WTF is going on here? I can't tell whether this is
+            // appropriate or not. there's a method on TypesBridge that only applies to
+            // DocumentNodeType? Really? And it can't be in the argument? Really really?
             throw new AssertionError(type);
         }
     }
@@ -640,7 +644,8 @@ public final class TypesBridgeImpl implements TypesBridge
         }
         else
         {
-            throw new AssertionError("TODO: getBinaryLHS(" + type.getClass() + ")");
+            // TODO: implement?
+            throw new UnsupportedOperationException("getBinaryLHS(" + type.getClass() + ")");
         }
     }
 
@@ -654,7 +659,8 @@ public final class TypesBridgeImpl implements TypesBridge
         }
         else
         {
-            throw new AssertionError("TODO: getBinaryRHS(" + type.getClass() + ")");
+            // TODO: implement?
+            throw new UnsupportedOperationException("getBinaryRHS(" + type.getClass() + ")");
         }
     }
 
@@ -1174,8 +1180,8 @@ public final class TypesBridgeImpl implements TypesBridge
         }
         else
         {
-            // TODO:
-            throw new AssertionError();
+            // TODO: handle the simple type case
+            throw new UnsupportedOperationException();
         }
     }
 
