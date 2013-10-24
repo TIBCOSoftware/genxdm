@@ -1,0 +1,14 @@
+Export-Package: org.genxdm.bridgekit;version=1.0,\
+	org.genxdm.bridgekit.atoms;version=1.0,\
+	org.genxdm.bridgekit.axes;version=1.0,\
+	org.genxdm.bridgekit.filters;version=1.0,\
+	org.genxdm.bridgekit.misc;version=1.0,\
+	org.genxdm.bridgekit.names;version=1.0,\
+	org.genxdm.bridgekit.tree;version=1.0,\
+	org.genxdm.bridgekit.xs;version=1.0,\
+	org.genxdm.bridgekit.xs.complex;version=1.0,\
+	org.genxdm.bridgekit.xs.constraint;version=1.0,\
+	org.genxdm.bridgekit.xs.operations;version=1.0,\
+	org.genxdm.bridgekit.xs.simple;version=1.0
+Bundle-Version: 1.0.0
+-runee: JavaSE-1.6
