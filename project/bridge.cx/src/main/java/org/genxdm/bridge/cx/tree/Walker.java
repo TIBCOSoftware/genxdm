@@ -32,31 +32,25 @@ public final class Walker
             case ELEMENT:
             {
                 handler.startElement(node.namespaceURI, node.localName, node.prefixHint);
-                try
+                XmlNamespaceNode namespace = ((XmlElementNode)node).firstNamespace;
+                while (namespace != null)
                 {
-                    XmlNamespaceNode namespace = ((XmlElementNode)node).firstNamespace;
-                    while (namespace != null)
-                    {
-                        walk(namespace, handler);
-                        namespace = (XmlNamespaceNode)namespace.nextSibling;
-                    }
-                    XmlAttributeNode attribute = ((XmlElementNode)node).firstAttribute;
-                    while (attribute != null)
-                    {
-                        walk(attribute, handler);
-                        attribute = (XmlAttributeNode)attribute.nextSibling;
-                    }
-                    XmlNode child = ((XmlContainerNode)node).firstChild;
-                    while (child != null)
-                    {
-                        walk(child, handler);
-                        child = child.nextSibling;
-                    }
+                    walk(namespace, handler);
+                    namespace = (XmlNamespaceNode)namespace.nextSibling;
                 }
-                finally
+                XmlAttributeNode attribute = ((XmlElementNode)node).firstAttribute;
+                while (attribute != null)
                 {
-                    handler.endElement();
+                    walk(attribute, handler);
+                    attribute = (XmlAttributeNode)attribute.nextSibling;
                 }
+                XmlNode child = ((XmlContainerNode)node).firstChild;
+                while (child != null)
+                {
+                    walk(child, handler);
+                    child = child.nextSibling;
+                }
+                handler.endElement();
                 break;
             }
             case ATTRIBUTE:
@@ -72,19 +66,13 @@ public final class Walker
             case DOCUMENT:
             {
                 handler.startDocument(((XmlRootNode)node).documentURI, ((XmlRootNode)node).docTypeDecl);
-                try
+                XmlNode child = ((XmlContainerNode)node).firstChild;
+                while (child != null)
                 {
-                    XmlNode child = ((XmlContainerNode)node).firstChild;
-                    while (child != null)
-                    {
-                        walk(child, handler);
-                        child = child.nextSibling;
-                    }
+                    walk(child, handler);
+                    child = child.nextSibling;
                 }
-                finally
-                {
-                    handler.endDocument();
-                }
+                handler.endDocument();
                 break;
             }
             case NAMESPACE:

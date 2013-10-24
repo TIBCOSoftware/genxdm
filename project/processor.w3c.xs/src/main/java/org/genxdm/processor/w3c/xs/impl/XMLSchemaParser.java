@@ -36,6 +36,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcUnexpectedAttributeException;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException;
@@ -199,7 +200,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 // being well formed XML. Perhaps it's not XML at all. We'll throw
                 // this assertion and deal
                 // with it more accurately when we know more.
-                throw new AssertionError(xse);
+                throw new GenXDMException(xse);
             }
         }
         
@@ -6059,8 +6060,6 @@ final class XMLSchemaParser extends XMLRepresentation
                 final List<XmlAtom> value = type.validate(name, atoms);
                 if (value.size() > 0)
                     return new QName(targetNamespace, atoms.getString(value.get(0)));
-                // TODO: shouldn't this have some bloody information in it?
-                throw new AssertionError();
             }
             catch (DatatypeException dte)
             {
@@ -7788,8 +7787,7 @@ final class XMLSchemaParser extends XMLRepresentation
         {
             throw new SimpleTypeException(initialValue, type, dte);
         }
-        // TODO: shouldn't this be more specific? like a simpletypeexception 'null is not true or false' or something?
-        throw new AssertionError();
+        return false;
     }
 
     /**

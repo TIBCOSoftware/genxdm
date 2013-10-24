@@ -171,6 +171,5 @@ public final class AtomicTypeSupport
 
     private AtomicTypeSupport()
     {
-        throw new AssertionError();
     }
 }

@@ -2303,6 +2303,7 @@ final class SchemaConstraintChecker
             {
                 if (one.getType().getName().equals(two.getType().getName()))
                 {
+                    // TODO: WTF?
                     throw new AssertionError("!@#$%^");
                 }
                 else

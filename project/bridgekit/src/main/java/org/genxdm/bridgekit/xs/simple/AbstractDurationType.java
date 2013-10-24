@@ -92,25 +92,25 @@ abstract class AbstractDurationType extends AbstractAtomType
     public final void accept(SequenceTypeVisitor visitor)
     {
         // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        throw new UnsupportedOperationException("TODO");
     }
 
     public final boolean derivedFrom(String namespace, String name, Set<DerivationMethod> derivationMethods)
     {
         // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        throw new UnsupportedOperationException("TODO");
     }
 
     public final Iterable<EnumerationDefinition> getEnumerations()
     {
         // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        throw new UnsupportedOperationException("TODO");
     }
 
     public final Facet getFacetOfKind(FacetKind facetKind)
     {
         // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        throw new UnsupportedOperationException("TODO");
     }
 
     public final Iterable<Facet> getFacets()
@@ -126,7 +126,7 @@ abstract class AbstractDurationType extends AbstractAtomType
     public final Iterable<Pattern> getPatterns()
     {
         // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        throw new UnsupportedOperationException("TODO");
     }
 
     public final ScopeExtent getScopeExtent()

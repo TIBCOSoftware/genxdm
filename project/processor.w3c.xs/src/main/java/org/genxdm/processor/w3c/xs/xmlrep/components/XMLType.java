@@ -111,10 +111,7 @@ public final class XMLType extends XMLComponent
         {
             return name;
         }
-        else
-        {
-            throw new AssertionError();
-        }
+        return null;
     }
 
     public boolean isComplexUrType()

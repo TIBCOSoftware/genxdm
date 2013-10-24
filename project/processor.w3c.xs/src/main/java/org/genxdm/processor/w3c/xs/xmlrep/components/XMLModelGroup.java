@@ -82,10 +82,7 @@ public final class XMLModelGroup extends XMLComponent implements XMLParticleTerm
         {
             return m_name;
         }
-        else
-        {
-            throw new AssertionError();
-        }
+        return null;
     }
 
     public ModelGroup.SmCompositor getCompositor()

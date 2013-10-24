@@ -55,7 +55,7 @@ public final class ContentTypeImpl implements ContentType
         destination.contentModel = contentModel;
     }
 
-    public ModelGroupUse getContentModel() throws AssertionError
+    public ModelGroupUse getContentModel()
     {
         PreCondition.assertTrue(isMixed() || isElementOnly(), "isMixed() || isElementOnly()");
         return contentModel;
@@ -66,7 +66,7 @@ public final class ContentTypeImpl implements ContentType
         return PreCondition.assertArgumentNotNull(kind, "kind");
     }
 
-    public SimpleType getSimpleType() throws AssertionError
+    public SimpleType getSimpleType()
     {
         PreCondition.assertTrue(isSimple(), "isSimple()");
         return simpleType;

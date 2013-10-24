@@ -298,6 +298,5 @@ final class DurationSupport
 
     private DurationSupport()
     {
-        throw new AssertionError();
     }
 }
