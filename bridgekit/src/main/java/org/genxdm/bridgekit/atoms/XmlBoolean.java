@@ -77,14 +77,14 @@ public enum XmlBoolean implements XmlAtom
 
     public boolean contains(Object o)
     {
-        // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        // TODO: maybe equivalent to equals?
+        throw new UnsupportedOperationException();
     }
 
     public boolean containsAll(Collection<?> c)
     {
-        // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        // TODO: if size == 1, equivalent to equals?
+        throw new UnsupportedOperationException();
     }
 
     public XmlBoolean get(final int index)
@@ -111,8 +111,9 @@ public enum XmlBoolean implements XmlAtom
 
     public int indexOf(Object o)
     {
-        // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        // TODO: if the object is a boolean and it matches our value, return index 0
+        // otherwise, return the not-found indicator.
+        throw new UnsupportedOperationException();
     }
 
     public boolean isEmpty()
@@ -132,20 +133,20 @@ public enum XmlBoolean implements XmlAtom
 
     public int lastIndexOf(Object o)
     {
-        // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        return indexOf(o);
     }
 
     public ListIterator<XmlAtom> listIterator()
     {
-        // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        // TODO: how does one turn this into a single-element list and then an iterator?
+        throw new UnsupportedOperationException();
     }
 
     public ListIterator<XmlAtom> listIterator(int index)
     {
-        // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        if (index == 0)
+            return listIterator();
+        throw new ArrayIndexOutOfBoundsException(index);
     }
 
     public XmlAtom remove(final int index)
@@ -180,8 +181,9 @@ public enum XmlBoolean implements XmlAtom
 
     public List<XmlAtom> subList(final int fromIndex, final int toIndex)
     {
-        // TODO Auto-generated method stub
-        throw new AssertionError("TODO");
+        if ( (fromIndex == 0) && (toIndex == 1) )
+            return this;
+        throw new ArrayIndexOutOfBoundsException(toIndex);
     }
 
     public Object[] toArray()

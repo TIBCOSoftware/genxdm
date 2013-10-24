@@ -130,7 +130,7 @@ public final class ComponentBagImpl implements ComponentBag
             }
             else
             {
-                throw new AssertionError(name);
+                throw new RuntimeException(name.toString());
             }
         }
     }

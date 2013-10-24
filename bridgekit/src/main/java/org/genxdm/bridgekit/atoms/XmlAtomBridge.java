@@ -159,8 +159,9 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
 
     public XmlAtom compile(final String sourceValue, final NativeType targetType, final PrefixResolver resolver) throws AtomCastException
     {
-        // TODO Auto-generated method stub
-        throw new AssertionError("TODO: compile");
+        // TODO implement compilation in the presence of a prefix resolver.
+        // this is so we can compile QNames. How can this be unimplemented?
+        throw new UnsupportedOperationException("Not implemented: compilation of QNames with a prefix resolver. Please report this issue.");
     }
 
     public XmlBase64Binary createBase64Binary(final byte[] base64BinaryValue)
@@ -1116,7 +1117,6 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
         }
         else
         {
-            // TODO Auto-generated method stub
             throw new AssertionError(atom.getClass());
         }
     }
@@ -1141,7 +1141,6 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
         }
         else
         {
-            // TODO Auto-generated method stub
             throw new AssertionError(atom.getClass());
         }
     }
@@ -1166,7 +1165,6 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
         }
         else
         {
-            // TODO Auto-generated method stub
             throw new AssertionError(atom.getClass());
         }
     }

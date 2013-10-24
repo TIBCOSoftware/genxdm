@@ -571,7 +571,9 @@ final class ModelPSVI implements VxPSVI, Locatable
 			final Set<DerivationMethod> prohibitedSubstitutions = complexType.getProhibitedSubstitutions();
 			if (prohibitedSubstitutions.contains(DerivationMethod.Substitution))
 			{
-				throw new AssertionError("Isn't this dead code?");
+			    // omgwtfbbq? don't assert with a snark-message unless you put your
+			    // name, address, and phone number in, plus the best time to not-call
+				//throw new AssertionError("Isn't this dead code?");
 				// Substitutions are blocked outright by the substitution group type.
 				// errors.error(new CvcSubstitutionBlockedByHeadTypeException(elementDeclaration,
 				// locatable.getLocation()));

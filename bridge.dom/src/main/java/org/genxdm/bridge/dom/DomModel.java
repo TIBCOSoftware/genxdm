@@ -324,6 +324,7 @@ public class DomModel
             {
                 try
                 {
+                    // TODO: use the better parser in bridgekit, and stop throwing the assertion.
                     return new URI(documentURI);
                 }
                 catch (final URISyntaxException e)
