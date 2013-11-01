@@ -68,14 +68,14 @@ public class NamespaceFixupSequenceFilter<A>
             }
             required.add(new DefaultNamespaceBinding(p, ns));
         }
-        Type t = (type == null) ? BuiltInSchema.SINGLETON.UNTYPED_ATOMIC : schema.getComponentProvider().getTypeDefinition(type);
-        // i'm not sure about this test
-        if ( (type != null) && t.derivedFromType(BuiltInSchema.SINGLETON.QNAME, methods) )
-        {
-            // TODO: finish the job
-            // we need to check for qnames in content, here, and insure
-            // that any bindings that they require are also declared.
-        }
+//        Type t = (type == null) ? BuiltInSchema.SINGLETON.UNTYPED_ATOMIC : schema.getComponentProvider().getTypeDefinition(type);
+//        // i'm not sure about this test
+//        if ( (type != null) && t.derivedFromType(BuiltInSchema.SINGLETON.QNAME, methods) )
+//        {
+//            // TODO: finish the job
+//            // we need to check for qnames in content, here, and insure
+//            // that any bindings that they require are also declared.
+//        }
         attributes.add(new Attr(ns, localName, p, data, type));
     }
 
