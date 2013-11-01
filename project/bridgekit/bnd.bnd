@@ -5,6 +5,7 @@ Export-Package: org.genxdm.bridgekit;version=1.0,\
 	org.genxdm.bridgekit.misc;version=1.0,\
 	org.genxdm.bridgekit.names;version=1.0,\
 	org.genxdm.bridgekit.tree;version=1.0,\
+	org.genxdm.bridgekit.validation;version=1.0,\
 	org.genxdm.bridgekit.xs;version=1.0,\
 	org.genxdm.bridgekit.xs.complex;version=1.0,\
 	org.genxdm.bridgekit.xs.constraint;version=1.0,\
