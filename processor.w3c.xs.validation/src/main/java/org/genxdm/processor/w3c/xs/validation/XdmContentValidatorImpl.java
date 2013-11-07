@@ -186,7 +186,7 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 		flush();
 		try
 		{
-			kernel.characters(untypedAtomic.toCharArray(), 0, untypedAtomic.length());
+			kernel.text(atomBridge.wrapAtom(atomBridge.createUntypedAtomic(untypedAtomic)));
 		}
 		catch (final IOException e)
 		{
