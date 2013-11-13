@@ -158,13 +158,16 @@ final class XMLSchemaParser extends XMLRepresentation
         PreCondition.assertArgumentNotNull(cache, "cache");
         PreCondition.assertArgumentNotNull(module, "module");
 
-        if (cache.m_seenSystemIds.contains(systemId))
+        if(!module.isChameleon())
         {
-            return;
-        }
-        else
-        {
-            cache.m_seenSystemIds.add(systemId);
+            if (cache.m_seenSystemIds.contains(systemId))
+            {
+                return;
+            }
+            else
+            {
+                cache.m_seenSystemIds.add(systemId);
+            }
         }
 
         final XMLInputFactory factory = XMLInputFactory.newInstance();
