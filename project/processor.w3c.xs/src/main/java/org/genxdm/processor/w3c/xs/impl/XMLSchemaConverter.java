@@ -157,7 +157,7 @@ import org.genxdm.xs.types.UnionSimpleType;
  */
 public final class XMLSchemaConverter
 {
-    private XMLSchemaConverter(final SchemaRegExCompiler regexc, final ComponentProvider outCache, final XMLSchemaCache inCache, final ComponentBagImpl schema, final XMLComponentLocator locations, final SchemaExceptionHandler errors)
+    private XMLSchemaConverter(final SchemaRegExCompiler regexc, final ComponentProvider outCache, final XMLSchemaCache inCache, final ComponentBagImpl schema, final XMLComponentLocator locations, final SchemaExceptionHandler errors, final boolean lastInWins)
     {
         this.regexc = regexc;
         this.m_existingCache = outCache;
@@ -167,6 +167,7 @@ public final class XMLSchemaConverter
         this.m_locations = locations;
         this.m_errors = errors;
         this.m_cycles = new XMLCycles();
+        this.m_lastInWins = lastInWins;
     }
 
     private SchemaWildcard attributeWildcard(final Type baseType)
@@ -569,7 +570,7 @@ public final class XMLSchemaConverter
             {
                 return m_outBag.getAttribute(name);
             }
-            if (m_existingCache.hasAttribute(name))
+            if (!m_lastInWins && m_existingCache.hasAttribute(name))
             {
                 m_inCache.m_attributesUnresolved.remove(name);
                 return m_existingCache.getAttributeDeclaration(name);
@@ -634,7 +635,7 @@ public final class XMLSchemaConverter
             {
                 return m_outBag.getAttributeGroup(agName);
             }
-            if (m_existingCache.hasAttributeGroup(agName))
+            if (!m_lastInWins && m_existingCache.hasAttributeGroup(agName))
             {
                 m_inCache.m_attributeGroupsUnresolved.remove(agName);
                 return m_existingCache.getAttributeGroup(agName);
@@ -702,7 +703,7 @@ public final class XMLSchemaConverter
             try
             {
                 QName name = source.getName();
-                if(m_existingCache.getAttributeGroup(name) != null)
+                if(!m_lastInWins && m_existingCache.getAttributeGroup(name) != null)
                 {
                     m_inCache.m_attributeGroupsUnresolved.remove(name);
                 }
@@ -722,7 +723,7 @@ public final class XMLSchemaConverter
             try
             {
                 QName name = source.getName();
-                if(m_existingCache.getAttributeDeclaration(name) != null)
+                if(!m_lastInWins && m_existingCache.getAttributeDeclaration(name) != null)
                 {
                     m_inCache.m_attributesUnresolved.remove(name);
                 }
@@ -775,7 +776,7 @@ public final class XMLSchemaConverter
             {
                 return m_outBag.getComplexType(outName);
             }
-            if (m_existingCache.hasComplexType(outName))
+            if (!m_lastInWins && m_existingCache.hasComplexType(outName))
             {
                 m_inCache.m_typesUnresolved.remove(outName);
                 return m_existingCache.getComplexType(outName);
@@ -1015,7 +1016,7 @@ public final class XMLSchemaConverter
             {
                 return m_outBag.getElement(name);
             }
-            if (m_existingCache.hasElement(name))
+            if (!m_lastInWins && m_existingCache.hasElement(name))
             {
                 m_inCache.m_elementsUnresolved.remove(name);
                 return m_existingCache.getElementDeclaration(name);
@@ -1151,7 +1152,7 @@ public final class XMLSchemaConverter
             try
             {
                 QName name = source.getName();
-                if(m_existingCache.getElementDeclaration(name) != null)
+                if(!m_lastInWins && m_existingCache.getElementDeclaration(name) != null)
                 {
                     m_inCache.m_elementsUnresolved.remove(name);
                 }
@@ -1223,7 +1224,7 @@ public final class XMLSchemaConverter
         {
             return m_outBag.getIdentityConstraint(name);
         }
-        if (m_existingCache.hasIdentityConstraint(name))
+        if (!m_lastInWins && m_existingCache.hasIdentityConstraint(name))
         {
             m_inCache.m_constraintsUnresolved.remove(name);
             return m_existingCache.getIdentityConstraint(name);
@@ -1264,7 +1265,7 @@ public final class XMLSchemaConverter
             try
             {
                 QName name = source.getName();
-                if(m_existingCache.getIdentityConstraint(name) != null)
+                if(!m_lastInWins && m_existingCache.getIdentityConstraint(name) != null)
                 {
                     m_inCache.m_constraintsUnresolved.remove(name);
                 }
@@ -1332,7 +1333,7 @@ public final class XMLSchemaConverter
             {
                 return m_outBag.getModelGroup(name);
             }
-            if (m_existingCache.hasModelGroup(name))
+            if (!m_lastInWins && m_existingCache.hasModelGroup(name))
             {
                 m_inCache.m_modelGroupsUnresolved.remove(name);
                 return m_existingCache.getModelGroup(name);
@@ -1408,7 +1409,7 @@ public final class XMLSchemaConverter
             try
             {
                 QName name = source.getName();
-                if(m_existingCache.getModelGroup(name) != null)
+                if(!m_lastInWins && m_existingCache.getModelGroup(name) != null)
                 {
                     m_inCache.m_modelGroupsUnresolved.remove(name);
                 }
@@ -1455,7 +1456,7 @@ public final class XMLSchemaConverter
         for (final XMLNotation source : m_inCache.m_notations.values())
         {
             QName name = source.getName();
-            if(m_existingCache.getNotationDeclaration(name) != null)
+            if(!m_lastInWins && m_existingCache.getNotationDeclaration(name) != null)
             {
                 m_inCache.m_notationsUnresolved.remove(name);
             }
@@ -1484,7 +1485,7 @@ public final class XMLSchemaConverter
             {
                 return m_outBag.getSimpleType(name);
             }
-            if (m_existingCache.hasSimpleType(name))
+            if (!m_lastInWins && m_existingCache.hasSimpleType(name))
             {
                 m_inCache.m_typesUnresolved.remove(name);
                 return m_existingCache.getSimpleType(name);
@@ -1630,12 +1631,12 @@ public final class XMLSchemaConverter
         if (typeRef.isGlobal())
         {
             QName name = typeRef.getName();
-            if(m_existingCache.hasComplexType(name))
+            if(!m_lastInWins && m_existingCache.hasComplexType(name))
             {
                 m_inCache.m_typesUnresolved.remove(name);
                 return m_existingCache.getComplexType(name);
             }
-            if(m_existingCache.hasSimpleType(name))
+            if(!m_lastInWins && m_existingCache.hasSimpleType(name))
             {
                 m_inCache.m_typesUnresolved.remove(name);
                 return m_existingCache.getSimpleType(name);
@@ -1658,11 +1659,20 @@ public final class XMLSchemaConverter
             final boolean isAnonymous = false;
             try
             {
-                if(m_existingCache.getComplexType(name) != null || m_existingCache.getSimpleType(name) != null)
-                {
-                    m_inCache.m_typesUnresolved.remove(name);
-                }
-                else if (sourceType.isComplex())
+            	if((m_existingCache.getComplexType(name) != null || m_existingCache.getSimpleType(name) != null))
+            	{
+                    if(!m_lastInWins)
+                    {
+                        m_inCache.m_typesUnresolved.remove(name);
+                        return;
+                    }
+                    else if(!sourceType.isComplex() && !sourceType.isSimple()) // a typeRef that already exists
+                    {
+                        m_inCache.m_typesUnresolved.remove(name);
+                        return;
+                    }
+            	}
+                if (sourceType.isComplex())
                 {
                     convertComplexType(name, isAnonymous, sourceType);
                 }
@@ -2055,10 +2065,14 @@ public final class XMLSchemaConverter
 
     public static  Pair<ComponentBagImpl, XMLComponentLocator> convert(final SchemaRegExCompiler regexc, final ComponentProvider rtmCache, final XMLSchemaCache xmlCache, final SchemaExceptionHandler errors) throws AbortException
     {
+    	return convert(regexc, rtmCache, xmlCache, errors, false);
+    }
+    public static  Pair<ComponentBagImpl, XMLComponentLocator> convert(final SchemaRegExCompiler regexc, final ComponentProvider rtmCache, final XMLSchemaCache xmlCache, final SchemaExceptionHandler errors, boolean lastInWins) throws AbortException
+    {
         final ComponentBagImpl schema = new ComponentBagImpl();
         final XMLComponentLocator locations = new XMLComponentLocator();
 
-        final XMLSchemaConverter converter = new XMLSchemaConverter(regexc, rtmCache, xmlCache, schema, locations, errors);
+        final XMLSchemaConverter converter = new XMLSchemaConverter(regexc, rtmCache, xmlCache, schema, locations, errors, lastInWins);
 
         xmlCache.computeSubstitutionGroups();
 
@@ -2185,5 +2199,7 @@ public final class XMLSchemaConverter
     private final ComponentBagImpl m_outBag;
 
     private final SchemaRegExCompiler regexc;
+    
+    private final boolean m_lastInWins;
 
 }

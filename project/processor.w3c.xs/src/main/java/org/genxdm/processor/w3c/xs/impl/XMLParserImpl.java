@@ -114,6 +114,14 @@ final public class XMLParserImpl implements SchemaParser, LoadOptions
                 else
                     m_processRepeatedNamespaces = false;
             }
+            String liw = m_options.getOption(OPTION_LAST_IN_WINS);
+            if (liw != null)
+            {
+                if (liw.trim().equals(TRUE) || liw.trim().equals(YES))
+                    m_lastInWins = true;
+                else
+                    m_lastInWins = false;
+            }
         }
     }
 
@@ -125,7 +133,7 @@ final public class XMLParserImpl implements SchemaParser, LoadOptions
         // Convert the schema before checking for unresolved references.  That way, during the
         // conversion from XML model to SCHEMA model, we can peer into the SmComponentProvider to
         // see if any of the desired components are there.
-        Pair<ComponentBagImpl, XMLComponentLocator> retval = XMLSchemaConverter.convert(m_regexc, this.cache, cache, errors);      
+        Pair<ComponentBagImpl, XMLComponentLocator> retval = XMLSchemaConverter.convert(m_regexc, this.cache, cache, errors, m_lastInWins);      
         try
         {
             cache.checkReferences();
@@ -194,5 +202,6 @@ final public class XMLParserImpl implements SchemaParser, LoadOptions
     @SuppressWarnings("unused")
     private SchemaLoadOptions m_options;
     private boolean m_processRepeatedNamespaces = false;
+    private boolean m_lastInWins = false;
 
 }
