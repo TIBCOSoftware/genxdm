@@ -276,14 +276,17 @@ public class ContentHandlerOnXmlStreamWriter
         throws XMLStreamException
     {
         String retVal;
-        if (isAttribute)
-        {
+//        if (isAttribute)
+//        {
             // attributes in the default namespace are not in global scope (requiring a namespace declaration),
             // but in the scope of their parent element, and the default prefix, for attributes, is *never*
             // bound (or bindable) to anything other than the default/global/null namespace
             if (uri.equals(XMLConstants.NULL_NS_URI) || (uri == null))
                 return XMLConstants.DEFAULT_NS_PREFIX;
-        }
+            // isAttribute check commented out, because if we have a default namespace uri,
+            // it doesn't matter whether it's an attribute or an element, it needs bound to
+            // the default prefix.
+//        }
         if (prefixSuggestion == null) // no prefix.
         {
             String suggestion = null;
