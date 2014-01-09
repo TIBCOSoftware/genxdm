@@ -1664,15 +1664,13 @@ public final class XMLSchemaConverter
                     if(!m_lastInWins)
                     {
                         m_inCache.m_typesUnresolved.remove(name);
-                        return;
                     }
                     else if(!sourceType.isComplex() && !sourceType.isSimple()) // a typeRef that already exists
                     {
                         m_inCache.m_typesUnresolved.remove(name);
-                        return;
                     }
             	}
-                if (sourceType.isComplex())
+                else if (sourceType.isComplex())
                 {
                     convertComplexType(name, isAnonymous, sourceType);
                 }
