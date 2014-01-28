@@ -94,6 +94,7 @@ public interface TypedNodeInformer<N, A>
      * For text nodes, returns the value as an xs:untypedAtomic. Invalid, unvalidated,
      * and partially-validated nodes tend to return string values variously
      * typed. null (the empty sequence) is possible in some circumstances.
+     * When xsi:nillable="true", then null is returned.
      * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-typed-value">XDM dm:typed-value accessor</a>
      * @see <a href="http://www.w3.org/TR/xpath-datamodel/#TypedValueDetermination">XDM Typed Value Determination</a>
      */

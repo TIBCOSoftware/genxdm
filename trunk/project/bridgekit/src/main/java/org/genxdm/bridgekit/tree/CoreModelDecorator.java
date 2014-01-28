@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.Model;
 import org.genxdm.NodeKind;
+import org.genxdm.bridgekit.atoms.XsiNil;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
@@ -313,6 +314,12 @@ public final class CoreModelDecorator<N, A>
         switch (getNodeKind(node))
         {
             case ELEMENT:
+            {
+                if (XsiNil.isNilledElement(this, node, atomBridge))
+                    return null;
+                // otherwise, fall through to the next section, which is both
+                // elements and attributes. clear?
+            }
             case ATTRIBUTE:
             {
                 final QName typeName = getTypeName(node);
