@@ -1590,12 +1590,8 @@ public final class XMLSchemaConverter
                 {
                     return convertComplexType(name, isAnonymous, type);
                 }
-                else
-                {
-                    throw new SmUndeclaredReferenceException(name, m_inCache.m_typesUnresolved.get(name));
-                }
             }
-            else if (m_existingCache.hasSimpleType(name))
+            if (m_existingCache.hasSimpleType(name))
             {
                 return m_existingCache.getSimpleType(name);
             }
