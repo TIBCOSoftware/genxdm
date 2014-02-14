@@ -1675,57 +1675,47 @@ public final class XMLSchemaConverter
 
     private Type convertType(final QName name, final boolean isAnonymous) throws SchemaException, AbortException
     {
+        // first, check our incrementally collected results, in m_outBag.
+        // if we have something there, return it.
+        // should we insure that it's not in the unresolved list, in that case?
         if (m_outBag.hasSimpleType(name))
-        {
             return m_outBag.getSimpleType(name);
-        }
         else if (m_outBag.hasComplexType(name))
-        {
             return m_outBag.getComplexType(name);
-        }
         else
         {
+            // now, we look in the collection of xmlrep components. is it there?
             if (m_inCache.m_globalTypes.containsKey(name))
             {
+                // okay. if it's simple or complex, convert it and return
                 final XMLType type = m_inCache.m_globalTypes.get(name);
                 if (type.isSimple())
-                {
                     return convertSimpleType(name, isAnonymous, type);
-                }
                 else if (type.isComplex())
-                {
                     return convertComplexType(name, isAnonymous, type);
-                }
-            }
-            if (m_existingCache.hasSimpleType(name))
-            {
-                return m_existingCache.getSimpleType(name);
-            }
-            else if (m_existingCache.hasComplexType(name))
-            {
-                return m_existingCache.getComplexType(name);
-            }
-            else
-            {
+                // if not, then it's an unresolved reference. so ... don't ever
+                // call this method if there's more parsing to be done, eh?
                 throw new SmUndeclaredReferenceException(name, m_inCache.m_typesUnresolved.get(name));
             }
+            // it's not in the collection of unresolved components
+            // is it already in our component provider?
+            else if (m_existingCache.hasSimpleType(name))
+                return m_existingCache.getSimpleType(name);
+            else if (m_existingCache.hasComplexType(name))
+                return m_existingCache.getComplexType(name);
+            // not there, either. oops. die in flames.
+            throw new SmUndeclaredReferenceException(name, m_inCache.m_typesUnresolved.get(name));
         }
     }
 
     private Type convertType(final QName name, final boolean isAnonymous, final XMLType type) throws AbortException, SchemaException
     {
         if (type.isSimple())
-        {
             return convertSimpleType(name, isAnonymous, type);
-        }
         else if (type.isComplex())
-        {
             return convertComplexType(name, isAnonymous, type);
-        }
-        else
-        {
-            throw new SmUndeclaredReferenceException(name, m_inCache.m_typesUnresolved.get(name));
-        }
+        // if it's neither simple nor complex, it's a type reference without a referent
+        throw new SmUndeclaredReferenceException(name, m_inCache.m_typesUnresolved.get(name));
     }
 
     private Type convertType(final XMLTypeRef typeRef) throws AbortException, SchemaException
@@ -1754,39 +1744,41 @@ public final class XMLSchemaConverter
 
     private void convertTypes() throws AbortException
     {
+        // we're iterating over all of the global types that haven't been
+        // converted yet. local types can't ever be unresolved, of course,
+        // and should be handled in the context of whatever contains them.
         for (final XMLType sourceType : m_inCache.m_globalTypes.values())
         {
             // {name} is known because the type is global.
             final QName name = sourceType.getName();
+            // and therefore not anonymous
             final boolean isAnonymous = false;
             try
             {
-            	if((!m_lastInWins && m_existingCache.getComplexType(name) != null || m_existingCache.getSimpleType(name) != null))
+                // if this one exists already, do special processing in case lastInWins
+            	if (m_existingCache.getComplexType(name) != null || m_existingCache.getSimpleType(name) != null)
             	{
-            		m_inCache.m_typesUnresolved.remove(name);
-                	// TODO: should this check be re-established, i.e. not commented out?
-//                    if(!m_lastInWins)
-//                    {
-//                        m_inCache.m_typesUnresolved.remove(name);
-//                    }
-//                    else if(!sourceType.isComplex() && !sourceType.isSimple()) // a typeRef that already exists
-//                    {
-//                        m_inCache.m_typesUnresolved.remove(name);
-//                    }
+            	    if (!m_lastInWins)
+            	        m_inCache.m_typesUnresolved.remove(name);
+            	    else
+            	    {
+            	        // if it's a real type to replace the existing, replace.
+            	        if (sourceType.isComplex())
+            	            convertComplexType(name, isAnonymous, sourceType);
+                        else if (sourceType.isSimple())
+                            convertSimpleType(name, isAnonymous, sourceType);
+            	        // if neither complex nor simple, then it's a ref; remove from unresolved
+                        else
+                            m_inCache.m_typesUnresolved.remove(name);
+            	    }
             	}
+            	// otherwise, it's not in the existing cache, so convert
                 else if (sourceType.isComplex())
-                {
                     convertComplexType(name, isAnonymous, sourceType);
-                }
                 else if (sourceType.isSimple())
-                {
                     convertSimpleType(name, isAnonymous, sourceType);
-                }
-                else
-                {
-                    convertType(name, isAnonymous);
-                    //throw new AssertionError(sourceType);
-                }
+                else // this isn't going to work--it's an incomplete type/type reference without a referent
+                    convertType(name, isAnonymous, sourceType); // let this method throw.
             }
             catch (final SchemaException e)
             {
@@ -2290,14 +2282,18 @@ public final class XMLSchemaConverter
 
     private final SchemaExceptionHandler m_errors;
 
+    // things that have already been pushed into the component provider in this parse group
     private final ComponentProvider m_existingCache;
     
     private final CanonicalAtomBridge m_atoms;
 
+    // this is the collection of components from the xmlrep package.
+    // it needs to be empty when we're done.
     private final XMLSchemaCache m_inCache;
 
     private final XMLComponentLocator m_locations;
 
+    // this is what we'll return
     private final ComponentBagImpl m_outBag;
 
     private final SchemaRegExCompiler regexc;
