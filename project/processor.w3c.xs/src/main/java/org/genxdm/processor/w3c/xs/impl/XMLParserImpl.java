@@ -162,8 +162,7 @@ final public class XMLParserImpl implements SchemaParser, LoadOptions
         }
     }
     
-    private ComponentBag resolve(XMLSchemaCache schemaCache, SchemaExceptionCatcher catcher,
-            SchemaExceptionHandler errors)
+    private ComponentBag resolve(XMLSchemaCache schemaCache, SchemaExceptionCatcher catcher, SchemaExceptionHandler errors)
         throws AbortException
     {
         if (!catcher.isEmpty())
@@ -199,7 +198,6 @@ final public class XMLParserImpl implements SchemaParser, LoadOptions
     private SchemaCatalog m_catalog;
     private CatalogResolver m_resolver;
     private SchemaRegExCompiler m_regexc;
-    @SuppressWarnings("unused")
     private SchemaLoadOptions m_options;
     private boolean m_processRepeatedNamespaces = false;
     private boolean m_lastInWins = false;
