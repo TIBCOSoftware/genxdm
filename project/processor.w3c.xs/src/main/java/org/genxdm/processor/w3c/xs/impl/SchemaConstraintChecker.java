@@ -461,7 +461,7 @@ final class SchemaConstraintChecker
 
             if (!clause14(complexType, baseType))
             {
-                errors.error(complexType, new SccDerivationExtensionContentTypeException(complexType.getName()));
+                errors.error(complexType, new SccDerivationExtensionContentTypeException(complexType.getName(), baseType.getName()));
             }
         }
         else if (complexType.getBaseType() instanceof SimpleType)
@@ -2254,7 +2254,6 @@ final class SchemaConstraintChecker
         {
             // It's the same particle.
             return true;
-
         }
         else if (1 == minOccurs && 1 == maxOccurs)
         {
@@ -2268,27 +2267,13 @@ final class SchemaConstraintChecker
                     if (firstMember instanceof ModelGroupUse)
                     {
                         final ModelGroupUse F = (ModelGroupUse)firstMember;
-                        return recursivelyIdenticalProperties(F, B);
-                    }
-                    else
-                    {
-                        return false;
+                        if (recursivelyIdenticalProperties(F, B))
+                            return true;
                     }
                 }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
             }
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     private boolean recursivelyIdenticalElements(final ElementDefinition one, final ElementDefinition two)

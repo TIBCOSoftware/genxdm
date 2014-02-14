@@ -20,14 +20,17 @@ import javax.xml.namespace.QName;
 @SuppressWarnings("serial")
 public final class SccDerivationExtensionContentTypeException extends SccDerivationExtensionException
 {
-    public SccDerivationExtensionContentTypeException(final QName complexTypeName)
+    public SccDerivationExtensionContentTypeException(final QName complexTypeName, final QName baseTypeName)
     {
         super(PART_WHEN_BASE_COMPLEX_TYPE_CONTENT_TYPE, complexTypeName);
+        baseType = baseTypeName;
     }
 
     @Override
     public String getMessage()
     {
-        return "The {content type} of the complex type " + getComplexTypeName() + " conflicts with the {content type} of the {base type definition}.";
+        return "The {content type} of the complex type " + getComplexTypeName() + " conflicts with the {content type} of the {base type definition} " + baseType + ".";
     }
+    
+    private QName baseType;
 }
