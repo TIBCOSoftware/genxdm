@@ -570,10 +570,25 @@ public final class XMLSchemaConverter
             {
                 return m_outBag.getAttribute(name);
             }
-            if (!m_lastInWins && m_existingCache.hasAttribute(name))
+            if(m_existingCache.hasAttribute(name))
             {
-                m_inCache.m_attributesUnresolved.remove(name);
-                return m_existingCache.getAttributeDeclaration(name);
+            	if(!m_lastInWins)
+            	{
+            		// We are not allowing this schema parse to create new elements.  
+                    m_inCache.m_attributesUnresolved.remove(name);
+                    return m_existingCache.getAttributeDeclaration(name);
+            	}
+            	else if(m_inCache.m_attributesUnresolved.containsKey(name) || m_attributesResolvedFromExistingCache.containsKey(name))
+            	{
+            		// This component is a reference which refers to an imported component; otherwise, its name would not be 
+            		// in the m_inCache.m_XxxUnresolved.  When XMLSchemaCache.registerXxx is called, it removes name from m_XxxUnresolved,
+            		// and registerXxxt is called when XMLSchemaParser encounters a global component, the only components that can be referenced.
+            		// So, we're going to remove its name from the list, NOT convert it, and return the existing component.
+                    m_inCache.m_attributesUnresolved.remove(name);
+            		AttributeDefinition existing = m_existingCache.getAttributeDeclaration(name);
+            		m_attributesResolvedFromExistingCache.put(name, existing);
+                    return existing;
+            	}
             }
             if (m_cycles.attributes.contains(xmlAttribute))
             {
@@ -635,10 +650,25 @@ public final class XMLSchemaConverter
             {
                 return m_outBag.getAttributeGroup(agName);
             }
-            if (!m_lastInWins && m_existingCache.hasAttributeGroup(agName))
+            if(m_existingCache.hasAttributeGroup(agName))
             {
-                m_inCache.m_attributeGroupsUnresolved.remove(agName);
-                return m_existingCache.getAttributeGroup(agName);
+            	if(!m_lastInWins)
+            	{
+            		// We are not allowing this schema parse to create new elements.  
+                    m_inCache.m_attributeGroupsUnresolved.remove(agName);
+                    return m_existingCache.getAttributeGroup(agName);
+            	}
+            	else if(m_inCache.m_attributeGroupsUnresolved.containsKey(agName) || m_attributeGroupsResolvedFromExistingCache.containsKey(agName))
+            	{
+            		// This component is a reference which refers to an imported component; otherwise, its name would not be 
+            		// in the m_inCache.m_XxxUnresolved.  When XMLSchemaCache.registerXxx is called, it removes name from m_XxxUnresolved,
+            		// and registerXxxt is called when XMLSchemaParser encounters a global component, the only components that can be referenced.
+            		// So, we're going to remove its name from the list, NOT convert it, and return the existing component.
+                    m_inCache.m_attributeGroupsUnresolved.remove(agName);
+            		AttributeGroupDefinition existing = m_existingCache.getAttributeGroup(agName);
+            		m_attributeGroupsResolvedFromExistingCache.put(agName, existing);
+                    return existing;
+            	}
             }
             if (m_cycles.attributeGroups.contains(xmlAttributeGroup))
             {
@@ -723,7 +753,8 @@ public final class XMLSchemaConverter
             try
             {
                 QName name = source.getName();
-                if(!m_lastInWins && m_existingCache.getAttributeDeclaration(name) != null)
+                
+                if(!m_lastInWins && m_existingCache.hasAttribute(name))
                 {
                     m_inCache.m_attributesUnresolved.remove(name);
                 }
@@ -776,10 +807,25 @@ public final class XMLSchemaConverter
             {
                 return m_outBag.getComplexType(outName);
             }
-            if (!m_lastInWins && m_existingCache.hasComplexType(outName))
+            if(m_existingCache.hasComplexType(outName))
             {
-                m_inCache.m_typesUnresolved.remove(outName);
-                return m_existingCache.getComplexType(outName);
+            	if(!m_lastInWins)
+            	{
+            		// We are not allowing this schema parse to create new elements.  
+                    m_inCache.m_typesUnresolved.remove(outName);
+                    return m_existingCache.getComplexType(outName);
+            	}
+            	else if(m_inCache.m_typesUnresolved.containsKey(outName) || m_typesResolvedFromExistingCache.containsKey(outName))
+            	{
+            		// This component is a reference which refers to an imported component; otherwise, its name would not be 
+            		// in the m_inCache.m_XxxUnresolved.  When XMLSchemaCache.registerXxx is called, it removes name from m_XxxUnresolved,
+            		// and registerXxxt is called when XMLSchemaParser encounters a global component, the only components that can be referenced.
+            		// So, we're going to remove its name from the list, NOT convert it, and return the existing component.
+                    m_inCache.m_typesUnresolved.remove(outName);
+            		ComplexType existing = m_existingCache.getComplexType(outName);
+            		m_typesResolvedFromExistingCache.put(outName, existing);
+                    return existing;
+            	}
             }
             if (m_cycles.types.contains(xmlComplexType))
             {
@@ -1016,10 +1062,25 @@ public final class XMLSchemaConverter
             {
                 return m_outBag.getElement(name);
             }
-            if (!m_lastInWins && m_existingCache.hasElement(name))
+            if(m_existingCache.hasElement(name))
             {
-                m_inCache.m_elementsUnresolved.remove(name);
-                return m_existingCache.getElementDeclaration(name);
+            	if(!m_lastInWins)
+            	{
+            		// We are not allowing this schema parse to create new elements.  
+                    m_inCache.m_elementsUnresolved.remove(name);
+                    return m_existingCache.getElementDeclaration(name);
+            	}
+            	else if(m_inCache.m_elementsUnresolved.containsKey(name) || m_elementsResolvedFromExistingCache.containsKey(name))
+            	{
+            		// This element is a reference which refers to an imported element; otherwise, its name would not be 
+            		// in the m_inCache.m_elementsUnresolved.  When XMLSchemaCache.registerELement is called, it removes name from m_elementsUnresolved,
+            		// and registerElement is called when XMLSchemaParser encounters a global element, the only elements that can be referenced.
+            		// So, we're going to remove its name from the list and NOT convert it -- it's just a reference
+                    m_inCache.m_elementsUnresolved.remove(name);
+            		ElementDefinition existing = m_existingCache.getElementDeclaration(name);
+            		m_elementsResolvedFromExistingCache.put(name, existing);
+                    return existing;
+            	}
             }
             if (m_cycles.elements.contains(xmlElement))
             {
@@ -1224,10 +1285,25 @@ public final class XMLSchemaConverter
         {
             return m_outBag.getIdentityConstraint(name);
         }
-        if (!m_lastInWins && m_existingCache.hasIdentityConstraint(name))
+        if(m_existingCache.hasIdentityConstraint(name))
         {
-            m_inCache.m_constraintsUnresolved.remove(name);
-            return m_existingCache.getIdentityConstraint(name);
+        	if(!m_lastInWins)
+        	{
+        		// We are not allowing this schema parse to create new elements.  
+                m_inCache.m_constraintsUnresolved.remove(name);
+                return m_existingCache.getIdentityConstraint(name);
+        	}
+        	else if(m_inCache.m_constraintsUnresolved.containsKey(name) || m_constraintsResolvedFromExistingCache.containsKey(name))
+        	{
+        		// This component is a reference which refers to an imported component; otherwise, its name would not be 
+        		// in the m_inCache.m_XxxUnresolved.  When XMLSchemaCache.registerXxx is called, it removes name from m_XxxUnresolved,
+        		// and registerXxxt is called when XMLSchemaParser encounters a global component, the only components that can be referenced.
+        		// So, we're going to remove its name from the list, NOT convert it, and return the existing component.
+                m_inCache.m_constraintsUnresolved.remove(name);
+        		IdentityConstraint existing = m_existingCache.getIdentityConstraint(name);
+        		m_constraintsResolvedFromExistingCache.put(name, existing);
+                return existing;
+        	}
         }
         if (m_cycles.constraints.contains(xmlConstraint))
         {
@@ -1333,10 +1409,25 @@ public final class XMLSchemaConverter
             {
                 return m_outBag.getModelGroup(name);
             }
-            if (!m_lastInWins && m_existingCache.hasModelGroup(name))
+            if(m_existingCache.hasModelGroup(name))
             {
-                m_inCache.m_modelGroupsUnresolved.remove(name);
-                return m_existingCache.getModelGroup(name);
+            	if(!m_lastInWins)
+            	{
+            		// We are not allowing this schema parse to create new elements.  
+                    m_inCache.m_modelGroupsUnresolved.remove(name);
+                    return m_existingCache.getModelGroup(name);
+            	}
+            	else if(m_inCache.m_modelGroupsUnresolved.containsKey(name) || m_modelGroupsResolvedFromExistingCache.containsKey(name))
+            	{
+            		// This component is a reference which refers to an imported component; otherwise, its name would not be 
+            		// in the m_inCache.m_XxxUnresolved.  When XMLSchemaCache.registerXxx is called, it removes name from m_XxxUnresolved,
+            		// and registerXxxt is called when XMLSchemaParser encounters a global component, the only components that can be referenced.
+            		// So, we're going to remove its name from the list, NOT convert it, and return the existing component.
+                    m_inCache.m_modelGroupsUnresolved.remove(name);
+            		ModelGroup existing = m_existingCache.getModelGroup(name);
+            		m_modelGroupsResolvedFromExistingCache.put(name, existing);
+                    return existing;
+            	}
             }
             if (m_cycles.groups.contains(xmlModelGroup))
             {
@@ -1485,10 +1576,25 @@ public final class XMLSchemaConverter
             {
                 return m_outBag.getSimpleType(name);
             }
-            if (!m_lastInWins && m_existingCache.hasSimpleType(name))
+            if(m_existingCache.hasSimpleType(name))
             {
-                m_inCache.m_typesUnresolved.remove(name);
-                return m_existingCache.getSimpleType(name);
+            	if(!m_lastInWins)
+            	{
+            		// We are not allowing this schema parse to create new elements.  
+                    m_inCache.m_typesUnresolved.remove(name);
+                    return m_existingCache.getSimpleType(name);
+            	}
+            	else if(m_inCache.m_typesUnresolved.containsKey(name) || m_typesResolvedFromExistingCache.containsKey(name))
+            	{
+            		// This component is a reference which refers to an imported component; otherwise, its name would not be 
+            		// in the m_inCache.m_XxxUnresolved.  When XMLSchemaCache.registerXxx is called, it removes name from m_XxxUnresolved,
+            		// and registerXxxt is called when XMLSchemaParser encounters a global component, the only components that can be referenced.
+            		// So, we're going to remove its name from the list, NOT convert it, and return the existing component.
+                    m_inCache.m_typesUnresolved.remove(name);
+            		SimpleType existing = m_existingCache.getSimpleType(name);
+            		m_typesResolvedFromExistingCache.put(name, existing);
+                    return existing;
+            	}
             }
             if (m_cycles.types.contains(xmlSimpleType))
             {
@@ -1655,16 +1761,18 @@ public final class XMLSchemaConverter
             final boolean isAnonymous = false;
             try
             {
-            	if((m_existingCache.getComplexType(name) != null || m_existingCache.getSimpleType(name) != null))
+            	if((!m_lastInWins && m_existingCache.getComplexType(name) != null || m_existingCache.getSimpleType(name) != null))
             	{
-                    if(!m_lastInWins)
-                    {
-                        m_inCache.m_typesUnresolved.remove(name);
-                    }
-                    else if(!sourceType.isComplex() && !sourceType.isSimple()) // a typeRef that already exists
-                    {
-                        m_inCache.m_typesUnresolved.remove(name);
-                    }
+            		m_inCache.m_typesUnresolved.remove(name);
+                	// TODO: should this check be re-established, i.e. not commented out?
+//                    if(!m_lastInWins)
+//                    {
+//                        m_inCache.m_typesUnresolved.remove(name);
+//                    }
+//                    else if(!sourceType.isComplex() && !sourceType.isSimple()) // a typeRef that already exists
+//                    {
+//                        m_inCache.m_typesUnresolved.remove(name);
+//                    }
             	}
                 else if (sourceType.isComplex())
                 {
@@ -2195,5 +2303,13 @@ public final class XMLSchemaConverter
     private final SchemaRegExCompiler regexc;
     
     private final boolean m_lastInWins;
-
+    
+    // Used only when m_lastInWins is true
+    public final Map<QName, ElementDefinition> m_elementsResolvedFromExistingCache = new HashMap<QName, ElementDefinition>();
+    public final Map<QName, AttributeDefinition> m_attributesResolvedFromExistingCache = new HashMap<QName, AttributeDefinition>();
+    public final Map<QName, Type> m_typesResolvedFromExistingCache = new HashMap<QName, Type>();
+    public final Map<QName, ModelGroup> m_modelGroupsResolvedFromExistingCache = new HashMap<QName, ModelGroup>();
+    public final Map<QName, AttributeGroupDefinition> m_attributeGroupsResolvedFromExistingCache = new HashMap<QName, AttributeGroupDefinition>();
+    public final Map<QName, IdentityConstraint> m_constraintsResolvedFromExistingCache = new HashMap<QName, IdentityConstraint>();
+    public final Map<QName, NotationDefinition> m_notationsResolvedFromExistingCache = new HashMap<QName, NotationDefinition>();
 }
