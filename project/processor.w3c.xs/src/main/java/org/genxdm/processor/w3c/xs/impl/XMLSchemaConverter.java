@@ -1675,6 +1675,7 @@ public final class XMLSchemaConverter
 
     private Type convertType(final QName name, final boolean isAnonymous) throws SchemaException, AbortException
     {
+        // note: as of 2014-2-18, only ever called from convertType(XMLTypeRef) (q.v.)
         // first, check our incrementally collected results, in m_outBag.
         // if we have something there, return it.
         // should we insure that it's not in the unresolved list, in that case?
@@ -1695,14 +1696,35 @@ public final class XMLSchemaConverter
                     return convertComplexType(name, isAnonymous, type);
                 // if not, then it's an unresolved reference. so ... don't ever
                 // call this method if there's more parsing to be done, eh?
+                if(m_lastInWins) 
+                {
+                    // if operating w/lastInWins true, reference could still be in existing cache
+                    // and we wouldn't have resolved it, yet.  check now.)
+                    if (m_existingCache.hasSimpleType(name))
+                    {
+                        m_inCache.m_typesUnresolved.remove(name);
+                        return m_existingCache.getSimpleType(name);
+                    }
+                    else if (m_existingCache.hasComplexType(name))
+                    {
+                        m_inCache.m_typesUnresolved.remove(name);
+                        return m_existingCache.getComplexType(name);
+                    }
+                }
                 throw new SmUndeclaredReferenceException(name, m_inCache.m_typesUnresolved.get(name));
             }
             // it's not in the collection of unresolved components
             // is it already in our component provider?
             else if (m_existingCache.hasSimpleType(name))
+            {
+                m_inCache.m_typesUnresolved.remove(name);
                 return m_existingCache.getSimpleType(name);
+            }
             else if (m_existingCache.hasComplexType(name))
+            {
+                m_inCache.m_typesUnresolved.remove(name);
                 return m_existingCache.getComplexType(name);
+            }
             // not there, either. oops. die in flames.
             throw new SmUndeclaredReferenceException(name, m_inCache.m_typesUnresolved.get(name));
         }
@@ -1723,17 +1745,26 @@ public final class XMLSchemaConverter
         if (typeRef.isGlobal())
         {
             QName name = typeRef.getName();
-            if(!m_lastInWins && m_existingCache.hasComplexType(name))
+            // normal case: lastInWins is not true.
+            // check the cache.
+            if (!m_lastInWins)
             {
-                m_inCache.m_typesUnresolved.remove(name);
-                return m_existingCache.getComplexType(name);
-            }
-            if(!m_lastInWins && m_existingCache.hasSimpleType(name))
-            {
-                m_inCache.m_typesUnresolved.remove(name);
-                return m_existingCache.getSimpleType(name);
+                if (m_existingCache.hasComplexType(name))
+                {
+                    m_inCache.m_typesUnresolved.remove(name);
+                    return m_existingCache.getComplexType(name);
+                }
+                if (m_existingCache.hasSimpleType(name))
+                {
+                    m_inCache.m_typesUnresolved.remove(name);
+                    return m_existingCache.getSimpleType(name);
+                }
             }
             
+            // either it wasn't in the cache (an error), or
+            // we're doing lastInWins (it may be in the outbag)
+            // so call convertType, so that we check outbag
+            // before checking cache--inverting the order, in effect.
             return convertType(typeRef.getName(), false);
         }
         else
