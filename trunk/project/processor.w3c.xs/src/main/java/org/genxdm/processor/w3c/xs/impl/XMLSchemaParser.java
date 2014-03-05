@@ -169,6 +169,31 @@ final class XMLSchemaParser extends XMLRepresentation
                 cache.m_seenSystemIds.add(systemId);
             }
         }
+        else
+        {
+        	// For chameleons, we only want to parse them into a particular namespace once.  Subsequent
+        	// request to parse them into that namespace should be ignored (i.e. we're going to return from this code block).
+    		String computedTns = module.computeTargetNamespace();
+        	HashSet<String> tnsSet = cache.m_seenChameleonsLocation2Tns.get(systemId);
+        	if(tnsSet != null)
+        	{
+        		if(tnsSet.contains(computedTns))
+        		{
+        			// Stop parsing.  We've already parsed this chameleon into this namespace.
+        			return;
+        		}
+        		else
+        		{
+        			tnsSet.add(computedTns);
+        		}
+        	}
+        	else
+        	{
+        		final HashSet<String> newList = new HashSet<String>();
+        		newList.add(computedTns);
+        		cache.m_seenChameleonsLocation2Tns.put(systemId, newList);
+        	}
+        }
 
         final XMLInputFactory factory = XMLInputFactory.newInstance();
 
