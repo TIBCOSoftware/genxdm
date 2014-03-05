@@ -75,6 +75,7 @@ public final class XMLSchemaCache
 
     public final HashSet<URI> m_seenNamespaces = new HashSet<URI>();
     public final HashSet<URI> m_seenSystemIds = new HashSet<URI>();
+    public final HashMap<URI,HashSet<String>> m_seenChameleonsLocation2Tns = new HashMap<URI,HashSet<String>>();
 
     private final XMLScope GLOBAL = new XMLScope();
     private final XMLTypeRef ANY_SIMPLE_TYPE;
