@@ -15,12 +15,16 @@
  */
 package org.genxdm.bridgekit.xs;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.misc.StringToURIParser;
 import org.genxdm.bridgekit.xs.complex.CommentNodeTypeImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.ComponentBag;
@@ -310,15 +314,27 @@ final class SchemaCacheImpl implements SchemaComponentCache
         @Override
         public AtomicType getAtomicType(final QName name)
         {
-            final SimpleType simpleType = m_simpleTypes.get(name);
-            if (simpleType.isAtomicType())
+            SimpleType simpleType = m_simpleTypes.get(name);
+            if(simpleType != null)
             {
-                return (AtomicType)simpleType;
+            	if(simpleType.isAtomicType())
+            	{
+                    return (AtomicType)simpleType;
+            	}
             }
             else
             {
-                return null;
+            	final QName testName = encodeQName(name);
+            	if(testName != null)
+            	{
+                    simpleType = m_simpleTypes.get(testName);
+                    if(simpleType != null && simpleType.isAtomicType())
+                    {
+                    	return (AtomicType)simpleType;
+                    }
+            	}
             }
+            return null;
         }
 
         @Override
@@ -345,21 +361,48 @@ final class SchemaCacheImpl implements SchemaComponentCache
         public AttributeDefinition getAttributeDeclaration(final QName name)
         {
             PreCondition.assertArgumentNotNull(name, "name");
-            return m_attributes.get(name);
+            AttributeDefinition retval = m_attributes.get(name);
+            if(retval == null)
+            {
+            	final QName testName = encodeQName(name);
+            	if(testName != null)
+            	{
+            		return m_attributes.get(testName);
+            	}
+            }
+            return retval;
         }
 
         @Override
         public AttributeGroupDefinition getAttributeGroup(final QName name)
         {
             PreCondition.assertArgumentNotNull(name, "name");
-            return m_attributeGroups.get(name);
+            AttributeGroupDefinition retval = m_attributeGroups.get(name);
+            if(retval == null)
+            {
+            	final QName testName = encodeQName(name);
+            	if(testName != null)
+            	{
+            		return m_attributeGroups.get(testName);
+            	}
+            }
+            return retval;
         }
 
         @Override
         public ComplexType getComplexType(final QName name)
         {
             PreCondition.assertArgumentNotNull(name, "name");
-            return m_complexTypes.get(name);
+            ComplexType retval = m_complexTypes.get(name);
+            if(retval == null)
+            {
+            	final QName testName = encodeQName(name);
+            	if(testName != null)
+            	{
+            		return m_complexTypes.get(testName);
+            	}
+            }
+            return retval;
         }
 
         @Override
@@ -372,35 +415,80 @@ final class SchemaCacheImpl implements SchemaComponentCache
         public ElementDefinition getElementDeclaration(final QName name)
         {
             PreCondition.assertArgumentNotNull(name, "name");
-            return m_elements.get(name);
+            ElementDefinition retval = m_elements.get(name);
+            if(retval == null)
+            {
+            	final QName testName = encodeQName(name);
+            	if(testName != null)
+            	{
+            		return m_elements.get(testName);
+            	}
+            }
+            return retval;
         }
 
         @Override
         public IdentityConstraint getIdentityConstraint(final QName name)
         {
             PreCondition.assertArgumentNotNull(name, "name");
-            return m_identityConstraints.get(name);
+            IdentityConstraint retval = m_identityConstraints.get(name);
+            if(retval == null)
+            {
+            	final QName testName = encodeQName(name);
+            	if(testName != null)
+            	{
+            		return m_identityConstraints.get(testName);
+            	}
+            }
+            return retval;
         }
 
         @Override
         public ModelGroup getModelGroup(final QName name)
         {
             PreCondition.assertArgumentNotNull(name, "name");
-            return m_modelGroups.get(name);
+            ModelGroup retval = m_modelGroups.get(name);
+            if(retval == null)
+            {
+            	final QName testName = encodeQName(name);
+            	if(testName != null)
+            	{
+            		return m_modelGroups.get(testName);
+            	}
+            }
+            return retval;
         }
 
         @Override
         public NotationDefinition getNotationDeclaration(final QName name)
         {
             PreCondition.assertArgumentNotNull(name, "name");
-            return m_notations.get(name);
+            NotationDefinition retval =  m_notations.get(name);
+            if(retval == null)
+            {
+            	final QName testName = encodeQName(name);
+            	if(testName != null)
+            	{
+            		return m_notations.get(testName);
+            	}
+            }
+            return retval;
         }
 
         @Override
         public SimpleType getSimpleType(final QName name)
         {
             PreCondition.assertArgumentNotNull(name, "name");
-            return m_simpleTypes.get(name);
+            SimpleType retval = m_simpleTypes.get(name);
+            if(retval == null)
+            {
+            	final QName testName = encodeQName(name);
+            	if(testName != null)
+            	{
+            		return m_simpleTypes.get(testName);
+            	}
+            }
+            return retval;
         }
 
         @Override
@@ -673,56 +761,150 @@ final class SchemaCacheImpl implements SchemaComponentCache
         public boolean hasAttribute(final QName name)
         {
             PreCondition.assertArgumentNotNull(name, "name");
-            return m_attributes.containsKey(name);
+            boolean retval = m_attributes.containsKey(name);
+            final QName testName = encodeQName(name);
+        	if(testName != null)
+        	{
+        		if (m_attributes.containsKey(testName))
+        		{
+        			return true;
+        		}
+        	}
+            return retval;
         }
 
         @Override
         public boolean hasAttributeGroup(final QName name)
         {
             PreCondition.assertArgumentNotNull(name, "name");
-            return m_attributeGroups.containsKey(name);
+            boolean retval = m_attributeGroups.containsKey(name);
+            final QName testName = encodeQName(name);
+        	if(testName != null)
+        	{
+        		if (m_attributeGroups.containsKey(testName))
+        		{
+        			return true;
+        		}
+        	}
+            return retval;
         }
 
         @Override
         public boolean hasComplexType(final QName name)
         {
             PreCondition.assertArgumentNotNull(name, "name");
-            return m_complexTypes.containsKey(name);
+            boolean retval = m_complexTypes.containsKey(name);
+            final QName testName = encodeQName(name);
+        	if(testName != null)
+        	{
+        		if (m_complexTypes.containsKey(testName))
+        		{
+        			return true;
+        		}
+        	}
+            return retval;
         }
 
         @Override
         public boolean hasElement(final QName name)
         {
             PreCondition.assertArgumentNotNull(name, "name");
-            return m_elements.containsKey(name);
+            boolean retval = m_elements.containsKey(name);
+            if(!retval)
+            {
+            	final QName testName = encodeQName(name);
+            	if(testName != null)
+            	{
+            		if (m_elements.containsKey(testName))
+            		{
+            			return true;
+            		}
+            	}
+            }
+            return retval;
         }
 
         @Override
         public boolean hasIdentityConstraint(final QName name)
         {
             PreCondition.assertArgumentNotNull(name, "name");
-            return m_identityConstraints.containsKey(name);
+            boolean retval = m_identityConstraints.containsKey(name);
+            if(!retval)
+            {
+            	final QName testName = encodeQName(name);
+            	if(testName != null)
+            	{
+            		if (m_identityConstraints.containsKey(testName))
+            		{
+            			return true;
+            		}
+            	}
+            }
+            return retval;
         }
 
         @Override
         public boolean hasModelGroup(final QName name)
         {
             PreCondition.assertArgumentNotNull(name, "name");
-            return m_modelGroups.containsKey(name);
+            boolean retval = m_modelGroups.containsKey(name);
+            if(!retval)
+            {
+            	final QName testName = encodeQName(name);
+            	if(testName != null)
+            	{
+            		if (m_modelGroups.containsKey(testName))
+            		{
+            			return true;
+            		}
+            	}
+            }
+            return retval;
         }
 
         @Override
         public boolean hasNotation(final QName name)
         {
             PreCondition.assertArgumentNotNull(name, "name");
-            return m_notations.containsKey(name);
+            boolean retval = m_notations.containsKey(name);
+            if(!retval)
+            {
+            	final QName testName = encodeQName(name);
+            	if(testName != null)
+            	{
+            		if (m_notations.containsKey(testName))
+            		{
+            			return true;
+            		}
+            	}
+            }
+            return retval;
         }
 
         @Override
         public boolean hasSimpleType(final QName name)
         {
             PreCondition.assertArgumentNotNull(name, "name");
-            return m_simpleTypes.containsKey(name);
+            boolean retval = m_simpleTypes.containsKey(name);
+            if(!retval)
+            {
+            	final QName testName = encodeQName(name);
+            	if(testName != null)
+            	{
+                	if(testName != null)
+                	{
+                    	if (m_complexTypes.containsKey(testName))
+                    	{
+                    		return true;
+                    	}
+                    	else if (m_simpleTypes.containsKey(testName))
+                    	{
+                    		return true;
+                    	}
+                	}
+            	}
+            }
+            return retval;
         }
 
         @Override
@@ -737,10 +919,61 @@ final class SchemaCacheImpl implements SchemaComponentCache
             {
                 return true;
             }
+            else 
+            {
+            	final QName testName = encodeQName(name);
+            	if(testName != null)
+            	{
+                	if (m_complexTypes.containsKey(testName))
+                	{
+                		return true;
+                	}
+                	else if (m_simpleTypes.containsKey(testName))
+                	{
+                		return true;
+                	}
+            	}
+            }
             return false;
         }
     }
-    
+    private QName encodeQName(final QName name)
+    {
+    	final String ns = name.getNamespaceURI();
+    	if(ns != null && ns.length() > 0)
+    	{
+        	// Do we already have an encoded version of this namespace?  Check the map of unencoded to encoded namespaces.
+        	String encodedNs = m_unencodedNs2EncodedNsMap.get(ns);
+        	if(encodedNs == null)
+        	{
+        		encodedNs = StringToURIParser.parse(ns).toString();
+        		if(false == encodedNs.equals(ns))
+        		{
+        			m_unencodedNs2EncodedNsMap.put(ns, encodedNs);
+        		}
+        		else
+        		{
+        			// Note: at this point, we have a namespace from a QName which has no matching component in this cache; 
+        			// otherwise, this encodeQName method would not have been called.  We're choosing to not put the 
+        			// namespace into the map of unencodedNs2encodedNs because it doesn't need encoding; but, that means 
+        			// repeated calls to match that QName will cause repeated (and unnecessary?) calls to 
+        			// StringToURIParser.parse, above.  Someday, we may choose a different behavior.
+        			return null; // incoming namespace did not require encoding.
+        		}
+        	}
+        	if(encodedNs != null)
+        	{
+        		QName testName = m_unencodeQNameKeys.get(name);
+        		if(testName == null)
+        		{
+            		testName = new QName(encodedNs, name.getLocalPart());
+            		m_unencodeQNameKeys.put(name, testName);
+        		}
+        		return testName;
+        	}
+    	}
+    	return null;
+    }
     private final ComponentProvider m_provider = new ProviderImpl();
     private final ComponentBag m_components = new BagImpl();
 
@@ -765,4 +998,9 @@ final class SchemaCacheImpl implements SchemaComponentCache
      */
     private final Set<String> namespaces = new HashSet<String>();
 
+    /**
+     * keys are uncoded namespaces; values are the encoded namespace which should match the namespaces in the cache
+     */
+    private final Map<String,String> m_unencodedNs2EncodedNsMap = Collections.synchronizedMap(new WeakHashMap<String, String>());    
+    private final Map<QName,QName> m_unencodeQNameKeys = Collections.synchronizedMap(new WeakHashMap<QName, QName>());    
 }
