@@ -15,8 +15,6 @@
  */
 package org.genxdm.bridgekit.xs.simple;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -139,7 +137,14 @@ public final class AnyURIType extends AbstractAtomType
     public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
     {
         final String normalized = normalize(initialValue);
-        return atomBridge.wrapAtom(atomBridge.createURI(StringToURIParser.parse(normalized)));
+        try
+        {
+            return atomBridge.wrapAtom(atomBridge.createURI(StringToURIParser.parse(normalized)));
+        }
+        catch(IllegalArgumentException ex)
+        {
+        	throw new DatatypeException(initialValue, this);        	
+        }
     }
     
     public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
