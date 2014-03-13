@@ -23,6 +23,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.misc.StringToURIParser;
 import org.genxdm.names.PrefixResolver;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.EnumerationDefinition;
@@ -138,16 +139,9 @@ public final class AnyURIType extends AbstractAtomType
     public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
     {
         final String normalized = normalize(initialValue);
-        try
-        {
-            return atomBridge.wrapAtom(atomBridge.createURI(new URI(normalized)));
-        }
-        catch (final URISyntaxException e)
-        {
-            throw new DatatypeException(initialValue, this);
-        }
+        return atomBridge.wrapAtom(atomBridge.createURI(StringToURIParser.parse(normalized)));
     }
-
+    
     public <A> List<A> validate(String initialValue, PrefixResolver resolver, AtomBridge<A> bridge) throws DatatypeException
     {
         return validate(initialValue, bridge);
