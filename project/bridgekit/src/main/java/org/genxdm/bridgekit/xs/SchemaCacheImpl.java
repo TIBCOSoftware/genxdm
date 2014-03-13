@@ -937,14 +937,22 @@ final class SchemaCacheImpl implements SchemaComponentCache
             return false;
         }
     }
+    /**
+     * Method added for Issue 152: http://code.google.com/p/genxdm/issues/detail?id=152
+     * @param name QName for which component could not be found
+     * @return QName with properly encoded namespace IFF the provided namespace needed encoded, or null, if the namespace was 
+     * already properly encoded
+     */
     private QName encodeQName(final QName name)
     {
     	final String ns = name.getNamespaceURI();
-    	if(ns != null && ns.length() > 0)
+    	
+		// If this is a known namespace, it must be properly encoded, so just return and avoid unnecessary calls to StringToURIParser.parse.
+    	if(ns != null && ns.length() > 0 && !namespaces.contains(ns))
     	{
         	// Do we already have an encoded version of this namespace?  Check the map of unencoded to encoded namespaces.
         	String encodedNs = m_unencodedNs2EncodedNsMap.get(ns);
-        	if(encodedNs == null)
+        	if (encodedNs == null)
         	{
         		encodedNs = StringToURIParser.parse(ns).toString();
         		if(false == encodedNs.equals(ns))
@@ -953,11 +961,12 @@ final class SchemaCacheImpl implements SchemaComponentCache
         		}
         		else
         		{
-        			// Note: at this point, we have a namespace from a QName which has no matching component in this cache; 
-        			// otherwise, this encodeQName method would not have been called.  We're choosing to not put the 
-        			// namespace into the map of unencodedNs2encodedNs because it doesn't need encoding; but, that means 
-        			// repeated calls to match that QName will cause repeated (and unnecessary?) calls to 
-        			// StringToURIParser.parse, above.  Someday, we may choose a different behavior.
+        			/* Note: at this point, we have a properly encoded namespace from a QName which has no matching component 
+        			 * in this cache; otherwise, this encodeQName method would not have been called.  We're choosing to not 
+        			 * put the namespace into the map of unencodedNs2encodedNs because it doesn't need encoding; but, that means 
+        			 * repeated calls to match that QName will cause repeated (and unnecessary?) calls to 
+        			 * StringToURIParser.parse, above.  Someday, we may choose a different behavior.
+        			 */
         			return null; // incoming namespace did not require encoding.
         		}
         	}
