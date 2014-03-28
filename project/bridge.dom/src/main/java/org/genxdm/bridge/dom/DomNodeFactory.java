@@ -16,10 +16,13 @@
 package org.genxdm.bridge.dom;
 
 import java.net.URI;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.genxdm.bridgekit.misc.StringToURIParser;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.mutable.NodeFactory;
 import org.w3c.dom.Document;
@@ -51,7 +54,7 @@ public class DomNodeFactory
     {
         PreCondition.assertNotNull(prefix, "prefix");
         insureDocumentExists();
-        return DomSupport.createAttributeUntyped(m_doc, namespaceURI, localName, prefix, value);
+        return DomSupport.createAttributeUntyped(m_doc, checkNamespace(namespaceURI), localName, prefix, value);
     }
 
     public Node createComment(String data)
@@ -78,7 +81,7 @@ public class DomNodeFactory
     {
         PreCondition.assertNotNull(prefix, "prefix");
         insureDocumentExists();
-        return DomSupport.createElement(m_doc, namespaceURI, localName, prefix);
+        return DomSupport.createElement(m_doc, checkNamespace(namespaceURI), localName, prefix);
     }
 
     public Node createProcessingInstruction(String target, String data)
@@ -99,6 +102,19 @@ public class DomNodeFactory
             createDocument(null, null);
     }
     
+    private String checkNamespace(String original)
+    {
+        if ((original == null) || (original.length() == 0))
+            return "";
+        String ns = namespaces.get(original);
+        if (ns != null)
+            return ns;
+        ns = StringToURIParser.parse(original).toString();
+        namespaces.put(original, ns);
+        return ns;
+    }
+
     private DocumentBuilderFactory m_dbf;
     private Document m_doc;
+    private Map<String, String> namespaces = new WeakHashMap<String, String>();
 }

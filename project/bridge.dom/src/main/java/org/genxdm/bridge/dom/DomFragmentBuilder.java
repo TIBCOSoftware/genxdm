@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -27,6 +29,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.genxdm.NodeKind;
+import org.genxdm.bridgekit.misc.StringToURIParser;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.io.FragmentBuilder;
@@ -55,11 +58,12 @@ public class DomFragmentBuilder
         throws GenXDMException
     {
         DtdAttributeKind kind = (type == null) ? DtdAttributeKind.CDATA : type;
+        String ns = checkNamespace(namespaceURI);
         if (m_depth > 0)
         {
-            final Attr attribute = DomSupport.setAttributeUntyped(m_current, namespaceURI, localName, prefix, value);
+            final Attr attribute = DomSupport.setAttributeUntyped(m_current, ns, localName, prefix, value);
             if ( (type == DtdAttributeKind.ID) ||
-                    (namespaceURI.equals(XMLConstants.XML_NS_URI) &&
+                    (ns.equals(XMLConstants.XML_NS_URI) &&
                      localName.equals("id")) )
                 ((Element)m_current).setIdAttributeNode(attribute, true);
             setAnnotationType(attribute, new QName("http://www.w3.org/TR/REC-xml", kind.toString()));
@@ -67,7 +71,7 @@ public class DomFragmentBuilder
         else
         {
             startNodeProcessing();
-            m_current = DomSupport.createAttributeUntyped(getOwner(), namespaceURI, localName, prefix, value);
+            m_current = DomSupport.createAttributeUntyped(getOwner(), ns, localName, prefix, value);
             setAnnotationType(m_current, new QName("http://www.w3.org/TR/REC-xml", kind.toString()));
             endNodeProcessing();
         }
@@ -153,14 +157,15 @@ public class DomFragmentBuilder
     public void namespace(final String prefix, final String namespaceURI) 
         throws GenXDMException
     {
+        String ns = checkNamespace(namespaceURI);
         if (m_depth > 0)
         {
-            DomSupport.setNamespace(m_current, prefix, namespaceURI);
+            DomSupport.setNamespace(m_current, prefix, ns);
         }
         else
         {
             startNodeProcessing();
-            m_current = DomSupport.createNamespace(getOwner(), prefix, namespaceURI);
+            m_current = DomSupport.createNamespace(getOwner(), prefix, ns);
             endNodeProcessing();
         }
     }
@@ -201,7 +206,8 @@ public class DomFragmentBuilder
     {
         flush();
         startNodeProcessing();
-        final Element element = DomSupport.createElement(getOwner(), namespaceURI, localName, prefix);
+        String ns = checkNamespace(namespaceURI);
+        final Element element = DomSupport.createElement(getOwner(), ns, localName, prefix);
         if (m_current != null)
         {
             try
@@ -355,6 +361,18 @@ public class DomFragmentBuilder
         }
     }
 
+    protected String checkNamespace(String original)
+    {
+        if ((original == null) || (original.length() == 0))
+            return "";
+        String ns = namespaces.get(original);
+        if (ns != null)
+            return ns;
+        ns = StringToURIParser.parse(original).toString();
+        namespaces.put(original, ns);
+        return ns;
+    }
+
     private final DocumentBuilder m_db;
     
     protected int m_depth;
@@ -362,4 +380,6 @@ public class DomFragmentBuilder
     private final ArrayList<Node> m_nodes = new ArrayList<Node>();
     private final StringBuilder m_chBuffer = new StringBuilder();
     private NodeKind m_chNodeKind = null;
+
+    private Map<String, String> namespaces = new WeakHashMap<String, String>();
 }
