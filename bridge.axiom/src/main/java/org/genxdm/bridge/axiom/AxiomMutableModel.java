@@ -30,6 +30,7 @@ import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
 import org.apache.axiom.om.impl.OMNodeEx;
+import org.genxdm.bridgekit.misc.StringToURIParser;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.mutable.MutableModel;
@@ -249,7 +250,7 @@ public class AxiomMutableModel
      */
     public Object insertNamespace(final Object element, final String prefix, final String uri)
     {
-        OMNamespace ns = factory.omFactory.createOMNamespace(uri, prefix);
+        OMNamespace ns = factory.omFactory.createOMNamespace(StringToURIParser.parse(uri).toString(), prefix);
         OMElement omElem = AxiomSupport.staticDowncastElement(element);
         omElem.declareNamespace(ns);
         return ns;

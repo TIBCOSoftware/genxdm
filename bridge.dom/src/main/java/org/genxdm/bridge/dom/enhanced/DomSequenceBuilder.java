@@ -44,15 +44,16 @@ final class DomSequenceBuilder
 
     public void attribute(final String namespaceURI, final String localName, final String prefix, final List<? extends XmlAtom> data, final QName type) throws GenXDMException
     {
+        String ns = checkNamespace(namespaceURI);
         if (m_depth > 0)
         {
-            final Node attribute = DomSupport.setAttributeUntyped(m_current, namespaceURI, localName, prefix, Emulation.C14N.atomsToString(data, atomBridge));
+            final Node attribute = DomSupport.setAttributeUntyped(m_current, ns, localName, prefix, Emulation.C14N.atomsToString(data, atomBridge));
             setAnnotationType(attribute, type);
         }
         else
         {
             startNodeProcessing();
-            m_current = DomSupport.createAttributeUntyped(getOwner(), namespaceURI, localName, prefix, Emulation.C14N.atomsToString(data, atomBridge));
+            m_current = DomSupport.createAttributeUntyped(getOwner(), ns, localName, prefix, Emulation.C14N.atomsToString(data, atomBridge));
             setAnnotationType(m_current, type);
             endNodeProcessing();
         }
@@ -60,7 +61,7 @@ final class DomSequenceBuilder
 
     public void startElement(final String namespaceURI, final String localName, final String prefix, final QName type) throws GenXDMException
     {
-        startElement(namespaceURI, localName, prefix);
+        startElement(checkNamespace(namespaceURI), localName, prefix);
         setAnnotationType(m_current, type);
     }
 
