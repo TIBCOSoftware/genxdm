@@ -48,6 +48,7 @@ public class TypedXmlNodeBuilder
         flushCatch();
         depth++;
         Type stype = (type == null) ? null : cache.getComponentProvider().getTypeDefinition(type);
+        namespaceURI = checkNamespace(namespaceURI);
         if (current != null)
         {
             final XmlAttributeNode attribute = factory.createAttribute(namespaceURI, localName, prefix, data, stype);
@@ -68,6 +69,7 @@ public class TypedXmlNodeBuilder
         flushCatch();
         depth++;
         Type stype = (type == null) ? null : cache.getComponentProvider().getTypeDefinition(type);
+        namespaceURI = checkNamespace(namespaceURI);
         if (current != null)
         {
             final XmlElementNode element = factory.createElement(namespaceURI, localName, prefix, stype);
