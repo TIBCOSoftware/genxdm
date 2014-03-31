@@ -19,7 +19,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.WeakHashMap;
+
+import javax.xml.namespace.QName;
 
 import org.genxdm.bridge.cx.tree.XmlAttributeNode;
 import org.genxdm.bridge.cx.tree.XmlCommentNode;
@@ -30,6 +35,7 @@ import org.genxdm.bridge.cx.tree.XmlNodeFactory;
 import org.genxdm.bridge.cx.tree.XmlNodeMutator;
 import org.genxdm.bridge.cx.tree.XmlPINode;
 import org.genxdm.bridge.cx.tree.XmlTextNode;
+import org.genxdm.bridgekit.misc.StringToURIParser;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.io.FragmentBuilder;
@@ -43,6 +49,8 @@ public class XmlNodeBuilder
     {
         flushCatch();
         depth++;
+        
+        namespaceURI = checkNamespace(namespaceURI);
         if (current != null)
         {
             final XmlAttributeNode attribute = factory.createAttribute(namespaceURI, localName, prefix, value, type);
@@ -123,6 +131,8 @@ public class XmlNodeBuilder
     {
         flushCatch();
         depth++;
+        
+        namespaceURI = checkNamespace(namespaceURI);
         XmlNamespaceNode ns = factory.createNamespace(prefix, namespaceURI);
         if (current != null)
         {
@@ -174,6 +184,7 @@ public class XmlNodeBuilder
     {
         flushCatch();
         depth++;
+        namespaceURI = checkNamespace(namespaceURI);
         if (current != null)
         {
             final XmlElementNode element = factory.createElement(namespaceURI, localName, prefix);
@@ -233,6 +244,26 @@ public class XmlNodeBuilder
         }
     }
 
+    /**
+     * Method added for Issue 152: http://code.google.com/p/genxdm/issues/detail?id=152
+     * @param original the namespace to check
+     * @return a properly encoded namespace
+     * already properly encoded
+     */
+    protected String checkNamespace(final String original)
+    {
+       if(original == null || original.length() == 0)
+          return original;
+       
+       String goodNs = goodNamespaces.get(original);
+       if(goodNs != null)
+          return goodNs;
+
+       goodNs = StringToURIParser.parse(original).toString();
+       goodNamespaces.put(original, goodNs);
+       return goodNs;
+    }
+    protected final WeakHashMap<String,String> goodNamespaces = new WeakHashMap<String,String>();
     protected final ArrayList<XmlNode> nodes = new ArrayList<XmlNode>();
     protected int depth;
     protected XmlNode current;
