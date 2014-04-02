@@ -103,7 +103,7 @@ public interface TypedContext<N, A>
      *        be an element (of the type specified by the type-name).
      * @param validator the (partially-initialized) validation handler to be
      *        used; must not be null.
-     * @param initialType the QName of the element node passed as the 'source'
+     * @param initialType the QName of the type of the element node passed as the 'source'
      *        parameter. This argument should <em>usually</em> be null; supplying
      *        an initial type argument tells the validator to ignore the name
      *        of the supplied element, and to validate it based solely on its
@@ -131,7 +131,7 @@ public interface TypedContext<N, A>
      *        be used during validation.
      * @param validator the (partially-initialized) validation handler to be
      *        used; must not be null.
-     * @param initialType the QName of the element node that the 'source'
+     * @param initialType the QName of the type of the element node that the 'source'
      *        parameter is positioned on. This argument should <em>usually</em> be null; supplying
      *        an initial type argument tells the validator to ignore the name
      *        of the initial element, and to validate it based solely on its
