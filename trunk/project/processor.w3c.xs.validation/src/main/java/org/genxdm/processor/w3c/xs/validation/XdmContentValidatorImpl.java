@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.misc.StringToURIParser;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;
@@ -232,6 +233,12 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
     @Override
     public void setInitialElementType(QName name)
     {
+        if (name != null)
+        {
+            String nsURI = StringToURIParser.parse(name.getNamespaceURI()).toString();
+            if (!nsURI.equals(name.getNamespaceURI()))
+                name = new QName(nsURI, name.getLocalPart());
+        }
         m_elementType = name;
     }
 
