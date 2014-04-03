@@ -56,19 +56,18 @@ public class AxiomFragmentBuilder
         PreCondition.assertNotNull(localName, "localName");
         PreCondition.assertNotNull(prefix, "prefix");
         PreCondition.assertNotNull(value, "value");
-        String ns = checkNamespace(namespaceURI);
 
         if (currentNode != null)
         {
             final OMElement element = AxiomSupport.dynamicDowncastElement(currentNode);
-            OMNamespace namespace = element.findNamespace(ns, prefix);
+            OMNamespace namespace = element.findNamespace(namespaceURI, prefix);
             if (namespace == null)
-                namespace = factory.createOMNamespace(ns, prefix);
+                namespace = factory.createOMNamespace(namespaceURI, prefix);
             final OMAttribute attribute = factory.createOMAttribute(localName, namespace, value);
             if (type != null)
                 attribute.setAttributeType(type.toString());
             if ( (type == DtdAttributeKind.ID) ||
-                (ns.equals(XMLConstants.XML_NS_URI) &&
+                (namespaceURI.equals(XMLConstants.XML_NS_URI) &&
                  localName.equals("id")) )
             {
                 Map<String, OMElement> ids = AxiomSupport.getIdMap(documentNode);
@@ -81,7 +80,7 @@ public class AxiomFragmentBuilder
         }
         else
         {
-            final OMNamespace namespace = factory.createOMNamespace(ns, prefix);
+            final OMNamespace namespace = factory.createOMNamespace(namespaceURI, prefix);
             nodes.add(factory.createOMAttribute(localName, namespace, value));
         }
     }
@@ -135,7 +134,7 @@ public class AxiomFragmentBuilder
     public void namespace(String prefix, String namespaceURI)
         throws GenXDMException
     {
-        String ns = (namespaceURI == null) ? XMLConstants.NULL_NS_URI : checkNamespace(namespaceURI);
+        String ns = (namespaceURI == null) ? XMLConstants.NULL_NS_URI : namespaceURI;
         
         if (currentNode != null)
         {
@@ -202,8 +201,7 @@ public class AxiomFragmentBuilder
         IllegalNullArgumentException.check(namespaceURI, "namespaceURI");
         IllegalNullArgumentException.check(localName, "localName");
         IllegalNullArgumentException.check(prefix, "prefix");
-        String nspace = checkNamespace(namespaceURI);
-    	OMNamespace ns = factory.createOMNamespace(nspace, prefix);
+    	OMNamespace ns = factory.createOMNamespace(namespaceURI, prefix);
         if (null != currentNode)
         {
             final OMContainer container = AxiomSupport.dynamicDowncastContainer(currentNode);
@@ -322,18 +320,6 @@ public class AxiomFragmentBuilder
         level++;
     }
     
-    private String checkNamespace(String original)
-    {
-        if ((original == null) || (original.length() == 0))
-            return "";
-        String ns = namespaces.get(original);
-        if (ns != null)
-            return ns;
-        ns = StringToURIParser.parse(original).toString();
-        namespaces.put(original, ns);
-        return ns;
-    }
-
     protected int level;
     protected final OMFactory factory;
     protected ArrayList<Object> nodes = new ArrayList<Object>();
@@ -342,6 +328,4 @@ public class AxiomFragmentBuilder
     protected Object nodeId;
     protected OMDocument documentNode;
     protected boolean ignoreComments;
-
-    private Map<String, String> namespaces = new WeakHashMap<String, String>();
 }
