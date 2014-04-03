@@ -18,10 +18,8 @@ package org.genxdm.bridge.cx.tree;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.WeakHashMap;
 
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.genxdm.bridgekit.misc.StringToURIParser;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.mutable.NodeFactory;
@@ -35,19 +33,19 @@ public class XmlNodeFactory
 
     public XmlAttributeNode createAttribute(String namespaceURI, String localName, String prefix, String value)
     {
-        return new XmlAttributeNode(checkNamespace(namespaceURI), localName, prefix, DtdAttributeKind.CDATA, value);
+        return new XmlAttributeNode(namespaceURI, localName, prefix, DtdAttributeKind.CDATA, value);
     }
     
     public XmlAttributeNode createAttribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
     {
         PreCondition.assertNotNull(prefix, "prefix");
-        return new XmlAttributeNode(checkNamespace(namespaceURI), localName, prefix, type, value);
+        return new XmlAttributeNode(namespaceURI, localName, prefix, type, value);
     }
     
     public XmlAttributeNode createAttribute(String namespaceURI, String localName, String prefix, List<? extends XmlAtom> data, Type type)
     {
         PreCondition.assertNotNull(prefix, "prefix");
-        return new XmlAttributeNode(checkNamespace(namespaceURI), localName, prefix, type, makeList(data));
+        return new XmlAttributeNode(namespaceURI, localName, prefix, type, makeList(data));
     }
     
     public XmlCommentNode createComment(String data)
@@ -63,18 +61,18 @@ public class XmlNodeFactory
     public XmlElementNode createElement(String namespaceURI, String localName, String prefix)
     {
         PreCondition.assertNotNull(prefix, "prefix");
-        return new XmlElementNode(checkNamespace(namespaceURI), localName, prefix, null);
+        return new XmlElementNode(namespaceURI, localName, prefix, null);
     }
     
     public XmlElementNode createElement(String namespaceURI, String localName, String prefix, Type type)
     {
         PreCondition.assertNotNull(prefix, "prefix");
-        return new XmlElementNode(checkNamespace(namespaceURI), localName, prefix, type);
+        return new XmlElementNode(namespaceURI, localName, prefix, type);
     }
 
     public XmlNamespaceNode createNamespace(String prefix, String namespaceURI)
     {
-        return new XmlNamespaceNode(prefix, checkNamespace(namespaceURI));
+        return new XmlNamespaceNode(prefix, namespaceURI);
     }
 
     public XmlPINode createProcessingInstruction(String target, String data)
@@ -101,24 +99,4 @@ public class XmlNodeFactory
         }
         return list;
     }
-    /**
-     * Method added for Issue 152: http://code.google.com/p/genxdm/issues/detail?id=152
-     * @param original the namespace to check
-     * @return a properly encoded namespace
-     * already properly encoded
-     */
-    protected String checkNamespace(final String original)
-    {
-       if(original == null || original.length() == 0)
-          return original;
-       
-       String goodNs = goodNamespaces.get(original);
-       if(goodNs != null)
-          return goodNs;
-
-       goodNs = StringToURIParser.parse(original).toString();
-       goodNamespaces.put(original, goodNs);
-       return goodNs;
-    }
-    protected final WeakHashMap<String,String> goodNamespaces = new WeakHashMap<String,String>();
 }

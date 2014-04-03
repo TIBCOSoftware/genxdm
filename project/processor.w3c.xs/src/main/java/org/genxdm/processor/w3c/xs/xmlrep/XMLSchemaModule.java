@@ -70,7 +70,7 @@ public final class XMLSchemaModule
         {
             if (null != m_targetNamespace)
             {
-                return m_targetNamespace.toString();
+                return m_targetNamespace;
             }
             else
             {
@@ -94,22 +94,14 @@ public final class XMLSchemaModule
         return m_systemId;
     }
 
-    public URI getTargetNamespace()
+    public String getTargetNamespace()
     {
         return m_targetNamespace;
     }
 
     public boolean isChameleon()
     {
-        if (null == m_targetNamespace)
-        {
-            return isInclude() || isRedefine();
-        }
-        else
-        {
-            // The targetNamespace attribute has been defined.
-            return false;
-        }
+        return (m_targetNamespace == null) ? (isInclude() || isRedefine()) : false;
     }
 
     public boolean isImport()
@@ -155,7 +147,7 @@ public final class XMLSchemaModule
         m_flags.add(ModuleKind.Redefine);
     }
 
-    public void setTargetNamespace(final URI targetNamespace)
+    public void setTargetNamespace(final String targetNamespace)
     {
         m_targetNamespace = PreCondition.assertArgumentNotNull(targetNamespace, "targetNamespace");
     }
@@ -170,5 +162,5 @@ public final class XMLSchemaModule
     private final URI m_schemaLocation;
     private final URI m_systemId;
 
-    private URI m_targetNamespace;
+    private String m_targetNamespace;
 }

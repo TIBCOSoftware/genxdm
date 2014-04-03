@@ -16,8 +16,6 @@
 package org.genxdm.bridge.axiom;
 
 import java.net.URI;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
@@ -27,7 +25,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
-import org.genxdm.bridgekit.misc.StringToURIParser;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.mutable.NodeFactory;
 
@@ -43,7 +40,7 @@ public class AxiomFactory
     public OMAttribute createAttribute(String namespaceURI, String localName, String prefix, String value)
     {
         PreCondition.assertNotNull(prefix, "prefix");
-        return omFactory.createOMAttribute(localName, omFactory.createOMNamespace(checkNamespace(namespaceURI), prefix), value);
+        return omFactory.createOMAttribute(localName, omFactory.createOMNamespace(namespaceURI, prefix), value);
     }
 
     public OMComment createComment(String data)
@@ -59,7 +56,7 @@ public class AxiomFactory
     public OMElement createElement(String namespaceURI, String localName, String prefix)
     {
         PreCondition.assertNotNull(prefix, "prefix");
-        OMNamespace ns = omFactory.createOMNamespace(checkNamespace(namespaceURI), prefix);
+        OMNamespace ns = omFactory.createOMNamespace(namespaceURI, prefix);
         return omFactory.createOMElement(localName, ns);
     }
 
@@ -73,18 +70,5 @@ public class AxiomFactory
         return omFactory.createOMText(value);
     }
     
-    private String checkNamespace(String original)
-    {
-        if ((original == null) || (original.length() == 0))
-            return "";
-        String ns = namespaces.get(original);
-        if (ns != null)
-            return ns;
-        ns = StringToURIParser.parse(original).toString();
-        namespaces.put(original, ns);
-        return ns;
-    }
-
     final OMFactory omFactory;
-    private Map<String, String> namespaces = new WeakHashMap<String, String>();
 }
