@@ -211,46 +211,46 @@ public class SimpleSchemaParseTest
         Iterable<NotationDefinition> nots = components.getNotations();
     }
     
-    @Test
-    public void parseTaskManagerSchema()
-        throws AbortException
-    {
-        W3cXmlSchemaParser parser = new W3cXmlSchemaParser();
-        
-        SchemaCatalog scat = new BogusSchemaCatalog();
-        CatalogResolver resolver = new ResourceResolver();
-        ComponentProvider bootstrap = new SchemaCacheFactory().newSchemaCache().getComponentProvider();
-        
-        // initialize the catalog for the schemas we want to read.
-        
-        parser.setCatalogResolver(resolver, scat);
-        parser.setComponentProvider(bootstrap);
-        
-        InputStream stream = getClass().getClassLoader().getResourceAsStream("TaskManager-v2_0.xsd");
-        ComponentBag components = parser.parse(null, stream, null, SchemaExceptionThrower.SINGLETON);
-        
-        Iterable<AttributeDefinition> atts = components.getAttributes();
-        Iterable<AttributeGroupDefinition> attGroups = components.getAttributeGroups();
-        Iterable<ElementDefinition> elems = components.getElements();
-        System.out.println("Elements: " + count(elems));
-        for (ElementDefinition element : elems)
-        {
-            System.out.println("  " + element.getName());
-        }
-        
-        Iterable<ModelGroup> models = components.getModelGroups();
-        Iterable<SimpleType> simps = components.getSimpleTypes();
-        Iterable<ComplexType> comps = components.getComplexTypes();
-        System.out.println("ComplexTypes: " + count(comps));
-        for (ComplexType comp : comps)
-        {
-            System.out.println("  " + comp.getName());
-        }
-
-        Iterable<IdentityConstraint> ids = components.getIdentityConstraints();
-        Iterable<NotationDefinition> nots = components.getNotations();
-    }
-    
+//    @Test
+//    public void parseTaskManagerSchema()
+//        throws AbortException
+//    {
+//        W3cXmlSchemaParser parser = new W3cXmlSchemaParser();
+//        
+//        SchemaCatalog scat = new BogusSchemaCatalog();
+//        CatalogResolver resolver = new ResourceResolver();
+//        ComponentProvider bootstrap = new SchemaCacheFactory().newSchemaCache().getComponentProvider();
+//        
+//        // initialize the catalog for the schemas we want to read.
+//        
+//        parser.setCatalogResolver(resolver, scat);
+//        parser.setComponentProvider(bootstrap);
+//        
+//        InputStream stream = getClass().getClassLoader().getResourceAsStream("TaskManager-v2_0.xsd");
+//        ComponentBag components = parser.parse(null, stream, null, SchemaExceptionThrower.SINGLETON);
+//        
+//        Iterable<AttributeDefinition> atts = components.getAttributes();
+//        Iterable<AttributeGroupDefinition> attGroups = components.getAttributeGroups();
+//        Iterable<ElementDefinition> elems = components.getElements();
+//        System.out.println("Elements: " + count(elems));
+//        for (ElementDefinition element : elems)
+//        {
+//            System.out.println("  " + element.getName());
+//        }
+//        
+//        Iterable<ModelGroup> models = components.getModelGroups();
+//        Iterable<SimpleType> simps = components.getSimpleTypes();
+//        Iterable<ComplexType> comps = components.getComplexTypes();
+//        System.out.println("ComplexTypes: " + count(comps));
+//        for (ComplexType comp : comps)
+//        {
+//            System.out.println("  " + comp.getName());
+//        }
+//
+//        Iterable<IdentityConstraint> ids = components.getIdentityConstraints();
+//        Iterable<NotationDefinition> nots = components.getNotations();
+//    }
+//    
     private <E> int count(Iterable<E> it)
     {
         int i = 0;
