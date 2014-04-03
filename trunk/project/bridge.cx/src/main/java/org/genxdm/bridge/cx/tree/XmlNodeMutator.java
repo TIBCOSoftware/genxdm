@@ -18,12 +18,10 @@ package org.genxdm.bridge.cx.tree;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.WeakHashMap;
 
 import org.genxdm.NodeKind;
 import org.genxdm.bridge.cx.base.XmlNodeBuilder;
 import org.genxdm.bridge.cx.base.XmlNodeModel;
-import org.genxdm.bridgekit.misc.StringToURIParser;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.mutable.MutableModel;
 import org.genxdm.mutable.NodeFactory;
@@ -216,7 +214,7 @@ public class XmlNodeMutator
         PreCondition.assertNotNull(prefix, "prefix");
         PreCondition.assertNotNull(uri, "namespaceURI");
         PreCondition.assertTrue(element.getNodeKind() == NodeKind.ELEMENT, "target is element");
-        XmlNamespaceNode result = factory.createNamespace(prefix, checkNamespace(uri));
+        XmlNamespaceNode result = factory.createNamespace(prefix, uri);
         ((XmlElementNode)element).setNamespace(result);
         
         return result;
@@ -351,25 +349,5 @@ public class XmlNodeMutator
         element.setNamespace(namespace);
     }
     
-    /**
-     * Method added for Issue 152: http://code.google.com/p/genxdm/issues/detail?id=152
-     * @param original the namespace to check
-     * @return a properly encoded namespace
-     */
-    protected String checkNamespace(final String original)
-    {
-       if(original == null || original.length() == 0)
-          return original;
-       
-       String goodNs = m_goodNamespaces.get(original);
-       if(goodNs != null)
-          return goodNs;
-
-       goodNs = StringToURIParser.parse(original).toString();
-       m_goodNamespaces.put(original, goodNs);
-       return goodNs;
-    }
-    
     private XmlNodeFactory factory = new XmlNodeFactory();
-    protected final WeakHashMap<String,String> m_goodNamespaces = new WeakHashMap<String,String>();
 }

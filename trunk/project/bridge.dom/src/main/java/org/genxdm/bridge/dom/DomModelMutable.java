@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.genxdm.NodeKind;
-import org.genxdm.bridgekit.misc.StringToURIParser;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.mutable.MutableModel;
 import org.w3c.dom.Attr;
@@ -243,7 +242,7 @@ public final class DomModelMutable
         if (prefix == null)
             prefix = "";
         PreCondition.assertArgumentNotNull(uri, "uri");
-        return DomSupport.setNamespace(element, prefix, StringToURIParser.parse(uri).toString());
+        return DomSupport.setNamespace(element, prefix, uri);
     }
     
     @Override

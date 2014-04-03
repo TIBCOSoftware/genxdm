@@ -73,7 +73,7 @@ public final class XMLSchemaCache
     public final Map<QName, XMLNotation> m_notations = new HashMap<QName, XMLNotation>();
     public final Map<QName, SrcFrozenLocation> m_notationsUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
-    public final HashSet<URI> m_seenNamespaces = new HashSet<URI>();
+    public final HashSet<String> m_seenNamespaces = new HashSet<String>();
     public final HashSet<URI> m_seenSystemIds = new HashSet<URI>();
     public final HashMap<URI,HashSet<String>> m_seenChameleonsLocation2Tns = new HashMap<URI,HashSet<String>>();
 
