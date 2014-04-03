@@ -36,6 +36,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.bridgekit.misc.StringToURIParser;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcUnexpectedAttributeException;
@@ -715,23 +716,6 @@ final class XMLSchemaParser extends XMLRepresentation
         return new XMLParticleWithWildcardTerm(minOccurs, maxOccurs, wildcard, getFrozenLocation(reader.getLocation()));
     }
 
-    private URI anyURI(final String initialValue) throws SimpleTypeException
-    {
-        final SimpleType atomicType = bootstrap.getAtomicType(NativeType.ANY_URI);
-        
-        try
-        {
-            final List<XmlAtom> value = atomicType.validate(initialValue, atoms);
-            if (value.size() > 0)
-                return atoms.getURI(value.get(0));
-        }
-        catch (DatatypeException dte)
-        {
-            throw new SimpleTypeException(initialValue, atomicType, dte);
-        }
-        return null;
-    }
-
     private void appinfoTag(final XMLStreamReader reader) throws XMLStreamException, AbortException
     {
         final int attributeCount = reader.getAttributeCount();
@@ -743,14 +727,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 final String localName = reader.getAttributeLocalName(i);
                 if (LN_SOURCE.equals(localName))
                 {
-                    try
-                    {
-                        /* final URI source = */anyURI(reader.getAttributeValue(i));
-                    }
-                    catch (final SimpleTypeException e)
-                    {
-                        reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
-                    }
+                    /* final String source = */reader.getAttributeValue(i);
                 }
                 else
                 {
@@ -2751,14 +2728,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 final String localName = reader.getAttributeLocalName(i);
                 if (LN_SOURCE.equals(localName))
                 {
-                    try
-                    {
-                        /* final URI source = */anyURI(reader.getAttributeValue(i));
-                    }
-                    catch (final SimpleTypeException e)
-                    {
-                        reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
-                    }
+                    /* final String source = */reader.getAttributeValue(i);
                 }
                 else
                 {
@@ -3563,91 +3533,6 @@ final class XMLSchemaParser extends XMLRepresentation
             }
         }
         return enumeration;
-    }
-
-    // TODO: what is this?  it was commented out and effectively obfuscated
-    /**
-     * Mangles the particle returned by the compositor according to the specification so that it can become the
-     * effective content for a complex type.
-     */
-    /*
-     private ParticleWithModelGroupTerm mangleCompositor(final boolean effectiveMixed, final ParticleWithModelGroupTerm particle) 
-     { 
-         final ModelGroupImpl term = particle.getTerm(); 
-         switch (term.getCompositor()) 
-         { 
-             case All: 
-             { 
-                 if (term.getParticles().isEmpty()) 
-                 { 
-                     if (effectiveMixed) 
-                     {
-                          particle.setMinOccurs(1); 
-                          particle.setMaxOccurs(1); 
-                          term.m_compositor = ModelGroup.Compositor.Sequence; 
-                          return particle; 
-                      } 
-                      else 
-                      { 
-                          return null; 
-                      } 
-                  } 
-                  else 
-                  { 
-                      return particle; 
-                  } 
-              } 
-              case Sequence: 
-              { 
-                  if (term.getParticles().isEmpty()) 
-                  { 
-                      if (effectiveMixed) 
-                      { 
-                          particle.setMinOccurs(1); 
-                          particle.setMaxOccurs(1);
-                          return particle; 
-                      } 
-                      else 
-                      { 
-                          return null; 
-                      } 
-                  } 
-                  else 
-                  {
-                      return particle; 
-                  } 
-              } 
-              case Choice: 
-              { 
-                  if (term.getParticles().isEmpty() && particle.getMinOccurs() == 0) 
-                  { 
-                      if (effectiveMixed) 
-                      { 
-                          particle.setMinOccurs(1);
-                          particle.setMaxOccurs(1); 
-                          return particle; 
-                      } 
-                      else 
-                      { 
-                          return null; 
-                      } 
-                  } 
-                  else 
-                  { 
-                      return particle; 
-                  } 
-              } 
-              default: 
-              { 
-                  throw new RuntimeException(term.getCompositor().name()); 
-              } 
-          } 
-      }
-     */
-
-    private boolean equalStrings(final String lhs, final String rhs)
-    {
-        return lhs.equals(rhs);
     }
 
     /**
@@ -4513,7 +4398,7 @@ final class XMLSchemaParser extends XMLRepresentation
         try
         {
             URI schemaLocation = null;
-            URI namespace = null;
+            String namespace = null;
             final int attributeCount = reader.getAttributeCount();
             for (int i = 0; i < attributeCount; i++)
             {
@@ -4523,26 +4408,12 @@ final class XMLSchemaParser extends XMLRepresentation
                     final String localName = reader.getAttributeLocalName(i);
                     if (LN_SCHEMA_LOCATION.equals(localName))
                     {
-                        try
-                        {
-                            schemaLocation = anyURI(reader.getAttributeValue(i));
-                        }
-                        catch (final SimpleTypeException e)
-                        {
-                            throw new SmAttributeUseException(reader.getName(), reader.getAttributeName(i), getFrozenLocation(reader.getLocation()), e);
-                        }
+                        schemaLocation = StringToURIParser.parse(reader.getAttributeValue(i));
                     }
                     else if (LN_NAMESPACE.equals(localName))
                     {
-                        try
-                        {
-                            namespace = anyURI(reader.getAttributeValue(i));
-                        }
-                        catch (final SimpleTypeException e)
-                        {
-                            throw new SmAttributeUseException(reader.getName(), reader.getAttributeName(i), getFrozenLocation(reader.getLocation()), e);
-                        }
-                        if (equalStrings(namespace.toString(), targetNamespace))
+                        namespace = reader.getAttributeValue(i);
+                        if (namespace.equals(targetNamespace))
                         {
                             throw new SmIllegalNamespaceException(LN_IMPORT, targetNamespace, namespace.toString(), new SrcFrozenLocation(reader.getLocation()));
                         }
@@ -4570,38 +4441,10 @@ final class XMLSchemaParser extends XMLRepresentation
 
             annotationContent(LN_IMPORT, reader, module);
 
-            // TODO: note comments following:
-            // if there's no schemaLocation hint, give up. /*try using the
-            // namespace.*/
-//            if (schemaLocation != null)
-//            {
-                if (m_processRepeatedNamespaces || !cache.m_seenNamespaces.contains(namespace))
-                {
-                    parseExternalModule(cache, module, reader.getLocation(), namespace, schemaLocation, ModuleKind.Import);
-                }
-//            }
-//            else
-//            {
-//                if (namespace != null)
-//                {
-//                    if (equalStrings(XMLConstants.XML_NS_URI, namespace.toString()))
-//                    {
-//                    }
-//                    else
-//                    {
-//                        // Do nothing.
-//                        parseExternalModule(cache, module, reader.getLocation(), namespace, namespace, ModuleKind.Import);
-//                    }
-//                }
-//                else
-//                {
-//                    // Do nothing.
-//                }
-//            }
-        }
-        catch (final SmAttributeUseException e)
-        {
-            m_errors.error(e);
+            if (m_processRepeatedNamespaces || !cache.m_seenNamespaces.contains(namespace))
+            {
+                parseExternalModule(cache, module, reader.getLocation(), namespace, schemaLocation, ModuleKind.Import);
+            }
         }
         catch (final SmIllegalNamespaceException e)
         {
@@ -4621,14 +4464,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 final String localName = reader.getAttributeLocalName(i);
                 if (LN_SCHEMA_LOCATION.equals(localName))
                 {
-                    try
-                    {
-                        schemaLocation = anyURI(reader.getAttributeValue(i));
-                    }
-                    catch (final SimpleTypeException e)
-                    {
-                        reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
-                    }
+                    schemaLocation = StringToURIParser.parse(reader.getAttributeValue(i));
                 }
                 else if (LN_ID.equals(localName))
                 {
@@ -5564,14 +5400,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 }
                 else if (LN_SYSTEM.equals(localName))
                 {
-                    try
-                    {
-                        notation.setSystemId(anyURI(reader.getAttributeValue(i)));
-                    }
-                    catch (final SimpleTypeException e)
-                    {
-                        reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
-                    }
+                    notation.setSystemId(StringToURIParser.parse(reader.getAttributeValue(i)));
                 }
                 else if (LN_ID.equals(localName))
                 {
@@ -5633,7 +5462,7 @@ final class XMLSchemaParser extends XMLRepresentation
         return null;
     }
 
-    private void parseExternalModule(final XMLSchemaCache cache, final XMLSchemaModule parent, final Location location, final URI namespace, final URI schemaLocation, final ModuleKind moduleKind) throws AbortException
+    private void parseExternalModule(final XMLSchemaCache cache, final XMLSchemaModule parent, final Location location, final String namespace, final URI schemaLocation, final ModuleKind moduleKind) throws AbortException
     {
 //        PreCondition.assertArgumentNotNull(schemaLocation, "schemaLocation");
 
@@ -5641,7 +5470,8 @@ final class XMLSchemaParser extends XMLRepresentation
         {
             throw new AssertionError("catalog required for include, import or redefine.");
         }
-        final URI catalogURI = m_catalog.resolveNamespaceAndSchemaLocation(parent.getSystemId(), namespace, schemaLocation);
+        // TODO: here, we use StringToURIParser on the namespace. we should be able to pass a string, instead.
+        final URI catalogURI = m_catalog.resolveNamespaceAndSchemaLocation(parent.getSystemId(), (namespace == null) ? null : StringToURIParser.parse(namespace), schemaLocation);
 
         // If the catalogURI is null, we will not parse (obviously), and we will not raise an error.
         // If the missing schema is a problem, that problem will be evident during component resolution,
@@ -5853,14 +5683,7 @@ final class XMLSchemaParser extends XMLRepresentation
                     final String localName = reader.getAttributeLocalName(i);
                     if (LN_SCHEMA_LOCATION.equals(localName))
                     {
-                        try
-                        {
-                            schemaLocation = anyURI(reader.getAttributeValue(i));
-                        }
-                        catch (final SimpleTypeException e)
-                        {
-                            reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
-                        }
+                        schemaLocation = StringToURIParser.parse(reader.getAttributeValue(i));
                     }
                     else if (LN_ID.equals(localName))
                     {
@@ -6890,19 +6713,12 @@ final class XMLSchemaParser extends XMLRepresentation
                 final String localName = reader.getAttributeLocalName(i);
                 if (LN_TARGET_NAMESPACE.equals(localName))
                 {
-                    try
+                    module.setTargetNamespace(reader.getAttributeValue(i));
+                    if (!module.isInclude() && !m_processRepeatedNamespaces && cache.m_seenNamespaces.contains(module.getTargetNamespace()))
                     {
-                        module.setTargetNamespace(anyURI(reader.getAttributeValue(i)));
-                        if (!module.isInclude() && !m_processRepeatedNamespaces && cache.m_seenNamespaces.contains(module.getTargetNamespace()))
-                        {
-                            // Ignore this schema.
-                            skipTag(reader);
-                            return;
-                        }
-                    }
-                    catch (final SimpleTypeException e)
-                    {
-                        reportAttributeUseError(reader.getName(), reader.getAttributeName(i), reader.getLocation(), e);
+                        // Ignore this schema.
+                        skipTag(reader);
+                        return;
                     }
                 }
                 else if ("elementFormDefault".equals(localName))
@@ -7406,16 +7222,8 @@ final class XMLSchemaParser extends XMLRepresentation
      */
     private void simpleTypeContentTag(final XMLType simpleType, final XMLSchemaModule module, final XMLStreamReader reader, final XMLSchemaCache cache, final boolean redefine, final String targetNamespace) throws XMLStreamException, AbortException
     {
-        // TODO: wtf? an if-else with a test and no code?
         // Derivation property must be null so that we check that we got the
         // required child elements.
-        if (!redefine)
-        {
-        }
-        else
-        {
-        }
-
         boolean firstElement = true;
         boolean missingRLU = true;
         boolean done = false;
@@ -8274,22 +8082,6 @@ final class XMLSchemaParser extends XMLRepresentation
         }
     }
 
-    // TODO: figure out what this is. it was commented out as received.
-    /**
-     * (xs:annotation?)
-     */
-    /*
-     * private static CmTable<String> makeAnnotationOptionalTable() { final CmTable<String> table = new
-     * CmTable<String>();
-     * 
-     * final HashMap<String, Integer> ZERO = new HashMap<String, Integer>(); ZERO.put(LN_ANNOTATION, CmTable.END);
-     * ZERO.put(EPSILON, CmTable.END);
-     * 
-     * table.put(0, ZERO);
-     * 
-     * return table; }
-     */
-
     private enum ModuleKind
     {
         Import, Include, Redefine
@@ -8649,8 +8441,6 @@ final class XMLSchemaParser extends XMLRepresentation
         }
     }
 
-    // TODO: what's this for?
-    // private static final CmTable<String> annotationOptionalTable = makeAnnotationOptionalTable();
     private static final ContentModelTable<String> attributeTable = makeAttributeTable();
     private static final ContentModelTable<String> complexContentTable = makeComplexContentTable();
     private static final ContentModelTable<String> complexTypeTable = makeComplexTypeTable();

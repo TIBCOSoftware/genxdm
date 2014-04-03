@@ -151,10 +151,20 @@ public class SimpleSchemaParseTest
         Iterable<AttributeDefinition> atts = components.getAttributes();
         Iterable<AttributeGroupDefinition> attGroups = components.getAttributeGroups();
         Iterable<ElementDefinition> elems = components.getElements();
+        System.out.println("Elements: " + count(elems));
+        for (ElementDefinition element : elems)
+        {
+            System.out.println("  " + element.getName());
+        }
         
         Iterable<ModelGroup> models = components.getModelGroups();
         Iterable<SimpleType> simps = components.getSimpleTypes();
         Iterable<ComplexType> comps = components.getComplexTypes();
+        System.out.println("ComplexTypes: " + count(comps));
+        for (ComplexType comp : comps)
+        {
+            System.out.println("  " + comp.getName());
+        }
 
         Iterable<IdentityConstraint> ids = components.getIdentityConstraints();
         Iterable<NotationDefinition> nots = components.getNotations();
@@ -182,10 +192,60 @@ public class SimpleSchemaParseTest
         Iterable<AttributeDefinition> atts = components.getAttributes();
         Iterable<AttributeGroupDefinition> attGroups = components.getAttributeGroups();
         Iterable<ElementDefinition> elems = components.getElements();
+        System.out.println("Elements: " + count(elems));
+        for (ElementDefinition element : elems)
+        {
+            System.out.println("  " + element.getName());
+        }
         
         Iterable<ModelGroup> models = components.getModelGroups();
         Iterable<SimpleType> simps = components.getSimpleTypes();
         Iterable<ComplexType> comps = components.getComplexTypes();
+        System.out.println("ComplexTypes: " + count(comps));
+        for (ComplexType comp : comps)
+        {
+            System.out.println("  " + comp.getName());
+        }
+
+        Iterable<IdentityConstraint> ids = components.getIdentityConstraints();
+        Iterable<NotationDefinition> nots = components.getNotations();
+    }
+    
+    @Test
+    public void parseTaskManagerSchema()
+        throws AbortException
+    {
+        W3cXmlSchemaParser parser = new W3cXmlSchemaParser();
+        
+        SchemaCatalog scat = new BogusSchemaCatalog();
+        CatalogResolver resolver = new ResourceResolver();
+        ComponentProvider bootstrap = new SchemaCacheFactory().newSchemaCache().getComponentProvider();
+        
+        // initialize the catalog for the schemas we want to read.
+        
+        parser.setCatalogResolver(resolver, scat);
+        parser.setComponentProvider(bootstrap);
+        
+        InputStream stream = getClass().getClassLoader().getResourceAsStream("TaskManager-v2_0.xsd");
+        ComponentBag components = parser.parse(null, stream, null, SchemaExceptionThrower.SINGLETON);
+        
+        Iterable<AttributeDefinition> atts = components.getAttributes();
+        Iterable<AttributeGroupDefinition> attGroups = components.getAttributeGroups();
+        Iterable<ElementDefinition> elems = components.getElements();
+        System.out.println("Elements: " + count(elems));
+        for (ElementDefinition element : elems)
+        {
+            System.out.println("  " + element.getName());
+        }
+        
+        Iterable<ModelGroup> models = components.getModelGroups();
+        Iterable<SimpleType> simps = components.getSimpleTypes();
+        Iterable<ComplexType> comps = components.getComplexTypes();
+        System.out.println("ComplexTypes: " + count(comps));
+        for (ComplexType comp : comps)
+        {
+            System.out.println("  " + comp.getName());
+        }
 
         Iterable<IdentityConstraint> ids = components.getIdentityConstraints();
         Iterable<NotationDefinition> nots = components.getNotations();
@@ -206,14 +266,42 @@ public class SimpleSchemaParseTest
         public InputStream resolveInputStream(URI catalogURI)
             throws IOException
         {
+            String strong = null;
             if (catalogURI.toString().equals(IPO_URI))
-                return getClass().getClassLoader().getResourceAsStream("ipo.xsd");
+                strong = "ipo.xsd";
             if (catalogURI.toString().equals(ADDRESS_URI))
-                return getClass().getClassLoader().getResourceAsStream("address.xsd");
+                strong = "address.xsd";
+            if (catalogURI.toString().equals(ACTIVITY_URI))
+                strong = "ActivityConditionPlace-v2_0.xsd";
+            if (catalogURI.toString().equals(COMMON_URI))
+                strong = "Common-v2_0.xsd";
+            if (catalogURI.toString().equals(TASKMAN_URI))
+                strong = "TaskManager-v2_0.xsd";
+            if (strong != null)
+                return getClass().getClassLoader().getResourceAsStream(strong);
             return DefaultCatalogResolver.SINGLETON.resolveInputStream(catalogURI);
         }
     }
     
-    private static String IPO_URI = "http://www.example.com/IPO";
-    private static String ADDRESS_URI = "http://www.example.com/schemas/address.xsd";
+    private class BogusSchemaCatalog implements SchemaCatalog
+    {
+
+        @Override
+        public URI resolveNamespaceAndSchemaLocation(URI baseURI, URI namespace, URI schemaLocation)
+        {
+            return namespace;
+        }
+
+        @Override
+        public URI resolveLocation(URI baseURI, URI schemaLocation)
+        {
+            return schemaLocation;
+        }
+    }
+    
+    private static final String IPO_URI = "http://www.example.com/IPO";
+    private static final String ADDRESS_URI = "http://www.example.com/schemas/address.xsd";
+    private static final String ACTIVITY_URI = "http://www.santam.co.za/xsd/activityconditionplace/activityconditionplace-v2";
+    private static final String COMMON_URI = "http://www.santam.co.za/xsd/common/common-v2";
+    private static final String TASKMAN_URI = "http://www.santam.co.za/xsd/taskmanager/taskmanager-v2";
 }
