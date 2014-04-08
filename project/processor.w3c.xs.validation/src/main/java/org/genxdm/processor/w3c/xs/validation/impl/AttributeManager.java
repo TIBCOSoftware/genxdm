@@ -399,9 +399,12 @@ final class AttributeManager<A>
 	 *            The handler for exceptions.
 	 * @param p2n
 	 *            A prefix resolver.
+	 * @return whether or not caller should switch processContents mode from lax to skip.  Returns true iff the current processContents is lax, 
+	 * AND an xsi:type attribute exists, AND that type cannot be resolved.  Otherwise, returns false.
 	 */
-	public void initialize(final QName elementName, final Locatable locatable, final LinkedList<VxMapping<QName, String>> attributes, final PrefixResolver p2n, final URI baseURI, final SchemaExceptionHandler errors, final VxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy) throws IOException, AbortException
+	public boolean initialize(final QName elementName, final Locatable locatable, final LinkedList<VxMapping<QName, String>> attributes, final PrefixResolver p2n, final URI baseURI, final SchemaExceptionHandler errors, final VxSchemaDocumentLocationStrategy schemaDocumentLocationStrategy, final ProcessContentsMode processContents) throws IOException, AbortException
 	{
+		boolean setFromLaxToSkip = false;
 		reset();
 
 		if (attributes.size() > 0) // Optimization.
@@ -423,9 +426,14 @@ final class AttributeManager<A>
 							final A actualValue = attributeType.validate(data, p2n, atomBridge).get(0);
 							final QName typeName = atomBridge.getQName(actualValue);
 							m_localType = metaBridge.getTypeDefinition(typeName);
-							if (null != m_localType)
+							
+							if (null != m_localType || processContents == ProcessContentsMode.Skip || processContents == ProcessContentsMode.Lax)
 							{
 								m_xsiAtoms.put(attributeName, new Pair<A, SimpleType>(actualValue, attributeType));
+								if(processContents == ProcessContentsMode.Lax)
+								{
+									setFromLaxToSkip = true;									
+								}
 							}
 							else
 							{
@@ -516,6 +524,7 @@ final class AttributeManager<A>
 				}
 			}
 		}
+		return setFromLaxToSkip;
 	}
 
 	public void reset()
