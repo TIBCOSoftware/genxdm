@@ -600,11 +600,21 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		    m_currentPSVI.setProcessContents(ProcessContentsMode.Lax);
 		}
 		
+		
 		// Digest the attributes from the XMLSchema-instance namespace.
-		m_attributes.initialize(elementName, m_currentItem, attributes, m_namespaces, documentURI, m_errors, sdl);
+		boolean switchProcessContentFromLaxToSkip = m_attributes.initialize(elementName, m_currentItem, attributes, m_namespaces, documentURI, m_errors, sdl, m_currentPSVI.getProcessContents());
+		
 		// if we're not operating in caller-overrides-type mode, get the xsi:type override
 		if (m_attributes.getLocalType() != null)
 		    localType = m_attributes.getLocalType();
+		else if(switchProcessContentFromLaxToSkip)
+		{
+			if(savedPC == null)
+			{
+				savedPC = m_currentPSVI.getProcessContents();
+			}
+			m_currentPSVI.setProcessContents(ProcessContentsMode.Skip);
+		}
 		final Boolean explicitNil = m_attributes.getLocalNil();
 
 		m_currentPSVI = m_mac.startElement(elementName, localType, explicitNil);
