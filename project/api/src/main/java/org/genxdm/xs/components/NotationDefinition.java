@@ -15,7 +15,6 @@
  */
 package org.genxdm.xs.components;
 
-import java.net.URI;
 
 /**
  * Notation
@@ -26,7 +25,7 @@ public interface NotationDefinition extends SchemaComponent
      * Returns the notation's {system identifier} property. Optional if {public identifier} is present. Must be a valid
      * URI reference.
      */
-    URI getSystemId();
+    String getSystemId();
 
     /**
      * Returns the notation's {public identifier} property. Optional if {system identifier} is present. Must be valid

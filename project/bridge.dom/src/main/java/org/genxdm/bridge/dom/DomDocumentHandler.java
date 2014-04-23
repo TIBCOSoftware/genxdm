@@ -18,15 +18,14 @@ package org.genxdm.bridge.dom;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.net.URI;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.genxdm.exceptions.XdmMarshalException;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.exceptions.XdmMarshalException;
 import org.genxdm.processor.io.DefaultDocumentHandler;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -60,21 +59,21 @@ public class DomDocumentHandler extends DefaultDocumentHandler<Node> {
 
     
     @Override
-    public Node parse(InputStream byteStream, URI systemId) throws IOException,
+    public Node parse(InputStream byteStream, String systemId) throws IOException,
             XdmMarshalException {
         return parse(new InputSource(byteStream), systemId);
     }
 
 
     @Override
-    public Node parse(Reader characterStream, URI systemId) throws IOException,
+    public Node parse(Reader characterStream, String systemId) throws IOException,
             XdmMarshalException {
         return parse(new InputSource(characterStream), systemId);
     }
 
 
     @Override
-    public Node parse(InputSource source, URI systemId) throws IOException,
+    public Node parse(InputSource source, String systemId) throws IOException,
             XdmMarshalException {
         
         PreCondition.assertArgumentNotNull(source, "source");

@@ -15,8 +15,6 @@
  */
 package org.genxdm.bridgekit.xs.simple;
 
-import java.net.URI;
-
 import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.xs.complex.NamedComponentImpl;
@@ -26,9 +24,9 @@ import org.genxdm.xs.enums.ScopeExtent;
 public final class NotationImpl extends NamedComponentImpl implements NotationDefinition
 {
     private final String publicId;
-    private final URI systemId;
+    private final String systemId;
 
-    public NotationImpl(final QName name, final String publicId, final URI systemId)
+    public NotationImpl(final QName name, final String publicId, final String systemId)
     {
         super(name, false, ScopeExtent.Global);
         this.publicId = publicId;
@@ -40,7 +38,7 @@ public final class NotationImpl extends NamedComponentImpl implements NotationDe
         return publicId;
     }
 
-    public URI getSystemId()
+    public String getSystemId()
     {
         return systemId;
     }

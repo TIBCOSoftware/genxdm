@@ -16,7 +16,6 @@
 package org.genxdm.processor.w3c.xs.impl;
 
 import java.io.InputStream;
-import java.net.URI;
 
 import org.genxdm.Cursor;
 import org.genxdm.bridgekit.xs.ComponentBagImpl;
@@ -46,8 +45,8 @@ final public class XMLParserImpl implements SchemaParser, LoadOptions
     }
 
     @Override
-    public ComponentBag parse(final URI schemaLocation, final Cursor tree,
-            final URI systemId, final SchemaExceptionHandler errors)
+    public ComponentBag parse(final String schemaLocation, final Cursor tree,
+            final String systemId, final SchemaExceptionHandler errors)
         throws AbortException
     {
         PreCondition.assertNotNull(tree, "tree");
@@ -56,7 +55,7 @@ final public class XMLParserImpl implements SchemaParser, LoadOptions
     }
     
     @Override
-    public ComponentBag parse(final URI schemaLocation, final InputStream istream, final URI systemId, final SchemaExceptionHandler errors) 
+    public ComponentBag parse(final String schemaLocation, final InputStream istream, final String systemId, final SchemaExceptionHandler errors) 
         throws AbortException
     {
         PreCondition.assertArgumentNotNull(istream, "istream");

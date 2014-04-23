@@ -15,7 +15,6 @@
  */
 package org.genxdm.processor.w3c.xs.xmlrep;
 
-import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -74,8 +73,8 @@ public final class XMLSchemaCache
     public final Map<QName, SrcFrozenLocation> m_notationsUnresolved = new HashMap<QName, SrcFrozenLocation>();
 
     public final HashSet<String> m_seenNamespaces = new HashSet<String>();
-    public final HashSet<URI> m_seenSystemIds = new HashSet<URI>();
-    public final HashMap<URI,HashSet<String>> m_seenChameleonsLocation2Tns = new HashMap<URI,HashSet<String>>();
+    public final HashSet<String> m_seenSystemIds = new HashSet<String>();
+    public final HashMap<String,HashSet<String>> m_seenChameleonsLocation2Tns = new HashMap<String,HashSet<String>>();
 
     private final XMLScope GLOBAL = new XMLScope();
     private final XMLTypeRef ANY_SIMPLE_TYPE;

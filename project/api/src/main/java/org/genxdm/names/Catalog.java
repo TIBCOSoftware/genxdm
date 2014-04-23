@@ -32,19 +32,19 @@ public interface Catalog
 {
     boolean isMappedPublicId(final String publicId);
     
-    boolean isMappedSystemId(final URI systemId);
+    boolean isMappedSystemId(final String systemId);
     
     boolean isMappedURI(final URI uri);
     
     void mapPublicId(final String publicId, final URI uri);
     
-    void mapSystemId(final URI systemId, final URI uri);
+    void mapSystemId(final String systemId, final URI uri);
     
     void mapURI(final URI original, final URI uri);
     
     URI retrievePublicId(final String publicId);
     
-    URI retrieveSystemId(final URI systemId);
+    URI retrieveSystemId(final String systemId);
     
     URI retrieveURI(final URI original);
 }

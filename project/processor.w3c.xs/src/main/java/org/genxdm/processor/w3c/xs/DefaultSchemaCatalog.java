@@ -17,6 +17,7 @@ package org.genxdm.processor.w3c.xs;
 
 import java.net.URI;
 
+import org.genxdm.bridgekit.misc.StringToURIParser;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.Catalog;
 import org.genxdm.xs.resolve.SchemaCatalog;
@@ -39,36 +40,29 @@ public class DefaultSchemaCatalog implements SchemaCatalog
         this.catalog = PreCondition.assertNotNull(catalog, "catalog");
     }
     
-    public URI resolveLocation(final URI baseURI, final URI schemaLocation)
+    public URI resolveLocation(final URI baseURI, final String schemaLocation)
     {
-        URI location = PreCondition.assertNotNull(schemaLocation, "schemaLocation");
-        if ((baseURI != null) && !schemaLocation.isAbsolute())
-            location = makeAbsolute(baseURI, schemaLocation);
+        URI location = StringToURIParser.parse(PreCondition.assertNotNull(schemaLocation, "schemaLocation"));
+        if ((baseURI != null) && !location.isAbsolute())
+            location = baseURI.resolve(location);
         if (catalog.isMappedURI(location))
             location = catalog.retrieveURI(location);
         return location;
     }
 
-    public URI resolveNamespaceAndSchemaLocation(URI baseURI, URI namespace, URI schemaLocation)
+    public URI resolveNamespaceAndSchemaLocation(URI baseURI, String namespace, String schemaLocation)
     {
         URI location = null;
         if (schemaLocation != null)
             location = resolveLocation(baseURI, schemaLocation);
         if (location == null)
         {
-            location = namespace;
-            if ((baseURI != null) && !namespace.isAbsolute())
-                location = makeAbsolute(baseURI, namespace);
+            location = resolveLocation(baseURI, namespace);
             if (catalog.isMappedURI(location))
                 location = catalog.retrieveURI(location);
         }
         return location;
     }
     
-    private URI makeAbsolute(final URI baseURI, final URI relativeURI)
-    {
-        return baseURI.resolve(relativeURI);
-    }
-
     private final Catalog catalog;
 }
