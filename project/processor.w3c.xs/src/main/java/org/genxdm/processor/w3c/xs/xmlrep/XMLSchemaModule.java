@@ -53,7 +53,7 @@ public final class XMLSchemaModule
     public String m_version;
     public String m_lang;
 
-    public XMLSchemaModule(final XMLSchemaModule parentModule, final URI schemaLocation, final URI systemId)
+    public XMLSchemaModule(final XMLSchemaModule parentModule, final String schemaLocation, final String systemId)
     {
         this.m_parentModule = parentModule;
         this.m_schemaLocation = schemaLocation;
@@ -84,12 +84,12 @@ public final class XMLSchemaModule
         return m_parentModule;
     }
 
-    public URI getSchemaLocation()
+    public String getSchemaLocation()
     {
         return m_schemaLocation;
     }
 
-    public URI getSystemId()
+    public String getSystemId()
     {
         return m_systemId;
     }
@@ -159,8 +159,8 @@ public final class XMLSchemaModule
     private final HashSet<QName> m_identityConstraints = new HashSet<QName>();
 
     private final XMLSchemaModule m_parentModule;
-    private final URI m_schemaLocation;
-    private final URI m_systemId;
+    private final String m_schemaLocation;
+    private final String m_systemId;
 
     private String m_targetNamespace;
 }

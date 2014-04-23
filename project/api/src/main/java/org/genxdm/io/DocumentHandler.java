@@ -20,7 +20,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
-import java.net.URI;
 
 import javax.xml.XMLConstants;
 
@@ -57,7 +56,7 @@ public interface DocumentHandler<N>
      * @param systemId the URI of the document, if available; may be null
      * @return a document node resulting from the parse
      */
-    N parse(final InputStream byteStream, final URI systemId) throws IOException, XdmMarshalException;
+    N parse(final InputStream byteStream, final String systemId) throws IOException, XdmMarshalException;
     
     /** Parse a reader (characters) as a document node.
      * 
@@ -67,7 +66,7 @@ public interface DocumentHandler<N>
      * @param systemId the URI of the document, if available; may be null
      * @return a document node resulting from the parse
      */
-    N parse(final Reader characterStream, final URI systemId) throws IOException, XdmMarshalException;
+    N parse(final Reader characterStream, final String systemId) throws IOException, XdmMarshalException;
     
     /** Parse a SAX InputSource to a document node.
      * 
@@ -80,7 +79,7 @@ public interface DocumentHandler<N>
      * @return a document node resulting from the parse.
      * 
      */
-    N parse(final InputSource source, final URI systemId) throws IOException, XdmMarshalException;
+    N parse(final InputSource source, final String systemId) throws IOException, XdmMarshalException;
 
     /** Write XML, as bytes in a specified character encoding, to an output stream, unformatted.
      *

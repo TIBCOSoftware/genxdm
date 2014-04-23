@@ -18,7 +18,6 @@ package org.genxdm.processor.io;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.net.URI;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -88,7 +87,7 @@ public class DefaultDocumentHandler<N>
         ipf.setProperty("javax.xml.stream.reporter", reporter);
     }
     
-    public N parse(InputStream byteStream, URI systemId)
+    public N parse(InputStream byteStream, String systemId)
         throws IOException, XdmMarshalException
     {
         PreCondition.assertNotNull(byteStream, "byteStream");
@@ -111,7 +110,7 @@ public class DefaultDocumentHandler<N>
         }
     }
 
-    public N parse(Reader characterStream, URI systemId)
+    public N parse(Reader characterStream, String systemId)
         throws IOException, XdmMarshalException
     {
         PreCondition.assertNotNull(characterStream, "characterStream");
@@ -134,7 +133,7 @@ public class DefaultDocumentHandler<N>
         }
     }
     
-    public N parse(InputSource source, URI systemId)
+    public N parse(InputSource source, String systemId)
         throws IOException, XdmMarshalException
     {
         if (source.getCharacterStream() != null)
@@ -161,7 +160,7 @@ public class DefaultDocumentHandler<N>
         //return !Boolean.TRUE.equals(ipf.getProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES));
     }
 
-    protected N parseEventReader(XMLEventReader reader, URI systemId)
+    protected N parseEventReader(XMLEventReader reader, String systemId)
         throws IOException, XdmMarshalException
     {
         // this is probably working now.

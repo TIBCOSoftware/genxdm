@@ -33,7 +33,7 @@ public class DefaultCatalog
     }
 
     @Override
-    public boolean isMappedSystemId(URI systemId)
+    public boolean isMappedSystemId(String systemId)
     {
         return systems.containsKey(systemId);
     }
@@ -55,7 +55,7 @@ public class DefaultCatalog
     }
 
     @Override
-    public void mapSystemId(URI systemId, URI uri)
+    public void mapSystemId(String systemId, URI uri)
     {
         PreCondition.assertNotNull(systemId, "key");
         if (uri == null)
@@ -81,7 +81,7 @@ public class DefaultCatalog
     }
 
     @Override
-    public URI retrieveSystemId(URI systemId)
+    public URI retrieveSystemId(String systemId)
     {
         return systems.get(systemId);
     }
@@ -93,6 +93,6 @@ public class DefaultCatalog
     }
 
     private final Map<String, URI> pubs = new HashMap<String, URI>();
-    private final Map<URI, URI> systems = new HashMap<URI, URI>();
+    private final Map<String, URI> systems = new HashMap<String, URI>();
     private final Map<URI, URI> uris = new HashMap<URI, URI>();
 }

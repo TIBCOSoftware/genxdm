@@ -152,7 +152,7 @@ public class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 		
 		for (final Resolved<InputStream> resource : resources)
 		{
-			ComponentBag scBag = parser.parse(new URI(resource.getLocation()), resource.getResource(), new URI(resource.getSystemId()), errors);
+			ComponentBag scBag = parser.parse(resource.getLocation(), resource.getResource(), resource.getSystemId(), errors);
 			if(!errors.isEmpty())
 			{
 				for(SchemaException error : errors)
@@ -166,29 +166,29 @@ public class TestValidate<N,A> extends BaseBridgePerfTest<N,A>
 	}
 	class MyCatalog implements SchemaCatalog {
 
-		private final HashMap<URI, URI> m_ns2loc = new HashMap<URI, URI>();
+		private final HashMap<String, String> m_ns2loc = new HashMap<String, String>();
 		
 		@Override
-		public URI resolveLocation(URI baseURI, URI schemaLocation) {
+		public URI resolveLocation(URI baseURI, String schemaLocation) {
 			return resolveNamespaceAndSchemaLocation(baseURI, null, schemaLocation);
 		}
 
 		@Override
-		public URI resolveNamespaceAndSchemaLocation(URI baseURI, URI namespace, URI schemaLocation) {
+		public URI resolveNamespaceAndSchemaLocation(URI baseURI, String namespace, String schemaLocation) {
 			if(schemaLocation == null)
 			{
 				// No other way to look this up in this catalog.
-				return m_ns2loc.get(namespace);
+				return StringToURIParser.parse(m_ns2loc.get(namespace));
 			}
 			String x = baseURI.toString();
 			int index = x.lastIndexOf('/');
-			String uriString = x.substring(0, index + 1).concat(schemaLocation.toString());
+			String uriString = x.substring(0, index + 1).concat(schemaLocation);
 			try {
 				m_ns2loc.put(namespace, schemaLocation);
 				return new URI(uriString);
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
-				return schemaLocation;
+				return StringToURIParser.parse(schemaLocation);
 			}
 		}
 	}
