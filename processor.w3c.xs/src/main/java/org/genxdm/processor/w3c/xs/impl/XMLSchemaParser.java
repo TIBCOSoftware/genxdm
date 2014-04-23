@@ -154,7 +154,7 @@ final class XMLSchemaParser extends XMLRepresentation
         ANY_TYPE = new XMLTypeRef(new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, "anyType"));
     }
 
-    public void parse(final URI systemId, final InputStream istream, final XMLSchemaCache cache, final XMLSchemaModule module) throws AbortException
+    public void parse(final String systemId, final InputStream istream, final XMLSchemaCache cache, final XMLSchemaModule module) throws AbortException
     {
         PreCondition.assertArgumentNotNull(cache, "cache");
         PreCondition.assertArgumentNotNull(module, "module");
@@ -4397,7 +4397,7 @@ final class XMLSchemaParser extends XMLRepresentation
         PreCondition.assertArgumentNotNull(module, "module");
         try
         {
-            URI schemaLocation = null;
+            String schemaLocation = null;
             String namespace = null;
             final int attributeCount = reader.getAttributeCount();
             for (int i = 0; i < attributeCount; i++)
@@ -4408,7 +4408,7 @@ final class XMLSchemaParser extends XMLRepresentation
                     final String localName = reader.getAttributeLocalName(i);
                     if (LN_SCHEMA_LOCATION.equals(localName))
                     {
-                        schemaLocation = StringToURIParser.parse(reader.getAttributeValue(i));
+                        schemaLocation = reader.getAttributeValue(i);
                     }
                     else if (LN_NAMESPACE.equals(localName))
                     {
@@ -4455,7 +4455,7 @@ final class XMLSchemaParser extends XMLRepresentation
     private void includeTag(final XMLSchemaCache cache, final XMLSchemaModule module, final XMLStreamReader reader) throws XMLStreamException, AbortException
     {
         final int attributeCount = reader.getAttributeCount();
-        URI schemaLocation = null;
+        String schemaLocation = null;
         for (int i = 0; i < attributeCount; i++)
         {
             final String namespaceURI = reader.getAttributeNamespace(i);
@@ -4464,7 +4464,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 final String localName = reader.getAttributeLocalName(i);
                 if (LN_SCHEMA_LOCATION.equals(localName))
                 {
-                    schemaLocation = StringToURIParser.parse(reader.getAttributeValue(i));
+                    schemaLocation = reader.getAttributeValue(i);
                 }
                 else if (LN_ID.equals(localName))
                 {
@@ -5400,7 +5400,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 }
                 else if (LN_SYSTEM.equals(localName))
                 {
-                    notation.setSystemId(StringToURIParser.parse(reader.getAttributeValue(i)));
+                    notation.setSystemId(reader.getAttributeValue(i));
                 }
                 else if (LN_ID.equals(localName))
                 {
@@ -5462,7 +5462,7 @@ final class XMLSchemaParser extends XMLRepresentation
         return null;
     }
 
-    private void parseExternalModule(final XMLSchemaCache cache, final XMLSchemaModule parent, final Location location, final String namespace, final URI schemaLocation, final ModuleKind moduleKind) throws AbortException
+    private void parseExternalModule(final XMLSchemaCache cache, final XMLSchemaModule parent, final Location location, final String namespace, final String schemaLocation, final ModuleKind moduleKind) throws AbortException
     {
 //        PreCondition.assertArgumentNotNull(schemaLocation, "schemaLocation");
 
@@ -5471,7 +5471,10 @@ final class XMLSchemaParser extends XMLRepresentation
             throw new AssertionError("catalog required for include, import or redefine.");
         }
         // TODO: here, we use StringToURIParser on the namespace. we should be able to pass a string, instead.
-        final URI catalogURI = m_catalog.resolveNamespaceAndSchemaLocation(parent.getSystemId(), (namespace == null) ? null : StringToURIParser.parse(namespace), schemaLocation);
+        String parentSystemId = parent.getSystemId();
+        if (parentSystemId == null)
+            parentSystemId = "";
+        final URI catalogURI = m_catalog.resolveNamespaceAndSchemaLocation(StringToURIParser.parse(parentSystemId), namespace, schemaLocation);
 
         // If the catalogURI is null, we will not parse (obviously), and we will not raise an error.
         // If the missing schema is a problem, that problem will be evident during component resolution,
@@ -5485,7 +5488,7 @@ final class XMLSchemaParser extends XMLRepresentation
                     throw new AssertionError("resolver required for include, import or redefine.");
                 }
                 final InputStream source = m_resolver.resolveInputStream(catalogURI);
-                final XMLSchemaModule module = new XMLSchemaModule(parent, schemaLocation, catalogURI);
+                final XMLSchemaModule module = new XMLSchemaModule(parent, schemaLocation, catalogURI.toString());
                 switch (moduleKind)
                 {
                     case Include:
@@ -5509,7 +5512,7 @@ final class XMLSchemaParser extends XMLRepresentation
                     }
                 }
                 final XMLSchemaParser parser = new XMLSchemaParser(bootstrap, m_errors, m_catalog, m_resolver, m_processRepeatedNamespaces);
-                parser.parse(catalogURI, source, cache, module);
+                parser.parse(catalogURI.toString(), source, cache, module);
             }
             catch (final IOException e)
             {
@@ -5673,7 +5676,7 @@ final class XMLSchemaParser extends XMLRepresentation
     private void redefineTag(final XMLSchemaCache cache, final XMLSchemaModule module, final XMLStreamReader reader, final String targetNamespace) throws XMLStreamException, AbortException
     {
         {
-            URI schemaLocation = null;
+            String schemaLocation = null;
             final int attributeCount = reader.getAttributeCount();
             for (int i = 0; i < attributeCount; i++)
             {
@@ -5683,7 +5686,7 @@ final class XMLSchemaParser extends XMLRepresentation
                     final String localName = reader.getAttributeLocalName(i);
                     if (LN_SCHEMA_LOCATION.equals(localName))
                     {
-                        schemaLocation = StringToURIParser.parse(reader.getAttributeValue(i));
+                        schemaLocation = reader.getAttributeValue(i);
                     }
                     else if (LN_ID.equals(localName))
                     {

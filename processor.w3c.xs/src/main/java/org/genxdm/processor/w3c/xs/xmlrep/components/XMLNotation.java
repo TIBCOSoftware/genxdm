@@ -15,8 +15,6 @@
  */
 package org.genxdm.processor.w3c.xs.xmlrep.components;
 
-import java.net.URI;
-
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
@@ -27,7 +25,7 @@ public final class XMLNotation extends XMLComponent
 {
     private final QName name;
     private String publicId;
-    private URI systemId;
+    private String systemId;
 
     public XMLNotation(final QName name, final XMLScope global, final SrcFrozenLocation location)
     {
@@ -50,12 +48,12 @@ public final class XMLNotation extends XMLComponent
         publicId = id;
     }
     
-    public URI getSystemId()
+    public String getSystemId()
     {
         return systemId;
     }
     
-    public void setSystemId(URI id)
+    public void setSystemId(String id)
     {
         systemId = id;
     }

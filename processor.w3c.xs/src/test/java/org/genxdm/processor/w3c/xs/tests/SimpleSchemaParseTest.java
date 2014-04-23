@@ -283,22 +283,6 @@ public class SimpleSchemaParseTest
         }
     }
     
-    private class BogusSchemaCatalog implements SchemaCatalog
-    {
-
-        @Override
-        public URI resolveNamespaceAndSchemaLocation(URI baseURI, URI namespace, URI schemaLocation)
-        {
-            return namespace;
-        }
-
-        @Override
-        public URI resolveLocation(URI baseURI, URI schemaLocation)
-        {
-            return schemaLocation;
-        }
-    }
-    
     private static final String IPO_URI = "http://www.example.com/IPO";
     private static final String ADDRESS_URI = "http://www.example.com/schemas/address.xsd";
     private static final String ACTIVITY_URI = "http://www.santam.co.za/xsd/activityconditionplace/activityconditionplace-v2";

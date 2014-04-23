@@ -53,7 +53,7 @@ public class XmlEventVisitor
         this.handler = PreCondition.assertNotNull(handler, "handler");
     }
     
-    public void setSystemId(URI systemId)
+    public void setSystemId(String systemId)
     {
         this.docURI = systemId;
     }
@@ -74,7 +74,7 @@ public class XmlEventVisitor
             {
                 if (!reader.peek().isStartDocument())
                 {
-                    storeEvent(new StoredStartDoc(docURI == null ? null : docURI.toString()));
+                    storeEvent(new StoredStartDoc(docURI));
                     manualStart = true;
                 }
             }
@@ -150,8 +150,6 @@ public class XmlEventVisitor
                 {
                     throw new XMLStreamException(mu);
                 }
-                if (uri == null)
-                    uri = docURI;
                 handler.startDocument(uri, null);
                 break;
             }
@@ -264,8 +262,6 @@ public class XmlEventVisitor
                 {
                     throw new XMLStreamException(mu);
                 }
-                if (uri == null)
-                    uri = docURI;
                 handler.startDocument(uri, ((javax.xml.stream.events.DTD)event).getDocumentTypeDeclaration());
                 while (!eventQueue.isEmpty())
                 {
@@ -561,7 +557,7 @@ public class XmlEventVisitor
     private final XMLEventReader reader;
     private final ContentHandler handler;
     private final Queue<XMLEvent> eventQueue = new LinkedList<XMLEvent>();
-    private URI docURI;
+    private String docURI;
     private int depth = 0;
     private boolean inProlog = false;
 }

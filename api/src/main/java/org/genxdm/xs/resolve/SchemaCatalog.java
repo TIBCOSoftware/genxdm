@@ -37,7 +37,7 @@ public interface SchemaCatalog
      *            The schema location specified.
      * @return A systemId for use by a resolver.
      */
-    URI resolveNamespaceAndSchemaLocation(URI baseURI, URI namespace, URI schemaLocation);
+    URI resolveNamespaceAndSchemaLocation(URI baseURI, String namespace, String schemaLocation);
 
     /**
      * Invoked for xsi:noNamespaceSchemaLocation hints.
@@ -48,5 +48,5 @@ public interface SchemaCatalog
      *            The schema location specified.
      * @return A systemId for use by a resolver.
      */
-    URI resolveLocation(URI baseURI, URI schemaLocation);
+    URI resolveLocation(URI baseURI, String schemaLocation);
 }

@@ -18,7 +18,6 @@ package org.genxdm.processor.io;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.net.URI;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
@@ -55,7 +54,7 @@ public class ValidatingDocumentHandler<N, A>
     }
     
     @Override
-    public N parse(InputStream byteStream, URI systemId)
+    public N parse(InputStream byteStream, String systemId)
         throws IOException, XdmMarshalException
     {
         final InputSource source = new InputSource(PreCondition.assertNotNull(byteStream, "byteStream"));
@@ -65,7 +64,7 @@ public class ValidatingDocumentHandler<N, A>
     }
 
     @Override
-    public N parse(Reader characterStream, URI systemId)
+    public N parse(Reader characterStream, String systemId)
         throws IOException, XdmMarshalException
     {
         final InputSource source = new InputSource(PreCondition.assertNotNull(characterStream, "characterStream"));
@@ -75,7 +74,7 @@ public class ValidatingDocumentHandler<N, A>
     }
 
     @Override
-    public N parse(InputSource source, URI systemId)
+    public N parse(InputSource source, String systemId)
         throws IOException, XdmMarshalException
     {
         try

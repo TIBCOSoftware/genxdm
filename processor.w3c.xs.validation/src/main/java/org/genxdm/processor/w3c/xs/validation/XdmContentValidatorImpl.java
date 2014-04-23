@@ -22,7 +22,6 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.bridgekit.misc.StringToURIParser;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.processor.w3c.xs.validation.api.VxMapping;

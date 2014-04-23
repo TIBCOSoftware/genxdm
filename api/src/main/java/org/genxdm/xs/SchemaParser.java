@@ -16,7 +16,6 @@
 package org.genxdm.xs;
 
 import java.io.InputStream;
-import java.net.URI;
 
 import org.genxdm.Cursor;
 import org.genxdm.xs.exceptions.AbortException;
@@ -27,8 +26,8 @@ import org.genxdm.xs.resolve.SchemaCatalog;
 
 public interface SchemaParser
 {
-    ComponentBag parse(final URI schemaLocation, final Cursor tree,
-            final URI systemId, final SchemaExceptionHandler errors)
+    ComponentBag parse(final String schemaLocation, final Cursor tree,
+            final String systemId, final SchemaExceptionHandler errors)
         throws AbortException;
     
     /** Parse and validate a schema, returning a bag of the components
@@ -50,8 +49,8 @@ public interface SchemaParser
      * of the parsed schema
      * @throws AbortException
      */
-    ComponentBag parse(final URI schemaLocation, final InputStream istream,
-            final URI systemId, final SchemaExceptionHandler errors)
+    ComponentBag parse(final String schemaLocation, final InputStream istream,
+            final String systemId, final SchemaExceptionHandler errors)
         throws AbortException;
     
     /** Set the regular expression compiler to be used during parsing.
