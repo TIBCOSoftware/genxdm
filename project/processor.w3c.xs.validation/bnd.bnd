@@ -1,5 +1,5 @@
-Bundle-Version: 1.0
+Bundle-Version: 1.1
 Private-Package: org.genxdm.processor.w3c.xs.validation.impl
-Export-Package: org.genxdm.processor.w3c.xs.validation;version=1.0,\
-	org.genxdm.processor.w3c.xs.validation.api;version=1.0
+Export-Package: org.genxdm.processor.w3c.xs.validation;version=1.1,\
+	org.genxdm.processor.w3c.xs.validation.api;version=1.1
 -runee: JavaSE-1.6
