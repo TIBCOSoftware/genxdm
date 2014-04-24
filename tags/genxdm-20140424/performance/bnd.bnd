@@ -1,0 +1,8 @@
+Bundle-Version: 1.0.0
+Export-Package: org.genxdm.samples.performance;version=1.0,\
+	org.genxdm.samples.performance.bridges;version=1.0,\
+	org.genxdm.samples.performance.bridges.axiom;version=1.0,\
+	org.genxdm.samples.performance.bridges.cx;version=1.0,\
+	org.genxdm.samples.performance.bridges.dom;version=1.0,\
+	org.genxdm.samples.performance.dom;version=1.0
+-runee: JavaSE-1.6
