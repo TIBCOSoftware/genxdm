@@ -1,6 +1,6 @@
-Bundle-Version: 1.0.1
-Export-Package: org.genxdm.processor.input;version=1.0,\
-	org.genxdm.processor.io;version=1.0,\
-	org.genxdm.processor.io.adapters;version=1.0,\
-	org.genxdm.processor.output;version=1.0
+Bundle-Version: 1.1.0
+Export-Package: org.genxdm.processor.input;version=1.1,\
+	org.genxdm.processor.io;version=1.1,\
+	org.genxdm.processor.io.adapters;version=1.1,\
+	org.genxdm.processor.output;version=1.1
 -runee: JavaSE-1.6
