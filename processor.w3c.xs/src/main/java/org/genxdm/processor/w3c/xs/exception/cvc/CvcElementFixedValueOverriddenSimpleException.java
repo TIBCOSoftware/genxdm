@@ -35,7 +35,7 @@ public final class CvcElementFixedValueOverriddenSimpleException extends CvcElem
     @Override
     public String getMessage()
     {
-        return "Fixed value, '" + m_expectValue + "', specified by the element declaration '" + getElementDeclaration().getName() + "' has been overridden with '" + m_actualValue + "'.";
+        return "Fixed value, '" + m_expectValue + "', specified by the element declaration '" + getElementDeclaration() + "' has been overridden with '" + m_actualValue + "'.";
     }
 
     @Override

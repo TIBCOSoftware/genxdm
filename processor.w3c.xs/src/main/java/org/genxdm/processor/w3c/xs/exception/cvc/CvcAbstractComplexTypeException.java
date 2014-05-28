@@ -25,9 +25,9 @@ import org.genxdm.xs.types.ComplexType;
 @SuppressWarnings("serial")
 public final class CvcAbstractComplexTypeException extends SmComplexTypeException
 {
-    private final ComplexType complexType;
+    private final QName complexType;
 
-    public ComplexType getComplexType()
+    public QName getComplexType()
     {
         return complexType;
     }
@@ -35,7 +35,7 @@ public final class CvcAbstractComplexTypeException extends SmComplexTypeExceptio
     public CvcAbstractComplexTypeException(final QName elementName, final ComplexType complexType, final LocationInSchema location)
     {
         super(PART_ABSTRACT_FALSE, elementName, location);
-        this.complexType = PreCondition.assertArgumentNotNull(complexType, "complexType");
+        this.complexType = PreCondition.assertArgumentNotNull(complexType, "complexType").getName();
     }
 
     public String getMessage()

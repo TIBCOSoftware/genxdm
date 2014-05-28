@@ -15,6 +15,8 @@
  */
 package org.genxdm.processor.w3c.xs.exception.cvc;
 
+import javax.xml.namespace.QName;
+
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.exceptions.ComponentConstraintException;
@@ -24,18 +26,18 @@ import org.genxdm.xs.types.Type;
 @SuppressWarnings("serial")
 public final class CvcElementLocalTypeDerivationException extends CvcElementException
 {
-    private final Type m_localType;
+    private final QName m_localType;
 
     public CvcElementLocalTypeDerivationException(final Type localType, final ElementDefinition elementDeclaration, final ComponentConstraintException cause, final LocationInSchema location)
     {
         super(PART_LOCAL_TYPE_DERIVATION, elementDeclaration, location, cause);
-        m_localType = PreCondition.assertArgumentNotNull(localType, "localType");
+        m_localType = PreCondition.assertArgumentNotNull(localType, "localType").getName();
     }
 
     @Override
     public String getMessage()
     {
-        final String localMessage = "The local type '" + m_localType + "' is not validly derived from the type definition '" + getElementDeclaration().getType() + "', of element '" + getElementDeclaration() + "'.";
+        final String localMessage = "The local type '" + m_localType + "' is not validly derived from the type definition '" + getElementDeclarationType() + "', of element '" + getElementDeclaration() + "'.";
 
         final StringBuilder message = new StringBuilder();
         message.append(getOutcome().getSection());

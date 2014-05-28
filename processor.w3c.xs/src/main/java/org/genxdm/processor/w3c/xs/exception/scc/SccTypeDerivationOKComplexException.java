@@ -18,6 +18,8 @@ package org.genxdm.processor.w3c.xs.exception.scc;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.xml.namespace.QName;
+
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.enums.DerivationMethod;
 import org.genxdm.xs.enums.ValidationOutcome;
@@ -28,8 +30,8 @@ import org.genxdm.xs.types.Type;
 @SuppressWarnings("serial")
 public abstract class SccTypeDerivationOKComplexException extends ComponentConstraintException
 {
-    private final Type derivedType;
-    private final Type m_baseName;
+    private final QName derivedType;
+    private final QName m_baseName;
     private final Set<DerivationMethod> m_subset;
 
     public static final String PART_METHOD = "1";
@@ -41,25 +43,25 @@ public abstract class SccTypeDerivationOKComplexException extends ComponentConst
     public SccTypeDerivationOKComplexException(final String partNumber, final Type derivedType, final Type baseName, final Set<DerivationMethod> subset)
     {
         super(ValidationOutcome.SCC_Type_Derivation_OK_Complex, partNumber);
-        this.derivedType = PreCondition.assertArgumentNotNull(derivedType, "derivedType");
-        this.m_baseName = PreCondition.assertArgumentNotNull(baseName, "baseName");
+        this.derivedType = PreCondition.assertArgumentNotNull(derivedType, "derivedType").getName();
+        this.m_baseName = PreCondition.assertArgumentNotNull(baseName, "baseName").getName();
         this.m_subset = PreCondition.assertArgumentNotNull(subset, "subset");
     }
 
     public SccTypeDerivationOKComplexException(final String partNumber, final Type derivedType, final Type baseName, final Set<DerivationMethod> subset, final ComponentConstraintException cause)
     {
         super(ValidationOutcome.SCC_Type_Derivation_OK_Complex, partNumber, cause);
-        this.derivedType = PreCondition.assertArgumentNotNull(derivedType, "derivedType");
-        this.m_baseName = PreCondition.assertArgumentNotNull(baseName, "baseName");
+        this.derivedType = PreCondition.assertArgumentNotNull(derivedType, "derivedType").getName();
+        this.m_baseName = PreCondition.assertArgumentNotNull(baseName, "baseName").getName();
         this.m_subset = PreCondition.assertArgumentNotNull(subset, "subset");
     }
 
-    public final Type getDerivedType()
+    public final QName getDerivedType()
     {
         return derivedType;
     }
 
-    public final Type getBaseName()
+    public final QName getBaseName()
     {
         return m_baseName;
     }

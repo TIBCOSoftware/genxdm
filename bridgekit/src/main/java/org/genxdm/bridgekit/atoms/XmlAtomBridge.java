@@ -143,7 +143,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
                 }
                 catch (final DatatypeException e)
                 {
-                    throw new AtomCastException(sourceValue, e.getType().getName(), FORG0001, e);
+                    throw new AtomCastException(sourceValue, e.getType(), FORG0001, e);
                 }
             }
             else

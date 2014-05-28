@@ -32,6 +32,6 @@ public final class SccComplexTypeBaseUrTypeException extends SccTypeDerivationOK
     @Override
     public String getMessage()
     {
-        return "The complex type definition " + getDerivedType().getName() + " base must not be the ur-type definition.";
+        return "The complex type definition " + getDerivedType() + " base must not be the ur-type definition.";
     }
 }
