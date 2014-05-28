@@ -35,7 +35,7 @@ public final class CvcElementChildElementWithFixedException extends CvcElementEx
     @Override
     public String getMessage()
     {
-        return "The element information item, '" + getElementDeclaration().getName() + "', must have no element information item [children] because there is a fixed {value constraint}.";
+        return "The element information item, '" + getElementDeclaration() + "', must have no element information item [children] because there is a fixed {value constraint}.";
     }
 
     @Override

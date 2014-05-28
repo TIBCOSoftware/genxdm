@@ -33,6 +33,6 @@ public final class SccComplexTypeBaseSimpleDerivationException extends SccTypeDe
     @Override
     public String getMessage()
     {
-        return "The {type definition} of " + getDerivedType().getName() + " must be validly derived from " + getBaseName() + ".";
+        return "The {type definition} of " + getDerivedType() + " must be validly derived from " + getBaseName() + ".";
     }
 }

@@ -32,6 +32,6 @@ public final class SccComplexTypeDerivationHierarchyException extends SccTypeDer
     @Override
     public String getMessage()
     {
-        return "The complex type definition " + getDerivedType().getName() + " is not validly derived from " + getBaseName() + " given the subset {" + derivations(getSubset()) + "}.";
+        return "The complex type definition " + getDerivedType() + " is not validly derived from " + getBaseName() + " given the subset {" + derivations(getSubset()) + "}.";
     }
 }
