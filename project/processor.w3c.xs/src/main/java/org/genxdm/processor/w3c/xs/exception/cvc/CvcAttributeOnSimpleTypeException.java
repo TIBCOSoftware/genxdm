@@ -25,13 +25,13 @@ import org.genxdm.xs.types.SimpleType;
 public final class CvcAttributeOnSimpleTypeException extends CvcAttributeException
 {
     private final QName elementName;
-    private final SimpleType simpleType;
+    private final QName simpleType;
 
     public CvcAttributeOnSimpleTypeException(final QName elementName, final QName attributeName, final SimpleType simpleType, final LocationInSchema location)
     {
         super("?", attributeName, location);
         this.elementName = PreCondition.assertArgumentNotNull(elementName, "elementName");
-        this.simpleType = PreCondition.assertArgumentNotNull(simpleType, "simpleType");
+        this.simpleType = PreCondition.assertArgumentNotNull(simpleType, "simpleType").getName();
     }
 
     @Override

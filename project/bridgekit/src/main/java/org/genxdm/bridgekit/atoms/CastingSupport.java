@@ -150,7 +150,7 @@ public final class CastingSupport
                 }
                 catch (final DatatypeException e)
                 {
-                    throw new AtomCastException(atomBridge.getC14NForm(sourceAtom), e.getType().getName(), FORG0001, e);
+                    throw new AtomCastException(atomBridge.getC14NForm(sourceAtom), e.getType(), FORG0001, e);
                 }
             }
             else
@@ -2299,7 +2299,7 @@ public final class CastingSupport
                 }
                 catch (final DatatypeException e)
                 {
-                    throw new AtomCastException(sourceAtom, e.getType().getName(), FORG0001, e);
+                    throw new AtomCastException(sourceAtom, e.getType(), FORG0001, e);
                 }
             }
             else
@@ -3064,7 +3064,7 @@ public final class CastingSupport
                 }
                 catch (final DatatypeException e)
                 {
-                    throw new AtomCastException(atomBridge.getC14NForm(sourceAtom), atomBridge.getDataType(sourceAtom), e.getType().getName(), FORG0001, e);
+                    throw new AtomCastException(atomBridge.getC14NForm(sourceAtom), atomBridge.getDataType(sourceAtom), e.getType(), FORG0001, e);
                 }
             }
             else

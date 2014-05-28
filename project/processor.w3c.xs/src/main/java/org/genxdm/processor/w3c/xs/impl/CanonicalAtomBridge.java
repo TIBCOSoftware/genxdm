@@ -142,7 +142,7 @@ public class CanonicalAtomBridge
                 }
                 catch (DatatypeException dte)
                 {
-                    throw new AtomCastException(srcval, dte.getType().getName(), FORG0001, dte);
+                    throw new AtomCastException(srcval, dte.getType(), FORG0001, dte);
                 }
             }
             throw new IllegalArgumentException("Datatype '" + dataType + "' is not an atomic type");

@@ -15,6 +15,8 @@
  */
 package org.genxdm.processor.w3c.xs.exception.cvc;
 
+import javax.xml.namespace.QName;
+
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.exception.sm.SmLocationException;
 import org.genxdm.xs.components.ElementDefinition;
@@ -28,7 +30,8 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public abstract class CvcElementException extends SmLocationException
 {
-    private final ElementDefinition elementDeclaration;
+    private final QName elementDeclaration;
+    private final QName elementDeclarationType;
 
     public static final String PART_ABSTRACT = "2";
     public static final String PART_NOT_NILLABLE = "3.1";
@@ -43,17 +46,24 @@ public abstract class CvcElementException extends SmLocationException
     public CvcElementException(final String partNumber, final ElementDefinition elementDeclaration, final LocationInSchema location)
     {
         super(ValidationOutcome.CVC_Element_Locally_Valid, partNumber, location);
-        this.elementDeclaration = PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration");
+        this.elementDeclaration = PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration").getName();
+        elementDeclarationType = elementDeclaration.getType().getName();
     }
 
     public CvcElementException(final String partNumber, final ElementDefinition elementDeclaration, final LocationInSchema location, final ComponentConstraintException cause)
     {
         super(ValidationOutcome.CVC_Element_Locally_Valid, partNumber, location, cause);
-        this.elementDeclaration = PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration");
+        this.elementDeclaration = PreCondition.assertArgumentNotNull(elementDeclaration, "elementDeclaration").getName();
+        elementDeclarationType = elementDeclaration.getType().getName();
     }
 
-    public final ElementDefinition getElementDeclaration()
+    public final QName getElementDeclaration()
     {
         return elementDeclaration;
+    }
+    
+    public final QName getElementDeclarationType()
+    {
+        return elementDeclarationType;
     }
 }
