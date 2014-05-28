@@ -15,6 +15,8 @@
  */
 package org.genxdm.xs.exceptions;
 
+import javax.xml.namespace.QName;
+
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.enums.ValidationOutcome;
 import org.genxdm.xs.types.SimpleType;
@@ -32,20 +34,20 @@ public final class DatatypeException extends SchemaException
     public static String PART_PATTERN = "1.1";
     public static String PART_UNION = "1.2.3";
     private final String literal;
-    private final SimpleType type;
+    private final QName type;
 
     public DatatypeException(final String literal, final SimpleType type)
     {
         super(ValidationOutcome.CVC_Datatype, "?");
         this.literal = PreCondition.assertArgumentNotNull(literal, "literal");
-        this.type = type;
+        this.type = ( type == null ) ? null : type.getName();
     }
 
     public DatatypeException(final String literal, final SimpleType type, final SchemaException cause)
     {
         super(ValidationOutcome.CVC_Datatype, "?", cause);
         this.literal = PreCondition.assertArgumentNotNull(literal, "literal");
-        this.type = type;
+        this.type = ( type == null ) ? null : type.getName();
     }
 
     public String getLiteral()
@@ -66,7 +68,7 @@ public final class DatatypeException extends SchemaException
         return message.toString();
     }
 
-    public SimpleType getType()
+    public QName getType()
     {
         return type;
     }
