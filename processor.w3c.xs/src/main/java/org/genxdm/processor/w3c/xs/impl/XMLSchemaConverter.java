@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -1401,6 +1402,7 @@ public final class XMLSchemaConverter
         final ScopeExtent scope = convertScope(xmlModelGroup.getScope());
         final QName name;
         final boolean isAnonymous;
+        
         if (scope == ScopeExtent.Global)
         {
             name = xmlModelGroup.getName();
@@ -1443,11 +1445,21 @@ public final class XMLSchemaConverter
             name = null;
             isAnonymous = true;
         }
+        // Create the model group and add it to m_outBag <em>prior</em> to processing the particles.  This way,
+        // we can exclude the contents of element particles from our modelGroup cycle check.
+        final ModelGroup.SmCompositor compositor = xmlModelGroup.getCompositor();
+        final LinkedList<SchemaParticle> particles = new LinkedList<SchemaParticle>();
+        ModelGroup modelGroup = new ModelGroupImpl(compositor, particles, name, isAnonymous, scope);
+        copyForeignAttributes(xmlModelGroup.foreignAttributes, (ModelGroupImpl)modelGroup);
+        if (modelGroup.getScopeExtent() == ScopeExtent.Global)
+        {
+            m_outBag.add(modelGroup);
+        }
+        m_locations.m_modelGroupLocations.put(modelGroup, xmlModelGroup.getLocation());
 
         try
         {
-            final ModelGroup.SmCompositor compositor = xmlModelGroup.getCompositor();
-            final LinkedList<SchemaParticle> particles = new LinkedList<SchemaParticle>();
+            
             for (final XMLParticle xmlParticle : xmlModelGroup.getParticles())
             {
                 try
@@ -1458,7 +1470,28 @@ public final class XMLSchemaConverter
                     }
                     else if (xmlParticle instanceof XMLParticleWithElementTerm)
                     {
+                    	// We must prevent the contents of element particle from becoming part of our invalid cycles check.
+                    	// So, we're going to clear the cycles for groups, and then restore it after we finish processing the 
+                    	// element.  
+                        Stack<XMLModelGroup> tempGroups = null;
+                        if(!m_cycles.groups.isEmpty())
+                        {
+                        	tempGroups = new Stack<XMLModelGroup>();
+                        	for(XMLModelGroup group : m_cycles.groups)
+                        	{
+                        		tempGroups.add(group);
+                        	}
+                            m_cycles.groups.clear();
+                        }
                         particles.add(convertElementUse((XMLParticleWithElementTerm)xmlParticle));
+                        if(tempGroups != null)
+                        {
+                        	m_cycles.groups.clear(); // should be clear, already; so, this line is probably unnecessary
+                        	for(XMLModelGroup group : tempGroups)
+                        	{
+                        		m_cycles.groups.add(group);
+                        	}
+                        }
                     }
                     else if (xmlParticle instanceof XMLParticleWithWildcardTerm)
                     {
@@ -1475,13 +1508,6 @@ public final class XMLSchemaConverter
                     m_errors.error(e);
                 }
             }
-            final ModelGroup modelGroup = new ModelGroupImpl(compositor, particles, name, isAnonymous, scope);
-            copyForeignAttributes(xmlModelGroup.foreignAttributes, (ModelGroupImpl)modelGroup);
-            if (modelGroup.getScopeExtent() == ScopeExtent.Global)
-            {
-                m_outBag.add(modelGroup);
-            }
-            m_locations.m_modelGroupLocations.put(modelGroup, xmlModelGroup.getLocation());
             return modelGroup;
         }
         finally

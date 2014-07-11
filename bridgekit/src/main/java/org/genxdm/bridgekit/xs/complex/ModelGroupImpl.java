@@ -15,7 +15,6 @@
  */
 package org.genxdm.bridgekit.xs.complex;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public final class ModelGroupImpl extends NamedComponentImpl implements ModelGro
     {
         super(name, isAnonymous, scope);
         this.compositor = PreCondition.assertArgumentNotNull(compositor, "compositor");
-        this.particles = Collections.unmodifiableList(new ArrayList<SchemaParticle>(particles));
+        this.particles = Collections.unmodifiableList(particles);
     }
 
     public SmCompositor getCompositor()
