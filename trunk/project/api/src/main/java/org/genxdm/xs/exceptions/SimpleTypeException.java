@@ -15,6 +15,8 @@
  */
 package org.genxdm.xs.exceptions;
 
+import javax.xml.namespace.QName;
+
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.enums.ValidationOutcome;
 import org.genxdm.xs.types.SimpleType;
@@ -23,27 +25,25 @@ import org.genxdm.xs.types.SimpleType;
 public final class SimpleTypeException extends SchemaException
 {
     private final String initialValue;
-    private final SimpleType type;
+    private final QName type;
+    private final boolean isAnonymous;
 
     public SimpleTypeException(final String initialValue, final SimpleType type, final SchemaException cause)
     {
         super(ValidationOutcome.CVC_Simple_Type, "?", cause);
         this.initialValue = PreCondition.assertArgumentNotNull(initialValue, "initialValue");
-        this.type = type;
+        this.type = type.getName();
+        isAnonymous = type.isAnonymous();
     }
 
     @Override
     public String getMessage()
     {
         final String name;
-        if (null != type)
-        {
-            name = type.isAnonymous() ? "{anonymous}" : type.getName().toString();
-        }
+        if (type != null)
+            name = isAnonymous ? "{anonymous}" : type.toString();
         else
-        {
             name = "{unknown}";
-        }
         final String localMessage = "The initial value '" + initialValue + "' is not valid with respect to the simple type definition '" + name + "'.";
 
         final StringBuilder message = new StringBuilder();
@@ -61,7 +61,7 @@ public final class SimpleTypeException extends SchemaException
         if (obj instanceof SimpleTypeException)
         {
             final SimpleTypeException other = (SimpleTypeException)obj;
-            return initialValue.equals(other.initialValue) && type.getName().equals(other.type.getName());
+            return initialValue.equals(other.initialValue) && type.equals(other.type);
         }
         else
         {
@@ -69,7 +69,7 @@ public final class SimpleTypeException extends SchemaException
         }
     }
     
-    public SimpleType getType()
+    public QName getType()
     {
         return type;
     }
