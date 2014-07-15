@@ -32,8 +32,8 @@ public final class SimpleTypeException extends SchemaException
     {
         super(ValidationOutcome.CVC_Simple_Type, "?", cause);
         this.initialValue = PreCondition.assertArgumentNotNull(initialValue, "initialValue");
-        this.type = type.getName();
-        isAnonymous = type.isAnonymous();
+        this.type = (type == null) ? null : type.getName();
+        isAnonymous = (type == null) ? false : type.isAnonymous();
     }
 
     @Override
