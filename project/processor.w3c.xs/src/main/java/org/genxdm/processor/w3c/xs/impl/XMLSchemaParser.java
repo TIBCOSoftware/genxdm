@@ -3217,8 +3217,10 @@ final class XMLSchemaParser extends XMLRepresentation
                 {
                     try
                     {
-                        final QName elemName = resolveUsingXMLNamespaces(reader.getAttributeValue(i), reader.getNamespaceContext());
-                        element.substitutionGroup = cache.dereferenceElement(elemName, reader.getLocation());
+                    	final QName elemName = module.isChameleon() ?
+                    			resolveUsingTargetNamespace(reader.getAttributeValue(i), targetNamespace, reader.getNamespaceContext())
+                    			: resolveUsingXMLNamespaces(reader.getAttributeValue(i), reader.getNamespaceContext());
+                    	element.substitutionGroup = cache.dereferenceElement(elemName, reader.getLocation());
                     }
                     catch (final SimpleTypeException e)
                     {
