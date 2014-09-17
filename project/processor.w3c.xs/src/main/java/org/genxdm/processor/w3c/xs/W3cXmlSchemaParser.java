@@ -18,6 +18,9 @@ package org.genxdm.processor.w3c.xs;
 import java.io.InputStream;
 
 import org.genxdm.Cursor;
+import org.genxdm.bridgekit.xs.DefaultCatalog;
+import org.genxdm.bridgekit.xs.DefaultCatalogResolver;
+import org.genxdm.bridgekit.xs.DefaultSchemaCatalog;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.impl.XMLParserImpl;
 import org.genxdm.processor.w3c.xs.regex.RegExCompilerXSDL;
