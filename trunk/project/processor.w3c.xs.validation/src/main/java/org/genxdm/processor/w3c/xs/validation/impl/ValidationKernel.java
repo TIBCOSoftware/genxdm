@@ -28,6 +28,7 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcElementFixedValueOverriddenSimpleException;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcElementUnexpectedChildInNilledElementException;
+import org.genxdm.processor.w3c.xs.exception.cvc.CvcElementUnresolvedLocalTypeException;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcUnexpectedNonWhiteSpaceTextInElementOnlyContentException;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcUnexpectedTextInEmptyContentException;
 import org.genxdm.processor.w3c.xs.exception.sm.SmExceptionSupplier;
@@ -602,22 +603,21 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 		
 		
 		// Digest the attributes from the XMLSchema-instance namespace.
-		boolean switchProcessContentFromLaxToSkip = m_attributes.initialize(elementName, m_currentItem, attributes, m_namespaces, documentURI, m_errors, sdl, m_currentPSVI.getProcessContents());
+		QName unresolvedXsiTypeName = m_attributes.initialize(elementName, m_currentItem, attributes, m_namespaces, documentURI, m_errors, sdl, m_currentPSVI.getProcessContents());
 		
 		// if we're not operating in caller-overrides-type mode, get the xsi:type override
 		if (m_attributes.getLocalType() != null)
 		    localType = m_attributes.getLocalType();
-		else if(switchProcessContentFromLaxToSkip)
-		{
-			if(savedPC == null)
-			{
-				savedPC = m_currentPSVI.getProcessContents();
-			}
-			m_currentPSVI.setProcessContents(ProcessContentsMode.Skip);
-		}
+		
 		final Boolean explicitNil = m_attributes.getLocalNil();
 
 		m_currentPSVI = m_mac.startElement(elementName, localType, explicitNil);
+		
+		if(unresolvedXsiTypeName != null && m_currentPSVI.getProcessContents() == ProcessContentsMode.Strict)
+		{
+			m_errors.error(new CvcElementUnresolvedLocalTypeException(unresolvedXsiTypeName, elementName, m_currentItem.getLocation()));
+		}
+		
 		// reset processContents in the child, if we relaxed it above, signalled by non-null savedPC
 		if (savedPC != null)
 		    m_currentPSVI.setProcessContents(savedPC); // actually a different ModelPSVI than the one we set lax above
