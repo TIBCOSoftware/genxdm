@@ -160,11 +160,22 @@ public final class XMLSchemaCache
         for (final QName name : m_elements.keySet())
         {
             final XMLElement element = m_elements.get(name);
-            if (null != element.substitutionGroup && element.typeRef.isComplexUrType())
-            {
-                element.typeRef = element.substitutionGroup.typeRef;
-            }
+            recursiveComputeSubstitutionGroups(element);
         }
+    }
+    private void recursiveComputeSubstitutionGroups(XMLElement element)
+    {
+    	if (null != element.substitutionGroup && element.typeRef.isComplexUrType())
+    	{
+    		recursiveComputeSubstitutionGroups(element.substitutionGroup);
+
+    		// Note: if substitutionGroup head's type is a local type, we'll pick that up later, in XMLSchemaConverter.convertElement(XMLElement);
+    		// for now, we'll only be concerned with global types
+    		if(element.substitutionGroup.typeRef.isGlobal())
+    		{
+        		element.typeRef = element.substitutionGroup.typeRef;
+    		}
+    	}
     }
 
     public XMLAttribute registerAttribute(final QName name, final SrcFrozenLocation location) throws SmDuplicateAttributeException
