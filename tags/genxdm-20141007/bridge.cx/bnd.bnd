@@ -1,0 +1,6 @@
+Export-Package: org.genxdm.bridge.cx;version=1.1,\
+	org.genxdm.bridge.cx.base;version=1.1,\
+	org.genxdm.bridge.cx.typed;version=1.1,\
+	org.genxdm.bridge.cx.tree;version=1.1
+Bundle-Version: 1.1.0
+-runee: JavaSE-1.6
