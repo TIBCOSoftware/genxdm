@@ -1093,7 +1093,6 @@ public final class XMLSchemaConverter
             }
         }
         final ElementDeclTypeImpl element;
-        ElementDeclTypeImpl substitutionGroupHead = null;            
         try
         {
             PreCondition.assertArgumentNotNull(xmlElement.typeRef, "{type definition} of " + name);
@@ -1110,7 +1109,7 @@ public final class XMLSchemaConverter
             if (null != xmlElement.substitutionGroup)
             {
                 // TODO: Would be nice to avoid this downcast. Maybe by using name for group head?
-                substitutionGroupHead = (ElementDeclTypeImpl)convertElement(xmlElement.substitutionGroup);
+                final ElementDeclTypeImpl substitutionGroupHead = (ElementDeclTypeImpl)convertElement(xmlElement.substitutionGroup);
                 element.setSubstitutionGroup(substitutionGroupHead);
                 substitutionGroupHead.addSubstitutionGroupMember(element);
             }
@@ -1136,15 +1135,7 @@ public final class XMLSchemaConverter
         m_locations.m_elementLocations.put(element, xmlElement.getLocation());
 
         // {type definition}
-        Type typeFromTypeRef = convertType(xmlElement.typeRef);
-        
-        // If the typeFromTypeRef is complexUrType, then it was not set, probably because
-        // the element did not have a type attribute.  So, use the type from the substitutionGroup
-        // head, if possible.
-        if(substitutionGroupHead != null && typeFromTypeRef.isComplexUrType()) {
-        	typeFromTypeRef = substitutionGroupHead.getType();
-        }
-        element.setType(typeFromTypeRef);
+        element.setType(convertType(xmlElement.typeRef));
 
         // {nillable}
         element.setNillable(xmlElement.isNillable());
