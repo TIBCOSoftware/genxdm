@@ -50,7 +50,7 @@ public final class ComplexTypeImpl extends TypeImpl implements ComplexType, Prim
         super(PreCondition.assertArgumentNotNull(name, "name"), isAnonymous, scope, derivation);
         this.isNative = isNative;
         this.m_atoms = PreCondition.assertArgumentNotNull(atoms, "atoms");
-        m_baseType = PreCondition.assertArgumentNotNull(baseType, "baseType");
+        m_baseType = baseType; // PreCondition.assertArgumentNotNull(baseType, "baseType");
         m_contentType = PreCondition.assertArgumentNotNull(contentType, "contentType");
         m_block = PreCondition.assertArgumentNotNull(block, "block");
         m_blockUnmodifiable = Collections.unmodifiableSet(m_block);
@@ -82,7 +82,10 @@ public final class ComplexTypeImpl extends TypeImpl implements ComplexType, Prim
     {
         return m_baseType;
     }
-
+    public void setBaseType(Type baseType)
+    {
+    	m_baseType = baseType;
+    }
     public ContentType getContentType()
     {
         return m_contentType;
@@ -263,7 +266,7 @@ public final class ComplexTypeImpl extends TypeImpl implements ComplexType, Prim
      * {attribute wildcard} is mutable
      */
     private SchemaWildcard m_attributeWildcard = null;
-    private final Type m_baseType;
+    private Type m_baseType;
 
     private final Set<DerivationMethod> m_block;
 
