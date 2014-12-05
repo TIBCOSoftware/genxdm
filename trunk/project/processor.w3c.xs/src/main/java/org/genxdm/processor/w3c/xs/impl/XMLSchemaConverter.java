@@ -16,6 +16,7 @@
 package org.genxdm.processor.w3c.xs.impl;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -308,9 +309,9 @@ public final class XMLSchemaConverter
     /**
      * Expand temporary variables used to hold syntactic constructs for attribute uses and wildcards.
      */
-    private Map<QName, AttributeUse> computeAttributeUses(final XMLType complexType) throws AbortException, SchemaException
+    private Map<QName, AttributeUse> computeAttributeUses(final XMLType complexType, final Map<QName, AttributeUse> attributeUses) throws AbortException, SchemaException
     {
-        final HashMap<QName, AttributeUse> attributeUses = new HashMap<QName, AttributeUse>();
+//        final HashMap<QName, AttributeUse> attributeUses = new HashMap<QName, AttributeUse>();
 
         for (final XMLAttributeUse attributeUse : complexType.getAttributeUses())
         {
@@ -838,23 +839,20 @@ public final class XMLSchemaConverter
         try
         {
 
-            final Map<QName, AttributeUse> attributeUses = computeAttributeUses(xmlComplexType);
-            final Type baseType = convertType(xmlComplexType.getBaseRef());
+            final Map<QName, AttributeUse> attributeUses = new HashMap<QName,AttributeUse>();
 
             // Constructing and registering the complex type allows it to be
             // referenced in the {content type} property.
             final ComplexTypeImpl complexType;
-            if (null != attributeUses)
-            {
-                complexType = new ComplexTypeImpl(outName, false, isAnonymous, scope, baseType, xmlComplexType.getDerivationMethod(), attributeUses, EMPTY_CONTENT, xmlComplexType.getBlock(), m_existingCache.getAtomicType(NativeType.UNTYPED_ATOMIC));
-            }
-            else
-            {
-                complexType = new ComplexTypeImpl(outName, false, isAnonymous, scope, baseType, xmlComplexType.getDerivationMethod(), null, EMPTY_CONTENT, xmlComplexType.getBlock(), m_existingCache.getAtomicType(NativeType.UNTYPED_ATOMIC));
-            }
+            complexType = new ComplexTypeImpl(outName, false, isAnonymous, scope, null, xmlComplexType.getDerivationMethod(), attributeUses, EMPTY_CONTENT, xmlComplexType.getBlock(), m_existingCache.getAtomicType(NativeType.UNTYPED_ATOMIC));
+            
             m_outBag.add(complexType);
             m_locations.m_complexTypeLocations.put(complexType, xmlComplexType.getLocation());
-
+            
+            final Type baseType = convertType(xmlComplexType.getBaseRef());
+            complexType.setBaseType(baseType);
+            
+            computeAttributeUses(xmlComplexType, attributeUses);
             complexType.setContentType(convertContentType(xmlComplexType));
 
             complexType.setAbstract(xmlComplexType.isAbstract());
@@ -879,11 +877,16 @@ public final class XMLSchemaConverter
             copyForeignAttributes(xmlComplexType.foreignAttributes, complexType);
             return complexType;
         }
+        catch (Exception ex){
+        	System.out.println("ex: " + ex.getMessage());
+        	throw new RuntimeException(ex);
+        }
         finally
         {
             if (scope == ScopeExtent.Global)
             {
-                m_cycles.types.pop();
+                System.out.println("XMLSchemaConverter.convertComplexType[2]: popping type: " + m_cycles.types.pop());
+//                m_cycles.types.pop();
             }
         }
     }
