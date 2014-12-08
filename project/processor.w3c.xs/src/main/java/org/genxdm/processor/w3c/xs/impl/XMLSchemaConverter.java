@@ -16,7 +16,6 @@
 package org.genxdm.processor.w3c.xs.impl;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -311,8 +310,6 @@ public final class XMLSchemaConverter
      */
     private Map<QName, AttributeUse> computeAttributeUses(final XMLType complexType, final Map<QName, AttributeUse> attributeUses) throws AbortException, SchemaException
     {
-//        final HashMap<QName, AttributeUse> attributeUses = new HashMap<QName, AttributeUse>();
-
         for (final XMLAttributeUse attributeUse : complexType.getAttributeUses())
         {
             final QName attributeName = attributeUse.getDeclaration().getName();
@@ -877,16 +874,11 @@ public final class XMLSchemaConverter
             copyForeignAttributes(xmlComplexType.foreignAttributes, complexType);
             return complexType;
         }
-        catch (Exception ex){
-        	System.out.println("ex: " + ex.getMessage());
-        	throw new RuntimeException(ex);
-        }
         finally
         {
             if (scope == ScopeExtent.Global)
             {
-                System.out.println("XMLSchemaConverter.convertComplexType[2]: popping type: " + m_cycles.types.pop());
-//                m_cycles.types.pop();
+                m_cycles.types.pop();
             }
         }
     }
