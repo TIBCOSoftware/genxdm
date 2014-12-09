@@ -167,7 +167,23 @@ final class XMLSchemaParser extends XMLRepresentation
             }
             else
             {
-                cache.m_seenSystemIds.add(systemId);
+            	// If this schema doesn't have a targetNamespace, add it the chameleon list so we don't reparse it
+            	// into the no namespace.
+            	if(XMLConstants.NULL_NS_URI.equals(module.computeTargetNamespace()))
+            	{
+            		HashSet<String> tnsSet = cache.m_seenChameleonsLocation2Tns.get(systemId);
+            		if(tnsSet != null)
+            		{
+            			tnsSet.add(XMLConstants.NULL_NS_URI);
+            		}
+            		else
+            		{
+            			final HashSet<String> newList = new HashSet<String>();
+            			newList.add(XMLConstants.NULL_NS_URI);
+            			cache.m_seenChameleonsLocation2Tns.put(systemId, newList);
+            		}
+            	}
+            	cache.m_seenSystemIds.add(systemId);
             }
         }
         else
