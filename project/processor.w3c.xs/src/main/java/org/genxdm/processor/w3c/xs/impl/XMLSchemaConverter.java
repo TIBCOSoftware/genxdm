@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2010 TIBCO Software Inc.
+QName * Copyright (c) 2009-2010 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.genxdm.processor.w3c.xs.impl;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -832,6 +833,7 @@ public final class XMLSchemaConverter
             }
 
             m_cycles.types.push(xmlComplexType);
+            m_complexTypeNameCycles.push(xmlComplexType.getName());
         }
         try
         {
@@ -879,8 +881,63 @@ public final class XMLSchemaConverter
             if (scope == ScopeExtent.Global)
             {
                 m_cycles.types.pop();
+                final QName name = m_complexTypeNameCycles.pop();
+
+                // If we have any late resolutions to do, make sure we're back at the point of the
+                // stack where the late resolutions needs to begin; that ensures that the necessary base 
+                // type(s) have been resolved.  (See GXML-45 for relevant use cases.)
+                if(!m_lateTypeResolutionNameList.isEmpty() &&  m_lateTypeResolutionNameList.get(0).equals(name))
+                {
+                	while(!m_lateTypeResolutionNameList.isEmpty())
+                	{
+                		lateResolveType(m_lateTypeResolutionNameList.get(0));
+                	}
+                	if(!m_lateTypeResolutionMap.isEmpty())
+                	{
+                		throw new IllegalStateException("Late type resolution map should be empty, but it is not.");
+                	}
+                	// Element type resolution was delayed for all types whose resolution was delayed.
+                	// Those types have been resolved, so now we can resolve the elements.
+                	for(LateResolveElement lre : m_lateElementResolutionList)
+                	{
+                		convertElementTypeRef(lre.mi_xmlElement, lre.mi_elementDecl, lre.mi_subHead);
+                	}
+                	m_lateElementResolutionList.clear();
+                }
             }
         }
+    }
+    /**
+     * Retrieves a list of the names of complex types needing late resolution; then, retrieves the 
+     * corresponding ComplexType object & builds it content model.
+     * 
+     * (See GXML-45 for use case.)
+     *    
+     * @param typeName name of the now-resolved type which has dependent types which were awaiting its
+     * resolution
+     * @throws SchemaException 
+     * @throws AbortException 
+     * @throws SmAbortException
+     * @throws SmException
+     */
+    private void lateResolveType(final QName typeName) throws AbortException, SchemaException
+    {
+    	// Get the list of type names which were depending on the incoming type name's resolution.
+    	final List<XMLType> list = m_lateTypeResolutionMap.get(typeName);
+    	m_lateTypeResolutionMap.remove(typeName);
+    	m_lateTypeResolutionNameList.remove(typeName);
+    	if(list != null)
+    	{
+    		// Iterate of the list of XMLType objects
+    		for(final XMLType xmlType : list)
+    		{
+    			final QName lateResolveTypeName = xmlType.getName();
+    			//System.out.println("   late resolution: " + lateResolveTypeName + " because of " + typeName);
+    			final ComplexTypeImpl complexType = (ComplexTypeImpl)m_outBag.getComplexType(lateResolveTypeName);
+    			complexType.setContentType(convertContentType(xmlType));
+    			lateResolveType(lateResolveTypeName);
+    		}
+    	}
     }
 
     private ContentType convertContentType(final XMLType xmlComplexType) throws AbortException, SchemaException
@@ -918,6 +975,28 @@ public final class XMLSchemaConverter
             }
             else if (derivation.isExtension())
             {
+            	// Is the typeRef resolved, yet?  If not, postpone resolution of this type's content.				
+            	final QName typeRefName =  xmlComplexType.getBaseRef().getName();
+            	if(m_complexTypeNameCycles.contains(typeRefName) || m_lateTypeResolutionMap.containsKey(typeRefName))
+            	{
+            		//System.out.println("      cycle detected for " + xmlComplexType.getName().getC14NForm());
+            		ArrayList<XMLType> list = m_lateTypeResolutionMap.get(typeRefName);
+            		if(list == null)
+            		{
+            			list = new ArrayList<XMLType>();
+            			m_lateTypeResolutionMap.put(typeRefName, list);
+            			m_lateTypeResolutionNameList.add(typeRefName);
+            		}
+            		list.add(xmlComplexType);
+            		// Also, add the type to be late resolved as key to late resolution map.  Any components
+            		// depending on its content model must also wait for resolution.
+            		if(false == m_lateTypeResolutionMap.containsKey(xmlComplexType.getName()))
+            		{
+            			m_lateTypeResolutionMap.put(xmlComplexType.getName(), null);
+            			m_lateTypeResolutionNameList.add(xmlComplexType.getName());
+            		}
+            		return EMPTY_CONTENT; // actual content to be determined later
+            	}
                 final Type typeB = convertType(xmlComplexType.getBaseRef());
                 if (typeB instanceof ComplexType)
                 {
@@ -1130,23 +1209,66 @@ public final class XMLSchemaConverter
         }
         m_locations.m_elementLocations.put(element, xmlElement.getLocation());
 
-        // {type definition}
-        Type typeFromTypeRef = convertType(xmlElement.typeRef);
-        
-        // If the typeFromTypeRef is complexUrType, then it was not set, probably because
-        // the element did not have a type attribute.  So, use the type from the substitutionGroup
-        // head, if possible.
-        if(substitutionGroupHead != null && typeFromTypeRef.isComplexUrType()) {
-        	typeFromTypeRef = substitutionGroupHead.getType();
-        }
-        element.setType(typeFromTypeRef);
+		// {type definition}
+		convertElementTypeRef(xmlElement, element, substitutionGroupHead);
 
-        // {nillable}
-        element.setNillable(xmlElement.isNillable());
+		// {nillable}
+		element.setNillable(xmlElement.isNillable());
 
-        // {value constraint}
-        if (null != xmlElement.m_valueConstraint)
-        {
+		// {disallowed substitutions}
+		for (final DerivationMethod derivation : xmlElement.getBlock())
+		{
+			element.setBlock(derivation, true);
+		}
+
+		// {substitution group exclusions}
+		for (final DerivationMethod derivation : xmlElement.getFinal())
+		{
+			element.setFinal(derivation, true);
+		}
+
+		// {abstract}
+		element.setAbstract(xmlElement.isAbstract());
+
+		// {annotation} we don't care about.
+
+		// foreign attributes
+		copyForeignAttributes(xmlElement.foreignAttributes, element);
+		// We're done!
+		return element;
+    }
+    private void convertElementTypeRef(final XMLElement xmlElement, final ElementDeclTypeImpl element, ElementDeclTypeImpl substitutionGroupHead) throws AbortException, SchemaException
+    {
+    	// {type definition}
+    	// Is the typeRef resolved, yet?  If not, postpone resolution of this type's content.				
+    	if(xmlElement.typeRef.isGlobal())
+    	{
+    		final QName typeRefName = xmlElement.typeRef.getName();
+    		if(m_complexTypeNameCycles.contains(typeRefName))
+    		{
+    			//System.out.println("      cycle detected for element type ref " + xmlElement.getName().getC14NForm());
+
+    			m_lateElementResolutionList.add(new LateResolveElement(xmlElement, element, substitutionGroupHead));
+    			return;
+    		}
+    		else
+    		{
+    			//System.out.println("      NO cycle detected for element type ref " + xmlElement.getName().getC14NForm());
+    		}
+    	}
+
+    	Type typeFromTypeRef = convertType(xmlElement.typeRef);
+    	// If the typeFromTypeRef is complexUrType, then it was not set, probably because
+    	// the element did not have a type attribute.  So, use the type from the substitutionGroup
+    	// head, if possible.
+    	if(substitutionGroupHead != null && typeFromTypeRef.isComplexUrType()) {
+    		typeFromTypeRef = substitutionGroupHead.getType();
+    	}
+    	element.setType(typeFromTypeRef);
+
+    	// {value constraint}
+    	if (null != xmlElement.m_valueConstraint)
+    	{
             if (element.getType() instanceof SimpleType)
             {
                 final SimpleType elementType = (SimpleType)element.getType();
@@ -1186,30 +1308,8 @@ public final class XMLSchemaConverter
             {
                 throw new AssertionError(element.getType());
             }
-        }
-
-        // {disallowed substitutions}
-        for (final DerivationMethod derivation : xmlElement.getBlock())
-        {
-            element.setBlock(derivation, true);
-        }
-
-        // {substitution group exclusions}
-        for (final DerivationMethod derivation : xmlElement.getFinal())
-        {
-            element.setFinal(derivation, true);
-        }
-
-        // {abstract}
-        element.setAbstract(xmlElement.isAbstract());
-
-        // {annotation} we don't care about.
-
-        // foreign attributes
-        copyForeignAttributes(xmlElement.foreignAttributes, element);
-        // We're done!
-        return element;
-    }
+		}
+	}
 
     private void convertElements() throws AbortException
     {
@@ -1229,6 +1329,18 @@ public final class XMLSchemaConverter
                 m_errors.error(e);
             }
         }
+        // Ensure that all elements have their type refs resolved.
+        // Element type resolution was delayed for all types whose resolution was delayed.
+        // Those types have been resolved, so now we can resolve the elements.
+        for(LateResolveElement lre : m_lateElementResolutionList)
+        {
+        	try {
+        		convertElementTypeRef(lre.mi_xmlElement, lre.mi_elementDecl, lre.mi_subHead);
+        	} catch (SchemaException e) {
+        		m_errors.error(e);
+        	}
+        }
+        m_lateElementResolutionList.clear();
     }
 
     private SchemaParticle convertElementUse(final XMLParticleWithElementTerm particle) throws SchemaException, AbortException
@@ -2340,6 +2452,12 @@ public final class XMLSchemaConverter
 
     private final ContentType EMPTY_CONTENT = new ContentTypeImpl();
     private final XMLCycles m_cycles;
+    
+	private final Stack<QName> m_complexTypeNameCycles = new Stack<QName>();
+	private final HashMap<QName,ArrayList<XMLType>> m_lateTypeResolutionMap = new HashMap<QName,ArrayList<XMLType>>();
+	private final ArrayList<QName> m_lateTypeResolutionNameList = new ArrayList<QName>();
+	private final ArrayList<LateResolveElement> m_lateElementResolutionList = new ArrayList<LateResolveElement>();
+    
 
     private final SchemaExceptionHandler m_errors;
 
@@ -2369,4 +2487,16 @@ public final class XMLSchemaConverter
     public final Map<QName, AttributeGroupDefinition> m_attributeGroupsResolvedFromExistingCache = new HashMap<QName, AttributeGroupDefinition>();
     public final Map<QName, IdentityConstraint> m_constraintsResolvedFromExistingCache = new HashMap<QName, IdentityConstraint>();
     public final Map<QName, NotationDefinition> m_notationsResolvedFromExistingCache = new HashMap<QName, NotationDefinition>();
+    
+    final class LateResolveElement {
+    	public LateResolveElement(final XMLElement xmlElement, final ElementDeclTypeImpl elementDecl, final ElementDeclTypeImpl subHead)
+    	{
+    		mi_xmlElement = xmlElement;
+    		mi_elementDecl = elementDecl;
+    		mi_subHead = subHead;
+    	}
+    	final XMLElement mi_xmlElement;
+    	final ElementDeclTypeImpl mi_elementDecl;
+    	final ElementDeclTypeImpl mi_subHead;
+    }
 }
