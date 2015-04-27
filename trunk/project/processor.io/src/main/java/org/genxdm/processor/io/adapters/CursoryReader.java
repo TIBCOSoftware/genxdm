@@ -28,6 +28,7 @@ public class CursoryReader<N>
     {
         this.cursor = PreCondition.assertNotNull(cursor, "cursor");
         originId = cursor.getNodeId();
+        originIsLeaf = !cursor.getNodeKind().isContainer();
     }
 
     /** Initialize a reader with synchronized access semantics (per the
@@ -42,6 +43,7 @@ public class CursoryReader<N>
         super(lock);
         this.cursor = PreCondition.assertNotNull(cursor, "cursor");
         originId = cursor.getNodeId();
+        originIsLeaf = !cursor.getNodeKind().isContainer();
     }
 
     @Override
@@ -76,6 +78,8 @@ public class CursoryReader<N>
     private void lurch()
         throws IOException
     {
+        if (complete)
+            return;
         // we know that we haven't processed the current position yet,
         // and that we should be on a child node.
         NodeKind kind = cursor.getNodeKind();
@@ -92,6 +96,11 @@ public class CursoryReader<N>
             case COMMENT :
             {
                 builder.append("<!--" + cursor.getStringValue() + "-->");
+                if (originIsLeaf)
+                {
+                    complete = true;
+                    break; // early return, no movement
+                }
                 if (cursor.hasNextSibling())
                     cursor.moveToNextSibling();
                 else
@@ -101,6 +110,11 @@ public class CursoryReader<N>
             case PROCESSING_INSTRUCTION :
             {
                 builder.append("<?" + cursor.getLocalName() + " " + cursor.getStringValue() + "?>");
+                if (originIsLeaf)
+                {
+                    complete = true;
+                    break; // early return, no movement
+                }
                 if (cursor.hasNextSibling())
                     cursor.moveToNextSibling();
                 else
@@ -110,6 +124,11 @@ public class CursoryReader<N>
             case TEXT :
             {
                 builder.append(encoder.encodePCData(cursor.getStringValue()));
+                if (originIsLeaf)
+                {
+                    complete = true;
+                    break; // early return, no movement
+                }
                 if (cursor.hasNextSibling())
                     cursor.moveToNextSibling();
                 else
@@ -137,18 +156,45 @@ public class CursoryReader<N>
                     builder.append(">");
                     moved = cursor.moveToFirstChild();
                 }
+                // we can always move if there are children.
                 if (!moved)
                 {
+                    // special case: the provided element is empty, and we're already done
+                    // definitely do not move to the next sibling!
+                    if (originId.equals(cursor.getNodeId()))
+                    {
+                        complete = true;
+                        break; // early return
+                    }
+                    // move to next sibling can *never* be the origin node.
                     if (cursor.hasNextSibling())
                         cursor.moveToNextSibling();
                     else
-                        pop();
+                        pop(); // check for return to origin inside pop() method.
                 }
                 break;
             }
-            // TODO: wait, maybe these two can be legal? just very short ...
             case NAMESPACE : // can only happen on startup; broken
+            {
+                if (originIsLeaf) // because otherwise, this is broken, invalid state
+                {
+                    final String prefix = cursor.getLocalName();
+                    builder.append("xmlns" + (prefix.equals("") ? "" : ":" + prefix) + "=\"" + encoder.encodeCData(cursor.getStringValue()) + "\"");
+                    complete = true;
+                    break; // early return, no movement
+                }
+                // otherwise, fall through to invalid state
+            }
             case ATTRIBUTE : // can only happen on startup; broken
+            {
+                if (originIsLeaf) // because otherwise, this is broken, invalid state
+                {
+                    builder.append(getQName(cursor.getPrefix(), cursor.getLocalName()) + "=\"" + encoder.encodeCData(cursor.getStringValue()) + "\"");
+                    complete = true;
+                    break; // early return, no movement
+                }
+                // otherwise, fall through to invalid state
+            }
             default :
             {
                 throw new IOException("Invalid state");
@@ -166,11 +212,19 @@ public class CursoryReader<N>
         // then we have to find the next thing to move to.
         cursor.moveToParent();
         if (cursor.getNodeKind() == NodeKind.DOCUMENT)
+        {
+            complete = true; // if we're at the document, we're definitely complete
             return; // there's no more pop possible; we're done
+        }
+        // check whether we've returned to original position
         Object currentId = cursor.getNodeId();
+        // current position is always on an element
         builder.append("</" + getQName(cursor.getPrefix(), cursor.getLocalName()) + ">");
         if (currentId.equals(originId))
+        {
+            complete = true;
             return; // we're back to where we started; *don't* continue.
+        }
         if (cursor.hasNextSibling())
             cursor.moveToNextSibling();
         else
@@ -187,6 +241,9 @@ public class CursoryReader<N>
 
     private final Cursor cursor;
     private final Object originId;
+    private final boolean originIsLeaf;
     private final StringBuilder builder = new StringBuilder();
     private final XmlEncoder encoder = new XmlEncoder();
+    
+    private boolean complete = false;
 }
