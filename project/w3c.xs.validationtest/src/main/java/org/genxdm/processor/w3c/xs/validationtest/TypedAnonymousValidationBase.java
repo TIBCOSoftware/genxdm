@@ -10,13 +10,13 @@ import java.util.Random;
 import javax.xml.namespace.QName;
 
 import org.genxdm.ProcessingContext;
+import org.genxdm.bridgekit.xs.DefaultCatalog;
+import org.genxdm.bridgekit.xs.DefaultCatalogResolver;
+import org.genxdm.bridgekit.xs.DefaultSchemaCatalog;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.names.Catalog;
-import org.genxdm.processor.w3c.xs.DefaultCatalog;
-import org.genxdm.processor.w3c.xs.DefaultCatalogResolver;
-import org.genxdm.processor.w3c.xs.DefaultSchemaCatalog;
 import org.genxdm.processor.w3c.xs.W3cXmlSchemaParser;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.ValidationHandler;
