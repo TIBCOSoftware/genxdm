@@ -128,7 +128,7 @@
         <module>processor.convert</module>
         <module>processor.io</module>
         <module>processor.w3c.xs</module>
-        <module>processor.w3c.xs.build</module>
+        <!--module>processor.w3c.xs.build</module-->
         <module>processor.w3c.xs.validation</module>
         <module>processor.xpath.v10</module>
         <module>bridgetest</module>
