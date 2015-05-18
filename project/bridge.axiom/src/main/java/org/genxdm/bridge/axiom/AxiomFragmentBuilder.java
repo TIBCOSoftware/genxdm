@@ -76,7 +76,7 @@ public class AxiomFragmentBuilder
             }
                 
             element.addAttribute(attribute);
-            nodeId = AxiomModel.attributeIdentity(attribute);
+            nodeId = AxiomModel.attributeIdentity(attribute, true);
         }
         else
         {
