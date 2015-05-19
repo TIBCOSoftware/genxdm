@@ -1421,10 +1421,7 @@ public class AxiomModel
     {
         AttributeIdentity id = attributes.get(attr);
         if (id == null)
-        {
-            id = new AttributeIdentity(attr);
-            attributes.put(attr, id);
-        }
+            id = createAttributeIdentity(attr);
         return id;
     }
     
