@@ -21,8 +21,10 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMFactory;
 import org.genxdm.bridge.axiom.AxiomFragmentBuilder;
+import org.genxdm.bridge.axiom.AxiomModel;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.tree.TypeAnnotator;
 import org.genxdm.exceptions.GenXDMException;
@@ -43,7 +45,8 @@ final class AxiomSequenceBuilder
 	public void attribute(final String namespaceURI, final String localName, final String prefix, final List<? extends XmlAtom> value, final QName type)
 	{
 	    attribute(namespaceURI, localName, prefix, bridge.getC14NString(value), /*map from schema to dtd?*/ DtdAttributeKind.CDATA);
-	    types.annotate(base.docNode(), base.lastNodeId(), type);
+	    Object nodeId = AxiomModel.createAttributeIdentity((OMAttribute)base.lastTypedNode());
+	    types.annotate(base.docNode(), nodeId, type);
 	    
 	}
 	
@@ -117,7 +120,7 @@ final class AxiomSequenceBuilder
 	public void startElement(final String namespaceURI, final String localName, final String prefix, final QName type)
 	{
 	    startElement(namespaceURI, localName, prefix);
-	    types.annotate(base.docNode(), base.lastNodeId(), type);
+	    types.annotate(base.docNode(), base.lastTypedNode(), type);
 	}
 
 	public void text(final List<? extends XmlAtom> value)

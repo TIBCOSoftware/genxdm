@@ -1259,7 +1259,7 @@ public class AxiomModel
         if (node instanceof OMAttribute)
         {
             final OMAttribute attr = (OMAttribute)node;
-            return attributeIdentity(attr, false);
+            return attributeIdentity(attr);
         }
         if (node instanceof OMNamespace)
             return new NamespaceIdentity((OMNamespace)node);
@@ -1417,14 +1417,21 @@ public class AxiomModel
     }
     
     // done as static so that the fragmentbuilder can use the only map that we want to have around.
-    static AttributeIdentity attributeIdentity(OMAttribute attr, boolean isNew)
+    static public AttributeIdentity attributeIdentity(OMAttribute attr)
     {
-        AttributeIdentity id = isNew ? null : attributes.get(attr);
+        AttributeIdentity id = attributes.get(attr);
         if (id == null)
         {
             id = new AttributeIdentity(attr);
             attributes.put(attr, id);
         }
+        return id;
+    }
+    
+    static public AttributeIdentity createAttributeIdentity(OMAttribute attr)
+    {
+        AttributeIdentity id = new AttributeIdentity(attr);
+        attributes.put(attr, id);
         return id;
     }
 

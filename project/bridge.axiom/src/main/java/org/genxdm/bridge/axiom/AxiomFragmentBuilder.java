@@ -19,7 +19,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 import javax.xml.XMLConstants;
 
@@ -32,7 +31,6 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.OMProcessingInstruction;
 import org.apache.axiom.om.OMText;
-import org.genxdm.bridgekit.misc.StringToURIParser;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.IllegalNullArgumentException;
 import org.genxdm.exceptions.PreCondition;
@@ -74,9 +72,8 @@ public class AxiomFragmentBuilder
                 if (ids != null) // only null if we don't have a document.  *shrug*
                     ids.put(value, element);
             }
-                
+            typedNode = attribute;
             element.addAttribute(attribute);
-            nodeId = AxiomModel.attributeIdentity(attribute, true);
         }
         else
         {
@@ -221,7 +218,7 @@ public class AxiomFragmentBuilder
             
             currentNode = element;
         }
-        nodeId = currentNode;
+        typedNode = currentNode;
     }
 
     public void text(String data)
@@ -285,9 +282,9 @@ public class AxiomFragmentBuilder
         return factory;
     }
     
-    public Object lastNodeId()
+    public Object lastTypedNode()
     {
-        return nodeId;
+        return typedNode;
     }
     
     public OMDocument docNode()
@@ -325,7 +322,8 @@ public class AxiomFragmentBuilder
     protected ArrayList<Object> nodes = new ArrayList<Object>();
     protected Object currentNode;
     protected OMDocument docNode;
-    protected Object nodeId;
     protected OMDocument documentNode;
     protected boolean ignoreComments;
+    
+    private Object typedNode;
 }
