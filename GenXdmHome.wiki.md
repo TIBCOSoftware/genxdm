@@ -1,17 +1,11 @@
 # GenXDM
 
-<a href='Hidden comment: 
-copy and paste from old site
-
-todo: make it more reasonably comprehensive
-
-'></a>
-
-GenXDM enables applications to write code that uses and manipulates [XML](http://www.w3.org/XML/) trees
-without being tied to a particular XML tree representation like [DOM](http://www.w3.org/DOM/), [DOM4J](http://dom4j.sourceforge.net/),
-[Apache Axiom](http://ws.apache.org/axiom/), or any other. It also prods developers towards an immutable view of XML
-trees, which will make it easier and faster to work with XML across multiple
-cores and multiple processors.
+GenXDM enables applications to write code that uses and manipulates [XML](http://www.w3.org/XML/)
+trees without being tied to a particular XML tree representation like
+[DOM](http://www.w3.org/DOM/), [DOM4J](http://dom4j.sourceforge.net/), [Apache
+Axiom](http://ws.apache.org/axiom/), or any other. It also prods developers towards an immutable
+view of XML trees, which will make it easier and faster to work with XML across multiple cores and
+multiple processors.
 
 GenXDM adds support for critical new XML specifications. Specifically, GenXDM
 supports the XQuery Data Model, the foundation of XQuery 1.0, XPath 2.0, and

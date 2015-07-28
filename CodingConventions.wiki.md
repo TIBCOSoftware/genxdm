@@ -1,8 +1,10 @@
 # Overview
 
-We don't want to be too religious about our coding conventions, but we do have a few we need to establish.
+We don't want to be too religious about our coding conventions, but we do have a few we need to
+establish.
 
-Like many guidelines, these are very much aspirational, rather than being strictly followed everywhere.
+Like many guidelines, these are very much aspirational, rather than being strictly followed
+everywhere.
 
 # Additive
 

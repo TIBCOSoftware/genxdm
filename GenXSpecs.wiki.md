@@ -1,6 +1,7 @@
 # Introduction
 
-GenXDM is founded upon the notion of design-by-specification.  The core supported specifcation is the XDM.  We also support, or plan to support, a number of additional specs.
+GenXDM is founded upon the notion of design-by-specification. The core supported specifcation is
+the XDM. We also support, or plan to support, a number of additional specs.
 
 # Details
 
