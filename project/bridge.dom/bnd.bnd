@@ -2,3 +2,9 @@ Bundle-Version: 1.1.0
 Export-Package: org.genxdm.bridge.dom;version=1.1,\
 	org.genxdm.bridge.dom.enhanced;version=1.1
 -runee: JavaSE-1.6
+src: src/main/java
+bin: target/classes
+testsrc: src/test/java
+testbin: target/test-classes
+javac.source: 1.6
+javac.target: 1.6

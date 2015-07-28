@@ -17,3 +17,9 @@ Export-Package: org.genxdm.processor.w3c.xs;version=1.1,\
 	org.genxdm.processor.w3c.xs.xmlrep.util;version=1.1
 -runee: JavaSE-1.6
 Private-Package: org.genxdm.processor.w3c.xs.impl
+src: src/main/java
+bin: target/classes
+testsrc: src/test/java
+testbin: target/test-classes
+javac.source: 1.6
+javac.target: 1.6
