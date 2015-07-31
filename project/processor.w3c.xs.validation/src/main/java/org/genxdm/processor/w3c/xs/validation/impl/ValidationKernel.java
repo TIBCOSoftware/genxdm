@@ -726,7 +726,10 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 								{
 									final List<A> actualValue = simpleType.validate(initialValue, m_atomBridge);
 
-									checkValueConstraintForElement(declaration, simpleType, actualValue);
+									if (null != declaration)
+									{
+										checkValueConstraintForElement(declaration, simpleType, actualValue);
+									}
 
 									m_idm.text(actualValue, simpleType, m_currentItem, m_errors, m_atomBridge);
 									m_icm.text(actualValue, simpleType, m_currentItem, m_nodeIndex, m_atomBridge);
