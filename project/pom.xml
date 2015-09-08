@@ -100,21 +100,21 @@
 
     <reporting>
         <plugins>
-            <plugin>
+            <!--plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-changelog-plugin</artifactId>
                 <configuration>
                   <type>range</type>
-                  <!-- set to 90; change to indicate the actual number of days
+                  <!- - set to 90; change to indicate the actual number of days
                        since last release, when running mvn site, or use the
-                       date type, perhaps -->
+                       date type, perhaps - ->
                   <range>90</range>
                 </configuration>
-            </plugin>
-            <plugin>
+            </plugin-->
+            <!--plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>taglist-maven-plugin</artifactId>
-            </plugin>
+            </plugin-->
         </plugins>
     </reporting>
 
