@@ -1,10 +1,10 @@
 Bundle-Version: 1.2.0
 Export-Package: org.genxdm.processor.w3c.xs.validationtest;version=1.2,\
 	org.genxdm.processor.w3c.xs.validationtest.xsts;version=1.2
--runee: JavaSE-1.6
+-runee: JavaSE-1.7
 src: src/main/java
 bin: target/classes
 testsrc: src/test/java
 testbin: target/test-classes
-javac.source: 1.6
-javac.target: 1.6
+javac.source: 1.7
+javac.target: 1.7

@@ -5,10 +5,10 @@ Export-Package: org.genxdm.samples.performance;version=1.2,\
 	org.genxdm.samples.performance.bridges.cx;version=1.2,\
 	org.genxdm.samples.performance.bridges.dom;version=1.2,\
 	org.genxdm.samples.performance.dom;version=1.2
--runee: JavaSE-1.6
+-runee: JavaSE-1.7
 src: src/main/java
 bin: target/classes
 testsrc: src/test/java
 testbin: target/test-classes
-javac.source: 1.6
-javac.target: 1.6
+javac.source: 1.7
+javac.target: 1.7

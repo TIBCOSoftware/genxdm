@@ -8,10 +8,10 @@ Export-Package: org.genxdm.bridgetest;version=1.2,\
 	org.genxdm.bridgetest.typed.types;version=1.2
 Bundle-Version: 1.2.0
 Private-Package: org.genxdm.bridgetest.utilities
--runee: JavaSE-1.6
+-runee: JavaSE-1.7
 src: src/main/java
 bin: target/classes
 testsrc: src/test/java
 testbin: target/test-classes
-javac.source: 1.6
-javac.target: 1.6
+javac.source: 1.7
+javac.target: 1.7

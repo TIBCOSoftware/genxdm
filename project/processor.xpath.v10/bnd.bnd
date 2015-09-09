@@ -7,10 +7,10 @@ Private-Package: org.genxdm.processor.xpath.v10.expressions,\
 	org.genxdm.processor.xpath.v10.relations,\
 	org.genxdm.processor.xpath.v10.tests,\
 	org.genxdm.processor.xpath.v10.variants
--runee: JavaSE-1.6
+-runee: JavaSE-1.7
 src: src/main/java
 bin: target/classes
 testsrc: src/test/java
 testbin: target/test-classes
-javac.source: 1.6
-javac.target: 1.6
+javac.source: 1.7
+javac.target: 1.7

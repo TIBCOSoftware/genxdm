@@ -3,10 +3,10 @@ Export-Package: org.genxdm.processor.input;version=1.2,\
 	org.genxdm.processor.io;version=1.2,\
 	org.genxdm.processor.io.adapters;version=1.2,\
 	org.genxdm.processor.output;version=1.2
--runee: JavaSE-1.6
+-runee: JavaSE-1.7
 src: src/main/java
 bin: target/classes
 testsrc: src/test/java
 testbin: target/test-classes
-javac.source: 1.6
-javac.target: 1.6
+javac.source: 1.7
+javac.target: 1.7
