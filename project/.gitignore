@@ -2,8 +2,7 @@
 /reports/
 /generated/
 /cnf/
-/cnf/
-/cnf/
+/site/
 /build.gradle
 /gradle.properties
 /settings.gradle
