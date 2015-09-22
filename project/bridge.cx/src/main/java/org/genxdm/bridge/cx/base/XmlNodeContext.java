@@ -44,17 +44,20 @@ public final class XmlNodeContext
          mutant = new XmlNodeMutableContext(this);
     }
 
+    @Override
     public Model<XmlNode> getModel()
     {
         return model;
     }
 
+    @Override
     public MutableContext<XmlNode> getMutableContext()
     {
         return mutant;
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public TypedXmlNodeContext getTypedContext(SchemaComponentCache cache)
     {
         TypedXmlNodeContext tc;
@@ -80,11 +83,24 @@ public final class XmlNodeContext
         return tc;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public TypedXmlNodeContext getTempTypedContext(SchemaComponentCache cache)
+    {
+        // if it's null, return the default
+        if (cache == null)
+            return getTypedContext(null);
+        // otherwise, return a new one, and don't remember
+        return new TypedXmlNodeContext(this, cache);
+    }
+
+    @Override
     public boolean isNode(Object item)
     {
         return (item instanceof XmlNode);
     }
 
+    @Override
     public boolean isSupported(String feature)
     {
         PreCondition.assertNotNull(feature, "feature");
@@ -96,21 +112,25 @@ public final class XmlNodeContext
         return false;
     }
 
+    @Override
     public Cursor newCursor(XmlNode node)
     {
         return new XmlNodeCursor(node);
     }
 
+    @Override
     public FragmentBuilder<XmlNode> newFragmentBuilder()
     {
         return new FilteredFragmentBuilder<XmlNode>(new NamespaceFixupFilter(), new XmlNodeBuilder());
     }
 
+    @Override
     public XmlNode node(Object item)
     {
         return isNode(item) ? (XmlNode)item : null;
     }
 
+    @Override
     public XmlNode[] nodeArray(int size)
     {
         // TODO: our tests don't permit us to assert.  are the tests wrong?
@@ -118,32 +138,38 @@ public final class XmlNodeContext
         return new XmlNode[size];
     }
 
+    @Override
     public DocumentHandler<XmlNode> newDocumentHandler()
     {
         return new DefaultDocumentHandler<XmlNode>(this);
     }
 
+    @Override
     public DocumentHandler<XmlNode> newDocumentHandler(final XMLReporter reporter, final Resolver resolver)
     {
         // TODO: implement
         return newDocumentHandler();
     }
     
+    @Override
     public void setDefaultReporter(XMLReporter reporter)
     {
         this.reporter = reporter;
     }
     
+    @Override
     public void setDefaultResolver(Resolver resolver)
     {
         this.resolver = resolver;
     }
     
+    @Override
     public XMLReporter getDefaultReporter()
     {
         return reporter;
     }
     
+    @Override
     public Resolver getDefaultResolver()
     {
         return resolver;

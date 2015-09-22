@@ -76,11 +76,13 @@ public class DomProcessingContext
         
     }
     
+    @Override
     public Model<Node> getModel()
     {
         return model;
     }
 
+    @Override
     public MutableContext<Node> getMutableContext()
     {
         if (mutantContext == null)
@@ -88,11 +90,13 @@ public class DomProcessingContext
         return mutantContext;
     }
 
+    @Override
     public boolean isNode(Object item)
     {
         return (item instanceof Node);
     }
 
+    @Override
     public boolean isSupported(final String feature)
     {
         PreCondition.assertNotNull(feature, "feature");
@@ -104,6 +108,7 @@ public class DomProcessingContext
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public TypedContext<Node, XmlAtom> getTypedContext(SchemaComponentCache cache)
     {
         DomSAProcessingContext tc = null;
@@ -128,6 +133,16 @@ public class DomProcessingContext
         return tc;
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public TypedContext<Node, XmlAtom> getTempTypedContext(SchemaComponentCache cache)
+    {
+        if (cache == null)
+            return getTypedContext(null);
+        return new DomSAProcessingContext(this, cache);
+    }
+
+    @Override
     public Cursor newCursor(Node node)
     {
         return new CursorOnModel<Node>(node, model);
@@ -138,11 +153,13 @@ public class DomProcessingContext
         return new DomDocumentHandler(this);
     }
 
+    @Override
     public FragmentBuilder<Node> newFragmentBuilder()
     {
         return new FilteredFragmentBuilder<Node>(new NamespaceFixupFilter(), new DomFragmentBuilder(m_dbf));
     }
 
+    @Override
     public Node node(Object item)
     {
         if (isNode(item))
@@ -150,6 +167,7 @@ public class DomProcessingContext
         return null;
     }
 
+    @Override
     public Node[] nodeArray(int size)
     {
         return new Node[size];
@@ -158,21 +176,25 @@ public class DomProcessingContext
     private class MutantContext implements MutableContext<Node>
     {
         
+        @Override
         public MutableModel<Node> getModel()
         {
             return mutant;
         }
 
+        @Override
         public DomNodeFactory getNodeFactory()
         {
             return new DomNodeFactory(m_dbf);
         }
 
+        @Override
         public ProcessingContext<Node> getProcessingContext()
         {
             return DomProcessingContext.this;
         }
 
+        @Override
         public MutableCursor<Node> newCursor(Node node)
         {
             return new MutableCursorOnMutableModel<Node>(node, mutant);

@@ -40,6 +40,7 @@ import org.genxdm.mutable.MutableCursor;
 import org.genxdm.mutable.MutableModel;
 import org.genxdm.mutable.NodeFactory;
 import org.genxdm.processor.io.DefaultDocumentHandler;
+import org.genxdm.typed.TypedContext;
 import org.genxdm.xs.SchemaComponentCache;
 
 /** ProcessingContext to support abstraction of the AxiOM LLOM tree model.
@@ -170,6 +171,17 @@ public class AxiomProcessingContext
         return tc;
     }
     
+    @SuppressWarnings("unchecked")
+    @Override
+    public AxiomSAProcessingContext getTempTypedContext(SchemaComponentCache cache)
+    {
+        // if argument is null, use the default
+        if (cache == null)
+            return getTypedContext(null);
+        // create a new one; do not query or update the typedContexts map.
+        return new AxiomSAProcessingContext(this, cache);
+    }
+
     @Override
     public boolean isNode(Object item)
     {

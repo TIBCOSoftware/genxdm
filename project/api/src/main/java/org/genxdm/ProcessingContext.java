@@ -62,11 +62,31 @@ public interface ProcessingContext<N> extends DocumentHandlerFactory<N>
      * for subsequent calls with a null argument. 
      * 
      * @return a TypedContext associated with this ProcessingContext and the
-     * supplied SchemaComponentCache, or null if no such context is available. 
+     * supplied SchemaComponentCache, or null if no such context is available.
+     * Multiple calls with the same argument must return the same TypedContext. 
      * If the ProcessingContext does not support schema-aware
      * processing, null will be returned.
      */
     <A> TypedContext<N, A> getTypedContext(SchemaComponentCache cache);
+    
+    /**
+     * Get a temporary typed context, because the schema component cache is a
+     * temporary object.
+     * 
+     * This method is mostly intended for processors using various techniques
+     * that enhance an existing TypedContext's SchemaComponentCache, without
+     * adding permanent content ("chaining" or "linking" of component caches).
+     * In some cases, these constructions are known to be needed for a single
+     * use only, and keeping them around to meet the "same argument-same return"
+     * constraint of {@link getTypedContext(SchemaComponentCache)} produces
+     * a memory leak.
+     * 
+     * @param cache the supplied SchemaComponentCache; see {@link getTypedContext(SchemaComponentCache)}.
+     * @returna TypedContext associated with this ProcessingContext and the
+     * supplied SchemaComponentCache, but repeated calls with the same SCC will
+     * not return the same TypedContext.
+     */
+    <A> TypedContext<N, A> getTempTypedContext(SchemaComponentCache cache);
     
     /**
      * Determines whether the item is a node (an instance of the bridge's
