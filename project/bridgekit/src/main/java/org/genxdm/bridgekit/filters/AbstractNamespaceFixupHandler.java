@@ -61,7 +61,7 @@ public abstract class AbstractNamespaceFixupHandler
         PreCondition.assertNotNull(getOutputHandler());
         reconcile();
         getOutputHandler().endElement();
-        endScope();
+        scopeDeque.removeFirst();
     }
 
     @Override
@@ -217,11 +217,6 @@ public abstract class AbstractNamespaceFixupHandler
         }
         // done, clear that set
         attributes.clear();
-    }
-    
-    private void endScope()
-    {
-        scopeDeque.removeFirst();
     }
     
     private boolean inScope(String prefix, String uri)
