@@ -226,8 +226,7 @@ public class GregorianType extends AbstractAtomType
         // ISO8601.parseGregorian(trimmed, atomBridge, this);
         try
         {
-            final DatatypeFactory factory = getFactory();
-            final XMLGregorianCalendar calendar = factory.newXMLGregorianCalendar(trimmed);
+            final XMLGregorianCalendar calendar = datatypeFactory.newXMLGregorianCalendar(trimmed);
 
             final NameSource nameBridge = NameSource.SINGLETON;
 
@@ -265,15 +264,13 @@ public class GregorianType extends AbstractAtomType
         }
     }
 
-    private static DatatypeFactory getFactory()
-    {
-        try
-        {
-            return DatatypeFactory.newInstance();
-        }
-        catch (final DatatypeConfigurationException e)
-        {
-            throw new RuntimeException(e);
+    private static DatatypeFactory datatypeFactory;
+    
+    static {
+        try {
+            datatypeFactory = DatatypeFactory.newInstance();
+        } catch (DatatypeConfigurationException e) {
+            throw new ExceptionInInitializerError(e);
         }
     }
 }
