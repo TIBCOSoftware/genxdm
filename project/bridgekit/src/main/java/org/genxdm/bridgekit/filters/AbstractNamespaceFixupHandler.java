@@ -147,7 +147,7 @@ public abstract class AbstractNamespaceFixupHandler
         getOutputHandler().flush();
     }
 
-    protected abstract <H extends ContentHandler> H getOutputHandler();
+    protected abstract ContentHandler getOutputHandler();
     
     protected abstract void outputAttribute(Attr a);
     

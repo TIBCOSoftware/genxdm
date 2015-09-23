@@ -9,6 +9,7 @@ import javax.xml.namespace.QName;
 import org.genxdm.bridgekit.names.DefaultNamespaceBinding;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.ContentHandler;
 import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
@@ -91,9 +92,8 @@ public class NamespaceFixupSequenceFilter<A>
         atoms = PreCondition.assertNotNull(bridge);
     }
     
-    @SuppressWarnings("unchecked")
     @Override
-    protected SequenceHandler<A> getOutputHandler()
+    protected ContentHandler getOutputHandler()
     {
         return output;
     }

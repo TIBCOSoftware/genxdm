@@ -1,6 +1,5 @@
 package org.genxdm.bridgekit.filters;
 
-import org.genxdm.bridgekit.filters.AbstractNamespaceFixupHandler.Attr;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentFilter;
 import org.genxdm.io.ContentHandler;
@@ -21,7 +20,6 @@ public class NamespaceFixupFilter
         output = PreCondition.assertNotNull(handler);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     protected ContentHandler getOutputHandler()
     {
