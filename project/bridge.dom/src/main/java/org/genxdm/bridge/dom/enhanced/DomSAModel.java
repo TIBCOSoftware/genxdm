@@ -25,6 +25,7 @@ import org.genxdm.bridge.dom.DomModel;
 import org.genxdm.bridge.dom.DomSupport;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XsiNil;
+import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.TypedContext;
@@ -78,7 +79,7 @@ class DomSAModel
             case ELEMENT:
             {
                 if (XsiNil.isNilledElement(this, node, atomBridge))
-                    return null;
+                    return new UnaryIterable<XmlAtom>(null);
                 // otherwise, fall through to the next section, which is both
                 // elements and attributes. clear?
             }

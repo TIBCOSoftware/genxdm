@@ -25,6 +25,7 @@ import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridge.cx.tree.XmlRootNode;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XsiNil;
+import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.TypedModel;
@@ -82,7 +83,7 @@ public class TypedXmlNodeModel
             case ELEMENT :
             {
                 if (XsiNil.isNilledElement(this, node, bridge)) // xsi:nil special case returns null.
-                    return null;
+                    return new UnaryIterable<XmlAtom>(null);
                 if (node.hasChildren())
                 {
                     XmlNode firstChild = node.getFirstChild();

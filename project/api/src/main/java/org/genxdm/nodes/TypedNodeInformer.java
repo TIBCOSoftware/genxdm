@@ -83,8 +83,6 @@ public interface TypedNodeInformer<N, A>
      * 
      * <p>Applies to all node kinds.</p>
      * 
-     * <p>If the node argument is <code>null</code>, then <code>null</code> is returned.</p>
-     * 
      * @param node
      *            The node for which dm:typed-value is required.  May not be null.
      *
@@ -93,8 +91,11 @@ public interface TypedNodeInformer<N, A>
      * and processing instruction nodes, returns the string value of the content.
      * For text nodes, returns the value as an xs:untypedAtomic. Invalid, unvalidated,
      * and partially-validated nodes tend to return string values variously
-     * typed. null (the empty sequence) is possible in some circumstances.
-     * When xsi:nillable="true", then null is returned.
+     * typed. an empty iterator (the empty sequence) is possible in some circumstances.
+     * null may only be returned when the argument is null or the method
+     * is called on an element with element-only content, both of which can
+     * be determined by the caller in advance
+     * When xsi:nillable="true", then an empty iterator is returned.
      * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-typed-value">XDM dm:typed-value accessor</a>
      * @see <a href="http://www.w3.org/TR/xpath-datamodel/#TypedValueDetermination">XDM Typed Value Determination</a>
      */
