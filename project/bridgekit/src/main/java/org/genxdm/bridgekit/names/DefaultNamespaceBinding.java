@@ -46,13 +46,16 @@ public final class DefaultNamespaceBinding implements NamespaceBinding
     {
         return prefix + "=>" + uri;
     }
-    
+
     @Override
-    public int hashCode()
-    {
-        return toString().hashCode();
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((prefix == null) ? 0 : prefix.hashCode());
+        result = prime * result + ((uri == null) ? 0 : uri.hashCode());
+        return result;
     }
-    
+
     @Override
     public boolean equals(Object other)
     {

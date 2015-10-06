@@ -3,11 +3,10 @@ package org.genxdm.bridgekit.filters;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.XMLConstants;
 
@@ -21,7 +20,6 @@ import org.genxdm.names.NamespaceBinding;
 public abstract class AbstractNamespaceFixupHandler
     implements ContentHandler
 {
-
     @Override
     public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
         throws GenXDMException
@@ -119,7 +117,8 @@ public abstract class AbstractNamespaceFixupHandler
         reconcile();
         getOutputHandler().startElement(namespaceURI, localName, prefix);
         newScope();
-        required.add(new DefaultNamespaceBinding(prefix, namespaceURI));
+        elementPrefix = prefix;
+        elementNs = namespaceURI;
     }
 
     @Override
@@ -167,56 +166,71 @@ public abstract class AbstractNamespaceFixupHandler
                 if (p == null)
                     p = randomPrefix(ns);
             }
-            required.add(new DefaultNamespaceBinding(p, ns));
+            requiredAttNsBindings.add(new DefaultNamespaceBinding(p, ns));
         }
         return new PNS(p, ns);
     }
     
     protected void newScope()
     {
-        Map<String, String> scope = new HashMap<String, String>();
         if (scopeDeque.isEmpty()) // initialize
         {
-            scope.put(XMLConstants.DEFAULT_NS_PREFIX, XMLConstants.NULL_NS_URI);
-            scope.put(XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI);
-            scope.put(XMLConstants.XMLNS_ATTRIBUTE, XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
+            Map<String, String> baseScope = new HashMap<String, String>();
+            baseScope.put(XMLConstants.DEFAULT_NS_PREFIX, XMLConstants.NULL_NS_URI);
+            baseScope.put(XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI);
+            baseScope.put(XMLConstants.XMLNS_ATTRIBUTE, XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
+            scopeDeque.addFirst(baseScope);
         }
-        scopeDeque.addFirst(scope);
+        scopeDeque.addFirst(new HashMap<String, String>());
     }
     
     protected void reconcile()
     {
-        for (NamespaceBinding want : required)
-        {
-            if (!inScope(want.getPrefix(), want.getNamespaceURI())) // needed, not present
+    	// Check element ns binding.
+        if (elementPrefix != null && !inScope(elementPrefix, elementNs)) // needed, not present
+            namespace(elementPrefix, elementNs); // declare it as is
+        elementPrefix = null;
+        elementNs = null;
+    	
+    	// Check attribute ns bindings.
+        if(!requiredAttNsBindings.isEmpty()) {
+            for (NamespaceBinding want : requiredAttNsBindings)
             {
-                // note: instead of checking here, we're just going to declare
-                // it, by calling the namespace() method.  That method is going
-                // to throw an exception if this prefix is already declared in this
-                // scope.  We can't recover from multiple desired bindings for
-                // one prefix in a scope.
-                namespace(want.getPrefix(), want.getNamespaceURI()); // declare it as is
+                if (!inScope(want.getPrefix(), want.getNamespaceURI())) // needed, not present
+                {
+                    // note: instead of checking here, we're just going to declare
+                    // it, by calling the namespace() method.  That method is going
+                    // to throw an exception if this prefix is already declared in this
+                    // scope.  We can't recover from multiple desired bindings for
+                    // one prefix in a scope.
+                    namespace(want.getPrefix(), want.getNamespaceURI()); // declare it as is
+                }
+                // if it's in scope, we're good
             }
-            // if it's in scope, we're good
+            // all of the desired bindings are either already in scope, or have
+            // been added.
+            requiredAttNsBindings.clear();
         }
-        // all of the desired bindings are either already in scope, or have
-        // been added.
-        required.clear();
         // now emit all the namespace events at once
-        for (NamespaceBinding namespace : namespaces)
-        {
-            getOutputHandler().namespace(namespace.getPrefix(), namespace.getNamespaceURI());
+        if(!namespaces.isEmpty()) {
+            for (NamespaceBinding namespace : namespaces)
+            {
+                getOutputHandler().namespace(namespace.getPrefix(), namespace.getNamespaceURI());
+            }
+            // clear the bindings; we're done with them.
+            namespaces.clear();
         }
-        // clear the bindings; we're done with them.
-        namespaces.clear();
-        // emit all the attribute events.  we've already insured that all the
-        // attributes in namespaces have prefixes, and that the bindings are in scope
-        for (Attr a : attributes)
-        {
-            outputAttribute(a);
+        
+        if(!attributes.isEmpty()) {
+            // emit all the attribute events.  we've already insured that all the
+            // attributes in namespaces have prefixes, and that the bindings are in scope
+            for (Attr a : attributes)
+            {
+                outputAttribute(a);
+            }
+            // done, clear that set
+            attributes.clear();
         }
-        // done, clear that set
-        attributes.clear();
     }
     
     private boolean inScope(String prefix, String uri)
@@ -286,9 +300,12 @@ public abstract class AbstractNamespaceFixupHandler
         String value;
         DtdAttributeKind type;
         @Override
-        public int hashCode()
-        {
-            return ("{" + namespace + "}" + name).hashCode();
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((name == null) ? 0 : name.hashCode());
+            result = prime * result + ((namespace == null) ? 0 : namespace.hashCode());
+            return result;
         }
         @Override
         public boolean equals(Object other)
@@ -299,9 +316,11 @@ public abstract class AbstractNamespaceFixupHandler
         }
     }
 
-    protected Set<NamespaceBinding> namespaces = new HashSet<NamespaceBinding>();
-    protected Set<NamespaceBinding> required = new HashSet<NamespaceBinding>();
-    protected Set<Attr> attributes = new HashSet<Attr>();
+    protected ArrayList<NamespaceBinding> namespaces = new ArrayList<NamespaceBinding>();
+    protected ArrayList<NamespaceBinding> requiredAttNsBindings = new ArrayList<NamespaceBinding>();
+    protected String elementNs;
+    protected String elementPrefix;
+    protected ArrayList<Attr> attributes = new ArrayList<Attr>();
     protected Deque<Map<String, String>> scopeDeque = new ArrayDeque<Map<String, String>>();
     protected int counter = 0;
 }

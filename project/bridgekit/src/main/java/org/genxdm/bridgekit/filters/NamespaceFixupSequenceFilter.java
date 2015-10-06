@@ -6,7 +6,6 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.bridgekit.names.DefaultNamespaceBinding;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
@@ -62,7 +61,8 @@ public class NamespaceFixupSequenceFilter<A>
         reconcile();
         output.startElement(namespaceURI, localName, prefix, type);
         newScope();
-        required.add(new DefaultNamespaceBinding(prefix, namespaceURI));
+        elementPrefix = prefix;
+        elementNs = namespaceURI;
     }
 
     @Override
