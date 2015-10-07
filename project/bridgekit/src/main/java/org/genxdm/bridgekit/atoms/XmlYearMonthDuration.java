@@ -36,35 +36,15 @@ public final class XmlYearMonthDuration extends XmlAbstractAtom implements Compa
 
     public int compareTo(final XmlYearMonthDuration other)
     {
-        if (months > other.months)
-        {
-            return +1;
-        }
-        else if (months < other.months)
-        {
-            return -1;
-        }
-        else
-        {
-            return 0;
-        }
+        return months - other.months;
     }
 
     @Override
     public boolean equals(final Object obj)
     {
-        if (obj == this)
-        {
-            return true;
-        }
-        else if (obj instanceof XmlYearMonthDuration)
-        {
+        if (obj instanceof XmlYearMonthDuration)
             return months == ((XmlYearMonthDuration)obj).months;
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()

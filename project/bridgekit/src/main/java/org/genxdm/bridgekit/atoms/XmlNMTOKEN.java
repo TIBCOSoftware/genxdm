@@ -33,18 +33,9 @@ public final class XmlNMTOKEN extends XmlAbstractAtom
     @Override
     public boolean equals(final Object obj)
     {
-        if (this == obj)
-        {
-            return true;
-        }
-        else if (obj instanceof XmlNMTOKEN)
-        {
+        if (obj instanceof XmlNMTOKEN)
             return value.equals(((XmlNMTOKEN)obj).value);
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()

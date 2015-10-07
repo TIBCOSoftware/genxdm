@@ -15,35 +15,24 @@
  */
 package org.genxdm.bridgekit.atoms;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.types.NativeType;
 
 public class XmlQName extends XmlAbstractAtom
 {
-    private final String localName;
-
-    private final String namespaceURI;
-
-    private final String prefix;
-
     public XmlQName(final String namespaceURI, final String localName, final String prefix)
     {
-        this.namespaceURI = namespaceURI;
-        this.localName = localName;
+        this.namespaceURI = PreCondition.assertNotNull(namespaceURI);
+        this.localName = PreCondition.assertNotNull(localName);
         this.prefix = prefix;
     }
 
     @Override
     public boolean equals(final Object obj)
     {
-        // TODO: revise using getClass and test for this.
-        if (obj == null || !(obj instanceof XmlQName))
-        {
-            return false;
-        }
-        else
-        {
+        if (obj instanceof XmlQName)
             return equalsName((XmlQName)obj);
-        }
+        return false;
     }
 
     public boolean equalsName(final XmlQName other)
@@ -102,32 +91,18 @@ public class XmlQName extends XmlAbstractAtom
     @Override
     public int hashCode()
     {
-        if (null != namespaceURI)
-        {
-            if (null != localName)
-            {
-                return namespaceURI.hashCode() ^ localName.hashCode();
-            }
-            else
-            {
-                return namespaceURI.hashCode() ^ "*".hashCode();
-            }
-        }
-        else
-        {
-            if (null != localName)
-            {
-                return "*".hashCode() ^ localName.hashCode();
-            }
-            else
-            {
-                return "*".hashCode();
-            }
-        }
+        final int prime = 31;
+        int result = prime + ((namespaceURI == null) ? 0 : namespaceURI.hashCode());
+        result = prime * result + ((localName == null) ? 0 : localName.hashCode());
+        return result; 
     }
 
     public boolean isWhiteSpace()
     {
         return false;
     }
+
+    private final String localName;
+    private final String namespaceURI;
+    private final String prefix;
 }

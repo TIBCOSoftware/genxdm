@@ -38,10 +38,13 @@ public final class XmlForeignAtom extends XmlAbstractAtom
             final XmlForeignAtom other = (XmlForeignAtom)obj;
             return atomType.equals(other.atomType) && baseAtom.equals(other.baseAtom);
         }
-        else
-        {
-            return false;
-        }
+        return false;
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        return (17 + atomType.hashCode()) * 31 + baseAtom.hashCode();
     }
 
     public String getC14NForm()

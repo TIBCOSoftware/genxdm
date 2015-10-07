@@ -33,18 +33,9 @@ public final class XmlNormalizedString extends XmlAbstractAtom
     @Override
     public boolean equals(final Object obj)
     {
-        if (this == obj)
-        {
-            return true;
-        }
-        else if (obj instanceof XmlNormalizedString)
-        {
+        if (obj instanceof XmlNormalizedString)
             return value.equals(((XmlNormalizedString)obj).value);
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()

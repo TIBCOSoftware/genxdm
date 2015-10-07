@@ -41,13 +41,14 @@ public final class XmlDayTimeDuration extends XmlAbstractAtom implements Compara
     public boolean equals(Object obj)
     {
         if (obj instanceof XmlDayTimeDuration)
-        {
             return seconds.equals(((XmlDayTimeDuration)obj).seconds);
-        }
-        else
-        {
-            return false;
-        }
+        return false;
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        return seconds.hashCode();
     }
 
     public String getC14NForm()

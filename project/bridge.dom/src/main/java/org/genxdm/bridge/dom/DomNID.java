@@ -32,26 +32,28 @@ public final class DomNID
 
     public int hashCode()
     {
-        return m_node.getNodeType();
+        return System.identityHashCode(m_node);
+        // holy *shit* this is so wrong it's not *even* wrong!
+        //return m_node.getNodeType();
     }
 
     public boolean equals(final Object obj)
     {
         if (obj instanceof DomNID)
-        {
-            final DomNID other = (DomNID)obj;
-            if (m_node == other.m_node)
-            {
-                return true;
-            }
-            else
-            {
-                return m_node.isSameNode(other.m_node);
-            }
-        }
-        else
-        {
-            return false;
-        }
+            return hashCode() == obj.hashCode();
+        else if (obj instanceof Node)
+            return hashCode() == System.identityHashCode(obj);
+        return false;
+        // an utterly improper implementation, allied with an utterly improper
+        // hashCode() implementation for an utterly improper result.
+        // we don't need to care what dom thinks the 'same node' is.
+//        if (obj instanceof DomNID)
+//        {
+//            final DomNID other = (DomNID)obj;
+//            if (m_node == other.m_node)
+//                return true;
+//            return m_node.isSameNode(other.m_node);
+//        }
+//        return false;
     }
 }

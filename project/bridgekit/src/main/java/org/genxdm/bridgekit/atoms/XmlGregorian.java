@@ -54,10 +54,21 @@ public final class XmlGregorian extends XmlAbstractAtom
             return year == other.getYear() && month == other.getMonth() && day == other.getDayOfMonth() && hour == other.getHourOfDay() && minute == other.getMinute() && second == other.getSecond() && getFractionalSecond().equals(other.getFractionalSecond())
                     && timezone == other.getGmtOffset();
         }
-        else
-        {
-            return false;
-        }
+        return false;
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = prime + year;
+        result = prime * result + month;
+        result = prime * result + day;
+        result = prime * result + hour;
+        result = prime * result + minute;
+        result = prime * result + second;
+        result = prime * result + getFractionalSecond().hashCode();
+        return prime * result + timezone;
     }
 
     public String getC14NForm()

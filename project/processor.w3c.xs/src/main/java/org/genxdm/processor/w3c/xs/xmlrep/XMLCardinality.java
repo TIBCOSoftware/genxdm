@@ -315,7 +315,7 @@ public final class XMLCardinality
 
     public int hashCode()
     {
-        return m_min + m_max;
+        return (17 + m_min) * 31 + m_max;
     }
 
     public boolean isKnown()

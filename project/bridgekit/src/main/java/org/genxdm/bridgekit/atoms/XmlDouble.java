@@ -33,13 +33,8 @@ public final class XmlDouble extends XmlAbstractAtom
     public boolean equals(final Object obj)
     {
         if (obj instanceof XmlDouble)
-        {
             return doubleValue == ((XmlDouble)obj).doubleValue;
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()

@@ -80,9 +80,8 @@ final class RegExPair<L,R> implements Comparable<RegExPair<L,R>>
         else
             hash = 499;//a nice prime number for {null, *}
         if (m_second != null)
-            return (hash << 1) ^ m_second.hashCode();//assymetric
-        else
-            return hash;
+            return (hash << 1) ^ m_second.hashCode();//asymmetric
+        return hash;
     }
 
     /**

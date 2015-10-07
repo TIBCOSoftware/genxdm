@@ -33,18 +33,9 @@ public final class XmlLanguage extends XmlAbstractAtom
     @Override
     public boolean equals(final Object obj)
     {
-        if (this == obj)
-        {
-            return true;
-        }
-        else if (obj instanceof XmlLanguage)
-        {
+        if (obj instanceof XmlLanguage)
             return value.equals(((XmlLanguage)obj).value);
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()

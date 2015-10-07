@@ -36,13 +36,14 @@ public final class XmlHexBinary extends XmlAbstractAtom
     public boolean equals(final Object obj)
     {
         if (obj instanceof XmlHexBinary)
-        {
             return Arrays.equals(bytes, ((XmlHexBinary)obj).getByteArrayValue());
-        }
-        else
-        {
-            return false;
-        }
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return bytes.hashCode();
     }
 
     /**

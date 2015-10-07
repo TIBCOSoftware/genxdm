@@ -48,17 +48,14 @@ final class IdentityKey
 	@Override
 	public int hashCode()
 	{
-		return 0;
+	    return 31 + ((m_value == null) ? 0 : m_value.hashCode());
 	}
 
 	@Override
 	public boolean equals(final Object obj)
 	{
-		if (obj instanceof IdentityKey)
-		{
-			final IdentityKey other = (IdentityKey)obj;
-			return m_value == null ? other.m_value == null : m_value.equals(other.m_value);
-		}
+	    if (obj instanceof IdentityKey)
+	        return hashCode() == obj.hashCode();
 		return false;
 	}
 }

@@ -41,13 +41,8 @@ public final class XmlByte extends XmlAbstractAtom
     public boolean equals(final Object obj)
     {
         if (obj instanceof XmlByte)
-        {
             return byteValue == ((XmlByte)obj).getByteValue();
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()

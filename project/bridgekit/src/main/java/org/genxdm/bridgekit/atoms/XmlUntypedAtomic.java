@@ -33,18 +33,9 @@ public final class XmlUntypedAtomic extends XmlAbstractAtom
     @Override
     public boolean equals(final Object obj)
     {
-        if (this == obj)
-        {
-            return true;
-        }
-        else if (obj instanceof XmlUntypedAtomic)
-        {
+        if (obj instanceof XmlUntypedAtomic)
             return value.equals(((XmlUntypedAtomic)obj).value);
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()

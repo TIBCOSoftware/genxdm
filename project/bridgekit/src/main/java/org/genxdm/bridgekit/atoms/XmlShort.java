@@ -32,18 +32,9 @@ public final class XmlShort extends XmlAbstractAtom
     @Override
     public boolean equals(final Object obj)
     {
-        if (this == obj)
-        {
-            return true;
-        }
-        else if (obj instanceof XmlShort)
-        {
+        if (obj instanceof XmlShort)
             return shortValue == ((XmlShort)obj).shortValue;
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()

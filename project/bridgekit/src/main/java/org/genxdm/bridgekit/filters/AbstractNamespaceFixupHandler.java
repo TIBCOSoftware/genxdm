@@ -299,21 +299,6 @@ public abstract class AbstractNamespaceFixupHandler
         String prefix;
         String value;
         DtdAttributeKind type;
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + ((name == null) ? 0 : name.hashCode());
-            result = prime * result + ((namespace == null) ? 0 : namespace.hashCode());
-            return result;
-        }
-        @Override
-        public boolean equals(Object other)
-        {
-            if (other instanceof Attr)
-                return hashCode() == other.hashCode();
-            return false;
-        }
     }
 
     protected ArrayList<NamespaceBinding> namespaces = new ArrayList<NamespaceBinding>();

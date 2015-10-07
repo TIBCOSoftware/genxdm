@@ -35,18 +35,9 @@ public class XmlAnyURI extends XmlAbstractAtom
     @Override
     public boolean equals(final Object obj)
     {
-        if (this == obj)
-        {
-            return true;
-        }
-        else if (obj instanceof XmlAnyURI)
-        {
+        if (obj instanceof XmlAnyURI)
             return value.equals(((XmlAnyURI)obj).value);
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()

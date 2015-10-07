@@ -32,18 +32,9 @@ public final class XmlInt extends XmlAbstractAtom
     @Override
     public boolean equals(final Object obj)
     {
-        if (this == obj)
-        {
-            return true;
-        }
-        else if (obj instanceof XmlInt)
-        {
+        if (obj instanceof XmlInt)
             return intValue == ((XmlInt)obj).intValue;
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()

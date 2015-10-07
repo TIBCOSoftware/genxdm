@@ -32,18 +32,9 @@ public final class XmlLong extends XmlAbstractAtom
     @Override
     public boolean equals(final Object obj)
     {
-        if (this == obj)
-        {
-            return true;
-        }
-        else if (obj instanceof XmlLong)
-        {
+        if (obj instanceof XmlLong)
             return longValue == ((XmlLong)obj).longValue;
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()

@@ -33,13 +33,8 @@ public final class XmlFloat extends XmlAbstractAtom
     public boolean equals(final Object obj)
     {
         if (obj instanceof XmlFloat)
-        {
             return floatValue == ((XmlFloat)obj).floatValue;
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     /**

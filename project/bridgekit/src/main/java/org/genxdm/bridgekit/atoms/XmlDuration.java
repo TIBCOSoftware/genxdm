@@ -42,12 +42,15 @@ public final class XmlDuration extends XmlAbstractAtom
             final XmlDuration other = (XmlDuration)obj;
             return months == other.getTotalMonthsValue() && seconds.equals(other.getTotalSecondsValue());
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
+    @Override
+    public int hashCode()
+    {
+        return (17 + months) * 31 + seconds.hashCode();
+    }
+    
     public String getC14NForm()
     {
         return DurationSupport.formatDurationC14N(seconds, months);

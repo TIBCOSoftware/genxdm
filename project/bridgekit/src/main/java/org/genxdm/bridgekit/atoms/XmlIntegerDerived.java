@@ -45,19 +45,12 @@ public final class XmlIntegerDerived extends XmlAbstractAtom
     @Override
     public boolean equals(final Object obj)
     {
-        if (this == obj)
-        {
-            return true;
-        }
-        else if (obj instanceof XmlIntegerDerived)
+        if (obj instanceof XmlIntegerDerived)
         {
             final XmlIntegerDerived x = (XmlIntegerDerived)obj;
             return type == x.type && value.equals(x.value);
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()
@@ -73,7 +66,7 @@ public final class XmlIntegerDerived extends XmlAbstractAtom
     @Override
     public int hashCode()
     {
-        return value.hashCode();
+        return (17 + value.hashCode()) * 31 + type.hashCode();
     }
 
     public BigInteger integerValue()

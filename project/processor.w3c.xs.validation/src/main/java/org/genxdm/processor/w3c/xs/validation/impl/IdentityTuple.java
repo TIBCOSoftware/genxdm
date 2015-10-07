@@ -16,7 +16,6 @@
 package org.genxdm.processor.w3c.xs.validation.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.genxdm.exceptions.PreCondition;
 
@@ -25,59 +24,70 @@ import org.genxdm.exceptions.PreCondition;
  */
 final class IdentityTuple
 {
-	private final ArrayList<IdentityKey> m_keys;
+    private final ArrayList<IdentityKey> m_keys;
 
-	public IdentityTuple(final ArrayList<IdentityKey> keys)
-	{
-		// This invariant may not hold up to the test of time.
-		this.m_keys = PreCondition.assertArgumentNotNull(keys, "keys");
-	}
+    public IdentityTuple(final ArrayList<IdentityKey> keys)
+    {
+        // This invariant may not hold up to the test of time.
+        this.m_keys = PreCondition.assertArgumentNotNull(keys, "keys");
+    }
 
-	public ArrayList<IdentityKey> getKeys()
-	{
-		return m_keys;
-	}
+    public ArrayList<IdentityKey> getKeys()
+    {
+        return m_keys;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		return m_keys.size();
-	}
+    @Override
+    public int hashCode()
+    {
+        // deityonastick,thisisnotevenwrong
+//        return m_keys.size();
+        // thank you josh bloch for the correct impl:
+        final int prime = 31;
+        int result = 1;
+        for (IdentityKey key : m_keys)
+            result = prime * result + key.hashCode();
+        return result;
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (obj instanceof IdentityTuple)
-		{
-			final IdentityTuple other = (IdentityTuple)obj;
-			return equalKeys(m_keys, other.m_keys);
-		}
-		else
-		{
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj instanceof IdentityTuple)
+            return equalKeys(m_keys, ((IdentityTuple)obj).m_keys);
+        return false;
+    }
+    
+    private boolean equalKeys(final ArrayList<IdentityKey> expect, final ArrayList<IdentityKey> actual)
+    {
+        if (expect.size() != actual.size())
+            return false;
+        for (int i = 0; i < expect.size(); i++)
+        {
+            if (!expect.get(i).equals(actual.get(i)))
+                return false;
+        }
+        return true; // if we get here, everything matched.
 
-	private static <A> boolean equalKeys(final ArrayList<IdentityKey> expect, final ArrayList<IdentityKey> actual)
-	{
-		final Iterator<IdentityKey> lhs = expect.iterator();
-		final Iterator<IdentityKey> rhs = actual.iterator();
-		while (lhs.hasNext())
-		{
-			final IdentityKey lhsAtom = lhs.next();
-			if (rhs.hasNext())
-			{
-				final IdentityKey rhsAtom = rhs.next();
-				if (!lhsAtom.equals(rhsAtom))
-				{
-					return false;
-				}
-			}
-			else
-			{
-				return false;
-			}
-		}
-		return !rhs.hasNext();
-	}
+        // old version.
+//        final Iterator<IdentityKey> lhs = expect.iterator();
+//        final Iterator<IdentityKey> rhs = actual.iterator();
+//        while (lhs.hasNext())
+//        {
+//            final IdentityKey lhsAtom = lhs.next();
+//            if (rhs.hasNext())
+//            {
+//                final IdentityKey rhsAtom = rhs.next();
+//                if (!lhsAtom.equals(rhsAtom))
+//                {
+//                    return false;
+//                }
+//            }
+//            else
+//            {
+//                return false;
+//            }
+//        }
+//        return !rhs.hasNext();
+    }
 }

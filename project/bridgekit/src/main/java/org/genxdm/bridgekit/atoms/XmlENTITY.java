@@ -33,18 +33,9 @@ public final class XmlENTITY extends XmlAbstractAtom
     @Override
     public boolean equals(final Object obj)
     {
-        if (this == obj)
-        {
-            return true;
-        }
-        else if (obj instanceof XmlENTITY)
-        {
+        if (obj instanceof XmlENTITY)
             return value.equals(((XmlENTITY)obj).value);
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()

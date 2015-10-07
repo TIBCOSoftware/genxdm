@@ -33,18 +33,9 @@ public final class XmlToken extends XmlAbstractAtom
     @Override
     public boolean equals(final Object obj)
     {
-        if (this == obj)
-        {
-            return true;
-        }
-        else if (obj instanceof XmlToken)
-        {
+        if (obj instanceof XmlToken)
             return value.equals(((XmlToken)obj).value);
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()

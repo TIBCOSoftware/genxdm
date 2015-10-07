@@ -60,13 +60,8 @@ public final class XmlDecimal extends XmlAbstractAtom
     public boolean equals(final Object obj)
     {
         if (obj instanceof XmlDecimal)
-        {
             return decimalValue.equals(((XmlDecimal)obj).decimalValue);
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()

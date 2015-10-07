@@ -15,6 +15,7 @@
  */
 package org.genxdm.bridgekit.atoms;
 
+import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.types.NativeType;
 
 /**
@@ -22,9 +23,6 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlNCName extends XmlAbstractAtom
 {
-    private final String stringValue;
-    private final int hashCode;
-
     /**
      * Intentionally package protected because this must only be created through the name bridge.
      * 
@@ -32,31 +30,20 @@ public final class XmlNCName extends XmlAbstractAtom
      */
     public XmlNCName(final String stringValue)
     {
-        this.stringValue = stringValue;
-        // The caching of the hashCode has the side effect of detecting a null stringValue early.
-        this.hashCode = stringValue.hashCode();
+        value = PreCondition.assertNotNull(stringValue);
     }
 
     @Override
     public boolean equals(final Object obj)
     {
-        if (this == obj)
-        {
-            return true;
-        }
-        else if (obj instanceof XmlNCName)
-        {
-            return stringValue.equals(((XmlNCName)obj).stringValue);
-        }
-        else
-        {
-            return false;
-        }
+        if (obj instanceof XmlNCName)
+            return value.equals(((XmlNCName)obj).value);
+        return false;
     }
 
     public String getC14NForm()
     {
-        return stringValue;
+        return value;
     }
 
     public NativeType getNativeType()
@@ -67,11 +54,13 @@ public final class XmlNCName extends XmlAbstractAtom
     @Override
     public int hashCode()
     {
-        return hashCode;
+        return value.hashCode();
     }
 
     public boolean isWhiteSpace()
     {
         return false;
     }
+
+    private final String value;
 }

@@ -23,8 +23,6 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlName extends XmlAbstractAtom
 {
-    private final String value;
-
     public XmlName(final String value)
     {
         this.value = PreCondition.assertArgumentNotNull(value, "value");
@@ -33,18 +31,9 @@ public final class XmlName extends XmlAbstractAtom
     @Override
     public boolean equals(final Object obj)
     {
-        if (this == obj)
-        {
-            return true;
-        }
-        else if (obj instanceof XmlName)
-        {
+        if (obj instanceof XmlName)
             return value.equals(((XmlName)obj).value);
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()
@@ -67,4 +56,6 @@ public final class XmlName extends XmlAbstractAtom
     {
         return false;
     }
+
+    private final String value;
 }

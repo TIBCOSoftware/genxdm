@@ -23,31 +23,17 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlString extends XmlAbstractAtom
 {
-    private final int hashCode;
-    private final String value;
-
     public XmlString(final String value)
     {
         this.value = PreCondition.assertArgumentNotNull(value, "value");
-        this.hashCode = value.hashCode();
     }
 
     @Override
     public boolean equals(final Object object)
     {
-        if (this == object)
-        {
-            return true;
-        }
-        else if (object == null || getClass() != object.getClass())
-        {
-            return false;
-        }
-        else
-        {
-            final XmlString other = (XmlString)object;
-            return value.equals(other.value);
-        }
+        if (object instanceof XmlString)
+            return value.equals(((XmlString)object).value);
+        return false;
     }
 
     public String getC14NForm()
@@ -63,11 +49,13 @@ public final class XmlString extends XmlAbstractAtom
     @Override
     public int hashCode()
     {
-        return hashCode;
+        return value.hashCode();
     }
 
     public boolean isWhiteSpace()
     {
         return value.trim().length() == 0;
     }
+
+    private final String value;
 }

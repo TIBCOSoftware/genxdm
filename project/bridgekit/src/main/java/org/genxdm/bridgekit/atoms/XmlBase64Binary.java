@@ -36,13 +36,8 @@ public final class XmlBase64Binary extends XmlAbstractAtom
     public boolean equals(final Object obj)
     {
         if (obj instanceof XmlBase64Binary)
-        {
             return Arrays.equals(bytes, ((XmlBase64Binary)obj).getByteArrayValue());
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     /**

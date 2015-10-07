@@ -96,18 +96,9 @@ public final class XmlInteger extends XmlAbstractAtom
     @Override
     public boolean equals(final Object arg)
     {
-        if (arg == this)
-        {
-            return true;
-        }
-        else if (arg instanceof XmlInteger)
-        {
+        if (arg instanceof XmlInteger)
             return integerValue.equals(((XmlInteger)arg).integerValue);
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     public String getC14NForm()

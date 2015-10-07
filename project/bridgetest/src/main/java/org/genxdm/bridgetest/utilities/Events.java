@@ -438,15 +438,17 @@ public class Events<N> implements FragmentBuilder<N>
         @Override
         public int hashCode()
         {
-            return (namespace + name).hashCode() + kind.hashCode();
+            int result = 17 + namespace.hashCode();
+            result = 31 * result + name.hashCode();
+            return (13 * result + kind.hashCode());
         }
         
         @Override
         public boolean equals(Object e)
         {
-            if (e == null) return false;
-            if (!(e instanceof Event)) return false;
-            return e.hashCode() == hashCode();
+            if (e instanceof Event)
+                return hashCode() == e.hashCode();
+            return false;
         }
         
         @Override
