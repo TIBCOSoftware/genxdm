@@ -15,8 +15,8 @@
  */
 package org.genxdm.processor.w3c.xs.regex.nfa;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 final class NfaHelper
@@ -26,14 +26,14 @@ final class NfaHelper
      *
      * @param followers a List of PatternTerm.
      */
-    public static <E> void updateFollowers(LinkedList<NfaMatchState<E>> work, List<E> followers)
+    public static <E> void updateFollowers(ArrayDeque<NfaMatchState<E>> work, List<E> followers)
     {
         if (followers != null)
         {
             while (work.size() != 0)
             {
                 NfaMatchState<E> s = work.remove();
-                if (s == null)
+                if (s == NfaStepper.getMarker()) 
                 {
                     break;
                 }

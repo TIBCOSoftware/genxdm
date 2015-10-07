@@ -15,8 +15,8 @@
  */
 package org.genxdm.processor.w3c.xs.regex.nfa;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.genxdm.exceptions.PreCondition;
@@ -31,8 +31,26 @@ import org.genxdm.processor.w3c.xs.regex.api.RegExMachine;
 final class NfaStepper<E, T> implements RegExMachine<E, T>
 {
 	// The current list of states that the NFA is in...
-	private LinkedList<NfaMatchState<E>> m_clist = new LinkedList<NfaMatchState<E>>();
+	private ArrayDeque<NfaMatchState<E>> m_clist = new ArrayDeque<NfaMatchState<E>>();
+	
 
+	// Use of MARKER and getMarker() is so that we can have a marker other than "null" to use
+	// with ArrayDeque which doesn't allow nulls.
+	@SuppressWarnings("rawtypes")
+	private static final NfaMatchStateMarker MARKER = new NfaMatchStateMarker<Object>();
+	private static class NfaMatchStateMarker<E> extends NfaMatchState<E> {
+		NfaMatchStateMarker() { super(null); }
+	}
+	/**
+	 * Returns marker value
+	 * @return marker value with generic type cast to proper concrete type
+	 */
+	@SuppressWarnings("unchecked")
+	protected static final <T> NfaMatchState<T> getMarker() {
+		return (NfaMatchState<T>)MARKER;
+	}
+	
+	final private NfaMatchState<E> m_marker = getMarker();
 	private List<E> m_followers;
 	private RegExBridge<E, T> m_bridge;
 	private NfaMatchAllState<E> allState; // can only be one of these active at a time
@@ -82,13 +100,12 @@ final class NfaStepper<E, T> implements RegExMachine<E, T>
 		List<NfaMatchState<E>> visitedThisTurn = new ArrayList<NfaMatchState<E>>(23);
 		// Map visitedThisTurn = new HashMap();
 
-		// Append a marker (null) to separate the current states from the next states
-		m_clist.add(null); // null separates steps in the deque
-
+		// Append a marker to separate the current states from the next states
+		m_clist.add(m_marker);
 		while (true)
 		{
 			final NfaMatchState<E> curState = m_clist.removeFirst();
-			if (curState == null)
+			if(curState == m_marker)
 			{
 				// we're done with this step
 				if (m_clist.size() == 0)
