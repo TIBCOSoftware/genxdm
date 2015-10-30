@@ -173,15 +173,14 @@ public abstract class AbstractNamespaceFixupHandler
     
     protected void newScope()
     {
+        Map<String, String> scope = new HashMap<String, String>();
         if (scopeDeque.isEmpty()) // initialize
         {
-            Map<String, String> baseScope = new HashMap<String, String>();
-            baseScope.put(XMLConstants.DEFAULT_NS_PREFIX, XMLConstants.NULL_NS_URI);
-            baseScope.put(XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI);
-            baseScope.put(XMLConstants.XMLNS_ATTRIBUTE, XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
-            scopeDeque.addFirst(baseScope);
+            scope.put(XMLConstants.DEFAULT_NS_PREFIX, XMLConstants.NULL_NS_URI);
+            scope.put(XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI);
+            scope.put(XMLConstants.XMLNS_ATTRIBUTE, XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
         }
-        scopeDeque.addFirst(new HashMap<String, String>());
+        scopeDeque.addFirst(scope);
     }
     
     protected void reconcile()
@@ -241,6 +240,10 @@ public abstract class AbstractNamespaceFixupHandler
             {
                 if (uri.equals(bound))
                     return true;
+                // This prefix is not bound to this namespace in scope; even if
+                // a more distant ancestor has bound it, we need to return false 
+                // here and stop looking.
+                break;
             }
         }
         return false;
