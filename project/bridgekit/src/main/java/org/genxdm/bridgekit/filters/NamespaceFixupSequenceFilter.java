@@ -6,14 +6,17 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.xs.BuiltInSchema;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
+import org.genxdm.names.NamespaceBinding;
 import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.SchemaComponentCache;
 import org.genxdm.xs.enums.DerivationMethod;
+import org.genxdm.xs.types.Type;
 
 public class NamespaceFixupSequenceFilter<A>
     extends AbstractNamespaceFixupHandler
@@ -22,11 +25,12 @@ public class NamespaceFixupSequenceFilter<A>
 
     public NamespaceFixupSequenceFilter()
     {
-        methods.add(DerivationMethod.Extension);
-        methods.add(DerivationMethod.Restriction);
-        methods.add(DerivationMethod.List);
+        // you can't extend a simple type in attribute context (it can't have attributes)
+        // methods.add(DerivationMethod.Extension);
+        methods.add(DerivationMethod.Restriction); // allowed; enum or pattern or length/maxlen/minlen
+        methods.add(DerivationMethod.List); // honestly, this is problematic to handle
         // we prolly ought to allow the union, right?
-        //methods.add(DerivationMethod.Union);
+        //methods.add(DerivationMethod.Union); // also problematic ...
     }
     
     @Override
@@ -41,16 +45,16 @@ public class NamespaceFixupSequenceFilter<A>
                 namespace(localName.equalsIgnoreCase("xmlns") ? "" : localName, atoms.getC14NString(data));
             return;
         }
-        PNS pns = handleAttributeNS(namespaceURI, localName, prefix);
-//        Type t = (type == null) ? BuiltInSchema.SINGLETON.UNTYPED_ATOMIC : schema.getComponentProvider().getTypeDefinition(type);
+        NamespaceBinding pns = handleAttributeNS(namespaceURI, localName, prefix);
+        Type t = (type == null) ? BuiltInSchema.SINGLETON.UNTYPED_ATOMIC : schema.getComponentProvider().getTypeDefinition(type);
 //        // i'm not sure about this test
-//        if ( (type != null) && t.derivedFromType(BuiltInSchema.SINGLETON.QNAME, methods) )
-//        {
+        if ( (type != null) && t.derivedFromType(BuiltInSchema.SINGLETON.QNAME, methods) )
+        {
 //            // TODO: finish the job
 //            // we need to check for qnames in content, here, and insure
 //            // that any bindings that they require are also declared.
-//        }
-        attributes.add(new SeqAttr(pns.namespace, localName, pns.prefix, data, type));
+        }
+        attributes.add(new SeqAttr(pns.getNamespaceURI(), localName, pns.getPrefix(), data, type));
     }
 
     @Override
@@ -59,10 +63,11 @@ public class NamespaceFixupSequenceFilter<A>
     {
         PreCondition.assertNotNull(output);
         reconcile();
-        output.startElement(namespaceURI, localName, prefix, type);
         newScope();
         elementPrefix = prefix;
         elementNs = namespaceURI;
+        elementName = localName;
+        elementType = type;
     }
 
     @Override
@@ -117,6 +122,17 @@ public class NamespaceFixupSequenceFilter<A>
         output.attribute(a.namespace, a.name, a.prefix, a.value, a.type);
     }
 
+    @Override
+    protected void outputCurrentElement()
+    {
+        PreCondition.assertNotNull(output);
+        output.startElement(elementNs, elementName, elementPrefix, elementType);
+        elementNs = null;
+        elementName = null;
+        elementPrefix = null;
+        elementType = null;
+    }
+
     private class SeqAttr extends AbstractNamespaceFixupHandler.Attr
     {
         SeqAttr(String namespaceURI, String localName, String prefix, List<? extends A> data, QName type)
@@ -131,6 +147,7 @@ public class NamespaceFixupSequenceFilter<A>
         QName typeName;
     }
 
+    private QName elementType;
     private SequenceHandler<A> output;
     private AtomBridge<A> atoms;
     private SchemaComponentCache schema; // never used? why is this here? oh, for qnames in content; never mind

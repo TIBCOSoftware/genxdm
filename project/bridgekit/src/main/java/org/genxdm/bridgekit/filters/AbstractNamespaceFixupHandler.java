@@ -31,8 +31,8 @@ public abstract class AbstractNamespaceFixupHandler
             namespace(localName.equalsIgnoreCase("xmlns") ? "" : localName, value);
             return;
         }
-        PNS pns = handleAttributeNS(namespaceURI, localName, prefix);
-        attributes.add(new Attr(pns.namespace, localName, pns.prefix, value, type));
+        NamespaceBinding pns = handleAttributeNS(namespaceURI, localName, prefix);
+        attributes.add(new Attr(pns.getNamespaceURI(), localName, pns.getPrefix(), value, type));
     }
 
     @Override
@@ -49,6 +49,7 @@ public abstract class AbstractNamespaceFixupHandler
         throws GenXDMException
     {
         PreCondition.assertNotNull(getOutputHandler());
+        reconcile();
         getOutputHandler().endDocument();
     }
 
@@ -80,16 +81,21 @@ public abstract class AbstractNamespaceFixupHandler
             return; // silently drop it.
         if (namespaceURI.equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI))
             return;
-        // make sure that the prefix isn't already declared in this scope
+        // make sure that the prefix isn't already declared in this scope,
+        // bound to some other namespace.
         String boundTo = getDeclaredURI(prefix);
         if ( (boundTo != null) && !boundTo.equals(namespaceURI) )
+            throw new GenXDMException("In the element '" + elementName + "', the prefix '" + prefix + "' is already bound to '" + boundTo + "' and cannot also be bound to '" + namespaceURI + "'.");
+        // namespace redeclaration minimization: we know some users have grotty xml
+        // with the same namespace bound to the same prefix over and over in a descendant
+        // tree. let's clean it up some, since it's not useful and does obscure things.
+        if (!inScope(prefix, namespaceURI))
         {
-            throw new GenXDMException("The prefix '" + prefix + "' is already bound to " + boundTo + "and cannot also be bound to " + namespaceURI + ".");
+            // queue the namespaces
+            namespaces.add(new DefaultNamespaceBinding(prefix, namespaceURI));
+            // and modify the current scope
+            scopeDeque.peekFirst().put(prefix, namespaceURI);
         }
-        // queue the namespaces
-        namespaces.add(new DefaultNamespaceBinding(prefix, namespaceURI));
-        // and modify the current scope
-        scopeDeque.peekFirst().put(prefix, namespaceURI);
     }
 
     @Override
@@ -106,6 +112,8 @@ public abstract class AbstractNamespaceFixupHandler
         throws GenXDMException
     {
         PreCondition.assertNotNull(getOutputHandler());
+        reconcile(); // this should be a no-op. it's here
+        // because otherwise we can fail the document-in-element test.
         getOutputHandler().startDocument(documentURI, docTypeDecl);
     }
 
@@ -115,10 +123,10 @@ public abstract class AbstractNamespaceFixupHandler
     {
         PreCondition.assertNotNull(getOutputHandler());
         reconcile();
-        getOutputHandler().startElement(namespaceURI, localName, prefix);
         newScope();
         elementPrefix = prefix;
         elementNs = namespaceURI;
+        elementName = localName;
     }
 
     @Override
@@ -150,11 +158,21 @@ public abstract class AbstractNamespaceFixupHandler
     
     protected abstract void outputAttribute(Attr a);
     
-    protected PNS handleAttributeNS(String namespace, String name, String prefix)
+    protected void outputCurrentElement()
+    {
+        PreCondition.assertNotNull(getOutputHandler());
+        getOutputHandler().startElement(elementNs, elementName, elementPrefix);
+        elementNs = null;
+        elementName = null;
+        elementPrefix = null;
+    }
+    
+    protected NamespaceBinding handleAttributeNS(String namespace, String name, String prefix)
     {
         if (name.toLowerCase().startsWith("xml"))
             throw new GenXDMException("Invalid attribute name: " + name);
-        // first, make sure that we're not sending going to try to
+        NamespaceBinding nsb = null;
+        // first, make sure that we're not going to try to
         // generate an attribute with default prefix in non-default namespace
         String ns = namespace == null ? "" : namespace;
         String p = prefix == null ? "" : prefix;
@@ -164,11 +182,14 @@ public abstract class AbstractNamespaceFixupHandler
             {
                 p = getPrefixForURI(ns);
                 if (p == null)
-                    p = randomPrefix(ns);
+                    p = uniquePrefix(ns);
             }
+            nsb = new DefaultNamespaceBinding(p, ns);
             requiredAttNsBindings.add(new DefaultNamespaceBinding(p, ns));
         }
-        return new PNS(p, ns);
+        if (nsb == null)
+            nsb = new DefaultNamespaceBinding(p, ns);
+        return nsb;
     }
     
     protected void newScope()
@@ -185,12 +206,6 @@ public abstract class AbstractNamespaceFixupHandler
     
     protected void reconcile()
     {
-    	// Check element ns binding.
-        if (elementPrefix != null && !inScope(elementPrefix, elementNs)) // needed, not present
-            namespace(elementPrefix, elementNs); // declare it as is
-        elementPrefix = null;
-        elementNs = null;
-    	
     	// Check attribute ns bindings.
         if(!requiredAttNsBindings.isEmpty()) {
             for (NamespaceBinding want : requiredAttNsBindings)
@@ -210,23 +225,36 @@ public abstract class AbstractNamespaceFixupHandler
             // been added.
             requiredAttNsBindings.clear();
         }
-        // now emit all the namespace events at once
-        if(!namespaces.isEmpty()) {
+        // if we have namespace declarations and an open start tag, check
+        // the elementPrefix for consistency. change it if needed.
+        if (!namespaces.isEmpty() && (elementName != null)) {
             for (NamespaceBinding namespace : namespaces)
-            {
+                if (namespace.getPrefix().equals(elementPrefix) && !namespace.getNamespaceURI().equals(elementNs))
+                    elementPrefix = uniquePrefix(elementNs);
+        }
+        // Check element ns binding. it should be reconciled, now; there should be
+        // no conflict from the existing namespaces, all of which are in namespaces
+        if (elementPrefix != null && !inScope(elementPrefix, elementNs)) // needed, not present
+            namespace(elementPrefix, elementNs); // declare it as is
+        
+        // uses elementNs, elementName, elementPrefix in base impl, plus elementType in sequence filter impl
+        if (elementName != null) // only if called with open start tag
+            outputCurrentElement();
+        // now emit all the namespace events at once
+        if (!namespaces.isEmpty()) 
+        {
+            for (NamespaceBinding namespace : namespaces)
                 getOutputHandler().namespace(namespace.getPrefix(), namespace.getNamespaceURI());
-            }
             // clear the bindings; we're done with them.
             namespaces.clear();
         }
         
-        if(!attributes.isEmpty()) {
+        if (!attributes.isEmpty()) 
+        {
             // emit all the attribute events.  we've already insured that all the
             // attributes in namespaces have prefixes, and that the bindings are in scope
             for (Attr a : attributes)
-            {
                 outputAttribute(a);
-            }
             // done, clear that set
             attributes.clear();
         }
@@ -261,29 +289,58 @@ public abstract class AbstractNamespaceFixupHandler
     
     private String getPrefixForURI(String ns)
     {
-        for(Map<String, String> scope : scopeDeque) {
+        // look through the scopes, from most recent
+        for (Map<String, String> scope : scopeDeque) 
+        {
             for (Map.Entry<String, String> binding : scope.entrySet())
             {
+                // does this scope have a binding of this namespace?
                 if (binding.getValue().equals(ns))
-                {
-                    return binding.getKey();
-                }
+                    return binding.getKey(); // return it
+                // note that the return may not be inScope(prefix, ns)!
             }
         }
+        // didn't find anyone binding this namespace
         return null;
     }
     
-    private String randomPrefix(String uri)
+    private String getURIforPrefix(String prefix)
     {
-        // we can think about extracting something from the uri that isn't in scope
-        return "ns" + counter++;
+        // look through the scopes, from most recent
+        for (Map<String, String> scope : scopeDeque)
+        {
+            for (Map.Entry<String, String> binding : scope.entrySet())
+            {
+                // if this scope has a binding of this prefix
+                if (binding.getKey().equals(prefix))
+                    return binding.getValue(); // return it
+                // note that we never return out-of-scope
+            }
+        }
+        // no previous binding for this prefix
+        return null;
     }
     
-    protected class PNS
+    private String uniquePrefix(String uri)
     {
-        PNS(String p, String ns) { prefix = p; namespace = ns; }
-        final String prefix;
-        final String namespace;
+        // if we get here, we know that the original prefix for the supplied
+        // uri isn't acceptable. first, check for a bound prefix:
+        String prefix = getPrefixForURI(uri);
+        if ((prefix == null) || !inScope(prefix, uri))
+        {
+            // either there is no binding for the URI in scope (which is weird,
+            // because we should only be called when there's a conflict), or
+            // the requested prefix is already bound to some other namespace.
+            // so, ask for a new one.
+            prefix = nextPrefix();
+            while (getURIforPrefix(prefix) != null) // is the generated prefix already bound?
+                prefix = nextPrefix(); // generate another one.
+        }
+        return prefix; // either existing was in scope, or we created a new one
+    }
+    
+    private String nextPrefix() { // a *very* simpleminded unique prefix generator
+        return PREFIX_PREFIX + counter++;
     }
     
     protected class Attr
@@ -303,12 +360,15 @@ public abstract class AbstractNamespaceFixupHandler
         String value;
         DtdAttributeKind type;
     }
-
+    
     protected ArrayList<NamespaceBinding> namespaces = new ArrayList<NamespaceBinding>();
     protected ArrayList<NamespaceBinding> requiredAttNsBindings = new ArrayList<NamespaceBinding>();
     protected String elementNs;
     protected String elementPrefix;
+    protected String elementName;
     protected ArrayList<Attr> attributes = new ArrayList<Attr>();
     protected Deque<Map<String, String>> scopeDeque = new ArrayDeque<Map<String, String>>();
     protected int counter = 0;
+    
+    private static final String PREFIX_PREFIX = "ns";
 }
