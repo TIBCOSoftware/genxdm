@@ -951,35 +951,42 @@ final class SchemaCacheImpl implements SchemaComponentCache
     	if(ns != null && ns.length() > 0 && !namespaces.contains(ns))
     	{
         	// Do we already have an encoded version of this namespace?  Check the map of unencoded to encoded namespaces.
-        	String encodedNs = m_unencodedNs2EncodedNsMap.get(ns);
+    	    String encodedNs = m_unencodedNs2EncodedNsMap.get(ns);
         	if (encodedNs == null)
         	{
-        		encodedNs = StringToURIParser.parse(ns).toString();
-        		if(false == encodedNs.equals(ns))
-        		{
-        			m_unencodedNs2EncodedNsMap.put(ns, encodedNs);
-        		}
-        		else
-        		{
-        			/* Note: at this point, we have a properly encoded namespace from a QName which has no matching component 
-        			 * in this cache; otherwise, this encodeQName method would not have been called.  We're choosing to not 
-        			 * put the namespace into the map of unencodedNs2encodedNs because it doesn't need encoding; but, that means 
-        			 * repeated calls to match that QName will cause repeated (and unnecessary?) calls to 
-        			 * StringToURIParser.parse, above.  Someday, we may choose a different behavior.
-        			 */
-        			return null; // incoming namespace did not require encoding.
-        		}
+        	    synchronized(m_unencodedNs2EncodedNsMap) {
+        	        encodedNs = m_unencodedNs2EncodedNsMap.get(ns);
+                    if(encodedNs == null) {
+                        encodedNs = StringToURIParser.parse(ns).toString();
+                        m_unencodedNs2EncodedNsMap.put(ns, encodedNs);
+                    }
+        	    }
         	}
-        	if(encodedNs != null)
-        	{
-        		QName testName = m_unencodeQNameKeys.get(name);
-        		if(testName == null)
-        		{
-            		testName = new QName(encodedNs, name.getLocalPart());
-            		m_unencodeQNameKeys.put(name, testName);
-        		}
-        		return testName;
-        	}
+            // if incoming ns did not need encoding (i.e. they are equal strings), skip this block & return
+            if(false == ns.equals(encodedNs)) {
+                Map<QName, QName> qnameMap = m_ns2unencodeQNameKeys.get(encodedNs);
+                if(qnameMap == null)
+                {
+                    synchronized(m_ns2unencodeQNameKeys) {
+                        qnameMap = m_ns2unencodeQNameKeys.get(encodedNs);
+                        if(qnameMap == null) {
+                            qnameMap = new WeakHashMap<QName,QName>();
+                        }
+                    }
+                }
+                QName retval = qnameMap.get(name);
+                if(retval == null)
+                {
+                    synchronized(qnameMap) {
+                        retval = qnameMap.get(name);
+                        if(retval == null) {
+                            retval = new QName(encodedNs, name.getLocalPart());
+                            qnameMap.put(name, retval);
+                        }
+                    }
+                }                       
+                return retval;
+            }
     	}
     	return null;
     }
@@ -1010,6 +1017,8 @@ final class SchemaCacheImpl implements SchemaComponentCache
     /**
      * keys are uncoded namespaces; values are the encoded namespace which should match the namespaces in the cache
      */
-    private final Map<String,String> m_unencodedNs2EncodedNsMap = Collections.synchronizedMap(new WeakHashMap<String, String>());    
-    private final Map<QName,QName> m_unencodeQNameKeys = Collections.synchronizedMap(new WeakHashMap<QName, QName>());    
+//    private final Map<String,String> m_unencodedNs2EncodedNsMap = Collections.synchronizedMap(new WeakHashMap<String, String>());    
+//    private final Map<QName,QName> m_unencodeQNameKeys = Collections.synchronizedMap(new WeakHashMap<QName, QName>());    
+    private final Map<String, String> m_unencodedNs2EncodedNsMap = new WeakHashMap<String, String>();
+    private final Map<String, Map<QName,QName>> m_ns2unencodeQNameKeys = new WeakHashMap<String, Map<QName, QName>>();    
 }
