@@ -2,6 +2,7 @@ package org.genxdm.processor.io.adapters;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 
@@ -44,6 +45,22 @@ public class CursoryReader<N>
         this.cursor = PreCondition.assertNotNull(cursor, "cursor");
         originId = cursor.getNodeId();
         originIsLeaf = !cursor.getNodeKind().isContainer();
+    }
+    
+    /** Initialize a reader from a cursor with an additional namespace context.  This
+     *  constructor is useful when creating a cursor over a fragment.  The additional
+     *  namespaces will be associated with the first element encountered when traversing the tree.
+     * 
+     * @param cursor the cursor over which the reader operates, initialized
+     * to the desired starting position; may not be null.
+     * @param nsContext the namespace context in which the cursor/fragment exists
+     */
+    public CursoryReader(Cursor cursor, Map<String,String> nsContext)
+    {
+        this.cursor = PreCondition.assertNotNull(cursor, "cursor");
+        originId = cursor.getNodeId();
+        originIsLeaf = !cursor.getNodeKind().isContainer();
+        this.nsContext = nsContext;
     }
 
     @Override
@@ -138,10 +155,25 @@ public class CursoryReader<N>
             case ELEMENT :
             {
                 builder.append("<" + getQName(cursor.getPrefix(), cursor.getLocalName()));
-                if (cursor.hasNamespaces())
+                if(cursor.hasNamespaces() || nsContext != null) 
                 {
-                    for (String prefix : cursor.getNamespaceNames(false))
-                        builder.append(" xmlns" + (prefix.equals("") ? "" : ":" + prefix) + "=\"" + encoder.encodeCData(cursor.getNamespaceForPrefix(prefix)) + "\"");
+                	if(cursor.hasNamespaces()) 
+                	{
+                		for(String prefix : cursor.getNamespaceNames(false))
+                		{
+                            builder.append(" xmlns" + (prefix.equals("") ? "" : ":" + prefix) + "=\"" + encoder.encodeCData(cursor.getNamespaceForPrefix(prefix)) + "\"");
+                            if(nsContext != null) // ensure that an override in-scope doesn't cause exception
+                            	nsContext.remove(prefix);
+                		}
+                	}
+                	if(nsContext != null) 
+                	{
+                		for(String prefix : nsContext.keySet())
+                		{
+                            builder.append(" xmlns" + (prefix.equals("") ? "" : ":" + prefix) + "=\"" + encoder.encodeCData(nsContext.get(prefix)) + "\"");
+                		}
+                		nsContext = null;
+                	}
                 }
                 if (cursor.hasAttributes())
                 {
@@ -246,4 +278,5 @@ public class CursoryReader<N>
     private final XmlEncoder encoder = new XmlEncoder();
     
     private boolean complete = false;
+    private Map<String,String> nsContext;
 }
