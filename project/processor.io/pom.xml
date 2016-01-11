@@ -29,7 +29,7 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>bundle</packaging>
     <artifactId>processor.io</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <name>GenXDM Input/Output Processor</name>
     <url>http://www.genxdm.org/processor.io/</url>
 
