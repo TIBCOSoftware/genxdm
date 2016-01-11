@@ -51,11 +51,11 @@ public class CursoryReader<N>
      *  constructor is useful when creating a cursor over a fragment.  The additional
      *  namespaces will be associated with the first element encountered when traversing the tree.
      * 
+     * @param nsContext the namespace context in which the cursor/fragment exists
      * @param cursor the cursor over which the reader operates, initialized
      * to the desired starting position; may not be null.
-     * @param nsContext the namespace context in which the cursor/fragment exists
      */
-    public CursoryReader(Cursor cursor, Map<String,String> nsContext)
+    public CursoryReader(Map<String,String> nsContext, Cursor cursor)
     {
         this.cursor = PreCondition.assertNotNull(cursor, "cursor");
         originId = cursor.getNodeId();
