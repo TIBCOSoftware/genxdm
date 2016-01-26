@@ -36,7 +36,6 @@ public class BaseContentHelper
     @Override
     public void startComplex(String ns, String name, Map<String, String> bindings, Iterable<Attrib> attributes)
     {
-        // TODO : queueing
         if ( (name == null) || name.trim().isEmpty() )
             throw new IllegalArgumentException("Element with null or empty name");
         if (ns == null)
