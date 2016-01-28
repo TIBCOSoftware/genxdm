@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.namespace.QName;
 
@@ -19,6 +21,9 @@ import org.genxdm.xs.constraints.AttributeUse;
 import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.ComplexType;
+import org.genxdm.xs.types.ContentType;
+import org.genxdm.xs.types.ContentTypeKind;
+import org.genxdm.xs.types.NativeType;
 import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.Type;
 
@@ -35,23 +40,30 @@ public class TypedContentHelper<A>
     @Override
     public void start()
     {
+        if (depth >= 0)
+            throw new GenXDMException("Illegal start-document invocation: nesting depth >= 0 ("+depth+")");
         handler.startDocument(null, null);
+        depth++;
     }
 
     @Override
     public void start(String ns, String name, Map<String, String> bindings, Iterable<Attrib> attributes)
     {
         start();
-        if (name != null)
+        if ( (name != null) && !name.isEmpty() )
             startComplex(ns, name, bindings, attributes);
-        //else what? just drop it? TODO
+        // however, if the name is null or empty, *and* ...
+        else if ( (ns != null) || (bindings != null) || (attributes != null) )
+            throw new GenXDMException("Illegal start-document invocation: unnamed element has namespace(s) and/or attributes");
+        // but null or empty name with everything else null is just ignorable, right?
     }
 
     @Override
     public void startComplex(String ns, String name, Map<String, String> bindings, Iterable<Attrib> attributes)
     {
+        // this is the only place that we increment depth (well, and document start())
         if ( (name == null) || name.trim().isEmpty() )
-            throw new IllegalArgumentException("Element with null or empty name");
+            throw new IllegalArgumentException("Illegal start-complex invocation: unnamed element");
         if (ns == null)
             ns = NIT;
         if (nsStack.getPrefix(ns, bindings) == null)
@@ -76,37 +88,46 @@ public class TypedContentHelper<A>
         // this is where we do the promotion for the element.
         // we have to retrieve the correct type name. we should then have a stack
         // of types that we are tracking.
+        // TODO: we do not handle xsi:type overrides. leave it for later.
         // retrieve the type. quick and stupid: use the element name
-        Type type = typeStack.peek();
-        if (type == null)
-        {
+        Type type = null; // for now; should be: typeStack.peek();
+//        if (type == null)
+//        {
+            // this is more or less correct.
             ElementDefinition element = provider.getElementDeclaration(new QName(ns, name, nsStack.getPrefix(ns, bindings)));
             if (element == null)
-                throw new IllegalStateException("Element without a declaration");
+                throw new GenXDMException("Illegal start-complex invocation: element {"+ns+"}"+name+" has no element declaration");
             type = element.getType();
-        }
-        else
-        {
+//        }
+//        else
+//        {
             // this is where we go sideways, because the way to ensure
             // the order of things is correct is to walk over the schema
             // model at the same time that we receive our events via the message interface
             // we aren't doing it that way, because it takes a week just to understand the schema model
             // this is so going to break for so many things. ugh.
-            if (type instanceof ComplexType) // ought to be
-            {
+//            if (type instanceof ComplexType) // ought to be; it contains this element
+//            {
                 // TODO: do you know how much of a mess it is to find things? ugh
+                // we need to do approximately the same thing as simple-schema-model,
+                // where we 'digest' the content of a complex type to determine what
+                // element children are allowed.
+                // FOR NOW we're going to comment out all of the conditionals, and
+                // just check each name for a global element declaration. as soon
+                // as this fails (probably early) we'll have to do something a little
+                // more clever.
                 //((ComplexType)type).getContentType().
-                ElementDefinition element = provider.getElementDeclaration(new QName(ns, name, nsStack.getPrefix(ns, bindings)));
+//                ElementDefinition element = provider.getElementDeclaration(new QName(ns, name, nsStack.getPrefix(ns, bindings)));
                 // errors, because we're being sleazy as hell here
-                type = element.getType();
-            }
-            else
-                throw new IllegalStateException("Element content inside an element of non-complex type");
-        }
+//                type = element.getType();
+//            }
+//            else
+//                throw new IllegalStateException("Element content inside an element of non-complex type");
+//        }
             
         handler.startElement(ns, name, nsStack.getPrefix(ns, bindings), type.getName());
         
-        // okay, here we go back to tested code for namespaces 
+        // okay, here we go back to tested code for namespaces (basecontenthelper example)
         if (bindings != null)
             for (Map.Entry<String, String> binding : bindings.entrySet())
             {
@@ -116,23 +137,29 @@ public class TypedContentHelper<A>
         // and *now*, we have to handle the attributes, which is another set of
         // painful bits. *note*: this means that all the complexity, pretty much,
         // is in this single method. yay, design.
-        // TODO: *also* handle the problem of missing attributes? or defaulted ones?
         if (attributes != null)
         {
             if ( !(type instanceof ComplexType) )
-                throw new IllegalStateException("Attributes on instance of element not of complex type");
+                throw new GenXDMException("Illegal content: element {"+ns+"}"+name+" is not of complex type, but the instance contains attributes");
             Map<QName, AttributeUse> uses = ((ComplexType)type).getAttributeUses();
+            Set<QName> used = new HashSet<QName>();
             for (Attrib attribute : attributes)
             {
-                String ans = NIT;
-                String prefix = NIT;
+                String ans = NIT; // attribute namespace = "", usually true
+                String prefix = NIT; 
+                // empty namespace for an attribute *cannot be bound* to a prefix
                 if (!attribute.getNamespace().isEmpty())
                 {
                     ans = attribute.getNamespace();
                     prefix = nsStack.getAttributePrefix(attribute.getNamespace(), bindings);
                 }
-                AttributeUse use = uses.get(new QName(ans, attribute.getName(), prefix));
-                if (use != null)
+                // schema uses qnames. we *might* have to canonicalize, but hopefully
+                // the schema api/impl does it for us.
+                QName key = new QName(ans, attribute.getName(), prefix);
+                AttributeUse use = uses.get(key);
+                if (use == null)
+                    throw new GenXDMException("Illegal content: element {"+ns+"}"+name+" contains an undeclared attribute "+(ans.isEmpty()?ans:"{"+ans+"}")+attribute.getName()+"='"+attribute.getValue()+"'");
+                else // found the matching attribute decl
                 {
                     Type aType = use.getAttribute().getType();
                     ValueConstraint constraint = use.getValueConstraint();
@@ -143,53 +170,138 @@ public class TypedContentHelper<A>
                     }
                     catch (DatatypeException dte)
                     {
-                        throw new GenXDMException("Invalid attribute value", dte);
+                        throw new GenXDMException("Invalid attribute value '"+attribute.getValue()+"' + for attribute "+(ans.isEmpty()?ans:"{"+ans+"}")+attribute.getName()+"in element {"+ns+"}"+name, dte);
                     }
-                    // the value constraint is fixed or default values.
-                    // TODO: handle value constraints, after getting the value
+                    if (constraint != null)
+                    {
+                        if (constraint.getVariety().isFixed())
+                        {
+                            // TODO: compare the values
+                            // for a fixed attribute, a different value is an error
+                        }
+                        // otherwise it's default, so we can ignore it.
+                    }
 
                     handler.attribute(ans, attribute.getName(), prefix, data, aType.getName());
+                    used.add(key);
                 }
-                else
-                    throw new IllegalStateException("Unrecognized attribute");
             }
+            // this is actually not safe. how interesting.
+            // it modifies the type, by removing its attribute uses,
+            // because the complex type impl returns the modifiable map.
+            //for (QName key : used)
+            //    uses.remove(key);
+            //if (!uses.isEmpty())
+            Map<QName, AttributeUse> unused = new HashMap<QName, AttributeUse>();
+            for (Map.Entry<QName, AttributeUse> entry : uses.entrySet())
+                if (!used.contains(entry.getKey()))
+                    unused.put(entry.getKey(), entry.getValue());
+            if (!unused.isEmpty())
+            {
+                // handle missing attributes. if any of them are required
+                // and missing, that's an error. if any are defaulted, this is where
+                // we add them (unless they've already been overridden, in which case they
+                // won't be found in the map)
+                for (Map.Entry<QName, AttributeUse> entry : unused.entrySet())
+                {
+                    if (entry.getValue().isRequired())
+                        throw new GenXDMException("Illegal start-complex invocation: element {"+ns+"}"+name+" is missing required attribute "+(entry.getKey().getNamespaceURI()==null?"":"{"+entry.getKey().getNamespaceURI()+"}")+entry.getKey().getLocalPart());
+                    // just a note: the prefix we use here is almost certainly wrong. Do. Not. Care. worry later.
+                    else if (entry.getValue().getValueConstraint().getVariety().isDefault())
+                        handler.attribute(entry.getKey().getNamespaceURI(), entry.getKey().getLocalPart(), entry.getKey().getPrefix(), entry.getValue().getValueConstraint().getValue(bridge), entry.getValue().getAttribute().getType().getName());
+                }
+            }
+        }
+        else // attributes is null
+        {
+            // are there any attributes required? exception.
+            // any defaulted? add them
+            // otherwise, ignore.
+            if (type instanceof ComplexType)
+            {
+                Map<QName, AttributeUse> uses = ((ComplexType)type).getAttributeUses();
+                for (Map.Entry<QName, AttributeUse> entry : uses.entrySet())
+                {
+                    if (entry.getValue().isRequired())
+                        throw new GenXDMException("Illegal start-complex invocation: element {"+ns+"}"+name+" is missing required attribute "+(entry.getKey().getNamespaceURI()==null?"":"{"+entry.getKey().getNamespaceURI()+"}")+entry.getKey().getLocalPart());
+                    // just a note: the prefix we use here is almost certainly wrong. Do. Not. Care. worry later.
+                    else if (entry.getValue().getValueConstraint().getVariety().isDefault())
+                        handler.attribute(entry.getKey().getNamespaceURI(), entry.getKey().getLocalPart(), entry.getKey().getPrefix(), entry.getValue().getValueConstraint().getValue(bridge), entry.getValue().getAttribute().getType().getName());
+                }
+            }
+            // not a complex type, nothing required.
         }
         nsStack.push(bindings);
         typeStack.push(type);
+        depth++;
     }
 
     @Override
     public void simpleElement(String ns, String name, String value)
     {
+        // check for illegal name, etc, in startComplex()
         simplexElement(ns, name, null, null, value);
     }
 
     @Override
     public void simplexElement(String ns, String name, Map<String, String> bindings, Iterable<Attrib> attributes, String value)
     {
+        // element can be handled simply; this also initializes the type for
+        // this element.
         startComplex(ns, name, bindings, attributes);
-        // TODO: typed form
-        // TODO: if it's empty, leave it alone, okay? null or value.isEmpty().
-        // we need to handle that special case, right?
-        Type type = typeStack.peek();
-        List<A> content = null;
-        if (type instanceof ComplexType) // allowed, if simple content
+        
+        // now handle the content of the text node. it *may* be empty or null,
+        // in which case, bypass all of this and don't even supply a text node.
+        if ( (value != null) && !value.trim().isEmpty() )
         {
+            Type type = typeStack.peek();
+            List<A> content = null;
+            if (type instanceof ComplexType) // allowed, if simple content
+            {
+                ContentType contentType = ((ComplexType)type).getContentType();
+                if (contentType.getKind() == ContentTypeKind.Simple)
+                {
+                    SimpleType simp = contentType.getSimpleType();
+                    try
+                    {
+                        content = simp.validate(value, bridge);
+                    }
+                    catch (DatatypeException dte)
+                    {
+                        throw new GenXDMException("Invalid content for element {"+ns+"}"+name+" '"+value+"'", dte);
+                    }
+                }
+                // we can't do this: we would end up calling handler.text() twice. no.
+                // and I'm pretty sure this code won't work for mixed content anyway.
+//                else if (contentType.getKind() == ContentTypeKind.Mixed)
+//                {
+//                    // NOTA BENE: this is so going to fail. I'm pretty sure
+//                    // we don't support mixed content in startComplex().
+//                    handler.text(value);
+//                }
+                else // empty or element-only, with a text node
+                    throw new GenXDMException("Invalid content for element {"+ns+"}"+name+" '"+value+"'"+" with content type '"+contentType+"'");
+            }
+            else if (type instanceof SimpleType)
+            {
+                try
+                {
+                    content = ((SimpleType)type).validate(value, bridge);
+                }
+                catch (DatatypeException dte)
+                {
+                    throw new GenXDMException("Invalid content for element {"+ns+"}"+name+" '"+value+"'", dte);
+                }
+            }
+            // we should have actual content, either from the simple type branch
+            // or the complex type simple content branch.
+            handler.text(content);
         }
-        else if (type instanceof SimpleType)
+        else
         {
-            try
-            {
-                content = ((SimpleType)type).validate(value, bridge);
-            }
-            catch (DatatypeException dte)
-            {
-                throw new GenXDMException("invalid content");
-            }
+            // TODO: we should check that empty content is allowed for this type.
+            // leave it for later, though.
         }
-        // TODO: if we don't have simple (or empty) content, blow up
-        //((SimpleType)type).validate(value, bridge);
-        handler.text(content);
         endComplex();
     }
 
@@ -203,12 +315,28 @@ public class TypedContentHelper<A>
     public void binaryExElement(String ns, String name, Map<String, String> bindings, Iterable<Attrib> attributes, byte [] data)
     {
         if (data == null)
-            throw new IllegalArgumentException("Missing data");
+            throw new GenXDMException("Illegal content in invocation of binary-element for element {"+ns+"}"+name+": missing data");
         startComplex(ns, name, bindings, attributes);
         Type type = typeStack.peek();
-        // TODO: if the type isn't base64Binary (or, yeah, okay, hexBinary, all twice
-        // that we've seen a customer actually do it), blow up and barf on someone's shoes
-        List<A> content = bridge.wrapAtom(bridge.createBase64Binary(data));
+        SimpleType bType = (type instanceof SimpleType) ? (SimpleType)type : null;
+        if (bType == null)
+        {
+            // type must be a ComplexType, since it isn't simple
+            ContentType cType = ((ComplexType)type).getContentType();
+            if (cType.getKind() == ContentTypeKind.Simple)
+                bType = cType.getSimpleType();
+        }
+        if (bType == null)
+            throw new GenXDMException("Illegal invocation of binary-element for element {"+ns+"}"+name+" : type is not simple");
+        NativeType nType = bType.getNativeType();
+        if ( (nType != NativeType.BASE64_BINARY) && (nType != NativeType.HEX_BINARY) )
+            throw new GenXDMException("Illegal invocation of binary-element for element {"+ns+"}"+name+" : type is simple but not binary");
+        // if we get here, then we have either base64Binary or hexBinary.
+        final List<A> content;
+        if (nType == NativeType.BASE64_BINARY) // usual case
+            content = bridge.wrapAtom(bridge.createBase64Binary(data));
+        else
+            content = bridge.wrapAtom(bridge.createHexBinary(data));
         handler.text(content);
         endComplex();
     }
@@ -243,21 +371,23 @@ public class TypedContentHelper<A>
         handler.endElement();
         nsStack.pop();
         typeStack.pop();
+        depth--;
     }
 
     @Override
     public void end()
     {
-        // TODO : implement user-friendly finishing?
+        while (depth > 0)
+            endComplex();
         handler.endDocument();
     }
 
     @Override
     public void reset()
     {
-        // TODO : prolly mostly stack management?
         nsStack.reset();
         typeStack.clear();
+        depth = -1;
         try
         {
             handler.flush();
@@ -265,8 +395,7 @@ public class TypedContentHelper<A>
         }
         catch (IOException ioe)
         {
-            // TODO : something that isn't this
-            throw new GenXDMException(ioe);
+            throw new GenXDMException("Exception in reset of TypedContentHelper, while flushing attached handler", ioe);
         }
     }
 
@@ -275,6 +404,8 @@ public class TypedContentHelper<A>
     private final ComponentProvider provider;
     private final NamespaceContextStack nsStack = new NamespaceContextStack("cns");
     private final Deque<Type> typeStack = new ArrayDeque<Type>();
+    
+    private int depth = -1;
     
     private static final String NIT = "";
 }

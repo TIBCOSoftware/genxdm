@@ -7,6 +7,7 @@ import javax.xml.namespace.QName;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentGenerator;
 import org.genxdm.typed.TypedContext;
+import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.io.SequenceBuilder;
 
@@ -26,7 +27,7 @@ public class GenericValidator<N, A>
         handler.setSchema(context.getSchema());
         handler.setInitialElementType(type); // usually null, but setting null is a no-op
         handler.setSequenceHandler(builder);
-        context.getModel().stream(source, handler);
+        context.getModel().stream(source, handler, false);
         try 
         {
             handler.flush();
@@ -49,7 +50,14 @@ public class GenericValidator<N, A>
         handler.setSchema(context.getSchema());
         handler.setInitialElementType(type); // usually null, but setting null is a no-op
         handler.setSequenceHandler(builder);
-        source.write(handler);
+        if (source instanceof TypedCursor<?, ?>)
+        {
+            @SuppressWarnings("unchecked")
+            TypedCursor<N, A> curse = (TypedCursor<N, A>)source;
+            curse.write(handler, false);
+        }
+        else
+            source.write(handler);
         try 
         {
             handler.flush();
