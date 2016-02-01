@@ -1,5 +1,6 @@
 package org.genxdm.bridgekit.content;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -7,6 +8,38 @@ import javax.xml.namespace.QName;
 public class TypedContentEvent<A>
     extends ContentEvent
 {
+    // endDocument/endElement
+    public TypedContentEvent(EventKind kind)
+    {
+        super(kind);
+        type = null;
+        data = null;
+    }
+    
+    // startDocument
+    public TypedContentEvent(URI sysId, String internal)
+    {
+        super(sysId, internal);
+        type = null;
+        data = null;
+    }
+    
+    // comment (NOT text)
+    public TypedContentEvent(EventKind kind, String value)
+    {
+        super(kind, value);
+        type = null;
+        data = null;
+    }
+    
+    // namespace, pi
+    public TypedContentEvent(EventKind kind, String name, String value)
+    {
+        super(kind, name, value);
+        type = null;
+        data = null;
+    }
+    
     // startElement
     public TypedContentEvent(String ns, String nm, String pr, QName ty)
     {

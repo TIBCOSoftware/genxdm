@@ -28,6 +28,7 @@ import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.Type;
 
 public class TypedContentHelper<A>
+    extends AbstractContentHelper
     implements BinaryContentHelper
 {
     public TypedContentHelper(SequenceHandler<A> output, ComponentProvider components, AtomBridge<A> atoms)
@@ -44,18 +45,6 @@ public class TypedContentHelper<A>
             throw new GenXDMException("Illegal start-document invocation: nesting depth >= 0 ("+depth+")");
         handler.startDocument(null, null);
         depth++;
-    }
-
-    @Override
-    public void start(String ns, String name, Map<String, String> bindings, Iterable<Attrib> attributes)
-    {
-        start();
-        if ( (name != null) && !name.isEmpty() )
-            startComplex(ns, name, bindings, attributes);
-        // however, if the name is null or empty, *and* ...
-        else if ( (ns != null) || (bindings != null) || (attributes != null) )
-            throw new GenXDMException("Illegal start-document invocation: unnamed element has namespace(s) and/or attributes");
-        // but null or empty name with everything else null is just ignorable, right?
     }
 
     @Override
@@ -237,19 +226,90 @@ public class TypedContentHelper<A>
     }
 
     @Override
-    public void simpleElement(String ns, String name, String value)
+    public void binaryElement(String ns, String name, byte[] data)
     {
-        // check for illegal name, etc, in startComplex()
-        simplexElement(ns, name, null, null, value);
+        binaryExElement(ns, name, null, null, data);
+    }
+    
+    @Override
+    public void binaryExElement(String ns, String name, Map<String, String> bindings, Iterable<Attrib> attributes, byte [] data)
+    {
+        if (data == null)
+            throw new GenXDMException("Illegal content in invocation of binary-element for element {"+ns+"}"+name+": missing data");
+        startComplex(ns, name, bindings, attributes);
+        Type type = typeStack.peek();
+        SimpleType bType = (type instanceof SimpleType) ? (SimpleType)type : null;
+        if (bType == null)
+        {
+            // type must be a ComplexType, since it isn't simple
+            ContentType cType = ((ComplexType)type).getContentType();
+            if (cType.getKind() == ContentTypeKind.Simple)
+                bType = cType.getSimpleType();
+        }
+        if (bType == null)
+            throw new GenXDMException("Illegal invocation of binary-element for element {"+ns+"}"+name+" : type is not simple");
+        NativeType nType = bType.getNativeType();
+        if ( (nType != NativeType.BASE64_BINARY) && (nType != NativeType.HEX_BINARY) )
+            throw new GenXDMException("Illegal invocation of binary-element for element {"+ns+"}"+name+" : type is simple but not binary");
+        // if we get here, then we have either base64Binary or hexBinary.
+        final List<A> content;
+        if (nType == NativeType.BASE64_BINARY) // usual case
+            content = bridge.wrapAtom(bridge.createBase64Binary(data));
+        else
+            content = bridge.wrapAtom(bridge.createHexBinary(data));
+        handler.text(content);
+        endComplex();
     }
 
     @Override
-    public void simplexElement(String ns, String name, Map<String, String> bindings, Iterable<Attrib> attributes, String value)
+    public void comment(String text)
     {
-        // element can be handled simply; this also initializes the type for
-        // this element.
-        startComplex(ns, name, bindings, attributes);
-        
+        handler.comment(text);
+    }
+
+    @Override
+    public void pi(String target, String data)
+    {
+        handler.processingInstruction(target, data);
+    }
+
+    @Override
+    public void endComplex()
+    {
+        handler.endElement();
+        nsStack.pop();
+        typeStack.pop();
+        depth--;
+    }
+
+    @Override
+    public void end()
+    {
+        while (depth > 0)
+            endComplex();
+        handler.endDocument();
+        depth = -1;
+    }
+
+    @Override
+    public void reset()
+    {
+        nsStack.reset();
+        typeStack.clear();
+        depth = -1;
+        try
+        {
+            handler.flush();
+            handler.close();
+        }
+        catch (IOException ioe)
+        {
+            throw new GenXDMException("Exception in reset of TypedContentHelper, while flushing attached handler", ioe);
+        }
+    }
+    
+    protected void text(String ns, String name, String value)
+    {
         // now handle the content of the text node. it *may* be empty or null,
         // in which case, bypass all of this and don't even supply a text node.
         if ( (value != null) && !value.trim().isEmpty() )
@@ -301,101 +361,6 @@ public class TypedContentHelper<A>
         {
             // TODO: we should check that empty content is allowed for this type.
             // leave it for later, though.
-        }
-        endComplex();
-    }
-
-    @Override
-    public void binaryElement(String ns, String name, byte[] data)
-    {
-        binaryExElement(ns, name, null, null, data);
-    }
-    
-    @Override
-    public void binaryExElement(String ns, String name, Map<String, String> bindings, Iterable<Attrib> attributes, byte [] data)
-    {
-        if (data == null)
-            throw new GenXDMException("Illegal content in invocation of binary-element for element {"+ns+"}"+name+": missing data");
-        startComplex(ns, name, bindings, attributes);
-        Type type = typeStack.peek();
-        SimpleType bType = (type instanceof SimpleType) ? (SimpleType)type : null;
-        if (bType == null)
-        {
-            // type must be a ComplexType, since it isn't simple
-            ContentType cType = ((ComplexType)type).getContentType();
-            if (cType.getKind() == ContentTypeKind.Simple)
-                bType = cType.getSimpleType();
-        }
-        if (bType == null)
-            throw new GenXDMException("Illegal invocation of binary-element for element {"+ns+"}"+name+" : type is not simple");
-        NativeType nType = bType.getNativeType();
-        if ( (nType != NativeType.BASE64_BINARY) && (nType != NativeType.HEX_BINARY) )
-            throw new GenXDMException("Illegal invocation of binary-element for element {"+ns+"}"+name+" : type is simple but not binary");
-        // if we get here, then we have either base64Binary or hexBinary.
-        final List<A> content;
-        if (nType == NativeType.BASE64_BINARY) // usual case
-            content = bridge.wrapAtom(bridge.createBase64Binary(data));
-        else
-            content = bridge.wrapAtom(bridge.createHexBinary(data));
-        handler.text(content);
-        endComplex();
-    }
-
-    @Override
-    public Attrib newAttribute(String name, String value)
-    {
-        return new Attrib(name, value);
-    }
-
-    @Override
-    public Attrib newAttribute(String ns, String name, String value)
-    {
-        return new Attrib(ns, name, value);
-    }
-
-    @Override
-    public void comment(String text)
-    {
-        handler.comment(text);
-    }
-
-    @Override
-    public void pi(String target, String data)
-    {
-        handler.processingInstruction(target, data);
-    }
-
-    @Override
-    public void endComplex()
-    {
-        handler.endElement();
-        nsStack.pop();
-        typeStack.pop();
-        depth--;
-    }
-
-    @Override
-    public void end()
-    {
-        while (depth > 0)
-            endComplex();
-        handler.endDocument();
-    }
-
-    @Override
-    public void reset()
-    {
-        nsStack.reset();
-        typeStack.clear();
-        depth = -1;
-        try
-        {
-            handler.flush();
-            handler.close();
-        }
-        catch (IOException ioe)
-        {
-            throw new GenXDMException("Exception in reset of TypedContentHelper, while flushing attached handler", ioe);
         }
     }
 
