@@ -29,15 +29,14 @@ import org.genxdm.bridgekit.names.DefaultNamespaceBinding;
 import org.genxdm.bridgekit.names.QNameComparator;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NamespaceBinding;
-import org.genxdm.xs.types.Type;
 
 public final class XmlElementNode
     extends XmlContainerNode
 {
-    XmlElementNode(final String namespace, final String localName, final String prefix, final Type type)
+    XmlElementNode(final String namespace, final String localName, final String prefix, final QName type)
     {
         super(NodeKind.ELEMENT);
-        this.type = type;
+        this.typeName = type;
         this.localName = localName;
         this.namespaceURI = namespace;
         this.prefixHint = prefix;
@@ -154,16 +153,9 @@ public final class XmlElementNode
         return names;
     }
 
-    public Type getType()
-    {
-        return type;
-    }
-
     public QName getTypeName()
     {
-        if (type != null)
-            return type.getName();
-        return null;
+        return typeName;
     }
 
     public boolean hasAttributes()
@@ -209,6 +201,11 @@ public final class XmlElementNode
             }
         }
         return false;
+    }
+    
+    public void setTypeName(QName name)
+    {
+        typeName = name;
     }
     
     void setAttribute(XmlAttributeNode attribute)
@@ -350,5 +347,5 @@ public final class XmlElementNode
     protected XmlAttributeNode firstAttribute;
     protected XmlNamespaceNode firstNamespace;
     
-    private Type type;
+    private QName typeName;
 }

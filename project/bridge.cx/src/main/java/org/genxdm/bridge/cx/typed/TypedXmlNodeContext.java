@@ -123,6 +123,12 @@ public class TypedXmlNodeContext
     {
         return gator.validate(source, validator, initialType);
     }
+    
+    @Override
+    public void validateTree(XmlNode source, ValidationHandler<XmlAtom> validator, QName initialType)
+    {
+        gator.validateTree(new TreeCursor(this, source), validator, initialType);
+    }
 
     private final XmlNodeContext context;
     private final TypedXmlNodeModel model;

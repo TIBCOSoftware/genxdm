@@ -18,6 +18,7 @@ package org.genxdm.bridge.axiom.enhanced;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLReporter;
 
+import org.genxdm.Feature;
 import org.genxdm.bridge.axiom.AxiomFragmentBuilder;
 import org.genxdm.bridge.axiom.AxiomProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
@@ -109,6 +110,12 @@ public final class AxiomSAProcessingContext
     public Object validate(Object source, ValidationHandler<XmlAtom> validator, QName initialType)
     {
         return genvalid.validate(source, validator, initialType);
+    }
+    
+    @Override
+    public void validateTree(Object source, ValidationHandler<XmlAtom> validator, QName initialType)
+    {
+        throw new UnsupportedOperationException(Feature.UNSUPPORTED_MESSAGE + " : " + Feature.IN_TREE_VALIDATION);
     }
 
     private final AxiomProcessingContext context;

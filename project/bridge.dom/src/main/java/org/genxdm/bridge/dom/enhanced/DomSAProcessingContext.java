@@ -18,6 +18,7 @@ package org.genxdm.bridge.dom.enhanced;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLReporter;
 
+import org.genxdm.Feature;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.dom.DomProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
@@ -127,6 +128,12 @@ public final class DomSAProcessingContext
     public Node validate(Node source, ValidationHandler<XmlAtom> validator, QName initialType)
     {
         return gentour.validate(source, validator, initialType);
+    }
+    
+    @Override
+    public void validateTree(Node source, ValidationHandler<XmlAtom> validator, QName initialType)
+    {
+        throw new UnsupportedOperationException(Feature.UNSUPPORTED_MESSAGE + " : " + Feature.IN_TREE_VALIDATION);
     }
 
     private final DomProcessingContext parent;

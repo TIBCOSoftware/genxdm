@@ -212,7 +212,8 @@ public class AxiomProcessingContext
             // make it work; axis doesn't support it, apparently.
             if (feature.equals(Feature.DOCUMENT_URI) ||
                 feature.equals(Feature.BASE_URI) ||
-                feature.equals(Feature.NAMESPACE_AXIS) )
+                feature.equals(Feature.NAMESPACE_AXIS) ||
+                feature.equals(Feature.IN_TREE_VALIDATION) )
                 return false;
         }
         return false;

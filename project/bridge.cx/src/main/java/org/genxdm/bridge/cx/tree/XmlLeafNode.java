@@ -29,27 +29,26 @@ import org.genxdm.bridgekit.xs.SchemaCacheFactory;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NamespaceBinding;
 import org.genxdm.xs.types.NativeType;
-import org.genxdm.xs.types.Type;
 
 // since there are only two container nodes, it follows that there are five leaf nodes:
 // attribute, namespace, text, comment, pi
 public class XmlLeafNode
     extends XmlNode
 {
-    protected XmlLeafNode(final NodeKind nodeKind, final Type type, final List<? extends XmlAtom> data)
+    protected XmlLeafNode(final NodeKind nodeKind, final QName type, final List<? extends XmlAtom> data)
     {
         super(nodeKind);
         if (type == null)
-            this.type = UNTYPED_ATOMIC_TYPE;
+            this.typeName = UNTYPED_ATOMIC_NAME;
         else
-            this.type = type;
+            this.typeName = type;
         this.atoms = Collections.unmodifiableList(new ArrayList<XmlAtom>(PreCondition.assertNotNull(data, "data")));
     }
     
     protected XmlLeafNode(final NodeKind nodeKind, final String value)
     {
         super(nodeKind);
-        this.type = null;
+        this.typeName = null;
         this.atoms = Collections.unmodifiableList(new ArrayList<XmlAtom>(new XmlUntypedAtomic( (value == null) ? "" : value )));
     }
 
@@ -129,7 +128,7 @@ public class XmlLeafNode
             return "";
         // if there is no type specified, we are either an untyped leaf,
         // or we're operating in the untyped world, where everything is untyped atomic.
-        if (type == UNTYPED_ATOMIC_TYPE)
+        if (UNTYPED_ATOMIC_NAME.equals(typeName))
         {
             return getUntypedValue();
         }
@@ -143,16 +142,9 @@ public class XmlLeafNode
         return getUntypedValue();
     }
     
-    public Type getType()
-    {
-        return type;
-    }
-
     public QName getTypeName()
     {
-        if (type != null)
-            return type.getName();
-        return null;
+        return typeName;
     }
 
     public Iterable<? extends XmlAtom> getValue()
@@ -205,17 +197,22 @@ public class XmlLeafNode
         return false;
     }
     
+    public Iterable<? extends XmlAtom> setValue(final List<? extends XmlAtom> data)
+    {
+        List<XmlAtom> ret = atoms;
+        atoms = Collections.unmodifiableList(new ArrayList<XmlAtom>(PreCondition.assertNotNull(data, "data")));
+        return ret;
+    }
+    
+    public void setTypeName(QName name)
+    {
+        typeName = name;
+    }
+    
     String setValue(String value)
     {
         String ret = getUntypedValue();
         setValue(new ArrayList<XmlAtom>(new XmlUntypedAtomic( (value == null) ? "" : value )) );
-        return ret;
-    }
-    
-    Iterable<? extends XmlAtom> setValue(final List<? extends XmlAtom> data)
-    {
-        List<XmlAtom> ret = atoms;
-        atoms = Collections.unmodifiableList(new ArrayList<XmlAtom>(PreCondition.assertNotNull(data, "data")));
         return ret;
     }
     
@@ -240,7 +237,7 @@ public class XmlLeafNode
     }
 
     protected List<XmlAtom> atoms;
-    protected final Type type;
+    protected QName typeName;
     // TODO: this hackery should not be necessary.
-    private static final Type UNTYPED_ATOMIC_TYPE = new SchemaCacheFactory().newSchemaCache().getComponentProvider().getAtomicType(NativeType.UNTYPED_ATOMIC);
+    private static final QName UNTYPED_ATOMIC_NAME = new SchemaCacheFactory().newSchemaCache().getComponentProvider().getAtomicType(NativeType.UNTYPED_ATOMIC).getName();
 }

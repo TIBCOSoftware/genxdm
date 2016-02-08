@@ -97,5 +97,5 @@ public class TypedXmlNodeCursor
         Walker.walk(node, handler, bogus);
     }
 
-    private final TypedXmlNodeContext context;
+    protected final TypedXmlNodeContext context;
 }

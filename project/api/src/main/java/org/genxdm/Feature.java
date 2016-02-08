@@ -45,6 +45,10 @@ public interface Feature
     // must not return true if TYPED is false
     // must return atoms (not just untyped-atomic) if true.
     static final String TYPED_VALUE = PREFIX + TYPED + "/typed-value";
+    // if in-tree validation (TypedContext.validateTree()) is supported, return true
+    // must not return true if TYPED is false
+    // either TYPE_ANNOTATION or TYPED_VALUE must also be supported
+    static final String IN_TREE_VALIDATION = PREFIX + TYPED + "/in-tree-validation";
     
 
     static final String UNSUPPORTED_MESSAGE = "Feature is not supported";

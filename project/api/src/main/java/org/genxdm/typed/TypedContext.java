@@ -142,4 +142,24 @@ public interface TypedContext<N, A>
      * be the same tree (object) supplied as an argument. 
      */
     N validate(ContentGenerator source, ValidationHandler<A> validator, QName initialType);
+    
+    /** Validate or re-validate all or part of a tree in memory. This form of
+     * validation does not make a new tree; the original tree is annotated. The
+     * string values may be replaced by atomic values (or that may be performed
+     * on the fly, for some bridges).
+     * 
+     * A bridge that implements this method MUST return true to
+     * ProcessingContext.isSupported(Feature.IN_TREE_VALIDATION). A bridge
+     * that returns false for the feature may either no-op or throw an exception
+     * when this method is called.
+     * 
+     * @param target the starting point for validation; must not be null. If the
+     *        initialType argument is non-null, then this MUST be a node of NodeKind.ELEMENT.
+     *        Partial-tree validation is supported.
+     * @param validator the (partially-initialized) validation handler to be used;
+     *        must not be null.
+     * @param initialType the QName of the type of the 'target' element node.
+     *        May be (and usually is) null.
+     */
+    void validateTree(N target, ValidationHandler<A> validator, QName initialType);
 }

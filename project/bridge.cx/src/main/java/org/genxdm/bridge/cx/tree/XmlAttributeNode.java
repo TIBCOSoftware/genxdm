@@ -18,12 +18,11 @@ package org.genxdm.bridge.cx.tree;
 import java.util.List;
 
 import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.io.DtdAttributeKind;
-import org.genxdm.xs.types.AtomicType;
-import org.genxdm.xs.types.Type;
 
 public final class XmlAttributeNode
     extends XmlLeafNode
@@ -40,7 +39,7 @@ public final class XmlAttributeNode
         checkId();
     }
     
-    XmlAttributeNode( final String namespace, final String localName, final String prefix, final Type type, final List<XmlAtom> data)
+    XmlAttributeNode( final String namespace, final String localName, final String prefix, final QName type, final List<XmlAtom> data)
     {
         super(NodeKind.ATTRIBUTE, type, data);
         this.namespaceURI = (namespace == null) ? "" : namespace;
@@ -63,12 +62,10 @@ public final class XmlAttributeNode
              localName.equals("id") )
             return true;
         // true if type is xs:ID
-        if ( (type != null) && type.isNative() && type.isAtomicType() )
-        {
-            AtomicType atomicType = (AtomicType)type;
-            if (atomicType.isID())
-                return true;
-        }
+        if ( (typeName != null) &&
+              typeName.getNamespaceURI().equals(XMLConstants.W3C_XML_SCHEMA_NS_URI) &&
+              typeName.getLocalPart().equals("ID"))
+            return true;
         return false;
     }
 
@@ -77,13 +74,11 @@ public final class XmlAttributeNode
         if ( (dtdType == DtdAttributeKind.IDREF) ||
                 (dtdType == DtdAttributeKind.IDREFS) )
                return true;
-        // true if type is xs:IDREF or xs:IDREFS
-        if ( type.isNative() && type.isAtomicType() )
-        {
-            AtomicType atomicType = (AtomicType)type;
-            if (atomicType.isIDREF() || atomicType.isIDREFS())
-                return true;
-        }
+        if ( (typeName != null) &&
+              typeName.getNamespaceURI().equals(XMLConstants.W3C_XML_SCHEMA_NS_URI) &&
+             (typeName.getLocalPart().equals("IDREF") ||
+              typeName.getLocalPart().equals("IDREFS")) )
+            return true;
         return false;
     }
     

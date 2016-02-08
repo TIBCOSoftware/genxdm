@@ -17,9 +17,10 @@ package org.genxdm.bridge.cx.tree;
 
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.genxdm.NodeKind;
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.genxdm.xs.types.Type;
 
 public final class XmlTextNode
     extends XmlLeafNode
@@ -35,10 +36,10 @@ public final class XmlTextNode
         super(NodeKind.TEXT, value);
     }
     
-    public Type getType()
+    public QName getTypeName()
     {
         if ( (parent != null) && parent.isElement() )
-            return ((XmlElementNode)parent).getType();
+            return ((XmlElementNode)parent).getTypeName();
         return null;
     }
 

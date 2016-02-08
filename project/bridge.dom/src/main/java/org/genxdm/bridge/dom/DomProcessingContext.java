@@ -100,7 +100,8 @@ public class DomProcessingContext
     public boolean isSupported(final String feature)
     {
         PreCondition.assertNotNull(feature, "feature");
-        if (feature.equals(Feature.BASE_URI))
+        if (feature.equals(Feature.BASE_URI) ||
+            feature.equals(Feature.IN_TREE_VALIDATION) )
             return false;
         if (feature.startsWith(Feature.PREFIX))
             return true;

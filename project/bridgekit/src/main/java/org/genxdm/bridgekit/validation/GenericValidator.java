@@ -70,6 +70,24 @@ public class GenericValidator<N, A>
 
         return builder.getNode();
     }
+    
+    public void validateTree(ValidatingCursor<N, A> cursor, ValidationHandler<A> handler, QName type)
+    {
+        handler.setSchema(context.getSchema());
+        handler.setInitialElementType(type);
+        // set cursor as output
+        handler.setSequenceHandler(cursor);
+        // use cursor as input
+        cursor.write(handler, false);
+        try
+        {
+            handler.flush();
+        }
+        catch (IOException ioe)
+        {
+            throw new RuntimeException(ioe);
+        }
+    }
 
     private final TypedContext<N, A> context;
 }
