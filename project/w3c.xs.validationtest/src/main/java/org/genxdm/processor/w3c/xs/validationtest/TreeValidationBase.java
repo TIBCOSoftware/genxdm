@@ -5,9 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 
-import org.genxdm.Feature;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridgekit.xs.DefaultCatalog;
 import org.genxdm.bridgekit.xs.DefaultCatalogResolver;
@@ -18,7 +16,6 @@ import org.genxdm.names.Catalog;
 import org.genxdm.processor.w3c.xs.W3cXmlSchemaParser;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.ValidationHandler;
-import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.SchemaComponentCache;
 import org.genxdm.xs.exceptions.AbortException;
@@ -87,40 +84,6 @@ public abstract class TreeValidationBase<N, A>
         // this is a means of testing sequence handler output, which had problems.
 //        SequenceHandler<A> handler = new SequenceHandlerEmitter<A>(cache.getAtomBridge());
 //        cache.getModel().stream(typed, handler, false);
-    }
-    
-    @Test
-    public void validateTreePO()
-        throws AbortException, IOException
-    {
-        ProcessingContext<N> context = newProcessingContext();
-        // don't actually run this test unless in-tree validation is supported.
-        if (context.isSupported(Feature.IN_TREE_VALIDATION))
-        {
-            N untyped = parseInstance(context.newDocumentHandler());
-            assertNotNull(untyped);
-            POVerifier.verifyUntyped(untyped, context.getModel());
-    
-            TypedContext<N, A> cache = context.getTypedContext(null);
-            loadSchema(cache.getSchema());
-    
-            ValidationHandler<A> validator = getValidationHandler();
-            // the validate method *should* set the sequence handler and schema.
-            SchemaExceptionCatcher catcher = new SchemaExceptionCatcher();
-            validator.setSchemaExceptionHandler(catcher);
-    
-            cache.validateTree(untyped, validator, null);
-            //assertNotNull(typed);
-            for (SchemaException ex : catcher)
-                ex.printStackTrace();
-            assertEquals(0, catcher.size());
-            
-            // for more detail when things go wonky, uncomment 'Verbose'
-            // to use the more talkative method. note that it's not
-            // *very* verbose, at the moment, because adding the extra
-            // bits is fucking boring.
-            POVerifier.verifyTyped/*Verbose*/(untyped, cache.getModel());
-        }
     }
     
 }

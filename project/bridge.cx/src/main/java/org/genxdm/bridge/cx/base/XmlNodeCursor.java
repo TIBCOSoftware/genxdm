@@ -17,16 +17,21 @@ package org.genxdm.bridge.cx.base;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.genxdm.Cursor;
 import org.genxdm.NodeKind;
+import org.genxdm.NodeSource;
 import org.genxdm.bridge.cx.tree.Walker;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridgekit.tree.Ordering;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
 
-public class XmlNodeCursor extends XmlNodeTraversingInformer
-    implements Cursor
+public class XmlNodeCursor 
+    extends XmlNodeTraversingInformer
+    implements Cursor, NodeSource<XmlNode>
 {
     public XmlNodeCursor(final XmlNode node)
     {
@@ -111,6 +116,20 @@ public class XmlNodeCursor extends XmlNodeTraversingInformer
     public void moveToRoot()
     {
         moveToNode(node.getRoot());
+    }
+
+    @Override
+    public List<XmlNode> getNodes()
+    {
+        List<XmlNode> list = new ArrayList<XmlNode>();
+        list.add(node);
+        return list;
+    }
+
+    @Override
+    public XmlNode getNode()
+    {
+        return node;
     }
 
     public int compareTo(Cursor arg0)

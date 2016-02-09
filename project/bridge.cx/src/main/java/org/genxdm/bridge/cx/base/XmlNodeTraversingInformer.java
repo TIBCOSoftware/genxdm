@@ -38,11 +38,8 @@ import org.genxdm.nodes.TraversingInformer;
  * TODO - the axes can likely be implemented more efficiently than they are
  * below.
  */
-public class XmlNodeTraversingInformer implements TraversingInformer {
-
-    private static final XmlNodeModel m_model = new XmlNodeModel();
-    
-    protected XmlNode node;
+public class XmlNodeTraversingInformer 
+    implements TraversingInformer {
 
     public XmlNodeTraversingInformer(XmlNode node) {
         this.node = node;
@@ -254,5 +251,9 @@ public class XmlNodeTraversingInformer implements TraversingInformer {
     public Cursor newCursor() {
         return new XmlNodeCursor(node);
     }
+
+    private static final XmlNodeModel m_model = new XmlNodeModel();
+    
+    protected XmlNode node;
 
 }

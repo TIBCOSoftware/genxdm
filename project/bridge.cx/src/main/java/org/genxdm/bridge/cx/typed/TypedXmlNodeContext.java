@@ -115,21 +115,19 @@ public class TypedXmlNodeContext
     @Override
     public XmlNode validate(ContentGenerator source, ValidationHandler<XmlAtom> validator, QName initialType)
     {
+        // if the supplied cursor is ours, do in-tree validation
+        if (source instanceof TypedXmlNodeCursor)
+            return validate( ((TypedXmlNodeCursor)source).getNode(), validator, initialType);
         return gator.validate(source, validator, initialType);
     }
 
     @Override
     public XmlNode validate(XmlNode source, ValidationHandler<XmlAtom> validator, QName initialType)
     {
-        return gator.validate(source, validator, initialType);
+        gator.validateTree(new TreeCursor(this, source), validator, initialType);
+        return source;
     }
     
-    @Override
-    public void validateTree(XmlNode source, ValidationHandler<XmlAtom> validator, QName initialType)
-    {
-        gator.validateTree(new TreeCursor(this, source), validator, initialType);
-    }
-
     private final XmlNodeContext context;
     private final TypedXmlNodeModel model;
     private final XmlAtomBridge atoms;
