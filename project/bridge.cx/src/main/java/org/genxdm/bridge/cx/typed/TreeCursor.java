@@ -65,6 +65,7 @@ class TreeCursor
                 found = true;
                 break;
             }
+//System.out.println("Got element " + localName + " with type " + type.getLocalPart());
         }
         if (!found)
             throw new GenXDMException("validation error; can't find the element to annotate");
@@ -95,6 +96,7 @@ class TreeCursor
                 found = true;
                 break;
             }
+//System.out.println("Got attribute " + localName + " with type " + type.getLocalPart() + " and value " + data);
         }
         if (!found)
         {
@@ -114,11 +116,17 @@ class TreeCursor
         {
             if (target.isText()) // assume only one? not really safe; how do we do better?
             {
+                // it *should* be safe, assuming that whitespace nodes can't be
+                // passed. might fail with mixed content? but then we don't have
+                // typed value ...
+                // note that we *might* get ignorable whitespace in this call.
+                // that's gonna fail ....
                 // prolly need to compare original to new data?
                 // but it has to be kinda fuzzy.
                 ((XmlLeafNode)target).setValue(data);
                 fired.remove(target);
                 found = true;
+//System.out.println("Got text \"" + data + "\"");
                 break;
             }
         }
@@ -159,6 +167,7 @@ class TreeCursor
     public void startElement(String namespaceURI, String localName, String prefix)
         throws GenXDMException
     {
+//System.out.println("Got untyped element " + localName);
         // validator should never call this one; throw a fit if it does.
         throw new UnsupportedOperationException("untyped start-element");
     }
@@ -167,6 +176,7 @@ class TreeCursor
     public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
         throws GenXDMException
     {
+//System.out.println("Got untyped attribute " + localName + " with value " + value);
         // validator should never call this one; throw a fit if it does.
         throw new UnsupportedOperationException("untyped attribute");
     }
@@ -175,8 +185,12 @@ class TreeCursor
     public void text(String data)
         throws GenXDMException
     {
-        // validator should never call this one; throw a fit if it does.
-        throw new UnsupportedOperationException("untyped text");
+//System.out.println("Got untyped text \"" + data + "\"");
+        // Note: empty nodes or nodes containing whitespace only are not in
+        // the queue. if we get this call and it's ignorable whitespace,
+        // drop it silently. otherwise: exception
+        if (!data.trim().isEmpty())
+            throw new UnsupportedOperationException("untyped text");
     }
 
     @Override
@@ -199,8 +213,8 @@ class TreeCursor
         {
             case ELEMENT:
             {
-                handler.startElement(getNamespaceURI(), getLocalName(), getPrefix(), getTypeName());
                 fired.add(node);
+                handler.startElement(getNamespaceURI(), getLocalName(), getPrefix(), getTypeName());
                 for (NamespaceBinding namespace : getNamespaceBindings())
                 {
                     handler.namespace(namespace.getPrefix(), namespace.getNamespaceURI());
@@ -208,8 +222,8 @@ class TreeCursor
                 for (QName att : getAttributeNames(true))
                 {
                     moveToAttribute(att.getNamespaceURI(), att.getLocalPart());
-                    handler.attribute(node.getNamespaceURI(), node.getLocalName(), node.getPrefix(), (List<? extends XmlAtom>)node.getValue(), node.getTypeName());
                     fired.add(node);
+                    handler.attribute(node.getNamespaceURI(), node.getLocalName(), node.getPrefix(), (List<? extends XmlAtom>)node.getValue(), node.getTypeName());
                     moveToParent();
                 }
                 if (hasChildren())
@@ -228,13 +242,14 @@ class TreeCursor
             }
             case ATTRIBUTE:
             {
-                // doesn't happen
+                // doesn't happen; only happens inside element
                 break;
             }
             case TEXT:
             {
+                if (!node.getStringValue().trim().isEmpty())
+                    fired.add(node);
                 handler.text((List<? extends XmlAtom>)node.getValue());
-                fired.add(node);
                 break;
             }
             case DOCUMENT:
@@ -273,5 +288,15 @@ class TreeCursor
         }
     }
 
+    // the notion here is that we don't need to synchronize, because
+    // we add a node to this list, invoke the validator, and the validator
+    // will either fire back, or will queue, and then fire back a sequence
+    // of events. but we are initialized, and the validator is single-threaded,
+    // so there are no opportunities to concurrently modify.
+    // NOTA BENE: we may want to consider the possibility of doing this differently,
+    // by catching all the bits of a start tag together on the way in (and also
+    // catching the text node of elements with simple content, except that that
+    // kinda makes us want to be predictive, when this process is what gives us
+    // the type that we would use to predict with).
     private final List<XmlNode> fired = new ArrayList<XmlNode>();
 }

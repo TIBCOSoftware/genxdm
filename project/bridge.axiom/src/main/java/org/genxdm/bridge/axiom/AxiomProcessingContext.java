@@ -199,14 +199,9 @@ public class AxiomProcessingContext
     public boolean isSupported(final String feature)
     {
         PreCondition.assertNotNull(feature, "feature");
+System.out.println("Feature : " + feature);
         if (feature.startsWith(Feature.PREFIX))
         {
-            if (feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT) ||
-                feature.equals(Feature.MUTABILITY) ||
-                feature.equals(Feature.TYPED) ||
-                feature.equals(Feature.TYPE_ANNOTATION) ||
-                feature.equals(Feature.TYPED_VALUE) )
-                return true;
             // Axiom does not support document uri retrieval or xml:base.
             // disable namespace axis until we can figure out if we can
             // make it work; axis doesn't support it, apparently.
@@ -215,6 +210,12 @@ public class AxiomProcessingContext
                 feature.equals(Feature.NAMESPACE_AXIS) ||
                 feature.equals(Feature.IN_TREE_VALIDATION) )
                 return false;
+            if (feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT) ||
+                feature.equals(Feature.MUTABILITY) ||
+                feature.equals(Feature.TYPED) ||
+                feature.equals(Feature.TYPE_ANNOTATION) ||
+                feature.equals(Feature.TYPED_VALUE) )
+                return true;
         }
         return false;
     }

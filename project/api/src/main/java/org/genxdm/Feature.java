@@ -40,15 +40,15 @@ public interface Feature
     // if type annotations are supported, return true.
     // must not return true if TYPED is false
     // must return type annotations if this is true
-    static final String TYPE_ANNOTATION = PREFIX + TYPED + "/annotation";
+    static final String TYPE_ANNOTATION = TYPED + "/annotation";
     // if typed values are supported, return true.
     // must not return true if TYPED is false
     // must return atoms (not just untyped-atomic) if true.
-    static final String TYPED_VALUE = PREFIX + TYPED + "/typed-value";
+    static final String TYPED_VALUE = TYPED + "/typed-value";
     // if in-tree validation (TypedContext.validateTree()) is supported, return true
     // must not return true if TYPED is false
     // either TYPE_ANNOTATION or TYPED_VALUE must also be supported
-    static final String IN_TREE_VALIDATION = PREFIX + TYPED + "/in-tree-validation";
+    static final String IN_TREE_VALIDATION = TYPED + "/in-tree-validation";
     
 
     static final String UNSUPPORTED_MESSAGE = "Feature is not supported";
