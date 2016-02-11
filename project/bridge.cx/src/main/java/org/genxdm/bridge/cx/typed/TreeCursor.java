@@ -3,14 +3,20 @@ package org.genxdm.bridge.cx.typed;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridge.cx.tree.XmlAttributeNode;
 import org.genxdm.bridge.cx.tree.XmlElementNode;
 import org.genxdm.bridge.cx.tree.XmlLeafNode;
 import org.genxdm.bridge.cx.tree.XmlNode;
+import org.genxdm.bridge.cx.tree.XmlNodeMutator;
 import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.bridgekit.validation.ChildNode;
+import org.genxdm.bridgekit.validation.StartTag;
+import org.genxdm.bridgekit.validation.TextNode;
 import org.genxdm.bridgekit.validation.ValidatingCursor;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.ContentHandler;
@@ -54,19 +60,27 @@ class TreeCursor
         throws GenXDMException
     {
         boolean found = false;
-        for (XmlNode target : fired)
+        for (ChildNode<XmlNode> target : startTags)
         {
-            if (target.getNamespaceURI().equals(namespaceURI) &&
-                target.getLocalName().equals(localName) &&
-                target.isElement() )
+            // if the first one is a text node, is that an error?
+            // do we at least need to discard it?
+            //if (target.isText()) {}
+            if (target.isStartTag())
             {
-                ((XmlElementNode)target).setTypeName(type);
-                fired.remove(target);
-                found = true;
-                break;
+                StartTag<XmlNode> candidate = (StartTag<XmlNode>)target;
+                if (candidate.element.getNamespaceURI().equals(namespaceURI) &&
+                    candidate.element.getLocalName().equals(localName) )
+                {
+                    ((XmlElementNode)candidate.element).setTypeName(type);
+                    startTag = candidate;
+                    startTags.remove(target);
+                    found = true;
+                    break;
+                }
             }
-//System.out.println("Got element " + localName + " with type " + type.getLocalPart());
         }
+//if (found)
+//  System.out.println("Got element " + localName + " with type " + type.getLocalPart());
         if (!found)
             throw new GenXDMException("validation error; can't find the element to annotate");
     }
@@ -75,8 +89,33 @@ class TreeCursor
     public void namespace(String prefix, String namespaceURI)
         throws GenXDMException
     {
-        // TODO: make sure that the process doesn't screw up bindings.
-        // namespaces are not in the fired queue
+        boolean matched = false;
+        if ( (startTag != null) && (startTag.bindings != null) )
+        {
+            for (String candidate : startTag.bindings.keySet())
+            {
+                if (candidate.equals(prefix))
+                {
+                    String ns = startTag.bindings.get(candidate); 
+                    if (ns.equals(namespaceURI))
+                    {
+                        matched = true;
+                        break;
+                    }
+                    // oops. got the prefix here, but it's a different namespace.
+                    // trust the validator? that would mean: remove the original
+                    // binding, and add this new one.
+                    // for now, toss cookies
+                    throw new IllegalStateException("prefix " + prefix + " for namespace " + namespaceURI + " already bound to " + ns); 
+                }
+            }
+        }
+        if (!matched && (startTag != null) )
+        {
+            // add the binding to the start tag
+            XmlNodeMutator mutant = new XmlNodeMutator();
+            mutant.insertNamespace(startTag.element, prefix, namespaceURI);
+        } // else things are very, very strange; we have a namespace event without a start tag
     }
 
     @Override
@@ -84,26 +123,83 @@ class TreeCursor
         throws GenXDMException
     {
         boolean found = false;
-        for (XmlNode target : fired)
-        {
-            if (target.getNamespaceURI().equals(namespaceURI) &&
-                target.getLocalName().equals(localName) &&
-                target.isAttribute() )
-            {
-                ((XmlLeafNode)target).setTypeName(type);
-                ((XmlLeafNode)target).setValue(data);
-                fired.remove(target);
-                found = true;
-                break;
-            }
 //System.out.println("Got attribute " + localName + " with type " + type.getLocalPart() + " and value " + data);
+        if ( (startTag != null) && (startTag.attributes != null) )
+        {
+            for (XmlNode attribute : startTag.attributes)
+            {
+                if (attribute.getNamespaceURI().equals(namespaceURI) &&
+                    attribute.getLocalName().equals(localName) )
+                {
+                    ((XmlLeafNode)attribute).setTypeName(type);
+                    ((XmlLeafNode)attribute).setValue(data);
+                    found = true;
+                    break;
+                }
+            }
         }
         if (!found)
         {
-            // we *might* want to throw an exception. but i think we prolly want to
-            // add a new attribute that has a default value, don't you?
-            // but in that case, we have to find the element to put it on!
-            throw new GenXDMException("validation error; can't find the attribute to annotate and update");
+            XmlNodeMutator mutant = new XmlNodeMutator();
+            // add it
+            XmlAttributeNode attribute = (XmlAttributeNode)mutant.getFactory(startTag.element).createAttribute(namespaceURI, localName, prefix, "");
+            mutant.insertAttribute(startTag.element, attribute);
+            attribute.setTypeName(type);
+            attribute.setValue(data);
+        }
+    }
+
+    @Override
+    public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
+        throws GenXDMException
+    {
+        // this one *does* get called.
+        // it might be defaulted, too, though prolly not. defaulted has to be added.
+        // just ignore the ones that are already there.
+//System.out.println("Got untyped attribute " + localName + " with value " + value);
+        boolean found = false;
+        if ( (startTag != null) && (startTag.attributes != null) )
+        {
+            for (XmlNode attribute : startTag.attributes)
+            {
+                if (attribute.getNamespaceURI().equals(namespaceURI) &&
+                    attribute.getLocalName().equals(localName) )
+                {
+                    found = true; // found it: ignore
+                    break;
+                }
+            }
+        }
+        if (!found && (startTag != null) )
+        {
+            XmlNodeMutator mutant = new XmlNodeMutator();
+            // add it
+            XmlAttributeNode attribute = (XmlAttributeNode)mutant.getFactory(startTag.element).createAttribute(namespaceURI, localName, prefix, value);
+            mutant.insertAttribute(startTag.element, attribute);
+        }
+    }
+
+    @Override
+    public void text(String data)
+        throws GenXDMException
+    {
+        // this one *also* does get called.
+//System.out.println("Got untyped text \"" + data + "\"");
+        // Note: empty nodes or nodes containing whitespace only are not in
+        // the queue. if we get this call and it's ignorable whitespace,
+        // drop it silently.
+        // if it's *not* ignorable whitespace, it's *still* been validated
+        // so remove the first ChildNode that is text from startTags
+        if (!data.trim().isEmpty())
+        {
+            for (ChildNode<XmlNode> target : startTags)
+            {
+                if (target.isText())
+                {
+                    startTags.remove(target);
+                    break;
+                }
+            }
         }
     }
 
@@ -111,20 +207,23 @@ class TreeCursor
     public void text(List<? extends XmlAtom> data)
         throws GenXDMException
     {
+        // this is a non-element child node event
+        startTag = null; // we could do a verification of correctness, that everything's been touched
+        // if the supplied data is an empty string, it won't be in the list.
+        // shortcircuit the return.
+        if (context.getAtomBridge().getC14NString(data).trim().isEmpty())
+            return;
         boolean found = false;
-        for (XmlNode target : fired)
+        for (ChildNode<XmlNode> target : startTags)
         {
-            if (target.isText()) // assume only one? not really safe; how do we do better?
+            // we assume that the first text node is the one we want.
+            // the only way to "match" would be to re-validate and compare the values.
+            // that's pretty much not going to happen.
+            if (target.isText())
             {
-                // it *should* be safe, assuming that whitespace nodes can't be
-                // passed. might fail with mixed content? but then we don't have
-                // typed value ...
-                // note that we *might* get ignorable whitespace in this call.
-                // that's gonna fail ....
-                // prolly need to compare original to new data?
-                // but it has to be kinda fuzzy.
-                ((XmlLeafNode)target).setValue(data);
-                fired.remove(target);
+                TextNode<XmlNode> text = (TextNode<XmlNode>)target;
+                ((XmlLeafNode)text.content).setValue(data);
+                startTags.remove(target);
                 found = true;
 //System.out.println("Got text \"" + data + "\"");
                 break;
@@ -138,59 +237,45 @@ class TreeCursor
     public void processingInstruction(String target, String data)
         throws GenXDMException
     {
-        // not in the fired queue. ignore it
+        // this is a non-element child node event
+        startTag = null; // we could do a verification of correctness, that everything's been touched
+        // otherwise, ignore; pi-s don't validate.
     }
 
     @Override
     public void comment(String value)
         throws GenXDMException
     {
-        // not in the fired queue. ignore it
+        // this is a non-element child node event
+        startTag = null; // we could do a verification of correctness, that everything's been touched
+        // otherwise, ignore; comment-s don't validate
     }
 
     @Override
     public void endElement()
         throws GenXDMException
     {
-        // i don't think there's anything to be done.
-        // stored as a node in startElement, and already processed?
+        // this is a non-element child node event
+        startTag = null; // we could do a verification of correctness, that everything's been touched
+        // otherwise, we've already handled everything.
     }
 
     @Override
     public void endDocument()
         throws GenXDMException
     {
-        // anything?
+        // ignore. startTag had *better* already be null, for instance,
+        // and startTags should be empty. we could verify those things.
     }
 
     @Override
     public void startElement(String namespaceURI, String localName, String prefix)
         throws GenXDMException
     {
+        // by my reading of VxValidatorOutput, the adapter that drives the
+        // sequencehandler in the validator, this should never be called.
 //System.out.println("Got untyped element " + localName);
-        // validator should never call this one; throw a fit if it does.
         throw new UnsupportedOperationException("untyped start-element");
-    }
-
-    @Override
-    public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
-        throws GenXDMException
-    {
-//System.out.println("Got untyped attribute " + localName + " with value " + value);
-        // validator should never call this one; throw a fit if it does.
-        throw new UnsupportedOperationException("untyped attribute");
-    }
-
-    @Override
-    public void text(String data)
-        throws GenXDMException
-    {
-//System.out.println("Got untyped text \"" + data + "\"");
-        // Note: empty nodes or nodes containing whitespace only are not in
-        // the queue. if we get this call and it's ignorable whitespace,
-        // drop it silently. otherwise: exception
-        if (!data.trim().isEmpty())
-            throw new UnsupportedOperationException("untyped text");
     }
 
     @Override
@@ -209,21 +294,27 @@ class TreeCursor
     
     private void visit(SequenceHandler<XmlAtom> handler)
     {
-        switch (node.getNodeKind())
+        switch (getNodeKind())
         {
             case ELEMENT:
             {
-                fired.add(node);
+                StartTag<XmlNode> tag = new StartTag<XmlNode>(node);
+                startTags.add(tag);
                 handler.startElement(getNamespaceURI(), getLocalName(), getPrefix(), getTypeName());
                 for (NamespaceBinding namespace : getNamespaceBindings())
                 {
+                    if (tag.bindings == null)
+                        tag.bindings = new HashMap<String, String>();
+                    tag.bindings.put(namespace.getPrefix(), namespace.getNamespaceURI());
                     handler.namespace(namespace.getPrefix(), namespace.getNamespaceURI());
                 }
                 for (QName att : getAttributeNames(true))
                 {
                     moveToAttribute(att.getNamespaceURI(), att.getLocalPart());
-                    fired.add(node);
-                    handler.attribute(node.getNamespaceURI(), node.getLocalName(), node.getPrefix(), (List<? extends XmlAtom>)node.getValue(), node.getTypeName());
+                    if (tag.attributes == null)
+                        tag.attributes = new ArrayList<XmlNode>();
+                    tag.attributes.add(node);
+                    handler.attribute(getNamespaceURI(), getLocalName(), getPrefix(), (List<? extends XmlAtom>)getValue(), getTypeName());
                     moveToParent();
                 }
                 if (hasChildren())
@@ -247,9 +338,9 @@ class TreeCursor
             }
             case TEXT:
             {
-                if (!node.getStringValue().trim().isEmpty())
-                    fired.add(node);
-                handler.text((List<? extends XmlAtom>)node.getValue());
+                if (!getStringValue().trim().isEmpty())
+                    startTags.add(new TextNode<XmlNode>(node));
+                handler.text((List<? extends XmlAtom>)getValue());
                 break;
             }
             case DOCUMENT:
@@ -273,17 +364,17 @@ class TreeCursor
             }
             case COMMENT:
             {
-                handler.comment(node.getStringValue());
+                handler.comment(getStringValue());
                 break;
             }
             case PROCESSING_INSTRUCTION:
             {
-                handler.processingInstruction(node.getLocalName(), node.getStringValue());
+                handler.processingInstruction(getLocalName(), getStringValue());
                 break;
             }
             default:
             {
-                throw new AssertionError(node.getNodeKind());
+                throw new AssertionError(getNodeKind());
             }
         }
     }
@@ -293,10 +384,10 @@ class TreeCursor
     // will either fire back, or will queue, and then fire back a sequence
     // of events. but we are initialized, and the validator is single-threaded,
     // so there are no opportunities to concurrently modify.
-    // NOTA BENE: we may want to consider the possibility of doing this differently,
-    // by catching all the bits of a start tag together on the way in (and also
-    // catching the text node of elements with simple content, except that that
-    // kinda makes us want to be predictive, when this process is what gives us
-    // the type that we would use to predict with).
-    private final List<XmlNode> fired = new ArrayList<XmlNode>();
+    private final List<ChildNode<XmlNode>> startTags = new ArrayList<ChildNode<XmlNode>>();
+    // this gets set to the StartTag<XmlNode> from startTags that matches inside startElement,
+    // at which time that StartTag is also removed from the startTags list.
+    // we then handle attributes and namespaces by looking at this thing.
+    // when we get endElement, or any child node event, we reset this to null.
+    private StartTag<XmlNode> startTag;
 }
