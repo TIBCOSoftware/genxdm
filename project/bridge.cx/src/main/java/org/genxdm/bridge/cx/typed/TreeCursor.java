@@ -138,7 +138,7 @@ class TreeCursor
                 }
             }
         }
-        if (!found)
+        if (!found && (startTag != null) )
         {
             XmlNodeMutator mutant = new XmlNodeMutator();
             // add it
@@ -146,7 +146,7 @@ class TreeCursor
             mutant.insertAttribute(startTag.element, attribute);
             attribute.setTypeName(type);
             attribute.setValue(data);
-        }
+        } // else we have an attribute without an element. bad.
     }
 
     @Override
@@ -176,31 +176,7 @@ class TreeCursor
             // add it
             XmlAttributeNode attribute = (XmlAttributeNode)mutant.getFactory(startTag.element).createAttribute(namespaceURI, localName, prefix, value);
             mutant.insertAttribute(startTag.element, attribute);
-        }
-    }
-
-    @Override
-    public void text(String data)
-        throws GenXDMException
-    {
-        // this one *also* does get called.
-//System.out.println("Got untyped text \"" + data + "\"");
-        // Note: empty nodes or nodes containing whitespace only are not in
-        // the queue. if we get this call and it's ignorable whitespace,
-        // drop it silently.
-        // if it's *not* ignorable whitespace, it's *still* been validated
-        // so remove the first ChildNode that is text from startTags
-        if (!data.trim().isEmpty())
-        {
-            for (ChildNode<XmlNode> target : startTags)
-            {
-                if (target.isText())
-                {
-                    startTags.remove(target);
-                    break;
-                }
-            }
-        }
+        } // else we have an attribute without an element. bad.
     }
 
     @Override
@@ -231,6 +207,32 @@ class TreeCursor
         }
         if (!found)
             throw new GenXDMException("validation error; can't find the text node to update");
+    }
+
+    @Override
+    public void text(String data)
+        throws GenXDMException
+    {
+//System.out.println("Got untyped text \"" + data + "\"");
+        // this is a non-element child node event
+        startTag = null; // we could do a verification of correctness, that everything's been touched
+        // this one *also* does get called.
+        // Note: empty nodes or nodes containing whitespace only are not in
+        // the queue. if we get this call and it's ignorable whitespace,
+        // drop it silently.
+        // if it's *not* ignorable whitespace, it's *still* been validated
+        // so remove the first ChildNode that is text from startTags
+        if (!data.trim().isEmpty())
+        {
+            for (ChildNode<XmlNode> target : startTags)
+            {
+                if (target.isText())
+                {
+                    startTags.remove(target);
+                    break;
+                }
+            }
+        }
     }
 
     @Override
