@@ -48,12 +48,12 @@ public class NamespaceFixupSequenceFilter<A>
         NamespaceBinding pns = handleAttributeNS(namespaceURI, localName, prefix);
         Type t = (type == null) ? BuiltInSchema.SINGLETON.UNTYPED_ATOMIC : schema.getComponentProvider().getTypeDefinition(type);
 //        // i'm not sure about this test
-        if ( (type != null) && t.derivedFromType(BuiltInSchema.SINGLETON.QNAME, methods) )
-        {
+//        if ( (t != null) && t.derivedFromType(BuiltInSchema.SINGLETON.QNAME, methods) )
+//        {
 //            // TODO: finish the job
 //            // we need to check for qnames in content, here, and insure
 //            // that any bindings that they require are also declared.
-        }
+//        }
         attributes.add(new SeqAttr(pns.getNamespaceURI(), localName, pns.getPrefix(), data, type));
     }
 
