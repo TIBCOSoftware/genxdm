@@ -181,7 +181,10 @@ public class AxiomFragmentBuilder
         if (null == currentNode)
         {
             documentNode = factory.createOMDocument();
-            AxiomProcessingContext.docURIs.put(documentNode, documentURI);
+            synchronized (AxiomProcessingContext.docURIs)
+            {
+                AxiomProcessingContext.docURIs.put(documentNode, documentURI);
+            }
             currentNode = documentNode;
             docNode = documentNode;
         }

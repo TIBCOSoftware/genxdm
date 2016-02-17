@@ -15,7 +15,6 @@
  */
 package org.genxdm.bridgekit.xs;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -945,13 +944,20 @@ final class SchemaCacheImpl implements SchemaComponentCache
      */
     private QName encodeQName(final QName name)
     {
+        // 2016 02 17 aal : pushed a bunch of weakhashmap accessors inside
+        // synchronized blocks, because it turns out that weakhashmap isn't
+        // threadsafe for get(). looks like there might be some thrash here, though.
+        // needs review.
     	final String ns = name.getNamespaceURI();
     	
 		// If this is a known namespace, it must be properly encoded, so just return and avoid unnecessary calls to StringToURIParser.parse.
     	if(ns != null && ns.length() > 0 && !namespaces.contains(ns))
     	{
         	// Do we already have an encoded version of this namespace?  Check the map of unencoded to encoded namespaces.
-    	    String encodedNs = m_unencodedNs2EncodedNsMap.get(ns);
+    	    String encodedNs = null;
+    	    synchronized(m_unencodedNs2EncodedNsMap) {
+    	        encodedNs = m_unencodedNs2EncodedNsMap.get(ns);
+    	    }
         	if (encodedNs == null)
         	{
         	    synchronized(m_unencodedNs2EncodedNsMap) {
@@ -964,7 +970,10 @@ final class SchemaCacheImpl implements SchemaComponentCache
         	}
             // if incoming ns did not need encoding (i.e. they are equal strings), skip this block & return
             if(false == ns.equals(encodedNs)) {
-                Map<QName, QName> qnameMap = m_ns2unencodeQNameKeys.get(encodedNs);
+                Map<QName, QName> qnameMap = null;
+                synchronized(m_ns2unencodeQNameKeys) {
+                    qnameMap = m_ns2unencodeQNameKeys.get(encodedNs);
+                }
                 if(qnameMap == null)
                 {
                     synchronized(m_ns2unencodeQNameKeys) {
@@ -974,7 +983,10 @@ final class SchemaCacheImpl implements SchemaComponentCache
                         }
                     }
                 }
-                QName retval = qnameMap.get(name);
+                QName retval = null;
+                synchronized(qnameMap) {
+                    retval = qnameMap.get(name);
+                }
                 if(retval == null)
                 {
                     synchronized(qnameMap) {

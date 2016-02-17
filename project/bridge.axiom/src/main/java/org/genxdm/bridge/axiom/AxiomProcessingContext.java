@@ -40,7 +40,6 @@ import org.genxdm.mutable.MutableCursor;
 import org.genxdm.mutable.MutableModel;
 import org.genxdm.mutable.NodeFactory;
 import org.genxdm.processor.io.DefaultDocumentHandler;
-import org.genxdm.typed.TypedContext;
 import org.genxdm.xs.SchemaComponentCache;
 
 /** ProcessingContext to support abstraction of the AxiOM LLOM tree model.
@@ -199,7 +198,7 @@ public class AxiomProcessingContext
     public boolean isSupported(final String feature)
     {
         PreCondition.assertNotNull(feature, "feature");
-System.out.println("Feature : " + feature);
+//System.out.println("Feature : " + feature);
         if (feature.startsWith(Feature.PREFIX))
         {
             // Axiom does not support document uri retrieval or xml:base.
