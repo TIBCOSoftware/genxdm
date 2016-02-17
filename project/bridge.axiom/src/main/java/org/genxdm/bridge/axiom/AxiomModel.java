@@ -248,7 +248,12 @@ public class AxiomModel
         PreCondition.assertNotNull(node, "node");
         OMDocument doc = AxiomSupport.dynamicDowncastDocument(node);
         if (doc != null)
-            return AxiomProcessingContext.docURIs.get(doc);
+        {
+            synchronized(AxiomProcessingContext.docURIs)
+            {
+                return AxiomProcessingContext.docURIs.get(doc);
+            }
+        }
         return null;
     }
     

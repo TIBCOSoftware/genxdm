@@ -15,6 +15,7 @@
  */
 package org.genxdm.bridge.axiom;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -297,12 +298,15 @@ final public class AxiomSupport
 	        map = new HashMap<String, OMElement>();
 	        addIdMap(document, map);
 	    }
-	    return map;
+	    return Collections.synchronizedMap(map);
 	}
 	
 	public static void addIdMap(OMDocument document, HashMap<String, OMElement> map)
 	{
-	    idMaps.put(document, map);
+	    synchronized(idMaps)
+	    {
+	        idMaps.put(document, map);
+	    }
 	}
 	
 	static final Map<OMDocument, HashMap<String, OMElement>> idMaps = new WeakHashMap<OMDocument, HashMap<String, OMElement>>();
