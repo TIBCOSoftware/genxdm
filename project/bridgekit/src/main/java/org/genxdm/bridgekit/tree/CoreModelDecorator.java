@@ -17,7 +17,6 @@ package org.genxdm.bridgekit.tree;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -386,7 +385,12 @@ public final class CoreModelDecorator<N, A>
                 }
                 QName type = null;
                 if (localTypesMap != null)
-                    type = localTypesMap.get(getNodeId(node));
+                {
+                    synchronized(localTypesMap)
+                    {
+                        type = localTypesMap.get(getNodeId(node));
+                    }
+                }
                 if (type == null)
                     type = defaultType;
                 return type;
@@ -609,11 +613,14 @@ public final class CoreModelDecorator<N, A>
             localTypesMap = mapOfTypesMaps.get(documentId); 
             if (localTypesMap == null)
             {
-                localTypesMap = new HashMap<Object, QName>(initialCapacity);
+                localTypesMap = new WeakHashMap<Object, QName>(initialCapacity);
                 mapOfTypesMaps.put(documentId, localTypesMap);
             }
         }
-        localTypesMap.put(nodeId, type);
+        synchronized(localTypesMap)
+        {
+            localTypesMap.put(nodeId, type);
+        }
     }
     
     private List<? extends A> iterableToList(Iterable<? extends A> able)
