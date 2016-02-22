@@ -898,11 +898,13 @@ public final class XMLSchemaConverter
                 	}
                 	// Element type resolution was delayed for all types whose resolution was delayed.
                 	// Those types have been resolved, so now we can resolve the elements.
-                	for(LateResolveElement lre : m_lateElementResolutionList)
+                	ArrayList<LateResolveElement> list = m_lateElementResolutionMap.get(name);
+                	if(list != null && !list.isEmpty())
                 	{
-                		convertElementTypeRef(lre.mi_xmlElement, lre.mi_elementDecl, lre.mi_subHead);
+                    	for(LateResolveElement lre : list) {
+                    		convertElementTypeRef(lre.mi_xmlElement, lre.mi_elementDecl, lre.mi_subHead);
+                    	}
                 	}
-                	m_lateElementResolutionList.clear();
                 }
             }
         }
@@ -1247,8 +1249,12 @@ public final class XMLSchemaConverter
     		if(m_complexTypeNameCycles.contains(typeRefName))
     		{
     			//System.out.println("      cycle detected for element type ref " + xmlElement.getName().getC14NForm());
-
-    			m_lateElementResolutionList.add(new LateResolveElement(xmlElement, element, substitutionGroupHead));
+    			ArrayList<LateResolveElement> list = m_lateElementResolutionMap.get(typeRefName);
+    			if(list == null) {
+    				list = new ArrayList<LateResolveElement>();
+    				m_lateElementResolutionMap.put(typeRefName, list);
+    			}
+    			list.add(new LateResolveElement(xmlElement, element, substitutionGroupHead));
     			return;
     		}
     		else
@@ -1332,15 +1338,17 @@ public final class XMLSchemaConverter
         // Ensure that all elements have their type refs resolved.
         // Element type resolution was delayed for all types whose resolution was delayed.
         // Those types have been resolved, so now we can resolve the elements.
-        for(LateResolveElement lre : m_lateElementResolutionList)
-        {
-        	try {
-        		convertElementTypeRef(lre.mi_xmlElement, lre.mi_elementDecl, lre.mi_subHead);
-        	} catch (SchemaException e) {
-        		m_errors.error(e);
+        for(QName typeName : m_lateElementResolutionMap.keySet()) {
+        	ArrayList<LateResolveElement> list = m_lateElementResolutionMap.get(typeName);
+        	for(LateResolveElement lre : list) {
+                try {
+                	convertElementTypeRef(lre.mi_xmlElement, lre.mi_elementDecl, lre.mi_subHead);
+                } catch (SchemaException e) {
+                	m_errors.error(e);
+                }
         	}
         }
-        m_lateElementResolutionList.clear();
+        m_lateElementResolutionMap.clear();
     }
 
     private SchemaParticle convertElementUse(final XMLParticleWithElementTerm particle) throws SchemaException, AbortException
@@ -2456,7 +2464,9 @@ public final class XMLSchemaConverter
 	private final Stack<QName> m_complexTypeNameCycles = new Stack<QName>();
 	private final HashMap<QName,ArrayList<XMLType>> m_lateTypeResolutionMap = new HashMap<QName,ArrayList<XMLType>>();
 	private final ArrayList<QName> m_lateTypeResolutionNameList = new ArrayList<QName>();
-	private final ArrayList<LateResolveElement> m_lateElementResolutionList = new ArrayList<LateResolveElement>();
+	
+	// key = QName of type, value = list of elements to resolve
+	private final HashMap<QName, ArrayList<LateResolveElement>> m_lateElementResolutionMap = new HashMap<QName, ArrayList<LateResolveElement>>();
     
 
     private final SchemaExceptionHandler m_errors;
