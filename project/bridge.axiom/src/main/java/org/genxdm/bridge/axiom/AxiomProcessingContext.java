@@ -40,7 +40,6 @@ import org.genxdm.mutable.MutableCursor;
 import org.genxdm.mutable.MutableModel;
 import org.genxdm.mutable.NodeFactory;
 import org.genxdm.processor.io.DefaultDocumentHandler;
-import org.genxdm.typed.TypedContext;
 import org.genxdm.xs.SchemaComponentCache;
 
 /** ProcessingContext to support abstraction of the AxiOM LLOM tree model.
@@ -199,14 +198,9 @@ public class AxiomProcessingContext
     public boolean isSupported(final String feature)
     {
         PreCondition.assertNotNull(feature, "feature");
+//System.out.println("Feature : " + feature);
         if (feature.startsWith(Feature.PREFIX))
         {
-            if (feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT) ||
-                feature.equals(Feature.MUTABILITY) ||
-                feature.equals(Feature.TYPED) ||
-                feature.equals(Feature.TYPE_ANNOTATION) ||
-                feature.equals(Feature.TYPED_VALUE) )
-                return true;
             // Axiom does not support document uri retrieval or xml:base.
             // disable namespace axis until we can figure out if we can
             // make it work; axis doesn't support it, apparently.
@@ -214,6 +208,12 @@ public class AxiomProcessingContext
                 feature.equals(Feature.BASE_URI) ||
                 feature.equals(Feature.NAMESPACE_AXIS) )
                 return false;
+            if (feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT) ||
+                feature.equals(Feature.MUTABILITY) ||
+                feature.equals(Feature.TYPED) ||
+                feature.equals(Feature.TYPE_ANNOTATION) ||
+                feature.equals(Feature.TYPED_VALUE) )
+                return true;
         }
         return false;
     }

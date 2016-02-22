@@ -17,6 +17,7 @@ package org.genxdm.bridgekit.tree;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -378,7 +379,11 @@ public final class CoreModelDecorator<N, A>
                 Object documentId = (doc == null) ? dummyId : getNodeId(doc);
                 if (documentId == null)
                     documentId = dummyId;
-                Map<Object, QName> localTypesMap = mapOfTypesMaps.get(documentId);
+                Map<Object, QName> localTypesMap = null;
+                synchronized(mapOfTypesMaps)
+                {
+                    localTypesMap = mapOfTypesMaps.get(documentId);
+                }
                 QName type = null;
                 if (localTypesMap != null)
                     type = localTypesMap.get(getNodeId(node));
@@ -598,11 +603,15 @@ public final class CoreModelDecorator<N, A>
 //System.out.println("Node id is " + nodeId.toString());
         PreCondition.assertNotNull(nodeId, "nodeId");
         Object documentId = (document == null) ? dummyId : getNodeId(document);
-        Map<Object, QName> localTypesMap = mapOfTypesMaps.get(documentId);
-        if (localTypesMap == null)
+        Map<Object, QName> localTypesMap = null;
+        synchronized(mapOfTypesMaps)
         {
-            localTypesMap = new WeakHashMap<Object, QName>(initialCapacity);
-            mapOfTypesMaps.put(documentId, localTypesMap);
+            localTypesMap = mapOfTypesMaps.get(documentId); 
+            if (localTypesMap == null)
+            {
+                localTypesMap = new HashMap<Object, QName>(initialCapacity);
+                mapOfTypesMaps.put(documentId, localTypesMap);
+            }
         }
         localTypesMap.put(nodeId, type);
     }
