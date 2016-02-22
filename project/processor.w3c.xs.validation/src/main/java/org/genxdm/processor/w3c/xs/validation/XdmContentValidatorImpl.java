@@ -75,9 +75,13 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 		{
 			kernel.endDocument();
 		}
-		catch (final Exception e)
+		catch (final IOException ioe)
 		{
-			throw new GenXDMException(e);
+			throw new GenXDMException(ioe);
+		}
+		catch (final AbortException ae)
+		{
+		    throw new GenXDMException(ae);
 		}
 	}
 
@@ -89,10 +93,14 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 		{
 			kernel.endElement();
 		}
-		catch (final Exception e)
-		{
-			throw new GenXDMException(e);
-		}
+        catch (final IOException ioe)
+        {
+            throw new GenXDMException(ioe);
+        }
+        catch (final AbortException ae)
+        {
+            throw new GenXDMException(ae);
+        }
 	}
 
     @Override
@@ -105,9 +113,13 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
                 // if m_elementType is non-null, do an ignore-the-element-name validation
                 kernel.startElement(m_elementName, m_namespaces, m_attributes, m_elementType);
             }
-            catch (final Exception e)
+            catch (final IOException ioe)
             {
-                throw new GenXDMException(e);
+                throw new GenXDMException(ioe);
+            }
+            catch (final AbortException ae)
+            {
+                throw new GenXDMException(ae);
             }
             m_elementType = null; // usually null anyway
             m_elementName = null; // reset for next in doc orde
@@ -143,10 +155,14 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 		{
 			kernel.startDocument(documentURI);
 		}
-		catch (final Exception e)
-		{
-			throw new GenXDMException(e);
-		}
+        catch (final IOException ioe)
+        {
+            throw new GenXDMException(ioe);
+        }
+        catch (final AbortException ae)
+        {
+            throw new GenXDMException(ae);
+        }
 	}
 
     @Override
@@ -170,13 +186,13 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 		{
 			kernel.text(value);
 		}
-		catch (final IOException e)
+		catch (final IOException ioe)
 		{
-			throw new GenXDMException(e);
+			throw new GenXDMException(ioe);
 		}
-		catch (final AbortException e)
+		catch (final AbortException ae)
 		{
-			throw new GenXDMException(e);
+			throw new GenXDMException(ae);
 		}
 	}
 
@@ -188,13 +204,13 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 		{
 			kernel.text(atomBridge.wrapAtom(atomBridge.createUntypedAtomic(untypedAtomic)));
 		}
-		catch (final IOException e)
+		catch (final IOException ioe)
 		{
-			throw new GenXDMException(e);
+			throw new GenXDMException(ioe);
 		}
-		catch (final AbortException e)
+		catch (final AbortException ae)
 		{
-			throw new GenXDMException(e);
+			throw new GenXDMException(ae);
 		}
 	}
 
