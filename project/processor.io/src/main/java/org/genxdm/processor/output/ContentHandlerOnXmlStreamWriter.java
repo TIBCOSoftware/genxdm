@@ -272,21 +272,20 @@ public class ContentHandlerOnXmlStreamWriter
     }
     
     // *never* return null
-    private String verifyNamespace(final String uri, final String prefixSuggestion, final boolean isAttribute)
+    private String verifyNamespace(final String uri, String prefixSuggestion, final boolean isAttribute)
         throws XMLStreamException
     {
         String retVal;
-//        if (isAttribute)
-//        {
-            // attributes in the default namespace are not in global scope (requiring a namespace declaration),
-            // but in the scope of their parent element, and the default prefix, for attributes, is *never*
-            // bound (or bindable) to anything other than the default/global/null namespace
-            if (uri.equals(XMLConstants.NULL_NS_URI) || (uri == null))
+        // attributes in the default namespace are not in global scope (requiring a namespace declaration),
+        // but in the scope of their parent element, and the default prefix, for attributes, is *never*
+        // bound (or bindable) to anything other than the default/global/null namespace
+        if (uri.equals(XMLConstants.NULL_NS_URI) || (uri == null))
+        {
+            if (isAttribute)
                 return XMLConstants.DEFAULT_NS_PREFIX;
-            // isAttribute check commented out, because if we have a default namespace uri,
-            // it doesn't matter whether it's an attribute or an element, it needs bound to
-            // the default prefix.
-//        }
+            else
+                prefixSuggestion = XMLConstants.DEFAULT_NS_PREFIX;
+        }
         if (prefixSuggestion == null) // no prefix.
         {
             String suggestion = null;
