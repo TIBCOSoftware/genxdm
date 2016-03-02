@@ -384,7 +384,7 @@ public class AxiomMutableModel
         
         OMDocument doc = AxiomSupport.dynamicDowncastDocument(getRoot(attr));
         OMAttribute attrNode = AxiomSupport.staticDowncastAttribute(attr);
-        Map<String, OMElement> idMap = AxiomSupport.getIdMap(doc);
+        Map<String, OMElement> idMap = AxiomSupport.getIdMap(AxiomModel.documentIdentity(doc));
 
         String type = attrNode.getAttributeType(); 
         if ( !DtdAttributeKind.CDATA.toString().equals(type) && !DtdAttributeKind.ID.toString().equals(type)) {

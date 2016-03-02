@@ -249,9 +249,13 @@ public class AxiomModel
         OMDocument doc = AxiomSupport.dynamicDowncastDocument(node);
         if (doc != null)
         {
-            synchronized(AxiomProcessingContext.docURIs)
+            DocumentIdentity id = documents.get(doc);
+            if (id != null)
             {
-                return AxiomProcessingContext.docURIs.get(doc);
+                synchronized(AxiomProcessingContext.docURIs)
+                {
+                    return AxiomProcessingContext.docURIs.get(id);
+                }
             }
         }
         return null;
@@ -264,7 +268,7 @@ public class AxiomModel
         // note: this depends upon the map having been initialized.
         // TODO: check the size of the map? if it's empty, we might want
         // to try to look through the document for ids.  barf-puke, but eh.
-        Map<String, OMElement> idMap = AxiomSupport.getIdMap(AxiomSupport.dynamicDowncastDocument(getRoot(context)));
+        Map<String, OMElement> idMap = AxiomSupport.getIdMap(documents.get(AxiomSupport.dynamicDowncastDocument(getRoot(context))));
         return idMap.get(id);
     }
 
@@ -1261,11 +1265,10 @@ public class AxiomModel
     public Object getNodeId(final Object node)
     {
         PreCondition.assertNotNull(node, "node");
+        if (node instanceof OMDocument)
+            return documentIdentity((OMDocument)node);
         if (node instanceof OMAttribute)
-        {
-            final OMAttribute attr = (OMAttribute)node;
-            return attributeIdentity(attr);
-        }
+            return attributeIdentity((OMAttribute)node);
         if (node instanceof OMNamespace)
             return new NamespaceIdentity((OMNamespace)node);
         return node;
@@ -1436,6 +1439,21 @@ public class AxiomModel
         attributes.put(attr, id);
         return id;
     }
+    
+    static public DocumentIdentity documentIdentity(OMDocument doc)
+    {
+        DocumentIdentity id = documents.get(doc);
+        if (id == null)
+            id = createDocumentIdentity(doc);
+        return id;
+    }
+    
+    static public DocumentIdentity createDocumentIdentity(OMDocument doc)
+    {
+        DocumentIdentity id = new DocumentIdentity(doc);
+        documents.put(doc, id);
+        return id;
+    }
 
     /**
      * Determines whether the cancellation, xmlns="", is required to ensure correct semantics.
@@ -1518,4 +1536,5 @@ public class AxiomModel
     }
 
     private static final Map<OMAttribute, AttributeIdentity> attributes = new ReferenceIdentityMap<OMAttribute, AttributeIdentity>(AbstractReferenceMap.ReferenceStrength.WEAK, AbstractReferenceMap.ReferenceStrength.HARD);
+    private static final Map<OMDocument, DocumentIdentity> documents = new ReferenceIdentityMap<OMDocument, DocumentIdentity>(AbstractReferenceMap.ReferenceStrength.WEAK, AbstractReferenceMap.ReferenceStrength.HARD);
 }

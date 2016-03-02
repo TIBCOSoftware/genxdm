@@ -290,7 +290,7 @@ final public class AxiomSupport
 		return (OMText)node;
 	}
 	
-	public static Map<String, OMElement> getIdMap(OMDocument document)
+	public static Map<String, OMElement> getIdMap(DocumentIdentity document)
 	{
 	    HashMap<String, OMElement> map = idMaps.get(document);
 	    if (map == null)
@@ -301,7 +301,7 @@ final public class AxiomSupport
 	    return Collections.synchronizedMap(map);
 	}
 	
-	public static void addIdMap(OMDocument document, HashMap<String, OMElement> map)
+	public static void addIdMap(DocumentIdentity document, HashMap<String, OMElement> map)
 	{
 	    synchronized(idMaps)
 	    {
@@ -309,5 +309,5 @@ final public class AxiomSupport
 	    }
 	}
 	
-	static final Map<OMDocument, HashMap<String, OMElement>> idMaps = new WeakHashMap<OMDocument, HashMap<String, OMElement>>();
+	static final Map<DocumentIdentity, HashMap<String, OMElement>> idMaps = new WeakHashMap<DocumentIdentity, HashMap<String, OMElement>>();
 }
