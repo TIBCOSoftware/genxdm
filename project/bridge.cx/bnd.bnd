@@ -2,7 +2,7 @@ Export-Package: org.genxdm.bridge.cx;version=1.2,\
 	org.genxdm.bridge.cx.base;version=1.2,\
 	org.genxdm.bridge.cx.typed;version=1.2,\
 	org.genxdm.bridge.cx.tree;version=1.2
-Bundle-Version: 1.2.0
+Bundle-Version: 1.2.2
 -runee: JavaSE-1.7
 src: src/main/java
 bin: target/classes
