@@ -6,8 +6,8 @@ public interface TypeAnnotator<N>
 {
     /** Associate a node Id with a type name.
      * 
-     * @param nodeId The node; may not be null.
+     * @param node The node; may not be null.
      * @param typeName The type name.
      */
-    void annotate(N document, Object nodeID, QName typeName);
+    void annotate(N document, N node, QName typeName);
 }

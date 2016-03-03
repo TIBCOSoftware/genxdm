@@ -68,9 +68,14 @@ public class AxiomFragmentBuilder
                 (namespaceURI.equals(XMLConstants.XML_NS_URI) &&
                  localName.equals("id")) )
             {
-                Map<String, OMElement> ids = AxiomSupport.getIdMap(AxiomModel.documentIdentity(documentNode));
+                Map<String, Integer> ids = AxiomProcessingContext.getIdMap(documentNode);
                 if (ids != null) // only null if we don't have a document.  *shrug*
-                    ids.put(value, element);
+                {
+                    synchronized(ids)
+                    {
+                        ids.put(value, element.hashCode());
+                    }
+                }
             }
             typedNode = attribute;
             element.addAttribute(attribute);
@@ -183,7 +188,7 @@ public class AxiomFragmentBuilder
             documentNode = factory.createOMDocument();
             synchronized (AxiomProcessingContext.docURIs)
             {
-                AxiomProcessingContext.docURIs.put(AxiomModel.documentIdentity(documentNode), documentURI);
+                AxiomProcessingContext.docURIs.put(documentNode, documentURI);
             }
             currentNode = documentNode;
             docNode = documentNode;

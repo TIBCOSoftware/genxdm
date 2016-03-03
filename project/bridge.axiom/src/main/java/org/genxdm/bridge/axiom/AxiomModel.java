@@ -249,13 +249,9 @@ public class AxiomModel
         OMDocument doc = AxiomSupport.dynamicDowncastDocument(node);
         if (doc != null)
         {
-            DocumentIdentity id = documents.get(doc);
-            if (id != null)
+            synchronized(AxiomProcessingContext.docURIs)
             {
-                synchronized(AxiomProcessingContext.docURIs)
-                {
-                    return AxiomProcessingContext.docURIs.get(id);
-                }
+                return AxiomProcessingContext.docURIs.get(doc);
             }
         }
         return null;
@@ -268,8 +264,17 @@ public class AxiomModel
         // note: this depends upon the map having been initialized.
         // TODO: check the size of the map? if it's empty, we might want
         // to try to look through the document for ids.  barf-puke, but eh.
-        Map<String, OMElement> idMap = AxiomSupport.getIdMap(documents.get(AxiomSupport.dynamicDowncastDocument(getRoot(context))));
-        return idMap.get(id);
+        Map<String, Integer> idMap = AxiomProcessingContext.getIdMap(AxiomSupport.dynamicDowncastDocument(getRoot(context)));
+        // this is painfully slower than storing the elements in a map,
+        // but since we have to use omdocument as the weak key, an element in the
+        // value with a strong reference to its document locks it in memory.
+        if (idMap != null)
+        {
+            Integer code = idMap.get(id);
+            if (code != null)
+                return findElementByHashCode(getDescendantAxis(getRoot(context)), code);
+        }
+        return null;
     }
 
     @Override
@@ -1266,7 +1271,7 @@ public class AxiomModel
     {
         PreCondition.assertNotNull(node, "node");
         if (node instanceof OMDocument)
-            return documentIdentity((OMDocument)node);
+            return (OMDocument)node;
         if (node instanceof OMAttribute)
             return attributeIdentity((OMAttribute)node);
         if (node instanceof OMNamespace)
@@ -1424,9 +1429,21 @@ public class AxiomModel
         }
     }
     
+    private OMElement findElementByHashCode(Iterable<Object> docDescendants, int code)
+    {
+        for (Object node : docDescendants)
+        {
+            if ( (node instanceof OMElement) && (node.hashCode() == code) )
+                return (OMElement)node;
+        }
+        return null;
+    }
+    
     // done as static so that the fragmentbuilder can use the only map that we want to have around.
     static public AttributeIdentity attributeIdentity(OMAttribute attr)
     {
+        if (attr instanceof AttributeIdentity)
+            return (AttributeIdentity)attr;
         AttributeIdentity id = attributes.get(attr);
         if (id == null)
             id = createAttributeIdentity(attr);
@@ -1440,21 +1457,6 @@ public class AxiomModel
         return id;
     }
     
-    static public DocumentIdentity documentIdentity(OMDocument doc)
-    {
-        DocumentIdentity id = documents.get(doc);
-        if (id == null)
-            id = createDocumentIdentity(doc);
-        return id;
-    }
-    
-    static public DocumentIdentity createDocumentIdentity(OMDocument doc)
-    {
-        DocumentIdentity id = new DocumentIdentity(doc);
-        documents.put(doc, id);
-        return id;
-    }
-
     /**
      * Determines whether the cancellation, xmlns="", is required to ensure correct semantics.
      * 
@@ -1536,5 +1538,4 @@ public class AxiomModel
     }
 
     private static final Map<OMAttribute, AttributeIdentity> attributes = new ReferenceIdentityMap<OMAttribute, AttributeIdentity>(AbstractReferenceMap.ReferenceStrength.WEAK, AbstractReferenceMap.ReferenceStrength.HARD);
-    private static final Map<OMDocument, DocumentIdentity> documents = new ReferenceIdentityMap<OMDocument, DocumentIdentity>(AbstractReferenceMap.ReferenceStrength.WEAK, AbstractReferenceMap.ReferenceStrength.HARD);
 }

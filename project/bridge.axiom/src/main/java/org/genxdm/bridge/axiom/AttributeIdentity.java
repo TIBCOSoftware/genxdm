@@ -17,14 +17,100 @@ package org.genxdm.bridge.axiom;
 
 import java.lang.ref.WeakReference;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 
 public class AttributeIdentity
+    implements OMAttribute
 {
     
     AttributeIdentity(OMAttribute attribute)
     {
         this.attribute = new WeakReference<OMAttribute>(attribute);
+    }
+
+    // none of the OMAttribute methods should ever be called on this.
+    // it's defined as OMAttribute so that we can generally use <N> in coremodeldecorator
+    @Override
+    public String getLocalName()
+    {
+        return attribute.get().getLocalName();
+    }
+
+    @Override
+    public OMNamespace getNamespace()
+    {
+        return attribute.get().getNamespace();
+    }
+
+    @Override
+    public String getNamespaceURI()
+    {
+        return attribute.get().getNamespaceURI();
+    }
+
+    @Override
+    public String getPrefix()
+    {
+        return attribute.get().getPrefix();
+    }
+
+    @Override
+    public QName getQName()
+    {
+        return attribute.get().getQName();
+    }
+
+    @Override
+    public void setLocalName(String arg0)
+    {
+        // fuck that noise.
+    }
+
+    @Override
+    public OMFactory getOMFactory()
+    {
+        return attribute.get().getOMFactory();
+    }
+
+    @Override
+    public String getAttributeType()
+    {
+        return attribute.get().getAttributeType();
+    }
+
+    @Override
+    public String getAttributeValue()
+    {
+        return attribute.get().getAttributeValue();
+    }
+
+    @Override
+    public OMElement getOwner()
+    {
+        return attribute.get().getOwner();
+    }
+
+    @Override
+    public void setAttributeType(String arg0)
+    {
+        // fuck that noise.
+    }
+
+    @Override
+    public void setAttributeValue(String arg0)
+    {
+        // fuck that noise.
+    }
+
+    @Override
+    public void setOMNamespace(OMNamespace arg0)
+    {
+        // fuck that noise.
     }
 
     // this is the reason for this to exist

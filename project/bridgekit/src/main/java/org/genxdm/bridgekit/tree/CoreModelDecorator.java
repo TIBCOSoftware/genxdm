@@ -17,6 +17,7 @@ package org.genxdm.bridgekit.tree;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -52,7 +53,8 @@ public final class CoreModelDecorator<N, A>
         this.atomBridge = PreCondition.assertNotNull(atomBridge, "atomBridge");
         this.schemas = PreCondition.assertNotNull(cache, "schemas");
         // may not want initialcapacity here
-        mapOfTypesMaps = new WeakHashMap<Object, Map<Object, QName>>(initialCapacity);
+        mapOfTypesMaps = new WeakHashMap<N, Map<Integer, QName>>(initialCapacity);
+        nullDocMap = new WeakHashMap<N, QName>(initialCapacity);
     }
 
     @Override
@@ -375,20 +377,27 @@ public final class CoreModelDecorator<N, A>
                 if (defaultType == null) //{ System.out.println("Getting type name for attribute " + getNodeId(node)); 
                     defaultType = NativeType.UNTYPED_ATOMIC.toQName(); //}
                 N doc = getRoot(node);
-                Object documentId = (doc == null) ? dummyId : getNodeId(doc);
-                if (documentId == null)
-                    documentId = dummyId;
-                Map<Object, QName> localTypesMap = null;
-                synchronized(mapOfTypesMaps)
-                {
-                    localTypesMap = mapOfTypesMaps.get(documentId);
-                }
                 QName type = null;
-                if (localTypesMap != null)
+                if (doc == null)
                 {
-                    synchronized(localTypesMap)
+                    synchronized(nullDocMap)
                     {
-                        type = localTypesMap.get(getNodeId(node));
+                        type = nullDocMap.get(node);
+                    }
+                }
+                else
+                {
+                    Map<Integer, QName> localTypesMap = null;
+                    synchronized(mapOfTypesMaps)
+                    {
+                        localTypesMap = mapOfTypesMaps.get(doc);
+                    }
+                    if (localTypesMap != null)
+                    {
+                        synchronized(localTypesMap)
+                        {
+                            type = localTypesMap.get(getNodeId(node).hashCode());
+                        }
                     }
                 }
                 if (type == null)
@@ -601,25 +610,34 @@ public final class CoreModelDecorator<N, A>
     }
     
     @Override 
-    public void annotate(N document, Object nodeId, QName type)
+    public void annotate(N document, N node, QName type)
     {
 //System.out.println("Adding annotation for type " + type.toString());
-//System.out.println("Node id is " + nodeId.toString());
-        PreCondition.assertNotNull(nodeId, "nodeId");
-        Object documentId = (document == null) ? dummyId : getNodeId(document);
-        Map<Object, QName> localTypesMap = null;
-        synchronized(mapOfTypesMaps)
+//System.out.println("Node id is " + getLocalName(node) + " hashcode " + getNodeId(node).hashCode());
+        PreCondition.assertNotNull(node, "node");
+        if (document == null)
         {
-            localTypesMap = mapOfTypesMaps.get(documentId); 
-            if (localTypesMap == null)
+            synchronized(nullDocMap)
             {
-                localTypesMap = new WeakHashMap<Object, QName>(initialCapacity);
-                mapOfTypesMaps.put(documentId, localTypesMap);
+                nullDocMap.put(node, type);
             }
         }
-        synchronized(localTypesMap)
+        else
         {
-            localTypesMap.put(nodeId, type);
+            Map<Integer, QName> localTypesMap = null;
+            synchronized(mapOfTypesMaps)
+            {
+                localTypesMap = mapOfTypesMaps.get(document); 
+                if (localTypesMap == null)
+                {
+                    localTypesMap = new HashMap<Integer, QName>(initialCapacity);
+                    mapOfTypesMaps.put(document, localTypesMap);
+                }
+            }
+            synchronized(localTypesMap)
+            {
+                localTypesMap.put(getNodeId(node).hashCode(), type);
+            }
         }
     }
     
@@ -643,7 +661,6 @@ public final class CoreModelDecorator<N, A>
     private final Model<N> model;
     private final AtomBridge<A> atomBridge;
     private final SchemaComponentCache schemas;
-    private final Map<Object, Map<Object, QName>> mapOfTypesMaps;
-    private final Object dummyId = new Object();
-
+    private final Map<N, Map<Integer, QName>> mapOfTypesMaps;
+    private final Map<N, QName> nullDocMap;
 }

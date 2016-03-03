@@ -15,11 +15,6 @@
  */
 package org.genxdm.bridge.axiom;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.WeakHashMap;
-
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMComment;
 import org.apache.axiom.om.OMContainer;
@@ -290,24 +285,4 @@ final public class AxiomSupport
 		return (OMText)node;
 	}
 	
-	public static Map<String, OMElement> getIdMap(DocumentIdentity document)
-	{
-	    HashMap<String, OMElement> map = idMaps.get(document);
-	    if (map == null)
-	    {
-	        map = new HashMap<String, OMElement>();
-	        addIdMap(document, map);
-	    }
-	    return Collections.synchronizedMap(map);
-	}
-	
-	public static void addIdMap(DocumentIdentity document, HashMap<String, OMElement> map)
-	{
-	    synchronized(idMaps)
-	    {
-	        idMaps.put(document, map);
-	    }
-	}
-	
-	static final Map<DocumentIdentity, HashMap<String, OMElement>> idMaps = new WeakHashMap<DocumentIdentity, HashMap<String, OMElement>>();
 }
