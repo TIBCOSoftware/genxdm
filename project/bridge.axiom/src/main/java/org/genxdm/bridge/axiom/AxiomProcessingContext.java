@@ -16,12 +16,14 @@
 package org.genxdm.bridge.axiom;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 import javax.xml.stream.XMLReporter;
 
+import org.apache.axiom.om.OMDocument;
 import org.apache.axiom.om.OMFactory;
 import org.genxdm.Cursor;
 import org.genxdm.Feature;
@@ -258,6 +260,20 @@ public class AxiomProcessingContext
         return omfactory;
     }
     
+    public static Map<String, Integer> getIdMap(OMDocument document)
+    {
+        synchronized(idMaps)
+        {
+            Map<String, Integer> map = idMaps.get(document);
+            if (map == null)
+            {
+                map = new HashMap<String, Integer>();
+                idMaps.put(document, map);
+            }
+            return Collections.synchronizedMap(map);
+        }
+    }
+    
     private class AxioMutableContext implements MutableContext<Object>
     {
         AxioMutableContext()
@@ -289,7 +305,8 @@ public class AxiomProcessingContext
         private final AxiomMutableModel mmodel;
     }
     
-    static Map<DocumentIdentity, URI> docURIs = new WeakHashMap<DocumentIdentity, URI>();
+    static Map<OMDocument, URI> docURIs = new WeakHashMap<OMDocument, URI>();
+    static final Map<OMDocument, Map<String, Integer>> idMaps = new WeakHashMap<OMDocument, Map<String, Integer>>();
     
     private final AxiomModel model = new AxiomModel();
     private final OMFactory omfactory;
