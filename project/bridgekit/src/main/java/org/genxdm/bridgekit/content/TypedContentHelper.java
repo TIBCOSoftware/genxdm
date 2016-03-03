@@ -17,6 +17,9 @@ import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.components.ElementDefinition;
+import org.genxdm.xs.components.ModelGroup;
+import org.genxdm.xs.components.ParticleTerm;
+import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.constraints.AttributeUse;
 import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.xs.exceptions.DatatypeException;
@@ -79,40 +82,42 @@ public class TypedContentHelper<A>
         // of types that we are tracking.
         // TODO: we do not handle xsi:type overrides. leave it for later.
         // retrieve the type. quick and stupid: use the element name
-        Type type = null; // for now; should be: typeStack.peek();
-//        if (type == null)
-//        {
+        Type type = typeStack.peek(); // type of the parent of this element!
+        QName elementQName = new QName(ns, name, nsStack.getPrefix(ns, bindings));
+        if (type == null) // true for the root element, hopefully *only*
+        {
             // this is more or less correct.
-            ElementDefinition element = provider.getElementDeclaration(new QName(ns, name, nsStack.getPrefix(ns, bindings)));
-            if (element == null)
+            ElementDefinition element = provider.getElementDeclaration(elementQName);
+            if (element == null) // nowhere else to look. die in flames
                 throw new GenXDMException("Illegal start-complex invocation: element {"+ns+"}"+name+" has no element declaration");
             type = element.getType();
-//        }
-//        else
-//        {
-            // this is where we go sideways, because the way to ensure
-            // the order of things is correct is to walk over the schema
-            // model at the same time that we receive our events via the message interface
-            // we aren't doing it that way, because it takes a week just to understand the schema model
-            // this is so going to break for so many things. ugh.
-//            if (type instanceof ComplexType) // ought to be; it contains this element
-//            {
-                // TODO: do you know how much of a mess it is to find things? ugh
-                // we need to do approximately the same thing as simple-schema-model,
-                // where we 'digest' the content of a complex type to determine what
-                // element children are allowed.
-                // FOR NOW we're going to comment out all of the conditionals, and
-                // just check each name for a global element declaration. as soon
-                // as this fails (probably early) we'll have to do something a little
-                // more clever.
-                //((ComplexType)type).getContentType().
-//                ElementDefinition element = provider.getElementDeclaration(new QName(ns, name, nsStack.getPrefix(ns, bindings)));
-                // errors, because we're being sleazy as hell here
-//                type = element.getType();
-//            }
-//            else
-//                throw new IllegalStateException("Element content inside an element of non-complex type");
-//        }
+        }
+        else
+        {
+            ElementDefinition element = provider.getElementDeclaration(elementQName);
+            if (type instanceof ComplexType)// ought to be; it contains this element
+            {
+                // we don't mind the check above, because it catches
+                // attempts to put things in the wrong place. however,
+                // if we already have a global element, don't look for
+                // a local.
+                if (element == null)
+                {
+                    ComplexType cType = (ComplexType)type;
+                    if (!cType.getContentType().getKind().isSimple())
+                    {
+                        ModelGroup group = cType.getContentType().getContentModel().getTerm();
+                        element = locateElementDefinition(group, elementQName);
+                        if (element == null) // nowhere else to look. die in flames
+                            throw new GenXDMException("Illegal start-complex invocation: element {"+ns+"}"+name+" has no global element declaration or local element declaration in the scope of its parent");
+                    } // TODO: actually throw on this one, too?
+                    // else throw new ExceptionThisIsAnElementWhereAnAttributeShouldBe
+                }
+                type = element.getType();
+            }
+            else
+                throw new IllegalStateException("Illegal element content {"+ns+"}"+name+" inside an element of non-complex type {"+type.getName().getNamespaceURI()+"}"+type.getName().getLocalPart());
+        }
             
         handler.startElement(ns, name, nsStack.getPrefix(ns, bindings), type.getName());
         
@@ -362,6 +367,28 @@ public class TypedContentHelper<A>
             // TODO: we should check that empty content is allowed for this type.
             // leave it for later, though.
         }
+    }
+    
+    private ElementDefinition locateElementDefinition(ModelGroup mg, QName target)
+    {
+        for (SchemaParticle particle : mg.getParticles())
+        {
+            ParticleTerm term = particle.getTerm();
+            if (term instanceof ModelGroup)
+            {
+                ElementDefinition candidate = locateElementDefinition((ModelGroup)term, target);
+                if (candidate != null)
+                    return candidate;
+            }
+            else if (term instanceof ElementDefinition) // better be!
+            {
+                if ( ((ElementDefinition)term).getName().equals(target) )
+                    return (ElementDefinition)term;
+            }
+            // only two possibilities covered; if we haven't returned a match,
+            // fall through and return null.
+        }
+        return null;
     }
 
     private final SequenceHandler<A> handler;
