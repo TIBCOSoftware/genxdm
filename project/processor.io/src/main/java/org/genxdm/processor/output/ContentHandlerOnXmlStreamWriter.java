@@ -279,7 +279,7 @@ public class ContentHandlerOnXmlStreamWriter
         // attributes in the default namespace are not in global scope (requiring a namespace declaration),
         // but in the scope of their parent element, and the default prefix, for attributes, is *never*
         // bound (or bindable) to anything other than the default/global/null namespace
-        if (uri.equals(XMLConstants.NULL_NS_URI) || (uri == null))
+        if ((uri == null) || uri.equals(XMLConstants.NULL_NS_URI))
         {
             if (isAttribute)
                 return XMLConstants.DEFAULT_NS_PREFIX;
