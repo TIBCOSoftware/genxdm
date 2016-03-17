@@ -272,19 +272,67 @@ public class ContentHandlerOnXmlStreamWriter
     }
     
     // *never* return null
-    private String verifyNamespace(final String uri, String prefixSuggestion, final boolean isAttribute)
+    private String verifyNamespace(final String uri, final String prefixSuggestion, final boolean isAttribute)
         throws XMLStreamException
     {
         String retVal;
         // attributes in the default namespace are not in global scope (requiring a namespace declaration),
         // but in the scope of their parent element, and the default prefix, for attributes, is *never*
         // bound (or bindable) to anything other than the default/global/null namespace
-        if (uri.equals(XMLConstants.NULL_NS_URI) || (uri == null))
+        if ((uri == null) || uri.equals(XMLConstants.NULL_NS_URI))
         {
             if (isAttribute)
                 return XMLConstants.DEFAULT_NS_PREFIX;
             else
-                prefixSuggestion = XMLConstants.DEFAULT_NS_PREFIX;
+            {
+                String currentDefault = currentContext.getNamespaceURI(XMLConstants.DEFAULT_NS_PREFIX);
+                if (currentDefault == null)
+                {
+                    // look up the stack. if someone else has bound it, we need to
+                    // redeclare. if not, use the existing or implicit declaration
+                    Stack<NamespaceContext> pusher = new Stack<NamespaceContext>();
+                    do {
+                        NamespaceContext context = contexts.pop();
+                        pusher.push(context);
+                        // shouldn't reuse, but hey, it's efficient
+                        currentDefault = context.getNamespaceURI(XMLConstants.DEFAULT_NS_PREFIX); 
+                        if (currentDefault != null) // we're done
+                        {
+                            if (!currentDefault.equals(XMLConstants.NULL_NS_URI))
+                            {
+                                // rebind in current scope
+                                if (currentContext instanceof NSContext) // isn't this a given?
+                                    ((NSContext)currentContext).declare(XMLConstants.DEFAULT_NS_PREFIX, XMLConstants.NULL_NS_URI);
+                                else // it's the root context
+                                    output.setPrefix(XMLConstants.DEFAULT_NS_PREFIX, XMLConstants.NULL_NS_URI);
+                                nsDeclarations.add(new PrefixMap(XMLConstants.DEFAULT_NS_PREFIX, XMLConstants.NULL_NS_URI));
+                            }
+                            // else do nothing; the global namespace is implicitly bound to default prefix
+                            break; // because we're done!
+                        }
+                    } while (contexts.size() > 0);
+                    do {
+                        contexts.push(pusher.pop());
+                    } while (pusher.size() > 0);
+                    return XMLConstants.DEFAULT_NS_PREFIX; // because we're done
+                }
+                else if (currentDefault.equals(XMLConstants.NULL_NS_URI))
+                {
+                    // we already have xmlns="" in current context
+                    // this will happen if someone has explicitly declared it
+                    // for an element. do nothing and short-circuit return
+                    return XMLConstants.DEFAULT_NS_PREFIX;
+                }
+                else
+                {
+                    // the default prefix is bound to some other namespace,
+                    // *in the current context*. we're so screwed, because the
+                    // only thing we can bind it to is the default prefix here.
+                    // the easy way to do this is to declare it in current
+                    // scope:
+                    ((NSContext)currentContext).declare(XMLConstants.DEFAULT_NS_PREFIX, XMLConstants.NULL_NS_URI);
+                }
+            }
         }
         if (prefixSuggestion == null) // no prefix.
         {
@@ -318,25 +366,29 @@ public class ContentHandlerOnXmlStreamWriter
         else // there's a suggestion
         {
             String ns = currentContext.getNamespaceURI(prefixSuggestion);
+            String boundPrefix = currentContext.getPrefix(uri);
             if ((ns != null) && ns.equals(uri)) // declared in this context.
-            {
                 retVal = prefixSuggestion;
-            }
             else // not declared in this context.  how about the scopes?
             {
                 boolean suggestionOk = false;
-                String alternative = null;
+                String alternative = boundPrefix;
                 if (ns == null)
                 {
+                    // nothing is bound to the suggested prefix. ignore boundPrefix, if any
                     suggestionOk = true;
                     Stack<NamespaceContext> pusher = new Stack<NamespaceContext>();
                     do {
                         NamespaceContext context = contexts.pop();
                         pusher.push(context);
                         ns = context.getNamespaceURI(prefixSuggestion);
-                        if ((ns != null) && ns.equals(uri))
+                        if (ns != null) // prefix is bound; go no further 
                         {
-                            alternative = prefixSuggestion;
+                            if (ns.equals(uri))
+                                alternative = prefixSuggestion;
+                            // else it's bound to some other ns. in that case,
+                            // if the uri is already bound, we've got alternative
+                            // pointing at the boundPrefix.
                             break;
                         }
                     } while (contexts.size() > 0);
@@ -344,6 +396,13 @@ public class ContentHandlerOnXmlStreamWriter
                         contexts.push(pusher.pop());
                     } while (pusher.size() > 0);
                 }
+//                else // ns != null, but !ns.equals(uri)
+//                {
+                    // we already have the prefix bound in this context,
+                    // so we have to choose another. either it's boundPrefix
+                    // which is already assigned, or null, and we'll generate
+                    // a new prefix with no lookup.
+//                }
                 if (alternative == null)
                 {
                     String prefix = (suggestionOk ? prefixSuggestion : "ns"+nsCounter++);
@@ -418,7 +477,10 @@ public class ContentHandlerOnXmlStreamWriter
             throws GenXDMException
         {
             if (content.containsKey(prefix))
-                throw new GenXDMException("Prefix bound to multiple URIs in a single scope.");
+            {
+                String alreadyBound = content.get(prefix);
+                throw new GenXDMException("Prefix '"+ prefix + "' bound to multiple URIs ( {" + alreadyBound + "}, {" + uri + "} ) in a single scope.");
+            }
             content.put(prefix, uri);
         }
         
