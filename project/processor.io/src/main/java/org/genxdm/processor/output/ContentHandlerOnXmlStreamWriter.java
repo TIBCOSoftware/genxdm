@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
 
@@ -41,6 +42,8 @@ public class ContentHandlerOnXmlStreamWriter
     public ContentHandlerOnXmlStreamWriter(XMLStreamWriter output)
     {
         this.output = PreCondition.assertNotNull(output, "output");
+        Random r = new Random();
+        nsCounter = r.nextInt(900) + 100; // nsCounter starts at 100-1,000
     }
 
     public void flush()
@@ -505,5 +508,5 @@ public class ContentHandlerOnXmlStreamWriter
     private final ArrayList<PrefixMap> nsDeclarations = new ArrayList<PrefixMap>();
     private final Stack<NamespaceContext> contexts = new Stack<NamespaceContext>();
     
-    private int nsCounter = 0;
+    private int nsCounter;
 }

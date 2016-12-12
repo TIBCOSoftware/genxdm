@@ -39,6 +39,8 @@ public interface DocumentHandlerFactory<N> {
     
     Resolver getDefaultResolver();
     
+//    SerializationParams getDefaultParameters();
+    
     /**
      * Returns a new builder for parsing and writing data models.
      */
@@ -49,4 +51,6 @@ public interface DocumentHandlerFactory<N> {
     void setDefaultReporter(final XMLReporter reporter);
     
     void setDefaultResolver(final Resolver resolver);
+    
+//    void setDefaultParameters(final SerializationParams config);
 }
