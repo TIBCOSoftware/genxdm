@@ -7,9 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.genxdm.creation.Attrib;
+import org.genxdm.creation.ContentEvent;
+import org.genxdm.creation.EventKind;
+import org.genxdm.creation.EventQueue;
 
 public class ContentHelperToEventQueue
     extends AbstractContentHelper
+    implements EventQueue
 {
     public ContentHelperToEventQueue(Map<String, String> bindings)
     {
@@ -19,6 +23,7 @@ public class ContentHelperToEventQueue
             context = bindings;
     }
 
+    @Override
     public List<ContentEvent> getQueue()
     {
         return queue;
@@ -28,7 +33,7 @@ public class ContentHelperToEventQueue
     @Override
     public void start()
     {
-        queue.add(new ContentEvent((URI)null, null));
+        queue.add(new ContentEventImpl((URI)null, null));
     }
 
     @Override
@@ -37,7 +42,7 @@ public class ContentHelperToEventQueue
         // big deal is all in here; queue a start element:
         // TODO: do it right.
         String prefix = null;
-        queue.add(new ContentEvent(ns, name, prefix));
+        queue.add(new ContentEventImpl(ns, name, prefix));
         // TODO: queue the namespaces
         // TODO: queue the attributes
     }
@@ -45,25 +50,25 @@ public class ContentHelperToEventQueue
     @Override
     public void comment(String text)
     {
-        queue.add(new ContentEvent(EventKind.COMMENT, text));
+        queue.add(new ContentEventImpl(EventKind.COMMENT, text));
     }
 
     @Override
     public void pi(String target, String data)
     {
-        queue.add(new ContentEvent(EventKind.PROCESSING_INSTRUCTION, target, data));
+        queue.add(new ContentEventImpl(EventKind.PROCESSING_INSTRUCTION, target, data));
     }
 
     @Override
     public void endComplex()
     {
-        queue.add(new ContentEvent(EventKind.END_ELEMENT));
+        queue.add(new ContentEventImpl(EventKind.END_ELEMENT));
     }
 
     @Override
     public void end()
     {
-        queue.add(new ContentEvent(EventKind.END_DOCUMENT));
+        queue.add(new ContentEventImpl(EventKind.END_DOCUMENT));
     }
 
     @Override
@@ -76,7 +81,7 @@ public class ContentHelperToEventQueue
     
     protected void text(String ns, String name, String value)
     {
-        queue.add(new ContentEvent(EventKind.TEXT, value));
+        queue.add(new ContentEventImpl(EventKind.TEXT, value));
     }
 
     private final List<ContentEvent> queue = new ArrayList<ContentEvent>();

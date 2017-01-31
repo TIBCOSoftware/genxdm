@@ -3,6 +3,7 @@ package org.genxdm.bridgekit.content;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.genxdm.creation.EventKind;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.typed.io.SequenceHandler;
@@ -13,9 +14,9 @@ public class EventQueueDriver
     
     // TODO: maybe actually check for errors and stuff?
     
-    public static void driveQueue(Iterable<ContentEvent> queue, ContentHandler untypedOutput)
+    public static void driveQueue(Iterable<ContentEventImpl> queue, ContentHandler untypedOutput)
     {
-        for (ContentEvent event : queue)
+        for (ContentEventImpl event : queue)
         {
             EventKind kind = event.getKind();
             switch (kind)
@@ -64,9 +65,9 @@ public class EventQueueDriver
         }
     }
     
-    public static <A> void driveQueue(Iterable<TypedContentEvent<A>> queue, SequenceHandler<A> typedOutput)
+    public static <A> void driveQueue(Iterable<TypedContentEventImpl<A>> queue, SequenceHandler<A> typedOutput)
     {
-        for (TypedContentEvent<A> event : queue)
+        for (TypedContentEventImpl<A> event : queue)
         {
             EventKind kind = event.getKind();
             switch (kind)
@@ -119,13 +120,13 @@ public class EventQueueDriver
         }
     }
     
-    public static List<ContentEvent> newUntypedQueue()
+    public static List<ContentEventImpl> newUntypedQueue()
     {
-        return new ArrayList<ContentEvent>();
+        return new ArrayList<ContentEventImpl>();
     }
     
-    public static <A> List<TypedContentEvent<A>> newTypedQueue()
+    public static <A> List<TypedContentEventImpl<A>> newTypedQueue()
     {
-        return new ArrayList<TypedContentEvent<A>>();
+        return new ArrayList<TypedContentEventImpl<A>>();
     }
 }

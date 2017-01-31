@@ -5,11 +5,15 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-public class TypedContentEvent<A>
-    extends ContentEvent
+import org.genxdm.creation.EventKind;
+import org.genxdm.creation.TypedContentEvent;
+
+public class TypedContentEventImpl<A>
+    extends ContentEventImpl
+    implements TypedContentEvent<A>
 {
     // endDocument/endElement
-    public TypedContentEvent(EventKind kind)
+    public TypedContentEventImpl(EventKind kind)
     {
         super(kind);
         type = null;
@@ -17,7 +21,7 @@ public class TypedContentEvent<A>
     }
     
     // startDocument
-    public TypedContentEvent(URI sysId, String internal)
+    public TypedContentEventImpl(URI sysId, String internal)
     {
         super(sysId, internal);
         type = null;
@@ -25,7 +29,7 @@ public class TypedContentEvent<A>
     }
     
     // comment (NOT text)
-    public TypedContentEvent(EventKind kind, String value)
+    public TypedContentEventImpl(EventKind kind, String value)
     {
         super(kind, value);
         type = null;
@@ -33,7 +37,7 @@ public class TypedContentEvent<A>
     }
     
     // namespace, pi
-    public TypedContentEvent(EventKind kind, String name, String value)
+    public TypedContentEventImpl(EventKind kind, String name, String value)
     {
         super(kind, name, value);
         type = null;
@@ -41,7 +45,7 @@ public class TypedContentEvent<A>
     }
     
     // startElement
-    public TypedContentEvent(String ns, String nm, String pr, QName ty)
+    public TypedContentEventImpl(String ns, String nm, String pr, QName ty)
     {
         super(EventKind.START_TYPED_ELEMENT, (ns == null ? "" : ns), nm, (pr == null ? "" : pr));
         type = ty;
@@ -50,13 +54,13 @@ public class TypedContentEvent<A>
     }
     
     // attribute (simple)
-    public TypedContentEvent(String nm, List<? extends A> value, QName ty)
+    public TypedContentEventImpl(String nm, List<? extends A> value, QName ty)
     {
         this("", nm, "", value, ty);
     }
     
     // attribute (complete)
-    public TypedContentEvent(String ns, String nm, String pr, List<? extends A> value, QName ty)
+    public TypedContentEventImpl(String ns, String nm, String pr, List<? extends A> value, QName ty)
     {
         super(EventKind.ATTRIBUTE_TYPED, (ns == null ? "" : ns), nm, (pr == null ? "" : pr));
         data = value;
@@ -64,7 +68,7 @@ public class TypedContentEvent<A>
     }
     
     // text
-    public TypedContentEvent(List<? extends A> value)
+    public TypedContentEventImpl(List<? extends A> value)
     {
         super(EventKind.TEXT_TYPED);
         data = value;

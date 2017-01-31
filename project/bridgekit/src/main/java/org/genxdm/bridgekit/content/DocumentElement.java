@@ -7,6 +7,9 @@ import org.genxdm.ProcessingContext;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.TypedContext;
 
+/** A helper tool to locate the document element, given a NodeSource and a
+ * context.
+ */
 public final class DocumentElement
 {
     private DocumentElement() {} // prevent instantiation

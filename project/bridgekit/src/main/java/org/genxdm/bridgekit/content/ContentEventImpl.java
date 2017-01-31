@@ -2,12 +2,15 @@ package org.genxdm.bridgekit.content;
 
 import java.net.URI;
 
+import org.genxdm.creation.ContentEvent;
+import org.genxdm.creation.EventKind;
 import org.genxdm.exceptions.PreCondition;
 
-public class ContentEvent
+public class ContentEventImpl
+    implements ContentEvent
 {
     // use for endDocument/endElement
-    public ContentEvent(EventKind eventKind)
+    public ContentEventImpl(EventKind eventKind)
     {
         kind = PreCondition.assertNotNull(eventKind, "event kind");
         
@@ -16,7 +19,7 @@ public class ContentEvent
     }
     
     // use for startDocument
-    public ContentEvent(URI sysId, String internal)
+    public ContentEventImpl(URI sysId, String internal)
     {
         kind = EventKind.START_DOCUMENT;
         uri = sysId;
@@ -26,7 +29,7 @@ public class ContentEvent
     }
     
     // use for comment, text
-    public ContentEvent(EventKind eventKind, String value)
+    public ContentEventImpl(EventKind eventKind, String value)
     {
         PreCondition.assertNotNull(eventKind, "event kind");
         if ( (eventKind == EventKind.COMMENT) || (eventKind == EventKind.TEXT) )
@@ -41,7 +44,7 @@ public class ContentEvent
     }
     
     // use for namespace, simple attribute?, processing instruction 
-    public ContentEvent(EventKind eventKind, String name, String value)
+    public ContentEventImpl(EventKind eventKind, String name, String value)
     {
         PreCondition.assertNotNull(eventKind, "event kind");
         PreCondition.assertNotNull(name, "name");
@@ -67,7 +70,7 @@ public class ContentEvent
     }
     
     // startElement
-    public ContentEvent(String ns, String nm, String pr)
+    public ContentEventImpl(String ns, String nm, String pr)
     {
         name = PreCondition.assertNotNull(nm, "name");
         kind = EventKind.START_ELEMENT;
@@ -79,7 +82,7 @@ public class ContentEvent
     }
     
     // attribute (note: ASSUMES DtdAttributeKind.CDATA)
-    public ContentEvent(String ns, String nm, String pr, String value)
+    public ContentEventImpl(String ns, String nm, String pr, String value)
     {
         name = PreCondition.assertNotNull(nm, "name");
         kind = EventKind.ATTRIBUTE;
@@ -91,7 +94,7 @@ public class ContentEvent
     }
     
     // used by typed element and typed attribute subclass
-    protected ContentEvent(EventKind k, String ns, String nm, String pr)
+    protected ContentEventImpl(EventKind k, String ns, String nm, String pr)
     {
         kind = k;
         namespace = PreCondition.assertNotNull(ns, "namespace");

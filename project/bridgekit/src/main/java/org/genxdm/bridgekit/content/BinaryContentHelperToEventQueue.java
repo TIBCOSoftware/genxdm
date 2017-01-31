@@ -8,13 +8,16 @@ import java.util.Map;
 
 import org.genxdm.creation.Attrib;
 import org.genxdm.creation.BinaryContentHelper;
+import org.genxdm.creation.EventKind;
+import org.genxdm.creation.TypedContentEvent;
+import org.genxdm.creation.TypedEventQueue;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.ComponentProvider;
 
 public class BinaryContentHelperToEventQueue<A>
     extends AbstractContentHelper
-    implements BinaryContentHelper
+    implements BinaryContentHelper, TypedEventQueue<A>
 {
     public BinaryContentHelperToEventQueue(AtomBridge<A> atoms, ComponentProvider components, Map<String, String> bindings) 
     { 
@@ -37,7 +40,7 @@ public class BinaryContentHelperToEventQueue<A>
     @Override
     public void start()
     {
-        queue.add(new TypedContentEvent<A>((URI)null, null));
+        queue.add(new TypedContentEventImpl<A>((URI)null, null));
     }
 
     @Override
@@ -65,25 +68,25 @@ public class BinaryContentHelperToEventQueue<A>
     @Override
     public void comment(String text)
     {
-        queue.add(new TypedContentEvent<A>(EventKind.COMMENT, text));
+        queue.add(new TypedContentEventImpl<A>(EventKind.COMMENT, text));
     }
 
     @Override
     public void pi(String target, String data)
     {
-        queue.add(new TypedContentEvent<A>(EventKind.PROCESSING_INSTRUCTION, target, data));
+        queue.add(new TypedContentEventImpl<A>(EventKind.PROCESSING_INSTRUCTION, target, data));
     }
 
     @Override
     public void endComplex()
     {
-        queue.add(new TypedContentEvent<A>(EventKind.END_ELEMENT));
+        queue.add(new TypedContentEventImpl<A>(EventKind.END_ELEMENT));
     }
 
     @Override
     public void end()
     {
-        queue.add(new TypedContentEvent<A>(EventKind.END_DOCUMENT));
+        queue.add(new TypedContentEventImpl<A>(EventKind.END_DOCUMENT));
     }
 
     @Override
