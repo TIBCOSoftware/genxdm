@@ -2,6 +2,8 @@ package org.genxdm.bridgekit.content;
 
 import java.util.Map;
 
+import org.genxdm.creation.Attrib;
+import org.genxdm.creation.ContentHelper;
 import org.genxdm.exceptions.GenXDMException;
 
 public abstract class AbstractContentHelper
@@ -32,6 +34,12 @@ public abstract class AbstractContentHelper
         startComplex(ns, name, bindings, attributes);
         text(ns, name, value);
         endComplex();
+    }
+    
+    @Override
+    public void startComplex(String ns, String name)
+    {
+        startComplex(ns, name, null, null);
     }
 
     @Override

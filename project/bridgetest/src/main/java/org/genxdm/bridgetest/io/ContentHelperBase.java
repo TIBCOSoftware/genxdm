@@ -14,10 +14,10 @@ import java.util.Set;
 
 import org.genxdm.Cursor;
 import org.genxdm.ProcessingContext;
-import org.genxdm.bridgekit.content.Attrib;
 import org.genxdm.bridgekit.content.BaseContentHelper;
-import org.genxdm.bridgekit.content.ContentHelper;
 import org.genxdm.bridgetest.TestBase;
+import org.genxdm.creation.Attrib;
+import org.genxdm.creation.ContentHelper;
 import org.genxdm.io.FragmentBuilder;
 import org.junit.Test;
 

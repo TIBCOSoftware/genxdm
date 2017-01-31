@@ -1,4 +1,4 @@
-package org.genxdm.bridgekit.content;
+package org.genxdm.creation;
 
 import java.util.Map;
 

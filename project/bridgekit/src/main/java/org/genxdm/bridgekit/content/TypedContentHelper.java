@@ -11,6 +11,8 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.creation.Attrib;
+import org.genxdm.creation.BinaryContentHelper;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.io.SequenceHandler;
