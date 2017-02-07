@@ -92,7 +92,7 @@ public final class PreCondition
     {
         if (condition)
         {
-            throw new AssertionError(message + " must be false.");
+            throw new AssertionError(message);
         }
     }
 

@@ -52,64 +52,64 @@ public final class ComponentBagImpl implements ComponentBag
     public void add(final ElementDefinition element)
     {
         PreCondition.assertArgumentNotNull(element, "element");
-        PreCondition.assertTrue(element.getScopeExtent() == ScopeExtent.Global, "{scope} of element must be global");
-        PreCondition.assertFalse(m_elements.containsKey(element.getName()), "element must only be added once");
+        PreCondition.assertTrue(element.getScopeExtent() == ScopeExtent.Global, "{scope} of element " + element.getName() + " must be global");
+        PreCondition.assertFalse(m_elements.containsKey(element.getName()), "element " + element.getName() + " must only be added once");
         m_elements.put(element.getName(), element);
     }
 
     public void add(final AttributeDefinition attribute)
     {
         PreCondition.assertArgumentNotNull(attribute, "attribute");
-        PreCondition.assertTrue(attribute.getScopeExtent() == ScopeExtent.Global, "{scope} of attribute must be global");
-        PreCondition.assertFalse(m_attributes.containsKey(attribute.getName()), "attribute must only be added once");
+        PreCondition.assertTrue(attribute.getScopeExtent() == ScopeExtent.Global, "{scope} of attribute " + attribute.getName() + " must be global");
+        PreCondition.assertFalse(m_attributes.containsKey(attribute.getName()), "attribute " + attribute.getName() + " must only be added once");
         m_attributes.put(attribute.getName(), attribute);
     }
 
     public void add(final AttributeGroupDefinition attributeGroup)
     {
         PreCondition.assertArgumentNotNull(attributeGroup, "attributeGroup");
-        PreCondition.assertTrue(attributeGroup.getScopeExtent() == ScopeExtent.Global, "{scope} of attribute group must be global");
-        PreCondition.assertFalse(m_attributeGroups.containsKey(attributeGroup.getName()), "attribute group must only be added once");
+        PreCondition.assertTrue(attributeGroup.getScopeExtent() == ScopeExtent.Global, "{scope} of attribute group " + attributeGroup.getName() + " must be global");
+        PreCondition.assertFalse(m_attributeGroups.containsKey(attributeGroup.getName()), "attribute group " + attributeGroup.getName() + " must only be added once");
         m_attributeGroups.put(attributeGroup.getName(), attributeGroup);
     }
 
     public void add(final ComplexType complexType)
     {
         PreCondition.assertArgumentNotNull(complexType, "complexType");
-        PreCondition.assertFalse(m_complexTypes.containsKey(complexType.getName()));
-        PreCondition.assertFalse(m_simpleTypes.containsKey(complexType.getName()));
+        PreCondition.assertFalse(m_complexTypes.containsKey(complexType.getName()), "complexType " + complexType.getName() + " must only be added once");
+        PreCondition.assertFalse(m_simpleTypes.containsKey(complexType.getName()), "complexType " + complexType.getName() + " has the same name as a simpleType");
         m_complexTypes.put(complexType.getName(), complexType);
     }
 
     public void add(final IdentityConstraint identityConstraint)
     {
         PreCondition.assertArgumentNotNull(identityConstraint, "identity-constraint");
-        PreCondition.assertTrue(identityConstraint.getScopeExtent() == ScopeExtent.Global, "{scope} of identity-constraint must be global");
-        PreCondition.assertFalse(m_identityConstraints.containsKey(identityConstraint.getName()), "identity-constraint must only be added once");
+        PreCondition.assertTrue(identityConstraint.getScopeExtent() == ScopeExtent.Global, "{scope} of identity-constraint " + identityConstraint.getName() + " must be global");
+        PreCondition.assertFalse(m_identityConstraints.containsKey(identityConstraint.getName()), "identity-constraint " + identityConstraint.getName() + " must only be added once");
         m_identityConstraints.put(identityConstraint.getName(), identityConstraint);
     }
 
     public void add(final ModelGroup group)
     {
         PreCondition.assertArgumentNotNull(group, "group");
-        PreCondition.assertTrue(group.getScopeExtent() == ScopeExtent.Global, "{scope} of group must be global");
-        PreCondition.assertFalse(m_modelGroups.containsKey(group.getName()), "group must only be added once");
+        PreCondition.assertTrue(group.getScopeExtent() == ScopeExtent.Global, "{scope} of group " + group.getName() + " must be global");
+        PreCondition.assertFalse(m_modelGroups.containsKey(group.getName()), "group " + group.getName() + " must only be added once");
         m_modelGroups.put(group.getName(), group);
     }
 
     public void add(final NotationDefinition notation)
     {
         PreCondition.assertArgumentNotNull(notation, "notation");
-        PreCondition.assertTrue(notation.getScopeExtent() == ScopeExtent.Global, "{scope} of notation must be global");
-        PreCondition.assertFalse(m_notations.containsKey(notation.getName()), "notation must only be added once");
+        PreCondition.assertTrue(notation.getScopeExtent() == ScopeExtent.Global, "{scope} of notation " + notation.getName() + " must be global");
+        PreCondition.assertFalse(m_notations.containsKey(notation.getName()), "notation " + notation.getName() + " must only be added once");
         m_notations.put(notation.getName(), notation);
     }
 
     public void add(final SimpleType simpleType)
     {
         PreCondition.assertArgumentNotNull(simpleType, "simpleType");
-        PreCondition.assertFalse(m_simpleTypes.containsKey(simpleType.getName()), "simpleType must only be added once");
-        PreCondition.assertFalse(m_complexTypes.containsKey(simpleType.getName()), "complexType already exists with the same name");
+        PreCondition.assertFalse(m_simpleTypes.containsKey(simpleType.getName()), "simpleType " + simpleType.getName() + " must only be added once");
+        PreCondition.assertFalse(m_complexTypes.containsKey(simpleType.getName()), "simpleType " + simpleType.getName() + " has the same name as a complexType");
         m_simpleTypes.put(simpleType.getName(), simpleType);
     }
 
