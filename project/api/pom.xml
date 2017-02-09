@@ -35,9 +35,9 @@
     <description>The GenXDM API module defines the core interfaces and abstractions for GenXDM bridges and processors.  The untyped immutable API is focused in the genxdm package; the mutable extension in mutable.  The typed extension is in the typed package; it depends upon the XML Schema API found in the xs package.</description>
     <reporting>
         <plugins>
-            <plugin>
+            <!--plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
+            </plugin-->
             <!--plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jxr-maven-plugin</artifactId>
