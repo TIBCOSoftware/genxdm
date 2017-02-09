@@ -69,10 +69,10 @@
                 <role>bottle-washer</role>
             </roles>
         </developer>
-        <developer>
+        <!--developer>
             <id>joe.baysdon@gmail.com</id>
             <name>Joe Baysdon</name>
-        </developer>
+        </developer-->
         <developer>
             <id>eric@tibco.com</id>
             <name>Eric Johnson</name>
@@ -158,8 +158,12 @@
 	        <reportSets>
 	          <reportSet>
 	            <reports>
+	              <report>index</report>
 	              <report>dependencies</report>
+                  <report>mailing-list</report>
 	              <report>scm</report>
+	              <report>summary</report>
+	              <report>project-team</report>
 	            </reports>
 	          </reportSet>
 	        </reportSets>
