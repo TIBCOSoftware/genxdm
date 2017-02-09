@@ -34,29 +34,6 @@
     <url>http://www.genxdm.org/xpath.v10/</url>
     <description>The GenXDM XPath 1.0 API module is based on an abstraction of the XPath processing developed by James Clark and Bill Lindsey for XT (with their permission; see copying.txt and copyingjc.txt for their licenses).</description>
 
-    <reporting>
-        <plugins>
-            <plugin>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-            <!--plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jxr-maven-plugin</artifactId>
-            </plugin-->
-            <plugin>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-            </plugin>
-            <!--plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>jdepend-maven-plugin</artifactId>
-            </plugin-->
-        </plugins>
-    </reporting>
-
     <scm>
         <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/xpath.v10</connection>
         <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/xpath.v10</developerConnection>
