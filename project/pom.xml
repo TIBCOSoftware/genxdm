@@ -139,6 +139,17 @@
         <module>performance</module>
     </modules>
 
+	<profiles>
+	  <profile>
+	    <id>java8-doclint-disabled</id>
+	    <activation>
+	      <jdk>[1.8,)</jdk>
+	    </activation>
+	    <properties>
+	      <javadoc.opts>-Xdoclint:none</javadoc.opts>
+	    </properties>
+	  </profile>
+	</profiles>
     <build>
         <finalName>${groupId}.${artifactId}_${version}</finalName>
         <pluginManagement>
