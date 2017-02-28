@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.genxdm.creation.Attrib;
+import org.genxdm.creation.BinaryAttrib;
 import org.genxdm.creation.BinaryContentHelper;
 import org.genxdm.creation.EventKind;
 import org.genxdm.creation.TypedContentEvent;
@@ -95,6 +96,19 @@ public class BinaryContentHelperToEventQueue<A>
         queue.clear();
         // TODO: clear the namespace stuff, too
         // that means we need to have a way to reset context, for reuse!
+    }
+    // the next two are not ideal, but neither is returning attribs for
+    // newattribute() in abstracthelper, for our case.
+    @Override
+    public BinaryAttrib newBinaryAttribute(String name, byte [] data)
+    {
+        return new BinaryAttr(name, data);
+    }
+    
+    @Override
+    public BinaryAttrib newBinaryAttribute(String ns, String name, byte[] data)
+    {
+        return new BinaryAttr(ns, name, data);
     }
     
     protected void text(String ns, String name, String value)

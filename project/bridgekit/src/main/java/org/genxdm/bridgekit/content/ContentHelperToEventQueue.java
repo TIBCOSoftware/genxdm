@@ -1,6 +1,5 @@
 package org.genxdm.bridgekit.content;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +32,10 @@ public class ContentHelperToEventQueue
     @Override
     public void start()
     {
-        queue.add(new ContentEventImpl((URI)null, null));
+        // TODO: this should *probably* throw an exception, because how stupid is this?
+        // it's an event queue. we shouldn't have a document in it.
+        // *alternately*, just discard the event. do that for now.
+        //queue.add(new ContentEventImpl((URI)null, null));
     }
 
     @Override
@@ -68,7 +70,10 @@ public class ContentHelperToEventQueue
     @Override
     public void end()
     {
-        queue.add(new ContentEventImpl(EventKind.END_DOCUMENT));
+        //TODO: see above, for start(). we should *not* have documents inside
+        // an event queue, so we either throw an exception or we ignore it.
+        // ignore for now.
+        //queue.add(new ContentEventImpl(EventKind.END_DOCUMENT));
     }
 
     @Override

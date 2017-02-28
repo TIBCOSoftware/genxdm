@@ -45,13 +45,13 @@ public abstract class AbstractContentHelper
     @Override
     public Attrib newAttribute(String name, String value)
     {
-        return new Attrib(name, value);
+        return new Attr(name, value);
     }
 
     @Override
     public Attrib newAttribute(String ns, String name, String value)
     {
-        return new Attrib(ns, name, value);
+        return new Attr(ns, name, value);
     }
 
     protected abstract void text(String ns, String name, String value);

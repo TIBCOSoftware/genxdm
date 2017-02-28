@@ -12,9 +12,13 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.genxdm.creation.Attrib;
+import org.genxdm.creation.BinaryAttrib;
 import org.genxdm.creation.BinaryContentHelper;
+import org.genxdm.creation.TypeAwareBranchCopier;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.ContentGenerator;
+import org.genxdm.typed.io.SequenceGenerator;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.ComponentProvider;
@@ -34,7 +38,7 @@ import org.genxdm.xs.types.Type;
 
 public class TypedContentHelper<A>
     extends AbstractContentHelper
-    implements BinaryContentHelper
+    implements BinaryContentHelper, TypeAwareBranchCopier<A>
 {
     public TypedContentHelper(SequenceHandler<A> output, ComponentProvider components, AtomBridge<A> atoms)
     {
@@ -233,6 +237,18 @@ public class TypedContentHelper<A>
     }
 
     @Override
+    public BinaryAttrib newBinaryAttribute(String name, byte [] data)
+    {
+        return new BinaryAttr(name, data);
+    }
+    
+    @Override
+    public BinaryAttrib newBinaryAttribute(String ns, String name, byte[] data)
+    {
+        return new BinaryAttr(ns, name, data);
+    }
+    
+    @Override
     public void binaryElement(String ns, String name, byte[] data)
     {
         binaryExElement(ns, name, null, null, data);
@@ -315,6 +331,30 @@ public class TypedContentHelper<A>
         }
     }
     
+    @Override
+    public void copyTreeAt(ContentGenerator generator)
+    {
+        // TODO!!!
+        throw new UnsupportedOperationException("Not yet implemented");
+        // the remainder here is the untyped form, but this is supposed to be typed.
+        // basically, this should do validation on the fly.
+//        PreCondition.assertNotNull(generator);
+//        PreCondition.assertTrue(generator.isElement(), "ContentGenerator must be positioned on an element");
+        // TODO: make sure that we're positioned inside an element
+        // TODO: should we be handling namespace fixups?
+//        generator.write(handler);
+    }
+
+    @Override
+    public void copyTypedTreeAt(SequenceGenerator<A> generator)
+    {
+        PreCondition.assertNotNull(generator);
+        PreCondition.assertTrue(generator.isElement(), "SequenceGenerator must be positioned on an element");
+        // TODO: make sure that we're positioned inside an element
+        // TODO: should we be handling namespace fixups?
+        generator.write(handler, false);
+    }
+
     protected void text(String ns, String name, String value)
     {
         // now handle the content of the text node. it *may* be empty or null,

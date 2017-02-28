@@ -886,7 +886,7 @@ public final class XMLSchemaConverter
                 // If we have any late resolutions to do, make sure we're back at the point of the
                 // stack where the late resolutions needs to begin; that ensures that the necessary base 
                 // type(s) have been resolved.  (See GXML-45 for relevant use cases.)
-                if(!m_lateTypeResolutionNameList.isEmpty() &&  m_lateTypeResolutionNameList.get(0).equals(name))
+                if(!m_lateTypeResolutionNameList.isEmpty() &&  name.equals(m_lateTypeResolutionNameList.get(0)))
                 {
                 	while(!m_lateTypeResolutionNameList.isEmpty())
                 	{
@@ -934,7 +934,7 @@ public final class XMLSchemaConverter
     		for(final XMLType xmlType : list)
     		{
     			final QName lateResolveTypeName = xmlType.getName();
-    			//System.out.println("   late resolution: " + lateResolveTypeName + " because of " + typeName);
+//System.out.println("   late resolution: " + lateResolveTypeName + " because of " + typeName);
     			final ComplexTypeImpl complexType = (ComplexTypeImpl)m_outBag.getComplexType(lateResolveTypeName);
     			complexType.setContentType(convertContentType(xmlType));
     			lateResolveType(lateResolveTypeName);
@@ -987,6 +987,7 @@ public final class XMLSchemaConverter
             		{
             			list = new ArrayList<XMLType>();
             			m_lateTypeResolutionMap.put(typeRefName, list);
+//System.out.println("Add "+typeRefName+" to lateTypeResolutionNameList");
             			m_lateTypeResolutionNameList.add(typeRefName);
             		}
             		list.add(xmlComplexType);
@@ -995,6 +996,7 @@ public final class XMLSchemaConverter
             		if(false == m_lateTypeResolutionMap.containsKey(xmlComplexType.getName()))
             		{
             			m_lateTypeResolutionMap.put(xmlComplexType.getName(), null);
+//System.out.println("Add "+xmlComplexType.getName()+" to lateTypeResolutionNameList");
             			m_lateTypeResolutionNameList.add(xmlComplexType.getName());
             		}
             		return EMPTY_CONTENT; // actual content to be determined later

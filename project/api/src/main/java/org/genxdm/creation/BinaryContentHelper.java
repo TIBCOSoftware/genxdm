@@ -58,4 +58,8 @@ public interface BinaryContentHelper
      */
     void binaryExElement(String ns, String name, Map<String, String> bindings, Iterable<Attrib> attributes, byte [] data);
     
+    BinaryAttrib newBinaryAttribute(String name, byte [] data);
+    
+    BinaryAttrib newBinaryAttribute(String ns, String name, byte [] data);
+    
 }

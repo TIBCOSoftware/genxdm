@@ -5,14 +5,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.genxdm.creation.Attrib;
+import org.genxdm.creation.BranchCopier;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
+import org.genxdm.io.ContentGenerator;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.io.DtdAttributeKind;
 
 // simplified api for generating untyped xml trees.
 public class BaseContentHelper
     extends AbstractContentHelper
+    implements BranchCopier
 {
     public BaseContentHelper(ContentHandler handler)
     {
@@ -123,6 +126,16 @@ public class BaseContentHelper
         handler.text(value);
     }
     
+    @Override
+    public void copyTreeAt(ContentGenerator generator)
+    {
+        PreCondition.assertNotNull(generator);
+        PreCondition.assertTrue(generator.isElement(), "ContentGenerator must be positioned on an element");
+        // TODO: make sure that we're positioned inside an element
+        // TODO: should we be handling namespace fixups?
+        generator.write(handler);
+    }
+
     private final ContentHandler handler;
     private final NamespaceContextStack nsStack = new NamespaceContextStack("cns");
     

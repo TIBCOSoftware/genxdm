@@ -16,9 +16,8 @@
 package org.genxdm.typed;
 
 import org.genxdm.Cursor;
-import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.nodes.TypeInformer;
-import org.genxdm.typed.io.SequenceHandler;
+import org.genxdm.typed.io.SequenceGenerator;
 
 /**
  * A cursor paradigm for navigating an XML tree.
@@ -30,8 +29,6 @@ import org.genxdm.typed.io.SequenceHandler;
  *            The atom handle.
  */
 public interface TypedCursor<N, A> 
-    extends Cursor, TypeInformer<A>
+    extends Cursor, TypeInformer<A>, SequenceGenerator<A>
 {
-	void write(SequenceHandler<A> handler, boolean bogus)
-		throws GenXDMException;
 }
