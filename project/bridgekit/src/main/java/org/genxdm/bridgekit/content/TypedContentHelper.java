@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.genxdm.creation.Attrib;
@@ -86,7 +87,6 @@ public class TypedContentHelper<A>
         // this is where we do the promotion for the element.
         // we have to retrieve the correct type name. we should then have a stack
         // of types that we are tracking.
-        // TODO: we do not handle xsi:type overrides. leave it for later.
         // retrieve the type. quick and stupid: use the element name
         Type type = typeStack.peek(); // type of the parent of this element!
         QName elementQName = new QName(ns, name, nsStack.getPrefix(ns, bindings));
@@ -116,14 +116,20 @@ public class TypedContentHelper<A>
                         element = locateElementDefinition(group, elementQName);
                         if (element == null) // nowhere else to look. die in flames
                             throw new GenXDMException("Illegal start-complex invocation: element {"+ns+"}"+name+" has no global element declaration or local element declaration in the scope of its parent");
-                    } // TODO: actually throw on this one, too?
+                    }
                     // else throw new ExceptionThisIsAnElementWhereAnAttributeShouldBe
+                    // we'd throw that for empty or complex-with-simplecontent elements
+                    // that have a child element inside (which is not valid).
                 }
                 type = element.getType();
             }
             else
                 throw new IllegalStateException("Illegal element content {"+ns+"}"+name+" inside an element of non-complex type {"+type.getName().getNamespaceURI()+"}"+type.getName().getLocalPart());
         }
+        // here we handle xsi:type overrides (q.v. impl)
+        Type xsiTypeOverride = hasTypeOverride(attributes);
+        if (xsiTypeOverride != null)
+            type = xsiTypeOverride;
             
         handler.startElement(ns, name, nsStack.getPrefix(ns, bindings), type.getName());
         
@@ -334,15 +340,12 @@ public class TypedContentHelper<A>
     @Override
     public void copyTreeAt(ContentGenerator generator)
     {
-        // TODO!!!
-        throw new UnsupportedOperationException("Not yet implemented");
-        // the remainder here is the untyped form, but this is supposed to be typed.
-        // basically, this should do validation on the fly.
-//        PreCondition.assertNotNull(generator);
-//        PreCondition.assertTrue(generator.isElement(), "ContentGenerator must be positioned on an element");
-        // TODO: make sure that we're positioned inside an element
-        // TODO: should we be handling namespace fixups?
-//        generator.write(handler);
+        PreCondition.assertNotNull(generator);
+        PreCondition.assertTrue(generator.isElement(), "ContentGenerator must be positioned on an element");
+        HandlerHelper<A> hh = new HandlerHelper<A>(this);
+        // note: we may not be positioned correctly. let the output handler fail
+        // note: the target (us! right here!) has to handle namespace issues
+        generator.write(hh);
     }
 
     @Override
@@ -350,8 +353,8 @@ public class TypedContentHelper<A>
     {
         PreCondition.assertNotNull(generator);
         PreCondition.assertTrue(generator.isElement(), "SequenceGenerator must be positioned on an element");
-        // TODO: make sure that we're positioned inside an element
-        // TODO: should we be handling namespace fixups?
+        // note: we may not be positioned correctly. let the output handler fail
+        // note: the target handler has to handle namespace fixup
         generator.write(handler, false);
     }
 
@@ -409,6 +412,28 @@ public class TypedContentHelper<A>
             // TODO: we should check that empty content is allowed for this type.
             // leave it for later, though.
         }
+    }
+    
+    private Type hasTypeOverride(Iterable<Attrib> attributes)
+    {
+        if (attributes != null)
+        {
+            for (Attrib attr : attributes)
+            {
+                String ns = attr.getNamespace();
+                if (ns != null)
+                {
+                    if (ns.equals(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI)
+                        && attr.getName().equals("type") )
+                    {
+                        // TODO complete implementation of resolution/lookup
+                        QName typeName = null; // attr.getValue() gives you pfx:name; resolve it then get the type.
+                        // TODO: once complete, copy over to the queue impl
+                    }
+                }
+            }
+        }
+        return null; // always does this until we resolve qname and retrieve type
     }
     
     private ElementDefinition locateElementDefinition(ModelGroup mg, QName target)

@@ -9,6 +9,7 @@ import org.genxdm.creation.Attrib;
 import org.genxdm.creation.ContentEvent;
 import org.genxdm.creation.EventKind;
 import org.genxdm.creation.EventQueue;
+import org.genxdm.exceptions.GenXDMException;
 
 public class ContentHelperToEventQueue
     extends AbstractContentHelper
@@ -17,16 +18,16 @@ public class ContentHelperToEventQueue
     public ContentHelperToEventQueue(Map<String, String> bindings)
     {
         if (bindings == null)
-            context = new HashMap<String, String>();
-        else 
-            context = bindings;
+            bindings = new HashMap<String, String>();
+        nsStack.push(bindings);
     }
 
     @Override
     public List<ContentEvent> getQueue()
     {
+        if (depth != 0)
+            throw new GenXDMException("Unbalanced queue! Missing 'end' event for 'start' event");
         return queue;
-        // throw new GenXDMException("Unbalanced queue! Missing 'end' event for 'start' event");
     }
     
     @Override
@@ -41,12 +42,44 @@ public class ContentHelperToEventQueue
     @Override
     public void startComplex(String ns, String name, Map<String, String> bindings, Iterable<Attrib> attributes)
     {
-        // big deal is all in here; queue a start element:
-        // TODO: do it right.
-        String prefix = null;
-        queue.add(new ContentEventImpl(ns, name, prefix));
-        // TODO: queue the namespaces
-        // TODO: queue the attributes
+        if ( (name == null) || name.trim().isEmpty() )
+            throw new IllegalArgumentException("Illegal start-complex invocation: unnamed element");
+        if (ns == null)
+            ns = NIT;
+        if (nsStack.getPrefix(ns, bindings) == null)
+        {
+            // add a binding for the namespace, and initialize bindings.
+            if (bindings == null)
+                bindings = new HashMap<String, String>();
+            if (ns.isEmpty())
+                bindings.put(NIT, NIT);
+            else
+                bindings.put(nsStack.newPrefix(), ns);
+        }
+        if (attributes != null)
+            for (Attrib att : attributes)
+            {
+                if (!att.getNamespace().isEmpty())
+                    bindings = nsStack.checkAttributePrefix(att, bindings);
+            }
+        // by the time we get here, the local namespace context should be consistent.
+        // in most cases, we shouldn't have had to do anything to achieve that.
+        queue.add(new ContentEventImpl(ns, name, nsStack.getPrefix(ns, bindings)));
+        if (bindings != null)
+            for (Map.Entry<String, String> binding : bindings.entrySet())
+            {
+                queue.add(new ContentEventImpl(EventKind.NAMESPACE, binding.getKey(), binding.getValue()));
+            }
+        if (attributes != null)
+            for (Attrib attribute : attributes)
+            {
+                if (attribute.getNamespace().isEmpty())
+                    queue.add(new ContentEventImpl(NIT, attribute.getName(), NIT, attribute.getValue()));
+                else
+                    queue.add(new ContentEventImpl(attribute.getNamespace(), attribute.getName(), nsStack.getAttributePrefix(attribute.getNamespace(), bindings), attribute.getValue()));
+            }
+        nsStack.push(bindings);
+        depth++;
     }
 
     @Override
@@ -65,6 +98,8 @@ public class ContentHelperToEventQueue
     public void endComplex()
     {
         queue.add(new ContentEventImpl(EventKind.END_ELEMENT));
+        nsStack.pop();
+        depth--;
     }
 
     @Override
@@ -90,6 +125,9 @@ public class ContentHelperToEventQueue
     }
 
     private final List<ContentEvent> queue = new ArrayList<ContentEvent>();
-    private final Map<String, String> context; // namespace context at start
     private final NamespaceContextStack nsStack = new NamespaceContextStack("cns");
+    
+    private int depth = 0;
+    
+    private static final String NIT = "";
 }

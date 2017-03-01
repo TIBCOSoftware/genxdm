@@ -99,10 +99,16 @@ public class ContentEventImpl
         kind = k;
         namespace = PreCondition.assertNotNull(ns, "namespace");
         name = PreCondition.assertNotNull(nm, "name");
-        prefix = PreCondition.assertNotNull(pr, "prefix");
+        if (kind == EventKind.START_TYPED_ELEMENT)
+            prefix = PreCondition.assertNotNull(pr, "prefix");
+        else
+            prefix = null;
+        if (kind == EventKind.ATTRIBUTE_TYPED)
+            text = (pr == null) ? "" : pr;
+        else
+            text = null;
         
         uri = null;
-        text = null;
     }
     
     public EventKind getKind() { return kind; }
