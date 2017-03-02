@@ -1,12 +1,16 @@
 package org.genxdm.bridgekit.names;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 
+import org.genxdm.Model;
+import org.genxdm.NodeKind;
 import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.names.NamespaceBinding;
 
@@ -16,6 +20,40 @@ public class DefaultNamespaceContext
     public DefaultNamespaceContext(Iterable<NamespaceBinding> bindingsInScope)
     {
         inScope = bindingsInScope;
+    }
+    
+    // this is a much more useful constructor, you know
+    public <N> DefaultNamespaceContext(Model<N> model, N context)
+    {
+        // iterate from the starting point to the root via ancestor axis,
+        // at each element getting local namespace bindings and adding any that
+        // are not already bound in descendant context.
+        List<NamespaceBinding> bindings = new ArrayList<NamespaceBinding>();
+        Set<String> prefixes = new HashSet<String>();
+        do {
+            // set context to null if we're at the root
+            if (model.getNodeKind(context) == NodeKind.DOCUMENT)
+                context = null;
+            // if we have an element enhance the binding list
+            if (model.isElement(context))
+            {
+                // check locally declared bindings
+                for (NamespaceBinding binding : model.getNamespaceBindings(context))
+                {
+                    // if the prefix hasn't already (in a descendant) been bound, bind
+                    String prefix = binding.getPrefix();
+                    if (!prefixes.contains(prefix))
+                    {
+                        prefixes.add(prefix);
+                        bindings.add(binding);
+                    }
+                }
+            }
+            // finished with child, move to parent
+            context = model.getParent(context);
+        } while (context != null); // stop when there's no more ancestors
+        // set the inScope to the list
+        inScope = bindings;
     }
 
     @Override
