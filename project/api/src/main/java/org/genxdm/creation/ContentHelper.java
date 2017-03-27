@@ -56,6 +56,9 @@ public interface ContentHelper
      * extra call (developers who want to call endComplex() regardless of this
      * assurance are guaranteed that doing so will <em>not</em> cause an error).
      * 
+     * Parameters are thus identical to those required for the four-argument version
+     * of startComplex().
+     * 
      * @param ns the URI of the namespace for the document element (not the prefix);
      * if null, will be treated as the empty string (global/default namespace)
      * @param name the local name of the document element; if null or empty, and
@@ -76,7 +79,8 @@ public interface ContentHelper
      */
     void start(String ns, String name, Map<String, String> bindings, Iterable<Attrib> attributes);
     
-    /** Start a complex element with the given name and namespace.
+    /** Start a complex element with the given name, namespace, and optional namespace
+     * bindings and attributes.
      * 
      * A complex element is one that contains child elements, comments, or
      * processing instructions, so far as the ContentHelper interface is
@@ -117,9 +121,10 @@ public interface ContentHelper
      * a valid element name, an exception will be thrown, either IllegalArgumentException
      * or whatever the underlying tree model creation tool throws.
      */
-    void startComplex(String ns, String name); // for use only when there are no new bindings or attributes, like simplified start()
+    void startComplex(String ns, String name);
     
-    /** Create an element of simple type (or an empty element), opening and closing it in a single call.
+    /** Create an element of simple type (or an empty element), with its
+     * value, opening and closing it in a single call.
      * 
      * This could create a node that looks like this:
      * &lt;element>value&lt;/element> or this: &lt;element />, for example
@@ -176,6 +181,7 @@ public interface ContentHelper
      * value are both supplied.
      * 
      * The created attribute will be in the global/default namespace (no prefix).
+     * This is true for the overwhelming majority of attributes encountered in the wild.
      * 
      * @param name the name of the attribute, which must be unique in the scope of
      * the element it is to decorate.
@@ -208,6 +214,19 @@ public interface ContentHelper
      */
     void comment(String text);
     
+    /** Create a processing instruction.
+     * 
+     * Must happen between a startComplex() and endComplex() call (possibly mixed
+     * in with other simpleElement() or simplexElement() or startComplex()+endComplex()
+     * or comment() calls representing siblings).
+     * 
+     * @param target the content of the processing instruction up to the first
+     *        whitespace, commonly called the target and used to determine which
+     *        processor cares about it and how the rest of its content is interpreted.
+     *        Must not be null.
+     * @param data the processing instruction content after the first whitespace; 
+     *        if null, equivalent to empty string.
+     */
     void pi(String target, String data);
 
     /** Every startComplex() invocation must be matched by an endComplex() invocation.

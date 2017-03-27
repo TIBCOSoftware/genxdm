@@ -51,8 +51,17 @@ public class BinaryContentHelperToEventQueue<A>
         nsStack.push(bindings);
     }
 
+    @Override
     public List<TypedContentEvent<A>> getQueue()
     {
+// TODO: what about the case of an XML subtree in the middle of a queued event
+// stream? it's currently not supported, because of this check. I think if we want
+// something like that, we should probably do it with a second, specialized implementation,
+// and make the user admit that, yes, they do know in advance that they need to do that.
+// also, we should be able to do it without making another copy by storing a pointer
+// to the node and the branch copier and storing a special event of some sort. right?
+// but wait until some fule kno he want that functionality. 'cause there's no point if
+// no one actually needs it.
         if (depth != 0)
             throw new GenXDMException("Unbalanced queue! Missing 'end' event for 'start' event");
         return queue;
@@ -262,6 +271,7 @@ public class BinaryContentHelperToEventQueue<A>
         binaryExElement(ns, name, null, null, data);
     }
     
+    @Override
     public void binaryExElement(String ns, String name, Map<String, String> bindings, Iterable<Attrib> attributes, byte [] data)
     {
         if (data == null)
@@ -344,6 +354,7 @@ public class BinaryContentHelperToEventQueue<A>
         return new BinaryAttr(ns, name, data);
     }
     
+    @Override
     protected void text(String ns, String name, String value)
     {
         // now handle the content of the text node. it *may* be empty or null,

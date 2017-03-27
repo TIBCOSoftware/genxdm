@@ -1,6 +1,5 @@
 package org.genxdm.bridgekit.content;
 
-import org.genxdm.creation.Attrib;
 import org.genxdm.creation.BinaryAttrib;
 import org.genxdm.exceptions.PreCondition;
 

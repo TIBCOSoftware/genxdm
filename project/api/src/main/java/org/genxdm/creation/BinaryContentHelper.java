@@ -58,8 +58,31 @@ public interface BinaryContentHelper
      */
     void binaryExElement(String ns, String name, Map<String, String> bindings, Iterable<Attrib> attributes, byte [] data);
     
+    /** Simple form of attribute creation, most commonly used: the name and the byte
+     * value are both supplied.
+     * 
+     * The created attribute will be in the global/default namespace (no prefix).
+     * This is true for the overwhelming majority of attributes encountered in the wild.
+     * 
+     * @param name the name of the attribute, which must be unique in the scope of
+     * the element it is to decorate.
+     * @param data the value of the attribute, as a byte array.
+     * @return a newly-created BinaryAttrib with the name and value supplied 
+     */
     BinaryAttrib newBinaryAttribute(String name, byte [] data);
     
+    /** More complex form of attribute creation, in which a namespace (not the
+     * prefix!) is supplied as well.
+     * 
+     * @param ns if null or the empty string after trimming whitespace, this is
+     * the same as the two-argument invocation. Otherwise, the namespace in which
+     * this attribute is declared (the attribute will be prefixed with whatever
+     * prefix is bound to this namespace in scope).
+     * @param name the name of the attribute, which must be unique in the scope of
+     * the element it is to decorate.
+     * @param data the value of the attribute, as a byte array.
+     * @return a newly-created BinaryAttrib with the namespace, name, and value supplied 
+     */
     BinaryAttrib newBinaryAttribute(String ns, String name, byte [] data);
     
 }
