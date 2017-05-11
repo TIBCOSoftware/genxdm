@@ -45,7 +45,7 @@ public class XmlNodeFactory
     public XmlAttributeNode createAttribute(String namespaceURI, String localName, String prefix, List<? extends XmlAtom> data, Type type)
     {
         PreCondition.assertNotNull(prefix, "prefix");
-        return new XmlAttributeNode(namespaceURI, localName, prefix, type.getName(), makeList(data));
+        return new XmlAttributeNode(namespaceURI, localName, prefix, (type == null ? null : type.getName()), makeList(data));
     }
     
     public XmlCommentNode createComment(String data)
@@ -67,6 +67,8 @@ public class XmlNodeFactory
     public XmlElementNode createElement(String namespaceURI, String localName, String prefix, Type type)
     {
         PreCondition.assertNotNull(prefix, "prefix");
+        if (type == null)
+            return createElement(namespaceURI, localName, prefix);
         return new XmlElementNode(namespaceURI, localName, prefix, type.getName());
     }
 

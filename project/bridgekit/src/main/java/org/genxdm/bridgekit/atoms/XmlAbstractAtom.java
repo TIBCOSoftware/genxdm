@@ -17,7 +17,9 @@ package org.genxdm.bridgekit.atoms;
 
 import org.genxdm.bridgekit.misc.AbstractUnaryList;
 
-public abstract class XmlAbstractAtom extends AbstractUnaryList<XmlAtom> implements XmlAtom
+public abstract class XmlAbstractAtom 
+    extends AbstractUnaryList<XmlAtom> 
+    implements XmlAtom
 {
     public final XmlAtom get(final int index)
     {

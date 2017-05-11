@@ -19,7 +19,8 @@ import java.util.List;
 
 import org.genxdm.xs.types.NativeType;
 
-public interface XmlAtom extends List<XmlAtom>
+public interface XmlAtom 
+    extends List<XmlAtom>
 {
     String getC14NForm();
 

@@ -109,6 +109,13 @@ public interface ProcessingContext<N> extends DocumentHandlerFactory<N>
     boolean isSupported(String feature);
     
     /**
+     * List supported features.
+     * 
+     * @return an iterable over the list of features supported by this bridge.
+     */
+//    Iterable<String> getSupportedFeatures();
+    
+    /**
      * Returns a new {@link Cursor} for navigating the XQuery Data Model.
      * 
      * @param node

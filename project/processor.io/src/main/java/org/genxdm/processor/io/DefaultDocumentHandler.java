@@ -77,16 +77,19 @@ public class DefaultDocumentHandler<N>
         initIPF();
     }
     
+    //@Override
     public void setResolver(Resolver resolver)
     {
         this.resolver = resolver;
     }
     
+    //@Override
     public void setReporter(XMLReporter reporter)
     {
         ipf.setProperty("javax.xml.stream.reporter", reporter);
     }
     
+    @Override
     public N parse(InputStream byteStream, String systemId)
         throws IOException, XdmMarshalException
     {
@@ -110,6 +113,7 @@ public class DefaultDocumentHandler<N>
         }
     }
 
+    @Override
     public N parse(Reader characterStream, String systemId)
         throws IOException, XdmMarshalException
     {
@@ -133,6 +137,7 @@ public class DefaultDocumentHandler<N>
         }
     }
     
+    @Override
     public N parse(InputSource source, String systemId)
         throws IOException, XdmMarshalException
     {

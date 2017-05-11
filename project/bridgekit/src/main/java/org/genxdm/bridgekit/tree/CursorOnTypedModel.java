@@ -30,7 +30,7 @@ import org.genxdm.typed.io.SequenceHandler;
  * @param <N>
  *            The node implementation type.
  */
-public final class CursorOnTypedModel<N, A> 
+public class CursorOnTypedModel<N, A> 
     extends CursorOnModel<N> 
     implements TypedCursor<N, A>
 {
