@@ -65,7 +65,7 @@ public class EventQueueDriver
         }
     }
     
-    public static <A> void driveQueue(Iterable<TypedContentEventImpl<A>> queue, SequenceHandler<A> typedOutput)
+    public static <A> void driveTypedQueue(Iterable<TypedContentEventImpl<A>> queue, SequenceHandler<A> typedOutput)
     {
         for (TypedContentEventImpl<A> event : queue)
         {

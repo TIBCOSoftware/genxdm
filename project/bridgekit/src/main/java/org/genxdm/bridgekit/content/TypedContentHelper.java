@@ -39,13 +39,19 @@ import org.genxdm.xs.types.Type;
 
 public class TypedContentHelper<A>
     extends AbstractContentHelper
-    implements BinaryContentHelper, TypeAwareBranchCopier<A>
+    implements BinaryContentHelper, TypeAwareBranchCopier<A>, SequenceHandlerSource<A>
 {
     public TypedContentHelper(SequenceHandler<A> output, ComponentProvider components, AtomBridge<A> atoms)
     {
         handler = PreCondition.assertNotNull(output, "sequence handler");
         provider = PreCondition.assertNotNull(components, "component provider");
         bridge = PreCondition.assertNotNull(atoms, "atom bridge");
+    }
+    
+    @Override
+    public SequenceHandler<A> getSequenceHandler()
+    {
+        return handler;
     }
     
     @Override

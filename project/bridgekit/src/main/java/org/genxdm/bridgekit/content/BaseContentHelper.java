@@ -15,11 +15,17 @@ import org.genxdm.io.DtdAttributeKind;
 // simplified api for generating untyped xml trees.
 public class BaseContentHelper
     extends AbstractContentHelper
-    implements BranchCopier
+    implements BranchCopier, ContentHandlerSource
 {
     public BaseContentHelper(ContentHandler handler)
     {
         this.handler = PreCondition.assertNotNull(handler, "content handler");
+    }
+    
+    @Override
+    public ContentHandler getContentHandler()
+    {
+        return handler;
     }
 
     @Override
