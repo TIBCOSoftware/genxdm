@@ -91,11 +91,24 @@ public interface TypedContext<N, A>
     /** Create a new SequenceBuilder for constructing type-annotated trees
      * in memory, with typed values.
      * 
+     * By default, identical in behavior to newSequenceBuilder(true);
+     *
      * @return a new SequenceBuilder capable of generating typed and type-annotated
      * trees compatible with this typed context, never null.
      */
     SequenceBuilder<N, A> newSequenceBuilder();
     
+    /** Create a new SequenceBuilder for constructing type-annotated trees
+     * in memory, with typed values.
+     * 
+     * @param fixupNamespaces if true, add prefix to namespace bindings as needed,
+     *        and if possible. If false, make no such changes, and potentially generate
+     *        a namespace ill-formed tree.
+     * @return a new SequenceBuilder capable of generating typed and type-annotated
+     * trees compatible with this typed context, never null.
+     */
+    SequenceBuilder<N, A> newSequenceBuilder(boolean fixupNamespaces);
+
     /** Validate or revalidate a tree in memory.
      * 
      * @param source the starting point for validation; must not be null.

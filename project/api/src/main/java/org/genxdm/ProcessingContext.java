@@ -127,8 +127,17 @@ public interface ProcessingContext<N> extends DocumentHandlerFactory<N>
     /**
      * Returns a new {@link FragmentBuilder} for constructing data models.
      * 
+     * By default, this should be the same result as newFragmentBuilder(true);
      */
     FragmentBuilder<N> newFragmentBuilder();
+    
+    /**
+     * Returns a new {@link FragmentBuilder} for constructing data models.
+     *
+     * @param fixupNamespaces if true, generate prefix:namespace bindings as needed.
+     *        if false, the tree will not be modified, and may be namespace ill-formed.
+     */
+    FragmentBuilder<N> newFragmentBuilder(boolean fixupNamespaces);
 
     /**
      * Applies the node() test to the item.

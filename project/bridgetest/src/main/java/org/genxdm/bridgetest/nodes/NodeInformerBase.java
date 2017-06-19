@@ -454,6 +454,7 @@ public abstract class NodeInformerBase<N>
                 assertEquals(uri, model.getBaseURI(n));
                 
                 n = getNamespaceNode(model, e, "ns");
+                assertNotNull(n);
                 assertNull(model.getDocumentURI(n));
                 assertEquals(uri, model.getBaseURI(n));
                 

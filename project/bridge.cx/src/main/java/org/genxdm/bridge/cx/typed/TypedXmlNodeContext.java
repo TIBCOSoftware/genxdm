@@ -64,46 +64,63 @@ public class TypedXmlNodeContext
         gator = new GenericValidator<XmlNode, XmlAtom>(this);
     }
     
+    @Override
     public AtomBridge<XmlAtom> getAtomBridge()
     {
         return atoms;
     }
 
+    @Override
     public TypesBridge getTypesBridge()
     {
         return types;
     }
 
+    @Override
     public SchemaComponentCache getSchema()
     {
     	return schema;
     }
     
+    @Override
     public TypedModel<XmlNode, XmlAtom> getModel()
     {
         return model;
     }
 
+    @Override
     public ProcessingContext<XmlNode> getProcessingContext()
     {
         return context;
     }
 
+    @Override
     public TypedCursor<XmlNode, XmlAtom> newCursor(final XmlNode node)
     {
         return new TypedXmlNodeCursor(this, node);
     }
 
+    @Override
     public SequenceBuilder<XmlNode, XmlAtom> newSequenceBuilder()
     {
-        // TODO: this is temporary; it enables namespace fixup that we
-        // need, but does so by piling on the virtual calls.  fix is
-        // either combining the filter and the wrapper, or pulling the
-        // implementation into TypedXmlNodeBuilder.
-        SequenceFilter<XmlAtom> filter = new NamespaceFixupSequenceFilter<XmlAtom>();
-        filter.setAtomBridge(atoms);
-        filter.setSchema(schema);
-        return new FilteredSequenceBuilder<XmlNode, XmlAtom>(filter, new TypedXmlNodeBuilder(this));
+        return newSequenceBuilder(true);
+    }
+
+    @Override
+    public SequenceBuilder<XmlNode, XmlAtom> newSequenceBuilder(boolean namespaceFixup)
+    {
+        if (namespaceFixup)
+        {
+            // TODO: this is temporary; it enables namespace fixup that we
+            // need, but does so by piling on the virtual calls.  fix is
+            // either combining the filter and the wrapper, or pulling the
+            // implementation into TypedXmlNodeBuilder.
+            SequenceFilter<XmlAtom> filter = new NamespaceFixupSequenceFilter<XmlAtom>();
+            filter.setAtomBridge(atoms);
+            filter.setSchema(schema);
+            return new FilteredSequenceBuilder<XmlNode, XmlAtom>(filter, new TypedXmlNodeBuilder(this));
+        }
+        return new TypedXmlNodeBuilder(this);
     }
 
     @Override

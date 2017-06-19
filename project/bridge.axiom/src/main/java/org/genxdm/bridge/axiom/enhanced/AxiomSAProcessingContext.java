@@ -59,36 +59,50 @@ public final class AxiomSAProcessingContext
         genvalid = new GenericValidator<Object, XmlAtom>(this);
 	}
 	
+    @Override
 	public AtomBridge<XmlAtom> getAtomBridge()
 	{
 		return atomBridge;
 	}
 
+    @Override
     public TypesBridge getTypesBridge()
 	{
 		return metaBridge;
 	}
 
+    @Override
     public SchemaComponentCache getSchema()
     {
     	return cache;
     }
+    @Override
 	public TypedModel<Object, XmlAtom> getModel()
 	{
 		return model;
 	}
 
+    @Override
 	public AxiomProcessingContext getProcessingContext()
 	{
 	    return context;
 	}
 
+    @Override
 	public TypedCursor<Object, XmlAtom> newCursor(Object node)
 	{
 		return new CursorOnTypedModel<Object, XmlAtom>(node, model);
 	}
 
+    @Override
     public SequenceBuilder<Object, XmlAtom> newSequenceBuilder()
+    {
+        // doesn't actually work, but when we fix namespace fixup in the other method, we're set.
+        return newSequenceBuilder(true);
+    }
+    
+    @Override
+    public SequenceBuilder<Object, XmlAtom> newSequenceBuilder(boolean namespaceFixup)
     {
 	    return new AxiomSequenceBuilder((AxiomFragmentBuilder)context.newFragmentBuilder(), atomBridge, context.getOMFactory(), model, true);
     }

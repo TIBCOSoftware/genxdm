@@ -101,14 +101,24 @@ public final class DomSAProcessingContext
     @Override
     public SequenceBuilder<Node, XmlAtom> newSequenceBuilder()
     {
-        // TODO: this is temporary; it enables namespace fixup that we
-        // need, but does so by piling on the virtual calls.  fix is
-        // either combining the filter and the wrapper, or pulling the
-        // implementation into DomSequenceBuilder.
-        SequenceFilter<XmlAtom> filter = new NamespaceFixupSequenceFilter<XmlAtom>();
-        filter.setSchema(schema);
-        filter.setAtomBridge(atomBridge);
-        return new FilteredSequenceBuilder<Node, XmlAtom>(filter, new DomSequenceBuilder(parent.getDocumentBuilderFactory(), this));
+        return newSequenceBuilder(true);
+    }
+    
+    @Override
+    public SequenceBuilder<Node, XmlAtom> newSequenceBuilder(boolean namespaceFixup)
+    {
+        if (namespaceFixup)
+        {
+            // TODO: this is temporary; it enables namespace fixup that we
+            // need, but does so by piling on the virtual calls.  fix is
+            // either combining the filter and the wrapper, or pulling the
+            // implementation into DomSequenceBuilder.
+            SequenceFilter<XmlAtom> filter = new NamespaceFixupSequenceFilter<XmlAtom>();
+            filter.setSchema(schema);
+            filter.setAtomBridge(atomBridge);
+            return new FilteredSequenceBuilder<Node, XmlAtom>(filter, new DomSequenceBuilder(parent.getDocumentBuilderFactory(), this));
+        }
+        return new DomSequenceBuilder(parent.getDocumentBuilderFactory(), this);
     }
     
     @Override

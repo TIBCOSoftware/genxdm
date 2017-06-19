@@ -157,7 +157,15 @@ public class DomProcessingContext
     @Override
     public FragmentBuilder<Node> newFragmentBuilder()
     {
-        return new FilteredFragmentBuilder<Node>(new NamespaceFixupFilter(), new DomFragmentBuilder(m_dbf));
+        return newFragmentBuilder(true);
+    }
+
+    @Override
+    public FragmentBuilder<Node> newFragmentBuilder(boolean namespaceFixup)
+    {
+        if (namespaceFixup)
+            return new FilteredFragmentBuilder<Node>(new NamespaceFixupFilter(), new DomFragmentBuilder(m_dbf));
+        return new DomFragmentBuilder(m_dbf);
     }
 
     @Override

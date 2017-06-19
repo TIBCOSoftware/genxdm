@@ -229,6 +229,14 @@ public class AxiomProcessingContext
     @Override
     public FragmentBuilder<Object> newFragmentBuilder()
     {
+        // doesn't currently work, but when we implement namespace fixup
+        // in the other override, we won't have to change this, just remove the comment
+        return newFragmentBuilder(true);
+    }
+
+    @Override
+    public FragmentBuilder<Object> newFragmentBuilder(boolean fixupNamespaces)
+    {
         // TODO: we've disabled namespace fixups (for axiom) in order to enable typing.
         // the issue here is that namespace fixups delays the firing of events to the
         // underlying fragment builder, which means that we don't have the node identity and

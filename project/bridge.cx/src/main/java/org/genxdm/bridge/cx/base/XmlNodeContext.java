@@ -121,7 +121,15 @@ public final class XmlNodeContext
     @Override
     public FragmentBuilder<XmlNode> newFragmentBuilder()
     {
-        return new FilteredFragmentBuilder<XmlNode>(new NamespaceFixupFilter(), new XmlNodeBuilder());
+        return newFragmentBuilder(true);
+    }
+
+    @Override
+    public FragmentBuilder<XmlNode> newFragmentBuilder(boolean namespaceFixup)
+    {
+        if (namespaceFixup)
+            return new FilteredFragmentBuilder<XmlNode>(new NamespaceFixupFilter(), new XmlNodeBuilder());
+        return new XmlNodeBuilder();
     }
 
     @Override
