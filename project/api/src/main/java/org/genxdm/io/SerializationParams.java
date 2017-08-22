@@ -16,6 +16,8 @@
 package org.genxdm.io;
 
 import java.util.Map;
+
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 
 public interface SerializationParams
@@ -39,6 +41,8 @@ public interface SerializationParams
     String getMediaType();
     
     QName getMethod();
+    
+    NamespaceContext getNamespaceContextHints();
 
     String getNormalizationForm(); // NFC, NFD, NFKC, NFKD, fully-normalized, none (null), or implementation-defined
 

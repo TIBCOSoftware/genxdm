@@ -18,6 +18,7 @@ package org.genxdm.processor.output;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
+import java.nio.charset.CharsetEncoder;
 import java.util.Stack;
 
 import org.genxdm.exceptions.GenXDMException;
@@ -34,13 +35,20 @@ public class ContentWriter
     {
         this.output = PreCondition.assertNotNull(output, "output");
     }
+    
+    public void setCharsetEncoder(CharsetEncoder ce)
+    {
+        encoder = ce;
+    }
 
     public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
         throws GenXDMException
     {
         try
         {
-            output.write(" " + getQName(prefix, localName) + EQ + QU + encoder.encodeCData(value) + QU);
+            output.write(" " + getQName(prefix, localName) + EQ + QU);
+            XmlEncoder.writeEncodedCData(value, output, encoder, false); 
+            output.write(QU);
         }
         catch (IOException ioe)
         {
@@ -96,7 +104,9 @@ public class ContentWriter
     {
         try
         {
-            output.write(" xmlns" + (prefix.length() > 0 ? COLON + prefix : "") + EQ + QU + encoder.encodeCData(namespaceURI) + QU);
+            output.write(" xmlns" + (prefix.length() > 0 ? COLON + prefix : "") + EQ + QU);
+            XmlEncoder.writeEncodedCData(namespaceURI, output, encoder, false);
+            output.write(QU);
         }
         catch (IOException ioe)
         {
@@ -163,7 +173,7 @@ public class ContentWriter
         try
         {
             finishStart();
-            output.write(encoder.encodePCData(data));
+            XmlEncoder.writeEncodedCData(data, output, encoder, true);
         }
         catch (IOException ioe)
         {
@@ -210,9 +220,10 @@ public class ContentWriter
         return localName;
     }
 
+    private CharsetEncoder encoder;
+    
     private boolean openedTag = false;
     private final Writer output;
-    private final XmlEncoder encoder = new XmlEncoder();
     private Stack<String> tags = new Stack<String>();
 
     private static final String LT = "<";

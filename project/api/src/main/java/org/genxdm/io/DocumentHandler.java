@@ -106,7 +106,7 @@ public interface DocumentHandler<N>
     *   for the JVM, "UTF-8" will be used.
     * @param config the serialization parameters for this output
     */
-//    void write(final OutputStream byteStream, final N source, String encoding, final SerializationParams config) throws IOException, XdmMarshalException;
+//    void write(final OutputStream byteStream, final N source, final SerializationParams config) throws IOException, XdmMarshalException;
 
     /** Write XML, as characters, to a Writer, unformatted.
      * 

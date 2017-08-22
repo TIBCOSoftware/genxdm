@@ -19,10 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 
 public class GenxdmSerialization
-    implements SerializationParams
+    implements SerializationParams, ConfigurableSerializationParams
 {
 
     @Override
@@ -84,6 +85,12 @@ public class GenxdmSerialization
     {
         return method;
     }
+    
+    @Override
+    public NamespaceContext getNamespaceContextHints()
+    {
+        return namespaceHints;
+    }
 
     @Override
     public String getNormalizationForm()
@@ -125,44 +132,56 @@ public class GenxdmSerialization
         return "1.0";
     }
     
-    // TODO: figure out how to collect mutators into another interface.
-    
+    @Override
     public void setByteOrderMark(boolean flag)
     {
         bom = flag;
     }
     
+    @Override
     public void setCDataSectionElements(List<QName> list)
     {
         cdataElements = list;
     }
     
+    @Override
     public void setDoctypes(String pub, String sys)
     {
         doctypePublic = pub;
         doctypeSystem = sys;
     }
 
+    @Override
     public void setEncoding(String enc)
     {
         encoding = enc;
     }
     
+    @Override
     public void setIndent(boolean ind)
     {
         indent = ind;
     }
     
+    @Override
     public void setMediaType(String type)
     {
         mediaType = type;
     }
     
+    @Override
+    public void setNamespaceContextHints(NamespaceContext hints)
+    {
+        namespaceHints = hints;
+    }
+    
+    @Override
     public void setOmitXMLDeclaration(boolean flag)
     {
         omitDeclaration = flag;
     }
     
+    @Override
     public void setStandalone(Standalone value)
     {
         standalone = value;
@@ -177,6 +196,7 @@ public class GenxdmSerialization
     private String doctypeSystem;
     private Standalone standalone = Standalone.OMIT;
     private List<QName> cdataElements;
+    private NamespaceContext namespaceHints;
     
     private static String URI = "http://www.genxdm.org/serialization";
     private static final QName method = new QName(URI, "basic");

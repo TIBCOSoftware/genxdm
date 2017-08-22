@@ -47,14 +47,10 @@ abstract class DefaultSerializer<N>
         if (encoding != null)
         {
             if (Charset.isSupported(encoding))
-            {
                 cs = Charset.forName(encoding);
-            }
         }
         if (cs == null)
-        {
             cs = Charset.forName("UTF-8");
-        }
         OutputStreamWriter writer = new OutputStreamWriter(byteStream, cs);
         write(writer, source);
         writer.flush();
