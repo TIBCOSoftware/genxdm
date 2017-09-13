@@ -122,7 +122,9 @@ public abstract class AbstractNamespaceFixupHandler
         throws GenXDMException
     {
         PreCondition.assertNotNull(getOutputHandler());
-        PreCondition.assertFalse(localName.toLowerCase().startsWith("xml"), "Invalid element name: " + localName);
+        // customers are already using elements with this prefix, and have
+        // apparently done so for over a decade. don't try to wrestle pigs.
+//        PreCondition.assertFalse(localName.toLowerCase().startsWith("xml"), "Invalid element name: " + localName);
         reconcile();
         newScope();
         elementPrefix = prefix;
@@ -170,8 +172,13 @@ public abstract class AbstractNamespaceFixupHandler
     
     protected NamespaceBinding handleAttributeNS(String namespace, String name, String prefix)
     {
-        if (name.toLowerCase().startsWith("xml"))
-            throw new GenXDMException("Invalid attribute name: " + name);
+        // customers are already using elements with this prefix, and have
+        // apparently done so for over a decade. since they've gotten away
+        // with violating the specification (section 2.3), they want to do
+        // it some more. sooner or later some other xml api will bite them
+        // and they'll cry about it, but not our business. don't try to wrestle pigs.
+        //if (name.toLowerCase().startsWith("xml"))
+        //    throw new GenXDMException("Invalid attribute name: " + name);
         NamespaceBinding nsb = null;
         // first, make sure that we're not going to try to
         // generate an attribute with default prefix in non-default namespace
