@@ -122,6 +122,7 @@ public abstract class AbstractNamespaceFixupHandler
         throws GenXDMException
     {
         PreCondition.assertNotNull(getOutputHandler());
+        PreCondition.assertFalse(localName.toLowerCase().startsWith("xml"), "Invalid element name: " + localName);
         reconcile();
         newScope();
         elementPrefix = prefix;
