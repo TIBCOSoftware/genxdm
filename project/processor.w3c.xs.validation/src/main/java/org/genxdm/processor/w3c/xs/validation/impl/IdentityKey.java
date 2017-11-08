@@ -54,8 +54,15 @@ final class IdentityKey
 	@Override
 	public boolean equals(final Object obj)
 	{
+	    if (obj == null)
+	        return false;
 	    if (obj instanceof IdentityKey)
-	        return hashCode() == obj.hashCode();
+	    {
+	        String other_val = ((IdentityKey)obj).m_value;
+	        if (m_value == null)
+	            return (other_val == null); //NPEs are *so* declasse
+	        return m_value.equals(other_val);
+	    }
 		return false;
 	}
 }
