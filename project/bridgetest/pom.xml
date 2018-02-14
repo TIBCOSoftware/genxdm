@@ -23,32 +23,32 @@
     <parent>
         <groupId>org.genxdm</groupId>
         <artifactId>project</artifactId>
-        <version>1.3.0</version>
+        <version>1.4.0</version>
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
     <packaging>bundle</packaging>
     <artifactId>bridgetest</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0</version>
     <name>GenXDM Bridge Test Kit</name>
     <url>http://www.genxdm.org/bridgetest/</url>
 
-    <scm>
+    <!--scm>
         <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/bridgetest</connection>
         <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/bridgetest</developerConnection>
         <url>http://genxdm.googlecode.com/svn/trunk/project/bridgetest</url>
-    </scm>
+    </scm-->
 
     <dependencies>
         <dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>api</artifactId>
-            <version>[1.3,2)</version>
+            <version>[1.4,2)</version>
         </dependency>
         <dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>bridgekit</artifactId>
-            <version>[1.3,2)</version>
+            <version>[1.4,2)</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

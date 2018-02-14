@@ -15,6 +15,9 @@
  */
 package org.genxdm.bridge.dom.enhanced;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLReporter;
 
@@ -139,6 +142,34 @@ public final class DomSAProcessingContext
         return gentour.validate(source, validator, initialType);
     }
     
+    @Override
+    public Map<String, String> getNamespaceRegistry()
+    {
+        // TODO Auto-generated method stub
+        return new HashMap<String, String>();
+    }
+
+    @Override
+    public String getRegisteredPrefix(String namespace)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void registerNamespace(String namespace, String prefix)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void registerNamespaces(Map<String, String> nsToPrefixMap)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
     private final DomProcessingContext parent;
     private final XmlAtomBridge atomBridge;
     private final TypesBridge typesBridge;

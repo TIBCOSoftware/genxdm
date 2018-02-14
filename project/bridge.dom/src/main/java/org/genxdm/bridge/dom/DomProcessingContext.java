@@ -108,6 +108,13 @@ public class DomProcessingContext
         return false;
     }
 
+    @Override
+    public String getRegisteredPrefix(String namespace)
+    {
+        // TODO : implement properly; placeholder for now
+        return null;
+    }
+    
     @SuppressWarnings("unchecked")
     @Override
     public TypedContext<Node, XmlAtom> getTypedContext(SchemaComponentCache cache)

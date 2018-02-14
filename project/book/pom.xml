@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.genxdm</groupId>
         <artifactId>project</artifactId>
-        <version>1.2.0</version>
+        <version>1.4.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -33,11 +33,11 @@
     <name>GenXDM Book</name>
     <url>http://www.genxdm.org/book/</url>
 
-    <scm>
+    <!--scm>
         <connection>scm:svn:http://genxdm.googlecode.com/svn/trunk/project/book</connection>
         <developerConnection>scm:svn:https://genxdm.googlecode.com/svn/trunk/project/book</developerConnection>
         <url>http://genxdm.googlecode.com/svn/trunk/project/book</url>
-    </scm>
+    </scm-->
 
     <build>
         <plugins>

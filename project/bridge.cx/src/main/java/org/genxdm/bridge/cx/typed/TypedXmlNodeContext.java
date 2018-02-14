@@ -15,6 +15,9 @@
  */
 package org.genxdm.bridge.cx.typed;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLReporter;
 
@@ -145,6 +148,34 @@ public class TypedXmlNodeContext
         return source;
     }
     
+    @Override
+    public Map<String, String> getNamespaceRegistry()
+    {
+        // TODO Auto-generated method stub
+        return new HashMap<String, String>();
+    }
+
+    @Override
+    public String getRegisteredPrefix(String namespace)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void registerNamespace(String namespace, String prefix)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void registerNamespaces(Map<String, String> nsToPrefixMap)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
     private final XmlNodeContext context;
     private final TypedXmlNodeModel model;
     private final XmlAtomBridge atoms;

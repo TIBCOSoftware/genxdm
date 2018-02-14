@@ -13,6 +13,8 @@ import javax.xml.stream.XMLStreamWriter;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.exceptions.XdmMarshalException;
 import org.genxdm.io.ContentStreamer;
+import org.genxdm.io.DocumentWriter;
+import org.genxdm.io.SerializationParams;
 import org.genxdm.processor.output.ContentHandlerOnXmlStreamWriter;
 
 /** This is a simple mixin, though that isn't really possible in Java.
@@ -21,6 +23,7 @@ import org.genxdm.processor.output.ContentHandlerOnXmlStreamWriter;
  * shared write methods.
  */
 abstract class DefaultSerializer<N>
+    implements DocumentWriter<N>
 {
     protected DefaultSerializer(final ContentStreamer<N> model)
     {
@@ -37,7 +40,7 @@ abstract class DefaultSerializer<N>
             opf = factory;
     }
             
-    
+    @Override
     public void write(final OutputStream byteStream, final N source, String encoding)
         throws IOException, XdmMarshalException
     {
@@ -56,6 +59,15 @@ abstract class DefaultSerializer<N>
         writer.flush();
     }
     
+    @Override
+    public void write(final OutputStream byteStream, final N source, final SerializationParams config)
+        throws IOException, XdmMarshalException
+    {
+        // TODO: do something more useful than this; this is just a placeholder
+        write(byteStream, source, (config != null ? config.getEncoding() : null));
+    }
+
+    @Override
     public void write(Writer characterStream, N source)
         throws IOException, XdmMarshalException
     {
@@ -73,6 +85,14 @@ abstract class DefaultSerializer<N>
         {
             throw new XdmMarshalException(xse);
         }
+    }
+
+    @Override
+    public void write(final Writer characterStream, final N source, final SerializationParams config)
+        throws IOException, XdmMarshalException
+    {
+        // TODO: do something more useful than this; this is just a placeholder
+        write(characterStream, source);
     }
 
     protected final XMLOutputFactory opf;

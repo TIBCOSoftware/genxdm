@@ -21,6 +21,7 @@ import javax.xml.stream.XMLReporter;
 import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.DocumentHandlerFactory;
 import org.genxdm.io.Resolver;
+import org.genxdm.io.SerializationParams;
 import org.w3c.dom.Node;
 
 /**
@@ -66,7 +67,20 @@ public class DomDocumentHandlerFactory implements DocumentHandlerFactory<Node> {
         return resolver;
     }
 
-    final DocumentBuilderFactory m_dbf;
+    @Override
+    public SerializationParams getDefaultParameters()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void setDefaultParameters(SerializationParams config)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+   final DocumentBuilderFactory m_dbf;
     private XMLReporter reporter;
     private Resolver resolver;
 }

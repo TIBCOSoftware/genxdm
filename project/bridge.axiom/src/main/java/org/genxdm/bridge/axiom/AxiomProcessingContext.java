@@ -36,6 +36,7 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.io.Resolver;
+import org.genxdm.io.SerializationParams;
 import org.genxdm.mutable.MutableContext;
 import org.genxdm.mutable.MutableCursor;
 import org.genxdm.mutable.MutableModel;
@@ -262,6 +263,27 @@ public class AxiomProcessingContext
             throw new NegativeArraySizeException("Illegal size: " + size);
         }
         return new Object[size];
+    }
+
+    @Override
+    public String getRegisteredPrefix(String namespace)
+    {
+        // TODO : implement properly; placeholder for now
+        return null;
+    }
+    
+    @Override
+    public SerializationParams getDefaultParameters()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void setDefaultParameters(SerializationParams config)
+    {
+        // TODO Auto-generated method stub
+        
     }
 
     public OMFactory getOMFactory()

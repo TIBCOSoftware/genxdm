@@ -19,6 +19,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.ProcessingContext;
 import org.genxdm.io.ContentGenerator;
+import org.genxdm.names.NamespaceRegistry;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.TypedDocumentHandlerFactory;
 import org.genxdm.typed.types.AtomBridge;
@@ -38,7 +39,7 @@ import org.genxdm.xs.SchemaComponentCache;
  *            The atom handle.
  */
 public interface TypedContext<N, A> 
-    extends TypedDocumentHandlerFactory<N, A>
+    extends TypedDocumentHandlerFactory<N, A>, NamespaceRegistry
 {
     /**
      * Returns the bridge used for atom interaction.  Atoms are typed values.
@@ -108,7 +109,7 @@ public interface TypedContext<N, A>
      * trees compatible with this typed context, never null.
      */
     SequenceBuilder<N, A> newSequenceBuilder(boolean fixupNamespaces);
-
+    
     /** Validate or revalidate a tree in memory.
      * 
      * @param source the starting point for validation; must not be null.

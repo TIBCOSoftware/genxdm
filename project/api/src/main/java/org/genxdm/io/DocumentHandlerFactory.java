@@ -39,7 +39,7 @@ public interface DocumentHandlerFactory<N> {
     
     Resolver getDefaultResolver();
     
-//    SerializationParams getDefaultParameters();
+    SerializationParams getDefaultParameters();
     
     /**
      * Returns a new builder for parsing and writing data models.
@@ -52,5 +52,5 @@ public interface DocumentHandlerFactory<N> {
     
     void setDefaultResolver(final Resolver resolver);
     
-//    void setDefaultParameters(final SerializationParams config);
+    void setDefaultParameters(final SerializationParams config);
 }
