@@ -29,7 +29,7 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>bundle</packaging>
     <artifactId>processor.w3c.xs.validation</artifactId>
-    <version>1.4.2</version>
+    <version>1.4.0</version>
     <name>GenXDM W3C XML Schema Validator</name>
     <url>http://www.genxdm.org/processor.w3c.xs.validation/</url>
 

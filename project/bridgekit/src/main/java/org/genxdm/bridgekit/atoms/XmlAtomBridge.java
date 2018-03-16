@@ -118,7 +118,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
         PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
         PreCondition.assertArgumentNotNull(targetType, "targetType");
         final Type type = schema.getComponentProvider().getTypeDefinition(targetType);
-        if (null != type)
+        if (type != null)
         {
             if (type.isAtomicType())
             {
@@ -127,19 +127,13 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
                 {
                     final List<XmlAtom> atoms = atomicType.validate(sourceValue, this);
                     final int size = atoms.size();
-                    if (1 == size)
-                    {
+                    if (size == 1)
                         return atoms.get(0);
-                    }
-                    else if (0 == size)
-                    {
+                    else if (size == 0)
                         return null;
-                    }
                     else
-                    {
                         // Atomic type should not be yielding multiple atoms.
-                        throw new AssertionError();
-                    }
+                        throw new AssertionError("Non-list type results in multiple atoms");
                 }
                 catch (final DatatypeException e)
                 {
@@ -147,21 +141,46 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
                 }
             }
             else
-            {
                 throw new IllegalArgumentException(targetType + " dataType is not an atomic type.");
-            }
         }
-        else
-        {
-            throw new IllegalArgumentException(targetType + " dataType could not be found in the processing context.");
-        }
+        throw new IllegalArgumentException(targetType + " dataType could not be found in the processing context.");
     }
 
     public XmlAtom compile(final String sourceValue, final NativeType targetType, final PrefixResolver resolver) throws AtomCastException
     {
-        // TODO implement compilation in the presence of a prefix resolver.
-        // this is so we can compile QNames. How can this be unimplemented?
-        throw new UnsupportedOperationException("Not implemented: compilation of QNames with a prefix resolver. Please report this issue.");
+        // use base unless this has a resolver and is a QName
+        if ( (resolver == null) || (targetType != NativeType.QNAME) )
+            return compile(sourceValue, targetType);
+
+        PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
+        PreCondition.assertArgumentNotNull(targetType, "targetType");
+        final Type type = schema.getComponentProvider().getTypeDefinition(targetType);
+        if (type != null)
+        {
+            if (type.isAtomicType())
+            {
+                final SimpleType atomicType = (SimpleType)type;
+                try
+                {
+                    final List<XmlAtom> atoms = atomicType.validate(sourceValue, resolver, this);
+                    final int size = atoms.size();
+                    if (size == 1)
+                        return atoms.get(0);
+                    else if (size == 0)
+                        return null;
+                    else
+                        // Atomic type should not be yielding multiple atoms.
+                        throw new AssertionError("Non-list type results in multiple atoms");
+                }
+                catch (final DatatypeException e)
+                {
+                    throw new AtomCastException(sourceValue, e.getType(), FORG0001, e);
+                }
+            }
+            else
+                throw new IllegalArgumentException(targetType + " dataType is not an atomic type.");
+        }
+        throw new IllegalArgumentException(targetType + " dataType could not be found in the processing context.");
     }
 
     public XmlBase64Binary createBase64Binary(final byte[] base64BinaryValue)
