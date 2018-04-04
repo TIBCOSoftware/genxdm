@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.processor.w3c.xs.impl;
+package org.genxdm.bridgekit.misc;
 
 /**
  * A type-safe pair of objects.
  */
-final class Pair<X, Y>
+public final class Pair<X, Y>
 {
     private final X m_x;
     private final Y m_y;

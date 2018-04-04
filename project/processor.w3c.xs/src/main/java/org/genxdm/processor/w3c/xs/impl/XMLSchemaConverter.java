@@ -32,6 +32,7 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.atoms.XmlAtom;
+import org.genxdm.bridgekit.misc.Pair;
 import org.genxdm.bridgekit.xs.ComponentBagImpl;
 import org.genxdm.bridgekit.xs.ForeignAttributesSink;
 import org.genxdm.bridgekit.xs.complex.AttributeDeclTypeImpl;

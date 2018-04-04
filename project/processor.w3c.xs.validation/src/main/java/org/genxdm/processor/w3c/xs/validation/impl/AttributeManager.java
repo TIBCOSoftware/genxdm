@@ -27,12 +27,12 @@ import java.util.Set;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.misc.Pair;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.PrefixResolver;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcAttributeFixedValueOverriddenException;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcAttributeNormalizedValueException;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcAttributeOnSimpleTypeException;
-import org.genxdm.processor.w3c.xs.exception.cvc.CvcElementUnresolvedLocalTypeException;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcMissingAttributeDeclarationException;
 import org.genxdm.processor.w3c.xs.exception.cvc.CvcUnexpectedAttributeException;
 import org.genxdm.processor.w3c.xs.exception.sm.SmAttributeUseException;

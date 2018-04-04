@@ -19,6 +19,7 @@ import java.util.StringTokenizer;
 
 import javax.xml.XMLConstants;
 
+import org.genxdm.bridgekit.misc.Pair;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.names.PrefixResolver;

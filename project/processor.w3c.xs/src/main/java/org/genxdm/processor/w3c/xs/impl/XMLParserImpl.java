@@ -18,6 +18,7 @@ package org.genxdm.processor.w3c.xs.impl;
 import java.io.InputStream;
 
 import org.genxdm.Cursor;
+import org.genxdm.bridgekit.misc.Pair;
 import org.genxdm.bridgekit.xs.ComponentBagImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.LoadOptions;
