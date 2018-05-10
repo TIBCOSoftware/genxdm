@@ -19,7 +19,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.ProcessingContext;
 import org.genxdm.io.ContentGenerator;
-import org.genxdm.names.NamespaceRegistry;
+import org.genxdm.names.NamespaceRegistrar;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.TypedDocumentHandlerFactory;
 import org.genxdm.typed.types.AtomBridge;
@@ -39,7 +39,7 @@ import org.genxdm.xs.SchemaComponentCache;
  *            The atom handle.
  */
 public interface TypedContext<N, A> 
-    extends TypedDocumentHandlerFactory<N, A>, NamespaceRegistry
+    extends TypedDocumentHandlerFactory<N, A>, NamespaceRegistrar
 {
     /**
      * Returns the bridge used for atom interaction.  Atoms are typed values.

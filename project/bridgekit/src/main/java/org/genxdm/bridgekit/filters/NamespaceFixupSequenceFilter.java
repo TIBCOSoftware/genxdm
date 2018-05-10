@@ -11,6 +11,7 @@ import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.names.NamespaceBinding;
+import org.genxdm.names.RegisteredPrefixProvider;
 import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
@@ -22,9 +23,13 @@ public class NamespaceFixupSequenceFilter<A>
     extends AbstractNamespaceFixupHandler
     implements SequenceFilter<A>
 {
-
-    public NamespaceFixupSequenceFilter()
+    public NamespaceFixupSequenceFilter(RegisteredPrefixProvider provider)
     {
+        super(provider);
+        // TODO: this initialization is for handling of QNames in context,
+        // which we currently don't do. see attribute(). note that it should
+        // probably also happen in text(List<? extends A>). but we haven't
+        // had anyone complaining yet, so screw it.
         // you can't extend a simple type in attribute context (it can't have attributes)
         // methods.add(DerivationMethod.Extension);
         methods.add(DerivationMethod.Restriction); // allowed; enum or pattern or length/maxlen/minlen
@@ -32,7 +37,7 @@ public class NamespaceFixupSequenceFilter<A>
         // we prolly ought to allow the union, right?
         //methods.add(DerivationMethod.Union); // also problematic ...
     }
-    
+
     @Override
     public void attribute(String namespaceURI, String localName, String prefix, List<? extends A> data, QName type)
         throws GenXDMException

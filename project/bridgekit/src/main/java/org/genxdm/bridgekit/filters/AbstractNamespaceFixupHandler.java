@@ -16,10 +16,16 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.names.NamespaceBinding;
+import org.genxdm.names.RegisteredPrefixProvider;
 
 public abstract class AbstractNamespaceFixupHandler
     implements ContentHandler
 {
+    protected AbstractNamespaceFixupHandler(RegisteredPrefixProvider provider)
+    {
+        rpp = provider;
+    }
+    
     @Override
     public void attribute(String namespaceURI, String localName, String prefix, String value, DtdAttributeKind type)
         throws GenXDMException
@@ -182,11 +188,11 @@ public abstract class AbstractNamespaceFixupHandler
         NamespaceBinding nsb = null;
         // first, make sure that we're not going to try to
         // generate an attribute with default prefix in non-default namespace
-        String ns = namespace == null ? "" : namespace;
-        String p = prefix == null ? "" : prefix;
-        if (ns.trim().length() > 0)
+        String ns = (namespace == null) ? "" : namespace;
+        String p = (prefix == null) ? "" : prefix;
+        if (!ns.trim().isEmpty()) // namespace not default
         {
-            if (p.trim().length() == 0)
+            if (p.trim().isEmpty()) // prefix default
             {
                 p = getPrefixForURI(ns);
                 if (p == null)
@@ -308,6 +314,17 @@ public abstract class AbstractNamespaceFixupHandler
                 // note that the return may not be inScope(prefix, ns)!
             }
         }
+        // no declared namespace in scope. have we been given a preference?
+        if (rpp != null)
+        {
+            String pref = rpp.getRegisteredPrefix(ns);
+            if (pref != null)
+            {
+                String bound = getURIforPrefix(pref);
+                if ( (bound == null) || ns.equals(bound) ) // nobody's using it
+                    return pref;
+            }
+        }
         // didn't find anyone binding this namespace
         return null;
     }
@@ -369,6 +386,7 @@ public abstract class AbstractNamespaceFixupHandler
         DtdAttributeKind type;
     }
     
+    protected final RegisteredPrefixProvider rpp;
     protected ArrayList<NamespaceBinding> namespaces = new ArrayList<NamespaceBinding>();
     protected ArrayList<NamespaceBinding> requiredAttNsBindings = new ArrayList<NamespaceBinding>();
     protected String elementNs;

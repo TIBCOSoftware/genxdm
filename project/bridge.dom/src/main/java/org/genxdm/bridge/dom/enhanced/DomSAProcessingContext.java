@@ -15,7 +15,6 @@
  */
 package org.genxdm.bridge.dom.enhanced;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
@@ -27,6 +26,7 @@ import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XmlAtomBridge;
 import org.genxdm.bridgekit.filters.FilteredSequenceBuilder;
 import org.genxdm.bridgekit.filters.NamespaceFixupSequenceFilter;
+import org.genxdm.bridgekit.names.DefaultNamespaceRegistrar;
 import org.genxdm.bridgekit.tree.CursorOnTypedModel;
 import org.genxdm.bridgekit.validation.GenericValidator;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
@@ -34,6 +34,7 @@ import org.genxdm.bridgekit.xs.TypesBridgeImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentGenerator;
 import org.genxdm.io.Resolver;
+import org.genxdm.names.NamespaceRegistrar;
 import org.genxdm.processor.io.ValidatingDocumentHandler;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
@@ -53,18 +54,15 @@ public final class DomSAProcessingContext
     public DomSAProcessingContext(DomProcessingContext parent, SchemaComponentCache schema)
     {
         if (schema == null)
-        {
             this.schema = new SchemaCacheFactory().newSchemaCache();
-        }
         else
-        {
             this.schema = schema;
-        }
         this.typesBridge = new TypesBridgeImpl();
         this.atomBridge = new XmlAtomBridge(this.schema);
         this.m_model = new DomSAModel(this);
         this.parent = PreCondition.assertNotNull(parent);
         gentour = new GenericValidator<Node, XmlAtom>(this);
+        ns2pReg = new DefaultNamespaceRegistrar(null);
     }
 
     @Override
@@ -116,7 +114,7 @@ public final class DomSAProcessingContext
             // need, but does so by piling on the virtual calls.  fix is
             // either combining the filter and the wrapper, or pulling the
             // implementation into DomSequenceBuilder.
-            SequenceFilter<XmlAtom> filter = new NamespaceFixupSequenceFilter<XmlAtom>();
+            SequenceFilter<XmlAtom> filter = new NamespaceFixupSequenceFilter<XmlAtom>(this);
             filter.setSchema(schema);
             filter.setAtomBridge(atomBridge);
             return new FilteredSequenceBuilder<Node, XmlAtom>(filter, new DomSequenceBuilder(parent.getDocumentBuilderFactory(), this));
@@ -145,29 +143,25 @@ public final class DomSAProcessingContext
     @Override
     public Map<String, String> getNamespaceRegistry()
     {
-        // TODO Auto-generated method stub
-        return new HashMap<String, String>();
+        return ns2pReg.getNamespaceRegistry();
     }
 
     @Override
     public String getRegisteredPrefix(String namespace)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return ns2pReg.getRegisteredPrefix(namespace);
     }
 
     @Override
     public void registerNamespace(String namespace, String prefix)
     {
-        // TODO Auto-generated method stub
-        
+        ns2pReg.registerNamespace(namespace, prefix);
     }
 
     @Override
     public void registerNamespaces(Map<String, String> nsToPrefixMap)
     {
-        // TODO Auto-generated method stub
-        
+        ns2pReg.registerNamespaces(nsToPrefixMap);
     }
 
     private final DomProcessingContext parent;
@@ -175,6 +169,7 @@ public final class DomSAProcessingContext
     private final TypesBridge typesBridge;
     private final SchemaComponentCache schema;
     private final GenericValidator<Node, XmlAtom> gentour;
+    private final NamespaceRegistrar ns2pReg;
 
     private final DomSAModel m_model;
 }

@@ -129,7 +129,7 @@ public final class XmlNodeContext
     public FragmentBuilder<XmlNode> newFragmentBuilder(boolean namespaceFixup)
     {
         if (namespaceFixup)
-            return new FilteredFragmentBuilder<XmlNode>(new NamespaceFixupFilter(), new XmlNodeBuilder());
+            return new FilteredFragmentBuilder<XmlNode>(new NamespaceFixupFilter(this), new XmlNodeBuilder());
         return new XmlNodeBuilder();
     }
 
@@ -187,8 +187,14 @@ public final class XmlNodeContext
     @Override
     public String getRegisteredPrefix(String namespace)
     {
-        // TODO : implement properly; placeholder for now
-        return null;
+        String prefix = null;
+        for (TypedXmlNodeContext tc : typedContexts.values())
+        {
+            prefix = tc.getRegisteredPrefix(namespace);
+            if (prefix != null)
+                break;
+        }
+        return prefix;
     }
     
     @Override

@@ -18,6 +18,7 @@ package org.genxdm;
 import org.genxdm.io.DocumentHandlerFactory;
 import org.genxdm.io.FragmentBuilder;
 import org.genxdm.mutable.MutableContext;
+import org.genxdm.names.RegisteredPrefixProvider;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.xs.SchemaComponentCache;
 
@@ -28,7 +29,8 @@ import org.genxdm.xs.SchemaComponentCache;
  * 
  * <p>End users will normally consume, rather than implement, this interface.</p>
  */
-public interface ProcessingContext<N> extends DocumentHandlerFactory<N> 
+public interface ProcessingContext<N> 
+    extends DocumentHandlerFactory<N>, RegisteredPrefixProvider 
 {
     /**
      * Returns a {@link Model} for navigating an XDM model.
@@ -42,14 +44,6 @@ public interface ProcessingContext<N> extends DocumentHandlerFactory<N>
      * if no such context is available
      */
     MutableContext<N> getMutableContext();
-    
-    /** Return the prefix preferred by the specified namespace.
-     * 
-     * @param namespace the namespace to query; if null, the method returns null
-     * @return the prefix that the specified namespace has registered as its
-     *         preference, or null if no preference is registered
-     */
-    String getRegisteredPrefix(String namespace);
     
     /**
      * Get a TypedContext associated with this ProcessingContext which
@@ -132,8 +126,7 @@ public interface ProcessingContext<N> extends DocumentHandlerFactory<N>
     Cursor newCursor(N node);
 
 
-    /**
-     * Returns a new {@link FragmentBuilder} for constructing data models.
+    /* Returns a new {@link FragmentBuilder} for constructing data models.
      * 
      * By default, this should be the same result as newFragmentBuilder(true);
      */

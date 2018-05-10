@@ -268,8 +268,14 @@ public class AxiomProcessingContext
     @Override
     public String getRegisteredPrefix(String namespace)
     {
-        // TODO : implement properly; placeholder for now
-        return null;
+        String prefix = null;
+        for (AxiomSAProcessingContext tc : typedContexts.values())
+        {
+            prefix = tc.getRegisteredPrefix(namespace);
+            if (prefix != null)
+                break;
+        }
+        return prefix;
     }
     
     @Override

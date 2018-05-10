@@ -15,7 +15,6 @@
  */
 package org.genxdm.bridge.axiom.enhanced;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
@@ -25,6 +24,7 @@ import org.genxdm.bridge.axiom.AxiomFragmentBuilder;
 import org.genxdm.bridge.axiom.AxiomProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XmlAtomBridge;
+import org.genxdm.bridgekit.names.DefaultNamespaceRegistrar;
 import org.genxdm.bridgekit.tree.CoreModelDecorator;
 import org.genxdm.bridgekit.tree.CursorOnTypedModel;
 import org.genxdm.bridgekit.validation.GenericValidator;
@@ -33,6 +33,7 @@ import org.genxdm.bridgekit.xs.TypesBridgeImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentGenerator;
 import org.genxdm.io.Resolver;
+import org.genxdm.names.NamespaceRegistrar;
 import org.genxdm.processor.io.ValidatingDocumentHandler;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
@@ -60,6 +61,7 @@ public final class AxiomSAProcessingContext
         this.atomBridge = new XmlAtomBridge(this.cache);
         this.model = new CoreModelDecorator<Object, XmlAtom>(context.getModel(), atomBridge, cache);
         genvalid = new GenericValidator<Object, XmlAtom>(this);
+        ns2pReg = new DefaultNamespaceRegistrar(null);
 	}
 	
     @Override
@@ -131,35 +133,32 @@ public final class AxiomSAProcessingContext
     @Override
     public Map<String, String> getNamespaceRegistry()
     {
-        // TODO Auto-generated method stub
-        return new HashMap<String, String>();
+        return ns2pReg.getNamespaceRegistry();
     }
 
     @Override
     public String getRegisteredPrefix(String namespace)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return ns2pReg.getRegisteredPrefix(namespace);
     }
 
     @Override
     public void registerNamespace(String namespace, String prefix)
     {
-        // TODO Auto-generated method stub
-        
+        ns2pReg.registerNamespace(namespace, prefix);
     }
 
     @Override
     public void registerNamespaces(Map<String, String> nsToPrefixMap)
     {
-        // TODO Auto-generated method stub
-        
+        ns2pReg.registerNamespaces(nsToPrefixMap);
     }
 
     private final AxiomProcessingContext context;
 	private final AtomBridge<XmlAtom> atomBridge;
 	private final SchemaComponentCache cache;
 	private final GenericValidator<Object, XmlAtom> genvalid;
+	private final NamespaceRegistrar ns2pReg;
 	
 	@SuppressWarnings("unused")
 	private boolean locked;

@@ -15,7 +15,6 @@
  */
 package org.genxdm.bridge.cx.typed;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
@@ -28,12 +27,14 @@ import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XmlAtomBridge;
 import org.genxdm.bridgekit.filters.FilteredSequenceBuilder;
 import org.genxdm.bridgekit.filters.NamespaceFixupSequenceFilter;
+import org.genxdm.bridgekit.names.DefaultNamespaceRegistrar;
 import org.genxdm.bridgekit.validation.GenericValidator;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
 import org.genxdm.bridgekit.xs.TypesBridgeImpl;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentGenerator;
 import org.genxdm.io.Resolver;
+import org.genxdm.names.NamespaceRegistrar;
 import org.genxdm.processor.io.ValidatingDocumentHandler;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
@@ -54,17 +55,14 @@ public class TypedXmlNodeContext
     {
         this.context = PreCondition.assertNotNull(context, "context");
         if (schema == null)
-        {
             this.schema = new SchemaCacheFactory().newSchemaCache();
-        }
         else
-        {
         	this.schema = schema;
-        }
         this.types = new TypesBridgeImpl();
         this.atoms = new XmlAtomBridge(this.schema);
         this.model = new TypedXmlNodeModel(atoms);
         gator = new GenericValidator<XmlNode, XmlAtom>(this);
+        ns2pReg = new DefaultNamespaceRegistrar(null);
     }
     
     @Override
@@ -118,7 +116,7 @@ public class TypedXmlNodeContext
             // need, but does so by piling on the virtual calls.  fix is
             // either combining the filter and the wrapper, or pulling the
             // implementation into TypedXmlNodeBuilder.
-            SequenceFilter<XmlAtom> filter = new NamespaceFixupSequenceFilter<XmlAtom>();
+            SequenceFilter<XmlAtom> filter = new NamespaceFixupSequenceFilter<XmlAtom>(this);
             filter.setAtomBridge(atoms);
             filter.setSchema(schema);
             return new FilteredSequenceBuilder<XmlNode, XmlAtom>(filter, new TypedXmlNodeBuilder(this));
@@ -151,29 +149,25 @@ public class TypedXmlNodeContext
     @Override
     public Map<String, String> getNamespaceRegistry()
     {
-        // TODO Auto-generated method stub
-        return new HashMap<String, String>();
+        return ns2pReg.getNamespaceRegistry();
     }
 
     @Override
     public String getRegisteredPrefix(String namespace)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return ns2pReg.getRegisteredPrefix(namespace);
     }
 
     @Override
     public void registerNamespace(String namespace, String prefix)
     {
-        // TODO Auto-generated method stub
-        
+        ns2pReg.registerNamespace(namespace, prefix);
     }
 
     @Override
     public void registerNamespaces(Map<String, String> nsToPrefixMap)
     {
-        // TODO Auto-generated method stub
-        
+        ns2pReg.registerNamespaces(nsToPrefixMap);
     }
 
     private final XmlNodeContext context;
@@ -182,4 +176,5 @@ public class TypedXmlNodeContext
     private final TypesBridge types;
     private final SchemaComponentCache schema;
     private final GenericValidator<XmlNode, XmlAtom> gator;
+    private final NamespaceRegistrar ns2pReg;
 }

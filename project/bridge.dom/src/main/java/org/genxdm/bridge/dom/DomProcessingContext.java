@@ -111,8 +111,14 @@ public class DomProcessingContext
     @Override
     public String getRegisteredPrefix(String namespace)
     {
-        // TODO : implement properly; placeholder for now
-        return null;
+        String prefix = null;
+        for (DomSAProcessingContext tc : typedContexts.values())
+        {
+            prefix = tc.getRegisteredPrefix(namespace);
+            if (prefix != null)
+                break;
+        }
+        return prefix;
     }
     
     @SuppressWarnings("unchecked")
@@ -171,7 +177,7 @@ public class DomProcessingContext
     public FragmentBuilder<Node> newFragmentBuilder(boolean namespaceFixup)
     {
         if (namespaceFixup)
-            return new FilteredFragmentBuilder<Node>(new NamespaceFixupFilter(), new DomFragmentBuilder(m_dbf));
+            return new FilteredFragmentBuilder<Node>(new NamespaceFixupFilter(this), new DomFragmentBuilder(m_dbf));
         return new DomFragmentBuilder(m_dbf);
     }
 

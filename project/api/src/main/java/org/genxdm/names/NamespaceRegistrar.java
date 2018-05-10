@@ -2,7 +2,8 @@ package org.genxdm.names;
 
 import java.util.Map;
 
-public interface NamespaceRegistry
+public interface NamespaceRegistrar
+    extends RegisteredPrefixProvider
 {
     /** Get the contents of the registry
      * 
@@ -15,14 +16,6 @@ public interface NamespaceRegistry
      * of this namespace registry; may be empty but never null
      */
     Map<String, String> getNamespaceRegistry();
-    
-    /** Return the prefix preferred by the specified namespace.
-     * 
-     * @param namespace the namespace to query; if null, the method returns null
-     * @return the prefix that the specified namespace has registered as its
-     *         preference, or null if no preference is registered
-     */
-    String getRegisteredPrefix(String namespace);
     
     /** Register a preferred prefix for one of the namespaces in our SchemaComponentCache
      * 
