@@ -23,6 +23,11 @@ public class NamespaceFixupSequenceFilter<A>
     extends AbstractNamespaceFixupHandler
     implements SequenceFilter<A>
 {
+    public NamespaceFixupSequenceFilter()
+    {
+        this(null);
+    }
+    
     public NamespaceFixupSequenceFilter(RegisteredPrefixProvider provider)
     {
         super(provider);

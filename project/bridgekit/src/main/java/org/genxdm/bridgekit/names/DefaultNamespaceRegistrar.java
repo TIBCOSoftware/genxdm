@@ -50,8 +50,14 @@ public class DefaultNamespaceRegistrar
     @Override
     public void registerNamespaces(Map<String, String> nsToPrefixMap)
     {
-        if ( (nsToPrefixMap != null) && !nsToPrefixMap.isEmpty() )
-            preferredPrefixes.putAll(nsToPrefixMap);
+        // not using putAll here because we want to guard against empty
+        // string for keys and values, and against null keys and values
+        // (which hashmap should prevent, but better safe)
+        if (nsToPrefixMap != null)
+        {
+            for (String ns : nsToPrefixMap.keySet())
+                registerNamespace(ns, nsToPrefixMap.get(ns));
+        }
     }
 
     private final Map<String, String> preferredPrefixes;

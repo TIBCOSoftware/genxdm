@@ -14,6 +14,11 @@ public class NamespaceFixupFilter
     extends AbstractNamespaceFixupHandler
     implements ContentFilter
 {
+    public NamespaceFixupFilter()
+    {
+        this(null);
+    }
+    
     public NamespaceFixupFilter(RegisteredPrefixProvider provider)
     {
         super(provider);
