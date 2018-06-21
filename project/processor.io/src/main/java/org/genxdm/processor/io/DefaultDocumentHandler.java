@@ -182,7 +182,8 @@ public class DefaultDocumentHandler<N>
     {
         ipf.setProperty("javax.xml.stream.isCoalescing", true);
         ipf.setProperty("javax.xml.stream.isReplacingEntityReferences", true);
-        //ipf.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+        ipf.setProperty("javax.xml.stream.supportDTD", false);
+        ipf.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
     }
 
     protected final XMLInputFactory ipf;
