@@ -306,7 +306,7 @@ public final class XmlEncoder
 
     private static final String AMP_ENT = "&amp;";
     private static final String LT_ENT = "&lt;";
-    private static final String GT_ENT = "&lt;";
+    private static final String GT_ENT = "&gt;";
     private static final String APOS_ENT = "&apos;";
     private static final String QUOT_ENT = "&quot;";
     private static final String CR_ENT = "&#xD;";

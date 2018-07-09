@@ -44,6 +44,7 @@
             <groupId>org.genxdm</groupId>
             <artifactId>api</artifactId>
             <version>[1.3,2)</version>
+            <!--version>1.3.2</version-->
         </dependency>
     </dependencies>
 </project>
