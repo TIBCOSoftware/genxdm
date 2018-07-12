@@ -58,7 +58,7 @@ public final class SimpleTypeException extends SchemaException
             name = "{unknown}";
         String localMessage = null;
         
-        if(elementName == null || !elementName.toString().isEmpty()){
+        if(elementName != null || !elementName.toString().isEmpty()){
         	localMessage = "The initial value '" + initialValue +" for element "+ elementName +"' is not valid with respect to the simple type definition '" + name + "'.";
         } else {
         	localMessage = "The initial value '" + initialValue + "' is not valid with respect to the simple type definition '" + name + "'.";
