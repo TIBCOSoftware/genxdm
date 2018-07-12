@@ -1987,7 +1987,9 @@ public final class XMLSchemaConverter
             }
             catch (DatatypeException dte)
             {
-                final SimpleTypeException ste = new SimpleTypeException(initialValue, simpleType, dte);
+                // this is sort of a kludge: we can show the localname of the element, but not the
+                // namespace, because we don't have the namespace here.
+                final SimpleTypeException ste = new SimpleTypeException(initialValue, simpleType, dte, (elementName == null ? null : new QName(elementName)));
                 throw new SmAttributeUseException(new QName(elementName), xmlValueConstraint.getAttributeName(), xmlValueConstraint.getLocation(), ste);
             }
             
@@ -2107,6 +2109,7 @@ public final class XMLSchemaConverter
         }
         catch (final DatatypeException dte)
         {
+            // this is one of the places where we don't have an element name for the simple type exception
             final SimpleTypeException ste = new SimpleTypeException(sourceEnum.getValue(), baseType, dte);
             final QName elementName = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, XMLRepresentation.LN_ENUMERATION);
             final QName attributeName = new QName(XMLRepresentation.LN_VALUE);
@@ -2263,6 +2266,7 @@ public final class XMLSchemaConverter
             }
             catch (final DatatypeException dte)
             {
+                // don't have an element name
                 final SimpleTypeException ste = new SimpleTypeException(initialValue, baseType, dte);
                 final QName elementName = new QName(XMLConstants.W3C_XML_SCHEMA_NS_URI, xmlFacet.elementName);
                 final QName attributeName = new QName(XMLRepresentation.LN_VALUE);
@@ -2292,6 +2296,7 @@ public final class XMLSchemaConverter
             catch (final SchemaRegExCompileException e)
             {
                 final DatatypeException dte = new DatatypeException(regex, null);
+                // don't have an element name
                 throw new SimpleTypeException(regex, null, dte);
             }
         }

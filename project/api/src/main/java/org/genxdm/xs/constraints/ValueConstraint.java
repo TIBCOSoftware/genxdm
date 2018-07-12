@@ -79,7 +79,8 @@ public final class ValueConstraint
         {
             // this should never happen, mind.  if it does, then there's
             // breakage in the atom bridge supplied.
-            throw new RuntimeException(new SimpleTypeException(lexicalForm, constrainedType, dte));
+            // Note that this is a case in which we do not know the name of the element.
+            throw new RuntimeException(new SimpleTypeException(lexicalForm, constrainedType, dte, null));
         }
         return Collections.unmodifiableList(new ArrayList<A>(value));
     }

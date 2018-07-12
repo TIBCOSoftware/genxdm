@@ -129,7 +129,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 					catch (final DatatypeException e)
 					{
 						final String lexicalValue = m_atomBridge.getC14NString(initialFixed);
-						m_errors.error(new SimpleTypeException(lexicalValue, simpleType, e));
+						m_errors.error(new SimpleTypeException(lexicalValue, simpleType, e, (elementDeclaration == null ? null : elementDeclaration.getName())));
 					}
 				}
 				break;
@@ -273,7 +273,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 						catch (final DatatypeException e)
 						{
 							final String lexicalValue = m_atomBridge.getC14NString(initialValue);
-							m_errors.error(new SimpleTypeException(lexicalValue, simpleType, e));
+							m_errors.error(new SimpleTypeException(lexicalValue, simpleType, e, (declaration == null ? null : declaration.getName())));
 
 							m_idm.text(initialValue, simpleType, m_currentItem, m_errors, m_atomBridge);
 							m_icm.text(initialValue, simpleType, m_currentItem, m_nodeIndex, m_atomBridge);
@@ -309,7 +309,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 				}
 				catch (final DatatypeException e)
 				{
-					m_errors.error(new SimpleTypeException("", simpleType, e));
+					m_errors.error(new SimpleTypeException("", simpleType, e, (declaration == null ? null : declaration.getName())));
 				}
 			}
 		}
@@ -376,7 +376,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 							}
 							catch (final DatatypeException e)
 							{
-								m_errors.error(new SimpleTypeException(initialValue, simpleType, e));
+								m_errors.error(new SimpleTypeException(initialValue, simpleType, e, (declaration == null ? null : declaration.getName())));
 								if (null != m_downstream)
 								{
 									m_downstream.text(initialValue);
@@ -416,7 +416,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 								}
 								catch (final DatatypeException e)
 								{
-									m_errors.error(new SimpleTypeException(initialValue, simpleType, e));
+									m_errors.error(new SimpleTypeException(initialValue, simpleType, e, (declaration == null ? null : declaration.getName())));
 									if (null != m_downstream)
 									{
 										m_downstream.text(initialValue);
@@ -706,7 +706,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 						}
 						catch (final DatatypeException e)
 						{
-							m_errors.error(new SimpleTypeException(m_atomBridge.getC14NString(initialValue), simpleType, e));
+							m_errors.error(new SimpleTypeException(m_atomBridge.getC14NString(initialValue), simpleType, e, (declaration == null ? null : declaration.getName())));
 							if (null != m_downstream)
 							{
 								m_downstream.text(initialValue);
@@ -741,7 +741,7 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 								}
 								catch (final DatatypeException e)
 								{
-									m_errors.error(new SimpleTypeException(m_atomBridge.getC14NString(initialValue), simpleType, e));
+									m_errors.error(new SimpleTypeException(m_atomBridge.getC14NString(initialValue), simpleType, e, (declaration == null ? null : declaration.getName())));
 									if (null != m_downstream)
 									{
 										m_downstream.text(initialValue);
