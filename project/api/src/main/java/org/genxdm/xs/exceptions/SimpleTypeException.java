@@ -27,6 +27,7 @@ public final class SimpleTypeException extends SchemaException
     private final String initialValue;
     private final QName type;
     private final boolean isAnonymous;
+    private final QName elementName;
 
     public SimpleTypeException(final String initialValue, final SimpleType type, final SchemaException cause)
     {
@@ -34,8 +35,19 @@ public final class SimpleTypeException extends SchemaException
         this.initialValue = PreCondition.assertArgumentNotNull(initialValue, "initialValue");
         this.type = (type == null) ? null : type.getName();
         isAnonymous = (type == null) ? false : type.isAnonymous();
+        elementName = null;//Keep backward compatibility
     }
 
+    
+    public SimpleTypeException(final QName elementName, final String initialValue, final SimpleType type, final SchemaException cause)
+    {
+        super(ValidationOutcome.CVC_Simple_Type, "?", cause);
+        this.initialValue = PreCondition.assertArgumentNotNull(initialValue, "initialValue");
+        this.type = (type == null) ? null : type.getName();
+        isAnonymous = (type == null) ? false : type.isAnonymous();
+        this.elementName = elementName;
+    }
+    
     @Override
     public String getMessage()
     {
@@ -44,7 +56,13 @@ public final class SimpleTypeException extends SchemaException
             name = isAnonymous ? "{anonymous}" : type.toString();
         else
             name = "{unknown}";
-        final String localMessage = "The initial value '" + initialValue + "' is not valid with respect to the simple type definition '" + name + "'.";
+        String localMessage = null;
+        
+        if(elementName != null || !elementName.toString().isEmpty()){
+        	localMessage = "The initial value '" + initialValue +" for element "+ elementName +"' is not valid with respect to the simple type definition '" + name + "'.";
+        } else {
+        	localMessage = "The initial value '" + initialValue + "' is not valid with respect to the simple type definition '" + name + "'.";
+        }
 
         final StringBuilder message = new StringBuilder();
         // message.append(getOutcome().getSection());

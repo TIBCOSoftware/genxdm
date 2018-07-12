@@ -706,7 +706,11 @@ final class ValidationKernel<A> implements VxValidator<A>, SmExceptionSupplier
 						}
 						catch (final DatatypeException e)
 						{
-							m_errors.error(new SimpleTypeException(m_atomBridge.getC14NString(initialValue), simpleType, e));
+							if(declaration != null && declaration.getName() != null && !declaration.getName().toString().isEmpty()){ // Let's be extra cautious
+								m_errors.error(new SimpleTypeException(declaration.getName(),m_atomBridge.getC14NString(initialValue), simpleType, e));
+							} else {
+								m_errors.error(new SimpleTypeException(m_atomBridge.getC14NString(initialValue), simpleType, e));
+							}
 							if (null != m_downstream)
 							{
 								m_downstream.text(initialValue);
