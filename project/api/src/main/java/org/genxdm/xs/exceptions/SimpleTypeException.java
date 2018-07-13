@@ -24,15 +24,17 @@ import org.genxdm.xs.types.SimpleType;
 @SuppressWarnings("serial")
 public final class SimpleTypeException extends SchemaException
 {
-    private final String initialValue;
-    private final QName type;
-    private final boolean isAnonymous;
-
     public SimpleTypeException(final String initialValue, final SimpleType type, final SchemaException cause)
+    {
+        this(initialValue, type, cause, null);
+    }
+
+    public SimpleTypeException(final String initialValue, final SimpleType type, final SchemaException cause, final QName elementName)
     {
         super(ValidationOutcome.CVC_Simple_Type, "?", cause);
         this.initialValue = PreCondition.assertArgumentNotNull(initialValue, "initialValue");
         this.type = (type == null) ? null : type.getName();
+        this.elementName = elementName;
         isAnonymous = (type == null) ? false : type.isAnonymous();
     }
 
@@ -44,15 +46,20 @@ public final class SimpleTypeException extends SchemaException
             name = isAnonymous ? "{anonymous}" : type.toString();
         else
             name = "{unknown}";
-        final String localMessage = "The initial value '" + initialValue + "' is not valid with respect to the simple type definition '" + name + "'.";
+        final String localMessage = "The initial value '" + initialValue + "' "
+               + ( (elementName == null) ? "" : "for element '" + elementName + "' ") 
+               + "is not valid with respect to the simple type definition '" + name + "'.";
 
-        final StringBuilder message = new StringBuilder();
+        // 14 jul 18 aal: why is this stuff all commented out? irrelevant?
+        // because of the cost of creating stringbuilder?
+        // final StringBuilder message = new StringBuilder();
         // message.append(getOutcome().getSection());
         // message.append(".");
         // message.append(getPartNumber());
         // message.append(": ");
-        message.append(localMessage);
-        return message.toString();
+        // message.append(localMessage);
+        // return message.toString();
+        return localMessage;
     }
 
     @Override
@@ -78,4 +85,9 @@ public final class SimpleTypeException extends SchemaException
     {
         return initialValue;
     }
+
+    private final String initialValue;
+    private final QName type;
+    private final QName elementName;
+    private final boolean isAnonymous;
 }

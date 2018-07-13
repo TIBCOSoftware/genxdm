@@ -438,7 +438,7 @@ final class AttributeManager<A>
 						}
 						catch (final DatatypeException dte)
 						{
-							final SimpleTypeException ste = new SimpleTypeException(data, attributeType, dte);
+							final SimpleTypeException ste = new SimpleTypeException(data, attributeType, dte, elementName);
 							errors.error(new SmAttributeUseException(elementName, attributeName, locatable.getLocation(), ste));
 						}
 					}
@@ -454,7 +454,7 @@ final class AttributeManager<A>
 						}
 						catch (final DatatypeException dte)
 						{
-							final SimpleTypeException ste = new SimpleTypeException(data, attributeType, dte);
+							final SimpleTypeException ste = new SimpleTypeException(data, attributeType, dte, elementName);
 							errors.error(new SmAttributeUseException(elementName, attributeName, locatable.getLocation(), ste));
 						}
 					}
@@ -489,7 +489,7 @@ final class AttributeManager<A>
 						}
 						catch (final DatatypeException dte)
 						{
-							final SimpleTypeException ste = new SimpleTypeException(data, attributeType, dte);
+							final SimpleTypeException ste = new SimpleTypeException(data, attributeType, dte, elementName);
 							errors.error(new SmAttributeUseException(elementName, attributeName, locatable.getLocation(), ste));
 						}
 					}
@@ -509,7 +509,7 @@ final class AttributeManager<A>
 						}
 						catch (final DatatypeException dte)
 						{
-							final SimpleTypeException ste = new SimpleTypeException(data, attributeType, dte);
+							final SimpleTypeException ste = new SimpleTypeException(data, attributeType, dte, elementName);
 							errors.error(new SmAttributeUseException(elementName, attributeName, locatable.getLocation(), ste));
 						}
 					}

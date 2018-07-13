@@ -1986,7 +1986,9 @@ public final class XMLSchemaConverter
             }
             catch (DatatypeException dte)
             {
-                final SimpleTypeException ste = new SimpleTypeException(initialValue, simpleType, dte);
+                // this is sort of a kludge: we can show the localname of the element, but not the
+                // namespace, because we don't have the namespace here.
+                final SimpleTypeException ste = new SimpleTypeException(initialValue, simpleType, dte, (elementName == null ? null : new QName(elementName)));
                 throw new SmAttributeUseException(new QName(elementName), xmlValueConstraint.getAttributeName(), xmlValueConstraint.getLocation(), ste);
             }
             
