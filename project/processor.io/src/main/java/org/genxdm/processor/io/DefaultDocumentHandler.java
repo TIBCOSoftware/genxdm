@@ -53,37 +53,42 @@ public class DefaultDocumentHandler<N>
     implements DocumentHandler<N>
 {
     
-    public DefaultDocumentHandler(ProcessingContext<N> context)
+    public DefaultDocumentHandler(ProcessingContext<N> pc)
     {
-        this(PreCondition.assertNotNull(context, "context").newFragmentBuilder(), context.getModel());
+        this(null, null, pc);
     }
     
-    public DefaultDocumentHandler(XMLInputFactory inputFac, XMLOutputFactory outputFac, ProcessingContext<N> context)
+    public DefaultDocumentHandler(XMLInputFactory inputFac, XMLOutputFactory outputFac, ProcessingContext<N> pc)
     {
-        super(outputFac, context.getModel());
+        super(outputFac, PreCondition.assertNotNull(pc, "processing context").getModel());
         if (inputFac == null)
             ipf = XMLInputFactory.newInstance();
         else
             ipf = inputFac;
-        this.builder = context.newFragmentBuilder();
+        builder = null;
+        context = pc; 
         initIPF();
     }
     
+    /**
+     *@deprecated since 1.4
+     */
     public DefaultDocumentHandler(final FragmentBuilder<N> builder, final Model<N> model)
     {
         super(PreCondition.assertNotNull(model, "model"));
         this.builder = PreCondition.assertNotNull(builder, "builder");
+        context = null;
         ipf = XMLInputFactory.newInstance();
         initIPF();
     }
     
-    //@Override
+    @Override
     public void setResolver(Resolver resolver)
     {
         this.resolver = resolver;
     }
     
-    //@Override
+    @Override
     public void setReporter(XMLReporter reporter)
     {
         ipf.setProperty("javax.xml.stream.reporter", reporter);
@@ -168,13 +173,40 @@ public class DefaultDocumentHandler<N>
     protected N parseEventReader(XMLEventReader reader, String systemId)
         throws IOException, XdmMarshalException
     {
-        // this is probably working now.
         PreCondition.assertNotNull(reader, "reader");
-        builder.reset();
-        XmlEventVisitor visitor = new XmlEventVisitor(reader, builder);
+        if (builder != null)
+            builder.reset();
+        // we rely upon the fact that builder and context cannot both be null.
+        // this implementation tries to retain thread safety but to reuse
+        // builders. however, to be safe, we're going to throw away the thread-local
+        // builder whenever we encounter an exception; this should give us thread
+        // safety, efficiency (not creating a new builder each time), and robustness
+        // (because we will create a new builder when there's an error, since we
+        // haven't done well at ensuring that it's properly reset).
+        FragmentBuilder<N> fb = (context != null) ? getBuilder() : builder;
+        XmlEventVisitor visitor = new XmlEventVisitor(reader, fb);
         if (systemId != null)
             visitor.setSystemId(systemId);
-        visitor.parse();
+        try
+        {
+            visitor.parse();
+        }
+        catch (IOException ioe)
+        {
+            if (context != null)
+                builders.remove();
+            else
+                builder.reset();
+            throw ioe;
+        }
+        catch (XdmMarshalException xme)
+        {
+            if (context != null)
+                builders.remove();
+            else
+                builder.reset();
+            throw xme;
+        }
         return builder.getNode();
     }
     
@@ -185,9 +217,19 @@ public class DefaultDocumentHandler<N>
         ipf.setProperty("javax.xml.stream.supportDTD", false);
         ipf.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
     }
+    
+    private FragmentBuilder<N> getBuilder()
+    {
+        FragmentBuilder<N> fragBer = builders.get();
+        if (fragBer == null)
+            fragBer = context.newFragmentBuilder();
+        return fragBer;
+    }
 
     protected final XMLInputFactory ipf;
     private final FragmentBuilder<N> builder;
+    private final ProcessingContext<N> context;
+    private ThreadLocal<FragmentBuilder<N>> builders = new ThreadLocal<FragmentBuilder<N>>();
     private Resolver resolver;
 
 }

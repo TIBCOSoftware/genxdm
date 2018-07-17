@@ -46,17 +46,12 @@ public final class SimpleTypeException extends SchemaException
             name = isAnonymous ? "{anonymous}" : type.toString();
         else
             name = "{unknown}";
-        final String localMessage = "The initial value '" + initialValue + "' "
+        final String message = getOutcome().getSection() + "." + getPartNumber()
+               + ": The initial value '" + initialValue + "' "
                + ( (elementName == null) ? "" : "for element '" + elementName + "' ") 
                + "is not valid with respect to the simple type definition '" + name + "'.";
 
-        final StringBuilder message = new StringBuilder();
-        // message.append(getOutcome().getSection());
-        // message.append(".");
-        // message.append(getPartNumber());
-        // message.append(": ");
-        message.append(localMessage);
-        return message.toString();
+        return message;
     }
 
     @Override

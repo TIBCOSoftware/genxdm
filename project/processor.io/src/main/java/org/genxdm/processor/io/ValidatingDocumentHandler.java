@@ -118,6 +118,18 @@ public class ValidatingDocumentHandler<N, A>
         }
     }
     
+    @Override
+    public void setResolver(Resolver resolver)
+    {
+        this.resolver = resolver;
+    }
+    
+    @Override
+    public void setReporter(XMLReporter reporter)
+    {
+        this.reporter = reporter; // doesn't actually work usefully, though.
+    }
+    
     private final TypedContext<N, A> context;
     private final SAXValidator<A> validator;
     private Resolver resolver;

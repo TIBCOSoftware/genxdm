@@ -15,16 +15,8 @@
  */
 package org.genxdm.io;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
-
 import javax.xml.XMLConstants;
-
-import org.genxdm.exceptions.XdmMarshalException;
-import org.xml.sax.InputSource;
+import javax.xml.stream.XMLReporter;
 
 /** Provides an interface for reading and writing XML.
  * 
@@ -58,4 +50,8 @@ public interface DocumentHandler<N>
      * @return <code>true</code> if the processing will be done securely.
      */
     boolean isSecurelyProcessing();
+    
+    void setReporter(XMLReporter reporter);
+    
+    void setResolver(Resolver resolver);
 }
