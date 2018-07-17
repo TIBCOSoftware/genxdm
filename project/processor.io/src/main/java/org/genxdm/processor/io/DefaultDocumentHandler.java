@@ -55,24 +55,30 @@ public class DefaultDocumentHandler<N>
     
     public DefaultDocumentHandler(ProcessingContext<N> context)
     {
-        this(PreCondition.assertNotNull(context, "context").newFragmentBuilder(), context.getModel());
+        this(null, null, context);
     }
     
     public DefaultDocumentHandler(XMLInputFactory inputFac, XMLOutputFactory outputFac, ProcessingContext<N> context)
     {
-        super(outputFac, context.getModel());
+        super(outputFac, PreCondition.assertNotNull(context, "processing context").getModel());
         if (inputFac == null)
             ipf = XMLInputFactory.newInstance();
         else
             ipf = inputFac;
-        this.builder = context.newFragmentBuilder();
+        this.context = context;
+        this.builder = null;
         initIPF();
     }
     
+    /**
+     * bad idea constructor; avoid using it
+     * @deprecated since 1.3.2
+     */
     public DefaultDocumentHandler(final FragmentBuilder<N> builder, final Model<N> model)
     {
         super(PreCondition.assertNotNull(model, "model"));
         this.builder = PreCondition.assertNotNull(builder, "builder");
+        context = null;
         ipf = XMLInputFactory.newInstance();
         initIPF();
     }
@@ -170,8 +176,11 @@ public class DefaultDocumentHandler<N>
     {
         // this is probably working now.
         PreCondition.assertNotNull(reader, "reader");
-        builder.reset();
-        XmlEventVisitor visitor = new XmlEventVisitor(reader, builder);
+        // we mostly ignore builder, if we can.
+        FragmentBuilder<N> fb = (context != null) ? context.newFragmentBuilder() : builder;
+        if (builder != null)
+            builder.reset();
+        XmlEventVisitor visitor = new XmlEventVisitor(reader, fb);
         if (systemId != null)
             visitor.setSystemId(systemId);
         visitor.parse();
@@ -187,6 +196,7 @@ public class DefaultDocumentHandler<N>
     }
 
     protected final XMLInputFactory ipf;
+    private final ProcessingContext<N> context;
     private final FragmentBuilder<N> builder;
     private Resolver resolver;
 
