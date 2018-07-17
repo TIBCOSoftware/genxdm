@@ -184,7 +184,7 @@ public class DefaultDocumentHandler<N>
         if (systemId != null)
             visitor.setSystemId(systemId);
         visitor.parse();
-        return builder.getNode();
+        return fb.getNode();
     }
     
     private void initIPF()
