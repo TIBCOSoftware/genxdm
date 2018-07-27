@@ -207,7 +207,7 @@ public class DefaultDocumentHandler<N>
                 builder.reset();
             throw xme;
         }
-        return builder.getNode();
+        return fb.getNode();
     }
     
     private void initIPF()
