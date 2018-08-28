@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+        xmlns:tns="http://www.example.org/AGSub" 
+        targetNamespace="http://www.example.org/AGSub" 
+        elementFormDefault="qualified">
+
+	<xs:redefine schemaLocation="SubSet_AttGroup_Base.xsd">
+		<xs:attributeGroup name="TestAttGroup">
+			<xs:attribute name="att1" type="xs:string" use="required"/>
+			<xs:attribute name="att2" type="xs:integer" use="required"/>
+		</xs:attributeGroup>
+	</xs:redefine>
+</schema>

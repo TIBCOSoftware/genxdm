@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+        xmlns:tns="http://www.example.org/STR" 
+        targetNamespace="http://www.example.org/STR" 
+        elementFormDefault="qualified">
+
+	<xs:redefine schemaLocation="SimpleType_Restriction_Base.xsd">
+		<xs:simpleType name="simpleTest">
+	  		<xs:restriction base="tns:simpleTest">
+	  			<xs:enumeration value="validValue1"/>
+	    		<xs:enumeration value="validValue2"/>	
+	  		</xs:restriction>
+		</xs:simpleType>
+		
+		<xs:simpleType name="simpleTest1">
+	  		<xs:restriction base="tns:simpleTest1">
+	  			<xs:minInclusive value="10"></xs:minInclusive>
+	  			<xs:maxInclusive value="800"></xs:maxInclusive>
+	  		</xs:restriction>
+		</xs:simpleType>
+		
+		<xs:simpleType name="simpleTest2">
+		  <xs:restriction base="tns:simpleTest2">
+		  	<xs:pattern value="[0-9]">
+		  	</xs:pattern>
+		  	</xs:restriction>
+		</xs:simpleType>
+	</xs:redefine>
+</schema>

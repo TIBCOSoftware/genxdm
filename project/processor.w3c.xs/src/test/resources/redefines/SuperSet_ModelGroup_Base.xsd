@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.w3.org/2001/XMLSchema" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:tns="http://www.example.org/MGSuper" 
+           targetNamespace="http://www.example.org/MGSuper" 
+           elementFormDefault="qualified">
+
+	<xs:group name="TestGroup">
+		<xs:sequence>				
+			<xs:element ref="tns:Sample1" minOccurs="0"/>
+			<xs:element ref="tns:Sample2" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	
+	<xs:element name="Sample1" type="xs:string"></xs:element>
+	<xs:element name="Sample2" type="xs:integer"></xs:element>
+	
+	<xs:element name="TestUser" type="tns:User"></xs:element>
+	<xs:complexType name="User">
+		<xs:sequence>
+			<xs:element name ="Sample5" type="xs:string"/>
+			<xs:group ref="tns:TestGroup" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

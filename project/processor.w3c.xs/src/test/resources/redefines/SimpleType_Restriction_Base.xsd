@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.w3.org/2001/XMLSchema" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:tns="http://www.example.org/STR" 
+           targetNamespace="http://www.example.org/STR" 
+           elementFormDefault="qualified">
+
+	<xs:simpleType name="simpleTest">
+	  <xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	
+	<xs:simpleType name="simpleTest1">
+	  <xs:restriction base="xs:integer">
+	  	<xs:minInclusive value="1"></xs:minInclusive>
+	  	<xs:maxInclusive value="1000"></xs:maxInclusive>
+	  </xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="simpleTest2">
+	  <xs:restriction base="xs:string">
+	  	<xs:pattern value="[a-z]">
+	  	</xs:pattern>
+	  	</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:element name="simpleElement" type="tns:simpleTest"/>
+	<xs:element name="simpleElement1" type="tns:simpleTest1"/>
+	<xs:element name="simpleElement2" type="tns:simpleTest2"/>
+</xs:schema>
+
+	

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+        xmlns:tns="http://www.example.org/AGSuper" 
+        targetNamespace="http://www.example.org/AGSuper" 
+        elementFormDefault="qualified">
+
+	<xs:redefine schemaLocation="SuperSet_AttGroup_Base.xsd">
+		<xs:attributeGroup name="TestAttGroup">
+			<xs:attribute name="att1" type="xs:string"/>
+			<xs:attribute name="att2" type="xs:integer"/>
+			<xs:attribute name="att3" type="xs:boolean"/>
+			<xs:attribute name="att4" type="xs:decimal"/>
+			<xs:attribute name="att5" type="xs:integer"/>
+		</xs:attributeGroup>
+	</xs:redefine>
+</schema>

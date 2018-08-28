@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.w3.org/2001/XMLSchema" 
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+        xmlns:tns="http://www.example.org/MGSuperRef" 
+        targetNamespace="http://www.example.org/MGSuperRef" 
+        elementFormDefault="qualified">
+
+	<xs:redefine schemaLocation="SuperSet_ModelGroup_withRef_Base.xsd">
+		<xs:group name="TestGroup">
+			<xs:sequence>	
+				<xs:group ref="tns:TestGroup"/>			
+				<xs:element ref="tns:Sample3"/>
+				<xs:element ref="tns:Sample4"/>
+			</xs:sequence>
+		</xs:group>
+	</xs:redefine>
+	
+	<xs:element name="Sample3" type="xs:boolean"></xs:element>
+	<xs:element name="Sample4" type="xs:decimal"></xs:element>
+</xs:schema>

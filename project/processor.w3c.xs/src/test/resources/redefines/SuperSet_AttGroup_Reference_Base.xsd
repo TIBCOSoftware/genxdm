@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.w3.org/2001/XMLSchema" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:tns="http://www.example.org/AGSuperRef" 
+           targetNamespace="http://www.example.org/AGSuperRef" 
+           elementFormDefault="qualified">
+
+	<xs:attributeGroup name="TestAttGroup">
+		<xs:attribute name="att1" type="xs:string"/>
+		<xs:attribute name="att2" type="xs:integer"/>
+		<xs:attribute name="att3" type="xs:boolean"/>
+	</xs:attributeGroup>
+	
+	<xs:element name="TestUser" type="tns:User"></xs:element>
+	<xs:complexType name="User">
+		<xs:sequence>
+			<xs:element name ="Sample5" type="xs:string"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="tns:TestAttGroup"></xs:attributeGroup>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+        xmlns:tns="http://www.example.org/CTR" 
+        targetNamespace="http://www.example.org/CTR" 
+        elementFormDefault="qualified">
+
+    <xs:redefine schemaLocation="ComplexType_Restriction_Base.xsd">
+		<xs:complexType name="pname">
+	    	<xs:complexContent>
+	      		<xs:restriction base="tns:pname">
+	        		<xs:sequence>
+	         			 <xs:element name="firstname" type="xs:string"/>
+	         			 <xs:element name= "age" type="xs:integer"></xs:element>
+	        		</xs:sequence>
+	      		</xs:restriction>
+	    	</xs:complexContent>
+	  	</xs:complexType>	
+    </xs:redefine>
+	
+</schema>

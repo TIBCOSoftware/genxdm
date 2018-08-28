@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.w3.org/2001/XMLSchema" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:tns="http://www.example.org/CTR" 
+           targetNamespace="http://www.example.org/CTR" 
+           elementFormDefault="qualified">
+
+	<xs:complexType name="pname">
+		<xs:sequence>
+    		<xs:element name="firstname" type="xs:string"/>
+    		<xs:element name="lastname" type="xs:string" minOccurs="0"/>
+    		<xs:element name= "age" type="xs:integer"></xs:element>
+  		</xs:sequence>
+	</xs:complexType>
+
+    <xs:element name="customer" type="tns:pname"/>
+</xs:schema>

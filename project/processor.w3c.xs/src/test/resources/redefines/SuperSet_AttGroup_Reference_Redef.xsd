@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+        xmlns:tns="http://www.example.org/AGSuperRef" 
+        targetNamespace="http://www.example.org/AGSuperRef" 
+        elementFormDefault="qualified">
+
+	<xs:redefine schemaLocation="SuperSet_AttGroup_Reference_Base.xsd">
+		<xs:attributeGroup name="TestAttGroup">
+			<xs:attributeGroup ref="tns:TestAttGroup"/>
+			<xs:attribute name="att4" type="xs:decimal"/>
+			<xs:attribute name="att5" type="xs:integer"/>
+		</xs:attributeGroup>
+	</xs:redefine>
+</schema>
