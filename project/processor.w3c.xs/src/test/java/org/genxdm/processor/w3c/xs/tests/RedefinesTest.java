@@ -29,8 +29,8 @@ public class RedefinesTest
         try
         {
             ComponentBag components = parseSchema(schema);
-//        System.out.println("Redefine SimpleType/Restriction schema components (splat!)");
-//        Utilities.displayComponents(components);
+            System.out.println("Redefine SimpleType/Restriction schema components (splat!)");
+            Utilities.displayComponents(components);
         }
         catch (AbortException ae)
         {
@@ -46,8 +46,8 @@ public class RedefinesTest
         try
         {
             ComponentBag components = parseSchema(schema);
-//        System.out.println("Redefine ComplexType/Restriction schema components (splat!)");
-//        Utilities.displayComponents(components);
+            System.out.println("Redefine ComplexType/Restriction schema components (splat!)");
+            Utilities.displayComponents(components);
         }
         catch (AbortException ae)
         {
@@ -63,8 +63,8 @@ public class RedefinesTest
         try
         {
             ComponentBag components = parseSchema(schema);
-//        System.out.println("Redefine ComplexType/Extension schema components (splat!)");
-//        Utilities.displayComponents(components);
+            System.out.println("Redefine ComplexType/Extension schema components (splat!)");
+        Utilities.displayComponents(components);
         }
         catch (AbortException ae)
         {
@@ -80,8 +80,8 @@ public class RedefinesTest
         try
         {
             ComponentBag components = parseSchema(schema);
-//        System.out.println("Redefine ModelGroup/SubSet schema components (splat!)");
-//        Utilities.displayComponents(components);
+            System.out.println("Redefine ModelGroup/SubSet schema components (splat!)");
+            Utilities.displayComponents(components);
         }
         catch (AbortException ae)
         {
@@ -97,8 +97,8 @@ public class RedefinesTest
         try
         {
             ComponentBag components = parseSchema(schema);
-//        System.out.println("Redefine ModelGroup/SuperSet schema components (splat!)");
-//        Utilities.displayComponents(components);
+            System.out.println("Redefine ModelGroup/SuperSet schema components (splat!)");
+            Utilities.displayComponents(components);
         }
         catch (AbortException ae)
         {
@@ -114,8 +114,8 @@ public class RedefinesTest
         try
         {
             ComponentBag components = parseSchema(schema);
-//        System.out.println("Redefine ModelGroup/SuperSet (with reference) schema components (splat!)");
-//        Utilities.displayComponents(components);
+            System.out.println("Redefine ModelGroup/SuperSet (with reference) schema components (splat!)");
+            Utilities.displayComponents(components);
         }
         catch (AbortException ae)
         {
@@ -131,8 +131,8 @@ public class RedefinesTest
         try
         {
             ComponentBag components = parseSchema(schema);
-//        System.out.println("Redefine AttributeGroup/SubSet schema components (splat!)");
-//        Utilities.displayComponents(components);
+            System.out.println("Redefine AttributeGroup/SubSet schema components (splat!)");
+            Utilities.displayComponents(components);
         }
         catch (AbortException ae)
         {
@@ -148,8 +148,8 @@ public class RedefinesTest
         try
         {
             ComponentBag components = parseSchema(schema);
-//        System.out.println("Redefine AttributeGroup/SuperSet schema components (splat!)");
-//        Utilities.displayComponents(components);
+            System.out.println("Redefine AttributeGroup/SuperSet schema components (splat!)");
+            Utilities.displayComponents(components);
         }
         catch (AbortException ae)
         {
@@ -165,8 +165,8 @@ public class RedefinesTest
         try
         {
             ComponentBag components = parseSchema(schema);
-//        System.out.println("Redefine Attribute Group/SuperSet (with reference) schema components (splat!)");
-//        Utilities.displayComponents(components);
+            System.out.println("Redefine Attribute Group/SuperSet (with reference) schema components (splat!)");
+            Utilities.displayComponents(components);
         }
         catch (AbortException ae)
         {
@@ -203,7 +203,7 @@ public class RedefinesTest
             // resolution is thus easy, using the resource loader and base path
             PreCondition.assertArgumentNotNull(uri, "uri");
             InputStream stream = getClass().getClassLoader().getResourceAsStream(REDEF_DIR+uri);
-            System.out.println(((stream == null) ? "Could not resolve: " : "Resolved: " )+REDEF_DIR+uri);
+//System.out.println(((stream == null) ? "Could not resolve: " : "Resolved: " )+REDEF_DIR+uri);
             return stream;
         }
     }

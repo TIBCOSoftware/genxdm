@@ -6735,7 +6735,9 @@ final class XMLSchemaParser extends XMLRepresentation
                 if (LN_TARGET_NAMESPACE.equals(localName))
                 {
                     module.setTargetNamespace(reader.getAttributeValue(i));
-                    if (!module.isInclude() && !m_processRepeatedNamespaces && cache.m_seenNamespaces.contains(module.getTargetNamespace()))
+                    if (!(module.isInclude() || module.isRedefine()) && 
+                        !m_processRepeatedNamespaces && 
+                        cache.m_seenNamespaces.contains(module.getTargetNamespace()))
                     {
                         // Ignore this schema.
                         skipTag(reader);
