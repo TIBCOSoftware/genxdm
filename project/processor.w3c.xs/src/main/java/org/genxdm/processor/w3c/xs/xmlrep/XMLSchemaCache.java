@@ -49,7 +49,7 @@ import org.genxdm.xs.exceptions.SchemaException;
  * This class is used to do the "bookkeeping" associated with parsing in a streaming fashion and with managing forward
  * references.
  */
-public final class XMLSchemaCache
+public class XMLSchemaCache
 {
     public final Map<QName, XMLElement> m_elements = new HashMap<QName, XMLElement>();
     public final Map<QName, SrcFrozenLocation> m_elementsUnresolved = new HashMap<QName, SrcFrozenLocation>();

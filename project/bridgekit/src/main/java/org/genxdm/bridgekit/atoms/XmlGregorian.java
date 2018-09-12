@@ -20,7 +20,8 @@ import java.math.BigDecimal;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.types.NativeType;
 
-public final class XmlGregorian extends XmlAbstractAtom
+public final class XmlGregorian 
+    extends XmlAbstractAtom
 {
     private final int day;
     private final BigDecimal fSecond;
