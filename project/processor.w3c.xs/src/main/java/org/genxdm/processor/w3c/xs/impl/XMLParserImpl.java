@@ -25,7 +25,7 @@ import org.genxdm.processor.w3c.xs.LoadOptions;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLSchemaCache;
 import org.genxdm.processor.w3c.xs.xmlrep.XMLSchemaModule;
 import org.genxdm.processor.w3c.xs.xmlrep.exceptions.XMLSccExceptionAdapter;
-import org.genxdm.processor.w3c.xs.xmlrep.util.XMLComponentLocator;
+import org.genxdm.processor.w3c.xs.xmlrep.util.XMLBidiComponentLocator;
 import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.SchemaLoadOptions;
@@ -78,7 +78,6 @@ final public class XMLParserImpl implements SchemaParser, LoadOptions
         parser.parse(systemId, istream, schemaCache, module);
         
         return resolve(schemaCache, caught, errors);
-
     }
 
     @Override
@@ -128,12 +127,12 @@ final public class XMLParserImpl implements SchemaParser, LoadOptions
     /**
      * Converts the XML cache into a compiled schema.
      */
-    private Pair<ComponentBagImpl, XMLComponentLocator> convert(final XMLSchemaCache cache, final SchemaExceptionHandler errors) throws AbortException
+    private Pair<ComponentBagImpl, XMLBidiComponentLocator> convert(final XMLSchemaCache cache, final SchemaExceptionHandler errors) throws AbortException
     {
         // Convert the schema before checking for unresolved references.  That way, during the
         // conversion from XML model to SCHEMA model, we can peer into the SmComponentProvider to
         // see if any of the desired components are there.
-        Pair<ComponentBagImpl, XMLComponentLocator> retval = XMLSchemaConverter.convert(m_regexc, this.cache, cache, errors, m_lastInWins);      
+        Pair<ComponentBagImpl, XMLBidiComponentLocator> retval = XMLSchemaConverter.convert(m_regexc, this.cache, cache, errors, m_lastInWins);      
         try
         {
             cache.checkReferences();
@@ -143,7 +142,6 @@ final public class XMLParserImpl implements SchemaParser, LoadOptions
             errors.error(e);
             return null;
         }
-
         return retval;
     }
 
@@ -172,7 +170,7 @@ final public class XMLParserImpl implements SchemaParser, LoadOptions
         }
 
         // Convert the XML representation into the compiled schema.
-        final Pair<ComponentBagImpl, XMLComponentLocator> converted = convert(schemaCache, catcher);
+        final Pair<ComponentBagImpl, XMLBidiComponentLocator> converted = convert(schemaCache, catcher);
 
         if (catcher.isEmpty())
         {

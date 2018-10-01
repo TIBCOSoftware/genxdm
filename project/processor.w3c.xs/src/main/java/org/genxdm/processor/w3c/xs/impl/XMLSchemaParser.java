@@ -383,6 +383,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 break;
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -472,6 +473,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -587,6 +589,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -717,6 +720,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -790,6 +794,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -914,6 +919,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                     // Ignore.
                 }
@@ -1102,6 +1108,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                     // Ignore.
                 }
@@ -1342,6 +1349,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                     // Ignore.
                 }
@@ -1513,6 +1521,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                     // Ignore.
                 }
@@ -1745,6 +1754,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -1894,6 +1904,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                     // Ignore
                 }
@@ -2274,6 +2285,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -2534,6 +2546,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -2810,6 +2823,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -2930,6 +2944,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                     // Ignore.
                 }
@@ -3541,6 +3556,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -3750,6 +3766,7 @@ final class XMLSchemaParser extends XMLRepresentation
                     case XMLStreamConstants.CHARACTERS:
                     case XMLStreamConstants.COMMENT:
                     case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                    case XMLStreamConstants.SPACE:
                     {
                     }
                     break;
@@ -3892,6 +3909,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -3993,6 +4011,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -4114,6 +4133,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -4249,6 +4269,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                     // Ignore.
                 }
@@ -4390,6 +4411,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                     // Ignore.
                 }
@@ -4717,6 +4739,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -4860,6 +4883,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -4990,6 +5014,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -5118,6 +5143,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -5256,6 +5282,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -5624,6 +5651,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -5833,6 +5861,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -6178,6 +6207,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -6445,6 +6475,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -6712,6 +6743,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -7009,6 +7041,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                     // Ignore.
                 }
@@ -7118,6 +7151,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -7228,6 +7262,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -7314,6 +7349,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                     // Ignore.
                 }
@@ -7489,6 +7525,10 @@ final class XMLSchemaParser extends XMLRepresentation
                 {
                 }
                 break;
+                case XMLStreamConstants.SPACE: //ignorable whitespace is ignorable; who knew?
+                {
+                }
+                break;
                 default:
                 {
                     throw new UnsupportedOperationException(Integer.toString(event));
@@ -7620,6 +7660,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -7774,6 +7815,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -7914,6 +7956,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;
@@ -8080,6 +8123,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 case XMLStreamConstants.CHARACTERS:
                 case XMLStreamConstants.COMMENT:
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                case XMLStreamConstants.SPACE:
                 {
                 }
                 break;

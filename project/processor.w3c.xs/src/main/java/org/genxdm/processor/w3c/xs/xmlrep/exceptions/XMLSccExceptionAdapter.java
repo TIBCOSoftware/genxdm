@@ -17,6 +17,7 @@ package org.genxdm.processor.w3c.xs.xmlrep.exceptions;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.exception.scc.SccLocationException;
+import org.genxdm.processor.w3c.xs.xmlrep.util.XMLBidiComponentLocator;
 import org.genxdm.processor.w3c.xs.xmlrep.util.XMLComponentLocator;
 import org.genxdm.xs.components.AttributeDefinition;
 import org.genxdm.xs.components.AttributeGroupDefinition;
@@ -38,127 +39,235 @@ public final class XMLSccExceptionAdapter implements SchemaConstraintHandler
 {
     private final SchemaExceptionHandler m_errors;
     private final XMLComponentLocator m_locations;
+    private final XMLBidiComponentLocator m_bdLocations;
 
     public XMLSccExceptionAdapter(final SchemaExceptionHandler errors, final XMLComponentLocator locations)
     {
         m_errors = PreCondition.assertArgumentNotNull(errors, "errors");
         m_locations = PreCondition.assertArgumentNotNull(locations, "locations");
+        m_bdLocations = null;
+    }
+    
+    public XMLSccExceptionAdapter(final SchemaExceptionHandler errors, final XMLBidiComponentLocator locations)
+    {
+        m_errors = PreCondition.assertArgumentNotNull(errors, "errors");
+        m_bdLocations = PreCondition.assertArgumentNotNull(locations, "locations");
+        m_locations = null;
     }
 
     public void error(final SimpleType simpleType, final SchemaException exception) throws AbortException
     {
-        if (m_locations.m_simpleTypeLocations.containsKey(simpleType))
+        if (m_locations != null)
         {
-            final LocationInSchema location = m_locations.m_simpleTypeLocations.get(simpleType);
-            m_errors.error(new SccLocationException(location, exception));
+            if (m_locations.m_simpleTypeLocations.containsKey(simpleType))
+            {
+                final LocationInSchema location = m_locations.m_simpleTypeLocations.get(simpleType);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
         else
         {
-            m_errors.error(exception);
+            if (m_bdLocations.m_simpleTypeLocations.containsKey(simpleType))
+            {
+                final LocationInSchema location = m_bdLocations.m_simpleTypeLocations.reverse().get(simpleType);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
     }
 
     public void error(final ComplexType complexType, final SchemaException exception) throws AbortException
     {
-        if (m_locations.m_complexTypeLocations.containsKey(complexType))
+        if (m_locations != null)
         {
-            final LocationInSchema location = m_locations.m_complexTypeLocations.get(complexType);
-            m_errors.error(new SccLocationException(location, exception));
+            if (m_locations.m_complexTypeLocations.containsKey(complexType))
+            {
+                final LocationInSchema location = m_locations.m_complexTypeLocations.get(complexType);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
         else
         {
-            m_errors.error(exception);
+            if (m_bdLocations.m_complexTypeLocations.containsKey(complexType))
+            {
+                final LocationInSchema location = m_bdLocations.m_complexTypeLocations.reverse().get(complexType);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
     }
 
     public void error(final AttributeDefinition attribute, final SchemaException exception) throws AbortException
     {
-        if (m_locations.m_attributeLocations.containsKey(attribute))
+        if (m_locations != null)
         {
-            final LocationInSchema location = m_locations.m_attributeLocations.get(attribute);
-            m_errors.error(new SccLocationException(location, exception));
+            if (m_locations.m_attributeLocations.containsKey(attribute))
+            {
+                final LocationInSchema location = m_locations.m_attributeLocations.get(attribute);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
         else
         {
-            m_errors.error(exception);
+            if (m_bdLocations.m_attributeLocations.containsKey(attribute))
+            {
+                final LocationInSchema location = m_bdLocations.m_attributeLocations.reverse().get(attribute);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
     }
 
     public void error(final ElementDefinition element, final SchemaException exception) throws AbortException
     {
-        if (m_locations.m_elementLocations.containsKey(element))
+        if (m_locations != null)
         {
-            final LocationInSchema location = m_locations.m_elementLocations.get(element);
-            m_errors.error(new SccLocationException(location, exception));
+            if (m_locations.m_elementLocations.containsKey(element))
+            {
+                final LocationInSchema location = m_locations.m_elementLocations.get(element);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
         else
         {
-            m_errors.error(exception);
+            if (m_bdLocations.m_elementLocations.containsKey(element))
+            {
+                final LocationInSchema location = m_bdLocations.m_elementLocations.reverse().get(element);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
     }
 
     public void error(final ModelGroup modelGroup, final SchemaException exception) throws AbortException
     {
-        if (m_locations.m_modelGroupLocations.containsKey(modelGroup))
+        if (m_locations != null)
         {
-            final LocationInSchema location = m_locations.m_modelGroupLocations.get(modelGroup);
-            m_errors.error(new SccLocationException(location, exception));
+            if (m_locations.m_modelGroupLocations.containsKey(modelGroup))
+            {
+                final LocationInSchema location = m_locations.m_modelGroupLocations.get(modelGroup);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
         else
         {
-            m_errors.error(exception);
+            if (m_bdLocations.m_modelGroupLocations.containsKey(modelGroup))
+            {
+                final LocationInSchema location = m_bdLocations.m_modelGroupLocations.reverse().get(modelGroup);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
     }
 
     public void error(final AttributeGroupDefinition attributeGroup, final SchemaException exception) throws AbortException
     {
-        if (m_locations.m_attributeGroupLocations.containsKey(attributeGroup))
+        if (m_locations != null)
         {
-            final LocationInSchema location = m_locations.m_attributeGroupLocations.get(attributeGroup);
-            m_errors.error(new SccLocationException(location, exception));
+            if (m_locations.m_attributeGroupLocations.containsKey(attributeGroup))
+            {
+                final LocationInSchema location = m_locations.m_attributeGroupLocations.get(attributeGroup);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
         else
         {
-            m_errors.error(exception);
+            if (m_bdLocations.m_attributeGroupLocations.containsKey(attributeGroup))
+            {
+                final LocationInSchema location = m_bdLocations.m_attributeGroupLocations.reverse().get(attributeGroup);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
     }
 
     public void error(final IdentityConstraint constraint, final SchemaException exception) throws AbortException
     {
-        if (m_locations.m_constraintLocations.containsKey(constraint))
+        if (m_locations != null)
         {
-            final LocationInSchema location = m_locations.m_constraintLocations.get(constraint);
-            m_errors.error(new SccLocationException(location, exception));
+            if (m_locations.m_constraintLocations.containsKey(constraint))
+            {
+                final LocationInSchema location = m_locations.m_constraintLocations.get(constraint);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
         else
         {
-            m_errors.error(exception);
+            if (m_bdLocations.m_constraintLocations.containsKey(constraint))
+            {
+                final LocationInSchema location = m_bdLocations.m_constraintLocations.reverse().get(constraint);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
     }
 
     public void error(final NotationDefinition notation, final SchemaException exception) throws AbortException
     {
-        if (m_locations.m_notationLocations.containsKey(notation))
+        if (m_locations != null)
         {
-            final LocationInSchema location = m_locations.m_notationLocations.get(notation);
-            m_errors.error(new SccLocationException(location, exception));
+            if (m_locations.m_notationLocations.containsKey(notation))
+            {
+                final LocationInSchema location = m_locations.m_notationLocations.get(notation);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
         else
         {
-            m_errors.error(exception);
+            if (m_bdLocations.m_notationLocations.containsKey(notation))
+            {
+                final LocationInSchema location = m_bdLocations.m_notationLocations.reverse().get(notation);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
     }
 
     public void error(final SchemaParticle particle, final SchemaException exception) throws AbortException
     {
-        if (m_locations.m_particleLocations.containsKey(particle))
+        if (m_locations != null)
         {
-            final LocationInSchema location = m_locations.m_particleLocations.get(particle);
-            m_errors.error(new SccLocationException(location, exception));
+            if (m_locations.m_particleLocations.containsKey(particle))
+            {
+                final LocationInSchema location = m_locations.m_particleLocations.get(particle);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
         else
         {
-            m_errors.error(exception);
+            if (m_bdLocations.m_particleLocations.containsKey(particle))
+            {
+                final LocationInSchema location = m_bdLocations.m_particleLocations.reverse().get(particle);
+                m_errors.error(new SccLocationException(location, exception));
+            }
+            else
+                m_errors.error(exception);
         }
     }
 }

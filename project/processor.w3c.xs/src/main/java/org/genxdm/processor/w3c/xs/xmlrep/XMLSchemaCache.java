@@ -163,18 +163,17 @@ public class XMLSchemaCache
             recursiveComputeSubstitutionGroups(element);
         }
     }
+    
     private void recursiveComputeSubstitutionGroups(XMLElement element)
     {
-    	if (null != element.substitutionGroup && element.typeRef.isComplexUrType())
+    	if ( (element.substitutionGroup != null) && element.typeRef.isComplexUrType())
     	{
     		recursiveComputeSubstitutionGroups(element.substitutionGroup);
 
     		// Note: if substitutionGroup head's type is a local type, we'll pick that up later, in XMLSchemaConverter.convertElement(XMLElement);
     		// for now, we'll only be concerned with global types
     		if(element.substitutionGroup.typeRef.isGlobal())
-    		{
         		element.typeRef = element.substitutionGroup.typeRef;
-    		}
     	}
     }
 
@@ -191,17 +190,13 @@ public class XMLSchemaCache
                 attribute.setLocation(location);
             }
             else
-            {
                 throw new SmDuplicateAttributeException(name, location);
-            }
             return attribute;
         }
-        else
-        {
-            final XMLAttribute attribute = new XMLAttribute(name, GLOBAL, ANY_SIMPLE_TYPE, location);
-            m_attributes.put(name, attribute);
-            return attribute;
-        }
+        // otherwise
+        final XMLAttribute attribute = new XMLAttribute(name, GLOBAL, ANY_SIMPLE_TYPE, location);
+        m_attributes.put(name, attribute);
+        return attribute;
     }
 
     public XMLAttribute dereferenceAttribute(final QName name, final Location reference)
@@ -209,16 +204,11 @@ public class XMLSchemaCache
         PreCondition.assertArgumentNotNull(name);
 
         if (m_attributes.containsKey(name))
-        {
             return m_attributes.get(name);
-        }
-        else
-        {
-            final XMLAttribute attribute = new XMLAttribute(name, GLOBAL, ANY_SIMPLE_TYPE);
-            m_attributesUnresolved.put(name, new SrcFrozenLocation(reference));
-            m_attributes.put(name, attribute);
-            return attribute;
-        }
+        final XMLAttribute attribute = new XMLAttribute(name, GLOBAL, ANY_SIMPLE_TYPE);
+        m_attributesUnresolved.put(name, new SrcFrozenLocation(reference));
+        m_attributes.put(name, attribute);
+        return attribute;
     }
 
     /**
@@ -238,17 +228,13 @@ public class XMLSchemaCache
                 attributeGroup.setLocation(location);
             }
             else
-            {
                 throw new SmDuplicateAttributeGroupException(name, location);
-            }
             return attributeGroup;
         }
-        else
-        {
-            final XMLAttributeGroup attributeGroup = new XMLAttributeGroup(name, GLOBAL, location);
-            m_attributeGroups.put(name, attributeGroup);
-            return attributeGroup;
-        }
+        // or
+        final XMLAttributeGroup attributeGroup = new XMLAttributeGroup(name, GLOBAL, location);
+        m_attributeGroups.put(name, attributeGroup);
+        return attributeGroup;
     }
 
     public XMLAttributeGroup dereferenceAttributeGroup(final QName name, final Location reference, final boolean mustExist) throws SchemaException
@@ -256,23 +242,15 @@ public class XMLSchemaCache
         PreCondition.assertArgumentNotNull(name);
 
         if (m_attributeGroups.containsKey(name))
-        {
             return m_attributeGroups.get(name);
-        }
-        else
-        {
-            if (mustExist)
-            {
-                throw new SmUndeclaredReferenceException(name, new SrcFrozenLocation(reference));
-            }
-            else
-            {
-                final XMLAttributeGroup attributeGroup = new XMLAttributeGroup(name, GLOBAL);
-                m_attributeGroupsUnresolved.put(name, new SrcFrozenLocation(reference));
-                m_attributeGroups.put(name, attributeGroup);
-                return attributeGroup;
-            }
-        }
+        // or else
+        if (mustExist)
+            throw new SmUndeclaredReferenceException(name, new SrcFrozenLocation(reference));
+        // or
+        final XMLAttributeGroup attributeGroup = new XMLAttributeGroup(name, GLOBAL);
+        m_attributeGroupsUnresolved.put(name, new SrcFrozenLocation(reference));
+        m_attributeGroups.put(name, attributeGroup);
+        return attributeGroup;
     }
 
     /**
@@ -293,9 +271,7 @@ public class XMLSchemaCache
                 constraint.setLocation(location);
             }
             else
-            {
                 throw new SmDuplicateIdentityConstraintException(name, location);
-            }
         }
         else
         {
@@ -315,16 +291,12 @@ public class XMLSchemaCache
         PreCondition.assertArgumentNotNull(name);
 
         if (m_constraints.containsKey(name))
-        {
             return m_constraints.get(name);
-        }
-        else
-        {
-            final XMLIdentityConstraint constraint = new XMLIdentityConstraint(name, GLOBAL);
-            m_constraints.put(name, constraint);
-            m_constraintsUnresolved.put(name, new SrcFrozenLocation(reference));
-            return constraint;
-        }
+        // otherwise
+        final XMLIdentityConstraint constraint = new XMLIdentityConstraint(name, GLOBAL);
+        m_constraints.put(name, constraint);
+        m_constraintsUnresolved.put(name, new SrcFrozenLocation(reference));
+        return constraint;
     }
 
     public XMLType registerType(final QName name, final SrcFrozenLocation location) throws SmDuplicateTypeException
@@ -340,18 +312,14 @@ public class XMLSchemaCache
                 type.setLocation(location);
             }
             else
-            {
                 // Duplicate type in the context of the cache.
                 throw new SmDuplicateTypeException(name, location);
-            }
             return type;
         }
-        else
-        {
-            final XMLType type = new XMLType(name, GLOBAL, location);
-            m_globalTypes.put(name, type);
-            return type;
-        }
+        // or else
+        final XMLType type = new XMLType(name, GLOBAL, location);
+        m_globalTypes.put(name, type);
+        return type;
     }
 
     public XMLType registerAnonymousType(final XMLScope scope, final SrcFrozenLocation location)
@@ -364,23 +332,15 @@ public class XMLSchemaCache
         PreCondition.assertArgumentNotNull(name);
 
         if (m_globalTypes.containsKey(name))
-        {
             return m_globalTypes.get(name);
-        }
-        else
-        {
-            if (mustExist)
-            {
-                throw new SmUndeclaredReferenceException(name, new SrcFrozenLocation(reference));
-            }
-            else
-            {
-                final XMLType type = new XMLType(name, GLOBAL);
-                m_typesUnresolved.put(name, new SrcFrozenLocation(reference));
-                m_globalTypes.put(name, type);
-                return type;
-            }
-        }
+        // or
+        if (mustExist)
+            throw new SmUndeclaredReferenceException(name, new SrcFrozenLocation(reference));
+        // or
+        final XMLType type = new XMLType(name, GLOBAL);
+        m_typesUnresolved.put(name, new SrcFrozenLocation(reference));
+        m_globalTypes.put(name, type);
+        return type;
     }
 
     public XMLModelGroup registerModelGroup(final QName name, final SrcFrozenLocation location) throws SmDuplicateModelGroupException
@@ -396,17 +356,13 @@ public class XMLSchemaCache
                 modelGroup.setLocation(location);
             }
             else
-            {
                 throw new SmDuplicateModelGroupException(name, location);
-            }
             return modelGroup;
         }
-        else
-        {
-            final XMLModelGroup modelGroup = new XMLModelGroup(name, GLOBAL, location);
-            m_modelGroups.put(name, modelGroup);
-            return modelGroup;
-        }
+        // otherwise
+        final XMLModelGroup modelGroup = new XMLModelGroup(name, GLOBAL, location);
+        m_modelGroups.put(name, modelGroup);
+        return modelGroup;
     }
 
     public XMLModelGroup dereferenceModelGroup(final QName name, final Location reference, final boolean mustExist) throws SchemaException
@@ -414,23 +370,15 @@ public class XMLSchemaCache
         PreCondition.assertArgumentNotNull(name);
 
         if (m_modelGroups.containsKey(name))
-        {
             return m_modelGroups.get(name);
-        }
-        else
-        {
-            if (mustExist)
-            {
-                throw new SmUndeclaredReferenceException(name, new SrcFrozenLocation(reference));
-            }
-            else
-            {
-                final XMLModelGroup modelGroup = new XMLModelGroup(name, GLOBAL);
-                m_modelGroups.put(name, modelGroup);
-                m_modelGroupsUnresolved.put(name, new SrcFrozenLocation(reference));
-                return modelGroup;
-            }
-        }
+        // or
+        if (mustExist)
+            throw new SmUndeclaredReferenceException(name, new SrcFrozenLocation(reference));
+        // or
+        final XMLModelGroup modelGroup = new XMLModelGroup(name, GLOBAL);
+        m_modelGroups.put(name, modelGroup);
+        m_modelGroupsUnresolved.put(name, new SrcFrozenLocation(reference));
+        return modelGroup;
     }
 
     public XMLNotation registerNotation(final QName name, final SrcFrozenLocation location) throws SmDuplicateNotationException
@@ -447,16 +395,12 @@ public class XMLSchemaCache
                 return notation;
             }
             else
-            {
                 throw new SmDuplicateNotationException(name, location);
-            }
         }
-        else
-        {
-            final XMLNotation notation = new XMLNotation(name, GLOBAL, location);
-            m_notations.put(name, notation);
-            return notation;
-        }
+        // otherwise
+        final XMLNotation notation = new XMLNotation(name, GLOBAL, location);
+        m_notations.put(name, notation);
+        return notation;
     }
 
     public XMLElement registerElement(final QName name, final SrcFrozenLocation location) throws SmDuplicateElementException
@@ -472,17 +416,13 @@ public class XMLSchemaCache
                 element.setLocation(location);
             }
             else
-            {
                 throw new SmDuplicateElementException(name, location);
-            }
             return element;
         }
-        else
-        {
-            final XMLElement element = new XMLElement(name, GLOBAL, ANY_TYPE, location);
-            m_elements.put(name, element);
-            return element;
-        }
+        // otherwise
+        final XMLElement element = new XMLElement(name, GLOBAL, ANY_TYPE, location);
+        m_elements.put(name, element);
+        return element;
     }
 
     /**
@@ -493,15 +433,11 @@ public class XMLSchemaCache
         PreCondition.assertArgumentNotNull(name);
 
         if (m_elements.containsKey(name))
-        {
             return m_elements.get(name);
-        }
-        else
-        {
-            final XMLElement element = new XMLElement(name, GLOBAL, ANY_TYPE);
-            m_elements.put(name, element);
-            m_elementsUnresolved.put(name, new SrcFrozenLocation(reference));
-            return element;
-        }
+        // otherwise
+        final XMLElement element = new XMLElement(name, GLOBAL, ANY_TYPE);
+        m_elements.put(name, element);
+        m_elementsUnresolved.put(name, new SrcFrozenLocation(reference));
+        return element;
     }
 }

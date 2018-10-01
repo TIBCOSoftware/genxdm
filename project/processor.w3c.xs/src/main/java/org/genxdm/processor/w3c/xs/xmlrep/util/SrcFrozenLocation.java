@@ -21,14 +21,9 @@ import javax.xml.stream.Location;
 
 import org.genxdm.xs.resolve.LocationInSchema;
 
-public final class SrcFrozenLocation implements LocationInSchema
+public final class SrcFrozenLocation 
+    implements LocationInSchema
 {
-    private final int m_lineNumber;
-    private final int m_columnNumber;
-    private final int m_characterOffset;
-    private final String m_publicId;
-    private final String m_systemId;
-
     public SrcFrozenLocation(final int lineNumber, final int columnNumber, final int characterOffset, final String publicId, final String systemId)
     {
         m_lineNumber = lineNumber;
@@ -94,4 +89,50 @@ public final class SrcFrozenLocation implements LocationInSchema
         map.put("systemId", m_systemId);
         return map.toString();
     }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + m_characterOffset;
+        result = prime * result + m_columnNumber;
+        result = prime * result + m_lineNumber;
+        result = prime * result
+                + ((m_publicId == null) ? 0 : m_publicId.hashCode());
+        result = prime * result
+                + ((m_systemId == null) ? 0 : m_systemId.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        SrcFrozenLocation other = (SrcFrozenLocation) obj;
+        if (m_characterOffset != other.m_characterOffset)
+            return false;
+        if (m_columnNumber != other.m_columnNumber)
+            return false;
+        if (m_lineNumber != other.m_lineNumber)
+            return false;
+        if ( ((m_publicId == null) && (other.m_publicId != null)) ||
+             ((m_publicId != null) && !m_publicId.equals(other.m_publicId)) )
+            return false;
+        if ( ((m_systemId == null) && (other.m_systemId != null)) ||
+             ((m_systemId != null) && !m_systemId.equals(other.m_systemId)) )
+            return false;
+        return true;
+    }
+
+    private final int m_lineNumber;
+    private final int m_columnNumber;
+    private final int m_characterOffset;
+    private final String m_publicId;
+    private final String m_systemId;
 }

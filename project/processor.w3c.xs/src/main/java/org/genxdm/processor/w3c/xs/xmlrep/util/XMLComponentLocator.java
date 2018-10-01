@@ -32,6 +32,7 @@ import org.genxdm.xs.types.SimpleType;
 /**
  * Used by the {@link XMLSchemaConverter} to keep track of the locations of created schema components so that errors may
  * be reported using locations.
+ * @deprecated use XMLBidiComponentLocator instead
  */
 public final class XMLComponentLocator
 {
