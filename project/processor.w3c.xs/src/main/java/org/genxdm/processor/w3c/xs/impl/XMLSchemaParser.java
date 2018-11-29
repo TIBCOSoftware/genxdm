@@ -5080,7 +5080,7 @@ final class XMLSchemaParser extends XMLRepresentation
                 // {any attributes with non-schema namespace}
             }
         }
-
+        
         boolean missingST = true;
         boolean firstElement = true;
         boolean done = false;
