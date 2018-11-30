@@ -1,6 +1,5 @@
 The project will now fail (at least on my machine) if JAVA_HOME is not set.
-This is because JDK 1.8 decided that XHTML is not to be supported. Oracle
-sucks rocks.
+This is because JDK 1.8 decided that XHTML is not to be supported.
 
 The pom got updated to include some javadoc-related stuff (it may die if you
 try to build with 1.7, too, in which case say something, I guess, and maybe
