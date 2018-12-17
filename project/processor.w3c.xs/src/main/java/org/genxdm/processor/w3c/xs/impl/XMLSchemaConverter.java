@@ -1218,6 +1218,21 @@ public final class XMLSchemaConverter
         // Ensure that all elements have their type refs resolved.
         // Element type resolution was delayed for all types whose resolution was delayed.
         // Those types have been resolved, so now we can resolve the elements.
+        if (!m_lateTypeResolutionNameList.isEmpty())
+        {
+            // in case something has stuffed something back into the late types list ...
+            try
+            {
+                while (!m_lateTypeResolutionNameList.isEmpty())
+                {
+                    lateResolveType(m_lateTypeResolutionNameList.get(0));
+                }
+            }
+            catch (SchemaException e)
+            {
+                m_errors.error(e);
+            }
+        }
         for (QName typeName : m_lateElementResolutionMap.keySet()) 
         {
         	ArrayList<LateResolveElement> list = m_lateElementResolutionMap.get(typeName);
