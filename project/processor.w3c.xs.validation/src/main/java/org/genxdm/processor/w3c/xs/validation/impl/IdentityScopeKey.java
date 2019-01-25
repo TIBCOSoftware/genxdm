@@ -48,7 +48,7 @@ final class IdentityScopeKey extends IdentityScope
 	@Override
 	protected void onKeysComplete(final ArrayList<IdentityKey> keyValues, final int elementIndex) throws AbortException
 	{
-		final IdentityTuple key = new IdentityTuple(keyValues);
+	    final IdentityTuple key = new IdentityTuple(keyValues);
 
 		final IdentityVariant mapped = m_qualifiedTargets.get(key);
 

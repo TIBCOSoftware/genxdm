@@ -45,12 +45,25 @@ public interface IdentityConstraint extends SchemaComponent
      */
     IdentityConstraint getKeyConstraint();
 
+    /** The name of this constraint (from the name attribute)
+     * 
+     */
     QName getName();
 
+    /** ScopeExtent has values global or local
+     * 
+     */
     ScopeExtent getScopeExtent();
 
     /**
      * Returns the {selector} restricted XPath of the constraint.
      */
     RestrictedXPath getSelector();
+    
+    /** True if the selector XPath for this constraint selects only the context node
+     * 
+     * That is, if the key contains approximately: &lt;selector xpath="." /&gt;
+     * it returns true, and otherwise returns false.
+     */
+    boolean selectsContainer();
 }

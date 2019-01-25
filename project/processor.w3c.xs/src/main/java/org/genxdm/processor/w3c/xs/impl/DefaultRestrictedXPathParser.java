@@ -100,13 +100,8 @@ final class DefaultRestrictedXPathParser implements RestrictedXPathParser
     {
         final int index = qualifiedName.indexOf(':');
         if (index == -1)
-        {
             return XMLConstants.DEFAULT_NS_PREFIX;
-        }
-        else
-        {
-            return qualifiedName.substring(0, index);
-        }
+        return qualifiedName.substring(0, index);
     }
 
     private static  DefaultRestrictedXPathImpl parseAlternate(final String xpath, final PrefixResolver prefixes, NameSource nameBridge, final String original, final ComponentProvider bootstrap) throws SimpleTypeException

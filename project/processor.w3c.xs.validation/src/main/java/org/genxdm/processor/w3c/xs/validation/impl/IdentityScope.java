@@ -35,7 +35,7 @@ import org.genxdm.xs.types.Type;
  * {@link IdentityScope} corresponds to an identity-constraint. An {@link IdentityScope} is created for each constraint
  * each time an element information item is associated with a declaration containing the identity constraint. That
  * element information item represents the scope over which the identity constraint applies. <br/>
- * Not surprisingly, this evaluation class mimicks the identity-constraint by having a selector and a list of fields
+ * Not surprisingly, this evaluation class mimics the identity-constraint by having a selector and a list of fields
  * that are of type {@link IdentitySelector}. The selector is established immediately (upon initialization)
  */
 abstract class IdentityScope
@@ -149,8 +149,8 @@ abstract class IdentityScope
 	}
 
 	/**
-	 * We've found and element that matches the {selector}, so install handlers for the fields. This only needs to be
-	 * done once for a given selected element, therby accounting for duplicates caused by the union(s) in the XPath
+	 * We've found an element that matches the {selector}, so install handlers for the fields. This only needs to be
+	 * done once for a given selected element, thereby accounting for duplicates caused by the union(s) in the XPath
 	 * {selector} expression.
 	 * 
 	 * @param elementName
@@ -169,7 +169,7 @@ abstract class IdentityScope
 			final ArrayList<IdentityField> fieldEvals = new ArrayList<IdentityField>();
 			for (final RestrictedXPath path : getConstraint().getFields())
 			{
-				fieldEvals.add(new IdentityField(path, elementIndex, this, m_errorHandler));
+			    fieldEvals.add(new IdentityField(path, elementIndex, this, m_errorHandler));
 			}
 			m_fieldEvals.put(elementIndex, fieldEvals);
 		}
@@ -194,15 +194,12 @@ abstract class IdentityScope
 				m_boundFields.remove(elementIndex);
 			}
 		}
-		else
-		{
-			// We must have duplicates and removed it already.
-		}
+		// else we must have duplicates and removed it already.
 	}
 
 	/**
 	 * When all fields have been gathered, report back up to the scope. This method is called by an IdentityField when
-	 * its's value has been set.
+	 * its value has been set.
 	 * 
 	 * @param changedField
 	 *            The {@link IdentityField} that had its value set.

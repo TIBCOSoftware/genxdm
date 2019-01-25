@@ -41,6 +41,7 @@ public final class IdentityConstraintImpl
         m_selector = PreCondition.assertArgumentNotNull(selector, "selector");
         m_fields = PreCondition.assertArgumentNotNull(fields, "fields");
         m_keyConstraint = keyConstraint;
+        m_selectsContainer = evaluateSelector(m_selector);
     }
 
     @Override
@@ -71,13 +72,8 @@ public final class IdentityConstraintImpl
     {
         PreCondition.assertArgumentNotNull(constraint, "constraint");
         if (this == constraint)
-        {
             return true;
-        }
-        else
-        {
-            return getName().equals(constraint.getName());
-        }
+        return getName().equals(constraint.getName());
     }
 
     @Override
@@ -108,10 +104,35 @@ public final class IdentityConstraintImpl
         forAtts.putForeignAttribute(name, value);
     }
 
+    @Override
+    public boolean selectsContainer()
+    {
+        return m_selectsContainer;
+    }
+    
+    private boolean evaluateSelector(RestrictedXPath selector)
+    {
+        // the DefaultRestrictedXPathImpl is associated with its alternatives
+        // (which should be unusual for the case of an xpath selector identifying
+        // the context node, but it is *conceivable*) via the getAlternate()
+        // mechanism, which then allows us to examine each to see if it contains
+        // a sole context-node alternative. we return true if *any* branch is
+        // sole context-node, because we want to fire the extra startElement event.
+        do {
+            if ((selector.getStepLength() == 1) // only contains one step
+                && selector.isContextNode(0)) // that step is self::node() or . ; delegate determination to the xpath parser/xpath impl
+                return true;
+            selector = selector.getAlternate(); // next selector
+        } while (selector != null); // stop when we get a null selector
+
+        return false; // return false unconditionally if we haven't found a selector xpath alternate that matches context node only. 
+    }
+
     private ForeignAttributesImpl forAtts = new ForeignAttributesImpl();
     private final IdentityConstraintKind m_category;
     private final List<RestrictedXPath> m_fields;
     private final IdentityConstraint m_keyConstraint;
     private final QName m_name;
     private final RestrictedXPath m_selector;
+    private final boolean m_selectsContainer;
 }

@@ -65,7 +65,7 @@ final class IdentityConstraintManager
 		// it...
 		PreCondition.assertArgumentNotNull(elementPSVI, "elementPSVI");
 		final ElementDefinition declaration = elementPSVI.getDeclaration();
-		if (null != declaration && declaration.hasIdentityConstraints())
+		if ((declaration != null) && declaration.hasIdentityConstraints())
 		{
 			// Handle xs:unique, xs:key and xs:keyref in order so that
 			// xs:keyref scopes can be fixed up to xs:key scopes.
@@ -82,6 +82,8 @@ final class IdentityConstraintManager
 						elementItem.m_refScopes.put(constraint.getName(), new ArrayList<IdentityScopeRef>());
 						elementItem.m_identityScopes.add(scope);
 						m_totalScopes++;
+						if (constraint.selectsContainer())
+						    scope.startElement(elementPSVI.getName(), elementItem.getElementIndex(), elementPSVI.getType(), elementItem);
 					}
 					break;
 					case KeyRef:
@@ -168,6 +170,15 @@ final class IdentityConstraintManager
 					scope.reportUnmatchedRefs();
 				}
 			}
+			// this has to happen before we throw away our own scopes.
+			for (IdentityScopeKey k : elementItem.m_keyScopes.values())
+			{
+			    if (k.getConstraint().selectsContainer()) // artificial startElement() has matching endElement()
+			        k.endElement(elementPSVI.getName(), elementItem.getElementIndex(), elementItem);
+			}
+			// note that although we do ancestor-or-self below, self already has
+			// all these bits removed, effectively. unnoticeable previously since
+			// we didn't have a way of *starting* a scope properly if it used a context-node selector.
 			m_totalScopes = m_totalScopes - elementItem.m_identityScopes.size();
 			elementItem.m_identityScopes.clear();
 			elementItem.m_keyScopes.clear();

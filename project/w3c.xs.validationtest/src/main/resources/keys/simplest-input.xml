@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<s:root xmlns:s="simplest">
+  <s:child key="1"><s:key>first</s:key></s:child>
+  <s:child key="B"><s:key>second</s:key></s:child>
+  <s:child key="iii"><s:key>last</s:key></s:child>
+  <!-- invalid version; keys are duplicated for each variant: -->
+  <s:child key="1"><s:key>last</s:key></s:child>
+</s:root>

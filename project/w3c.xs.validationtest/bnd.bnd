@@ -1,4 +1,4 @@
-Bundle-Version: 1.4.0
+Bundle-Version: 1.4.2
 Export-Package: org.genxdm.processor.w3c.xs.validationtest;version=1.4,\
 	org.genxdm.processor.w3c.xs.validationtest.xsts;version=1.4
 -runee: JavaSE-1.7
