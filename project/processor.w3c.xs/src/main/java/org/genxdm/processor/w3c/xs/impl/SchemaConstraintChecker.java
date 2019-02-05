@@ -128,7 +128,7 @@ import org.genxdm.xs.types.UnionSimpleType;
 final class SchemaConstraintChecker
 {
     // TODO: the basic architecture here *sucks*. "i like procedural programming with libraries"
-    // TODO: look for commented-out bits.  they're disabled and broken.  Probably fix technique:
+    // TODO: look for commented-out bits.  they're disabled and broken.  Probable fix technique:
     // create a canonical atom bridge for use here only, and use it just as it's shown in use.
     private static int FOURTEEN_HOURS_IN_MINUTES = 840;
     
@@ -506,7 +506,7 @@ final class SchemaConstraintChecker
         }
         else
         {
-            // TODO: Check tis out for the TIBCOxml test suite.
+            // TODO: Check this out for the TIBCOxml test suite.
             // errors.error(complexType, new
             // SccDerivationRestrictionBaseTypeMustBeComplexTypeException(qname(complexType.getName(),
             // nameBridge)));
@@ -1534,8 +1534,7 @@ final class SchemaConstraintChecker
     }
 
     private boolean clause14(final ComplexType complexType, final ComplexType baseType)
-    {
-        // 1.4 One of the following must be true.
+    { // 1.4: one of the following must be true: 1.4.1, 1.4.2, or 1.4.3
         final ContentType contentTypeD = complexType.getContentType();
         final ContentType contentTypeB = baseType.getContentType();
 
@@ -1543,78 +1542,62 @@ final class SchemaConstraintChecker
     }
 
     private boolean clause141(final ContentType contentTypeD, final ContentType contentTypeB)
-    {
+    { // 1.4.1: the content type of the base type definition and the content type
+      // of the derived type definition must be the same simple type.
         if (contentTypeD.isSimple() && contentTypeB.isSimple())
-        {
             return contentTypeD.getSimpleType() == contentTypeB.getSimpleType();
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     private boolean clause142(final ContentType contentTypeD, final ContentType contentTypeB)
-    {
+    { // 1.4.2 : the content type of both base type and derived type must be empty
         return contentTypeD.isEmpty() && contentTypeB.isEmpty();
     }
 
     private boolean clause143(final ContentType contentTypeD, final ContentType contentTypeB)
-    {
+    { // 1.4.3: both 1.4.3.1 and 1.4.3.2 must be true
         if (clause1431(contentTypeD))
-        {
             return clause1432(contentTypeD, contentTypeB);
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     private boolean clause1431(final ContentType contentTypeD)
-    {
+    { // 1.4.3.1: the derived type must specify a particle (== not be empty) (and not simple, but it can't be)
         return contentTypeD.isMixed() || contentTypeD.isElementOnly();
     }
 
     private boolean clause1432(final ContentType contentTypeD, final ContentType contentTypeB)
-    {
+    { // 1.4.3.2: either 1.4.3.1 or 1.4.3.2 must be true
         return clause14321(contentTypeB) || clause14322(contentTypeD, contentTypeB);
     }
 
     private boolean clause14321(final ContentType contentTypeB)
-    {
+    { // 1.4.3.2.1: the base type is empty
         return contentTypeB.isEmpty();
     }
 
     private boolean clause14322(final ContentType contentTypeD, final ContentType contentTypeB)
-    {
+    { // 1.4.3.2.2: both 1.4.3.2.2.1 and 1.4.3.2.2.2 must be true 
         if (clause143221(contentTypeD, contentTypeB))
         {
             final ModelGroupUse contentModelD = contentTypeD.getContentModel();
             final ModelGroupUse contentModelB = contentTypeB.getContentModel();
             return clause143222(contentModelD, contentModelB);
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     private boolean clause143221(final ContentType contentTypeD, final ContentType contentTypeB)
-    {
+    { // 1.4.3.2.2.1: either both base and derived are mixed, or both base and derived are element only
         if (contentTypeD.isMixed() && contentTypeB.isMixed())
-        {
             return true;
-        }
         else if (contentTypeD.isElementOnly() && contentTypeB.isElementOnly())
-        {
             return true;
-        }
         return false;
     }
 
     private boolean clause143222(final ModelGroupUse contentModelD, final ModelGroupUse contentModelB)
-    {
+    { // 1.4.3.2.2.2: derived type valid extension of base type per "Particle Valid (Extension)" (schema 3.9.6)
         return isValidParticleExtension(contentModelD, contentModelB);
     }
 
@@ -2070,44 +2053,6 @@ final class SchemaConstraintChecker
         }
     }
 
-//    private String getDisplayString(final List<XmlAtom> value)
-//    {
-//        final Iterator<XmlAtom> atoms = value.iterator();
-//
-//        if (atoms.hasNext())
-//        {
-//            final XmlAtom first = atoms.next();
-//
-//            if (atoms.hasNext())
-//            {
-//                final StringBuilder buffer = new StringBuilder();
-//
-//                buffer.append('(');
-//
-//                append(first, buffer);
-//
-//                while (atoms.hasNext())
-//                {
-//                    buffer.append(", ");
-//
-//                    append(atoms.next(), buffer);
-//                }
-//
-//                buffer.append(')');
-//
-//                return buffer.toString();
-//            }
-//            else
-//            {
-//                return getDisplayString(first);
-//            }
-//        }
-//        else
-//        {
-//            return "()";
-//        }
-//    }
-
     /**
      * Searches up the inheritance tree and returns to first facet of the requested kind, or null if no such facet is inherited
      * 
@@ -2243,14 +2188,24 @@ final class SchemaConstraintChecker
      *            The base particle.
      */
     private boolean isValidParticleExtension(final ModelGroupUse E, final ModelGroupUse B)
-    {
+    { // derived particle must be exactly the base particle OR
+      // derived minoccurs=maxoccurs=1 and
+      // its term is a sequence whose particles' first member is 
+      //   a particle all of whose properties, recursively, are identical to those of base
+// turn on for debugging. if type toString() methods have been updated, it
+// can help show what the differences are between the types. better to do
+// it with a restriction by type names, though
+//System.out.println("Derived: "+E);
+//System.out.println("Base: "+B);
         final int minOccurs = E.getMinOccurs();
         
         // Use Integer.MIN_VALUE to represent unbounded; okay in this case because we're only comparing values
         final int maxOccurs = E.isMaxOccursUnbounded() ? Integer.MIN_VALUE : E.getMaxOccurs();
         final int maxOccursB = B.isMaxOccursUnbounded() ? Integer.MIN_VALUE : B.getMaxOccurs();
 
-        if (minOccurs == B.getMinOccurs() && maxOccurs == maxOccursB && (E.getTerm() == B.getTerm()))
+        if ((minOccurs == B.getMinOccurs()) && 
+            (maxOccurs == maxOccursB) && 
+            (E.getTerm() == B.getTerm()))
         {
             // It's the same particle.
             return true;

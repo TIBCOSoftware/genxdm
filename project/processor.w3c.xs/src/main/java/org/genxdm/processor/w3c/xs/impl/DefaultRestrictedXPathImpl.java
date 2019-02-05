@@ -19,18 +19,9 @@ import java.util.ArrayList;
 
 import org.genxdm.xs.constraints.RestrictedXPath;
 
-final class DefaultRestrictedXPathImpl implements RestrictedXPath
+final class DefaultRestrictedXPathImpl 
+    implements RestrictedXPath
 {
-    private final ArrayList<String> m_namespaces = new ArrayList<String>();
-    private final ArrayList<String> m_localNames = new ArrayList<String>();
-    private final ArrayList<Boolean> m_contextNode = new ArrayList<Boolean>();
-
-    boolean m_isAttribute;
-
-    boolean m_relocatable;
-
-    DefaultRestrictedXPathImpl m_alternate;
-
     public boolean isContextNode(final int index)
     {
         return m_contextNode.get(index);
@@ -95,6 +86,35 @@ final class DefaultRestrictedXPathImpl implements RestrictedXPath
     {
         return m_alternate;
     }
+    
+    public String toString()
+    {
+        StringBuilder builder = new StringBuilder();
+        if (isRelocatable())
+            builder.append(".//");
+        for (int index = 0 ; index < m_localNames.size(); index++)
+        {
+            if (index > 0)
+                builder.append("/");
+            if (m_contextNode.get(index))
+                builder.append(".");
+            else
+            {
+                if (m_isAttribute && (index == (m_localNames.size() - 1)) )
+                    builder.append("@");
+                String ns = m_namespaces.get(index);
+                if (ns == null)
+                    ns = "*";
+                String localName = m_localNames.get(index);
+                if (localName == null)
+                    localName = "*";
+                builder.append("{"+ns+"}"+localName);
+            }
+        }
+        if (m_alternate != null)
+            builder.append("|"+m_alternate);
+        return builder.toString();
+    }
 
     public void setAlternate(final DefaultRestrictedXPathImpl alternate)
     {
@@ -114,4 +134,13 @@ final class DefaultRestrictedXPathImpl implements RestrictedXPath
         m_localNames.add(localName);
         m_contextNode.add(Boolean.FALSE);
     }
+    private final ArrayList<String> m_namespaces = new ArrayList<String>();
+    private final ArrayList<String> m_localNames = new ArrayList<String>();
+    private final ArrayList<Boolean> m_contextNode = new ArrayList<Boolean>();
+
+    boolean m_isAttribute;
+
+    boolean m_relocatable;
+
+    DefaultRestrictedXPathImpl m_alternate;
 }
