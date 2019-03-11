@@ -1293,6 +1293,9 @@ public final class XMLSchemaConverter
                 }
             }
         }
+        // I hate having this here. it assumes success. the late type resolution
+        // instead removes each bit in turn, and may add it back; inconsistent
+        m_lateElementResolutionMap.clear();
     }
 
     private SchemaParticle convertElementUse(final XMLParticleWithElementTerm particle) 
