@@ -1,0 +1,7 @@
+<tns:TestUser xmlns:tns="http://www.example.org/super_mg">
+  <tns:Sample5>helll</tns:Sample5>
+  <tns:Sample1>NNN</tns:Sample1>
+  <tns:Sample2>99</tns:Sample2>
+  <tns:Sample3>true</tns:Sample3>
+  <tns:Sample4>89</tns:Sample4>
+</tns:TestUser>
