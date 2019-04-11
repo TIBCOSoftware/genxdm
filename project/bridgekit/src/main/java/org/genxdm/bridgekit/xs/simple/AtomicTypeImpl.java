@@ -43,139 +43,10 @@ import org.genxdm.xs.types.SimpleType;
  * This is strictly used for derived atomic values
  * </p>
  */
-public final class AtomicTypeImpl extends SimpleTypeImpl implements AtomicType
+public final class AtomicTypeImpl 
+    extends SimpleTypeImpl 
+    implements AtomicType
 {
-    private static String collapseWhiteSpace(final String text)
-    {
-        // Note. We make no distinction between control characters less than ASCII 32
-        // because we don't expect them in XML strings. We assume they are not there,
-        // taken out by parsing. If we had to behave otherwise, we would end up
-        // with annoying exception semantics and slow code.
-
-        // trim() is our secret weapon #1. It costs virtually nothing because String
-        // uses a special constructor to share the char[] value, so we only pay for the
-        // String wrapper - pretty cheap by comparison. From now on, we only have to worry
-        // about embedded whitespace, which allows the mainline (non whitespace) part of
-        // the loop to be devoid of tests.
-        final String trimmed = text.trim();
-
-        int trimLength = trimmed.length();
-
-        if (trimLength > 0)
-        {
-            if (trimLength < 3)
-            {
-                return trimmed;
-            }
-            else
-            {
-                // Fall through to handle (possibly) embedded whitespace.
-            }
-        }
-        else
-        {
-            // It's all whitespace
-            return "";
-        }
-
-        // Assume that this transformation is a no-op unless we discover otherwise.
-        boolean noop = true;
-
-        // Keep track of the number of characters required for the new char[] buffer.
-        // Count down from the trimmed length to get this operation out of the mainline.
-        int newLength = trimLength;
-
-        // Used to detect consecutive whitespace characters.
-        boolean inWhite = false;
-
-        // For this loop, we only need to iterate over index > 0, index < trimLength -1
-        // because we know that the first and last character are not whitespace.
-        final int endIndex = trimLength - 1;
-
-        for (int index = 1; index < endIndex; index++)
-        {
-            char c = trimmed.charAt(index);
-            if (c <= ' ')
-            {
-                if (inWhite)
-                {
-                    // Detected consecutive (embedded) whitespace characters that must be skipped.
-                    noop = false;
-
-                    newLength--;
-                }
-                else
-                {
-                    if (c < ' ')
-                    {
-                        // Detected an (embedded) whitespace character that needs replacing.
-                        noop = false;
-                    }
-
-                    inWhite = true;
-                }
-            }
-            else
-            {
-                inWhite = false;
-            }
-        }
-
-        if (noop)
-        {
-            return trimmed;
-        }
-        else
-        {
-            char[] sb = new char[newLength];
-
-            // The first character is not whitespace, so if we pre-process it,...
-            sb[0] = trimmed.charAt(0);
-
-            // 1. We are not in whitespace
-            inWhite = false;
-
-            // 2. Count begins at One.
-            // Be careful, this count also acts as an index in this loop.
-            int count = 1;
-
-            // 3. Iterate over trimmed charcters excluding the first and last.
-            for (int index = 1; index < endIndex; index++)
-            {
-                char c = trimmed.charAt(index);
-                if (c <= ' ')
-                {
-                    if (inWhite)
-                    {
-                        // Skip
-                    }
-                    else
-                    {
-                        sb[count++] = ' ';
-                        inWhite = true;
-                    }
-                }
-                else
-                {
-                    inWhite = false;
-                    sb[count++] = c;
-                }
-            }
-
-            // The last character is also not whitespace.
-            sb[count++] = trimmed.charAt(endIndex);
-
-            return new String(sb, 0, count);
-        }
-    }
-
-    private static String replaceWhiteSpace(final String text)
-    {
-        return text.replace('\t', ' ').replace('\n', ' ').replace('\r', ' ');
-    }
-
-    private final AtomicType baseType;
-
     public AtomicTypeImpl(final QName name, final boolean isAnonymous, final ScopeExtent scope, final AtomicType baseType, final WhiteSpacePolicy whiteSpace)
     {
         super(name, isAnonymous, scope, DerivationMethod.Restriction, whiteSpace);
@@ -321,15 +192,18 @@ public final class AtomicTypeImpl extends SimpleTypeImpl implements AtomicType
         final NativeType nativeType = getNativeType();
         if (nativeType.isToken())
         {
-            return collapseWhiteSpace(initialValue);
+            return WhiteSpacePolicy.COLLAPSE.apply(initialValue);
         }
         else if (nativeType == NativeType.NORMALIZED_STRING)
         {
-            return replaceWhiteSpace(initialValue);
+            // in theory, it could be the base type for something constrained
+            // to collapse, but why would you do that? use a collapse-string base
+            return WhiteSpacePolicy.REPLACE.apply(initialValue);
         }
         else if (nativeType == NativeType.STRING)
         {
-            return initialValue;
+            // the only type that allows preserve (well, apart from untypedatomic)
+            return getWhiteSpacePolicy().apply(initialValue);
         }
         else if (nativeType == NativeType.UNTYPED_ATOMIC)
         {
@@ -337,7 +211,7 @@ public final class AtomicTypeImpl extends SimpleTypeImpl implements AtomicType
         }
         else
         {
-            return collapseWhiteSpace(initialValue);
+            return WhiteSpacePolicy.COLLAPSE.apply(initialValue);
         }
     }
 
@@ -386,9 +260,17 @@ public final class AtomicTypeImpl extends SimpleTypeImpl implements AtomicType
         }
     }
 
-    @Override
-    public String toString()
-    {
-        return getName().toString();
-    }
+//    @Override
+//    protected String specializeNamedComponentString()
+//    {
+//        return "Simple Type/Atomic Type; Base: "+baseType.getName();
+//    }
+
+//    @Override
+//    public String toString()
+//    {
+//        return getName().toString();
+//    }
+
+    private final AtomicType baseType;
 }
