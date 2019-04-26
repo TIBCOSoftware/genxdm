@@ -27,6 +27,7 @@ import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.bridgekit.names.DefaultNamespaceBinding;
 import org.genxdm.bridgekit.names.QNameComparator;
+import org.genxdm.bridgekit.xs.BuiltInSchema;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NamespaceBinding;
 
@@ -155,6 +156,8 @@ public final class XmlElementNode
 
     public QName getTypeName()
     {
+        if (typeName == null)
+            return UNTYPED_NAME;
         return typeName;
     }
 
@@ -348,4 +351,5 @@ public final class XmlElementNode
     protected XmlNamespaceNode firstNamespace;
     
     private QName typeName;
+    private static final QName UNTYPED_NAME = BuiltInSchema.SINGLETON.UNTYPED.getName();
 }
