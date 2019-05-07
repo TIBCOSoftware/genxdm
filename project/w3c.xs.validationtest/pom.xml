@@ -43,7 +43,7 @@
         <dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>processor.w3c.xs.validation</artifactId>
-            <version>[1.4,2)</version>
+            <version>1.4.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

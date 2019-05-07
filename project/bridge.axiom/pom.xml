@@ -41,14 +41,19 @@
 
     <dependencies>
         <dependency>
+          <groupId>org.genxdm</groupId>
+          <artifactId>api</artifactId>
+          <version>1.4.1</version>
+        </dependency>
+        <dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>bridgekit</artifactId>
-            <version>[1.4,2)</version>
+            <version>1.4.1</version>
         </dependency>
         <dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>processor.io</artifactId>
-            <version>[1.4,2)</version>
+            <version>1.4.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.ws.commons.axiom</groupId>
@@ -63,25 +68,25 @@
         <dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>bridgetest</artifactId>
-            <version>[1.4,2)</version>
+            <version>1.4.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>processor.io.tests</artifactId>
-            <version>[1.4,2)</version>
+            <version>1.4.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>processor.xpath.v10.tests</artifactId>
-            <version>[1.4,2)</version>
+            <version>1.4.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>processor.w3c.xs.validationtest</artifactId>
-            <version>[1.4,2)</version>
+            <version>1.4.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
