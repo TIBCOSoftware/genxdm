@@ -25,7 +25,6 @@ import org.genxdm.bridge.dom.DomModel;
 import org.genxdm.bridge.dom.DomSupport;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.atoms.XsiNil;
-import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.typed.TypedContext;
@@ -79,7 +78,7 @@ class DomSAModel
             case ELEMENT:
             {
                 if (XsiNil.isNilledElement(this, node, atomBridge))
-                    return new UnaryIterable<XmlAtom>(null);
+                    return (List<XmlAtom>)atomBridge.emptySequence();
                 // otherwise, fall through to the next section, which is both
                 // elements and attributes. clear?
             }
@@ -121,6 +120,7 @@ class DomSAModel
         }
     }
 
+    @SuppressWarnings("incomplete-switch")
     @Override
     public final QName getTypeName(final Node node)
     {

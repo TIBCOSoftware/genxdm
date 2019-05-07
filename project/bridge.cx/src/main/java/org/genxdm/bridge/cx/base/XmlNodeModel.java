@@ -45,7 +45,6 @@ import org.genxdm.bridgekit.axes.IterableFollowingAxis;
 import org.genxdm.bridgekit.axes.IterableFollowingSiblingAxis;
 import org.genxdm.bridgekit.axes.IterablePrecedingAxis;
 import org.genxdm.bridgekit.axes.IterablePrecedingSiblingAxis;
-import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.bridgekit.tree.Ordering;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
@@ -423,7 +422,7 @@ public class XmlNodeModel
                 return attributeMap.values();
             }
         }
-        return new UnaryIterable<XmlNode>(null);
+        return XmlNodeContext.EMPTY_NODE_SEQUENCE;
     }
 
     @Override
@@ -533,7 +532,7 @@ public class XmlNodeModel
                 return namespaceMap.values();
             }
         }
-        return new UnaryIterable<XmlNode>(null);
+        return XmlNodeContext.EMPTY_NODE_SEQUENCE;
     }
 
     @Override

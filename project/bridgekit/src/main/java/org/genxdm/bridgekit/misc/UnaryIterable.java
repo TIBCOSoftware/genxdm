@@ -36,62 +36,39 @@ public final class UnaryIterable<E> implements List<E>
 
     public int size()
     {
-        return (null != m_thing) ? 1 : 0;
+        return (m_thing != null) ? 1 : 0;
     }
 
     public boolean isEmpty()
     {
-        return (null == m_thing);
+        return (m_thing == null);
     }
 
     public E get(final int index)
     {
-        if (null != m_thing)
+        if (m_thing != null)
         {
-            if (0 == index)
-            {
+            if (index == 0)
                 return m_thing;
-            }
-            else
-            {
-                throw new IndexOutOfBoundsException();
-            }
-        }
-        else
-        {
             throw new IndexOutOfBoundsException();
         }
+        throw new IndexOutOfBoundsException();
     }
 
     public boolean contains(final Object object)
     {
         if (object == null)
-        {
-            return null == m_thing;
-        }
-        else
-        {
-            if (null != m_thing)
-            {
-                return m_thing.equals(object);
-            }
-            else
-            {
-                return false;
-            }
-        }
+            return m_thing == null;
+        if (m_thing != null)
+            return m_thing.equals(object);
+        return false;
     }
 
     public Object[] toArray()
     {
-        if (null != m_thing)
-        {
+        if (m_thing != null)
             return new Object[] { m_thing };
-        }
-        else
-        {
-            return new Object[] {};
-        }
+        return new Object[] {};
     }
 
     @SuppressWarnings("unchecked")
@@ -99,14 +76,10 @@ public final class UnaryIterable<E> implements List<E>
     {
         final int size = size();
         if (a.length < size)
-        {
             a = (T[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
-        }
         System.arraycopy(toArray(), 0, a, 0, size);
         if (a.length > size)
-        {
             a[size] = null;
-        }
         return a;
     }
 
@@ -193,13 +166,8 @@ public final class UnaryIterable<E> implements List<E>
     @Override
     public String toString()
     {
-        if (null != m_thing)
-        {
+        if (m_thing != null)
             return m_thing.toString();
-        }
-        else
-        {
-            return "()";
-        }
+        return "()";
     }
 }

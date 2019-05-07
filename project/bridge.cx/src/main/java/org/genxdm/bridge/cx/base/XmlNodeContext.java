@@ -227,5 +227,5 @@ public final class XmlNodeContext
     private XMLReporter reporter;
     private Resolver resolver;
     
-    private static final Iterable<XmlNode> EMPTY_NODE_SEQUENCE = new UnaryIterable<XmlNode>(null); 
+    static final Iterable<XmlNode> EMPTY_NODE_SEQUENCE = new UnaryIterable<XmlNode>(null); 
 }
