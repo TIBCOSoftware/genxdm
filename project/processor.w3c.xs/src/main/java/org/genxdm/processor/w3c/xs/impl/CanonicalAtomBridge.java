@@ -58,6 +58,7 @@ import org.genxdm.bridgekit.atoms.XmlString;
 import org.genxdm.bridgekit.atoms.XmlToken;
 import org.genxdm.bridgekit.atoms.XmlUntypedAtomic;
 import org.genxdm.bridgekit.atoms.XmlYearMonthDuration;
+import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.exceptions.AtomCastException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
@@ -471,6 +472,12 @@ public class CanonicalAtomBridge
     public XmlAtom createYearMonthDuration(int months)
     {
         return XmlYearMonthDuration.valueOf(months);
+    }
+    
+    @Override
+    public Iterable<XmlAtom> emptySequence()
+    {
+        return EMPTY_ATOM_SEQUENCE;
     }
 
     @Override
@@ -1362,4 +1369,5 @@ public class CanonicalAtomBridge
 
     // the name is from the functions and operators spec
     private static final QName FORG0001 = new QName("http://www.w3.org/2005/xqt-errors/", "FORG0001", "err");
+    private static final Iterable<XmlAtom> EMPTY_ATOM_SEQUENCE = new UnaryIterable<XmlAtom>(null);
 }

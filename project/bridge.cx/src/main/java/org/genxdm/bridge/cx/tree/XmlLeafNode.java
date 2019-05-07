@@ -28,6 +28,7 @@ import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.bridgekit.xs.SchemaCacheFactory;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NamespaceBinding;
+import org.genxdm.nodes.NodeIndex;
 import org.genxdm.xs.types.NativeType;
 
 // since there are only two container nodes, it follows that there are five leaf nodes:
@@ -88,6 +89,11 @@ public class XmlLeafNode
     }
 
     public XmlNode getLastChild()
+    {
+        return null;
+    }
+    
+    public NodeIndex getIndex()
     {
         return null;
     }

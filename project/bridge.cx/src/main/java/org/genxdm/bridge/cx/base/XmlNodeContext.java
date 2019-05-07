@@ -28,6 +28,7 @@ import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridge.cx.typed.TypedXmlNodeContext;
 import org.genxdm.bridgekit.filters.FilteredFragmentBuilder;
 import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
+import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.DocumentHandler;
 import org.genxdm.io.FragmentBuilder;
@@ -105,9 +106,11 @@ public final class XmlNodeContext
     public boolean isSupported(String feature)
     {
         PreCondition.assertNotNull(feature, "feature");
+        if (feature.equals(Feature.IN_TREE_INDEX))
+            return false;
         if (feature.startsWith(Feature.PREFIX))
         {
-            // support all core features
+            // support all core features (except ones not supported)
             return true;
         }
         return false;
@@ -145,6 +148,12 @@ public final class XmlNodeContext
         // TODO: our tests don't permit us to assert.  are the tests wrong?
 //        PreCondition.assertTrue(size > -1);
         return new XmlNode[size];
+    }
+    
+    @Override
+    public Iterable<XmlNode> emptySequence()
+    {
+        return EMPTY_NODE_SEQUENCE;
     }
 
     @Override
@@ -217,4 +226,6 @@ public final class XmlNodeContext
     private SchemaComponentCache defaultCache;
     private XMLReporter reporter;
     private Resolver resolver;
+    
+    private static final Iterable<XmlNode> EMPTY_NODE_SEQUENCE = new UnaryIterable<XmlNode>(null); 
 }

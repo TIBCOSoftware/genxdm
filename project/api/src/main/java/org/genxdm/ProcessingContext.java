@@ -157,5 +157,16 @@ public interface ProcessingContext<N>
      *            The size of the array of nodes.  May not be negative.
      */
     N[] nodeArray(int size);
+    
+    /**
+     * Return an empty sequence of Nodes.
+     * 
+     * This may be optimized by always returning the same empty sequence,
+     * which can reduce memory usage for a tree model.
+     * 
+     * @return an Iterable over N with no content; this is XPath/XDM-equivalent
+     * to null, but is not (ever) Java null for this method
+     */
+    Iterable<N> emptySequence(); 
 
 }

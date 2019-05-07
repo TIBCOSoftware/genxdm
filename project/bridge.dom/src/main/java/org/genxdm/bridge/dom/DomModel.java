@@ -48,6 +48,7 @@ import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.names.NamespaceBinding;
+import org.genxdm.nodes.NodeIndex;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -397,6 +398,12 @@ public class DomModel
         if (node.getNextSibling() != null)
             return new IterableFollowingSiblingAxis<Node>(node, this);
         return Collections.emptyList();
+    }
+    
+    @Override
+    public NodeIndex getIndex(Node node)
+    {
+        return null; // always; we don't support in-tree position annotation
     }
 
     @Override

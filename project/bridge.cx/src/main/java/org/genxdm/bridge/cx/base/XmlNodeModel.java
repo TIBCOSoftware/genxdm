@@ -51,6 +51,7 @@ import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.names.NamespaceBinding;
+import org.genxdm.nodes.NodeIndex;
 
 public class XmlNodeModel
     implements Model<XmlNode>
@@ -96,6 +97,14 @@ public class XmlNodeModel
     {
         PreCondition.assertNotNull(node, "node");
         return node.getDocumentURI();
+    }
+    
+    @Override
+    public NodeIndex getIndex(XmlNode node)
+    {
+        // this is temporary; if we decide to support it, change XmlNodeContext.isSupported
+        // and then this is required to return non-null in all cases
+        return null;
     }
 
     @Override

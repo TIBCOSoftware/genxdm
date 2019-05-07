@@ -21,6 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.NodeKind;
 import org.genxdm.names.NamespaceBinding;
+import org.genxdm.nodes.NodeIndex;
 import org.genxdm.nodes.Informer;
 
 /**
@@ -49,6 +50,11 @@ public class InformerDelegate implements Informer {
     @Override
     public String getAttributeStringValue(String namespaceURI, String localName) {
         return informer.getAttributeStringValue(namespaceURI, localName);
+    }
+    
+    @Override
+    public NodeIndex getIndex() {
+        return informer.getIndex();
     }
 
     @Override

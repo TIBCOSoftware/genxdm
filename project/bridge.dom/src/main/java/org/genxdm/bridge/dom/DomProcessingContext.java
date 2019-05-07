@@ -31,6 +31,7 @@ import org.genxdm.bridge.dom.enhanced.DomSAProcessingContext;
 import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.filters.FilteredFragmentBuilder;
 import org.genxdm.bridgekit.filters.NamespaceFixupFilter;
+import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.bridgekit.tree.CursorOnModel;
 import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
@@ -101,7 +102,8 @@ public class DomProcessingContext
     {
         PreCondition.assertNotNull(feature, "feature");
         if (feature.equals(Feature.BASE_URI) ||
-            feature.equals(Feature.IN_TREE_VALIDATION) )
+            feature.equals(Feature.IN_TREE_VALIDATION) ||
+            feature.equals(Feature.IN_TREE_INDEX) )
             return false;
         if (feature.startsWith(Feature.PREFIX))
             return true;
@@ -194,6 +196,12 @@ public class DomProcessingContext
     {
         return new Node[size];
     }
+    
+    @Override
+    public Iterable<Node> emptySequence()
+    {
+        return EMPTY_NODE_SEQUENCE;
+    }
 
     private class MutantContext implements MutableContext<Node>
     {
@@ -242,4 +250,6 @@ public class DomProcessingContext
     private MutantContext mutantContext;
     private Map<SchemaComponentCache, DomSAProcessingContext> typedContexts = new HashMap<SchemaComponentCache, DomSAProcessingContext>();
     private SchemaComponentCache defaultCache;
+    
+    private static final Iterable<Node> EMPTY_NODE_SEQUENCE = new UnaryIterable<Node>(null);
 }

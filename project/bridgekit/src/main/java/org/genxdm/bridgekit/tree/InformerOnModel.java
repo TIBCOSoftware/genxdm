@@ -23,6 +23,7 @@ import org.genxdm.Model;
 import org.genxdm.NodeKind;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NamespaceBinding;
+import org.genxdm.nodes.NodeIndex;
 import org.genxdm.nodes.Informer;
 
 class InformerOnModel<N>
@@ -53,6 +54,11 @@ class InformerOnModel<N>
     public URI getDocumentURI()
     {
         return model.getDocumentURI(node);
+    }
+    
+    public NodeIndex getIndex()
+    {
+        return model.getIndex(node);
     }
 
     public int getLineNumber()

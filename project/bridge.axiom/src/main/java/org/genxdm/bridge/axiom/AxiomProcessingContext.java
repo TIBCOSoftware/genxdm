@@ -30,6 +30,7 @@ import org.genxdm.Feature;
 import org.genxdm.Model;
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridge.axiom.enhanced.AxiomSAProcessingContext;
+import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.bridgekit.tree.CursorOnModel;
 import org.genxdm.bridgekit.tree.MutableCursorOnMutableModel;
 import org.genxdm.exceptions.PreCondition;
@@ -209,7 +210,8 @@ public class AxiomProcessingContext
             if (feature.equals(Feature.DOCUMENT_URI) ||
                 feature.equals(Feature.BASE_URI) ||
                 feature.equals(Feature.NAMESPACE_AXIS) ||
-                feature.equals(Feature.IN_TREE_VALIDATION) )
+                feature.equals(Feature.IN_TREE_VALIDATION) ||
+                feature.equals(Feature.IN_TREE_INDEX) )
                 return false;
             if (feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT) ||
                 feature.equals(Feature.MUTABILITY) ||
@@ -263,6 +265,12 @@ public class AxiomProcessingContext
             throw new NegativeArraySizeException("Illegal size: " + size);
         }
         return new Object[size];
+    }
+    
+    @Override
+    public Iterable<Object> emptySequence()
+    {
+        return EMPTY_NODE_SEQUENCE;
     }
 
     @Override
@@ -344,6 +352,7 @@ public class AxiomProcessingContext
     
     static Map<OMDocument, URI> docURIs = new WeakHashMap<OMDocument, URI>();
     static final Map<OMDocument, Map<String, Integer>> idMaps = new WeakHashMap<OMDocument, Map<String, Integer>>();
+    private static final Iterable<Object> EMPTY_NODE_SEQUENCE = new UnaryIterable<Object>(null);
     
     private final AxiomModel model = new AxiomModel();
     private final OMFactory omfactory;

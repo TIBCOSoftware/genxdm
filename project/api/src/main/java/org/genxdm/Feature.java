@@ -29,6 +29,10 @@ public interface Feature
     // return true if xml:base is supported
     static final String BASE_URI = PREFIX + "uri/base";
     
+    // return true if Model.getIndex(N) is guaranteed to return non-null;
+    // if false, then Model.getIndex(N) *always* returns null
+    static final String IN_TREE_INDEX = PREFIX + "in-tree-index";
+    
     // return true if there is a mutable extension for this bridge.
     // getMutableContext must return non-null
     static final String MUTABILITY = PREFIX + "mutable";

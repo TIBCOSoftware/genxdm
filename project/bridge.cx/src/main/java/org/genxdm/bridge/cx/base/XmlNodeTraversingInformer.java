@@ -28,6 +28,7 @@ import org.genxdm.bridgekit.axes.IteratorAncestorOrSelfAxis;
 import org.genxdm.bridgekit.misc.UnaryIterator;
 import org.genxdm.bridgekit.tree.TraverserOnIterator;
 import org.genxdm.names.NamespaceBinding;
+import org.genxdm.nodes.NodeIndex;
 import org.genxdm.nodes.Traverser;
 import org.genxdm.nodes.TraversingInformer;
 
@@ -51,6 +52,10 @@ public class XmlNodeTraversingInformer
 
     public URI getDocumentURI() {
         return node.getDocumentURI();
+    }
+    
+    public NodeIndex getIndex() {
+        return null; // required when isSupport(Feature.IN_TREE_INDEX) == false
     }
 
     public Iterable<NamespaceBinding> getNamespaceBindings() {

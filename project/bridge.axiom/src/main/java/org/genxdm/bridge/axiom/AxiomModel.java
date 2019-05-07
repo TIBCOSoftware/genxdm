@@ -57,6 +57,7 @@ import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.names.NamespaceBinding;
+import org.genxdm.nodes.NodeIndex;
 
 public class AxiomModel
     implements Model<Object>
@@ -330,6 +331,12 @@ public class AxiomModel
     {
         PreCondition.assertNotNull(node, "node");
         return new IterableFollowingSiblingAxis<Object>(node, this);
+    }
+    
+    @Override
+    public NodeIndex getIndex(Object node)
+    {
+        return null; // feature not supported
     }
 
     @Override

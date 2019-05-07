@@ -91,6 +91,25 @@ public interface NodeInformer<N>
      * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-document-uri">XDM dm:document-uri accessor</a>
      */
     URI getDocumentURI(N node);
+    
+    /**
+     * Returns an IndexPair, identifying the parent index and own index of
+     * every element and document node in the tree. See IndexPair for additional
+     * information.
+     * If ProcessingContext.isSupported(Feature.IN_TREE_INDEX) is true, this
+     * must never return null; if false, it must always return null. This provides
+     * support for highly efficient sorting of nodes within a document. Generally
+     * of more interest to processors that have to operate in-order than to
+     * general node processing.
+     *
+     * @param node The node for which the index is requested; may not be null.
+     * @return an IndexPair representing the index of the supplied node's parent document or
+     *         element (for all node kinds) and the index of the supplied node
+     *         (only for document and element node kinds; all others have -1).
+     *         Return value is strictly conditioned by feature support: either
+     *         always null or never null.
+     */
+    NodeIndex getIndex(N node);
 
     /**
      * Returns the local-name property of the <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-node-name">

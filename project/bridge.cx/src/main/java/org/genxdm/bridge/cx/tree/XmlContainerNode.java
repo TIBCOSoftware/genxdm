@@ -22,6 +22,7 @@ import org.genxdm.bridgekit.atoms.XmlAtom;
 import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NamespaceBinding;
+import org.genxdm.nodes.NodeIndex;
 
 // there are only two possible containers: the "root" (typically a document, but xquery allows
 // it to be a little strange) or an element.
@@ -81,6 +82,11 @@ public class XmlContainerNode
             }
         }
         return firstChild.getNextSiblingElementByName(nsURI, lName);
+    }
+    
+    public NodeIndex getIndex()
+    {
+        return null;
     }
 
     public XmlNode getLastChild()

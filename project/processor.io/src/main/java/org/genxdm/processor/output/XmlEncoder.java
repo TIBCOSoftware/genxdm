@@ -37,7 +37,6 @@ public final class XmlEncoder
         writeEncodedCData(data, target, null, isPCData);
     }
 
-    
     public static final void writeEncodedCData(String data, Writer target, CharsetEncoder encoder, boolean isPCData)
         throws IOException
     {
@@ -169,7 +168,7 @@ public final class XmlEncoder
         if (remaining != 0)
             target.write(data, last, remaining);
     }
-    
+
     public final String encodePCData(String input)
     {
         prepare(input);
@@ -177,7 +176,7 @@ public final class XmlEncoder
         
         return builder.toString();
     }
-    
+
     public final byte[] encodePCData(String input, String encoding)
     {
         prepare(input);
@@ -185,7 +184,7 @@ public final class XmlEncoder
 
         return byteArray(encoding);
     }
-    
+
     public final String encodeCData(String input)
     {
         prepare(input);
@@ -194,7 +193,7 @@ public final class XmlEncoder
         
         return builder.toString();
     }
-    
+
     public final byte[] encodeCData(String input, String encoding)
     {
         prepare(input);
@@ -203,14 +202,14 @@ public final class XmlEncoder
 
         return byteArray(encoding);
     }
-    
+
     private void prepare(String input)
     {
         builder.delete(0, builder.length());
         builder.ensureCapacity(input.length());
         builder.append(input);
    }
-    
+
     private void encodePCData()
     {
         int index = builder.indexOf("&");
@@ -233,7 +232,7 @@ public final class XmlEncoder
             index = builder.indexOf("]]>");
         }
     }
-    
+
     // assumes that PCData is already done
     private void encodeCData()
     {
@@ -250,7 +249,7 @@ public final class XmlEncoder
             index = builder.indexOf("'", index);
         }
     }
-    
+
     private byte[] byteArray(final String encoding)
     {
         try
@@ -265,7 +264,7 @@ public final class XmlEncoder
             return null;
         }
     }
-    
+
     private static void illegal(char c) 
     {
         throw new IllegalArgumentException("Char 0x" + toHexString((int) c) + " cannot be used in XML");

@@ -22,7 +22,8 @@ import org.genxdm.xs.components.SchemaParticle;
  * Describes the use of a model group.
  * 
  */
-public interface ModelGroupUse extends SchemaParticle
+public interface ModelGroupUse 
+    extends SchemaParticle
 {
     /**
      * Returns the {particle term} property for this usage which is a model group.

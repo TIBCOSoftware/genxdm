@@ -32,6 +32,7 @@ import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentHandler;
 import org.genxdm.names.NamespaceBinding;
+import org.genxdm.nodes.NodeIndex;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
@@ -195,6 +196,12 @@ public final class CoreModelDecorator<N, A>
     public Iterable<N> getFollowingSiblingAxis(final N origin)
     {
         return model.getFollowingSiblingAxis(origin);
+    }
+    
+    @Override
+    public NodeIndex getIndex(final N origin)
+    {
+        return model.getIndex(origin);
     }
 
     @Override

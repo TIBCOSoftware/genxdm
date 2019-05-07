@@ -53,6 +53,24 @@ public interface Informer
     URI getDocumentURI();
 
     /**
+     * Returns an IndexPair, identifying the parent index and own index of
+     * every element and document node in the tree. See IndexPair for additional
+     * information.
+     * If ProcessingContext.isSupported(Feature.IN_TREE_INDEX) is true, this
+     * must never return null; if false, it must always return null. This provides
+     * support for highly efficient sorting of nodes within a document. Generally
+     * of more interest to processors that have to operate in-order than to
+     * general node processing.
+     *
+     * @return an IndexPair representing the index of the parent document or
+     *         element (for all node kinds) and the index of the current node
+     *         (only for document and element node kinds; all others have -1).
+     *         Return value is strictly conditioned by feature support: either
+     *         always null or never null.
+     */
+    NodeIndex getIndex();
+
+    /**
      * Returns the namespace bindings associated with the node as a set or prefix/URI pairs.
      * 
      * <p>Only includes prefix mappings which are explicit and local to the node.</p>

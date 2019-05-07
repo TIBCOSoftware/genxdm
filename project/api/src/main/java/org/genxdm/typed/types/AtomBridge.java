@@ -427,6 +427,13 @@ public interface AtomBridge<A>
      *            The total number of months in the duration.
      */
     A createYearMonthDuration(int months);
+    
+    /**
+     * Create and return (or return a static) empty sequence of Atoms.
+     * 
+     * Note that this is exactly equivalent to wrapAtom(null).
+     */
+    Iterable<A> emptySequence();
 
     /**
      * Returns the bytes for an atom derived from xs:base64Binary.
