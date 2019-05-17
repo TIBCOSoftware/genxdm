@@ -23,72 +23,10 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#integer">integer</a>.
  */
-public final class XmlInteger extends XmlAbstractAtom
+public final class XmlInteger 
+    extends XmlAbstractAtom
 {
-    public static XmlInteger valueOf(final BigInteger value)
-    {
-        return new XmlInteger(value);
-    }
-
-    /**
-     * The {@link XmlInteger} constant zero.
-     * 
-     * @since 1.0
-     */
-    public static final XmlInteger ZERO = new XmlInteger(BigInteger.valueOf(0));
-
-    /**
-     * Initialize static constant array when class is loaded.
-     */
-    private final static int MAX_CONSTANT = 16;
-    private static XmlInteger posConst[] = new XmlInteger[MAX_CONSTANT + 1];
-    private static XmlInteger negConst[] = new XmlInteger[MAX_CONSTANT + 1];
-    static
-    {
-        for (int i = 1; i <= MAX_CONSTANT; i++)
-        {
-            posConst[i] = new XmlInteger(BigInteger.valueOf(+i));
-            negConst[i] = new XmlInteger(BigInteger.valueOf(-i));
-        }
-    }
-
-    /**
-     * The {@link XmlInteger} constant one.
-     * 
-     * @since 1.0
-     */
-    public static final XmlInteger ONE = valueOf(1);
-
-    /**
-     * The {@link XmlInteger} constant ten.
-     * 
-     * @since 1.0
-     */
-    public static final XmlInteger TEN = valueOf(10);
-
-    public static XmlInteger valueOf(final long value)
-    {
-        if (value == 0)
-        {
-            return ZERO;
-        }
-        if (value > 0 && value <= MAX_CONSTANT)
-        {
-            return posConst[(int)value];
-        }
-        else if (value < 0 && value >= -MAX_CONSTANT)
-        {
-            return negConst[(int)-value];
-        }
-        else
-        {
-            return new XmlInteger(BigInteger.valueOf(value));
-        }
-    }
-
-    private final BigInteger integerValue;
-
-    private XmlInteger(final BigInteger integerValue)
+    private XmlInteger(final BigInteger integerValue) // use valueOf()
     {
         this.integerValue = PreCondition.assertArgumentNotNull(integerValue, "integerValue");
     }
@@ -129,4 +67,57 @@ public final class XmlInteger extends XmlAbstractAtom
     {
         return false;
     }
+
+    /**
+     * Initialize static constant array when class is loaded.
+     */
+    private final static int MAX_CONSTANT = 16;
+    private static XmlInteger posConst[] = new XmlInteger[MAX_CONSTANT + 1];
+    private static XmlInteger negConst[] = new XmlInteger[MAX_CONSTANT + 1];
+    static
+    {
+        for (int i = 1; i <= MAX_CONSTANT; i++)
+        {
+            posConst[i] = new XmlInteger(BigInteger.valueOf(+i));
+            negConst[i] = new XmlInteger(BigInteger.valueOf(-i));
+        }
+    }
+
+    /**
+     * The {@link XmlInteger} constant zero.
+     * 
+     * @since 1.0
+     */
+    public static final XmlInteger ZERO = new XmlInteger(BigInteger.valueOf(0));
+    /**
+     * The {@link XmlInteger} constant one.
+     * 
+     * @since 1.0
+     */
+    public static final XmlInteger ONE = valueOf(1);
+
+    /**
+     * The {@link XmlInteger} constant ten.
+     * 
+     * @since 1.0
+     */
+    public static final XmlInteger TEN = valueOf(10);
+
+    public static XmlInteger valueOf(final BigInteger value)
+    {
+        return new XmlInteger(value);
+    }
+
+    public static XmlInteger valueOf(final long value)
+    {
+        if (value == 0)
+            return ZERO;
+        if ((value > 0) && (value <= MAX_CONSTANT))
+            return posConst[(int)value];
+        else if ((value < 0) && (value >= -MAX_CONSTANT))
+            return negConst[(int)-value];
+        return new XmlInteger(BigInteger.valueOf(value));
+    }
+
+    private final BigInteger integerValue;
 }

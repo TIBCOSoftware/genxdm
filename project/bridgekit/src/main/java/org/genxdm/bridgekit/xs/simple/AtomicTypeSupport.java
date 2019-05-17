@@ -22,6 +22,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.genxdm.bridgekit.atoms.Base64BinarySupport;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.types.NativeType;
 
@@ -29,7 +30,7 @@ public final class AtomicTypeSupport
 {
     public static String formatBase64BinaryC14N(final byte[] bytes, final boolean dontBreakLines)
     {
-        return Base64Codec.encodeBase64(bytes, dontBreakLines);
+        return Base64BinarySupport.encodeBase64(bytes, dontBreakLines);
     }
 
     public static String formatQNameC14N(final String localName, final String prefix)
@@ -37,13 +38,8 @@ public final class AtomicTypeSupport
         PreCondition.assertArgumentNotNull(localName, "localName");
         PreCondition.assertArgumentNotNull(prefix, "prefix");
         if (prefix.length() > 0)
-        {
             return prefix.concat(":").concat(localName);
-        }
-        else
-        {
-            return localName;
-        }
+        return localName;
     }
 
     public static String formatBooleanC14N(final boolean booleanValue)

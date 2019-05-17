@@ -20,10 +20,9 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#double">double</a>.
  */
-public final class XmlDouble extends XmlAbstractAtom
+public final class XmlDouble 
+    extends XmlAbstractAtom
 {
-    private final double doubleValue;
-
     public XmlDouble(final double doubleValue)
     {
         this.doubleValue = doubleValue;
@@ -66,4 +65,6 @@ public final class XmlDouble extends XmlAbstractAtom
     {
         return false;
     }
+
+    private final double doubleValue;
 }

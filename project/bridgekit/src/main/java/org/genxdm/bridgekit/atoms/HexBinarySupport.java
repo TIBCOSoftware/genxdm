@@ -17,9 +17,11 @@ package org.genxdm.bridgekit.atoms;
 
 /**
  * Encoding and decoding in base 16.
+ *
  */
 final class HexBinarySupport
 {
+    // TODO: add decode: see HexCodec in ../xs/simple/
     public static String encodeHex(final byte[] values)
     {
         final char[] buf = new char[(values.length << 1)];
@@ -28,9 +30,7 @@ final class HexBinarySupport
         {
             int b = values[i];
             if (b < 0)
-            {
                 b = 256 + b;
-            }
             buf[(i << 1)] = hexchar(b >> 4);
             buf[(i << 1) + 1] = hexchar(b % 16);
         }
@@ -40,9 +40,7 @@ final class HexBinarySupport
     private static char hexchar(final int value)
     {
         if (value <= 9)
-        {
             return (char)('0' + (char)value);
-        }
         return (char)(('A' - 10) + (char)value);
     }
 }

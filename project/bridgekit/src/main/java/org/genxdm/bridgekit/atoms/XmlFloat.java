@@ -20,10 +20,9 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#float">float</a>.
  */
-public final class XmlFloat extends XmlAbstractAtom
+public final class XmlFloat 
+    extends XmlAbstractAtom
 {
-    private final float floatValue;
-
     public XmlFloat(final float floatValue)
     {
         this.floatValue = floatValue;
@@ -65,4 +64,6 @@ public final class XmlFloat extends XmlAbstractAtom
     {
         return false;
     }
+
+    private final float floatValue;
 }

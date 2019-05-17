@@ -23,11 +23,9 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#duration">duration</a>.
  */
-public final class XmlDuration extends XmlAbstractAtom
+public final class XmlDuration 
+    extends XmlAbstractAtom
 {
-    private final int months;
-    private final BigDecimal seconds;
-
     public XmlDuration(final int months, final BigDecimal seconds)
     {
         this.months = months;
@@ -75,4 +73,7 @@ public final class XmlDuration extends XmlAbstractAtom
     {
         return seconds;
     }
+
+    private final int months;
+    private final BigDecimal seconds;
 }

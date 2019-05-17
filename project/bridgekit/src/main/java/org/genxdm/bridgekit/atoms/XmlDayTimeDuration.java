@@ -23,10 +23,10 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#dayTimeDuration">dayTimeDuration</a>.
  */
-public final class XmlDayTimeDuration extends XmlAbstractAtom implements Comparable<XmlDayTimeDuration>
+public final class XmlDayTimeDuration 
+    extends XmlAbstractAtom 
+    implements Comparable<XmlDayTimeDuration>
 {
-    private final BigDecimal seconds;
-
     public XmlDayTimeDuration(final BigDecimal seconds)
     {
         this.seconds = PreCondition.assertArgumentNotNull(seconds, "seconds");
@@ -70,4 +70,6 @@ public final class XmlDayTimeDuration extends XmlAbstractAtom implements Compara
     {
         return seconds;
     }
+
+    private final BigDecimal seconds;
 }

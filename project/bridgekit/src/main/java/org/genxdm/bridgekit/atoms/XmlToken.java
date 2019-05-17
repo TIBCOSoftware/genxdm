@@ -21,10 +21,9 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#token">token</a>.
  */
-public final class XmlToken extends XmlAbstractAtom
+public final class XmlToken 
+    extends XmlAbstractAtom
 {
-    private final String value;
-
     public XmlToken(final String value)
     {
         this.value = PreCondition.assertArgumentNotNull(value, "value");
@@ -58,4 +57,6 @@ public final class XmlToken extends XmlAbstractAtom
     {
         return value.trim().length() == 0;
     }
+
+    private final String value;
 }

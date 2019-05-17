@@ -5,15 +5,15 @@ import java.io.PrintStream;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.xml.namespace.QName;
 
-import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.NodeKind;
-import org.genxdm.typed.types.AtomBridge;
+import org.genxdm.exceptions.GenXDMException;
+import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.typed.io.SequenceFilter;
 import org.genxdm.typed.io.SequenceHandler;
-import org.genxdm.exceptions.GenXDMException;
-import org.genxdm.exceptions.PreCondition;
+import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.SchemaComponentCache;
 
 // initialize this thing and it spits out each created thing as it's encountered

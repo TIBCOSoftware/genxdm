@@ -15,6 +15,7 @@
  */
 package org.genxdm.bridgekit.atoms;
 
+import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -24,12 +25,8 @@ import java.io.UnsupportedEncodingException;
  * message. This codec handles Base64.
  * 
  */
-final class Base64BinarySupport
+public final class Base64BinarySupport
 {
-    private static final char BASE64_PAD = '=';
-
-    // private static final String BASE64_TABLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
     /**
      * Warning: if the supplied string does not work out to a multiple of 3 bytes, then the returned string will contain
      * padding. If it has padding, then it cannot have another string concatenated on the end of it.
@@ -142,6 +139,163 @@ final class Base64BinarySupport
     }
 
     /**
+     * Warning: the supplied string must be valid base 64 (a subset of US-ASCII, correctly padded). The algorithm is forgiving about line length and line ending style, however.
+     * 
+     * @param base64
+     *            the properly aligned and padded string to be decoded.
+     * @param enc
+     *            the encoding name to use for transforming the decoded bytes into a String.
+     * @return a decoded String, if possible, based on the specified encoding
+     * @throws IllegalArgumentException
+     *             if the String cannot be parsed as base64 (contains illegal bytes, is not padded to a multiple of four bytes, etc).
+     */
+    public static String decodeBase64(String base64, String enc) throws UnsupportedEncodingException
+    {
+        return new String(decodeBase64(base64), enc);
+    }
+
+    /**
+     * Warning: the supplied string must be valid base 64 (a subset of US-ASCII, correctly padded). The algorithm is forgiving about line length and line ending style, however.
+     * 
+     * @param base64
+     *            the properly aligned and padded string to be decoded.
+     * @return a byte array containing the decoded bytes
+     * @throws IllegalArgumentException
+     *             if the String cannot be parsed as base64 (contains illegal bytes, is not padded to a multiple of four bytes, etc).
+     */
+    public static byte[] decodeBase64(String base64)
+    {
+        byte[] riff = new byte[3];
+        int range = 0;
+        //int index = 0;
+        // probably wrong, but it will be too big by a little.
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(base64.length()/4*3); //arrayLength(base64));
+        //byte [] result = new byte[arrayLength(base64)];
+        for (int i = 0; i < base64.length(); i++)
+        {
+            char c = base64.charAt(i);
+            if (c == BASE64_PAD)
+            {
+                // one to two of the bytes are
+                // valid. If there are two pad
+                // characters, range will be 2,
+                // and only one byte is valid.
+                // if there is only one pad character,
+                // then range should be 3, and
+                // the first two bytes are valid.
+                if (range < 2)
+                    throw new IllegalArgumentException("Short block at offset " + i);
+                for (int j = 0; j < range - 1; j++)
+                    baos.write(riff[j]);
+//                {
+//                    result[index] = riff[j];
+//                    index++;
+//                }
+                // ensure that decoded characters haven't spilled over -- sign of illegal encodings
+                for (int j = range - 1; j < 3; j++)
+                {
+                    if (0 != riff[j])
+                    {
+                        i -= range - 1;
+                        c = base64.charAt(i);
+                        throw new IllegalArgumentException("Illegal character " + c + " at offset " + i);
+                    }
+                }
+                if (2 == range)
+                {// second PAD expected
+                    ++i;
+                    char cc = base64.charAt(i);
+                    if (isWhiteChar(cc))
+                        ++i;
+                    if (i >= base64.length() || BASE64_PAD != base64.charAt(i))
+                        throw new IllegalArgumentException("Short padding at offset " + i);
+                }
+                // range is now reached; no need to complain
+                range = 0;
+                // when we encounter padding, stop -- make sure the stream ended here
+                while (++i < base64.length())
+                {
+                    c = base64.charAt(i);
+                    if (!isWhiteChar(c))
+                        throw new IllegalArgumentException("Illegal characters after padding '" + c + "'");
+                }
+                break;
+            }
+            // ignore whitespace...
+            if (isWhiteChar(c))
+                continue;
+            // ...not the rest
+            byte index2 = getBase64Value(c);
+            if (index2 >= 0)
+            {
+                if (range == 0)
+                {
+                    range++;
+                    riff[0] = (byte)(index2 << 2);
+                }
+                else if (range == 1)
+                {
+                    range++;
+                    riff[0] |= (index2 >> 4);
+                    riff[1] = (byte)(index2 << 4);
+                }
+                else if (range == 2)
+                {
+                    range++;
+                    riff[1] |= (index2 >> 2);
+                    riff[2] = (byte)(index2 << 6);
+                }
+                else
+                {
+                    range = 0;
+                    riff[2] |= index2;
+                    for (int j = 0; j < riff.length; j++)
+                    {
+//                        result[index] = riff[j];
+//                        index++;
+                        baos.write(riff[j]);
+                        riff[j] = 0;// reset after use !
+                    }
+                }
+            }
+            else
+                throw new IllegalArgumentException("Illegal character '" + c + "' at offset " + i);
+        }
+        if (range != 0)
+            throw new IllegalArgumentException("Encoded data not in multiples of four");
+//        return result;
+        return baos.toByteArray();
+    }
+    
+    // nah. too likely to be wrong to spend time doing it.
+    /**
+     * Implementation detail: package access. Get the base length
+     * by dividing by 4, multiplying by 3; subtract 0 if there's no pad
+     * character, 1 if there's 1 pad character, and two if there's two
+     * pad characters, but throw an exception if the third-from last
+     * character is a pad.
+     * @return length of the expected output
+     */
+//    static int arrayLength(String base64)
+//    {
+//        final int length = base64.length();
+//        if (base64.charAt(length - 1) == BASE64_PAD) // -1
+//        {
+//            if (base64.charAt(length - 2) == BASE64_PAD) // -2
+//            {
+//                if (base64.charAt(length - 3) == BASE64_PAD) // oops
+//                    throw new IllegalArgumentException("More than two trailing pad characters");
+//                // implicit else: -2
+//                return (length / 4 * 3) - 2;
+//            }
+//            // implicit else: -1
+//            return (length / 4 * 3) - 1;
+//        }
+//        // implicit else: last character not pad
+//        return length / 4 * 3;
+//    }
+
+    /**
      * Implementation detail: package access. AS has shown by profiling that these two methods are faster than table
      * lookup. Note that the Base64 Table remains defined in the constants, as it is useful as documentation (if nothing
      * else).
@@ -150,7 +304,7 @@ final class Base64BinarySupport
      *            an integer in the six-bit (0-63) range. Only six bits should be set.
      * @return the character corresponding to this value in the base64 algorithm.
      */
-    public static char getBase64Char(int sixBit)
+    static char getBase64Char(int sixBit)
     {
         // note: should we change this to throw an exception when out-of-range
         // values appear? Or to return a special value, such as the byte-order mark?
@@ -168,8 +322,7 @@ final class Base64BinarySupport
 
     /**
      * Implementation detail: package access. AS has shown by profiling that these two methods are faster than table
-     * lookup. Note that the Base64 Table remains defined in the constants, as it is useful as documentation (if nothing
-     * else).
+     * lookup.
      * 
      * @param c
      *            a valid character (one of 64 allowed characters) (padding is not decoded) in the base64 encoding
@@ -210,4 +363,6 @@ final class Base64BinarySupport
                 return false;
         }
     }
+
+    private static final char BASE64_PAD = '=';
 }

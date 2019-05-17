@@ -21,11 +21,10 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#NCName">NCName</a>.
  */
-public final class XmlNCName extends XmlAbstractAtom
+public final class XmlNCName 
+    extends XmlAbstractAtom
 {
     /**
-     * Intentionally package protected because this must only be created through the name bridge.
-     * 
      * @param stringValue
      */
     public XmlNCName(final String stringValue)

@@ -18,7 +18,8 @@ package org.genxdm.bridgekit.atoms;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.types.NativeType;
 
-public class XmlQName extends XmlAbstractAtom
+public class XmlQName 
+    extends XmlAbstractAtom
 {
     public XmlQName(final String namespaceURI, final String localName, final String prefix)
     {
@@ -43,28 +44,20 @@ public class XmlQName extends XmlAbstractAtom
     public String getC14NForm()
     {
         final int prefixLength = prefix.length();
-        if (null != localName)
+        if (localName != null)
         {
             if (prefixLength > 0)
             {
                 final int localNameLength = localName.length();
                 return new StringBuilder(prefixLength + 1 + localNameLength).append(prefix).append(":").append(localName).toString();
             }
-            else
-            {
-                return localName;
-            }
+            return localName;
         }
         else
         {
             if (prefixLength > 0)
-            {
                 return prefix.concat(":*");
-            }
-            else
-            {
-                return "*";
-            }
+            return "*";
         }
     }
 

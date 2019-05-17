@@ -21,10 +21,9 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#normalizedString">normalizedString</a>.
  */
-public final class XmlNormalizedString extends XmlAbstractAtom
+public final class XmlNormalizedString 
+    extends XmlAbstractAtom
 {
-    private final String value;
-
     public XmlNormalizedString(final String value)
     {
         this.value = PreCondition.assertArgumentNotNull(value, "value");
@@ -63,4 +62,6 @@ public final class XmlNormalizedString extends XmlAbstractAtom
     {
         return value.trim().length() == 0;
     }
+
+    private final String value;
 }

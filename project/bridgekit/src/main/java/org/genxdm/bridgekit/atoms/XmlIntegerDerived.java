@@ -20,7 +20,8 @@ import java.math.BigInteger;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.types.NativeType;
 
-public final class XmlIntegerDerived extends XmlAbstractAtom
+public final class XmlIntegerDerived 
+    extends XmlAbstractAtom
 {
     public static XmlIntegerDerived valueOf(final BigInteger integerValue, final NativeType nativeType)
     {
@@ -31,10 +32,6 @@ public final class XmlIntegerDerived extends XmlAbstractAtom
     {
         return new XmlIntegerDerived(BigInteger.valueOf(integerValue), nativeType);
     }
-
-    private final NativeType type;
-
-    private final BigInteger value;
 
     private XmlIntegerDerived(final BigInteger integerValue, final NativeType nativeType)
     {
@@ -93,4 +90,8 @@ public final class XmlIntegerDerived extends XmlAbstractAtom
     {
         return value.shortValue();
     }
+
+    private final NativeType type;
+
+    private final BigInteger value;
 }

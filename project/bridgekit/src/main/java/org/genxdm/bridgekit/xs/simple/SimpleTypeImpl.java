@@ -500,7 +500,7 @@ public abstract class SimpleTypeImpl extends TypeImpl implements SimpleType
     private static <X> int countIterable(Iterable<X> iterable)
     {
         int count = 0;
-        for (X x : iterable)
+        for (@SuppressWarnings("unused") X x : iterable)
             count++;
         return count;
     }

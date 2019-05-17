@@ -20,11 +20,9 @@ import javax.xml.namespace.QName;
 import org.genxdm.exceptions.IllegalNullArgumentException;
 import org.genxdm.xs.types.NativeType;
 
-public final class XmlForeignAtom extends XmlAbstractAtom
+public final class XmlForeignAtom 
+    extends XmlAbstractAtom
 {
-    public final QName atomType;
-    public final XmlAtom baseAtom;
-
     public XmlForeignAtom(final QName atomType, final XmlAtom baseAtom)
     {
         this.atomType = IllegalNullArgumentException.check(atomType, "atomType");
@@ -61,4 +59,7 @@ public final class XmlForeignAtom extends XmlAbstractAtom
     {
         return baseAtom.isWhiteSpace();
     }
+
+    public final QName atomType;
+    public final XmlAtom baseAtom;
 }

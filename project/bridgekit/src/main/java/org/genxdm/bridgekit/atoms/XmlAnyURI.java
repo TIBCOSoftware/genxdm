@@ -23,10 +23,9 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#anyURI">anyURI</a>.
  */
-public class XmlAnyURI extends XmlAbstractAtom
+public class XmlAnyURI 
+    extends XmlAbstractAtom
 {
-    private final URI value;
-
     public XmlAnyURI(final URI value)
     {
         this.value = PreCondition.assertArgumentNotNull(value, "value");
@@ -68,4 +67,6 @@ public class XmlAnyURI extends XmlAbstractAtom
     {
         return false;
     }
+
+    private final URI value;
 }

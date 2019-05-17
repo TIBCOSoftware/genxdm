@@ -26,7 +26,8 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#boolean">boolean</a>.
  */
-public enum XmlBoolean implements XmlAtom
+public enum XmlBoolean 
+    implements XmlAtom
 {
     FALSE(false), TRUE(true);
 
@@ -34,8 +35,6 @@ public enum XmlBoolean implements XmlAtom
     {
         return booleanValue ? TRUE : FALSE;
     }
-
-    private final boolean booleanValue;
 
     private XmlBoolean(final boolean booleanValue)
     {
@@ -77,26 +76,24 @@ public enum XmlBoolean implements XmlAtom
 
     public boolean contains(Object o)
     {
-        // TODO: maybe equivalent to equals?
-        throw new UnsupportedOperationException();
+        return this.equals(o);
     }
 
     public boolean containsAll(Collection<?> c)
     {
-        // TODO: if size == 1, equivalent to equals?
-        throw new UnsupportedOperationException();
+        if (c.size() == 1)
+        {
+            for (final Object o : c)
+                return this.equals(o);
+        }
+        return false;
     }
 
     public XmlBoolean get(final int index)
     {
-        if (0 == index)
-        {
+        if (index == 0)
             return this;
-        }
-        else
-        {
-            throw new ArrayIndexOutOfBoundsException(index);
-        }
+        throw new ArrayIndexOutOfBoundsException(index);
     }
 
     public String getC14NForm()
@@ -111,9 +108,9 @@ public enum XmlBoolean implements XmlAtom
 
     public int indexOf(Object o)
     {
-        // TODO: if the object is a boolean and it matches our value, return index 0
-        // otherwise, return the not-found indicator.
-        throw new UnsupportedOperationException();
+        if ( (o instanceof XmlBoolean) && this.equals(o))
+            return 0;
+        return -1;
     }
 
     public boolean isEmpty()
@@ -138,15 +135,12 @@ public enum XmlBoolean implements XmlAtom
 
     public ListIterator<XmlAtom> listIterator()
     {
-        // TODO: how does one turn this into a single-element list and then an iterator?
         throw new UnsupportedOperationException();
     }
 
     public ListIterator<XmlAtom> listIterator(int index)
     {
-        if (index == 0)
-            return listIterator();
-        throw new ArrayIndexOutOfBoundsException(index);
+        throw new UnsupportedOperationException();
     }
 
     public XmlAtom remove(final int index)
@@ -196,14 +190,12 @@ public enum XmlBoolean implements XmlAtom
     {
         final int size = size();
         if (a.length < size)
-        {
             a = (T[])java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
-        }
         System.arraycopy(toArray(), 0, a, 0, size);
         if (a.length > size)
-        {
             a[size] = null;
-        }
         return a;
     }
+    
+    private final boolean booleanValue;
 }

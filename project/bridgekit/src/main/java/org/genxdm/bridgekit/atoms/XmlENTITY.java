@@ -21,10 +21,9 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#ENTITY">ENTITY</a>.
  */
-public final class XmlENTITY extends XmlAbstractAtom
+public final class XmlENTITY 
+    extends XmlAbstractAtom
 {
-    private final String value;
-
     public XmlENTITY(final String value)
     {
         this.value = PreCondition.assertArgumentNotNull(value, "value");
@@ -58,4 +57,6 @@ public final class XmlENTITY extends XmlAbstractAtom
     {
         return false;
     }
+
+    private final String value;
 }

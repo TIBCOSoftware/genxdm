@@ -21,7 +21,8 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#Name">Name</a>.
  */
-public final class XmlName extends XmlAbstractAtom
+public final class XmlName 
+    extends XmlAbstractAtom
 {
     public XmlName(final String value)
     {

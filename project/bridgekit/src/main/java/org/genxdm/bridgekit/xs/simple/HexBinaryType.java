@@ -138,70 +138,11 @@ public final class HexBinaryType extends AbstractAtomType
         final String normalized = normalize(initialValue);
         try
         {
-            return atomBridge.wrapAtom(atomBridge.createHexBinary(parseHexBinary(normalized, this)));
+            return atomBridge.wrapAtom(atomBridge.createHexBinary(HexCodec.parseHexBinary(normalized, this)));
         }
         catch (final RuntimeException e)
         {
             throw new DatatypeException(initialValue, this);
-        }
-    }
-
-    private static void illegal(final String s, final char c, final SimpleType type) throws DatatypeException
-    {
-        throw new DatatypeException(s, type);
-        // throw new DatatypeException(s, type, new IllegalArgumentException("Illegal hex character:" + c));
-    }
-
-    public static byte[] parseHexBinary(final String s, final SimpleType type) throws DatatypeException
-    {
-        final char[] buf = s.toCharArray();
-
-        if (buf.length % 2 != 0)
-        {
-            throw new DatatypeException(s, type);
-            // throw new DatatypeException(s, type, new
-            // IllegalArgumentException("Improperly encoded hex, odd# of characters"));
-        }
-
-        final byte[] b = new byte[buf.length >> 1];
-
-        final int len = buf.length;
-
-        for (int i = 0; i < len; i += 2)
-        {
-            final int hi = hexval(buf[i]);
-            if (hi < 0)
-            {
-                illegal(s, (char)hi, type);
-            }
-            final int lo = hexval(buf[i + 1]);
-            if (lo < 0)
-            {
-                illegal(s, (char)lo, type);
-            }
-            b[i >> 1] = (byte)((hi << 4) + lo);
-        }
-        return b;
-    }
-
-    private static int hexval(final char c)
-    {
-        if (c >= '0' && c <= '9')
-        {
-            return c - '0';
-        }
-        if (c >= 'A' && c <= 'F')
-        {
-            return c - ('A' - 10);
-        }
-        if (c >= 'a' && c <= 'f')
-        {
-            // according to schema, section 3.2.15hexBinary, lower case a-f are ok, too.
-            return c - ('a' - 10);
-        }
-        else
-        {
-            return -1;
         }
     }
 

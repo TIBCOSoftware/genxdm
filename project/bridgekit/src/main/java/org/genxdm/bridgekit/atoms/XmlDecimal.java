@@ -23,11 +23,10 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#decimal">decimal</a>.
  */
-public final class XmlDecimal extends XmlAbstractAtom
+public final class XmlDecimal 
+    extends XmlAbstractAtom
 {
     // TODO: Caching of common values.
-    private final BigDecimal decimalValue;
-
     public static XmlDecimal valueOf(final BigDecimal decimalValue)
     {
         return new XmlDecimal(decimalValue);
@@ -84,4 +83,6 @@ public final class XmlDecimal extends XmlAbstractAtom
     {
         return false;
     }
+
+    private final BigDecimal decimalValue;
 }

@@ -19,37 +19,20 @@ import java.math.BigDecimal;
 
 final class DurationSupport
 {
-    public static final int HOURS_PER_DAY = 24;
-    public static final long HOURS_PER_DAY_LONG = 24l;
-
-    public static final int MINUTES_PER_HOUR = 60;
-    public static final long MINUTES_PER_HOUR_LONG = 60l;
-
-    public static final int MONTHS_PER_YEAR = 12;
-    public static final int SECONDS_PER_DAY = 86400;
-    public static final long SECONDS_PER_DAY_LONG = 86400l;
-    public static final int SECONDS_PER_HOUR = 3600;
-    public static final long SECONDS_PER_HOUR_LONG = 3600l;
-
-    public static final int SECONDS_PER_MINUTE = 60;
-    public static final long SECONDS_PER_MINUTE_LONG = 60l;
+    private DurationSupport() {} // cannot be instantiated
 
     public static String formatDayTimeDurationC14N(final BigDecimal totalSeconds)
     {
         final boolean isNegative = totalSeconds.signum() < 0;
-
         final StringBuilder buffer = new StringBuilder();
 
         if (isNegative)
-        {
             buffer.append('-');
-        }
 
         buffer.append('P');
 
         int designators = 0;
-
-        if (designators == 0)
+        if (designators == 0) // wtf? care to suggest how it won't be?
         {
             // The canonical representation of dayTimeDuration restricts the value
             // of the hours component to integer values between 0 and 23, both inclusive; the
@@ -60,11 +43,9 @@ final class DurationSupport
             // synchronized with the rotation of the planet.
 
             BigDecimal time = isNegative ? totalSeconds.negate() : totalSeconds;
-
-            final long integralSeconds = time == null ? 0 : time.longValue();
+            final long integralSeconds = (time == null) ? 0 : time.longValue();
 
             long minutes = integralSeconds / SECONDS_PER_MINUTE_LONG;
-
             BigDecimal seconds = time.subtract(BigDecimal.valueOf(minutes * SECONDS_PER_MINUTE_LONG));
 
             long hours = minutes / MINUTES_PER_HOUR_LONG;
@@ -73,18 +54,14 @@ final class DurationSupport
             long days = hours / HOURS_PER_DAY_LONG;
             hours = hours - days * HOURS_PER_DAY_LONG;
 
-            boolean isZero = (0 == seconds.signum());
-
+            boolean isZero = (seconds.signum() == 0);
             if (days != 0)
             {
                 buffer.append(Long.toString(days)).append('D');
-
                 designators++;
 
-                if (hours == 0 && minutes == 0 && isZero)
-                {
+                if ((hours == 0) && (minutes == 0) && isZero)
                     return buffer.toString();
-                }
             }
 
             buffer.append('T');
@@ -92,63 +69,50 @@ final class DurationSupport
             if (hours != 0)
             {
                 buffer.append(Long.toString(hours)).append('H');
-
                 designators++;
             }
 
             if (minutes != 0)
             {
                 buffer.append(Long.toString(minutes)).append('M');
-
                 designators++;
             }
 
             if (!isZero)
             {
                 buffer.append(seconds.toPlainString());
-
                 buffer.append('S');
-
                 designators++;
             }
 
             if (designators == 0)
-            {
                 buffer.append('0').append('S');
-            }
         }
         return buffer.toString();
     }
 
     public static String formatDurationC14N(final BigDecimal totalSeconds, final int totalMonths)
     {
-        final boolean isNegative = (totalSeconds != null ? totalSeconds.signum() < 0 : false) || totalMonths < 0;
-
+        final boolean isNegative = ((totalSeconds != null) ? totalSeconds.signum() < 0 : false) || (totalMonths < 0);
         final StringBuilder buffer = new StringBuilder();
 
         int months;
-
         if (isNegative)
         {
             months = totalMonths * -1;
-
             buffer.append('-');
         }
         else
-        {
             months = totalMonths;
-        }
 
         // The canonical representation calls of yearMonthDuration restricts the value of
         // the months component to integer values between 0 and 11, both inclusive.
         int year = months / MONTHS_PER_YEAR;
-
         int month = months - (year * MONTHS_PER_YEAR);
 
         buffer.append('P');
 
         int designators = 0;
-
         if (totalMonths != 0)
         {
             // If a component has the value zero (0) then the number and designator for
@@ -157,7 +121,6 @@ final class DurationSupport
             {
                 buffer.append(year);
                 buffer.append('Y');
-
                 designators++;
             }
 
@@ -165,22 +128,19 @@ final class DurationSupport
             {
                 buffer.append(month);
                 buffer.append('M');
-
                 designators++;
             }
 
             // If the values is zero (0) months, the canonical form is "P0M".
-            if (totalSeconds == null || totalSeconds.signum() == 0)
+            if ((totalSeconds == null) || (totalSeconds.signum() == 0))
             {
                 if (designators == 0)
-                {
                     buffer.append('0').append('M');
-                }
             }
         }
 
         final BigDecimal timeSpan = (totalSeconds == null) ? BigDecimal.ZERO : totalSeconds;
-        if (designators == 0 || (totalSeconds != null && totalSeconds.signum() != 0))
+        if ((designators == 0) || ((totalSeconds != null) && (totalSeconds.signum() != 0)))
         {
             // The canonical representation of dayTimeDuration restricts the value
             // of the hours component to integer values between 0 and 23, both inclusive; the
@@ -191,11 +151,9 @@ final class DurationSupport
             // synchronized with the rotation of the planet.
 
             final BigDecimal time = isNegative ? timeSpan.negate() : timeSpan;
-
-            final long integralSeconds = time == null ? 0 : time.longValue();
+            final long integralSeconds = (time == null) ? 0 : time.longValue();
 
             long minutes = integralSeconds / SECONDS_PER_MINUTE_LONG;
-
             BigDecimal seconds = time.subtract(BigDecimal.valueOf(minutes * SECONDS_PER_MINUTE_LONG));
 
             long hours = minutes / MINUTES_PER_HOUR_LONG;
@@ -204,15 +162,14 @@ final class DurationSupport
             long days = hours / HOURS_PER_DAY_LONG;
             hours = hours - days * HOURS_PER_DAY_LONG;
 
-            boolean isZero = (0 == seconds.signum());
-
+            boolean isZero = (seconds.signum() == 0);
             if (days != 0)
             {
                 buffer.append(Long.toString(days)).append('D');
 
                 designators++;
 
-                if (hours == 0 && minutes == 0 && isZero)
+                if ((hours == 0) && (minutes == 0) && isZero)
                 {
                     return buffer.toString();
                 }
@@ -223,30 +180,24 @@ final class DurationSupport
             if (hours != 0)
             {
                 buffer.append(Long.toString(hours)).append('H');
-
                 designators++;
             }
 
             if (minutes != 0)
             {
                 buffer.append(Long.toString(minutes)).append('M');
-
                 designators++;
             }
 
             if (!isZero)
             {
                 buffer.append(seconds.toPlainString());
-
                 buffer.append('S');
-
                 designators++;
             }
 
             if (designators == 0)
-            {
                 buffer.append('0').append('S');
-            }
         }
         return buffer.toString();
     }
@@ -256,17 +207,13 @@ final class DurationSupport
         final StringBuilder sb = new StringBuilder();
 
         int months;
-
         if (totalMonths < 0)
         {
             months = totalMonths * -1;
-
             sb.append('-');
         }
         else
-        {
             months = totalMonths;
-        }
 
         sb.append('P');
 
@@ -296,7 +243,18 @@ final class DurationSupport
         return sb.toString();
     }
 
-    private DurationSupport()
-    {
-    }
+    public static final int HOURS_PER_DAY = 24;
+    public static final long HOURS_PER_DAY_LONG = 24l;
+
+    public static final int MINUTES_PER_HOUR = 60;
+    public static final long MINUTES_PER_HOUR_LONG = 60l;
+
+    public static final int MONTHS_PER_YEAR = 12;
+    public static final int SECONDS_PER_DAY = 86400;
+    public static final long SECONDS_PER_DAY_LONG = 86400l;
+    public static final int SECONDS_PER_HOUR = 3600;
+    public static final long SECONDS_PER_HOUR_LONG = 3600l;
+
+    public static final int SECONDS_PER_MINUTE = 60;
+    public static final long SECONDS_PER_MINUTE_LONG = 60l;
 }

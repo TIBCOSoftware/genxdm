@@ -21,8 +21,6 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.genxdm.bridgekit.xs.ForeignAttributesImpl;
-import org.genxdm.bridgekit.xs.ForeignAttributesSink;
 import org.genxdm.bridgekit.xs.SchemaSupport;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.PrefixResolver;

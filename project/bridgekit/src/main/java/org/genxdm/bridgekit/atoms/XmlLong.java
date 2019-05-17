@@ -20,10 +20,9 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#long">long</a>.
  */
-public final class XmlLong extends XmlAbstractAtom
+public final class XmlLong 
+    extends XmlAbstractAtom
 {
-    private final long longValue;
-
     public XmlLong(final long longValue)
     {
         this.longValue = longValue;
@@ -62,4 +61,6 @@ public final class XmlLong extends XmlAbstractAtom
     {
         return false;
     }
+
+    private final long longValue;
 }

@@ -20,10 +20,9 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#int">int</a>.
  */
-public final class XmlInt extends XmlAbstractAtom
+public final class XmlInt 
+    extends XmlAbstractAtom
 {
-    private final int intValue;
-
     public XmlInt(final int intValue)
     {
         this.intValue = intValue;
@@ -65,4 +64,6 @@ public final class XmlInt extends XmlAbstractAtom
     {
         return false;
     }
+
+    private final int intValue;
 }

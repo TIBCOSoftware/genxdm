@@ -21,10 +21,9 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#language">language</a>.
  */
-public final class XmlLanguage extends XmlAbstractAtom
+public final class XmlLanguage
+    extends XmlAbstractAtom
 {
-    private final String value;
-
     public XmlLanguage(final String value)
     {
         this.value = PreCondition.assertArgumentNotNull(value, "value");
@@ -63,4 +62,6 @@ public final class XmlLanguage extends XmlAbstractAtom
     {
         return false;
     }
+
+    private final String value;
 }

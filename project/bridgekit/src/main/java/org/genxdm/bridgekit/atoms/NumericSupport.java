@@ -22,19 +22,6 @@ import javax.xml.XMLConstants;
 
 public final class NumericSupport
 {
-    private static final BigDecimal DECIMAL_ONE = new BigDecimal(BigInteger.ONE);
-    private static final BigDecimal DECIMAL_TEN = BigDecimal.valueOf(10);
-    private static final BigDecimal DECIMAL_ZERO = new BigDecimal(BigInteger.ZERO);
-    private static final double DOUBLE_LOWER_LIMIT = Double.parseDouble("0.000001");
-    private static final double DOUBLE_UPPER_LIMIT = Double.parseDouble("1000000");
-    private static final double FLOAT_LOWER_LIMIT = Float.parseFloat("0.000001");
-    private static final double FLOAT_UPPER_LIMIT = Float.parseFloat("1000000");
-    private static final String LEGACY_NEGATIVE_INFINITY_LITERAL = "-Infinity";
-    private static final String LEGACY_POSITIVE_INFINITY_LITERAL = "Infinity";
-    private static final String MODERN_NEGATIVE_INFINITY_LITERAL = "-INF";
-    private static final String MODERN_POSITIVE_INFINITY_LITERAL = "INF";
-    private static final String NAN_LITERAL = "NaN";
-
     /**
      * Removes leading zeros (even when there is a minus sign). <br/>
      * Behavior is undefined for input containing '+', '.', and 'E'.
@@ -49,11 +36,9 @@ public final class NumericSupport
             s = s.substring(1);
         }
         else
-        {
             negative = false;
-        }
 
-        while (s.length() > 1 && s.charAt(0) == '0')
+        while ((s.length() > 1) && (s.charAt(0) == '0'))
         {
             s = s.substring(1);
         }
@@ -77,9 +62,7 @@ public final class NumericSupport
         {
             final int indexOfDecimalPoint = s.indexOf('.');
             if (indexOfDecimalPoint < 0)
-            {
                 return compressIntegerNumberString(s);
-            }
             else
             {
                 while (s.charAt(s.length() - 1) == '0')
@@ -88,20 +71,12 @@ public final class NumericSupport
                 }
 
                 if (s.charAt(s.length() - 1) == '.')
-                {
                     return compressIntegerNumberString(s.substring(0, s.length() - 1));
-                }
-                else
-                {
-                    return s;
-                }
+                return s;
             }
         }
-        else
-        {
-            // Zero-length string is just returned.
-            return s;
-        }
+        // Zero-length string is just returned.
+        return s;
     }
 
     /**
@@ -119,9 +94,7 @@ public final class NumericSupport
         {
             int indexOfE = s.indexOf('E');
             if (indexOfE < 0)
-            {
                 return compressNonScientificNumberString(s);
-            }
             else
             {
                 final int exp = parseExponent(s.substring(indexOfE + 1));
@@ -153,59 +126,42 @@ public final class NumericSupport
                     digitsR = 0;
                 }
 
-                if (exp < 0 && (-exp >= digitsL))
+                if ((exp < 0) && (-exp >= digitsL))
                 {
                     buffer.append("0.");
 
                     if (-exp > digitsL)
-                    {
                         buffer.append(pad(-exp - digitsL, '0'));
-                    }
                 }
 
                 final int endDigitsL = digitsL;
 
                 if ((exp < 0) && (-exp < digitsL))
-                {
                     buffer.append(s.substring(0, endDigitsL + exp)).append(".").append(s.substring(endDigitsL + exp, endDigitsL));
-                }
                 else
-                {
                     buffer.append(s.substring(0, endDigitsL));
-                }
 
                 if (exp == 0)
-                {
                     buffer.append(".");
-                }
 
                 if (digitsR > 0)
                 {
                     final int beginDigitsR = digitsL + 1;
 
                     if ((exp > 0) && (exp < digitsR))
-                    {
                         buffer.append(s.substring(beginDigitsR, beginDigitsR + exp)).append(".").append(s.substring(beginDigitsR + exp, indexOfE));
-                    }
                     else
-                    {
                         buffer.append(s.substring(beginDigitsR, indexOfE));
-                    }
                 }
 
                 if (exp > digitsR)
-                {
                     buffer.append(pad(exp - digitsR, '0'));
-                }
 
                 return compressNonScientificNumberString(buffer.toString());
             }
         }
-        else
-        {
-            // Zero-length string is just returned.
-            return s;
-        }
+        // Zero-length string is just returned.
+        return s;
     }
 
     /**
@@ -239,9 +195,7 @@ public final class NumericSupport
         final int dp = strval.indexOf('.');
 
         if (dp < 0)
-        {
             return (new StringBuilder(strval)).append(".0").toString();
-        }
         else
         {
             final int lbound = dp + 1;
@@ -270,21 +224,13 @@ public final class NumericSupport
     public static String formatDoubleC14N(final double dblval)
     {
         if (dblval == Double.POSITIVE_INFINITY)
-        {
             return MODERN_POSITIVE_INFINITY_LITERAL;
-        }
         else if (dblval == Double.NEGATIVE_INFINITY)
-        {
             return MODERN_NEGATIVE_INFINITY_LITERAL;
-        }
         else if (Double.isNaN(dblval))
-        {
             return NAN_LITERAL;
-        }
         else if (dblval == 0.0)
-        {
             return "0.0E0";
-        }
         else
         {
             String s = Double.toString(dblval);
@@ -297,9 +243,7 @@ public final class NumericSupport
                 s = s.substring(1);
             }
             else
-            {
                 negative = false;
-            }
 
             BigDecimal mantissa;
             int exponent;
@@ -335,9 +279,7 @@ public final class NumericSupport
             final StringBuilder buffer = new StringBuilder();
 
             if (negative)
-            {
                 buffer.append('-');
-            }
 
             buffer.append(formatDecimalC14N(mantissa));
 
@@ -353,75 +295,46 @@ public final class NumericSupport
     public static String formatDoubleXPath10(final double number)
     {
         if (Double.isNaN(number))
-        {
             return NAN_LITERAL;
-        }
         else if (Double.isInfinite(number))
-        {
             return (number > 0) ? LEGACY_POSITIVE_INFINITY_LITERAL : LEGACY_NEGATIVE_INFINITY_LITERAL;
-        }
         else
         {
             final int iVal = (int)number;
             if (number == iVal)
             {
-                if (0 == iVal)
+                if (iVal == 0)
                 {
                     if (new Double(number).compareTo(0.0d) < 0)
-                    {
                         return "-0";
-                    }
-                    else
-                    {
-                        return "0";
-                    }
+                    return "0";
                 }
-                else
-                {
-                    return Integer.toString(iVal);
-                }
+                return Integer.toString(iVal);
             }
-            else
-            {
-                return NumericSupport.compressNumberString(Double.toString(number));
-            }
+            return NumericSupport.compressNumberString(Double.toString(number));
         }
     }
 
     public static String formatDoubleXQuery10(final double number)
     {
         if (Double.isNaN(number))
-        {
             return NAN_LITERAL;
-        }
         else if (Double.isInfinite(number))
-        {
             return (number > 0) ? MODERN_POSITIVE_INFINITY_LITERAL : MODERN_NEGATIVE_INFINITY_LITERAL;
-        }
         else
         {
             if (0.0d == number)
             {
                 if (new Double(number).compareTo(0.0d) < 0)
-                {
                     return "-0";
-                }
-                else
-                {
-                    return "0";
-                }
+                return "0";
             }
             else
             {
                 final double abs = Math.abs(number);
-                if (abs >= DOUBLE_LOWER_LIMIT && abs < DOUBLE_UPPER_LIMIT)
-                {
+                if ((abs >= DOUBLE_LOWER_LIMIT) && (abs < DOUBLE_UPPER_LIMIT))
                     return NumericSupport.formatDoubleXPath10(number);
-                }
-                else
-                {
-                    return NumericSupport.formatDoubleC14N(number);
-                }
+                return NumericSupport.formatDoubleC14N(number);
             }
         }
     }
@@ -429,21 +342,13 @@ public final class NumericSupport
     public static String formatFloatC14N(final float fltval)
     {
         if (fltval == Float.POSITIVE_INFINITY)
-        {
             return MODERN_POSITIVE_INFINITY_LITERAL;
-        }
         else if (fltval == Float.NEGATIVE_INFINITY)
-        {
             return MODERN_NEGATIVE_INFINITY_LITERAL;
-        }
         else if (Float.isNaN(fltval))
-        {
             return NAN_LITERAL;
-        }
         else if (fltval == 0.0)
-        {
             return "0.0E0";
-        }
         else
         {
             String s = Float.toString(fltval);
@@ -494,9 +399,7 @@ public final class NumericSupport
             final StringBuilder buffer = new StringBuilder();
 
             if (negative)
-            {
                 buffer.append('-');
-            }
 
             buffer.append(formatDecimalC14N(mantissa));
 
@@ -513,75 +416,46 @@ public final class NumericSupport
     public static String formatFloatXPath10(final float number)
     {
         if (Float.isNaN(number))
-        {
             return NAN_LITERAL;
-        }
         else if (Float.isInfinite(number))
-        {
             return (number > 0) ? LEGACY_POSITIVE_INFINITY_LITERAL : LEGACY_NEGATIVE_INFINITY_LITERAL;
-        }
         else
         {
             final int iVal = (int)number;
             if (number == iVal)
             {
-                if (0 == iVal)
+                if (iVal == 0)
                 {
                     if (new Float(number).compareTo(0.0f) < 0)
-                    {
                         return "-0";
-                    }
-                    else
-                    {
-                        return "0";
-                    }
+                    return "0";
                 }
-                else
-                {
-                    return Integer.toString(iVal);
-                }
+                return Integer.toString(iVal);
             }
-            else
-            {
-                return NumericSupport.compressNumberString(Float.toString(number));
-            }
+            return NumericSupport.compressNumberString(Float.toString(number));
         }
     }
 
     public static String formatFloatXQuery10(final float number)
     {
         if (Float.isNaN(number))
-        {
             return NAN_LITERAL;
-        }
         else if (Float.isInfinite(number))
-        {
             return (number > 0) ? MODERN_POSITIVE_INFINITY_LITERAL : MODERN_NEGATIVE_INFINITY_LITERAL;
-        }
         else
         {
             if (0.0f == number)
             {
                 if (new Float(number).compareTo(0.0f) < 0)
-                {
                     return "-0";
-                }
-                else
-                {
-                    return "0";
-                }
+                return "0";
             }
             else
             {
                 final float abs = Math.abs(number);
-                if (abs >= FLOAT_LOWER_LIMIT && abs < FLOAT_UPPER_LIMIT)
-                {
+                if ((abs >= FLOAT_LOWER_LIMIT) && abs < (FLOAT_UPPER_LIMIT))
                     return NumericSupport.formatFloatXPath10(number);
-                }
-                else
-                {
-                    return NumericSupport.formatFloatC14N(number);
-                }
+                return NumericSupport.formatFloatC14N(number);
             }
         }
     }
@@ -600,9 +474,7 @@ public final class NumericSupport
     private static char[] pad(final int n, final char ch) throws IllegalArgumentException
     {
         if (n <= 0)
-        {
             throw new IllegalArgumentException();
-        }
         else
         {
             final char[] buf = new char[n];
@@ -622,13 +494,8 @@ public final class NumericSupport
         // e.g. 1.234E+9
 
         if (exponentString.startsWith("+"))
-        {
             return Integer.parseInt(exponentString.substring(1));
-        }
-        else
-        {
-            return Integer.parseInt(exponentString);
-        }
+        return Integer.parseInt(exponentString);
     }
 
     /**
@@ -655,20 +522,27 @@ public final class NumericSupport
             {
                 final char first = collapsed.charAt(1);
 
-                if (first == '-' || first == '+')
-                {
+                if ((first == '-') || (first == '+'))
                     throw new NumberFormatException(strval);
-                }
-                if (sign == '+' && first >= '0' && first <= '9')
-                {
+                if ((sign == '+') && (first >= '0') && (first <= '9'))
                     return collapsed.substring(1);
-                }
             }
         }
-        else if (collapsedLength == 0 || collapsed.charAt(0) > '9' || collapsed.charAt(0) < '0')
-        {
+        else if ((collapsedLength == 0) || (collapsed.charAt(0) > '9') || (collapsed.charAt(0) < '0'))
             throw new NumberFormatException(strval);
-        }
         return collapsed;
     }
+
+    private static final BigDecimal DECIMAL_ONE = new BigDecimal(BigInteger.ONE);
+    private static final BigDecimal DECIMAL_TEN = BigDecimal.valueOf(10);
+    private static final BigDecimal DECIMAL_ZERO = new BigDecimal(BigInteger.ZERO);
+    private static final double DOUBLE_LOWER_LIMIT = Double.parseDouble("0.000001");
+    private static final double DOUBLE_UPPER_LIMIT = Double.parseDouble("1000000");
+    private static final double FLOAT_LOWER_LIMIT = Float.parseFloat("0.000001");
+    private static final double FLOAT_UPPER_LIMIT = Float.parseFloat("1000000");
+    private static final String LEGACY_NEGATIVE_INFINITY_LITERAL = "-Infinity";
+    private static final String LEGACY_POSITIVE_INFINITY_LITERAL = "Infinity";
+    private static final String MODERN_NEGATIVE_INFINITY_LITERAL = "-INF";
+    private static final String MODERN_POSITIVE_INFINITY_LITERAL = "INF";
+    private static final String NAN_LITERAL = "NaN";
 }

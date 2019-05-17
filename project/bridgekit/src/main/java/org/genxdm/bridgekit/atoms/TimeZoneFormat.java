@@ -17,10 +17,6 @@ package org.genxdm.bridgekit.atoms;
 
 public final class TimeZoneFormat
 {
-    private static final int TIMEZONE_LENGTH = 6;
-    private static final int SECONDS_PER_MINUTE = 60;
-    private static final int MINUTES_PER_HOUR = 60;
-
     /**
      * Returns a timezone string with the format Z|(+|-)HH:MM
      * 
@@ -92,9 +88,7 @@ public final class TimeZoneFormat
                 hours *= (-1);
             }
             else
-            {
-                throw new RuntimeException();
-            }
+                throw new RuntimeException(); // ugh!
         }
         else if (hours == 0)
         {
@@ -109,17 +103,13 @@ public final class TimeZoneFormat
             else if (minutes == 0)
             {
                 if (zuluEnabled)
-                {
                     return "Z";
-                }
                 else
                 {
                     buffer = new StringBuilder(TIMEZONE_LENGTH);
 
                     if (plusEnabled)
-                    {
                         buffer.append('+');
-                    }
 
                     minutes *= (-1);
                 }
@@ -129,25 +119,19 @@ public final class TimeZoneFormat
                 buffer = new StringBuilder(TIMEZONE_LENGTH);
 
                 if (plusEnabled)
-                {
                     buffer.append('+');
-                }
             }
         }
         else
         {
             if (minutes < 0)
-            {
-                throw new RuntimeException();
-            }
+                throw new RuntimeException(); // better exception please
             else
             {
                 buffer = new StringBuilder(TIMEZONE_LENGTH);
 
                 if (plusEnabled)
-                {
                     buffer.append('+');
-                }
             }
         }
 
@@ -166,12 +150,12 @@ public final class TimeZoneFormat
             buffer.append(posValue);
         }
         else if (posValue < 100)
-        {
             buffer.append(posValue);
-        }
         else
-        {
-            throw new RuntimeException();
-        }
+            throw new RuntimeException(); // crappy exception
     }
+
+    private static final int TIMEZONE_LENGTH = 6;
+    private static final int SECONDS_PER_MINUTE = 60;
+    private static final int MINUTES_PER_HOUR = 60;
 }

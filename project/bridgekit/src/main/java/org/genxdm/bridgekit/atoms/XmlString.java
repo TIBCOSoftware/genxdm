@@ -21,7 +21,8 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#string">string</a>.
  */
-public final class XmlString extends XmlAbstractAtom
+public final class XmlString 
+    extends XmlAbstractAtom
 {
     public XmlString(final String value)
     {

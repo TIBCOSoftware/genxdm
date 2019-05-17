@@ -20,10 +20,9 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#short">short</a>.
  */
-public final class XmlShort extends XmlAbstractAtom
+public final class XmlShort 
+    extends XmlAbstractAtom
 {
-    private final short shortValue;
-
     public XmlShort(final short value)
     {
         this.shortValue = value;
@@ -62,4 +61,6 @@ public final class XmlShort extends XmlAbstractAtom
     {
         return false;
     }
+
+    private final short shortValue;
 }

@@ -142,7 +142,6 @@ import org.genxdm.xs.facets.RegExPattern;
 import org.genxdm.xs.facets.SchemaRegExCompiler;
 import org.genxdm.xs.types.AtomicType;
 import org.genxdm.xs.types.ComplexType;
-import org.genxdm.xs.types.ComplexUrType;
 import org.genxdm.xs.types.ContentType;
 import org.genxdm.xs.types.ListSimpleType;
 import org.genxdm.xs.types.NativeType;
@@ -150,7 +149,6 @@ import org.genxdm.xs.types.SimpleType;
 import org.genxdm.xs.types.SimpleUrType;
 import org.genxdm.xs.types.Type;
 import org.genxdm.xs.types.UnionSimpleType;
-
 
 /**
  * The main purpose of this conversion class is to build the schema from the cache. <br/>

@@ -20,14 +20,14 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#yearMonthDuration">yearMonthDuration</a>.
  */
-public final class XmlYearMonthDuration extends XmlAbstractAtom implements Comparable<XmlYearMonthDuration>
+public final class XmlYearMonthDuration 
+    extends XmlAbstractAtom 
+    implements Comparable<XmlYearMonthDuration>
 {
     public static XmlYearMonthDuration valueOf(final int months)
     {
         return new XmlYearMonthDuration(months);
     }
-
-    private final int months;
 
     private XmlYearMonthDuration(final int months)
     {
@@ -72,4 +72,6 @@ public final class XmlYearMonthDuration extends XmlAbstractAtom implements Compa
     {
         return false;
     }
+
+    private final int months;
 }

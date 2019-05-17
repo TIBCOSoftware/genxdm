@@ -21,10 +21,9 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#untypedAtomic">untypedAtomic</a>.
  */
-public final class XmlUntypedAtomic extends XmlAbstractAtom
+public final class XmlUntypedAtomic 
+    extends XmlAbstractAtom
 {
-    private final String value;
-
     public XmlUntypedAtomic(final String strval)
     {
         this.value = PreCondition.assertArgumentNotNull(strval, "strval");
@@ -58,4 +57,6 @@ public final class XmlUntypedAtomic extends XmlAbstractAtom
     {
         return value.trim().length() == 0;
     }
+
+    private final String value;
 }

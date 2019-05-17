@@ -21,12 +21,9 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#NOTATION">NOTATION</a>.
  */
-public final class XmlNOTATION extends XmlAbstractAtom
+public final class XmlNOTATION 
+    extends XmlAbstractAtom
 {
-    private final String localName;
-    private final String namespaceURI;
-    private final String prefix;
-
     public XmlNOTATION(final String namespaceURI, final String localName, final String prefix)
     {
         this.namespaceURI = namespaceURI;
@@ -44,13 +41,8 @@ public final class XmlNOTATION extends XmlAbstractAtom
         PreCondition.assertArgumentNotNull(localName, "localName");
         PreCondition.assertArgumentNotNull(prefix, "prefix");
         if (prefix.length() > 0)
-        {
             return prefix.concat(":").concat(localName);
-        }
-        else
-        {
-            return localName;
-        }
+        return localName;
     }
 
     public String getLocalName()
@@ -77,4 +69,8 @@ public final class XmlNOTATION extends XmlAbstractAtom
     {
         return false;
     }
+
+    private final String localName;
+    private final String namespaceURI;
+    private final String prefix;
 }

@@ -22,8 +22,6 @@ import org.genxdm.xs.types.NativeType;
  */
 public final class XmlByte extends XmlAbstractAtom
 {
-    private final byte byteValue;
-
     public XmlByte(final byte byteValue)
     {
         this.byteValue = byteValue;
@@ -65,4 +63,6 @@ public final class XmlByte extends XmlAbstractAtom
     {
         return false;
     }
+
+    private final byte byteValue;
 }

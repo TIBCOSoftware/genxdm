@@ -23,10 +23,9 @@ import org.genxdm.xs.types.NativeType;
 /**
  * Corresponds to the W3C XML Schema <a href="http://www.w3.org/TR/xmlschema-2/#base64Binary">base64Binary</a>.
  */
-public final class XmlBase64Binary extends XmlAbstractAtom
+public final class XmlBase64Binary 
+    extends XmlAbstractAtom
 {
-    private final byte[] bytes;
-
     public XmlBase64Binary(final byte[] bytes)
     {
         this.bytes = PreCondition.assertArgumentNotNull(bytes, "bytes");
@@ -68,4 +67,6 @@ public final class XmlBase64Binary extends XmlAbstractAtom
     {
         return false;
     }
+
+    private final byte[] bytes;
 }

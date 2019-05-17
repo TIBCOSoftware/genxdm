@@ -3,7 +3,6 @@ package org.genxdm.bridgekit.atoms;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import org.genxdm.exceptions.AtomCastException;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.types.AtomBridge;
 
@@ -22,7 +21,7 @@ public final class XsiNil
                     if (bridge.unwrapAtom(value) == bridge.getBooleanTrue())
                         return true;
                 }
-                catch (AtomCastException ace)
+                catch (Exception e) // change: catch more than just ACE; *don't* throw
                 {
                     // fall through to return false.
                     // xsi:nil should be typed and should have a boolean value.

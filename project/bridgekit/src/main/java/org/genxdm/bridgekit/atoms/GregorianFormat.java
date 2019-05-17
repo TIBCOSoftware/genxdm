@@ -30,21 +30,6 @@ final class GregorianFormat
     public static final GregorianFormat date = new GregorianFormat("date", true, true, true, false);
     public static final GregorianFormat time = new GregorianFormat("time", false, false, false, true);
 
-    private static final String YEAR_MISSING = "--";
-    private static final String MONTH_MISSING = "-";
-    private static final String DATE_SEPARATOR = "-";
-    private static final String TIME_SEPARATOR = ":";
-    private static final String DATETIME_SEPARATOR = "T";
-    private static final int MIN_YEAR_DIGITS = 4;
-    private static final int MONTH_DIGITS = 2;
-    private static final int DAYOFMONTH_DIGITS = 2;
-
-    private final String m_name;
-    private final boolean m_hasYear;
-    private final boolean m_hasMonth;
-    private final boolean m_hasDayOfMonth;
-    private final boolean m_hasTime;
-
     private GregorianFormat(String name, boolean hasYear, boolean hasMonth, boolean hasDayOfMonth, boolean hasTime)
     {
         m_name = name;
@@ -168,12 +153,10 @@ final class GregorianFormat
 
         appendDigits(integralSec, 2, buffer);
 
-        if ((null != fractional) && (fractional.signum() > 0))
+        if ((fractional != null) && (fractional.signum() > 0))
         {
             final String decimalStr = fractional.toPlainString();
-
             final int decimalPoint = decimalStr.indexOf('.');
-
             String decimals = decimalStr.substring(decimalPoint);
 
             // The decimals part must not end with a zero.
@@ -184,7 +167,6 @@ final class GregorianFormat
 
             buffer.append(decimals);
         }
-
         return buffer;
     }
 
@@ -197,9 +179,7 @@ final class GregorianFormat
             strval = Integer.toString(-value);
         }
         else
-        {
             strval = Integer.toString(value);
-        }
         int padding = minDigits - strval.length();
         while (padding > 0)
         {
@@ -209,4 +189,19 @@ final class GregorianFormat
         sb.append(strval);
         return sb;
     }
+
+    private static final String YEAR_MISSING = "--";
+    private static final String MONTH_MISSING = "-";
+    private static final String DATE_SEPARATOR = "-";
+    private static final String TIME_SEPARATOR = ":";
+    private static final String DATETIME_SEPARATOR = "T";
+    private static final int MIN_YEAR_DIGITS = 4;
+    private static final int MONTH_DIGITS = 2;
+    private static final int DAYOFMONTH_DIGITS = 2;
+
+    private final String m_name;
+    private final boolean m_hasYear;
+    private final boolean m_hasMonth;
+    private final boolean m_hasDayOfMonth;
+    private final boolean m_hasTime;
 }

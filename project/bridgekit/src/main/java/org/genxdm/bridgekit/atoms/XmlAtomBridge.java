@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 
 import org.genxdm.bridgekit.misc.UnaryIterable;
 import org.genxdm.exceptions.AtomCastException;
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.names.NameSource;
 import org.genxdm.names.PrefixResolver;
@@ -42,12 +43,11 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     public XmlAtomBridge(final SchemaComponentCache schema)
     {
         this.schema = PreCondition.assertNotNull(schema, "schema");
-        this.nameBridge = NameSource.SINGLETON;
     }
 
     public void setProcessingContext(final SchemaComponentCache schema)
     {
-        this.schema = PreCondition.assertArgumentNotNull(schema, "schema");
+        this.schema = PreCondition.assertNotNull(schema, "schema");
     }
 
     @Override
@@ -66,7 +66,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     
     @Override
     public XmlAtom unwrapAtom(final Iterable<? extends XmlAtom> sequence)
-        throws AtomCastException
+        throws AtomCastException // note: AtomCastException is completely wrong, unless we add a constructor (using FORG0005, maybe)
     {
         Iterator<? extends XmlAtom> it = sequence.iterator();
         if (it.hasNext())
@@ -75,9 +75,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             if (!it.hasNext())
                 return first;
         }
-        // TODO: throw an atom cast exception if we have zero or >1 atoms.
-        //throw new AtomCastException();
-        throw new RuntimeException("invalid unwrap");
+        throw new GenXDMException("AtomBridge.unwrapAtom() called with a sequence containing zero or more than one item.");
     }
 
     @Override
@@ -85,8 +83,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     {
         if (foreignAtom instanceof XmlForeignAtom)
             return ((XmlForeignAtom)foreignAtom).baseAtom;
-        PreCondition.assertArgumentNotNull(foreignAtom, "foreignAtom");
-        throw new AssertionError("baseAtomFromForeignAtom(" + foreignAtom.getClass() + ")");
+        PreCondition.assertNotNull(foreignAtom, "foreignAtom");
+        throw new GenXDMException("AtomBridge.upCast(" + foreignAtom.getClass() + ") has no base atom.");
     }
 
     @Override
@@ -98,15 +96,15 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     @Override
     public XmlAtom castAs(final XmlAtom sourceAtom, final NativeType targetType, final CastingContext castingContext) throws AtomCastException
     {
-        PreCondition.assertArgumentNotNull(castingContext, "castingContext");
+        PreCondition.assertNotNull(castingContext, "castingContext");
         return CastingSupport.castAs(getNativeAtom(sourceAtom), targetType, castingContext, schema.getComponentProvider(), this);
     }
 
     @Override
     public XmlAtom compile(final String sourceValue, final NativeType targetType) throws AtomCastException
     {
-        PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
-        PreCondition.assertArgumentNotNull(targetType, "targetType");
+        PreCondition.assertNotNull(sourceValue, "sourceValue");
+        PreCondition.assertNotNull(targetType, "targetType");
         final Type type = schema.getComponentProvider().getTypeDefinition(targetType);
         if (type != null)
         {
@@ -123,17 +121,16 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
                         return null;
                     else
                         // Atomic type should not be yielding multiple atoms.
-                        throw new AssertionError("Non-list type results in multiple atoms");
+                        throw new AtomCastException(sourceValue, targetType.toQName(), FORG0003);
                 }
                 catch (final DatatypeException e)
                 {
                     throw new AtomCastException(sourceValue, e.getType(), FORG0001, e);
                 }
             }
-            else
-                throw new IllegalArgumentException(targetType + " dataType is not an atomic type.");
+            throw new AtomCastException(sourceValue, targetType.toQName(), FORG0006);
         }
-        throw new IllegalArgumentException(targetType + " dataType could not be found in the processing context.");
+        throw new AtomCastException(sourceValue, targetType.toQName(), FORG0006);
     }
 
     @Override
@@ -143,8 +140,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
         if ( (resolver == null) || (targetType != NativeType.QNAME) )
             return compile(sourceValue, targetType);
 
-        PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
-        PreCondition.assertArgumentNotNull(targetType, "targetType");
+        PreCondition.assertNotNull(sourceValue, "sourceValue");
+        PreCondition.assertNotNull(targetType, "targetType");
         final Type type = schema.getComponentProvider().getTypeDefinition(targetType);
         if (type != null)
         {
@@ -168,10 +165,9 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
                     throw new AtomCastException(sourceValue, e.getType(), FORG0001, e);
                 }
             }
-            else
-                throw new IllegalArgumentException(targetType + " dataType is not an atomic type.");
+            throw new AtomCastException(sourceValue, targetType.toQName(), FORG0006);
         }
-        throw new IllegalArgumentException(targetType + " dataType could not be found in the processing context.");
+        throw new AtomCastException(sourceValue, targetType.toQName(), FORG0006);
     }
 
     @Override
@@ -283,13 +279,9 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             case UNSIGNED_INT:
             case UNSIGNED_SHORT:
             case UNSIGNED_BYTE:
-            {
                 return XmlIntegerDerived.valueOf(value, nativeType);
-            }
             default:
-            {
                 throw new AssertionError(nativeType);
-            }
         }
     }
 
@@ -348,7 +340,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     @Override
     public XmlQName createQName(final String namespaceURI, final String localName, final String prefix)
     {
-        PreCondition.assertArgumentNotNull(prefix, "prefix");
+        PreCondition.assertNotNull(prefix, "prefix");
         return new XmlQName(namespaceURI, localName, prefix);
     }
 
@@ -371,7 +363,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     {
         if (initialValue != null)
         {
-            PreCondition.assertArgumentNotNull(nativeType, "nativeType");
+            PreCondition.assertNotNull(nativeType, "nativeType");
             final String normalized = normalize(initialValue, nativeType);
             switch (nativeType)
             {
@@ -451,12 +443,26 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlBase64Binary)atom).getByteArrayValue();
         else if (isForeignAtom(atom))
             return getBase64Binary(getNativeAtom(atom));
-        else
+        else if ( (atom instanceof XmlUntypedAtomic) || (atom instanceof XmlString) )
         {
-            PreCondition.assertNotNull(atom, "atom");
-            PreCondition.assertTrue(atom instanceof XmlBase64Binary, "atom instance of xs:base64Binary");
-            throw new AssertionError(atom.getClass());
-        }
+            // try harder for untypedatomic and string, because we have other
+            // examples of people doing that. note that this has a deleterious
+            // impact on performance, and violates the contract of AtomBridge
+            final String canonical = atom.getC14NForm();
+            // don't check length, because if it has whitespace, it prolly won't match
+            try
+            {
+               return Base64BinarySupport.decodeBase64(canonical);
+            }
+            catch (IllegalArgumentException iae)
+            {
+                // amusingly enough, some callers are catching ace, though it can't be thrown from here
+                //throw new AtomCastException(canonical, NativeType.BASE64_BINARY.toQName(), FORG0001);
+            }
+        } // just fall through, especially now that we're trying harder;
+        // if our try-harder fails, give the expected results.
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getBase64Binary("+atom.getClass().getName()+"): argument must be xs:base64Binary");
     }
 
     @Override
@@ -466,12 +472,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlBoolean)atom).getBooleanValue();
         else if (isForeignAtom(atom))
             return getBoolean(getNativeAtom(atom));
-        else
-        {
-            PreCondition.assertNotNull(atom, "atom");
-            PreCondition.assertTrue(atom instanceof XmlBoolean, "atom instance of xs:boolean");
-            throw new AssertionError(atom.getClass());
-        }
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getBoolean("+atom.getClass().getName()+"): argument must be xs:boolean");
     }
 
     @Override
@@ -493,11 +495,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlByte)atom).getByteValue();
         else if (isForeignAtom(atom))
             return getByte(getNativeAtom(atom));
-        else
-        {
-            PreCondition.assertArgumentNotNull(atom, "atom");
-            throw new AssertionError("getByte(" + atom.getClass() + ")");
-        }
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getByte(" + atom.getClass().getName() + "): argument must be xs:byte");
     }
 
     @Override
@@ -526,7 +525,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
                 return sb.toString();
             }
         }
-        else if (size < 0)
+        else if (size < 0) // how do you get a negative value? this is a no-op, right?
             throw new IllegalArgumentException("atoms.size() must be greater than or equal to zero.");
         return "";
     }
@@ -534,7 +533,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     @Override
     public QName getDataType(final XmlAtom atom)
     {
-        return nameBridge.nativeType(atom.getNativeType());
+        return NameSource.SINGLETON.nativeType(atom.getNativeType());
     }
 
     @Override
@@ -544,9 +543,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlGregorian)gregorian).getDayOfMonth();
         else if (isForeignAtom(gregorian))
             return getDayOfMonth(getNativeAtom(gregorian));
-        else
-            PreCondition.assertArgumentNotNull(gregorian, "gregorian");
-            throw new AssertionError("getDayOfMonth(" + gregorian.getClass().getName() + ")");
+        PreCondition.assertNotNull(gregorian, "gregorian");
+        throw new AssertionError("AtomBridge.getDayOfMonth(" + gregorian.getClass().getName() + "): argument must be an xs date-related type");
     }
 
     @Override
@@ -568,11 +566,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return new BigDecimal(((XmlIntegerDerived)atom).integerValue());
         else if (isForeignAtom(atom))
             return getDecimal(getNativeAtom(atom));
-        else
-        {
-            PreCondition.assertArgumentNotNull(atom, "atom");
-            throw new AssertionError("getDecimal(" + atom.getClass() + ")");
-        }
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getDecimal(" + atom.getClass().getName() + "): argument must be an xs numeric type");
     }
 
     @Override
@@ -582,11 +577,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlDouble)atom).getDoubleValue();
         else if (isForeignAtom(atom))
             return getDouble(getNativeAtom(atom));
-        else
-        {
-            PreCondition.assertArgumentNotNull(atom, "atom");
-            throw new AssertionError("TODO: getDouble(" + atom.getClass() + ")");
-        }
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getDouble(" + atom.getClass().getName() + "): argument must be xs:double");
     }
 
     @Override
@@ -598,12 +590,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlDuration)duration).getTotalMonthsValue();
         else if (isForeignAtom(duration))
             return getDurationTotalMonths(getNativeAtom(duration));
-        else
-        {
-            PreCondition.assertNotNull(duration, "duration");
-            PreCondition.assertTrue(duration instanceof XmlYearMonthDuration, "atom instance of xs:yearMonthDuration");
-            throw new AssertionError(duration.getClass());
-        }
+        PreCondition.assertNotNull(duration, "duration");
+        throw new AssertionError("Atombridge.getDurationTotalMonths("+duration.getClass().getName()+"): argument must be xs:yearMonthDuration");
     }
 
     @Override
@@ -615,12 +603,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlDuration)duration).getTotalSecondsValue();
         else if (isForeignAtom(duration))
             return getDurationTotalSeconds(getNativeAtom(duration));
-        else
-        {
-            PreCondition.assertNotNull(duration, "duration");
-            PreCondition.assertTrue(false, "atom instance of xs:duration");
-            throw new AssertionError(duration.getClass());
-        }
+        PreCondition.assertNotNull(duration, "duration");
+        throw new AssertionError("AtomBridge.getDurationTotalSeconds("+duration.getClass().getName()+"): argument must be xs:duration");
     }
 
     @Override
@@ -630,12 +614,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlFloat)atom).getFloatValue();
         else if (isForeignAtom(atom))
             return getFloat(getNativeAtom(atom));
-        else
-        {
-            PreCondition.assertNotNull(atom, "atom");
-            PreCondition.assertTrue(atom instanceof XmlFloat, "atom instance of xs:float");
-            throw new AssertionError(atom.getClass());
-        }
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getFloat("+atom.getClass().getName()+"): argument must be xs:float");
     }
 
     @Override
@@ -645,11 +625,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlGregorian)gregorian).getFractionalSecond();
         else if (isForeignAtom(gregorian))
             return getFractionalSecondPart(getNativeAtom(gregorian));
-        else
-        {
-            PreCondition.assertArgumentNotNull(gregorian, "gregorian");
-            throw new AssertionError("getFractionalSecond(" + gregorian.getClass().getName() + ")");
-        }
+        PreCondition.assertNotNull(gregorian, "gregorian");
+        throw new AssertionError("AtomBridge.getFractionalSecond(" + gregorian.getClass().getName() + "): argument must be an xs time-related type");
     }
 
     @Override
@@ -659,11 +636,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlGregorian)gregorian).getGmtOffset();
         else if (isForeignAtom(gregorian))
             return getGmtOffset(getNativeAtom(gregorian));
-        else
-        {
-            PreCondition.assertArgumentNotNull(gregorian, "gregorian");
-            throw new AssertionError("getGmtOffset(" + gregorian.getClass().getName() + ")");
-        }
+        PreCondition.assertNotNull(gregorian, "gregorian");
+        throw new AssertionError("AtomBridge.getGmtOffset(" + gregorian.getClass().getName() + "): argument must be an xs time-related type");
     }
 
     @Override
@@ -673,12 +647,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlHexBinary)atom).getByteArrayValue();
         else if (isForeignAtom(atom))
             return getHexBinary(getNativeAtom(atom));
-        else
-        {
-            PreCondition.assertNotNull(atom, "atom");
-            PreCondition.assertTrue(atom instanceof XmlHexBinary, "atom instance of xs:hexBinary");
-            throw new AssertionError(atom.getClass());
-        }
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getHexBinary("+atom.getClass().getName()+"): argument must be xs:hexBinary");
     }
 
     @Override
@@ -688,11 +658,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlGregorian)gregorian).getHourOfDay();
         else if (isForeignAtom(gregorian))
             return getHourOfDay(getNativeAtom(gregorian));
-        else
-        {
-            PreCondition.assertArgumentNotNull(gregorian, "gregorian");
-            throw new AssertionError("getHourOfDay(" + gregorian.getClass().getName() + ")");
-        }
+        PreCondition.assertNotNull(gregorian, "gregorian");
+        throw new AssertionError("AtomBridge.getHourOfDay(" + gregorian.getClass().getName() + "): argument must be an xs time-related type");
     }
 
     @Override
@@ -706,11 +673,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlByte)atom).getByteValue();
         else if (isForeignAtom(atom))
             return getInt(upCast(atom));
-        else
-        {
-            PreCondition.assertArgumentNotNull(atom, "atom");
-            throw new AssertionError("getInt(" + atom.getClass() + ")");
-        }
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getInt(" + atom.getClass().getName() + "): argument must be xs:int or derived");
     }
 
     @Override
@@ -730,11 +694,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlIntegerDerived)atom).integerValue();
         else if (atom instanceof XmlForeignAtom)
             return getInteger(((XmlForeignAtom)atom).baseAtom);
-        else
-        {
-            PreCondition.assertArgumentNotNull(atom, "atom");
-            throw new AssertionError("getInteger(" + atom.getClass() + ")");
-        }
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getInteger(" + atom.getClass().getName() + "): argument must be xs:integer or derived");
     }
 
     @Override
@@ -744,11 +705,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlGregorian)gregorian).getSecond();
         else if (isForeignAtom(gregorian))
             return getIntegralSecondPart(getNativeAtom(gregorian));
-        else
-        {
-            PreCondition.assertArgumentNotNull(gregorian, "gregorian");
-            throw new AssertionError("getSecond(" + gregorian.getClass().getName() + ")");
-        }
+        PreCondition.assertNotNull(gregorian, "gregorian");
+        throw new AssertionError("AtomBridge.getSecond(" + gregorian.getClass().getName() + "): argument must be an xs time-related type");
     }
 
     @Override
@@ -758,11 +716,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlQName)atom).getLocalName();
         else if (isForeignAtom(atom))
             return getLocalNameFromQName(getNativeAtom(atom));
-        else
-        {
-            PreCondition.assertArgumentNotNull(atom, "atom");
-            throw new AssertionError("getLocalNameFromQName(" + atom.getClass().getName() + ")");
-        }
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getLocalNameFromQName(" + atom.getClass().getName() + "): argument must be xs:qname");
     }
 
     @Override
@@ -778,14 +733,12 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlByte)atom).getByteValue();
         else if (isForeignAtom(atom))
             return getLong(upCast(atom));
+
+        if (atom != null)
+            throw new AssertionError("AtomBridge.getLong(" + atom.getClass().getName() + "): argument must be xs:long or derived");
         else
-        {
-            if (atom != null)
-                throw new AssertionError("getLong(" + atom.getClass().getName() + ")");
-            else
-                // Consistent with Unboxing.
-                throw new NullPointerException();
-        }
+            // Consistent with Unboxing. gah. maybe. sucks though -- aal
+            throw new NullPointerException();
     }
 
     @Override
@@ -795,11 +748,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlGregorian)gregorian).getMinute();
         else if (isForeignAtom(gregorian))
             return getMinute(getNativeAtom(gregorian));
-        else
-        {
-            PreCondition.assertArgumentNotNull(gregorian, "gregorian");
-            throw new AssertionError("getMinute(" + gregorian.getClass().getName() + ")");
-        }
+        PreCondition.assertNotNull(gregorian, "gregorian");
+        throw new AssertionError("AtomBridge.getMinute(" + gregorian.getClass().getName() + "): argument must be an xs time-related type");
     }
 
     @Override
@@ -809,11 +759,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlGregorian)gregorian).getMonth();
         else if (isForeignAtom(gregorian))
             return getMonth(getNativeAtom(gregorian));
-        else
-        {
-            PreCondition.assertArgumentNotNull(gregorian, "gregorian");
-            throw new AssertionError("getMonth(" + gregorian.getClass().getName() + ")");
-        }
+        PreCondition.assertNotNull(gregorian, "gregorian");
+        throw new AssertionError("AtomBridge.getMonth(" + gregorian.getClass().getName() + "): argument must be an xs date-related type");
     }
 
     @Override
@@ -823,11 +770,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlQName)atom).getNamespaceURI();
         else if (isForeignAtom(atom))
             return getNamespaceFromQName(getNativeAtom(atom));
-        else
-        {
-            PreCondition.assertArgumentNotNull(atom, "atom");
-            throw new AssertionError("getNamespaceFromQName(" + atom.getClass().getName() + ")");
-        }
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getNamespaceFromQName(" + atom.getClass().getName() + "): argument must be xs:qname");
     }
 
     @Override
@@ -854,11 +798,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
         }
         else if (isForeignAtom(atom))
             return getNotation(getNativeAtom(atom));
-        else
-        {
-            PreCondition.assertArgumentNotNull(atom, "atom");
-            throw new AssertionError("getNotation(" + atom.getClass().getName() + ")");
-        }
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getNotation(" + atom.getClass().getName() + "): argument must be xs:NOTATION");
     }
 
     @Override
@@ -868,11 +809,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlQName)atom).getPrefix();
         else if (isForeignAtom(atom))
             return getPrefixFromQName(getNativeAtom(atom));
-        else
-        {
-            PreCondition.assertArgumentNotNull(atom, "atom");
-            throw new AssertionError("getPrefixFromQName(" + atom.getClass().getName() + ")");
-        }
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getPrefixFromQName(" + atom.getClass().getName() + "): argument must be xs:qname");
     }
 
     @Override
@@ -885,11 +823,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
         }
         else if (isForeignAtom(atom))
             return getQName(getNativeAtom(atom));
-        else
-        {
-            PreCondition.assertArgumentNotNull(atom, "atom");
-            throw new AssertionError("getQName(" + atom.getClass().getName() + ")");
-        }
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getQName(" + atom.getClass().getName() + "): argument must be xs:qname");
     }
 
     @Override
@@ -911,11 +846,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlByte)atom).getByteValue();
         else if (isForeignAtom(atom))
             return getShort(getNativeAtom(atom));
-        else
-        {
-            PreCondition.assertArgumentNotNull(atom, "atom");
-            throw new AssertionError("getShort(" + atom.getClass().getName() + ")");
-        }
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getShort(" + atom.getClass().getName() + "): argument must be xs:short or derived");
     }
 
     @Override
@@ -943,11 +875,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return atom.getC14NForm();
         else if (isForeignAtom(atom))
             return getString(getNativeAtom(atom));
-        else
-        {
-            PreCondition.assertArgumentNotNull(atom, "atom");
-            throw new AssertionError("getString(" + atom.getClass().getName() + ")");
-        }
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getString(" + atom.getClass().getName() + "): argument must be xs:string or derived");
     }
 
     @Override
@@ -958,11 +887,11 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             final XmlIntegerDerived integer = (XmlIntegerDerived)atom;
             if (integer.getNativeType() == NativeType.UNSIGNED_BYTE)
                 return integer.shortValue();
-            throw new AssertionError(atom.getClass());
         }
         else if (isForeignAtom(atom))
             return getUnsignedByte(getNativeAtom(atom));
-        throw new AssertionError(atom.getClass());
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getUnsignedByte("+atom.getClass().getName()+"): argument must be xs:unsignedByte");
     }
 
     @Override
@@ -973,11 +902,11 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             final XmlIntegerDerived integer = (XmlIntegerDerived)atom;
             if (integer.getNativeType().isA(NativeType.UNSIGNED_INT))
                 return integer.longValue();
-            throw new AssertionError(atom.getClass());
         }
         else if (isForeignAtom(atom))
             return getUnsignedInt(getNativeAtom(atom));
-        throw new AssertionError(atom.getClass());
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getUnsignedInt("+atom.getClass().getName()+"): argument must be xs:unsignedInt");
     }
 
     @Override
@@ -988,11 +917,11 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             final XmlIntegerDerived integer = (XmlIntegerDerived)atom;
             if (integer.getNativeType().isA(NativeType.UNSIGNED_SHORT))
                 return integer.intValue();
-            throw new AssertionError(atom.getClass());
         }
         else if (isForeignAtom(atom))
             return getUnsignedShort(getNativeAtom(atom));
-        throw new AssertionError(atom.getClass());
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getUnsignedShort("+atom.getClass().getName()+"): argument must be xs:unsignedShort");
     }
 
     @Override
@@ -1002,11 +931,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlAnyURI)atom).getURI();
         else if (isForeignAtom(atom))
             return getURI(getNativeAtom(atom));
-        else
-        {
-            PreCondition.assertArgumentNotNull(atom, "atom");
-            throw new AssertionError("getURI(" + atom.getClass().getName() + ")");
-        }
+        PreCondition.assertNotNull(atom, "atom");
+        throw new AssertionError("AtomBridge.getURI(" + atom.getClass().getName() + "): argument must be xs:anyURI");
     }
 
     @Override
@@ -1042,11 +968,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlGregorian)gregorian).getYear();
         else if (isForeignAtom(gregorian))
             return getYear(getNativeAtom(gregorian));
-        else
-        {
-            PreCondition.assertArgumentNotNull(gregorian, "gregorian");
-            throw new AssertionError("getYear(" + gregorian.getClass().getName() + ")");
-        }
+        PreCondition.assertNotNull(gregorian, "gregorian");
+        throw new AssertionError("AtomBridge.getYear(" + gregorian.getClass().getName() + "): argument must be an xs date-related type");
     }
 
     @Override
@@ -1087,12 +1010,19 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
         return simpleType.normalize(initialValue);
     }
 
+    // shared at least with CastingSupport, maybe others in this package.
+    static final String NS_XQT_ERRS = "http://www.w3.org/2005/xqt-errors/";
+    static final String PFX_ERR = "err";
+    static final QName FORG0001 = new QName(NS_XQT_ERRS, "FORG0001", PFX_ERR); // invalid value for cast/constructor
+    static final QName FORG0003 = new QName(NS_XQT_ERRS, "FORG0003", PFX_ERR); // zero-or-one got more-than-one
+    static final QName FORG0004 = new QName(NS_XQT_ERRS, "FORG0004", PFX_ERR); // one-or-more got zero
+    static final QName FORG0005 = new QName(NS_XQT_ERRS, "FORG0005", PFX_ERR); // exactly-one got zero or more-than-one
+    static final QName FORG0006 = new QName(NS_XQT_ERRS, "FORG0006", PFX_ERR); // invalid argument type
+
     private static final int EPOCH_DAY = 1; // 1st
     private static final int EPOCH_MONTH = 1; // January
     private static final int EPOCH_YEAR = 1970;
-    private static final QName FORG0001 = new QName("http://www.w3.org/2005/xqt-errors/", "FORG0001", "err");
     private static final Iterable<XmlAtom> EMPTY_ATOM_SEQUENCE = new UnaryIterable<XmlAtom>(null);
-
-    private final NameSource nameBridge;
+    
     private SchemaComponentCache schema;
 }

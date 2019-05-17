@@ -21,6 +21,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.atoms.Base64BinarySupport;
 import org.genxdm.names.PrefixResolver;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.components.EnumerationDefinition;
@@ -138,7 +139,7 @@ public final class Base64BinaryType extends AbstractAtomType
         final String normalized = normalize(initialValue);
         try
         {
-            return atomBridge.wrapAtom(atomBridge.createBase64Binary(Base64Codec.decodeBase64(normalized)));
+            return atomBridge.wrapAtom(atomBridge.createBase64Binary(Base64BinarySupport.decodeBase64(normalized)));
         }
         catch (final RuntimeException e)
         {

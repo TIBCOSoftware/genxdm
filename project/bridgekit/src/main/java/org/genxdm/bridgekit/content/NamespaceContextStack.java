@@ -84,6 +84,17 @@ public class NamespaceContextStack
         return bindings;
     }
     
+    public String getNamespace(final String prefix)
+    {
+        if (prefix != null)
+        {
+            NSContext context = bindingStack.peek();
+            if (context != null)
+                return context.getNamespaceForPrefix(prefix); 
+        }
+        return null;
+    }
+    
     private class NSContext
     {
         NSContext(NSContext dad, Map<String, String> bound)
@@ -105,6 +116,19 @@ public class NamespaceContextStack
                     return answer;
             }
             return null;
+        }
+        String getNamespaceForPrefix(String prefix)
+        {
+            String result = null;
+            if (bindings != null)
+            {
+                result = bindings.get(prefix);
+                if (result != null)
+                    return result;
+            }
+            if (parent != null)
+                result = parent.getNamespaceForPrefix(prefix);
+            return result;
         }
         private final NSContext parent;
         private final Map<String, String> bindings;

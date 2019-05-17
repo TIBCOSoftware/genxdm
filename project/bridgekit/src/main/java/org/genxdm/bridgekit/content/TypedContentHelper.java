@@ -432,14 +432,17 @@ public class TypedContentHelper<A>
                     if (ns.equals(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI)
                         && attr.getName().equals("type") )
                     {
-                        // TODO complete implementation of resolution/lookup
-                        QName typeName = null; // attr.getValue() gives you pfx:name; resolve it then get the type.
+                        // attr.getValue() gives you pfx:name; resolve it then get the type.
+                        QName typeName = resolveQualifiedNameString(attr.getValue());
+                        if (typeName != null)
+                            return provider.getTypeDefinition(typeName);
                         // TODO: once complete, copy over to the queue impl
                     }
                 }
             }
         }
         return null; // always does this until we resolve qname and retrieve type
+        // also does it after we complete implementation, when there isn't an override
     }
     
     private ElementDefinition locateElementDefinition(ModelGroup mg, QName target)
@@ -460,6 +463,21 @@ public class TypedContentHelper<A>
             }
             // only two possibilities covered; if we haven't returned a match,
             // fall through and return null.
+        }
+        return null;
+    }
+    
+    private QName resolveQualifiedNameString(final String name)
+    {
+        if (!name.contains(":"))
+            return new QName(name);
+        else
+        {
+            final String pfx = name.substring(0, name.indexOf(":"));
+            final String local = name.substring(name.indexOf(":")+1);
+            final String ns = nsStack.getNamespace(pfx);
+            if (ns != null)
+                return new QName(ns, local, pfx);
         }
         return null;
     }

@@ -2188,9 +2188,7 @@ public enum NativeType
             for (final NativeType type : NativeType.values())
             {
                 if (localName.equals(type.getLocalName()))
-                {
                     return type;
-                }
             }
         }
         return null;
