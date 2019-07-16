@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2010 TIBCO Software Inc.
+ * Copyright (c) 2019 TIBCO Software Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.genxdm.typed.io;
+package org.genxdm.typed;
 
-import org.genxdm.typed.Validator;
-import org.xml.sax.ContentHandler;
+import org.genxdm.typed.io.SAXValidator;
 
-/**
- * A "push" style streaming validator that consumes SAX events and emits typed values and annotated content.
- */
-public interface SAXValidator<A> 
-    extends ContentHandler, Validator<A>
+public interface ValidatorFactory<A>
 {
+    ValidationHandler<A> newXdmContentValidator();
+
+    SAXValidator<A> newSAXContentValidator();
+    
+    //StAXValidator<A> newStAXContentValidator(); // prolly based on EventVisitor? or XMLStreamReader, who knows
 }

@@ -902,7 +902,7 @@ public final class XMLSchemaConverter
     private void lateResolveOneType(XMLType xmlType)
         throws SchemaException, AbortException
     {
-        final QName lateResolveTypeName = xmlType.getName();
+        final QName lateResolveTypeName = getLateResolveTypeName(xmlType);
         // get the complex type impl, but *not* via convertComplexType()
         final ComplexTypeImpl complexType = (ComplexTypeImpl)m_outBag.getComplexType(lateResolveTypeName);
         // if we have a type, and *that type does not already have non-empty content*,
@@ -910,6 +910,18 @@ public final class XMLSchemaConverter
         // empty content as a flag)
         if ((complexType != null) && (complexType.getContentType() == EMPTY_CONTENT))
             complexType.setContentType(convertContentType(xmlType));
+    }
+    
+    private QName getLateResolveTypeName(final XMLType xmlType)
+    {
+        QName tName = xmlType.getName();
+        if (tName == null)
+        {
+            ComplexType ct = m_locations.m_complexTypeLocations.get(xmlType.getLocation());
+            if (ct != null)
+                tName = ct.getName();
+        }
+        return tName;
     }
 
     private ContentType convertContentType(final XMLType xmlComplexType) 

@@ -18,9 +18,13 @@ public interface ConfigurableSerializationParams
 
     void setEncoding(String enc);
     
+    // escapeURIAttributes boolean ; includeContentType boolean
+    
     void setIndent(boolean ind);
     
     void setMediaType(String type);
+    
+    // method QName (really, don't want this to be terribly settable; constructor only)
     
     void setNamespaceContextHints(NamespaceContext hints);
     
@@ -29,4 +33,10 @@ public interface ConfigurableSerializationParams
     void setOmitXMLDeclaration(boolean flag);
     
     void setStandalone(Standalone value);
+    
+    // undeclarePrefixes boolean;
+    
+    // useCharacterMaps Map<Character [CodePoint instead?], String>
+    
+    // version String [implementation defined meaning; undefined by us]
 }

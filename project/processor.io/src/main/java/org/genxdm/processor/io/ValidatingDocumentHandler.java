@@ -29,6 +29,7 @@ import org.genxdm.exceptions.XdmMarshalException;
 import org.genxdm.io.Resolver;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.Validator;
+import org.genxdm.typed.ValidatorFactory;
 import org.genxdm.typed.io.SAXValidator;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.TypedDocumentHandler;
@@ -41,16 +42,32 @@ public class ValidatingDocumentHandler<N, A>
     implements TypedDocumentHandler<N, A>
 {
 
-    public ValidatingDocumentHandler(final TypedContext<N, A> context, final SAXValidator<A> validator, final XMLReporter reporter, final Resolver resolver)
+    /**
+     *@deprecated since 1.5
+     */
+    public ValidatingDocumentHandler(final TypedContext<N, A> typedContext, final SAXValidator<A> validator, final XMLReporter rep, final Resolver res)
     {
-        super(PreCondition.assertNotNull(context, "context").getModel());
-        this.context = context;
+        super(PreCondition.assertNotNull(typedContext, "context").getModel());
+        context = typedContext;
+        resolver = res;
+        reporter = rep;
+        spf = SAXParserFactory.newInstance();
+        spf.setNamespaceAware(true);
         this.validator = PreCondition.assertNotNull(validator, "validator");
-        this.validator.setSchema(this.context.getSchema());
-        this.resolver = resolver;
-        this.reporter = reporter;
-        this.spf = SAXParserFactory.newInstance();
-        this.spf.setNamespaceAware(true);
+        this.validator.setSchema(context.getSchema());
+        valFactory = null;
+    }
+    
+    public ValidatingDocumentHandler(final TypedContext<N, A> typedContext, final ValidatorFactory<A> factory, final XMLReporter rep, final Resolver res)
+    {
+        super(PreCondition.assertNotNull(typedContext, "context").getModel());
+        context = typedContext;
+        resolver = res;
+        reporter = rep;
+        spf = SAXParserFactory.newInstance();
+        spf.setNamespaceAware(true);
+        valFactory = PreCondition.assertNotNull(factory, "factory");
+        validator = null;
     }
     
     @Override
@@ -80,10 +97,22 @@ public class ValidatingDocumentHandler<N, A>
         try
         {
             XMLReader reader = spf.newSAXParser().getXMLReader();
-            SequenceBuilder<N, A> builder = context.newSequenceBuilder();
-            validator.setSequenceHandler(builder);
-            // TODO: query lexical handler?
-            // if we want a lexical handler, then SAXValidator should do it.
+            final SequenceBuilder<N, A> builder;
+            if (valFactory == null)
+                builder = context.newSequenceBuilder();
+            else
+            {
+                builder = getBuilder();
+                builder.reset();
+            }
+            final SAXValidator valley;
+            if (valFactory != null)
+                valley = getLocalValidator();
+            else
+                valley = validator;
+            valley.reset();
+            valley.setSchema(context.getSchema());
+            valley.setSequenceHandler(builder);
             reader.setContentHandler(validator);
             // TODO
 //            reader.setErrorHandler(new ErrorHandlerToXMLReporterAdapter(reporter));
@@ -92,10 +121,20 @@ public class ValidatingDocumentHandler<N, A>
         } 
         catch (SAXException saxy)
         {
+            if (valFactory != null)
+            {
+                validators.remove();
+                builders.remove();
+            }
             throw new XdmMarshalException(saxy);
         } 
         catch (ParserConfigurationException pce)
         {
+            if (valFactory != null)
+            {
+                validators.remove();
+                builders.remove();
+            }
             throw new XdmMarshalException(pce);
         }
     }
@@ -103,7 +142,9 @@ public class ValidatingDocumentHandler<N, A>
     @Override
     public Validator<A> getValidator()
     {
-        return validator;
+        if (valFactory == null)
+            return validator;
+        return getLocalValidator();
     }
 
     /**
@@ -130,9 +171,40 @@ public class ValidatingDocumentHandler<N, A>
         this.reporter = reporter; // doesn't actually work usefully, though.
     }
     
+    private SequenceBuilder<N, A> getBuilder()
+    {
+        SequenceBuilder<N, A> seqBer = builders.get();
+        if (seqBer == null)
+        {
+            seqBer = context.newSequenceBuilder();
+            builders.set(seqBer);
+        }
+        return seqBer;
+    }
+    
+    private SAXValidator<A> getLocalValidator()
+    {
+        if (valFactory == null)
+            return validator;
+        SAXValidator<A> val = validators.get();
+        if (val == null)
+        {
+            val = valFactory.newSAXContentValidator();
+            validators.set(val);
+        }
+        return val;
+    }
+
     private final TypedContext<N, A> context;
+    // only used in non-thread-safe mode
     private final SAXValidator<A> validator;
+    
     private Resolver resolver;
     private XMLReporter reporter;
-    private SAXParserFactory spf;
+    
+    private final SAXParserFactory spf;
+    private final ValidatorFactory<A> valFactory;
+    
+    private ThreadLocal<SequenceBuilder<N, A>> builders = new ThreadLocal<SequenceBuilder<N, A>>();
+    private ThreadLocal<SAXValidator<A>> validators = new ThreadLocal<SAXValidator<A>>();
 }

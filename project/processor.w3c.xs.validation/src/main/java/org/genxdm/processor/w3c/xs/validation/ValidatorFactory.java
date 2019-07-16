@@ -24,6 +24,7 @@ import org.genxdm.typed.io.SAXValidator;
 import org.genxdm.typed.types.AtomBridge;
 
 public final class ValidatorFactory<N, A>
+    implements org.genxdm.typed.ValidatorFactory
 {
 
     public ValidatorFactory(final TypedContext<N, A> pcx)
@@ -32,12 +33,14 @@ public final class ValidatorFactory<N, A>
         this.atomBridge = pcx.getAtomBridge();
     }
 
+    @Override
     public ValidationHandler<A> newXdmContentValidator()
     {
         final VxValidator<A> kernel = factory.newValidator(atomBridge);
         return new XdmContentValidatorImpl<A>(kernel, atomBridge);
     }
 
+    @Override
     public SAXValidator<A> newSAXContentValidator()
     {
         final VxValidator<A> kernel = factory.newValidator(atomBridge);

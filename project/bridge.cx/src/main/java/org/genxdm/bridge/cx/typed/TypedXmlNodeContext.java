@@ -40,6 +40,7 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.ValidationHandler;
+import org.genxdm.typed.ValidatorFactory;
 import org.genxdm.typed.io.SAXValidator;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.SequenceFilter;
@@ -127,7 +128,14 @@ public class TypedXmlNodeContext
     @Override
     public ValidatingDocumentHandler<XmlNode, XmlAtom> newDocumentHandler(final SAXValidator<XmlAtom> validator, final XMLReporter reporter, final Resolver resolver)
     {
+        // deprecated, don't use
         return new ValidatingDocumentHandler<XmlNode, XmlAtom>(this, validator, reporter, resolver);
+    }
+
+    @Override
+    public ValidatingDocumentHandler<XmlNode, XmlAtom> newDocumentHandler(final ValidatorFactory<XmlAtom> factory, final XMLReporter reporter, final Resolver resolver)
+    {
+        return new ValidatingDocumentHandler<XmlNode, XmlAtom>(this, factory, reporter, resolver);
     }
 
     @Override

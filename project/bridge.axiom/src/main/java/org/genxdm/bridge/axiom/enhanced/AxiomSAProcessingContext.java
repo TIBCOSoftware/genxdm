@@ -39,6 +39,7 @@ import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedCursor;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.typed.ValidationHandler;
+import org.genxdm.typed.ValidatorFactory;
 import org.genxdm.typed.io.SAXValidator;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.TypedDocumentHandler;
@@ -115,7 +116,14 @@ public final class AxiomSAProcessingContext
     @Override
     public TypedDocumentHandler<Object, XmlAtom> newDocumentHandler(SAXValidator<XmlAtom> validator, XMLReporter reporter, Resolver resolver)
     {
+        // deprecated; don't use
         return new ValidatingDocumentHandler<Object, XmlAtom>(this, validator, reporter, resolver);
+    }
+
+    @Override
+    public TypedDocumentHandler<Object, XmlAtom> newDocumentHandler(ValidatorFactory<XmlAtom> factory, XMLReporter reporter, Resolver resolver)
+    {
+        return new ValidatingDocumentHandler<Object, XmlAtom>(this, factory, reporter, resolver);
     }
 
     @Override

@@ -222,7 +222,10 @@ public class DefaultDocumentHandler<N>
     {
         FragmentBuilder<N> fragBer = builders.get();
         if (fragBer == null)
+        {
             fragBer = context.newFragmentBuilder();
+            builders.set(fragBer);
+        }
         return fragBer;
     }
 
