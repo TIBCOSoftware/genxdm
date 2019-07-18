@@ -90,7 +90,12 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     @Override
     public XmlAtom castAs(final XmlAtom sourceAtom, final QName targetType, final CastingContext castingContext) throws AtomCastException
     {
-        return CastingSupport.castAs(sourceAtom, targetType, castingContext, schema.getComponentProvider(), this);
+        final NativeType nativeType = NameSource.SINGLETON.nativeType(targetType);
+        if (nativeType != null)
+            return castAs(sourceAtom, nativeType, castingContext);
+        else
+            throw new AtomCastException(getC14NForm(sourceAtom), targetType, FORG0006);
+        //return CastingSupport.castAs(sourceAtom, targetType, castingContext, schema.getComponentProvider(), this);
     }
 
     @Override

@@ -28,6 +28,7 @@ import org.genxdm.exceptions.SpillagePolicy;
 import org.genxdm.names.NameSource;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
+import org.genxdm.typed.types.Emulation;
 import org.genxdm.xs.ComponentProvider;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.NativeType;
@@ -38,6 +39,7 @@ public final class CastingSupport
 {
     private CastingSupport() {} // cannot be instantiated
 
+    // XmlAtomBridge.castAs(A, QName ...) used to invoke this one, but not any more
     public static <A> A castAs(final A sourceAtom, final QName targetType, final CastingContext castingContext, final ComponentProvider pcx, final AtomBridge<A> atomBridge) 
         throws AtomCastException
     {
@@ -53,6 +55,7 @@ public final class CastingSupport
     }
 
     // this is our main entry point. the other castAs() calls this (or asserts)
+    // XmlAtomBridge.castAs(A, NativeType ...) invokes this one.
     public static <A> A castAs(final A sourceAtom, final NativeType targetType, final CastingContext castingContext, final ComponentProvider pcx, final AtomBridge<A> atomBridge) 
         throws AtomCastException
     {
@@ -63,9 +66,14 @@ public final class CastingSupport
         final NativeType sourceType = atomBridge.getNativeType(sourceAtom);
 
         final SpillagePolicy spillagePolicy = castingContext.getSpillagePolicy();
+        final Emulation emulation = castingContext.getEmulation();
         final boolean checkCapacity = spillagePolicy.checkCapacity();
         final boolean raiseError = spillagePolicy.raiseError();
-
+        
+        // optimize; why create anything if it isn't necessary?
+        if (sourceType == targetType)
+            return sourceAtom;
+        
         switch (targetType)
         {
             case BOOLEAN:
@@ -336,7 +344,7 @@ public final class CastingSupport
                     case STRING:
                         return sourceAtom;
                     case DOUBLE:
-                        switch (castingContext.getEmulation())
+                        switch (emulation)
                         {
                             case C14N:
                                 return atomBridge.createString(atomBridge.getC14NForm(sourceAtom));
@@ -345,10 +353,10 @@ public final class CastingSupport
                             case LEGACY:
                                 return atomBridge.createString(NumericSupport.formatDoubleXPath10(atomBridge.getDouble(sourceAtom)));
                             default: // this can't actually happen: emulation is an enum
-                                throw new AssertionError(castingContext.getEmulation());
+                                throw new AssertionError(emulation);
                         }
                     case FLOAT:
-                        switch (castingContext.getEmulation())
+                        switch (emulation)
                         {
                             case C14N:
                                 return atomBridge.createString(atomBridge.getC14NForm(sourceAtom));
@@ -357,10 +365,10 @@ public final class CastingSupport
                             case LEGACY:
                                 return atomBridge.createString(NumericSupport.formatFloatXPath10(atomBridge.getFloat(sourceAtom)));
                             default:
-                                throw new AssertionError(castingContext.getEmulation());
+                                throw new AssertionError(emulation);
                         }
                     case DECIMAL:
-                        switch (castingContext.getEmulation())
+                        switch (emulation)
                         {
                             case C14N:
                                 return atomBridge.createString(atomBridge.getC14NForm(sourceAtom));
@@ -369,7 +377,7 @@ public final class CastingSupport
                             case LEGACY:
                                 return atomBridge.createString(NumericSupport.formatDecimalXPath10(atomBridge.getDecimal(sourceAtom)));
                             default:
-                                throw new AssertionError(castingContext.getEmulation());
+                                throw new AssertionError(emulation);
                         }
                     default:
                         return atomBridge.createString(atomBridge.getC14NForm(sourceAtom));
@@ -737,7 +745,7 @@ public final class CastingSupport
                     case UNTYPED_ATOMIC:
                         return sourceAtom;
                     case DOUBLE:
-                        switch (castingContext.getEmulation())
+                        switch (emulation)
                         {
                             case C14N:
                                 return atomBridge.createUntypedAtomic(atomBridge.getC14NForm(sourceAtom));
@@ -746,10 +754,10 @@ public final class CastingSupport
                             case LEGACY:
                                 return atomBridge.createUntypedAtomic(NumericSupport.formatDoubleXPath10(atomBridge.getDouble(sourceAtom)));
                             default:
-                                throw new AssertionError(castingContext.getEmulation());
+                                throw new AssertionError(emulation);
                         }
                     case FLOAT:
-                        switch (castingContext.getEmulation())
+                        switch (emulation)
                         {
                             case C14N:
                                 return atomBridge.createUntypedAtomic(atomBridge.getC14NForm(sourceAtom));
@@ -758,10 +766,10 @@ public final class CastingSupport
                             case LEGACY:
                                 return atomBridge.createUntypedAtomic(NumericSupport.formatFloatXPath10(atomBridge.getFloat(sourceAtom)));
                             default:
-                                throw new AssertionError(castingContext.getEmulation());
+                                throw new AssertionError(emulation);
                         }
                     case DECIMAL:
-                        switch (castingContext.getEmulation())
+                        switch (emulation)
                         {
                             case C14N:
                                 return atomBridge.createUntypedAtomic(atomBridge.getC14NForm(sourceAtom));
@@ -770,7 +778,7 @@ public final class CastingSupport
                             case LEGACY:
                                 return atomBridge.createUntypedAtomic(NumericSupport.formatDecimalXPath10(atomBridge.getDecimal(sourceAtom)));
                             default:
-                                throw new AssertionError(castingContext.getEmulation());
+                                throw new AssertionError(emulation);
                         }
                     default:
                         return atomBridge.createUntypedAtomic(atomBridge.getC14NForm(sourceAtom));
