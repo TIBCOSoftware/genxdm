@@ -44,6 +44,16 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     {
         this.schema = PreCondition.assertNotNull(schema, "schema");
     }
+    
+    public XmlAtomBridge(final SchemaComponentCache schema, final BridgeConfiguration config)
+    {
+        this(schema);
+        if (config != null)
+        {
+            flag_decodeBase64 = config.getDecodeBase64FromStringUntyped();
+            flag_omitDecimal = config.getOmitDecimalPoint();
+        }
+    }
 
     public void setProcessingContext(final SchemaComponentCache schema)
     {
@@ -90,6 +100,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     @Override
     public XmlAtom castAs(final XmlAtom sourceAtom, final QName targetType, final CastingContext castingContext) throws AtomCastException
     {
+        if (sourceAtom == null)
+            return null;
         final NativeType nativeType = NameSource.SINGLETON.nativeType(targetType);
         if (nativeType != null)
             return castAs(sourceAtom, nativeType, castingContext);
@@ -448,7 +460,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return ((XmlBase64Binary)atom).getByteArrayValue();
         else if (isForeignAtom(atom))
             return getBase64Binary(getNativeAtom(atom));
-        else if ( (atom instanceof XmlUntypedAtomic) || (atom instanceof XmlString) )
+        else if ( flag_decodeBase64 && (atom instanceof XmlUntypedAtomic) || (atom instanceof XmlString) )
         {
             // try harder for untypedatomic and string, because we have other
             // examples of people doing that. note that this has a deleterious
@@ -507,7 +519,19 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     @Override
     public String getC14NForm(final XmlAtom atom)
     {
-        return atom.getC14NForm();
+        if (atom == null)
+            return "";
+        final String canonForm = atom.getC14NForm();
+        if (flag_omitDecimal && (atom.getNativeType() == NativeType.DECIMAL))
+        {
+            int len = canonForm.length();
+            if ( (len > 2) && // prevent out of bounds
+                 (canonForm.charAt(len - 1) == '0') && // rarely happens
+                 (canonForm.charAt(len - 2) == '.') )
+                return canonForm.substring(0, len - 2); // rare
+            // else fall through (common case for decimal)
+        }
+        return canonForm; // common case
     }
 
     @Override
@@ -1030,4 +1054,12 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     private static final Iterable<XmlAtom> EMPTY_ATOM_SEQUENCE = new UnaryIterable<XmlAtom>(null);
     
     private SchemaComponentCache schema;
+
+    // behavioral flags, which mostly enable buggy behaviors
+    // omit decimal point in xs:decimal c14nform when ".0" (looks like an integer)
+    private boolean flag_omitDecimal;
+    // be forgiving, and hideously unperformant, when someone hands a string or untyped atomic 
+    // to getBase64Binary(); try to decode the string as base64 (creates a new copy each time!)
+    private boolean flag_decodeBase64;
+    
 }

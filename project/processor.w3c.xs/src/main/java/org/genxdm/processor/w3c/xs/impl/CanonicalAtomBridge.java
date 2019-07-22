@@ -155,9 +155,38 @@ public class CanonicalAtomBridge
     public XmlAtom compile(String srcval, NativeType dataType, PrefixResolver resolver)
         throws AtomCastException
     {
-        // TODO Auto-generated method stub
-        // note: when this is fixed here, go fix it in bridgekit.atoms.XmlAtomBridge too, 'kay?
-        return null;
+        // use base unless this has a resolver and is a QName
+        if ( (resolver == null) || (dataType != NativeType.QNAME) )
+            return compile(srcval, dataType);
+
+        PreCondition.assertNotNull(srcval, "sourceValue");
+        PreCondition.assertNotNull(dataType, "targetType");
+        final Type type = components.getTypeDefinition(dataType);
+        if (type != null)
+        {
+            if (type.isAtomicType())
+            {
+                final SimpleType atomicType = (SimpleType)type;
+                try
+                {
+                    final List<XmlAtom> atoms = atomicType.validate(srcval, resolver, this);
+                    final int size = atoms.size();
+                    if (size == 1)
+                        return atoms.get(0);
+                    else if (size == 0)
+                        return null;
+                    else
+                        // Atomic type should not be yielding multiple atoms.
+                        throw new AssertionError("Non-list type results in multiple atoms");
+                }
+                catch (final DatatypeException e)
+                {
+                    throw new AtomCastException(srcval, e.getType(), FORG0001, e);
+                }
+            }
+            throw new AtomCastException(srcval, dataType.toQName(), FORG0006);
+        }
+        throw new AtomCastException(srcval, dataType.toQName(), FORG0006);
     }
 
     @Override
@@ -1369,5 +1398,6 @@ public class CanonicalAtomBridge
 
     // the name is from the functions and operators spec
     private static final QName FORG0001 = new QName("http://www.w3.org/2005/xqt-errors/", "FORG0001", "err");
+    private static final QName FORG0006 = new QName("http://www.w3.org/2005/xqt-errors/", "FORG0006", "err"); // invalid argument type
     private static final Iterable<XmlAtom> EMPTY_ATOM_SEQUENCE = new UnaryIterable<XmlAtom>(null);
 }
