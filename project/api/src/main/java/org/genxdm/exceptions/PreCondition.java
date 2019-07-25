@@ -52,7 +52,7 @@ public final class PreCondition
      */
     public static <T> T assertArgumentNotNull(final T object, final String name)
     {
-        return (assertNotNull(object, name+" argument");
+        return assertNotNull(object, name+" argument");
     }
 
     /**
