@@ -39,24 +39,24 @@ public final class AtomCastException extends Exception
 
     public AtomCastException(final String sourceValue, final QName sourceType, final QName targetType, final QName errorCode)
     {
-        this.sourceValue = PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
-        this.sourceType = PreCondition.assertArgumentNotNull(sourceType, "sourceType");
-        this.targetType = PreCondition.assertArgumentNotNull(targetType, "targetType");
-        this.errorCode = PreCondition.assertArgumentNotNull(errorCode, "errorCode");
-    }
-
-    public AtomCastException(final String sourceValue, final QName sourceType, final QName targetType, final QName errorCode, final Throwable cause)
-    {
-        super(cause);
-        this.sourceValue = PreCondition.assertArgumentNotNull(sourceValue, "sourceValue");
-        this.sourceType = PreCondition.assertArgumentNotNull(sourceType, "sourceType");
-        this.targetType = PreCondition.assertArgumentNotNull(targetType, "targetType");
-        this.errorCode = PreCondition.assertArgumentNotNull(errorCode, "errorCode");
+        this.sourceValue = PreCondition.assertNotNull(sourceValue, "sourceValue");
+        this.sourceType = PreCondition.assertNotNull(sourceType, "sourceType");
+        this.targetType = PreCondition.assertNotNull(targetType, "targetType");
+        this.errorCode = PreCondition.assertNotNull(errorCode, "errorCode");
     }
 
     public AtomCastException(final String sourceValue, final QName targetType, final QName errorCode, final Throwable cause)
     {
         this(sourceValue, NativeType.UNTYPED_ATOMIC.toQName(), targetType, errorCode, cause);
+    }
+
+    public AtomCastException(final String sourceValue, final QName sourceType, final QName targetType, final QName errorCode, final Throwable cause)
+    {
+        super(cause);
+        this.sourceValue = PreCondition.assertNotNull(sourceValue, "sourceValue");
+        this.sourceType = PreCondition.assertNotNull(sourceType, "sourceType");
+        this.targetType = PreCondition.assertNotNull(targetType, "targetType");
+        this.errorCode = PreCondition.assertNotNull(errorCode, "errorCode");
     }
 
     /**

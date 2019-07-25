@@ -135,6 +135,11 @@ public final class TypesBridgeImpl implements TypesBridge
             final CommentNodeType comment = (CommentNodeType)type;
             visitor.textType(comment);
         }
+        else if (type instanceof ConcatType)
+        {
+            final ConcatType concat = (ConcatType)type;
+            visitor.concatType(concat, concat.getLHS(), concat.getRHS());
+        }
         else if (type instanceof DocumentNodeType)
         {
             final DocumentNodeType document = (DocumentNodeType)type;

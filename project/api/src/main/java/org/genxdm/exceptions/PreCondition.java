@@ -17,7 +17,7 @@ package org.genxdm.exceptions;
 
 
 /**
- * Assertions and Checks that generate consistent messages.
+ * Assertions that generate consistent messages.
  * 
  * <p>These preconditions all generate assertion errors; they are not
  * catchable.</p>
@@ -32,24 +32,15 @@ public final class PreCondition
      * @param object
      *            The object that is to be tested.
      * @return The input object.
+     * @deprecated
      */
     public static <T> T assertArgumentNotNull(final T object)
     {
-        if (null != object)
-        {
-            return object;
-        }
-        else
-        {
-            throw new AssertionError("Argument cannot be null.");
-        }
+        return assertNotNull(object, "Argument")
     }
 
     /**
      * Asserts that the named argument object is not <code>null</code>.
-     * <p>
-     * Be careful not to build strings for the name argument which may impact performance.
-     * </p>
      * 
      * @param <T>
      *            the type of the object.
@@ -61,125 +52,82 @@ public final class PreCondition
      */
     public static <T> T assertArgumentNotNull(final T object, final String name)
     {
-        if (null != object)
-        {
-            return object;
-        }
-        else
-        {
-            throw new AssertionError(name + " argument cannot be null.");
-        }
+        return (assertNotNull(object, name+" argument");
     }
 
     /**
      * Asserts that the specified condition is <code>false</code>
+     * @deprecated
      */
     public static void assertFalse(final boolean condition)
     {
         if (condition)
-        {
             throw new AssertionError();
-        }
     }
 
     /**
      * Asserts that the specified condition is <code>false</code>,
-     * <p>
-     * Be careful not to build strings for the message argument which may impact performance.
-     * </p>
      */
     public static void assertFalse(final boolean condition, final String message)
     {
         if (condition)
-        {
             throw new AssertionError(message);
-        }
     }
 
     /**
      * Asserts that the specified object is not <code>null</code>
+     * @deprecated
      */
     public static <T> T assertNotNull(final T obj)
     {
-        if (null != obj)
-        {
+        if (obj != null)
             return obj;
-        }
-        else
-        {
-            throw new AssertionError();
-        }
+        throw new AssertionError();
     }
 
     /**
      * Asserts that the named object is not <code>null</code>.
-     * <p>
-     * Be careful not to build strings for the name argument which may impact performance.
-     * </p>
      */
     public static <T> T assertNotNull(final T object, final String name)
     {
-        if (null != object)
-        {
+        if (object != null)
             return object;
-        }
-        else
-        {
-            throw new AssertionError(name + " cannot be null.");
-        }
+        throw new AssertionError(name + " cannot be null.");
     }
 
     /**
      * Asserts that the anonymous object is <code>null</code>
+     * @deprecated
      */
     public static void assertNull(final Object obj)
     {
-        if (null != obj)
-        {
+        if (obj != null)
             throw new AssertionError();
-        }
     }
 
     /**
      * Asserts that the named object is <code>null</code>.
-     * <p>
-     * Be careful not to build strings for the name argument which may impact performance.
-     * </p>
      */
     public static <T> void assertNull(final T object, final String name)
     {
-        if (null != object)
-        {
+        if (object != null)
             throw new AssertionError(name + " must be null.");
-        }
     }
 
+    /**
+     * @deprecated
+     */
     public static void assertTrue(final boolean condition) throws AssertionError
     {
-        if (!condition) { 
-            throw new AssertionError("Condition is not true.");
-        }
+        if (!condition)
+            throw new AssertionError();
     }
 
     public static void assertTrue(final boolean condition, final String message) throws AssertionError
     {
-        if (!condition) {
+        if (!condition)
             throw new AssertionError(message);
-        }
     }
 
-    public static <T> T checkArgumentNotNull(final T object) throws IllegalArgumentException
-    {
-        return IllegalNullArgumentException.check(object, "anonymous");
-    }
-
-    public static <T> T checkArgumentNotNull(final T object, final String name) throws IllegalNullArgumentException
-    {
-        return IllegalNullArgumentException.check(object, name);
-    }
-
-    private PreCondition() throws AssertionError
-    {
-        throw new AssertionError();
-    }
+    private PreCondition() {} // cannot be instantiated
 }
