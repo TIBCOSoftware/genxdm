@@ -1881,8 +1881,8 @@ public final class XMLSchemaConverter
                 List<XmlAtom> val = simpleType.validate(initialValue, m_atoms);
                 if (val.size() > 0)
                     return new ValueConstraint(xmlValueConstraint.kind, simpleType, m_atoms.getC14NForm(val.get(0)));
-                // TODO: throw a better exception
-                throw new AssertionError(); // no value in the value constraint
+                // no value in the value constraint
+                throw new DatatypeException(initialValue, simpleType);
             }
             catch (DatatypeException dte)
             {
