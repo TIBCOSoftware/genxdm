@@ -113,7 +113,7 @@ public class ValidatingDocumentHandler<N, A>
             valley.reset();
             valley.setSchema(context.getSchema());
             valley.setSequenceHandler(builder);
-            reader.setContentHandler(validator);
+            reader.setContentHandler(valley);
             // TODO
 //            reader.setErrorHandler(new ErrorHandlerToXMLReporterAdapter(reporter));
             reader.parse(source);
