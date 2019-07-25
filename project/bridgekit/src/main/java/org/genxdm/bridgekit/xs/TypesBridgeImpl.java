@@ -61,6 +61,7 @@ import org.genxdm.xs.types.ChoiceType;
 import org.genxdm.xs.types.CommentNodeType;
 import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.ComplexUrType;
+import org.genxdm.xs.types.ConcatType;
 import org.genxdm.xs.types.ContentType;
 import org.genxdm.xs.types.DocumentNodeType;
 import org.genxdm.xs.types.ElementNodeType;

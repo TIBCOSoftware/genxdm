@@ -36,7 +36,7 @@ public final class PreCondition
      */
     public static <T> T assertArgumentNotNull(final T object)
     {
-        return assertNotNull(object, "Argument")
+        return assertNotNull(object, "Argument");
     }
 
     /**
