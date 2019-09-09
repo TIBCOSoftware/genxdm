@@ -226,6 +226,7 @@ public class DefaultDocumentHandler<N>
             fragBer = context.newFragmentBuilder();
             builders.set(fragBer);
         }
+        fragBer.reset();
         return fragBer;
     }
 
