@@ -11,7 +11,8 @@ public interface DocumentParser<N>
 {
     /** Parse an input stream (bytes) as a document node.
      * 
-     * This method typically delegates to parse(InputSource, systemId).
+     * This method is typically implemented using the system encoding to
+     * decode the bytes into characters.
      * 
      * @param byteStream the input; may not be null
      * @param systemId the URI of the document, if available; may be null
@@ -21,7 +22,7 @@ public interface DocumentParser<N>
     
     /** Parse a reader (characters) as a document node.
      * 
-     * This method typically delegates to parse(InputSource, systemId).
+     * This method is typically implemented.
      * 
      * @param characterStream the input; may not be null
      * @param systemId the URI of the document, if available; may be null
@@ -31,9 +32,11 @@ public interface DocumentParser<N>
     
     /** Parse a SAX InputSource to a document node.
      * 
-     * The contract of this method is that the SAX InputSource will be read
-     * completely, feeding a document builder associated with the corresponding
-     * bridge.
+     * This method exists mostly for compatibility and tradition; it is typically
+     * implemented by using the non-null return from InputSource.getCharacterStream(),
+     * and if that fails, trying InputSource.getByteStream(), and if that fails
+     * but the handler has a Resolver, using the Resolver to find and parse the
+     * document found in the (non-null) systemId argument.
      * 
      * @param source the input; may not be null
      * @param systemId the URI of the document, if available; may be null

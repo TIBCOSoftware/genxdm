@@ -14,7 +14,7 @@ package org.genxdm.nodes;
  * child (or attribute or namespace) returns the same int, but the child/namespace/attribute
  * is necessarily later in the document than its parent/container.
  * 
- * Within the scope of a single element namespace precede attributes, which
+ * Within the scope of a single element namespaces precede attributes, which
  * precede all children. Namespaces and attributes have canonical order which
  * defines their position as amongst one another (ascending lexicographic order
  * of serial form of qualified names); they can be compared directly in a

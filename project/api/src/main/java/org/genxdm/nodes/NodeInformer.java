@@ -93,9 +93,9 @@ public interface NodeInformer<N>
     URI getDocumentURI(N node);
     
     /**
-     * Returns an IndexPair, identifying the parent index and own index of
-     * every element and document node in the tree. See IndexPair for additional
-     * information.
+     * Returns a NodeIndex, identifying the index whether it is own-index or
+     * parent index, for every node in the tree.
+     * See NodeIndex for more information.
      * If ProcessingContext.isSupported(Feature.IN_TREE_INDEX) is true, this
      * must never return null; if false, it must always return null. This provides
      * support for highly efficient sorting of nodes within a document. Generally
@@ -103,9 +103,10 @@ public interface NodeInformer<N>
      * general node processing.
      *
      * @param node The node for which the index is requested; may not be null.
-     * @return an IndexPair representing the index of the supplied node's parent document or
-     *         element (for all node kinds) and the index of the supplied node
-     *         (only for document and element node kinds; all others have -1).
+     * @return a NodeIndex representing the index of the supplied node (for element
+     *         and document nodes, with isParentIndex() returning false), or
+     *         of the containing document or element node (with isParentIndex()
+     *         returning true) for all other node kinds.
      *         Return value is strictly conditioned by feature support: either
      *         always null or never null.
      */
