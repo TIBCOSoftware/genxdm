@@ -174,8 +174,6 @@ public class DefaultDocumentHandler<N>
         throws IOException, XdmMarshalException
     {
         PreCondition.assertNotNull(reader, "reader");
-        if (builder != null)
-            builder.reset();
         // we rely upon the fact that builder and context cannot both be null.
         // this implementation tries to retain thread safety but to reuse
         // builders. however, to be safe, we're going to throw away the thread-local
@@ -184,6 +182,7 @@ public class DefaultDocumentHandler<N>
         // (because we will create a new builder when there's an error, since we
         // haven't done well at ensuring that it's properly reset).
         FragmentBuilder<N> fb = (context != null) ? getBuilder() : builder;
+        fb.reset();
         XmlEventVisitor visitor = new XmlEventVisitor(reader, fb);
         if (systemId != null)
             visitor.setSystemId(systemId);
@@ -226,7 +225,6 @@ public class DefaultDocumentHandler<N>
             fragBer = context.newFragmentBuilder();
             builders.set(fragBer);
         }
-        fragBer.reset();
         return fragBer;
     }
 
