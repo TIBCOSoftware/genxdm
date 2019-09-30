@@ -214,6 +214,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     @Override
     public XmlGregorian createDateTime(final int year, final int month, final int dayOfMonth, final int hour, final int minute, final int second, final int millis, final BigDecimal remainderSecond, final int offsetInMinutes)
     {
+        if (remainderSecond == null)
+            return new XmlGregorian(year, month, dayOfMonth, hour, minute, second, new BigDecimal(BigInteger.valueOf(millis), 3), offsetInMinutes, NativeType.DATETIME);
         return new XmlGregorian(year, month, dayOfMonth, hour, minute, second, remainderSecond, offsetInMinutes, NativeType.DATETIME);
     }
 
@@ -412,6 +414,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     @Override
     public XmlGregorian createTime(final int hourOfDay, final int minute, final int second, final int millis, final BigDecimal fractionalSecond, final int timezone)
     {
+        if (fractionalSecond == null)
+            return new XmlGregorian(1970, 1, 1, hourOfDay, minute, second, new BigDecimal(BigInteger.valueOf(millis), 3), timezone, NativeType.TIME);
         return new XmlGregorian(1970, 1, 1, hourOfDay, minute, second, fractionalSecond, timezone, NativeType.TIME);
     }
 
@@ -814,6 +818,8 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     @Override
     public NativeType getNativeType(final XmlAtom atom)
     {
+        if (atom == null)
+            return null;
         return atom.getNativeType();
     }
 

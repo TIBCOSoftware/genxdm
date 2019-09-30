@@ -159,31 +159,58 @@ public interface AtomBridge<A>
      */
     A createByte(byte byteValue);
 
-    // TODO: document based on implementation contract
-    /**
-     * Returns an xs:date atomic value.
-     * 
-     * @param year For what year do we wish to create a date?
-     * @param month For what month?
-     * @param dayOfMonth    For what day of the month?
-     * @param timezone  In what timezone
+    /** Returns an xs:date atomic value.
+     *
+     * Arguments are required primitive values; it is not required that the
+     * implementation check the range values, but the caller is encouraged to
+     * abide by those restrictions. The month and dayOfMonth arguments are
+     * 1-indexed.
+     *
+     * @param year an integer, using positive numbers for Gregorian era CE, negative for BCE
+     * @param month an integer, which should be in the range 1-12
+     * @param dayOfMonth an integer, which should be in a range corresponding with the
+                         range suitable for the month argument, lower bound always 1,
+                         upper bound 28, 29, 30, or 31.
+     * @param timezone an integer representing the timezone offset in minutes, or the
+                       constant AtomBridge.TIMEZONE_UNDEFINED.
      * @return  An atomic value corresponding to the parameters passed.
      */
     A createDate(int year, int month, int dayOfMonth, int timezone);
 
-    // TODO: document based on implementation contract
-    /**
-     * Returns an xs:dateTime atomic value.
+    /** Returns an xs:dateTime atomic value.
+     *
+     * Arguments are required primitive values; it is not required that the
+     * implementation check the range values, but the caller is encouraged to
+     * abide by those restrictions. The month and dayOfMonth arguments are
+     * 1-indexed. hourOfDay, minute, and second are 0-indexed.
+     * millis may be ignored if remainderSecond is non-null; either millis
+     * or remainderSecond will be used, but not both, and remainderSecond will be
+     * preferred. No errors need be thrown for creation of values in which one or more
+     * components are out of range.
+     * 
+     * @param year an integer, using positive numbers for Gregorian era CE, negative for BCE
+     * @param month an integer, which should be in the range 1-12
+     * @param dayOfMonth an integer, which should be in a range corresponding with the
+                         range suitable for the month argument, lower bound always 1,
+                         upper bound 28, 29, 30, or 31.
+     * @param hourOfDay an integer, which should be in the range 0-23
+     * @param minute an integer, which should be in the range 0-59
+     * @param second an integer, which should be in the range 0-59
+     * @param millis an integer, which should be in the range 0-999; if fractionalSecond is non-null, it will be ignored
+     * @param fractionalSecond a BigDecimal representing the subsecond value of the time, to any supported scale; if null, use the millis value
+     * @param timezone an integer representing the timezone offset in minutes, or the
+                       constant AtomBridge.TIMEZONE_UNDEFINED.
      */
     A createDateTime(int year, int month, int dayOfMonth, int hour, int minute, int second, int millis, BigDecimal remainderSecond, int offsetInMinutes);
 
-    // TODO: document based on implementation contract
     /**
      * Returns an xs:gDay based upon the value.
+     * @param dayOfMonth an integer, which should be in the range 0-31
+     * @param timezone an integer representing the timezone offset in minutes, or the
+                       constant AtomBridge.TIMEZONE_UNDEFINED.
      */
     A createDay(int dayOfMonth, int timezone);
 
-    // TODO: document based on implementation contract
     /**
      * Returns an xs:dayTimeDuration based upon the seconds value.
      * 
@@ -192,9 +219,10 @@ public interface AtomBridge<A>
      */
     A createDayTimeDuration(BigDecimal seconds);
 
-    // TODO: document based on implementation contract
     /**
      * Returns an xs:decimal based upon the value.
+     *
+     * @param decimalValue a BigDecimal representing the fixed-point numeric value
      */
     A createDecimal(BigDecimal decimalValue);
 
@@ -214,14 +242,11 @@ public interface AtomBridge<A>
      */
     A createDouble(double value);
 
-    // TODO: document based on implementation contract
     /**
      * Returns an xs:duration based upon the total months and seconds.
      * 
-     * @param yearMonthDuration
-     *            The total months.
-     * @param dayTimeDuration
-     *            The total seconds.
+     * @param yearMonthDuration an integer representing the total months.
+     * @param dayTimeDuration an integer representing the total seconds.
      */
     A createDuration(int yearMonthDuration, BigDecimal dayTimeDuration);
 
@@ -305,15 +330,24 @@ public interface AtomBridge<A>
      */
     A createLong(long longValue);
 
-    // TODO: document based on implementation contract
     /**
      * Returns an xs:gMonth based upon the value.
+     *
+     * @param month an integer in the range 1-12.
+     * @param timezone an integer representing the timezone offset in minutes, or the
+                       constant AtomBridge.TIMEZONE_UNDEFINED.
      */
     A createMonth(int month, int timezone);
 
-    // TODO: document based on implementation contract
     /**
      * Returns an xs:gMonthDay based upon the value.
+     *
+     * @param month an integer, which should be in the range 1-12
+     * @param dayOfMonth an integer, which should be in the range defined with
+                         lower bound 1, upper bound dependent upon the value of
+                         the month argument, one of 28, 29, 30, or 31
+     * @param timezone an integer representing the timezone offset in minutes, or the
+                       constant AtomBridge.TIMEZONE_UNDEFINED.
      */
     A createMonthDay(int month, int dayOfMonth, int timezone);
 
@@ -357,9 +391,8 @@ public interface AtomBridge<A>
      */
     A createString(String strval);
 
-    /**
-     * Creates an implementation of a native type derived from xs:string.
-     * <p>
+    /** Creates an implementation of a native type derived from xs:string.
+     * 
      * This includes the following native types.
      * <ul>
      * <li>xs:normalizedString</li>
@@ -372,13 +405,10 @@ public interface AtomBridge<A>
      * <li>xs:IDREF</li>
      * <li>xs:ENTITY</li>
      * </ul>
-     * </p>
-     * <p>
+     * 
      * Whitespace is normalized in a way that is appropriate for the specified native type.
-     * </p>
-     * <p>
+     * 
      * Returns <code>null</code> if the argument is <code>null</code>.
-     * </p>
      * 
      * @param strval
      *            The {@link String} value of the created atomic value.
@@ -387,9 +417,20 @@ public interface AtomBridge<A>
      */
     A createStringDerived(String strval, NativeType nativeType);
 
-    // TODO: document based on implementation contract
-    /**
-     * Creates an xs:time atomic value.
+    /**Creates an xs:time atomic value. 
+     *
+     * Most of the arguments are required primitive
+     * values, but millis may be ignored if fractionalSecond is non-null; either millis
+     * or fractionalSecond will be used, but not both, and fractionalSecond will be
+     * preferred. No errors need be thrown for creation of values in which one or more
+     * components are out of range.
+     * @param hourOfDay an integer, which should be in the range 0-23
+     * @param minute an integer, which should be in the range 0-59
+     * @param second an integer, which should be in the range 0-59
+     * @param millis an integer, which should be in the range 0-999; if fractionalSecond is non-null, it will be ignored
+     * @param fractionalSecond a BigDecimal representing the subsecond value of the time, to any supported scale; if null, use the millis value
+     * @param timezone an integer representing the timezone offset in minutes, or the
+                       constant AtomBridge.TIMEZONE_UNDEFINED.
      */
     A createTime(int hourOfDay, int minute, int second, int millis, BigDecimal fractionalSecond, int timezone);
 
@@ -407,24 +448,31 @@ public interface AtomBridge<A>
      */
     A createURI(URI uri);
 
-    // TODO: document based on implementation contract
     /**
      * Returns an xs:gYear based upon the value.
+     *
+     * @param year an integer representing (if positive) years since the era,
+                   or (if negative) before the era. Note that zero is undefined.
+     * @param timezone an integer representing the timezone offset in minutes, or the
+                       constant AtomBridge.TIMEZONE_UNDEFINED.
      */
     A createYear(int year, int timezone);
 
-    // TODO: document based on implementation contract
     /**
      * Returns an xs:gYearMonth based upon the value.
+     *
+     * @param year an integer representing (if positive) years since the era,
+                   or (if negative) before the era. Note that zero is undefined.
+     * @param month an integer, which should be in the range 1-12
+     * @param timezone an integer representing the timezone offset in minutes, or the
+                       constant AtomBridge.TIMEZONE_UNDEFINED.
      */
     A createYearMonth(int year, int month, int timezone);
 
-    // TODO: document based on implementation contract
     /**
      * Creates an xs:yearMonthDuration atom based upon the number of calendar months.
      * 
-     * @param months
-     *            The total number of months in the duration.
+     * @param months an integer representing total months in this duration.
      */
     A createYearMonthDuration(int months);
     
@@ -471,9 +519,9 @@ public interface AtomBridge<A>
 
     /**
      * A convenience for obtaining the canonical string representation of a list of atoms.
-     * <p>
+     *
      * The canonical representation is the concatenation of each atom with a single space separator.
-     * </p>
+     *
      */
     String getC14NString(List<? extends A> atoms);
 
@@ -577,6 +625,11 @@ public interface AtomBridge<A>
      */
     int getIntegralSecondPart(A gregorian);
 
+    /** Given an atom which is of type QName, retrieve its name portion.
+     *
+     * @param atom the atom representing a QName type which is to be investigated
+     * @return the string representing the QName's local name portion
+     */
     String getLocalNameFromQName(A atom);
 
     /**
@@ -605,6 +658,11 @@ public interface AtomBridge<A>
      */
     int getMonth(A gregorian);
 
+    /** Given an atom which is of type QName, retrieve its namespace portion.
+     *
+     * @param atom the atom representing a QName type which is to be investigated
+     * @return the string representing the QName's namespace
+     */
     String getNamespaceFromQName(A atom);
 
     /**
@@ -625,6 +683,13 @@ public interface AtomBridge<A>
      *            The atomic value for which the data-type is required.
      */
 
+    /** Get the NativeType of the supplied atom
+     *
+     * NativeType is an enumerated type listing the base primitive types and
+     * their relationships and characteristics.
+     * @param atom the atom to be queried
+     * @return the native type of the queried atom, or null if the atom is null
+     */
     NativeType getNativeType(A atom);
 
     /**
@@ -636,6 +701,11 @@ public interface AtomBridge<A>
      */
     QName getNotation(A notation);
 
+    /** Given an atom which is of type QName, retrieve its prefix hint portion.
+     *
+     * @param atom the atom representing a QName type which is to be investigated
+     * @return the string representing the atom's understanding of its preferred prefix
+     */
     String getPrefixFromQName(A atom);
 
     /**
@@ -726,11 +796,9 @@ public interface AtomBridge<A>
      */
     int getYear(A gregorian);
 
-    /**
-     * Determines whether the object is an atom.
-     * <p/>
+    /** Determines whether the object is an atom.
+     *
      * If the object is <code>null</code>, the return value is <code>false</code>.
-     * </p>
      * 
      * @param object
      *            The candidate object.
@@ -754,17 +822,32 @@ public interface AtomBridge<A>
      */
     boolean isWhiteSpace(A atom);
 
+    /** Create a 'foreign' atom, which is an atom derived from some base known
+     * to this bridge.
+     *
+     * @param atomType the QName of the derived type; may not be null
+     * @param baseAtom the actual value of the atom, as represented in the
+     *                 base type
+     * @return an atom which contains as its value the base atom, and the
+     *         QName annotating its actual type.
+     */
     A makeForeignAtom(QName atomType, A baseAtom);
 
-    // get an atom from an iterable<atom>, but only if there's only one.
+    /** Extract a single atom from a sequence containing a single atom only.
+     *
+     * @param sequence the sequence from which to extract the atom
+     * @return the wrapped atom, if there is only a single atom in the sequence
+     * @throw AtomCastException if there is more than one atom in the sequence
+     */
     A unwrapAtom(Iterable<? extends A> sequence) throws AtomCastException;
     
-    /**
-     * Promotes a single atom into an {@link Iterable} sequence containing the same single atom. <br/>
+    /** Promotes a single atom into an {@link Iterable} sequence containing the same single atom.
+     *
      * Note this method is provided for performance reasons. Some implementations may implement {@link Iterable} on their atoms to avoid physically wrapping the atom.
      * 
-     * @param atom
-     *            The atom to be wrapped. May be <code>null</code>. If <code>null</code> is passed as an argument, the implementation <em>must</em> return an empty {@link Iterable} . This provides consistent semantics for the
+     * @param atom the atom to be wrapped, which may be null. If null, the
+                   implementation must return an empty Iterable, not null,
+                   to provide a guarantee of non-null to callers.
      */
     List<A> wrapAtom(A atom);
 }
