@@ -86,7 +86,7 @@ public class TreeModelDumper
                 break;
             case ELEMENT :
                 final QName type = model.getTypeName(node); 
-                splat(indent(indent, writer, stream)+CURL_START+"Kind: "+kind+" Namespace: "+model.getNamespaceURI(node)+" Name: "+model.getLocalName(node)+" Prefix hint: "+model.getPrefix(node), writer, stream);
+                splat(indent(indent, writer, stream)+CURL_START+"Kind: "+kind+" Namespace: "+CURL_START+model.getNamespaceURI(node)+CURL_END+" Name: "+QUOTE+model.getLocalName(node)+QUOTE+" Prefix hint: "+QUOTE+model.getPrefix(node)+QUOTE, writer, stream);
                 if (model.hasNamespaces(node))
                 {
                     splat(indent(indent+1, writer, stream)+"Namespaces "+BOX_START, writer, stream);
@@ -117,7 +117,7 @@ public class TreeModelDumper
                         ace.printStackTrace();
                         throw new GenXDMException("Unwrap exception: "+ace.getMessage(), ace);
                     }
-                    splat(indent(indent+1, writer, stream)+" Value (canonicalized): "+atoms.getC14NString(value)+" NativeType: "+nType+" Type name: {"+type.getNamespaceURI()+"}"+type.getLocalPart(), writer, stream);
+                    splat(indent(indent+1, writer, stream)+" Value (canonicalized): "+QUOTE+atoms.getC14NString(value)+QUOTE+" NativeType: "+nType+" Type name: {"+type.getNamespaceURI()+"}"+type.getLocalPart(), writer, stream);
                 }
                 if (model.hasChildren(node))
                 {
@@ -147,7 +147,7 @@ public class TreeModelDumper
                 splat(indent(indent, writer, stream)+CURL_END, writer, stream);
                 break;
             case NAMESPACE :
-                splat(indent(indent, writer, stream)+CURL_START+"Kind: "+kind+" Prefix: "+model.getLocalName(node)+" Namespace: "+model.getStringValue(node)+CURL_END, writer, stream); 
+                splat(indent(indent, writer, stream)+CURL_START+"Kind: "+kind+" Prefix: "+QUOTE+model.getLocalName(node)+QUOTE+" Namespace: "+CURL_START+model.getStringValue(node)+CURL_END+CURL_END, writer, stream); 
                 break;
             case ATTRIBUTE :
                 final List<? extends A> value = (List<? extends A>)model.getValue(node);
@@ -163,7 +163,7 @@ public class TreeModelDumper
                     throw new GenXDMException("Unwrap exception: "+ace.getMessage(), ace);
                 }
                 final QName typeName = model.getTypeName(node);
-                splat(indent(indent, writer, stream)+CURL_START+"Kind: "+kind+" Namespace: "+model.getNamespaceURI(node)+" Name: "+model.getLocalName(node)+" Prefix hint: "+model.getPrefix(node)+" Value (canonicalized): "+atoms.getC14NString(value)+" NativeType: "+nType+" Type name: {"+typeName.getNamespaceURI()+"}"+typeName.getLocalPart()+CURL_END, writer, stream);
+                splat(indent(indent, writer, stream)+CURL_START+"Kind: "+kind+" Namespace: "+CURL_START+model.getNamespaceURI(node)+CURL_END+" Name: "+QUOTE+model.getLocalName(node)+QUOTE+" Prefix hint: "+QUOTE+model.getPrefix(node)+QUOTE+" Value (canonicalized): "+QUOTE+atoms.getC14NString(value)+QUOTE+" NativeType: "+nType+" Type name: {"+typeName.getNamespaceURI()+"}"+typeName.getLocalPart()+CURL_END, writer, stream);
                 break;
             case TEXT :
             case COMMENT :
@@ -192,7 +192,7 @@ public class TreeModelDumper
                 splat(BOX_END+CURL_END, writer, stream);
                 break;
             case ELEMENT :
-                splat(indent(indent, writer, stream)+CURL_START+"Kind: "+kind+" Namespace: "+model.getNamespaceURI(node)+" Name: "+model.getLocalName(node)+" Prefix hint: "+model.getPrefix(node), writer, stream);
+                splat(indent(indent, writer, stream)+CURL_START+"Kind: "+kind+" Namespace: "+CURL_START+model.getNamespaceURI(node)+CURL_END+" Name: "+QUOTE+model.getLocalName(node)+QUOTE+" Prefix hint: "+QUOTE+model.getPrefix(node)+QUOTE, writer, stream);
                 if (model.hasNamespaces(node))
                 {
                     splat(indent(indent+1, writer, stream)+"Namespaces "+BOX_START, writer, stream);
@@ -217,10 +217,10 @@ public class TreeModelDumper
                 splat(indent(indent, writer, stream)+CURL_END, writer, stream);
                 break;
             case NAMESPACE :
-                splat(indent(indent, writer, stream)+CURL_START+"Kind: "+kind+" Prefix: "+model.getLocalName(node)+" Namespace: "+model.getStringValue(node)+CURL_END, writer, stream); 
+                splat(indent(indent, writer, stream)+CURL_START+"Kind: "+kind+" Prefix: "+QUOTE+model.getLocalName(node)+QUOTE+" Namespace: "+CURL_START+model.getStringValue(node)+CURL_END, writer, stream); 
                 break;
             case ATTRIBUTE :
-                splat(indent(indent, writer, stream)+CURL_START+"Kind: "+kind+" Namespace: "+model.getNamespaceURI(node)+" Name: "+model.getLocalName(node)+" Prefix hint: "+model.getPrefix(node)+" Value: "+model.getStringValue(node)+CURL_END, writer, stream);
+                splat(indent(indent, writer, stream)+CURL_START+"Kind: "+kind+" Namespace: "+CURL_START+model.getNamespaceURI(node)+CURL_END+" Name: "+QUOTE+model.getLocalName(node)+QUOTE+" Prefix hint: "+QUOTE+model.getPrefix(node)+QUOTE+" Value: "+model.getStringValue(node)+CURL_END, writer, stream);
                 break;
             case TEXT :
             case COMMENT :
@@ -307,6 +307,7 @@ public class TreeModelDumper
     private static final String BOX_START = "[ ";
     private static final String BOX_END = " ]";
     private static final String NL = "\n";
+    private static final String QUOTE = "'";
 
     private static final String NONE = "";
     private static final String TAB = "    ";
