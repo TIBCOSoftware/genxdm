@@ -27,7 +27,7 @@ public final class ContentTypeImpl
     public static final ContentTypeImpl EMPTY = new ContentTypeImpl();
     public static final ContentTypeImpl UNRESOLVED = new ContentTypeImpl();
     
-    ContentTypeImpl()
+    public ContentTypeImpl()
     {
         this.kind = ContentTypeKind.Empty;
         this.simpleType = null;
