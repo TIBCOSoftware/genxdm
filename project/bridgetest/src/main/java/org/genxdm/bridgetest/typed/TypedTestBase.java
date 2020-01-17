@@ -44,7 +44,7 @@ public abstract class TypedTestBase<N, A>
                         /*base type*/schema.getComponentProvider().getComplexUrType(), 
                         /*derivation method*/DerivationMethod.Restriction, 
                         /*attribute uses (map) (permitted attributes)*/new HashMap<QName, AttributeUse>(), 
-                        /*content type*/new ContentTypeImpl()/*this means empty*/, 
+                        /*content type*/ContentTypeImpl.EMPTY, 
                         /*block (set of derivation methods)*/EnumSet.noneOf(DerivationMethod.class),
                         /*atoms*/schema.getComponentProvider().getAtomicType(NativeType.UNTYPED_ATOMIC));
                 

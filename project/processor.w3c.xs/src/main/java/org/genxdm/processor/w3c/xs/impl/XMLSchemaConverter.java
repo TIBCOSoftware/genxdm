@@ -422,7 +422,7 @@ public final class XMLSchemaConverter
         }
     }
 
-    private ContentType computeLocallyEmptyContent(final XMLType complexType) 
+    private ContentType computeLocallyEmptyContent(final XMLType complexType, final QName typeName) 
         throws SchemaException, AbortException
     {
         final DerivationMethod derivation = complexType.getDerivationMethod();
@@ -430,7 +430,7 @@ public final class XMLSchemaConverter
         {
             case Restriction:
             {
-                return EMPTY_CONTENT;
+                return ContentTypeImpl.EMPTY;
             }
             case Extension:
             {
@@ -458,12 +458,12 @@ public final class XMLSchemaConverter
                         // depending on its content model must also wait for resolution.
                         // this isn't always necessary (a lot of types are leaves, not branches),
                         // but we handle that in lateResolve routines by noticing that it's already resolved.
-                        if (!m_lateTypeResolutionMap.containsKey(complexType.getName()))
+                        if (!m_lateTypeResolutionMap.containsKey(typeName))
                         {
-                            m_lateTypeResolutionMap.put(complexType.getName(), new LateResolveTypePair(complexType,  null));
-                            m_lateTypeResolutionNameList.add(complexType.getName());
+                            m_lateTypeResolutionMap.put(typeName, new LateResolveTypePair(complexType,  null));
+                            m_lateTypeResolutionNameList.add(typeName);
                         }
-                        return EMPTY_CONTENT; // actual content to be determined later
+                        return ContentTypeImpl.UNRESOLVED; // actual content to be determined later
                     }
                     // else it's resolved, so we can copy its content model
                     final ComplexType complexBase = (ComplexType)baseType;
@@ -803,7 +803,7 @@ public final class XMLSchemaConverter
         // !isNative, has null basetype, EMPTY_CONTENT, and atomic type UNTYPED_ATOMIC
         final ComplexTypeImpl complexType = new ComplexTypeImpl(outName, false, isAnonymous, scope, 
                                                                 null, xmlComplexType.getDerivationMethod(), 
-                                                                attributeUses, EMPTY_CONTENT, xmlComplexType.getBlock(), 
+                                                                attributeUses, ContentTypeImpl.UNRESOLVED, xmlComplexType.getBlock(), 
                                                                 m_existingCache.getAtomicType(NativeType.UNTYPED_ATOMIC));
         
         // add the "stub" created type to outbag.
@@ -821,7 +821,7 @@ public final class XMLSchemaConverter
         // this populates the attributeuses, basically defining attributes
         computeAttributeUses(xmlComplexType, attributeUses);
         // and then we set content type:
-        complexType.setContentType(convertContentType(xmlComplexType));
+        complexType.setContentType(convertContentType(xmlComplexType, outName));
 
         complexType.setAbstract(xmlComplexType.isAbstract());
         complexType.setAttributeWildcard(attributeWildcard(xmlComplexType));
@@ -908,8 +908,8 @@ public final class XMLSchemaConverter
         // if we have a type, and *that type does not already have non-empty content*,
         // then convert the content type (again, since the first time it got set to
         // empty content as a flag)
-        if ((complexType != null) && (complexType.getContentType() == EMPTY_CONTENT))
-            complexType.setContentType(convertContentType(xmlType));
+        if ((complexType != null) && (complexType.getContentType() == ContentTypeImpl.UNRESOLVED))
+            complexType.setContentType(convertContentType(xmlType, lateResolveTypeName));
     }
     
     private QName getLateResolveTypeName(final XMLType xmlType)
@@ -924,7 +924,7 @@ public final class XMLSchemaConverter
         return tName;
     }
 
-    private ContentType convertContentType(final XMLType xmlComplexType) 
+    private ContentType convertContentType(final XMLType xmlComplexType, final QName typeName) 
         throws AbortException, SchemaException
     {
         // we pass a complex type, and examine its content type and content model
@@ -938,7 +938,7 @@ public final class XMLSchemaConverter
             if (derivation.isRestriction())
             {
                 if (effectiveContent == null)
-                    return EMPTY_CONTENT;
+                    return ContentTypeImpl.EMPTY;
                 else // effectiveContent != null
                 {
                     if (mixed)
@@ -947,7 +947,7 @@ public final class XMLSchemaConverter
                     {
                         if ((effectiveContent.getTerm() == null) || 
                              effectiveContent.getTerm().getParticles().isEmpty())
-                            return EMPTY_CONTENT;
+                            return ContentTypeImpl.EMPTY;
                         else
                             return new ContentTypeImpl(mixed, effectiveContent);
                     }
@@ -970,12 +970,12 @@ public final class XMLSchemaConverter
                     blockedAndBlocker.addBlockedType(xmlComplexType);
                     // Also, add the type to be late resolved as key to late resolution map.  Any components
                     // depending on its content model must also wait for resolution.
-                    if (!m_lateTypeResolutionMap.containsKey(xmlComplexType.getName()))
+                    if (!m_lateTypeResolutionMap.containsKey(typeName))
                     {
-                        m_lateTypeResolutionMap.put(xmlComplexType.getName(), new LateResolveTypePair(xmlComplexType,  null));
-                        m_lateTypeResolutionNameList.add(xmlComplexType.getName());
+                        m_lateTypeResolutionMap.put(typeName, new LateResolveTypePair(xmlComplexType,  null));
+                        m_lateTypeResolutionNameList.add(typeName);
                     }
-                    return EMPTY_CONTENT; // actual content to be determined later
+                    return ContentTypeImpl.UNRESOLVED; // actual content to be determined later
                 }
                 // "typeB" == base type
                 final Type typeB = convertType(xmlComplexType.getBaseRef());
@@ -988,7 +988,7 @@ public final class XMLSchemaConverter
                 else if (contentTypeB.isEmpty())
                     return new ContentTypeImpl(mixed, effectiveContent);
                 else if (contentTypeB.isSimple())
-                    throw new SrcBaseContentTypeCannotBeSimpleException(xmlComplexType.getName(), complexTypeB.getName(), xmlComplexType.getLocation());
+                    throw new SrcBaseContentTypeCannotBeSimpleException(typeName, complexTypeB.getName(), xmlComplexType.getLocation());
                 else if (contentTypeB.isComplex())
                 {
                     final LinkedList<ModelGroupUse> particles = new LinkedList<ModelGroupUse>();
@@ -1064,7 +1064,7 @@ public final class XMLSchemaConverter
                 throw new AssertionError(typeB);
         }
         else // xmlComplexType.m_contentKind !complex, !simple, which means empty, apparently, though there isn't an item for empty in the enum
-            return computeLocallyEmptyContent(xmlComplexType);
+            return computeLocallyEmptyContent(xmlComplexType, typeName);
     }
 
     private ElementDefinition convertElement(final XMLElement xmlElement) 
@@ -2302,7 +2302,6 @@ public final class XMLSchemaConverter
      */
     private static final BigInteger MAX_INT_SIZE = BigInteger.valueOf(Integer.MAX_VALUE);
 
-    private final ContentType EMPTY_CONTENT = new ContentTypeImpl();
     private final XMLCycles m_cycles;
     
     private final Stack<QName> m_complexTypeNameCycles = new Stack<QName>();
