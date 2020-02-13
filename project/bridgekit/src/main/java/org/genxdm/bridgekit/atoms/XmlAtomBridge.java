@@ -107,7 +107,6 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             return castAs(sourceAtom, nativeType, castingContext);
         else
             throw new AtomCastException(getC14NForm(sourceAtom), targetType, FORG0006);
-        //return CastingSupport.castAs(sourceAtom, targetType, castingContext, schema.getComponentProvider(), this);
     }
 
     @Override
@@ -290,6 +289,9 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     {
         switch (nativeType)
         {
+            // because the return has signature XmlIntegerDerived, this won't work.
+//            case INTEGER:
+//                return XmlInteger.valueOf(value);
             case NON_POSITIVE_INTEGER:
             case NEGATIVE_INTEGER:
             case NON_NEGATIVE_INTEGER:
@@ -312,19 +314,12 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
             case INTEGER:
                 return XmlInteger.valueOf(value);
             case NON_POSITIVE_INTEGER:
-                return XmlIntegerDerived.valueOf(value, nativeType);
             case NEGATIVE_INTEGER:
-                return XmlIntegerDerived.valueOf(value, nativeType);
             case NON_NEGATIVE_INTEGER:
-                return XmlIntegerDerived.valueOf(value, nativeType);
             case UNSIGNED_LONG:
-                return XmlIntegerDerived.valueOf(value, nativeType);
             case UNSIGNED_INT:
-                return XmlIntegerDerived.valueOf(value, nativeType);
             case UNSIGNED_SHORT:
-                return XmlIntegerDerived.valueOf(value, nativeType);
             case UNSIGNED_BYTE:
-                return XmlIntegerDerived.valueOf(value, nativeType);
             case POSITIVE_INTEGER:
                 return XmlIntegerDerived.valueOf(value, nativeType);
             default:

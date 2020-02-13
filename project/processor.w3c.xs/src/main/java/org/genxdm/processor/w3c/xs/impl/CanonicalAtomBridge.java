@@ -108,7 +108,13 @@ public class CanonicalAtomBridge
         throws AtomCastException
     {
         PreCondition.assertArgumentNotNull(castingContext, "castingContext");
-        return CastingSupport.castAs(sourceAtom, targetType, castingContext, components, this);
+        if (sourceAtom == null)
+            return null;
+        final NativeType nativeType = NameSource.SINGLETON.nativeType(targetType);
+        if (nativeType != null)
+            return castAs(sourceAtom, nativeType, castingContext);
+        else
+            throw new AtomCastException(getC14NForm(sourceAtom), targetType, FORG0006);
     }
 
     @Override
