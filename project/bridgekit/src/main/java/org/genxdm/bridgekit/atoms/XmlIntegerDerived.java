@@ -17,6 +17,7 @@ package org.genxdm.bridgekit.atoms;
 
 import java.math.BigInteger;
 
+import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.xs.types.NativeType;
 
@@ -37,6 +38,51 @@ public final class XmlIntegerDerived
     {
         this.value = PreCondition.assertArgumentNotNull(integerValue, "integerValue");
         this.type = PreCondition.assertArgumentNotNull(nativeType, "nativeType");
+        // bounds checking
+        switch (nativeType)
+        {
+            case NEGATIVE_INTEGER:
+                if (integerValue.compareTo(BigInteger.ZERO) >= 0)
+                    throw new GenXDMException("Invalid value for type '"+nativeType.toQName()+"' + "+integerValue.toString());
+                break;
+            case NON_POSITIVE_INTEGER:
+                if (integerValue.compareTo(BigInteger.ZERO) > 0)
+                    throw new GenXDMException("Invalid value for type '"+nativeType.toQName()+"' + "+integerValue.toString());
+                break;
+            case POSITIVE_INTEGER:
+                if (integerValue.compareTo(BigInteger.ZERO) <= 0)
+                    throw new GenXDMException("Invalid value for type '"+nativeType.toQName()+"' : "+integerValue.toString());
+                break;
+            case NON_NEGATIVE_INTEGER:
+            case UNSIGNED_LONG:
+            case UNSIGNED_INT:
+            case UNSIGNED_SHORT:
+            case UNSIGNED_BYTE:
+                if (integerValue.compareTo(BigInteger.ZERO) < 0)
+                    throw new GenXDMException("Invalid value for type '"+nativeType.toQName()+"' : "+integerValue.toString());
+                break;
+            default:
+        }
+        switch (nativeType)
+        {
+            case UNSIGNED_LONG:
+                if (integerValue.compareTo(CastingSupport.UNSIGNED_LONG_MAX_VALUE) > 0)
+                    throw new GenXDMException("Invalid value for type '"+nativeType.toQName()+"' : "+integerValue.toString());
+                break;
+            case UNSIGNED_INT:
+                if (integerValue.compareTo(CastingSupport.UNSIGNED_INT_MAX_VALUE) > 0)
+                    throw new GenXDMException("Invalid value for type '"+nativeType.toQName()+"' : "+integerValue.toString());
+                break;
+            case UNSIGNED_SHORT:
+                if (integerValue.compareTo(CastingSupport.UNSIGNED_SHORT_MAX_VALUE) > 0)
+                    throw new GenXDMException("Invalid value for type '"+nativeType.toQName()+"' : "+integerValue.toString());
+                break;
+            case UNSIGNED_BYTE:
+                if (integerValue.compareTo(CastingSupport.UNSIGNED_BYTE_MAX_VALUE) > 0)
+                    throw new GenXDMException("Invalid value for type '"+nativeType.toQName()+"' : "+integerValue.toString());
+                break;
+            default:
+        }
     }
 
     @Override

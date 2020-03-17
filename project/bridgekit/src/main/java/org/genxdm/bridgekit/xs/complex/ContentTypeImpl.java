@@ -21,12 +21,12 @@ import org.genxdm.xs.types.ContentType;
 import org.genxdm.xs.types.ContentTypeKind;
 import org.genxdm.xs.types.SimpleType;
 
-public final class ContentTypeImpl implements ContentType
+public final class ContentTypeImpl 
+    implements ContentType
 {
-    private ModelGroupUse contentModel;
-    private ContentTypeKind kind;
-    private SimpleType simpleType;
-
+    public static final ContentTypeImpl EMPTY = new ContentTypeImpl();
+    public static final ContentTypeImpl UNRESOLVED = new ContentTypeImpl();
+    
     public ContentTypeImpl()
     {
         this.kind = ContentTypeKind.Empty;
@@ -96,4 +96,8 @@ public final class ContentTypeImpl implements ContentType
     {
         return kind.isSimple();
     }
+
+    private ModelGroupUse contentModel;
+    private ContentTypeKind kind;
+    private SimpleType simpleType;
 }

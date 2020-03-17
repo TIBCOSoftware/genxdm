@@ -332,8 +332,8 @@ public class ContentHandlerOnXmlStreamWriter
                     // *in the current context*. we're so screwed, because the
                     // only thing we can bind it to is the default prefix here.
                     // the easy way to do this is to declare it in current
-                    // scope:
-                    ((NSContext)currentContext).declare(XMLConstants.DEFAULT_NS_PREFIX, XMLConstants.NULL_NS_URI);
+                    // scope, which will force a doubly-bound prefix exception to be thrown:
+                    ((NSContext)currentContext).declareForException(XMLConstants.DEFAULT_NS_PREFIX, XMLConstants.NULL_NS_URI);
                 }
             }
         }
@@ -485,6 +485,16 @@ public class ContentHandlerOnXmlStreamWriter
                 throw new GenXDMException("Prefix '"+ prefix + "' bound to multiple URIs ( {" + alreadyBound + "}, {" + uri + "} ) in a single scope.");
             }
             content.put(prefix, uri);
+        }
+        
+        void declareForException(final String prefix, final String uri)
+            throws GenXDMException
+        {
+            if (content.containsKey(prefix)) // it does, always
+            {
+                String alreadyBound = content.get(prefix);
+                throw new GenXDMException("Prefix '"+prefix+"' bound to multiple URIs ( {"+alreadyBound+"}, {"+uri+"} ) in the scope of element {"+elementNamespace+"}"+elementLocalName+".");
+            }
         }
         
 //        Iterable<String> getDeclarations()

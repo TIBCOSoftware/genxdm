@@ -20,9 +20,6 @@ import org.genxdm.names.NamespaceBinding;
 
 public final class DefaultNamespaceBinding implements NamespaceBinding 
 {
-    private final String prefix;
-    private final String uri;
-
     public DefaultNamespaceBinding(final String prefix, final String uri)
     {
         this.prefix = PreCondition.assertNotNull(prefix, "prefix");
@@ -60,7 +57,13 @@ public final class DefaultNamespaceBinding implements NamespaceBinding
     public boolean equals(Object other)
     {
         if (other instanceof NamespaceBinding)
-            return hashCode() == other.hashCode();
+        {
+            NamespaceBinding ns = (NamespaceBinding)other;
+            return (prefix.equals(ns.getPrefix()) && uri.equals(ns.getNamespaceURI()));
+        }
         return false;
     }
+
+    private final String prefix;
+    private final String uri;
 }
