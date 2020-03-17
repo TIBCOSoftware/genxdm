@@ -169,8 +169,8 @@ public abstract class AbstractNamespaceFixupHandler
     
     protected NamespaceBinding handleAttributeNS(String namespace, String name, String prefix)
     {
-        if (name.toLowerCase().startsWith("xml"))
-            throw new GenXDMException("Invalid attribute name: " + name);
+//        if (name.toLowerCase().startsWith("xml"))
+//            throw new GenXDMException("Invalid attribute name: " + name);
         NamespaceBinding nsb = null;
         // first, make sure that we're not going to try to
         // generate an attribute with default prefix in non-default namespace
