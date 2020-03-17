@@ -43,6 +43,17 @@ public class StringToURIParser
             query = decode(matcher.group(7), true);
 //System.out.println("Query: \"" + query + "\"");
             fragment = decode(matcher.group(9), true);
+            // special case for terminal fragment indicator with empty fragment,
+            // used in exclusive xml 1.0 canonicalization (improperly, but wth).
+            if ( (fragment == null) && // no match for fragment in regex (matcher.group(9))
+                 (matcher.group(8) != null) && matcher.group(8).equals(EMPTY_FRAGMENT)) // but we have a terminal fragment signifier
+            {
+                // double-check that it's the specific case we want to allow; in general it's invalid
+                if ( ((path != null) && path.equals(XML_EXCLUSIVE_C14N)) && // exclusive xml canonicalization
+                     ((authority != null) && authority.equals(W3_AUTHORITY)) && // www.w3.org
+                     ((scheme != null) && scheme.equals(HTTP_SCHEME)) ) // http scheme only
+                    fragment = ""; // set fragment to empty string, to preserve fragment indicator
+            }
 //System.out.println("Fragment: \"" + fragment + "\"");
             // if scheme is non-null, then path *must* start with a slash for hierarchical
             if ( (scheme != null) && (path != null) && !path.startsWith(SLASH) ) // not hierarchical
@@ -149,7 +160,11 @@ public class StringToURIParser
     private static final String URI_REGEX = "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?";
 //  match group start positions:              12            3  4          5       6   7        8 9
     // constants for use in replacement (probably safe to use literals, but clearer-perhaps to use constants)
+    private static final String HTTP_SCHEME = "http";
     private static final String SLASH = "/";
+    private static final String EMPTY_FRAGMENT = "#";
+    private static final String XML_EXCLUSIVE_C14N = "/2001/10/xml-exc-c14n";
+    private static final String W3_AUTHORITY = "www.w3.org";
     private static final char QUERY = '?';
     private static final char PERCENT = '%';
     private static final char PLUS = '+';
