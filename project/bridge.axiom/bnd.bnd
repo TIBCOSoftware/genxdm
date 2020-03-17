@@ -1,10 +1,10 @@
 Export-Package: org.genxdm.bridge.axiom;version=1.5,\
 	org.genxdm.bridge.axiom.enhanced;version=1.5
-Bundle-Version: 1.5.0
--runee: JavaSE-1.7
+Bundle-Version: 1.5.1
+-runee: JavaSE-1.8
 src: src/main/java
 bin: target/classes
 testsrc: src/test/java
 testbin: target/test-classes
-javac.source: 1.7
-javac.target: 1.7
+javac.source: 1.8
+javac.target: 1.8

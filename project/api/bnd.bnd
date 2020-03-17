@@ -1,4 +1,4 @@
-Bundle-Version: 1.5.0
+Bundle-Version: 1.5.1
 Export-Package: org.genxdm;version=1.5,\
 	org.genxdm.axes;version=1.5,\
 	org.genxdm.compat;version=1.5,\
@@ -22,10 +22,10 @@ Export-Package: org.genxdm;version=1.5,\
 	org.genxdm.xs.resolve;version=1.5,\
 	org.genxdm.xs.types;version=1.5,\
 	org.genxdm.xs.generator;version=1.5
--runee: JavaSE-1.7
+-runee: JavaSE-1.8
 src: src/main/java
 bin: target/classes
 testsrc: src/test/java
 testbin: target/test-classes
-javac.source: 1.7
-javac.target: 1.7
+javac.source: 1.8
+javac.target: 1.8
