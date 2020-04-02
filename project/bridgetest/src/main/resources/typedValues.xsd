@@ -20,19 +20,86 @@
   </complexType>
   
   <complexType name="stringTypesContainerType">
+    <sequence>
+      <element name="stringElement" type="xs:string" />
+      <element name="normalizedStringElement" type="xs:normalizedString" />
+      <element name="tokenElement" type="xs:token" /><!-- nothing after this can be empty -->
+      <element name="languageElement" type="xs:language" />
+      <element name="NameElement" type="xs:Name" />
+      <element name="NCNameElement" type="xs:NCName" />
+      <!-- note that setting an element content to id or idref is pointless wanking.
+           it is, however, _*permitted*_ pointless wanking. *sigh* -->
+      <element name="IDElement" type="xs:ID" />
+      <element name="IDREFElement" type="xs:IDREF" />
+      <element name="NMTOKENElement" type="xs:NMTOKEN" />
+      <!-- oh fuck xs:entity for a lark -->
+      <!--element name="ENTITYElement" type="xs:ENTITY" /-->
+    </sequence>
   </complexType>
   
-  <complexType name="numericTypesContainerType">
+  <complexType name="numericTypesContainerType"><!-- none can be empty -->
+    <!--
+    float
+    double
+    decimal
+      integer
+        long
+          int
+            short
+              byte
+        nonNegativeInteger
+          positiveInteger
+          unsignedLong
+            unsignedInt
+              unsignedShort
+                unsignedByte
+        nonPositiveInteger
+          negativeInteger
+    -->
   </complexType>
   
-  <complexType name="dateTimeDurationTypesContainerType">
+  <complexType name="dateTimeDurationTypesContainerType"><!-- none can be empty -->
+    <!--
+    date
+    time
+    dateTime
+      dateTimeStamp [?????]
+    duration
+      dayTimeDuration
+      yearMonthDuration
+    gDay
+    gMonth
+    gMonthDay
+    gYear
+    gYearMonth
+    -->
   </complexType>
   
   <complexType name="miscellaneousTypesContainerType">
+    <sequence>
+      <!--
+      anyURI
+      base64Binary
+      boolean
+      hexBinary
+      NOTATION
+      QName
+      -->
+      <!-- see ENTITYElement above -->
+      <!--element name="NOTATIONElement" type="xs:NOTATION" /-->
+    </sequence>
   </complexType>
   
   <complexType name="containerOfEmptinessAndNothingType">
+    <sequence>
+      <element name="emptyString" type="xs:string" />
+      <element name="emptyNormalizedString" type="xs:normalizedString" />
+      <element name="emptyAnyURI" type="xs:anyURI" />
+    </sequence>
   </complexType>
+  
+  <!-- note that we also don't do anything with the three predefined list types:
+  ENTITIES, NMTOKENS, and IDREFS. see above, under xs:ENTITY for more -->
   
   <attributeGroup name="stringAttributes">
     <attribute name="aString" type="xs:string" use="required" />

@@ -43,26 +43,49 @@ public abstract class TypedModelBase<N, A>
     {
         TypedModel<N, A> model = typedContext.getModel();
         assertNotNull(validDocument);
+        N container = model.getFirstChildElement(validDocument);
+        assertNotNull(container);
     }
 
     @Test
     public void numericValues() // incl float double
     {
+        // TODO: not implemented. use the strings pattern, and implement
+        // in schema, instance, and test evaluation code
     }
 
     @Test
     public void dateTimeDurationValues() // incl gDayMate date time dateTime duration (+subtypes)
     {
+        // TODO: not implemented. use the strings pattern, and implement
+        // in schema, instance, and test evaluation code
     }
 
     @Test
     public void miscellaneousValues() // base64+hex binary, boolean, anyURI, QName, NOTATION
     {
+        // TODO: not implemented. use the strings pattern, and implement
+        // in schema, instance, and test evaluation code
     }
     
     @Test
     public void emptyValues() // do this separately, or no?
     {
+        TypedModel<N, A> model = typedContext.getModel();
+        assertNotNull(validDocument);
+        N container = model.getFirstChildElement(validDocument);
+        assertNotNull(container);
+        container = model.getFirstChildElementByName(container, NAMESPACE, EMPTY_CONTENT_CONTAINER);
+        assertNotNull(container);
+        N target = model.getFirstChildElement(container);
+        assertNotNull(target);
+        System.out.println("Element {"+model.getNamespaceURI(target)+"}"+model.getLocalName(target)+" has type: "+model.getTypeName(target)+", value=\""+model.getValue(target)+"\"");
+        target = model.getNextSiblingElement(target);
+        assertNotNull(target);
+        System.out.println("Element {"+model.getNamespaceURI(target)+"}"+model.getLocalName(target)+" has type: "+model.getTypeName(target)+", value=\""+model.getValue(target)+"\"");
+        target = model.getNextSiblingElement(target);
+        assertNotNull(target);
+        System.out.println("Element {"+model.getNamespaceURI(target)+"}"+model.getLocalName(target)+" has type: "+model.getTypeName(target)+", value=\""+model.getValue(target)+"\"");
     }
 
     protected InputStream getSchemaStream()
@@ -97,4 +120,9 @@ public abstract class TypedModelBase<N, A>
     
     private static final String SCHEMA_RESOURCE = "typedValues.xsd";
     private static final String INSTANCE_RESOURCE = "typedValues.xml";
+    private static final String NAMESPACE = "http://www.example.com/typedValues";
+    private static final String EMPTY_CONTENT_CONTAINER = "desert";
+    private static final String EMPTY_STRING_ELEMENT = "emptyString";
+    private static final String EMPTY_NORMALIZED_STRING_ELEMENT = "emptyNormalizedString";
+    private static final String EMPTY_ANY_URI = "emptyAnyURI";
 }

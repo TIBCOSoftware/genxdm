@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tv:root xmlns:tv="http://www.example.com/typedValues">
-  <tv:strings></tv:strings>
+  <tv:strings>
+    <tv:stringElement>The quick brown fox jumped over and over and over the hazy frog, right?</tv:stringElement>
+    <tv:normalizedStringElement> Are there  normal  forms for strings?</tv:normalizedStringElement>
+    <tv:tokenElement>Token</tv:tokenElement>
+    <tv:languageElement>en</tv:languageElement>
+    <tv:NameElement>Q:Name</tv:NameElement>
+    <tv:NCNameElement>NoQorCinThisName</tv:NCNameElement>
+    <tv:IDElement>id12</tv:IDElement>
+    <tv:IDREFElement>id12</tv:IDREFElement>
+    <tv:NMTOKENElement></tv:NMTOKENElement>
+  </tv:strings>
   <tv:numbers></tv:numbers>
   <tv:datesTimesDurations></tv:datesTimesDurations>
   <tv:miscellany></tv:miscellany>
-  <tv:desert></tv:desert>
+  <tv:desert>
+    <tv:emptyString></tv:emptyString>
+    <tv:emptyNormalizedString></tv:emptyNormalizedString>
+    <tv:emptyAnyURI></tv:emptyAnyURI>
+  </tv:desert>
 </tv:root>
