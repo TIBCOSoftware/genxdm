@@ -1,0 +1,43 @@
+<schema targetNamespace="http://www.example.com/typedValues"
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tv="http://www.example.com/typedValues"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+  <!-- note that almost nothing in this schema is optional, unless we're
+       testing types for emptiness. this isn't a remotely reasonable schema
+       for any practical use; it's for testing what the results of getValue()
+       are, primarily, but secondarily for some other TypedModel issues -->
+  <complexType name="documentElementType">
+    <sequence>
+      <element name="strings" type="tv:stringTypesContainerType" />
+      <element name="numbers" type="tv:numericTypesContainerType" />
+      <element name="datesTimesDurations" type="tv:dateTimeDurationTypesContainerType" />
+      <element name="miscellany" type="tv:miscellaneousTypesContainerType" />
+      <element name="desert" type="tv:containerOfEmptinessAndNothingType" />
+    </sequence>
+  </complexType>
+  
+  <complexType name="stringTypesContainerType">
+  </complexType>
+  
+  <complexType name="numericTypesContainerType">
+  </complexType>
+  
+  <complexType name="dateTimeDurationTypesContainerType">
+  </complexType>
+  
+  <complexType name="miscellaneousTypesContainerType">
+  </complexType>
+  
+  <complexType name="containerOfEmptinessAndNothingType">
+  </complexType>
+  
+  <attributeGroup name="stringAttributes">
+    <attribute name="aString" type="xs:string" use="required" />
+  </attributeGroup>
+  
+  <element name="root" type="tv:documentElementType" />
+
+</schema>

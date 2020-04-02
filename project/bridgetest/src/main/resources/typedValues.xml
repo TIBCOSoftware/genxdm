@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tv:root xmlns:tv="http://www.example.com/typedValues">
+  <tv:strings></tv:strings>
+  <tv:numbers></tv:numbers>
+  <tv:datesTimesDurations></tv:datesTimesDurations>
+  <tv:miscellany></tv:miscellany>
+  <tv:desert></tv:desert>
+</tv:root>

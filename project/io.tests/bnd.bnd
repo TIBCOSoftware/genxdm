@@ -3,7 +3,5 @@ Export-Package: org.genxdm.processor.io.tests;version=1.5
 -runee: JavaSE-1.8
 src: src/main/java
 bin: target/classes
-testsrc: src/test/java
-testbin: target/test-classes
 javac.source: 1.8
 javac.target: 1.8

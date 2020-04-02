@@ -375,6 +375,10 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     @Override
     public XmlAtom createStringDerived(final String initialValue, final NativeType nativeType)
     {
+        // a reasonable anti-optimization but user-friendly enhancement here
+        // would be this commented out conditional:
+//        if (nativeType == NativeType.STRING)
+//            return new XmlString(strval);
         if (initialValue != null)
         {
             PreCondition.assertNotNull(nativeType, "nativeType");

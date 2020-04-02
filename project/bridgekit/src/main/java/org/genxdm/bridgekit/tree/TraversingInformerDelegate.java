@@ -112,7 +112,6 @@ public class TraversingInformerDelegate extends InformerDelegate implements Trav
 
     @Override
     public Cursor newCursor() {
-        // TODO Auto-generated method stub
         return m_delegate.newCursor();
     }
 
