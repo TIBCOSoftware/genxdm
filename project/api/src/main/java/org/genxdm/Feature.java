@@ -31,6 +31,7 @@ public interface Feature
     
     // return true if Model.getIndex(N) is guaranteed to return non-null;
     // if false, then Model.getIndex(N) *always* returns null
+    /** @deprecated since 1.6.0 */
     static final String IN_TREE_INDEX = PREFIX + "in-tree-index";
     
     // return true if there is a mutable extension for this bridge.

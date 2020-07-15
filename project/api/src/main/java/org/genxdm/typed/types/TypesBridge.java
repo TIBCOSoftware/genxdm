@@ -360,10 +360,10 @@ public interface TypesBridge
     /**
      * Determines whether the actual type is a sub-type of the expected type.
      * 
-     * @param lhs
-     * @param rhs
+     * @param the target type to test
+     * @param the expected supertype
      */
-    boolean subtype(SequenceType lhs, SequenceType rhs);
+    boolean subtype(SequenceType actual, SequenceType expected);
 
     /**
      * Applies the text() test to the argument.

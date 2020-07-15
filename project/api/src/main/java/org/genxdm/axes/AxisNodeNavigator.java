@@ -88,7 +88,7 @@ public interface AxisNodeNavigator<N>
      *            The origin node; may not be null.
      * @return an iterable, which may be empty; never null.
      */
-    Iterable<N> getAncestorAxis(N node);
+    Iterable<N> getAncestorAxis(final N node);
 
     /**
      * Returns the nodes along the ancestor-or-self axis using the specified node as the origin.
@@ -97,7 +97,7 @@ public interface AxisNodeNavigator<N>
      *            The origin node; may not be null.
      * @return an iterable, which must contain at least one node; never null.
      */
-    Iterable<N> getAncestorOrSelfAxis(N node);
+    Iterable<N> getAncestorOrSelfAxis(final N node);
 
     /**
      * Returns the nodes along the attribute axis using the specified node as the origin.
@@ -115,7 +115,7 @@ public interface AxisNodeNavigator<N>
      * @return an iterable, which may be empty; never null.
      * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-attributes">XDM dm:attributes accessor</a>
      */
-    Iterable<N> getAttributeAxis(N node, boolean inherit);
+    Iterable<N> getAttributeAxis(final N node, final boolean inherit);
 
     /**
      * Returns the nodes along the child axis using the specified node as the origin.
@@ -131,7 +131,7 @@ public interface AxisNodeNavigator<N>
      * 
      * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-children">XDM dm:children accessor</a>
      */
-    Iterable<N> getChildAxis(N node);
+    Iterable<N> getChildAxis(final N node);
 
     /**
      * Returns all the child element along the child axis.
@@ -140,7 +140,7 @@ public interface AxisNodeNavigator<N>
      *            The origin node; may not be null.
      * @return an iterable, which may be empty; never null.
      */
-    Iterable<N> getChildElements(N node);
+    Iterable<N> getChildElements(final N node);
 
     /**
      * Returns all the child element along the child axis whose names match the arguments supplied.
@@ -153,7 +153,7 @@ public interface AxisNodeNavigator<N>
      *            The local-name to be matched.  If <code>null</code>, will match any local name.
      * @return an iterable, which may be empty; never null.
      */
-    Iterable<N> getChildElementsByName(N node, String namespaceURI, String localName);
+    Iterable<N> getChildElementsByName(final N node, final String namespaceURI, final String localName);
 
     /**
      * Returns the nodes along the descendant axis using the specified node as the origin.
@@ -162,7 +162,7 @@ public interface AxisNodeNavigator<N>
      *            The origin node; may not be null.
      * @return an iterable, which may be empty; never null.
      */
-    Iterable<N> getDescendantAxis(N node);
+    Iterable<N> getDescendantAxis(final N node);
 
     /**
      * Returns the nodes along the descendant-or-self axis using the specified node as the origin.
@@ -171,7 +171,7 @@ public interface AxisNodeNavigator<N>
      *            The origin node; may not be null.
      * @return an iterable, which must contain at least one node; never null.
      */
-    Iterable<N> getDescendantOrSelfAxis(N node);
+    Iterable<N> getDescendantOrSelfAxis(final N node);
 
     /**
      * Returns the nodes along the following axis using the specified node as the origin.
@@ -180,7 +180,7 @@ public interface AxisNodeNavigator<N>
      *            The origin node; may not be null.
      * @return an iterable, which may be empty; never null.
      */
-    Iterable<N> getFollowingAxis(N node);
+    Iterable<N> getFollowingAxis(final N node);
 
     /**
      * Returns the nodes along the following-sibling axis using the specified node as the origin.
@@ -189,7 +189,7 @@ public interface AxisNodeNavigator<N>
      *            The origin node; may not be null.
      * @return an iterable, which may be empty; never null.
      */
-    Iterable<N> getFollowingSiblingAxis(N node);
+    Iterable<N> getFollowingSiblingAxis(final N node);
 
     /**
      * Returns the nodes along the namespace axis using the specified node as the origin.
@@ -211,7 +211,7 @@ public interface AxisNodeNavigator<N>
      * @see <a href="http://www.w3.org/TR/xpath-datamodel/#acc-summ-namespace-nodes">XDM dm:namespace-nodes accessor</a>
      * @return an iterable, which may be empty; never null.
      */
-    Iterable<N> getNamespaceAxis(N node, boolean inherit);
+    Iterable<N> getNamespaceAxis(final N node, final boolean inherit);
 
     /**
      * Returns the nodes along the preceding axis using the specified node as the origin.
@@ -220,7 +220,7 @@ public interface AxisNodeNavigator<N>
      *            The origin node; may not be null.
      * @return an iterable, which may be empty; never null.
      */
-    Iterable<N> getPrecedingAxis(N node);
+    Iterable<N> getPrecedingAxis(final N node);
 
     /**
      * Returns the nodes along the preceding-sibling axis using the specified node as the origin.
@@ -229,6 +229,5 @@ public interface AxisNodeNavigator<N>
      *            The origin node; may not be null.
      * @return an iterable, which may be empty; never null.
      */
-    Iterable<N> getPrecedingSiblingAxis(N node);
-
+    Iterable<N> getPrecedingSiblingAxis(final N node);
 }

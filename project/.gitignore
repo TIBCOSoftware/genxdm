@@ -1,8 +1,5 @@
-/.gradle/
-/reports/
-/generated/
-/cnf/
-/site/
-/build.gradle
-/gradle.properties
-/settings.gradle
+reports/
+generated/
+cnf/
+site/
+target/

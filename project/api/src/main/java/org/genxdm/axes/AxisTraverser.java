@@ -15,7 +15,6 @@
  */
 package org.genxdm.axes;
 
-import org.genxdm.nodes.Informer;
 import org.genxdm.nodes.Traverser;
 
 /**
@@ -150,5 +149,4 @@ public interface AxisTraverser
      * @return  A Traverser for the axis.
      */
     Traverser traversePrecedingSiblingAxis();
-
 }

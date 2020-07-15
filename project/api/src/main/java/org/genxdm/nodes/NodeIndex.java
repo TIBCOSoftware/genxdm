@@ -37,6 +37,24 @@ package org.genxdm.nodes;
  * For cases that make heavy use of mixed content, it would be best to not
  * use this in-tree indexing optimization, but instead to accept the cost of
  * a pre-processing pass over the entire tree to assign indexes by node ID.
+ *
+ * NOTA BENE: deprecated, never implemented cleanly in any tree model. It
+ * turns out to be fundamentally incompatible with the mutable model's notion
+ * of out of order modification (particularly of insertion into a tree,
+ * which can require renumbering an entire tree, repeatedly, as each insertion
+ * happens: for the most-significant discovered intractable case, suppose that
+ * a tree containing thousands of nodes is updated with 'header' nodes in a
+ * subtree prepended to the 'body' subtree, and based on summary information
+ * collected as the tree was built; each time a new header node is added, the
+ * remainder of the tree must be renumbered, and this is true <em>even when
+ * the tree never passes through any of the XSLT constructs that are known to
+ * cause slowness in transformation</em>).
+ *
+ * Other approaches are more likely to be appropriate to solve the particular
+ * performance issues that NodeIndex was introduced to solve, so it is here
+ * marked as a misstep which is to be removed. DO NOT IMPLEMENT.
+ *
+ * @deprecated since 1.6.0
  */
 public interface NodeIndex
 {

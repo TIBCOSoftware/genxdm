@@ -102,6 +102,9 @@ public interface NodeInformer<N>
      * of more interest to processors that have to operate in-order than to
      * general node processing.
      *
+     * DO NOT USE: not implemented ever; was a misstep (the concept is fundamentally
+     * incompatible with the mutable model and out-of-order mutation of trees)
+     *
      * @param node The node for which the index is requested; may not be null.
      * @return a NodeIndex representing the index of the supplied node (for element
      *         and document nodes, with isParentIndex() returning false), or
@@ -109,6 +112,7 @@ public interface NodeInformer<N>
      *         returning true) for all other node kinds.
      *         Return value is strictly conditioned by feature support: either
      *         always null or never null.
+     * @deprecated since 1.6.0
      */
     NodeIndex getIndex(N node);
 

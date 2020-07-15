@@ -24,12 +24,13 @@ import org.genxdm.axes.AxisTraverser;
  * as well as the ability to get a new (and separate) {@link Cursor} to navigate to a new
  * location. 
  */
-public interface TraversingInformer extends AxisTraverser, Informer, Comparable<TraversingInformer> {
+public interface TraversingInformer extends AxisTraverser, Informer, Comparable<TraversingInformer> 
+{
 
     /**
      * Allow navigation of the tree where this informer is positioned.
      * 
-     * @return a Precursor positioned at the contained node.
+     * @return a Cursor positioned at the contained node.
      */
     Cursor newCursor();
 }
