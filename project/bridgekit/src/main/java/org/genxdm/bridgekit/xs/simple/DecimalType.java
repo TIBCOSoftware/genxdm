@@ -138,7 +138,7 @@ public final class DecimalType extends AbstractAtomType
     {
         try
         {
-            final String trimmed = scale(trim(initialValue), false, this);
+            final String trimmed = scale(trim(initialValue), this);
 
             if (0 == trimmed.length())
             {
@@ -160,8 +160,9 @@ public final class DecimalType extends AbstractAtomType
         return validate(initialValue, bridge);
     }
 
-    private static String scale(String value, boolean allowExponential, final SimpleType type) throws DatatypeException
+    private static String scale(String value, final SimpleType type) throws DatatypeException
     {
+        boolean allowExponential = DECIMAL_ALLOWS_EXPONENT;
         int exponential = value.indexOf('e');
         if (exponential < 0)
         {
@@ -209,4 +210,7 @@ public final class DecimalType extends AbstractAtomType
         }
         return value;
     }
+    
+    private static final String ALLOW_EXPONENT_PROPERTY = "genxdm.decimal.allow-exponent";
+    private static final boolean DECIMAL_ALLOWS_EXPONENT = Boolean.valueOf(System.getProperty(ALLOW_EXPONENT_PROPERTY, "false"));
 }
