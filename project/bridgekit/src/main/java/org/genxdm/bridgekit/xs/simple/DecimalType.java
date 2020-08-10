@@ -38,7 +38,7 @@ import org.genxdm.xs.types.SimpleType;
 
 public final class DecimalType extends AbstractAtomType
 {
-    private static boolean DECIMAL_ALLOWS_EXPONENT = false;
+    public static boolean DECIMAL_ALLOWS_EXPONENT = false;
     public DecimalType(final QName name, final SimpleType baseType)
     {
         super(name, baseType);
