@@ -174,11 +174,14 @@ public class XmlNodeMutator
 
     public void insertAttribute(final XmlNode element, final XmlNode attribute)
     {
-        PreCondition.assertNotNull(element, "element");
+// these preconditions are actually correct, but we're not going to use them        
+//        PreCondition.assertNotNull(element, "element");
         PreCondition.assertNotNull(attribute, "attribute");
-        PreCondition.assertTrue(element.getNodeKind() == NodeKind.ELEMENT, "target is element");
+//        PreCondition.assertTrue(element.getNodeKind() == NodeKind.ELEMENT, "target is element");
         PreCondition.assertTrue(attribute.getNodeKind() == NodeKind.ATTRIBUTE, "content is attribute");
-        ((XmlElementNode)element).setAttribute((XmlAttributeNode)attribute);
+        // if it's an element, do something; otherwise, quietly discard the attribute by taking no action
+        if (element.isElement())
+            ((XmlElementNode)element).setAttribute((XmlAttributeNode)attribute);
     }
 
     public void insertAttributes(final XmlNode element, final Iterable<XmlNode> attributes)

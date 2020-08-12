@@ -160,6 +160,7 @@ public abstract class AbstractNamespaceFixupHandler
         throws IOException
     {
         PreCondition.assertNotNull(getOutputHandler());
+        reconcile();
         getOutputHandler().flush();
     }
 
