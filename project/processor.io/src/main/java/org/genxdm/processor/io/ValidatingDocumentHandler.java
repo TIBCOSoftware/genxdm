@@ -117,7 +117,9 @@ public class ValidatingDocumentHandler<N, A>
             // TODO
 //            reader.setErrorHandler(new ErrorHandlerToXMLReporterAdapter(reporter));
             reader.parse(source);
-            return builder.getNode();
+            N result = builder.getNode();
+            builder.reset();
+            return result;
         } 
         catch (SAXException saxy)
         {

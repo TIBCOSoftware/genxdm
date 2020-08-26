@@ -206,7 +206,10 @@ public class DefaultDocumentHandler<N>
                 builder.reset();
             throw xme;
         }
-        return fb.getNode();
+        N result = fb.getNode();
+        if (context != null) // we're using thread-local builders
+            fb.reset(); // make the builder forget already. we don't do this when it's the member builder
+        return result;
     }
     
     private void initIPF()
