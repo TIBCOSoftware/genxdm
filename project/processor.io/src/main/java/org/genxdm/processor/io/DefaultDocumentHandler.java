@@ -206,7 +206,12 @@ public class DefaultDocumentHandler<N>
                 builder.reset();
             throw xme;
         }
-        return fb.getNode();
+        // fixes the OOM due to multiple threads keeping handles on parsed
+        // documents, even after the caller has discarded their reference.
+        N result = fb.getNode();
+        if (context != null) // we're using thread-local builders
+            fb.reset(); // make the builder forget already. we don't do this when it's the member builder
+        return result;
     }
     
     private void initIPF()
