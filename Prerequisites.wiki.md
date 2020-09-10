@@ -1,42 +1,48 @@
 # Command Line
 
-Short version: Maven 2, JDK 1.6, and everything should Just Work.
+Updated September 2020.
 
-Longer version: actually, if those prerequisites are met, then everything really should just work. You need the 1.6 JDK and maven 2 (maven 3 is not good; at last check it had a broken documentation cycle).
+The preferred development environment uses JDK 1.8 (or a later version
+configured as 1.8 source/binary), with the Eclipse IDE, configured to support
+both git and the internal version control environment (known to be subversion
+for some committers), plus the BndTools plugin to handle OSGi-ness.
+
+Up to version 1.5.0, we used JDK 1.7 max. At 1.5.1, we transitioned to 1.8.
+
+Note that you _must_ do a command line build (mvn clean install) before
+any commits. The project is defined in terms of the command line tools;
+this information on developing with an IDE is helpful, not required.
 
 # Eclipse
 
-Short version: Eclipse 3.7, Maven2Eclipse, Subversive, BndTools.
-
-## Missing 'generated' directory
-
-On first build in a clean environment (after going through all the stuff below), you may see errors for a missing 'generated' directory in multiple bundles. Restarting Eclipse seems to solve this.
-
-## Installation
-
-M2e and Subversive are available from the Eclipse repository.
-
-BndTools [installation instructions](http://bndtools.org/installation.html).
-
-After installing the necessary bits, make sure that you have a connector for subversion (best way: open svn repo browsing perspective and add the genxdm repo location--this will insure that projects are automatically associated, with no further effort on your part).
-
-## Configuring BndTools
-
-Do this after you have all of the necessary plugins (m2e, subversive, bndtools) installed), but before importing maven projects. You'll have already selected your workspace location. You already have the code checked out.
-
-  * Open Eclipse
-  * Select 'Preferences' from the appropriate menu (OS-dependent: OS X application menu; Windows Edit menu)
-  * Select 'BndTools OSGi'
-  * Accept the default radio button (create configuration), and click 'Next'
-  * Accept the default configuration (standard) and click 'Finish'
-    * You will return to the preferences dialog, and a project called 'cnf' has been created in the workspace
-  * Click 'OK' to dismiss the preferences dialog
-  * This is the weird part: highlight the cnf project and right-click. The context menu appears
-    * Select 'Refactor|Move'
-    * Browse to the location of the checked-out working copy; move cnf inside the 'project' directory (you may have to create a new folder named cnf in order to make this work, oddly; it wants to move the contents of cnf, not the directory itself)
+Use Eclipse 4.7.3. It's tested/working. Install, but _do not_ do an update
+of the software (as soon as you do that, it stops being 4.7.3 and everything
+goes sideways). We prefer 4.7.3 because it's the most recent version that
+supports our plugin set. Once you've got Eclipse running, install m2eclipse
+and Subversive, from the "install new software" menu. Both are part of the
+Eclipse release for Oxygen (4.7). Add a new site, named BndTools, and give
+it the backlevel (but works with 4.7) URL: https://dl.bintray.com/bndtools/bndtools/4.0.0/
+Then install all three BndTools components. Also, make sure that you
+have a connector for subversion.
 
 That's it. Now import your maven projects.
 
+Note: in my installation, at least, if "Build Automatically" is on in 4.7.3,
+it builds continuously, starting a new build as soon as the old one completes.
+If that happens to you, disable it, and build when you make changes.
+
 ## Importing Projects
 
-Easy. Select File|Import, choose the maven section, and select import existing maven projects. Browse to the 'project' directory. The whole set of related poms will be discovered (and automatically selected). Accept the selection, and wait for the initial build to complete.
+Easy. Select File|Import, choose the maven section, and select import existing 
+maven projects. Browse to the 'project' directory. The whole set of related 
+poms will be discovered (and automatically selected). Accept the selection, and 
+wait for the initial build to complete.
+
+## Note
+
+You can use any development environment you like, so long as the result is
+able to build in maven 3 using the supplied pom.xml (and bnd.bnd for OSGi
+metadata). Eclipse is preferred because it's what we've used, successfully,
+and we know how it works with our code. Likewise the m2e, git, subversion,
+and bndtools plugins. But if your code works in Eclipse, not at the command
+line, don't check it in. It must build at the command line to be accepted.

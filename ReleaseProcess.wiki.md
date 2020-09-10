@@ -17,3 +17,9 @@ So that we do this consistently, this page captures the process whereby we do a 
   * Upload the zips and tarballs of code and source to GoogleCode, removing the earliest deprecated build and deprecating the earliest undeprecated build
   * Send out an email announcing the release
   * Post an announcement to the [wiki](http://genxdm.wordpress.com/)
+
+# Note
+
+This release process has been a dead letter for a while. Since it's been a
+one-person show for several years, it's a lot less formal, and happens
+whenever.

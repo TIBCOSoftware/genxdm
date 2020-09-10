@@ -1,5 +1,9 @@
 # Summary
 
+September 2020: ignore this. It records what happened quite a while ago as
+we adopted tools to help us integrate maven and Eclipse into an OSGi-targeting
+environment. The Prerequisites page has more current information.
+
 Update: this is wrong, and needs revision. On the list. We'll change this to
 be 'using the tools' and 'best practices', prolly.
 

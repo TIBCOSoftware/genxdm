@@ -29,7 +29,3 @@ most cases, different 'supported' tree models have different support profiles, d
 If you'd like to use it in a maven build environment, add this repository:
 [http://www.genxdm.org/maven2/])http://www.genxdm.org/maven2/)
 
-## Other Links
-
-TBD. We're working on the transfer of functionality from googlecode, but it isn't as obvious as it could be
-as to which bits get moved automatically and how to make github work best for us.

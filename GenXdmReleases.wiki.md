@@ -1,5 +1,9 @@
 # Releases
 
+Note that this list stopped being updated at least eight year ago (as of
+September, 2020), by which time the project as a whole was specifying itself
+at version 1.6.0.
+
 This is an informal list of releases, with information about each.  The list
 of releases is below; informal discussion of each appears in reverse
 chronological order, probably with detail increasing as the project matures.

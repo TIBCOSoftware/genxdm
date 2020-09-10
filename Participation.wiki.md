@@ -1,5 +1,9 @@
 # Participation: Policies and Processes
 
+NOTA BENE: this was all true up until about 2012, at which point we dropped
+to two committers and did everything by email. In 2016, it dropped to a
+single committer/maintainer and became perhaps even more whimsical.
+
 The GenXDM project follows, insofar as it is able outside the incubator, the
 policies and processes of the Apache organization.  Everything happens openly,
 on the mailing list.  Decisions are made there, either by consensus or by
