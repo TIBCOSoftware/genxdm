@@ -26,7 +26,7 @@
     <groupId>org.genxdm</groupId>
     <artifactId>project</artifactId>
     <packaging>pom</packaging>
-    <version>1.6.0</version>
+    <version>1.7.0</version>
     
     <name>GenXDM</name>
     <url>http://www.genxdm.org/</url>
@@ -73,10 +73,10 @@
             <id>joe.baysdon@gmail.com</id>
             <name>Joe Baysdon</name>
         </developer-->
-        <developer>
+        <!--developer>
             <id>eric@tibco.com</id>
             <name>Eric Johnson</name>
-        </developer>
+        </developer-->
     </developers>
 
     <!--contributors>

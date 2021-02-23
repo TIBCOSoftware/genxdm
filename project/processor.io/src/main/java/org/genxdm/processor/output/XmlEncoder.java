@@ -91,6 +91,11 @@ public final class XmlEncoder
                     case '\r' :
                         entity = CR_ENT;
                         break;
+                    case '\n': // should be preserved in CDATA (attributes) when not collapsed.
+                        if (!isPCData)
+                            entity = NL_ENT;
+                        break;
+                        // otherwise no-op
                     // the next two handle single and double quote in CDATA (attributes)
                     case '\'' :
                         if (!isPCData)
@@ -309,6 +314,7 @@ public final class XmlEncoder
     private static final String APOS_ENT = "&apos;";
     private static final String QUOT_ENT = "&quot;";
     private static final String CR_ENT = "&#xD;";
+    private static final String NL_ENT = "&#xA;";
     private static final char[] digits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
     
     private StringBuilder builder = new StringBuilder();
