@@ -45,12 +45,12 @@
         <dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>xpath.v10</artifactId>
-            <version>[1.6,2)</version>
+            <version>[1.6,1.6.1)</version>
         </dependency>
         <dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>bridgekit</artifactId>
-            <version>[1.6,2)</version>
+            <version>[1.6,1.6.1)</version>
         </dependency>
     </dependencies>
     <build>
