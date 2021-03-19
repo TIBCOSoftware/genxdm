@@ -220,6 +220,16 @@ public final class NumericSupport
     {
         return compressNumberString(number.toPlainString());
     }
+    
+    public static String formatDoubleC14NForm(final Double dblval, boolean minimize)
+    {
+    	String doubleString = formatDoubleC14N(dblval);
+    	if(minimize && !(dblval <= -1000000 || dblval >= 1000000 || (dblval > 0 && dblval < 0.000001) || (dblval < 0 && dblval > -0.000001)))
+    	{
+    		doubleString = compressNumberString(doubleString);
+    	}
+    	return doubleString;
+    }
 
     public static String formatDoubleC14N(final double dblval)
     {

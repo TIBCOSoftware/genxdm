@@ -37,6 +37,16 @@ public final class BridgeConfiguration
         m_omitDecimal = flag;
     }
     
+    public boolean getMinimizeDouble() 
+    {
+    	return m_minimizeDouble;
+    }
+    
+    public void setMinimizeDouble(boolean m_minimizeDouble) {
+    	this.m_minimizeDouble = m_minimizeDouble;
+    }
+    
     private boolean m_decodeBase64;
     private boolean m_omitDecimal;
+    private boolean m_minimizeDouble;
 }
