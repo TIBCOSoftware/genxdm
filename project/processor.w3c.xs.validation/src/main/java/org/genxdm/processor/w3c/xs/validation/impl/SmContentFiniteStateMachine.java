@@ -15,6 +15,8 @@
  */
 package org.genxdm.processor.w3c.xs.validation.impl;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.genxdm.xs.components.ElementDefinition;
@@ -27,7 +29,7 @@ interface SmContentFiniteStateMachine
 {
 	/**
 	 * Steps the state machine upon completion of all elements.
-	 * 
+	 *
 	 * @return <code>true</code> if no more elements are expected.
 	 */
 	boolean end();
@@ -54,10 +56,17 @@ interface SmContentFiniteStateMachine
 
 	/**
 	 * Steps the state machine upon arrival of an element with the specified name.
-	 * 
+	 *
 	 * @param name
 	 *            The name of the element.
 	 * @return <code>true</code> if a transition exists for the element.
 	 */
 	boolean step(QName name);
+
+	/**
+	 * Returns list of QNames of terms that are of type ValidationExpr that follow a token
+	 * after it has failed to match against any pattern in the State machine.
+	 * Returns an empty List if no term follows the unmatched token
+	 */
+	<E> List<QName> getFollowers();
 }
