@@ -15,12 +15,15 @@
  */
 package org.genxdm.processor.w3c.xs.validation.impl;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.regex.api.RegExMachine;
+import org.genxdm.processor.w3c.xs.regex.api.RegExMachineWithFollowers;
 import org.genxdm.xs.components.ElementDefinition;
 import org.genxdm.xs.components.ParticleTerm;
 import org.genxdm.xs.components.SchemaWildcard;
@@ -56,15 +59,15 @@ final class SmMachineImpl implements SmContentFiniteStateMachine
 		{
 			final ValidationExpr expr = m_matchers.get(0);
 			ParticleTerm firstMatch = expr.getParticleTerm();
-			
-			// The XML Schema 1.1. specification does not consider it an error if an element particle and a wildcard particle 
+
+			// The XML Schema 1.1. specification does not consider it an error if an element particle and a wildcard particle
 	        // both match.  In that case, the element particle is preferred.  See http://www.w3.org/TR/xmlschema11-1/#cos-nonambig.
 			// Here's the relevant text from the spec: <br>
-	        //    Note: Content models in which an ·element particle· and a ·wildcard particle· ·compete· with each other are not prohibited. 
-	        //    In such cases, the Element Declaration is chosen; see the definitions of ·attribution· and ·validation-path·. 
+	        //    Note: Content models in which an ·element particle· and a ·wildcard particle· ·compete· with each other are not prohibited.
+	        //    In such cases, the Element Declaration is chosen; see the definitions of ·attribution· and ·validation-path·.
 	        //
 	        // Note that this is different behavior than that specified in the 1.0 specification: http://www.w3.org/TR/xmlschema-1/#non-ambig.
-			
+
 			// If first match is a wildcard, and another non-wildcard match exists, return the non-wildcard.
 			if(size > 1 && firstMatch instanceof SchemaWildcard)
 			{
@@ -136,6 +139,31 @@ final class SmMachineImpl implements SmContentFiniteStateMachine
 			}
 		}
 		return stepped;
+	}
+
+	public List<QName> getFollowers()
+	{
+
+		 List<QName> allExpectedQNames = new ArrayList<QName>();
+		 if(m_regexm instanceof RegExMachineWithFollowers<?,?>)
+		 {
+			 RegExMachineWithFollowers<ValidationExpr, QName> rexWithFollowers = (RegExMachineWithFollowers<ValidationExpr, QName>)m_regexm;
+			 List<ValidationExpr> expectedParticleElemList = rexWithFollowers.getFollowers();
+			 if (expectedParticleElemList !=null && !expectedParticleElemList.isEmpty())
+			 {
+				 for(ValidationExpr singleExpr : expectedParticleElemList)
+				 {
+					 if(singleExpr instanceof ParticleElementExpression)
+					 {
+						 ParticleElementExpression singleParticle = (ParticleElementExpression) singleExpr;
+						 ElementDefinition particleTerm = null;
+						 if ((particleTerm = singleParticle.getParticleTerm()) != null)
+							 allExpectedQNames.add(particleTerm.getName());
+					 }
+				 }
+			 }
+		 }
+		 return allExpectedQNames;
 	}
 
 	@Override

@@ -15,6 +15,8 @@
  */
 package org.genxdm.processor.w3c.xs.exception.sm;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.genxdm.exceptions.PreCondition;
@@ -24,11 +26,18 @@ import org.genxdm.xs.resolve.LocationInSchema;
 public final class SmUnexpectedElementException extends SmComplexTypeException
 {
     private final QName m_childName;
+    private List<QName> expectedElementsList;
 
     public SmUnexpectedElementException(final QName elementName, final LocationInSchema location, final QName childName, final LocationInSchema childLocation)
     {
         super(PART_CONTENT_TYPE_AND_CHILD_SEQUENCE, elementName, location);
         m_childName = PreCondition.assertArgumentNotNull(childName, "childName");
+    }
+
+    public SmUnexpectedElementException(final QName elementName, final LocationInSchema location, final QName childName, final LocationInSchema childLocation, List<QName> expectedElementsList)
+    {
+    	this(elementName, location, childName, childLocation);
+        this.expectedElementsList = expectedElementsList;
     }
 
     public QName getChildName()
@@ -39,7 +48,48 @@ public final class SmUnexpectedElementException extends SmComplexTypeException
     @Override
     public String getMessage()
     {
-        return "Unexpected element sequence, got '" + m_childName + "' in " + getElementName() + ".";
+    	String errMessage = "Unexpected element sequence, got '" + m_childName + "' in " + getElementName() + ". ";
+    	return errMessage += getExpectedElementMessage();
+    }
+
+    private String getExpectedElementMessage()
+    {
+    	if(this.expectedElementsList == null)
+    		return "";
+    	int expectedListSize;
+    	String expected = "";
+    	if((expectedListSize = this.expectedElementsList.size()) > 0)
+    	{
+    		if(expectedListSize > 1)
+    		{
+    			StringBuilder sb = new StringBuilder();
+    			sb.append("One of ");
+    			int ctr = expectedListSize-1;
+    			while(ctr > 0)
+    			{
+    				QName current = this.expectedElementsList.get(ctr);
+    				sb.append("'");
+    				sb.append(current);
+    				sb.append("', ");
+    				ctr--;
+    			}
+    			sb.append("'");
+    			sb.append(this.expectedElementsList.get(0));
+    			sb.append("' is expected");
+    			expected = sb.toString();
+    		}
+    		else
+    			expected = "'"+this.expectedElementsList.get(0)+"' is expected.";
+    	}
+    	/** AMBW-41937 : expectedElementsList will not be null while
+    	 * throwing out exception from validator. However, Schema parser
+    	 * uses this exception too. However, we are not changing its
+    	 * behavior for this fix. Need to continue to work as before.
+    	 * Hence this following check.
+    	 */
+    	else
+    		expected = "No child element is expected at this point.";
+    	return expected;
     }
 
     public boolean equals(final Object obj)
