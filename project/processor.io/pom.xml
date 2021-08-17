@@ -42,7 +42,7 @@
     <dependencies>
         <dependency>
             <groupId>org.genxdm</groupId>
-            <artifactId>api</artifactId>
+            <artifactId>bridgekit</artifactId>
             <version>[1.7,2)</version>
         </dependency>
     </dependencies>
