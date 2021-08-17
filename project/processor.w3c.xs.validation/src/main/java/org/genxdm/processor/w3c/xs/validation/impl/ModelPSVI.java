@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -243,8 +242,7 @@ final class ModelPSVI implements VxPSVI, Locatable
 								}
 								else
 								{
-									List<QName> expectedElementsName = m_machine.getFollowers();
-									errors.error(new SmUnexpectedElementException(getName(), getLocation(), childName, childLocatable.getLocation(), expectedElementsName));
+									errors.error(new SmUnexpectedElementException(getName(), getLocation(), childName, childLocatable.getLocation()));
 									m_suspendChecking = true;
 									return false;
 								}
@@ -255,8 +253,7 @@ final class ModelPSVI implements VxPSVI, Locatable
 								{
 									case Strict:
 									{
-										List<QName> expectedElementsName = m_machine.getFollowers();
-										errors.error(new SmUnexpectedElementException(getName(), getLocation(), childName, childLocatable.getLocation(), expectedElementsName));
+										errors.error(new SmUnexpectedElementException(getName(), getLocation(), childName, childLocatable.getLocation()));
 										m_suspendChecking = true;
 									}
 									default:
@@ -324,8 +321,7 @@ final class ModelPSVI implements VxPSVI, Locatable
 			{
 				if (!m_machine.end())
 				{
-					List<QName> expectedElementsName = m_machine.getFollowers();
-					errors.error(new SmUnexpectedEndException(getName(), getLocation(), expectedElementsName));
+					errors.error(new SmUnexpectedEndException(getName(), getLocation()));
 				}
 			}
 		}

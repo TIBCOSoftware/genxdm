@@ -19,7 +19,7 @@ package org.genxdm.bridgekit.atoms;
  * Encoding and decoding in base 16.
  *
  */
-public final class HexBinarySupport
+final class HexBinarySupport
 {
     // TODO: add decode: see HexCodec in ../xs/simple/
     public static String encodeHex(final byte[] values)

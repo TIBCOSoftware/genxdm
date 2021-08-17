@@ -206,7 +206,7 @@ public class ContentHandlerOnXmlStreamWriter
         }
     }
     
-    protected void flushPending()
+    private void flushPending()
         throws GenXDMException
     {
         // TODO: we might consider variations on a theme, with writeEmptyElement
@@ -504,7 +504,7 @@ public class ContentHandlerOnXmlStreamWriter
         private Map<String, String> content = new HashMap<String, String>();
     }
 
-    protected final XMLStreamWriter output;
+    private final XMLStreamWriter output;
 
     /**
      * State variables for the cached element, its namespaces and attributes.
