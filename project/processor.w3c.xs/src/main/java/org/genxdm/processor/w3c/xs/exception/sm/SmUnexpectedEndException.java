@@ -15,6 +15,8 @@
  */
 package org.genxdm.processor.w3c.xs.exception.sm;
 
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.genxdm.xs.resolve.LocationInSchema;
@@ -22,9 +24,17 @@ import org.genxdm.xs.resolve.LocationInSchema;
 @SuppressWarnings("serial")
 public final class SmUnexpectedEndException extends SmComplexTypeException
 {
-    public SmUnexpectedEndException(final QName elementName, final LocationInSchema location)
+	private List<QName> expectedElementsList;
+
+	public SmUnexpectedEndException(final QName elementName, final LocationInSchema location)
     {
         super(PART_CONTENT_TYPE_AND_CHILD_SEQUENCE, elementName, location);
+    }
+
+    public SmUnexpectedEndException(final QName elementName, final LocationInSchema location, List<QName> expectedElementsList)
+    {
+        super(PART_CONTENT_TYPE_AND_CHILD_SEQUENCE, elementName, location);
+        this.expectedElementsList = expectedElementsList;
     }
 
     @Override
@@ -38,6 +48,40 @@ public final class SmUnexpectedEndException extends SmComplexTypeException
         message.append(getPartNumber());
         message.append(": ");
         message.append(localMessage);
+        message.append(getExpectedElementMessage());
         return message.toString();
+    }
+
+    private String getExpectedElementMessage()
+    {
+    	if(this.expectedElementsList == null)
+    		return "";
+    	int expectedListSize;
+    	String expected = "";
+    	if(this.expectedElementsList != null &&  (expectedListSize = this.expectedElementsList.size()) > 0)
+    	{
+    		if(expectedListSize > 1)
+    		{
+    			StringBuilder sb = new StringBuilder();
+    			sb.append(" One of ");
+    			int ctr = expectedListSize-1;
+    			while(ctr > 0)
+    			{
+    				QName current = this.expectedElementsList.get(ctr);
+    				 sb.append("'");
+    				 sb.append(current);
+    				 sb.append("', ");
+    				 ctr--;
+    			}
+    			sb.append("'");
+    			sb.append(this.expectedElementsList.get(0));
+    			sb.append("'");
+    			sb.append(" is expected");
+    			expected = sb.toString();
+    		}
+    		else
+    			expected = "'"+this.expectedElementsList.get(0)+"' is expected.";
+    	}
+    	return expected;
     }
 }

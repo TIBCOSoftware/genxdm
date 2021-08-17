@@ -21,18 +21,18 @@ import java.util.List;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.regex.api.RegExBridge;
-import org.genxdm.processor.w3c.xs.regex.api.RegExMachine;
+import org.genxdm.processor.w3c.xs.regex.api.RegExMachineWithFollowers;
 
 
 /**
  * Pattern internal class for matching input against a state machine one input token at a time. <br/>
  * This class simulates the NFA.
  */
-final class NfaStepper<E, T> implements RegExMachine<E, T>
+final class NfaStepper<E, T> implements RegExMachineWithFollowers<E, T>
 {
 	// The current list of states that the NFA is in...
 	private ArrayDeque<NfaMatchState<E>> m_clist = new ArrayDeque<NfaMatchState<E>>();
-	
+
 
 	// Use of MARKER and getMarker() is so that we can have a marker other than "null" to use
 	// with ArrayDeque which doesn't allow nulls.
@@ -49,7 +49,7 @@ final class NfaStepper<E, T> implements RegExMachine<E, T>
 	protected static final <T> NfaMatchState<T> getMarker() {
 		return (NfaMatchState<T>)MARKER;
 	}
-	
+
 	final private NfaMatchState<E> m_marker = getMarker();
 	private List<E> m_followers;
 	private RegExBridge<E, T> m_bridge;
@@ -59,7 +59,7 @@ final class NfaStepper<E, T> implements RegExMachine<E, T>
 
 	/**
 	 * Creates a stepper and supplies a place to put follower terms.
-	 * 
+	 *
 	 * @param start
 	 *            the initial state of a state machine to step through
 	 * @param followers
@@ -74,9 +74,20 @@ final class NfaStepper<E, T> implements RegExMachine<E, T>
 	}
 
 	/**
+	 * Returns list of terms that follow the token being processed
+	 * by the RegEx machine of the finite state machine. That is,
+	 * it returns a snapshot of the finite state machine when this
+	 * method is called upon.
+	 */
+	public List<E> getFollowers()
+	{
+		return this.m_followers;
+	}
+
+	/**
 	 * Processes the given token with the state machine. if token is null, then we are at the end of input, and so make
 	 * sure the state machine is in an end state
-	 * 
+	 *
 	 * @param token
 	 *            an input token or null
 	 * @param matchers
@@ -214,7 +225,7 @@ final class NfaStepper<E, T> implements RegExMachine<E, T>
 	 * sure the state machine is in an end state
 	 * <p/>
 	 * Special case for handling the "all" content model type.
-	 * 
+	 *
 	 * @param token
 	 *            an input token or null
 	 * @param matchers
