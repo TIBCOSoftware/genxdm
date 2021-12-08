@@ -29,3 +29,5 @@ most cases, different 'supported' tree models have different support profiles, d
 If you'd like to use it in a maven build environment, add this repository:
 [http://www.genxdm.org/maven2/])http://www.genxdm.org/maven2/)
 
+Note: that repository is no longer available.
+
