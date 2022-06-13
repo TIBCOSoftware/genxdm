@@ -68,7 +68,7 @@ public class CursorOnTypedModel<N, A>
     public void write(SequenceHandler<A> handler, boolean bogus)
         throws GenXDMException
     {
-        tmodel.stream(node, handler);
+        tmodel.stream(node, handler, bogus);
     }
 
     private final TypedModel<N, A> tmodel;

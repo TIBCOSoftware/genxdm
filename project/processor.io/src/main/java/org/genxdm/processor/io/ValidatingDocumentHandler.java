@@ -33,12 +33,13 @@ import org.genxdm.typed.ValidatorFactory;
 import org.genxdm.typed.io.SAXValidator;
 import org.genxdm.typed.io.SequenceBuilder;
 import org.genxdm.typed.io.TypedDocumentHandler;
+import org.genxdm.typed.types.AtomBridge;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 public class ValidatingDocumentHandler<N, A>
-    extends DefaultSerializer<N>
+    extends TypeAwareSerializer<N, A>
     implements TypedDocumentHandler<N, A>
 {
 
@@ -47,7 +48,7 @@ public class ValidatingDocumentHandler<N, A>
      */
     public ValidatingDocumentHandler(final TypedContext<N, A> typedContext, final SAXValidator<A> validator, final XMLReporter rep, final Resolver res)
     {
-        super(PreCondition.assertNotNull(typedContext, "context").getModel());
+        super(null, PreCondition.assertNotNull(typedContext, "context").getModel(), typedContext.getAtomBridge());
         context = typedContext;
         resolver = res;
         reporter = rep;
@@ -60,7 +61,7 @@ public class ValidatingDocumentHandler<N, A>
     
     public ValidatingDocumentHandler(final TypedContext<N, A> typedContext, final ValidatorFactory<A> factory, final XMLReporter rep, final Resolver res)
     {
-        super(PreCondition.assertNotNull(typedContext, "context").getModel());
+        super(null, PreCondition.assertNotNull(typedContext, "context").getModel(), typedContext.getAtomBridge());
         context = typedContext;
         resolver = res;
         reporter = rep;
