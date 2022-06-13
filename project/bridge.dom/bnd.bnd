@@ -1,6 +1,6 @@
-Bundle-Version: 1.7.0
-Export-Package: org.genxdm.bridge.dom;version=1.7,\
-	org.genxdm.bridge.dom.enhanced;version=1.7
+Bundle-Version: 1.8.0
+Export-Package: org.genxdm.bridge.dom;version=1.8,\
+	org.genxdm.bridge.dom.enhanced;version=1.8
 -runee: JavaSE-1.8
 src: src/main/java
 bin: target/classes

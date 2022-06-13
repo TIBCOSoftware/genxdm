@@ -1,7 +1,7 @@
-Bundle-Version: 1.7.0
+Bundle-Version: 1.8.0
 Private-Package: org.genxdm.processor.w3c.xs.validation.impl
-Export-Package: org.genxdm.processor.w3c.xs.validation;version=1.7,\
-	org.genxdm.processor.w3c.xs.validation.api;version=1.7
+Export-Package: org.genxdm.processor.w3c.xs.validation;version=1.8,\
+	org.genxdm.processor.w3c.xs.validation.api;version=1.8
 -runee: JavaSE-1.8
 src: src/main/java
 bin: target/classes
