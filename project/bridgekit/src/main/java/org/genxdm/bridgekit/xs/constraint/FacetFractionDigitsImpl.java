@@ -15,6 +15,7 @@
  */
 package org.genxdm.bridgekit.xs.constraint;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.genxdm.typed.types.AtomBridge;
@@ -66,27 +67,26 @@ public final class FacetFractionDigitsImpl extends FacetImpl implements Fraction
         }
         else if (nativeType.isDecimal())
         {
-            final String s = atomBridge.getC14NForm(atom);
-            if (s.endsWith(".0"))
-            {
-                return 0;
-            }
-            else
-            {
-                final int decimalPoint = s.indexOf('.');
-                if (decimalPoint >= 0)
-                {
-                    return s.length() - decimalPoint - 1;
-                }
-                else
-                {
-                    throw new AssertionError(nativeType);
-                }
-            }
+            // old style used canonicalization then measured the string length after '.'
+            // this means we have to care about variant presentation (which happens).
+            // use scale instead, but do some dancing to make BD.scale() work properly.
+            BigDecimal value = atomBridge.getDecimal(atom);
+            // get the remainder after division by 1.0 to strip out the whole-number portion,
+            // leaving only the fraction. bigdecimal preserves scale, though, so that new
+            // bigdecimal has the same scale as the old, but while stripping zeros from the
+            // original feels risky, stripping trailing zeros from 0.fractionalpart000000 is
+            // quite safe, and gives correct results for 0, 1.0, 123456789.0, 1.00000,
+            // and 100.012345000 100.01234500000 (the line above: 0, this line: 6).
+            int scale = value.remainder(BigDecimal.ONE).stripTrailingZeros().scale();
+            if (scale >= 0)
+                return scale;
+            return 0; // if it's negative, the stored (integral) value is multiplied by 10*abs(scale)
+            // no assertions allowed here: it's either a decimal that has a value, which is legal, or
+            // we aren't inside this bloc.
         }
         else
         {
-            throw new AssertionError(nativeType);
+            throw new AssertionError(nativeType); // fractionDigits is only legal for these two types.
         }
     }
 }

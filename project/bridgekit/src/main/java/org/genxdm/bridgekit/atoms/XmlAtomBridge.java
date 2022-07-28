@@ -52,7 +52,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
         {
             flag_decodeBase64 = config.getDecodeBase64FromStringUntyped();
             flag_omitDecimal = config.getOmitDecimalPoint();
-			flag_minimizeDouble = config.getMinimizeDouble();
+            flag_minimizeDouble = config.getMinimizeDouble();
         }
     }
 
@@ -1072,7 +1072,7 @@ public final class XmlAtomBridge implements AtomBridge<XmlAtom>
     // to getBase64Binary(); try to decode the string as base64 (creates a new copy each time!)
     private boolean flag_decodeBase64;
     
-	// This flag when set gives the string format for double without exponentiation,
+    // This flag when set gives the string format for double without exponentiation,
     // except when the number is less or greater than -1000000 , 1000000 or between -0.000001 and 0.000001
     // When not set (set to false) the output is in exponential form irrespective of range or value
     public boolean flag_minimizeDouble;
