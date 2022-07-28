@@ -80,7 +80,7 @@ public final class FacetFractionDigitsImpl extends FacetImpl implements Fraction
             int scale = value.remainder(BigDecimal.ONE).stripTrailingZeros().scale();
             if (scale >= 0)
                 return scale;
-            return 0; // if it's negative, the stored (integral) value is multiplied by 10*abs(scale)
+            return 0; // if scale is negative, we can ignore it (it's xyz0000.0 or so).
             // no assertions allowed here: it's either a decimal that has a value, which is legal, or
             // we aren't inside this bloc.
         }
