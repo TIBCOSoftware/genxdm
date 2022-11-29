@@ -43,7 +43,8 @@
         <dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>processor.w3c.xs</artifactId>
-            <version>[1.8,2)</version>
+            <!-- <version>[1.8,2)</version> -->
+            <version>1.8.0</version>
         </dependency>
     </dependencies>
 </project>
