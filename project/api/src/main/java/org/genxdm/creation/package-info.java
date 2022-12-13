@@ -87,17 +87,15 @@ that must all be created at once or not at all, and possible creation of an alte
 branch later. Both of these cases can be handled by the use of Queues. Queues are
 simple extensions of the "helper" interfaces, which instead of immediately building
 a tree, store a set of {@link org.genxdm.creation.Event}s into a list, which can
-be returned when the condition is fulfilled, or the point at which the deferred branch
-is to be created in the output tree has been reached. This package does not include an
-event driver, but the pattern is easily determined from the reference implementation
-in {@link org.genxdm.bridgekit.content.EventQueueDriver}. The list of events is read
-and fired into the helper, which has already been positioned to the proper location.</p>
+be returned (as a ContentGenerator, the "source" for a ContentHandler "sink") when the 
+condition is fulfilled, or the point at which the deferred branch
+is to be created in the output tree has been reached.</p>
 
 <p>Finally, the 'branch copiers' are used when a portion of an XML tree has already
-been instantiated as XML in-memory. Given a {@link org.genxdm.io.ContentGenerator}
-(typically but not always a suitably positioned {@link org.genxdm.Cursor}) or a
-{@link org.genxdm.typed.io.SequenceGenerator} (typically {@link org.genxdm.typed.TypedCursor}),
-a given tree branch or fragment can be copied into the output tree with or without
+been instantiated as XML in-memory, or equivalently, when a queue has been created
+and its ContentGenerator has been accessed. Given a {@link org.genxdm.io.ContentGenerator}
+or a {@link org.genxdm.typed.io.SequenceGenerator} a given tree branch, fragment,
+or EventQueue can be copied into the output tree with or without
 type awareness (the reference implementations of the {@link org.genxdm.creation.ContentHelper}
 and {@link org.genxdm.creation.BinaryContentHelper} implement the corresponding untyped
 or typed copiers: {@link org.genxdm.creation.BranchCopier} and 

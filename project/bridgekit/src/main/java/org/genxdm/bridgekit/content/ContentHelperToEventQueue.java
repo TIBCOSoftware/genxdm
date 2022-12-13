@@ -10,6 +10,7 @@ import org.genxdm.creation.ContentEvent;
 import org.genxdm.creation.EventKind;
 import org.genxdm.creation.EventQueue;
 import org.genxdm.exceptions.GenXDMException;
+import org.genxdm.io.ContentGenerator;
 
 public class ContentHelperToEventQueue
     extends AbstractContentHelper
@@ -25,9 +26,19 @@ public class ContentHelperToEventQueue
     @Override
     public List<ContentEvent> getQueue()
     {
+        // deprecated and commented out
+        return null;
+    }
+    
+    @Override
+    public ContentGenerator getGenerator()
+    {
         if (depth != 0)
-            throw new GenXDMException("Unbalanced queue! Missing 'end' event for 'start' event");
-        return queue;
+            throw new GenXDMException("Unbalanced queue! Missing 'endComplex' event for 'startComplex' event");
+        // alternate sloppy approach:
+        //while (depth != 0)
+        //    endComplex();
+        return new QueueContentGenerator(queue);
     }
     
     @Override

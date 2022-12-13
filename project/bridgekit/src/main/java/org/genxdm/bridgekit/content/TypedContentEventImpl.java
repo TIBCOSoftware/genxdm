@@ -1,85 +1,80 @@
 package org.genxdm.bridgekit.content;
 
 import java.net.URI;
-import java.util.List;
-
-import javax.xml.namespace.QName;
 
 import org.genxdm.creation.EventKind;
 import org.genxdm.creation.TypedContentEvent;
 
-public class TypedContentEventImpl<A>
+// this shouldn't be called a TypedContentEvent in the API, or TypedContentEventImpl here.
+// it's not typed; typing happens when the queue is run, not before.
+public class TypedContentEventImpl
     extends ContentEventImpl
-    implements TypedContentEvent<A>
+    implements TypedContentEvent
 {
     // endDocument/endElement
     public TypedContentEventImpl(EventKind kind)
     {
         super(kind);
-        type = null;
         data = null;
     }
     
-    // startDocument
+    // startDocument (unusual)
     public TypedContentEventImpl(URI sysId, String internal)
     {
         super(sysId, internal);
-        type = null;
         data = null;
     }
     
-    // comment (NOT text)
+    // comment and non-binary text
     public TypedContentEventImpl(EventKind kind, String value)
     {
         super(kind, value);
-        type = null;
         data = null;
     }
     
-    // namespace, pi
+    // binary text node
+    public TypedContentEventImpl(byte [] value)
+    {
+        super(EventKind.TEXT_BINARY);
+        data = value;
+    }
+    
+    // non-binary simple attribute, namespace, pi
     public TypedContentEventImpl(EventKind kind, String name, String value)
     {
         super(kind, name, value);
-        type = null;
         data = null;
     }
     
     // startElement
-    public TypedContentEventImpl(String ns, String nm, String pr, QName ty)
+    public TypedContentEventImpl(String ns, String nm, String pr)
     {
-        super(EventKind.START_TYPED_ELEMENT, (ns == null ? "" : ns), nm, (pr == null ? "" : pr));
-        type = ty;
-        
+        super((ns == null ? "" : ns), nm, (pr == null ? "" : pr));
         data = null;
     }
     
-    // attribute (simple)
-    public TypedContentEventImpl(String nm, List<? extends A> value, QName ty)
+    // non-binary complete attribute
+    public TypedContentEventImpl(String ns, String nm, String pr, String value)
     {
-        this("", nm, "", value, ty);
+        super(ns, nm, pr, value);
+        data = null;
+    }
+
+    // binary attribute (simple)
+    public TypedContentEventImpl(String nm, byte [] value)
+    {
+        this("", nm, "", value);
     }
     
-    // attribute (complete)
-    public TypedContentEventImpl(String ns, String nm, String pr, List<? extends A> value, QName ty)
+    // binary attribute (complete)
+    public TypedContentEventImpl(String ns, String nm, String pr, byte [] value)
     {
-        super(EventKind.ATTRIBUTE_TYPED, (ns == null ? "" : ns), nm, (pr == null ? "" : pr));
+        super(EventKind.ATTRIBUTE_BINARY, (ns == null ? "" : ns), nm, (pr == null ? "" : pr));
         data = value;
-        type = ty;
     }
     
-    // text
-    public TypedContentEventImpl(List<? extends A> value)
-    {
-        super(EventKind.TEXT_TYPED);
-        data = value;
-        
-        type = null;
-    }
+    @Override
+    public byte [] getValue() { return data; }
     
-    public List<? extends A> getValue() { return data; }
-    
-    public QName getType() { return type; }
-    
-    private final List<? extends A> data;
-    private final QName type;
+    private final byte [] data;
 }

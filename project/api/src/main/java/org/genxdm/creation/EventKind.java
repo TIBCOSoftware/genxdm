@@ -12,19 +12,18 @@ package org.genxdm.creation;
  */
 public enum EventKind
 {
-    START_DOCUMENT, // startDocument()
-    START_ELEMENT, // ContentHandler.startElement()
-    START_TYPED_ELEMENT, //SequenceHandler.startElement() (includes type)
+    START_DOCUMENT,
+    START_ELEMENT,
     
-    NAMESPACE, // namespace()
-    ATTRIBUTE, // ContentHandler.attribute()
-    ATTRIBUTE_TYPED, // SequenceHandler.attribute() (includes type and typed value)
+    NAMESPACE,
+    ATTRIBUTE,
+    ATTRIBUTE_BINARY,
     
-    COMMENT, // comment()
-    PROCESSING_INSTRUCTION, //processingInstruction()
-    TEXT, // ContentHandler.text()
-    TEXT_TYPED, // SequenceHandler.text() (includes typed value)
+    COMMENT,
+    PROCESSING_INSTRUCTION,
+    TEXT,
+    TEXT_BINARY,
     
-    END_ELEMENT, // endElement()
-    END_DOCUMENT; // endDocument()
+    END_ELEMENT,
+    END_DOCUMENT;
 }
