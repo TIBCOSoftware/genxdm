@@ -3,6 +3,7 @@ package org.genxdm.bridgekit.content;
 import java.net.URI;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -152,7 +153,7 @@ class TypePromoter<A>
                 throw new GenXDMException("Illegal start-complex invocation: element {"+namespaceURI+"}"+localName+" has no element declaration");
             type = element.getType();
         }
-        else
+        else // p(arent)Type is not null
         {
             ElementDefinition element = m_provider.getElementDeclaration(elementQName);
             if (pType instanceof ComplexType)// ought to be; it contains this element
@@ -160,10 +161,10 @@ class TypePromoter<A>
                 // we don't mind the check above, because it catches
                 // attempts to put things in the wrong place. however,
                 // if we already have a global element, don't look for
-                // a local.
+                // a local here. we're protecting against the existence of local elements
                 if (element == null)
                 {
-                    ComplexType cType = (ComplexType)type;
+                    ComplexType cType = (ComplexType)pType;
                     if (!cType.getContentType().getKind().isSimple())
                     {
                         ModelGroup group = cType.getContentType().getContentModel().getTerm();
@@ -181,6 +182,8 @@ class TypePromoter<A>
                 throw new IllegalStateException("Illegal element content {"+namespaceURI+"}"+localName+" inside an element of non-complex type {"+type.getName().getNamespaceURI()+"}"+type.getName().getLocalPart());
         }
         // fully resolved here, call the typed version with the type we've collected.
+        // and save the actual type, because apparently some can't be looked up by name? wut?
+        m_lastActualTypeDiscovered = type;
         startElement(namespaceURI, localName, prefix, type.getName());
     }
 
@@ -190,6 +193,8 @@ class TypePromoter<A>
         // this can be called directly with the xsi type override, otherwise is called internally.
         PreCondition.assertNotNull(type, "{"+namespaceURI+"}"+localName+" type");
         Type actualType = m_provider.getTypeDefinition(type);
+        if (actualType == null)
+            actualType = m_lastActualTypeDiscovered;
         if (actualType instanceof ComplexType) // do some more setup: attribute uses, if any, and attribute set container
         {
             final ComplexType cType = (ComplexType)actualType;
@@ -297,61 +302,83 @@ class TypePromoter<A>
         m_attributeUses = null;
         m_types.clear();
         m_elements.clear();
+        
     }
     
-    // this should get invoked after startElement() (typed version), after all namespace events,
-    // after all attribute events (if any), at the first child (text, element, comment, pi, sometimes
-    // also endElement (but not startdoc/enddoc). it processes all of the outstanding attribute events
-    // at once, mostly.
     private void closeStartTag()
     {
+        // summary: 1: are there no attributes? then checkformissing, with insertion or exception possible
+        // 2: we have attributes, are none allowed? exception
+        // 3: have attributes, some are allowed, check each one
+        // 4: is this attribute allowed? no, exception.
+        // 5: this attribute allowed here, assign a type and promote the value to it (exception can happen
+        // 6: after handling all of the specified attributes, check if some 'attribute uses' remain, and
+        //    if so, checkformissing, again, with that subset, insertion or exception possible.
         // do we have any attributes?
+        if (m_attributes == null)
+        {
+            if ((m_attributeUses != null) && !m_attributeUses.isEmpty())
+                checkForMissingAttributes(m_attributeUses);
+        }
         if ((m_attributes != null) && !m_attributes.isEmpty())
         {
             // compare attributes (all of them at once!) with attribute uses.
             // first, if none are allowed, throw an exception.
             if (m_attributeUses == null)
                 throw new GenXDMException("Element "+getCurrentElementName()+" contains "+m_attributes.size()+"attributes when type "+getCurrentElementType().getName()+" allows none");
-            // next, if any are missing, and the use says that it has default value, insert it. 
-// TODO: add missing attributes with fixed values (default attributes)
-            // if any are missing and required, throw an exception
-// TODO: handle missing attributes that are required.
-        }
-        else if (m_attributeUses != null)
-        {
-            // no attributes are available, but some may be required; check.
-// TODO: handle missing attributes that are required.
-        }
-        for (final Attrib a : m_attributes)
-        {
-            final boolean isBinary = a instanceof BinaryAttrib;
-            final QName key = new QName(a.getNamespace(), a.getName());
-            final AttributeUse use = m_attributeUses.get(key);
-            if (use == null)
-            { // not found
-                if (!isBinary)
-                    throw new GenXDMException("In element "+getCurrentElementName()+ "no declaration found for attribute "+key+" with value "+a.getValue());
-                throw new GenXDMException("In element "+getCurrentElementName()+ "no declaration found for attribute "+key+" with binary content");
-            }
-            final SimpleType aType = use.getAttribute().getType();
-            if (isBinary)
+            // make a shallow copy, and check that it contains something
+            // we can modify the shallow copy by removing attribute uses, but not the original.
+            Map<QName, AttributeUse> unusedSoFar = new HashMap<QName, AttributeUse>(m_attributeUses);
+            //if (unusedSoFar.isEmpty()) // we have no allowed attributes, but at least one is here. it will throw
+            // an exception in the for loop for m_attributes.
+            for (final Attrib a: m_attributes)
             {
-                final BinaryAttr b = (BinaryAttr)a;
-                attribute(b.getNamespace(), b.getName(), b.getPrefix(), promote(aType.getNativeType(), b.getData()), aType.getName());
-            }
-            else // non-binary rocks :-)
+                final boolean isBinary = a instanceof BinaryAttrib;
+                final QName key = new QName(a.getNamespace(), a.getName());
+                final AttributeUse use = unusedSoFar.get(key);
+                if (use == null) // this attribute not allowed in this element
+                {
+                    if (isBinary) // protection against blowing the heap/stack with a BLOB in an error message
+                        throw new GenXDMException("In element "+getCurrentElementName()+" no declaration found for attribute "+key+" with binary content");
+                    // implicit else
+                    throw new GenXDMException("In element "+getCurrentElementName()+" no declaration found for attribute "+key+" with value '"+a.getValue()+"'");
+                }
+                // use is non-null
+                final SimpleType aType = use.getAttribute().getType();
+                if (isBinary)
+                {
+                    // this style can't throw DTE
+                    final BinaryAttr b = (BinaryAttr)a;
+                    attribute(b.getNamespace(), b.getName(), b.getPrefix(), promote(aType.getNativeType(), b.getData()), aType.getName());
+                }
+                else
+                {
+                    try
+                    {
+                        final Attr aa = (Attr)a; // this gives us back access to the prefix
+                        attribute(aa.getNamespace(), aa.getName(), aa.getPrefix(), promote(aType, aa.getValue()), aType.getName());
+                    }
+                    catch (DatatypeException dte)
+                    {
+                        throw new GenXDMException("In element "+getCurrentElementName()+" attribute "+key+" has invalid content '"+a.getValue()+"' for declared type "+aType.getName(), dte);
+                    }
+                } // else (non-binary)
+                // got to here, so remove the attribute just processed:
+                unusedSoFar.remove(key);
+            } // for loop
+            if (!unusedSoFar.isEmpty())
             {
-                try
-                {
-                    final Attr aa = (Attr)a; // recover the prefix
-                    attribute(aa.getNamespace(), aa.getName(), aa.getPrefix(), promote(aType, aa.getValue()), aType.getName());
-                }
-                catch (DatatypeException dte)
-                {
-                    throw new GenXDMException("In element "+getCurrentElementName()+ " attribute "+key+" has invalid content '"+a.getValue()+"' for declared type "+aType.getName(), dte);
-                }
+                // this is exactly the same problem as: m_attributeUses != null, m_attributes null or empty
+                // something is required, possibly with a default value when missing. So insert or throw an
+                // exception, but only for the unused subset, which unusedSoFar contains.
+                // (note: default attributes inserted here will result in attribute appearing not in
+                // canonical order; all of the specified attributes will appear first, then the attributes
+                // inserted due to defaulting. we could fix this, but it's not worth the effort unless
+                // someone reports it as a problem for them; in general we don't guarantee canonicalization
+                // of xml attribute order (it's worth doing when it's cheap and easy, though)).
+                checkForMissingAttributes(unusedSoFar);
             }
-        }
+        } // if m_attributes non-null and not empty
     }
 
     // some very simple/stupid methods to tell us the semantics of what we're doing rather than the mechanics of it
@@ -363,6 +390,28 @@ class TypePromoter<A>
     QName getCurrentElementName()
     {
         return m_elements.peekFirst();
+    }
+    
+    private void checkForMissingAttributes(Map<QName, AttributeUse> unusedUses) throws GenXDMException
+    {
+        // don't even call this if unusedUses is null or empty; caller's responsibility to check.
+        for (Map.Entry<QName, AttributeUse> unused : unusedUses.entrySet())
+        {
+            // check defaults (and insert) first; only check required if not also defaulted.
+            // any attribute defaulted (and unset to some other value): insert
+            // prefix, if the attribute is qualified, is prolly wrong. fix this when there's an actual example
+            // of failure. this should work for most (unprefixed) attributes (99.8% case).
+            // if we had logging, here's where we would log insertion of a default attribute
+            if (unused.getValue().getValueConstraint().getVariety().isDefault())
+                            attribute(unused.getKey().getNamespaceURI(), unused.getKey().getLocalPart(), unused.getKey().getPrefix(),
+                            unused.getValue().getValueConstraint().getValue(m_bridge), unused.getValue().getAttribute().getType().getName());
+            // any attribute that is required, but missing: exception
+            else if (unused.getValue().isRequired())
+                throw new GenXDMException("In element "+getCurrentElementName()+" required attribute "+unused.getKey()+" is missing.");
+            // the invisible common case here: an attribute is optional, and has no default value.
+            // so it exists in attribute uses, but there is no attribute for this instance. quietly ignore it;
+            // it's completely normal and requies no further attention.
+        }
     }
     
     private ElementDefinition locateElementDefinition(ModelGroup mg, QName target)
@@ -409,6 +458,11 @@ class TypePromoter<A>
     private Map<QName, AttributeUse> m_attributeUses = null; // set inside startElement if we have a complex type,
     // nulled out if it's not a complex type.
 
+    // this is a workaround for a weird problem: if we use m_provider to get a Type (from an element decl, perhaps),
+    // then call startElement(... QName type) by using startElement(... type.getName()), then retrieve using:
+    // m_provider.getTypeDefinition(QName type), we seem to sometimes get null. So save the original, use it
+    // if we have a null there. (this really shouldn't happen; anonymous means we generate a type name).
+    private Type m_lastActualTypeDiscovered = null;
     private final Deque<Type> m_types = new ArrayDeque<Type>(); // the stack of types determined for each element
     private final Deque<QName> m_elements = new ArrayDeque<QName>(); // the stack of element names
     
