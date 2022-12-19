@@ -1,9 +1,5 @@
 package org.genxdm.creation;
 
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 /** Extends ContentEvent with information about typed events.
  * 
  *

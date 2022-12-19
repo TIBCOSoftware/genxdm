@@ -1,15 +1,10 @@
 package org.genxdm.bridgekit.content;
 
 import java.io.IOException;
-//import java.util.ArrayDeque;
-//import java.util.Deque;
 import java.util.HashMap;
-//import java.util.HashSet;
-//import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-//import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.genxdm.creation.Attrib;
@@ -19,30 +14,14 @@ import org.genxdm.creation.TypeAwareBranchCopier;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.io.ContentGenerator;
-import org.genxdm.io.ContentHandler;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.ValidationHandler;
-import org.genxdm.typed.io.SequenceGenerator;
 import org.genxdm.typed.io.SequenceBuilder;
+import org.genxdm.typed.io.SequenceGenerator;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
-//import org.genxdm.xs.ComponentProvider;
-//import org.genxdm.xs.components.ElementDefinition;
-//import org.genxdm.xs.components.ModelGroup;
-//import org.genxdm.xs.components.ParticleTerm;
-//import org.genxdm.xs.components.SchemaParticle;
-//import org.genxdm.xs.constraints.AttributeUse;
-//import org.genxdm.xs.constraints.ValueConstraint;
-//import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.exceptions.SchemaExceptionThrower;
-//import org.genxdm.xs.types.ComplexType;
-//import org.genxdm.xs.types.ContentType;
-//import org.genxdm.xs.types.ContentTypeKind;
-//import org.genxdm.xs.types.NativeType;
-//import org.genxdm.xs.types.SimpleType;
-//import org.genxdm.xs.types.Type;
 
-// this version does support queueing for out of order creation
 public class ValidatingContentHelper<N, A>
     implements BinaryContentHelper, TypeAwareBranchCopier<A>, SequenceHandlerSource<A>
 {
@@ -310,7 +289,7 @@ public class ValidatingContentHelper<N, A>
     @Override
     public void copyTreeAt(ContentGenerator generator)
     {
-        PreCondition.assertNotNull(generator);
+        PreCondition.assertNotNull(generator, "generator");
         PreCondition.assertTrue(generator.isElement(), "ContentGenerator must be positioned on an element");
         generator.write(m_xdmValidator);
     }
@@ -318,7 +297,7 @@ public class ValidatingContentHelper<N, A>
     @Override
     public void copyTypedTreeAt(SequenceGenerator<A> generator)
     {
-        PreCondition.assertNotNull(generator);
+        PreCondition.assertNotNull(generator, "generator");
         PreCondition.assertTrue(generator.isElement(), "SequenceGenerator must be positioned on an element");
         generator.write(m_xdmValidator, false);
     }

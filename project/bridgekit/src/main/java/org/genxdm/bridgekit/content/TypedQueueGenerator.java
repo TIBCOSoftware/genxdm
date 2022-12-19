@@ -177,7 +177,8 @@ final class TypedQueueGenerator<A>
     
     private final List<TypedContentEvent> m_queue;
 
-    private static final boolean ERROR_ON_DOCUMENT = false; // throw an exception if a document is encountered
+    // not used here
+//    private static final boolean ERROR_ON_DOCUMENT = false; // throw an exception if a document is encountered
     private static final boolean ALLOW_DOCUMENT = false; // process the startDocument/endDocument events (will usually cause a fault
     private static final boolean ERROR_ON_BINARY = false;
 }

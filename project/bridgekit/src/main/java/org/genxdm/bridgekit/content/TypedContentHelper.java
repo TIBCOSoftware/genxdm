@@ -1,13 +1,7 @@
 package org.genxdm.bridgekit.content;
 
-import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -24,15 +18,6 @@ import org.genxdm.typed.io.SequenceGenerator;
 import org.genxdm.typed.io.SequenceHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.xs.ComponentProvider;
-import org.genxdm.xs.components.ElementDefinition;
-import org.genxdm.xs.components.ModelGroup;
-import org.genxdm.xs.components.ParticleTerm;
-import org.genxdm.xs.components.SchemaParticle;
-import org.genxdm.xs.exceptions.DatatypeException;
-import org.genxdm.xs.types.ComplexType;
-import org.genxdm.xs.types.ContentType;
-import org.genxdm.xs.types.ContentTypeKind;
-import org.genxdm.xs.types.Type;
 
 public class TypedContentHelper<A>
     extends AbstractContentHelper
@@ -105,7 +90,6 @@ public class TypedContentHelper<A>
         // all we do with attributes now is to fire the proper sort of attribute events.
         if (attributes != null)
         {
-            Set<QName> used = new HashSet<QName>();
             for (Attrib attribute : attributes)
             {
                 String ans = NIT; // attribute namespace = "", usually true
@@ -117,9 +101,9 @@ public class TypedContentHelper<A>
                     prefix = nsStack.getAttributePrefix(attribute.getNamespace(), bindings);
                 }
                 if (!(attribute instanceof BinaryAttrib))
-                    promoter.attribute(attribute.getNamespace(), attribute.getName(), prefix, attribute.getValue(), DtdAttributeKind.CDATA);
+                    promoter.attribute(ans, attribute.getName(), prefix, attribute.getValue(), DtdAttributeKind.CDATA);
                 else
-                    promoter.binaryAttribute(attribute.getNamespace(), attribute.getName(), prefix, ((BinaryAttrib)attribute).getData());
+                    promoter.binaryAttribute(ans, attribute.getName(), prefix, ((BinaryAttrib)attribute).getData());
             }
         }
         //else // attributes is null ; promoter is going to handle this because it knows from types; we don't.
@@ -198,7 +182,7 @@ public class TypedContentHelper<A>
     {
         // it is actually possible that this can work, btw. we only really have a difference
         // between binary-content and string-content trees, prior to stuffing things into a promoter
-        PreCondition.assertNotNull(generator);
+        PreCondition.assertNotNull(generator, "generator");
         PreCondition.assertTrue(generator.isElement(), "ContentGenerator must be positioned on an element");
         // note: we may not be positioned correctly. let the output handler fail
         // note: the target (us! right here!) has to handle namespace issues
@@ -208,7 +192,7 @@ public class TypedContentHelper<A>
     @Override
     public void copyTypedTreeAt(SequenceGenerator<A> generator)
     {
-        PreCondition.assertNotNull(generator);
+        PreCondition.assertNotNull(generator, "generator");
         PreCondition.assertTrue(generator.isElement(), "SequenceGenerator must be positioned on an element");
         // note: we may not be positioned correctly. let the output handler fail
         // note: the target handler has to handle namespace fixup
@@ -239,28 +223,6 @@ public class TypedContentHelper<A>
                         return resolveQualifiedNameString(attr.getValue());
                 }
             }
-        }
-        return null;
-    }
-    
-    private ElementDefinition locateElementDefinition(ModelGroup mg, QName target)
-    {
-        for (SchemaParticle particle : mg.getParticles())
-        {
-            ParticleTerm term = particle.getTerm();
-            if (term instanceof ModelGroup)
-            {
-                ElementDefinition candidate = locateElementDefinition((ModelGroup)term, target);
-                if (candidate != null)
-                    return candidate;
-            }
-            else if (term instanceof ElementDefinition) // better be!
-            {
-                if ( ((ElementDefinition)term).getName().equals(target) )
-                    return (ElementDefinition)term;
-            }
-            // only two possibilities covered; if we haven't returned a match,
-            // fall through and return null.
         }
         return null;
     }

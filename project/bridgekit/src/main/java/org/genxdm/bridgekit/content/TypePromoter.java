@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 import javax.xml.namespace.QName;
 
 import org.genxdm.creation.Attrib;
@@ -26,7 +27,6 @@ import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.ParticleTerm;
 import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.constraints.AttributeUse;
-import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.xs.exceptions.DatatypeException;
 import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.ContentType;
@@ -178,8 +178,8 @@ class TypePromoter<A>
                 }
                 type = element.getType();
             }
-            else
-                throw new IllegalStateException("Illegal element content {"+namespaceURI+"}"+localName+" inside an element of non-complex type {"+type.getName().getNamespaceURI()+"}"+type.getName().getLocalPart());
+            else // can't actually be null, but I'm not turning off warnings for the whole method because eclipse can't figure that out
+                throw new IllegalStateException("Illegal element content {"+namespaceURI+"}"+localName+" inside an element of non-complex type {"+(type==null?"null":type.getName().getNamespaceURI())+"}"+(type==null?"null":type.getName().getLocalPart()));
         }
         // fully resolved here, call the typed version with the type we've collected.
         // and save the actual type, because apparently some can't be looked up by name? wut?
@@ -274,7 +274,7 @@ class TypePromoter<A>
                 bType = cType.getSimpleType();
         }
         if (bType == null)
-            throw new GenXDMException("Illegal invocation of binary-element for element "+getCurrentElementName()+" : type "+bType.getName()+" is not simple");
+            throw new GenXDMException("Illegal invocation of binary-element for element "+getCurrentElementName()+" : type "+type.getName()+" is not simple");
         NativeType nType = bType.getNativeType();
         if ( (nType != NativeType.BASE64_BINARY) && (nType != NativeType.HEX_BINARY) )
             throw new GenXDMException("Illegal invocation of binary-element for element "+getCurrentElementName()+" : type "+nType.toQName()+" is simple but not binary");

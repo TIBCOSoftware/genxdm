@@ -2,12 +2,8 @@ package org.genxdm.bridgekit.content;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import javax.xml.namespace.QName;
 
 import org.genxdm.creation.Attrib;
 import org.genxdm.creation.BinaryAttrib;
@@ -16,8 +12,6 @@ import org.genxdm.creation.EventKind;
 import org.genxdm.creation.TypedContentEvent;
 import org.genxdm.creation.TypedEventQueue;
 import org.genxdm.exceptions.GenXDMException;
-import org.genxdm.exceptions.PreCondition;
-import org.genxdm.io.DtdAttributeKind;
 import org.genxdm.typed.io.SequenceGenerator;
 
 // this has a metric f..kton of copypasta from typedcontenthelper,
