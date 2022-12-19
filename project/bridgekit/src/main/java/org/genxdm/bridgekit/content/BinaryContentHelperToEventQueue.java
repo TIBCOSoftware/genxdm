@@ -32,6 +32,7 @@ public class BinaryContentHelperToEventQueue<A>
         if (bindings == null)
             bindings = new HashMap<String, String>();
         nsStack.push(bindings);
+        queue = new ArrayList<TypedContentEvent>();
     }
 
     @Override
@@ -53,7 +54,7 @@ public class BinaryContentHelperToEventQueue<A>
         //    throw new GenXDMException("Unbalanced queue! Missing 'endComplex' event for 'startComplex' event!");
         while (depth != 0) // this is easier, but supports sloppy coding
             endComplex();
-        return new TypedQueueGenerator(queue);
+        return new TypedQueueGenerator<A>(queue);
     }
     
     @Override

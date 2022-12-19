@@ -43,7 +43,7 @@ public class TypedContentHelper<A>
         handler = PreCondition.assertNotNull(output, "sequence handler");
         provider = PreCondition.assertNotNull(components, "component provider");
         bridge = PreCondition.assertNotNull(atoms, "atom bridge");
-        promoter = new TypePromoter(handler, bridge, provider);
+        promoter = new TypePromoter<A>(handler, bridge, provider);
     }
     
     @Override

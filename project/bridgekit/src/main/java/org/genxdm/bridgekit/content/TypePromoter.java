@@ -43,7 +43,7 @@ import org.genxdm.xs.types.Type;
 class TypePromoter<A>
     implements SequenceFilter<A>, Promoter, Stateful
 {
-    TypePromoter(final SequenceHandler out, final AtomBridge atoms, final ComponentProvider components)
+    TypePromoter(final SequenceHandler<A> out, final AtomBridge<A> atoms, final ComponentProvider components)
     {
         setOutputSequenceHandler(PreCondition.assertNotNull(out, "output target"));
         setAtomBridge(PreCondition.assertNotNull(atoms, "atom bridge"));

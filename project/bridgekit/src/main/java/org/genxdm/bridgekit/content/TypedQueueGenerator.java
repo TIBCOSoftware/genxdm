@@ -27,7 +27,7 @@ final class TypedQueueGenerator<A>
     public boolean isElement()
     {
         // this is actually an invariant in the current sole impl
-        TypedContentEvent firstEvent = m_queue.get(1);
+        TypedContentEvent firstEvent = m_queue.get(0);
         if (firstEvent.getKind() == EventKind.START_ELEMENT)
             return true;
         return false;

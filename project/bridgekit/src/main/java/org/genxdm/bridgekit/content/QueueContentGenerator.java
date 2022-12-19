@@ -21,7 +21,7 @@ final class QueueContentGenerator
     @Override
     public boolean isElement()
     {
-        ContentEvent firstEvent = m_queue.get(1);
+        ContentEvent firstEvent = m_queue.get(0);
         if (firstEvent.getKind() == EventKind.START_ELEMENT)
             return true;
         return false;
