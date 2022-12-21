@@ -302,7 +302,7 @@ class TypePromoter<A>
         m_attributeUses = null;
         m_types.clear();
         m_elements.clear();
-        
+        m_lastActualTypeDiscovered = null;
     }
     
     private void closeStartTag()

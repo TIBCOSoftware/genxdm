@@ -25,7 +25,8 @@ public class BinaryContentHelperToEventQueue<A>
     { 
         if (bindings == null)
             bindings = new HashMap<String, String>();
-        nsStack.push(bindings);
+        nsContext = bindings;
+        nsStack.push(nsContext);
         queue = new ArrayList<TypedContentEvent>();
     }
 
@@ -171,7 +172,8 @@ public class BinaryContentHelperToEventQueue<A>
     public void reset()
     {
         nsStack.reset();
-        depth = -1;
+        nsStack.push(nsContext);
+        depth = 0;
         queue = new ArrayList<TypedContentEvent>();
     }
     // the next two are not ideal, but neither is returning attribs for
@@ -202,6 +204,7 @@ public class BinaryContentHelperToEventQueue<A>
     
     private List<TypedContentEvent> queue;
     private final NamespaceContextStack nsStack = new NamespaceContextStack("qns");
+    private final Map<String, String> nsContext;
     
     private int depth = 0;
     
