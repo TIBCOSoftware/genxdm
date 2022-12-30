@@ -106,7 +106,7 @@ public class ValidatingDocumentHandler<N, A>
                 builder = getBuilder();
                 builder.reset();
             }
-            final SAXValidator valley;
+            final SAXValidator<A> valley;
             if (valFactory != null)
                 valley = getLocalValidator();
             else

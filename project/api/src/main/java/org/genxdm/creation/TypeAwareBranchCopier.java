@@ -2,13 +2,15 @@ package org.genxdm.creation;
 
 import org.genxdm.typed.io.SequenceGenerator;
 
-/** A tool to copy an existing in-memory XML tree into some other tool,
- * presumptively one of the ContentHelper tools in this package.
+/** A type aware version of the BranchCopier, used to copy an existing 
+ * in-memory XML tree, or more commonly a sequence of content events (method calls 
+ * on a SequenceHandler) such as an implementation of TypedEventQueue, 
+ * into some other tree (or target that exposes a SequenceHandler interface).
+ *
+ * TypeAwareBranchCopier is typically a secondary interface implemented by a
+ * class that implements BinaryContentHelper.
  * 
- * This interface expects a SequenceGenerator rather than a ContentGenerator,
- * and so is expected to drive a SequenceHandler, with its typed values and
- * type annotations, rather than a ContentHandler.
- * 
+ * @param <A> the base class of the implementations representing typed values.
  */
 public interface TypeAwareBranchCopier<A>
     extends BranchCopier

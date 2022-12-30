@@ -9,7 +9,7 @@ import org.genxdm.exceptions.PreCondition;
 public class ContentEventImpl
     implements ContentEvent
 {
-    // use for endDocument/endElement
+    // use for endDocument/endElement and also for binary text subclass
     public ContentEventImpl(EventKind eventKind)
     {
         kind = PreCondition.assertNotNull(eventKind, "event kind");
@@ -93,21 +93,14 @@ public class ContentEventImpl
         uri = null;
     }
     
-    // used by typed element and typed attribute subclass
+    // used by binary attribute subclass
     protected ContentEventImpl(EventKind k, String ns, String nm, String pr)
     {
         kind = k;
         namespace = PreCondition.assertNotNull(ns, "namespace");
         name = PreCondition.assertNotNull(nm, "name");
-        if (kind == EventKind.START_TYPED_ELEMENT)
-            prefix = PreCondition.assertNotNull(pr, "prefix");
-        else
-            prefix = null;
-        if (kind == EventKind.ATTRIBUTE_TYPED)
-            text = (pr == null) ? "" : pr;
-        else
-            text = null;
-        
+        prefix = PreCondition.assertNotNull(pr, "prefix");
+        text = null;
         uri = null;
     }
     
@@ -123,13 +116,13 @@ public class ContentEventImpl
     
     public String getText() { return text; }
     
-    private final EventKind kind;
+    protected final EventKind kind;
     
-    private final URI uri;
+    protected final URI uri;
     
-    private final String namespace;
-    private final String name; // also used for PI target, namespace prefix
-    private final String prefix;
+    protected final String namespace;
+    protected final String name; // also used for PI target, namespace prefix
+    protected final String prefix;
 
-    private final String text; // value of comment, text, pi, namespace, attribute
+    protected final String text; // value of comment, text, pi, namespace, attribute
 }

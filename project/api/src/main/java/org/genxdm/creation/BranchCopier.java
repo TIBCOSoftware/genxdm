@@ -2,8 +2,13 @@ package org.genxdm.creation;
 
 import org.genxdm.io.ContentGenerator;
 
-/** A tool to copy an existing in-memory XML tree into some other tool,
- * presumptively one of the ContentHelper tools in this package.
+/** A tool to copy an existing in-memory XML tree, or more commonly 
+ * a sequence of content events (method calls on a ContentHandler) 
+ * such as an implementation of EventQueue, into some other tree
+ * (or target that exposes a ContentHandler interface).
+ *
+ * BranchCopier is typically a secondary interface implemented by a
+ * class that implements ContentHelper.
  * 
  */
 public interface BranchCopier

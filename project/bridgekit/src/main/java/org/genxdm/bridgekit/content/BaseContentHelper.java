@@ -135,7 +135,7 @@ public class BaseContentHelper
     @Override
     public void copyTreeAt(ContentGenerator generator)
     {
-        PreCondition.assertNotNull(generator);
+        PreCondition.assertNotNull(generator, "generator");
         PreCondition.assertTrue(generator.isElement(), "ContentGenerator must be positioned on an element");
         // TODO: make sure that we're positioned inside an element
         // TODO: should we be handling namespace fixups?

@@ -45,6 +45,16 @@ public final class Attr
        v = (value == null) ? "" : value;
     }
     
+    // package access, for use solely by the promoter
+    public Attr(final String namespace, final String name, final String prefix, final String value)
+    {
+       ns = namespace;
+       n = name;
+       p = prefix;
+       v = (value == null) ? "" : value;
+    }
+    
+    
     /** Return the namespace associated with this attribute.
      * 
      * @return the URI of the namespace (which may be, and usually is, the
@@ -62,6 +72,10 @@ public final class Attr
      */
     public String getValue() { return v; }
     
+    // package access; promoter use only.
+    String getPrefix() { return p; }
+    
+    private String p; // the prefix; not final or public or visible
     private final String ns;
     private final String n;
     private final String v;

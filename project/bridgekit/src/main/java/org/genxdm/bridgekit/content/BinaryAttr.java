@@ -25,7 +25,7 @@ public final class BinaryAttr
      * @param name the local name; must be a valid XML NCName.
      * @param value the value of the attribute; if null will be treated as an empty string.
      */
-    public BinaryAttr(String name, byte [] data)
+    public BinaryAttr(final String name, final byte [] data)
     {
         this("", name, data);
     }
@@ -38,11 +38,19 @@ public final class BinaryAttr
      * @param name the local name; must be a valid XML NCName.
      * @param value the value of the attribute; if null will be treated as an empty string.
      */
-    public BinaryAttr(String namespace, String name, byte [] data)
+    public BinaryAttr(final String namespace, String name, final byte [] data)
     {
        ns = PreCondition.assertNotNull(namespace, "namespace");
        n = PreCondition.assertNotNull(name, "name");
        d = (data == null) ? new byte [0] : data;
+    }
+    
+    BinaryAttr(final String namespace, final String name, final String prefix, final byte [] data)
+    {
+       ns = namespace;
+       n = name;
+       d = (data == null) ? new byte [0] : data;
+       p = prefix;
     }
     
     /** Return the namespace associated with this attribute.
@@ -64,6 +72,9 @@ public final class BinaryAttr
     // TODO: is this the right thing to do?
     public String getValue() { throw new UnsupportedOperationException(); }
     
+    String getPrefix() { return p; }
+    
+    private String p; // prefix, promoter use only
     private final String ns;
     private final String n;
     private final byte [] d;

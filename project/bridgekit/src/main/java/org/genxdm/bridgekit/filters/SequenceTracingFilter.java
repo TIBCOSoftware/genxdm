@@ -19,7 +19,7 @@ import org.genxdm.xs.SchemaComponentCache;
 // initialize this thing and it spits out each created thing as it's encountered
 public class SequenceTracingFilter<A> implements SequenceFilter<A>
 {
-	public SequenceTracingFilter(final SequenceHandler<A> handler, final PrintStream ps, final AtomBridge bridge)
+	public SequenceTracingFilter(final SequenceHandler<A> handler, final PrintStream ps, final AtomBridge<A> bridge)
 	{
 	    // handler and bridge should either be set here or in the mutator methods.
 	    // ps must be set here.
