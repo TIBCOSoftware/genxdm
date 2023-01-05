@@ -47,12 +47,12 @@
         <dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>processor.io</artifactId>
-            <version>[1.7,2)</version>
+            <version>1.7.0</version>
         </dependency>
         <dependency>
             <groupId>org.genxdm</groupId>
             <artifactId>bridgekit</artifactId>
-            <version>[1.7,2)</version>
+            <version>1.7.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
