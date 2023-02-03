@@ -106,8 +106,6 @@ public final class XmlNodeContext
     public boolean isSupported(String feature)
     {
         PreCondition.assertNotNull(feature, "feature");
-        if (feature.equals(Feature.IN_TREE_INDEX))
-            return false;
         if (feature.startsWith(Feature.PREFIX))
         {
             // support all core features (except ones not supported)

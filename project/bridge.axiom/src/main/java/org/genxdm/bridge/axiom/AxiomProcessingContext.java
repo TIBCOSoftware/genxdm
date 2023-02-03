@@ -210,8 +210,7 @@ public class AxiomProcessingContext
             if (feature.equals(Feature.DOCUMENT_URI) ||
                 feature.equals(Feature.BASE_URI) ||
                 feature.equals(Feature.NAMESPACE_AXIS) ||
-                feature.equals(Feature.IN_TREE_VALIDATION) ||
-                feature.equals(Feature.IN_TREE_INDEX) )
+                feature.equals(Feature.IN_TREE_VALIDATION) )
                 return false;
             if (feature.equals(Feature.ATTRIBUTE_AXIS_INHERIT) ||
                 feature.equals(Feature.MUTABILITY) ||

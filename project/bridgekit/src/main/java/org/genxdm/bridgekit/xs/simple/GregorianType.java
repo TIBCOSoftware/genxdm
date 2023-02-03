@@ -44,8 +44,8 @@ import org.genxdm.xs.types.SimpleType;
 
 public class GregorianType extends AbstractAtomType
 {
-    private final NativeType nativeType;
-
+    public static boolean ALLOW_MISSING_FRACTIONAL_SECONDS = false;
+    
     public GregorianType(final NativeType nativeType, final QName name, final SimpleType baseType)
     {
         super(name, baseType);
@@ -145,7 +145,11 @@ public class GregorianType extends AbstractAtomType
 
     public <A> List<A> validate(final String initialValue, AtomBridge<A> atomBridge) throws DatatypeException
     {
-        final String normalized = normalize(initialValue);
+        String norm = normalize(initialValue);
+        final boolean fracSecs = ALLOW_MISSING_FRACTIONAL_SECONDS;
+        if (fracSecs && (norm.endsWith(".Z") || norm.endsWith(".z")) )
+            norm = norm.substring(0, norm.length() -  2) + "Z";
+        final String normalized = norm;
 
         final XMLGregorianCalendar calendar = castAsGregorian(normalized, nativeType, atomBridge);
 
@@ -264,7 +268,9 @@ public class GregorianType extends AbstractAtomType
         }
     }
 
-    private static DatatypeFactory datatypeFactory;
+    private final NativeType nativeType;
+
+     private static DatatypeFactory datatypeFactory;
     
     static {
         try {
