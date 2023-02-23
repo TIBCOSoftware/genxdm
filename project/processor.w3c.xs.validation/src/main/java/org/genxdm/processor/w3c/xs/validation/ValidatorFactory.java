@@ -24,7 +24,7 @@ import org.genxdm.typed.io.SAXValidator;
 import org.genxdm.typed.types.AtomBridge;
 
 public final class ValidatorFactory<N, A>
-    implements org.genxdm.typed.ValidatorFactory
+    implements org.genxdm.typed.ValidatorFactory<A>
 {
 
     public ValidatorFactory(final TypedContext<N, A> pcx)

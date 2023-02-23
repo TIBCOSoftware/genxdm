@@ -3,15 +3,16 @@ package org.genxdm.bridge.cx.tests.typed;
 import org.genxdm.bridge.cx.base.XmlNodeContext;
 import org.genxdm.bridge.cx.tree.XmlNode;
 import org.genxdm.bridgekit.atoms.XmlAtom;
-import org.genxdm.bridgetest.typed.io.SequenceBuilderBase;
+import org.genxdm.bridgetest.typed.io.ValidatingContentHelperBase;
 import org.genxdm.processor.w3c.xs.W3cXmlSchemaParser;
 import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.ValidatorFactory;
 import org.genxdm.xs.SchemaParser;
 
-public class SequenceBuilderTest
-    extends SequenceBuilderBase<XmlNode, XmlAtom>
+public class ValidatingContentHelperTest
+    extends ValidatingContentHelperBase<XmlNode, XmlAtom>
 {
+
     @Override
     public XmlNodeContext newProcessingContext()
     {

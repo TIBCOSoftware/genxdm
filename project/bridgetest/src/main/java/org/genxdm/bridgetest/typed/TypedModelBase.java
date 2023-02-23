@@ -1,17 +1,10 @@
 package org.genxdm.bridgetest.typed;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.junit.Before;
-import org.junit.Test;
 
 import org.genxdm.ProcessingContext;
 import org.genxdm.bridgekit.ProcessingContextFactory;
@@ -19,6 +12,8 @@ import org.genxdm.io.DocumentHandler;
 import org.genxdm.typed.TypedContext;
 import org.genxdm.typed.TypedModel;
 import org.genxdm.xs.SchemaComponentCache;
+import org.junit.Before;
+import org.junit.Test;
 
 // this test checks consistency: if we have a valid document, is getValue()
 // behaving? tests of atom bridge creating things is in atombridgebase,
@@ -26,17 +21,33 @@ import org.genxdm.xs.SchemaComponentCache;
 // here we just want to test that the values are as expected, from a known
 // instance with a known schema.
 
+// TODO: this was apparently written before the SchemaParser and validation-related
+// interfaces were promoted from their respective processors into the core API.
+// rewrite it; we can depend on the SchemaParser interface and the validation
+// interfaces; they're designed to delegate the *instantiation* of the parser
+// and validator, and that's what we should do. Implement the schema parsing,
+// and implement validation here (they're hard, don't make other people do it).
+// Then have SchemaParser getSchemaParser() and either ValidationHandler
+// getValidationHandler() or ValidatorFactory getValidatorFactory() (the latter
+// should probably be in the TypedTestBase)
+
 public abstract class TypedModelBase<N, A>
-    implements ProcessingContextFactory<N>
+    implements ProcessingContextFactory<N> // change to extends TypedTestBase<N, A>
 {
     // instantiating test cases have to call getSchemaStream() and use it to populate the cache
     // bridgetest cannot depend on the schema parser
     public abstract SchemaComponentCache parseTheSchema();
+    // replace this one with use of getSchemaParser(), possibly in combination with getCache()
 
     // instantiating test cases take the parsed document, the typedContext,
     // and initialize a validator (which bridgetest cannot depend upon, just like the parser)
     // validate the supplied already-parsed instance, and return the result.
     public abstract N validateTheInstance(N parsedDocument);
+    // replace with getValidationHandler(), initialize as needed and pass to tc.validate()
+    
+    // almost all of this needs to be rewritten, though. what do we really want to test when
+    // we're checking the functionality of the typed model? just the methods that are added
+    // on top of the model's methods? that seems pleasingly parsimonious.
 
     @Test
     public void stringValues()

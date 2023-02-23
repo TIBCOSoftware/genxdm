@@ -12,14 +12,38 @@ import org.genxdm.bridgekit.xs.CanonicalCastingContext;
 import org.genxdm.bridgetest.typed.TypedTestBase;
 import org.genxdm.exceptions.AtomCastException;
 import org.genxdm.exceptions.GenXDMException;
+import org.genxdm.typed.ValidationHandler;
 import org.genxdm.typed.types.AtomBridge;
 import org.genxdm.typed.types.CastingContext;
+import org.genxdm.xs.SchemaParser;
 import org.genxdm.xs.types.NativeType;
+import org.junit.Before;
 import org.junit.Test;
 
+// Jan 2023 this test is prolly okay; it could prolly be improved in any
+// number of ways, but it does what it should: it checks the typed value
+// models for expected behaviors. we think (we've only ever tested two
+// different typed value models, which were related to each other, and
+// since both have long since passed as okay, this code gets run, but
+// nobody's looked at it, really).
 public abstract class AtomBridgeBase<N, A>
     extends TypedTestBase<N, A>
 {
+    
+    // neither of these two typedtestbase base methods are required for this particular test;
+    // we do all of our testing here using the default schemacomponentcache.
+    @Override
+    public ValidationHandler<A> getValidationHandler()
+    {
+        return null;
+    }
+    
+    @Override
+    public SchemaParser getSchemaParser()
+    {
+        return null;
+    }
+    
     @Test
     public void createDerivedIntegers()
     {
@@ -27,7 +51,7 @@ public abstract class AtomBridgeBase<N, A>
               NativeType.UNSIGNED_INT, NativeType.UNSIGNED_SHORT, NativeType.UNSIGNED_BYTE,
               NativeType.POSITIVE_INTEGER, NativeType.NEGATIVE_INTEGER, NativeType.NON_POSITIVE_INTEGER };
         // we want this to fail when they're given values out of range.
-        AtomBridge<A> bridge = getTypedContext(null).getAtomBridge();
+        AtomBridge<A> bridge = tc.getAtomBridge();
         for (final NativeType type : derivedIntTypes)
         {
             // iterate over NON_NEGATIVE_INTEGER and the four unsigned: test -1.
@@ -81,7 +105,7 @@ public abstract class AtomBridgeBase<N, A>
         // test numeric casting: every numeric type to every other numeric type
         // pay attention at the boundaries: min, min-1, max, max+1 for target type
         // optional (maybe later): other types? with numeric as target only, though
-        AtomBridge<A> bridge = getTypedContext(null).getAtomBridge();
+        AtomBridge<A> bridge = tc.getAtomBridge();
         for (final NativeType targetType : numericTypes)
         {
             for (final NativeType sourceType : numericTypes)
@@ -111,6 +135,14 @@ public abstract class AtomBridgeBase<N, A>
     public void castingMiscellaneous()
     {
         // possibly including duration, dates, qname, anyuri, binary unsure
+    }
+    
+    @Before
+    public void initMembers()
+    {
+        schema = getCache();
+        parser = getSchemaParser();
+        tc = context.getTypedContext(schema);
     }
     
     // other test cases: creation of each type
@@ -1876,6 +1908,8 @@ public abstract class AtomBridgeBase<N, A>
         }
         return result;
     }
+    
+    
     
     private final NativeType [] numericTypes = { NativeType.FLOAT, NativeType.DOUBLE, NativeType.DECIMAL,
             NativeType.INTEGER, NativeType.NON_POSITIVE_INTEGER, NativeType.NEGATIVE_INTEGER,

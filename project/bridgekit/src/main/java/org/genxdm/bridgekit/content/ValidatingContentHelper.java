@@ -28,14 +28,16 @@ public class ValidatingContentHelper<N, A>
     // this is the tree-oriented validation version. really, this just means that the
     // validator exposes a standard sequencehandler interface.
     // maybe allow a default namespace prefix to be passed?
-    public ValidatingContentHelper(ValidationHandler<A> validator, TypedContext<N, A> context)
+    // caller required to create a sequence builder (even though we could do so) because
+    // they need to be able to retrieve the 
+    public ValidatingContentHelper(ValidationHandler<A> validator, TypedContext<N, A> context, SequenceBuilder<N, A> builder)
     {
         //
         m_xdmValidator = PreCondition.assertNotNull(validator, "validator");
         m_context = PreCondition.assertNotNull(context, "context");
         m_bridge = m_context.getAtomBridge();
+        m_builder = PreCondition.assertNotNull(builder, "builder");
         // now, basically do the same thing that we usually do in the "validate()" method in typedcontext
-        m_builder = m_context.newSequenceBuilder();
         m_xdmValidator.setSchema(m_context.getSchema());
         m_xdmValidator.setSequenceHandler(m_builder);
         // folks who want to use a catcher (or something else need to set it before passing the validator in
@@ -50,9 +52,9 @@ public class ValidatingContentHelper<N, A>
     // note that you don't have to use the binary methods, if your binary bits are small enough that you
     // don't have to care about the cost of encoding. just let them go through as encoded text values,
     // and the validator will fix it.
-    public ValidatingContentHelper(ValidationHandler<A> validator, TypedContext<N, A> context, Set<QName> hexElements, Set<QName> hexAtts)
+    public ValidatingContentHelper(ValidationHandler<A> validator, TypedContext<N, A> context, SequenceBuilder<N, A> builder, Set<QName> hexElements, Set<QName> hexAtts)
     {
-        this(validator, context);
+        this(validator, context, builder);
         m_hexElements = hexElements;
         // doing this for attributes is obviously fragile, but so is the whole hack
         m_hexAttributes = hexAtts;
@@ -281,8 +283,7 @@ public class ValidatingContentHelper<N, A>
         }
         m_nsStack.reset();
         m_xdmValidator.reset();
-        m_builder = m_context.newSequenceBuilder();
-        m_xdmValidator.setSequenceHandler(m_builder);
+        m_builder.reset();
         // do something with the schema exception handler?
     }
 
@@ -317,7 +318,7 @@ public class ValidatingContentHelper<N, A>
     private final TypedContext<N, A> m_context;
     private final AtomBridge<A> m_bridge;
     private final ValidationHandler<A> m_xdmValidator;
-    // not implemented, but this assumes the easy path: pass a Validator and only one these two will be non-null
+    // not implemented, but this assumes the easy path: pass a Validator and only one of these two will be non-null
     //private final SAXValidator<A> m_saxValidator;
     private final NamespaceContextStack m_nsStack = new NamespaceContextStack("vchns");
     

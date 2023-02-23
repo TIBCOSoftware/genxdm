@@ -1,161 +1,89 @@
 package org.genxdm.bridgetest.typed;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-
-import javax.xml.namespace.QName;
+import java.io.IOException;
+import java.io.InputStream;
 
 import org.genxdm.ProcessingContext;
-import org.genxdm.bridgekit.xs.ComponentBagImpl;
-import org.genxdm.bridgekit.xs.complex.ComplexTypeImpl;
-import org.genxdm.bridgekit.xs.complex.ContentTypeImpl;
-import org.genxdm.bridgekit.xs.complex.ElementDeclTypeImpl;
+import org.genxdm.bridgekit.xs.SchemaCacheFactory;
 import org.genxdm.bridgetest.TestBase;
+import org.genxdm.io.DocumentHandler;
 import org.genxdm.typed.TypedContext;
-import org.genxdm.typed.io.SequenceBuilder;
-import org.genxdm.typed.types.TypesBridge;
+import org.genxdm.typed.ValidationHandler;
+import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.SchemaComponentCache;
-import org.genxdm.xs.components.ElementDefinition;
-import org.genxdm.xs.constraints.AttributeUse;
-import org.genxdm.xs.enums.DerivationMethod;
-import org.genxdm.xs.enums.ScopeExtent;
-import org.genxdm.xs.types.ComplexType;
-import org.genxdm.xs.types.NativeType;
+import org.genxdm.xs.SchemaParser;
+import org.genxdm.xs.exceptions.AbortException;
+import org.genxdm.xs.exceptions.SchemaExceptionThrower;
 import org.junit.Before;
+
+// massive changes applied here jan 2023. Original implementation tried to
+// apply the untyped pattern to typed code, which was naive, clumsy, and
+// so irritating to attempt to do that it was apparently repeatedly deferred.
+// modified to be properly abstract, to throw away the enumeration of typed
+// documents schema caches (which was largely empty anyway due to the above
+// noted problems).
+// this is now abstract, and where necessary, asks the implementing concrete
+// class to provide information by the usual abstract "give me this object"
+// pattern used everywhere else. In this case, we get a validator and a
+// schema parser (but not, please note, a schemacomponentcache; it's up to
+// our tests to initialize that and keep track of the right one).
 
 public abstract class TypedTestBase<N, A>
     extends TestBase<N>
 {
-    protected static enum Doctype
-    { 
-        SIMPLEST
-        {
-            public void initializeSchema(SchemaComponentCache schema)
-            {
-                // dead simple: it has a single empty element called "doc"
-                // of course, that turns out not to be so simple, because an
-                // element definition has a type.  And that type has a base type, and a content model,
-                // and more *crap* than can be easily imagined.
-                QName typeName = new QName(NSCOM, "docType");
-                ComplexType docElementType = new ComplexTypeImpl(typeName, 
-                        /*native*/false, 
-                        /*anonymous*/false, 
-                        ScopeExtent.Global,
-                        /*base type*/schema.getComponentProvider().getComplexUrType(), 
-                        /*derivation method*/DerivationMethod.Restriction, 
-                        /*attribute uses (map) (permitted attributes)*/new HashMap<QName, AttributeUse>(), 
-                        /*content type*/ContentTypeImpl.EMPTY, 
-                        /*block (set of derivation methods)*/EnumSet.noneOf(DerivationMethod.class),
-                        /*atoms*/schema.getComponentProvider().getAtomicType(NativeType.UNTYPED_ATOMIC));
-                
-                QName name = new QName(NSCOM, "doc");
-                ElementDefinition docElement = new ElementDeclTypeImpl(name, ScopeExtent.Global, docElementType);
-                // and you can't register components individually, either.
-                ComponentBagImpl bag = new ComponentBagImpl();
-                bag.add(docElementType);
-                bag.add(docElement);
-                schema.register(bag);
-            }
-            public <N, A> N buildTypedDocument(SequenceBuilder<N, A> builder, TypesBridge schema)
-            {
-                builder.startDocument(null, null);
-                builder.startElement(NSCOM, "doc", "", new QName(NSCOM, "docType"));
-                builder.namespace("", NSCOM);
-                builder.endElement();
-                builder.endDocument();
-                return builder.getNode();
-            }
-        },
-        
-        TEXTMARKUP
-        {
-            public void initializeSchema(SchemaComponentCache schema)
-            {
-                // still very simple, basically a simple structured document.
-                // doc { 
-                //          title {text}, 
-                //          para {mixed: text, em{text}, bold{text}, link{@href, text}, fnref{@idref}}+, 
-                //          fn{ mixed: text, link{@href, text}* 
-                // }
-                // define link globally, refer to it.
-            }
-            public <N, A> N buildTypedDocument(SequenceBuilder<N, A> builder, TypesBridge schema)
-            {
-                return null;
-            }
-        },
-        
-        PO
-        {
-            public void initializeSchema(SchemaComponentCache schema)
-            {
-                // more complex, and using some basic types.
-                // purchaseorder {
-                //     shipto[addr],
-                //     billto[addr],
-                //     orderdate[datetime]
-                //     items {
-                //         item { name, sku, quantity }
-                //     }
-                // }
-            }
-            public <N, A> N buildTypedDocument(SequenceBuilder<N, A> builder, TypesBridge schema)
-            {
-                return null;
-            }
-        }, 
-        
-        SOAPYMESS
-        {
-            public void initializeSchema(SchemaComponentCache schema)
-            {
-                // dunno about doing a genuine soap message; that really would
-                // be a mess.  let's try for just the body, or something.
-                // the big deal here is that we want to have multiple
-                // namespaces involved.
-            }
-            public <N, A> N buildTypedDocument(SequenceBuilder<N, A> builder, TypesBridge schema)
-            {
-                return null;
-            }
-        };
-        
-        public abstract void initializeSchema(SchemaComponentCache schema);
-        
-        public abstract <N, A> N buildTypedDocument(SequenceBuilder<N, A> builder, TypesBridge schema);
-    };
     
-    // convenience method for testing typed context variants
-    protected TypedContext<N, A> getTypedContext(SchemaComponentCache schema)
-    {
-        return context.getTypedContext(schema);
-    }
+    // concrete classes must provide; we will configure
+    // this one isn't a member variable, because the whole process of
+    // parsing needs to happen before we initialize the validator with
+    // an initialized cache.
+    public abstract ValidationHandler<A> getValidationHandler();
     
-    // to use this, specify one of the enums
-    // then we'll build a document that has appropriate annotations.
-    // then the actual test code can verify things about the well-known
-    // schema components and documents that are created.
-    protected N createValidTypedDocument(TypedContext<N, A> schemaContext, Doctype dc)
+    // concrete classes must provide; we will configure
+    public abstract SchemaParser getSchemaParser();
+    
+    // default implementation returns null; this will be used to get a TypedContext which
+    // will then be associated with the specific schema component cache initialized for us.
+    // it can be overridden by a subclass (including concrete subclass) to initialize the
+    // cache with stuff that's not part of the test.
+    public SchemaComponentCache getCache()
     {
-        // create/register the schema components
-        dc.initializeSchema(schemaContext.getSchema());
-        // build the typed document
-        N document = dc.buildTypedDocument(schemaContext.newSequenceBuilder(), schemaContext.getTypesBridge());
-        // return it
-        return document;
+        if (schema == null)
+        {
+            SchemaCacheFactory factory = new SchemaCacheFactory();
+            schema =  factory.newSchemaCache();
+        }
+        return schema;
     }
     
     @Before
-    public void setUp()
+    public void setContext()
     {
         context = newProcessingContext();
+        schema = getCache();
+        tc = context.getTypedContext(schema);
+    }
+    
+    protected ComponentBag parseSchema(final String baseDir, final String targetResource)
+        throws AbortException, IOException
+    {
+        schema = getCache();
+        parser = getSchemaParser();
+        parser.setComponentProvider(schema.getComponentProvider());
+    
+        InputStream stream = getClass().getClassLoader().getResourceAsStream(baseDir+targetResource);
+
+        return parser.parse(null, stream, null, SchemaExceptionThrower.SINGLETON);
     }
 
-    static int nextType = 0;
+    public N parseInstance(final DocumentHandler<N> docHandler, final String baseDir, final String target)
+        throws IOException
+    {
+        InputStream stream = getClass().getClassLoader().getResourceAsStream(baseDir+target);
+        return docHandler.parse(stream, null);
+    }
     
     protected ProcessingContext<N> context;
-    protected static final String NSCOM = "http://www.example.com/namespace";
-    protected static final String NSORG = "http://www.example.org/namespace";
-    protected static final String NSNET = "http://www.example.net/namespace";
-    protected static final String NSANON = "http://www.example.anon/namespace";
+    protected TypedContext<N, A> tc;
+    protected SchemaComponentCache schema; // once initialized, we can run multiple tests with the same cache.
+    protected SchemaParser parser;
 }

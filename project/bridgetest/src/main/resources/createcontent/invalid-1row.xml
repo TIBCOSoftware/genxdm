@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<table xmlns="http://www.example.com/typedContent">
+    <row><id>xyzzy</id><name>word</name><name>extra name</name><dateValue>1980-04-15</dateValue><timeValue>12:34:56.78</timeValue><countValue>17</countValue></row>
+    <row><description>wrong row</description></row>
+    <row>text</row>
+</table>
