@@ -300,6 +300,12 @@ public class ValidatingContentHelper<N, A>
     {
         PreCondition.assertNotNull(generator, "generator");
         PreCondition.assertTrue(generator.isElement(), "SequenceGenerator must be positioned on an element");
+        if(generator instanceof TypedQueueGenerator)
+        {
+            TypedQueueGenerator<A> typedQueueGenerator = (TypedQueueGenerator<A>) generator;
+            typedQueueGenerator.injectAtomBridge(m_bridge);
+            typedQueueGenerator.injectHexLists(m_hexElements, m_hexAttributes);
+        }
         generator.write(m_xdmValidator, false);
     }
 
