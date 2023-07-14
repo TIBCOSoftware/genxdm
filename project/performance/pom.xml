@@ -42,12 +42,12 @@
     <dependency>
         <groupId>org.genxdm</groupId>
         <artifactId>bridge.dom</artifactId>
-        <version>[1.8.1,2)</version>
+        <version>1.8.1</version>
     </dependency>
     <dependency>
         <groupId>org.genxdm</groupId>
         <artifactId>bridge.cx</artifactId>
-        <version>[1.8.1,2)</version>
+        <version>1.8.1</version>
     </dependency>
     <dependency>
         <groupId>org.apache.ws.commons.axiom</groupId>
@@ -57,12 +57,12 @@
     <dependency>
         <groupId>org.genxdm</groupId>
         <artifactId>bridge.axiom</artifactId>
-        <version>[1.8.1,2)</version>
+        <version>1.8.1</version>
     </dependency>
     <dependency>
         <groupId>org.genxdm</groupId>
         <artifactId>processor.w3c.xs.validation</artifactId>
-        <version>[1.8.1,2)</version>
+        <version>1.8.1</version>
     </dependency>
     <dependency>
       <groupId>xerces</groupId>

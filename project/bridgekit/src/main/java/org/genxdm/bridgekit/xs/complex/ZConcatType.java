@@ -27,7 +27,7 @@ public final class ZConcatType
     extends ForeignAttributesImpl
     implements ConcatType
 {
-    public static  SequenceType concat(final SequenceType lhs, final SequenceType rhs)
+    public static SequenceType concat(final SequenceType lhs, final SequenceType rhs)
     {
         PreCondition.assertArgumentNotNull(lhs, "lhs");
         PreCondition.assertArgumentNotNull(rhs, "rhs");
@@ -48,6 +48,37 @@ public final class ZConcatType
             return new ZConcatType(lhs, rhs);
         }
     }
+    
+    public static SequenceType concatIterable(Iterable<SequenceType> typesList)
+    {
+        SequenceType lhs = new ZEmptyType();
+        boolean lhsEmpty = true;
+        for (final SequenceType rhs : typesList)
+        {
+            if (lhsEmpty) // first time through, at least
+            {
+                    lhs = concat(lhs, rhs); // may return lhs, rhs, or concat both
+                if (!isEmptyType(lhs))
+                    lhsEmpty = false; // non-empty from this point, never reenter
+            }
+            else // as soon as !lhsEmpty once
+            {
+                 if (!isEmptyType(rhs)) // if not empty, concat
+                     lhs = new ZConcatType(lhs, rhs);
+                 // else rhs is empty, discard
+            }
+        }
+        return lhs;
+    }
+    
+    private static boolean isEmptyType(final SequenceType sType)
+    {
+        return (sType.prime().isNone() && sType.quantifier().isOptional());
+    }
+
+
+    
+    
     private final SequenceType m_lhs;
 
     private final SequenceType m_rhs;
