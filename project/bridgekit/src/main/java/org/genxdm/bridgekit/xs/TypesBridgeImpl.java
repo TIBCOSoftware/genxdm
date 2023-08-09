@@ -434,6 +434,12 @@ public final class TypesBridgeImpl implements TypesBridge
     {
         return ZConcatType.concat(lhs, rhs);
     }
+    
+    @Override
+    public SequenceType concat(final Iterable<SequenceType> types)
+    {
+    	return ZConcatType.concatIterable(types);
+    }
 
     @Override
     public SequenceType contentType(final SequenceType type)

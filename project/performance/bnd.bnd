@@ -1,10 +1,10 @@
-Bundle-Version: 1.8.1
-Export-Package: org.genxdm.samples.performance;version=1.8,\
-	org.genxdm.samples.performance.bridges;version=1.8,\
-	org.genxdm.samples.performance.bridges.axiom;version=1.8,\
-	org.genxdm.samples.performance.bridges.cx;version=1.8,\
-	org.genxdm.samples.performance.bridges.dom;version=1.8,\
-	org.genxdm.samples.performance.dom;version=1.8
+Bundle-Version: 1.9.0
+Export-Package: org.genxdm.samples.performance;version=1.9,\
+	org.genxdm.samples.performance.bridges;version=1.9,\
+	org.genxdm.samples.performance.bridges.axiom;version=1.9,\
+	org.genxdm.samples.performance.bridges.cx;version=1.9,\
+	org.genxdm.samples.performance.bridges.dom;version=1.9,\
+	org.genxdm.samples.performance.dom;version=1.9
 -runee: JavaSE-1.8
 src: src/main/java
 bin: target/classes

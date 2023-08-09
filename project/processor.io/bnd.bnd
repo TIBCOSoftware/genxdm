@@ -1,8 +1,8 @@
-Bundle-Version: 1.8.1
-Export-Package: org.genxdm.processor.input;version=1.8,\
-	org.genxdm.processor.io;version=1.8,\
-	org.genxdm.processor.io.adapters;version=1.8,\
-	org.genxdm.processor.output;version=1.8
+Bundle-Version: 1.9.0
+Export-Package: org.genxdm.processor.input;version=1.9,\
+	org.genxdm.processor.io;version=1.9,\
+	org.genxdm.processor.io.adapters;version=1.9,\
+	org.genxdm.processor.output;version=1.9
 -runee: JavaSE-1.8
 src: src/main/java
 bin: target/classes

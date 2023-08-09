@@ -104,6 +104,14 @@ public interface TypesBridge
      * Returns a type denoting the combined sequence of two types.
      */
     SequenceType concat(SequenceType one, SequenceType two);
+    
+    /**
+     * Returns a type denoting the combined sequence of all the types
+     * evaluated as if concatenated in order.
+     * This is a performance optimization for long collections of
+     * concat(SequenceType, SequenceType)
+     */
+    SequenceType concat(Iterable<SequenceType> types);
 
     /**
      * <table border="1">
