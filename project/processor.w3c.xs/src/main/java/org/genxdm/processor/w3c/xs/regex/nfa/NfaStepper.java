@@ -18,6 +18,8 @@ package org.genxdm.processor.w3c.xs.regex.nfa;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.genxdm.exceptions.PreCondition;
 import org.genxdm.processor.w3c.xs.regex.api.RegExBridge;
@@ -108,8 +110,10 @@ final class NfaStepper<E, T> implements RegExMachineWithFollowers<E, T>
 
 		// TODO: Find a more efficient way to do this? Some solutions use a generation number but that
 		// TODO: would mean labelling the states diectly.
-		List<NfaMatchState<E>> visitedThisTurn = new ArrayList<NfaMatchState<E>>(23);
+//		List<NfaMatchState<E>> visitedThisTurn = new ArrayList<NfaMatchState<E>>(23);
 		// Map visitedThisTurn = new HashMap();
+		Set visitedThisTurn = new HashSet<NfaMatchState<E>>();
+		
 
 		// Append a marker to separate the current states from the next states
 		m_clist.add(m_marker);
@@ -173,7 +177,8 @@ final class NfaStepper<E, T> implements RegExMachineWithFollowers<E, T>
 					/*
 					 * if (!visitedThisTurn.containsKey(next)) { visitedThisTurn.put(next, next); work.addHead(next); }
 					 */
-					if (visitedThisTurn.indexOf(next) == -1)
+//					if (visitedThisTurn.indexOf(next) == -1)
+					if (!visitedThisTurn.contains(next))
 					{
 						visitedThisTurn.add(next);
 						m_clist.addFirst(next); // push onto deque so as not to be behind the marker
@@ -201,7 +206,8 @@ final class NfaStepper<E, T> implements RegExMachineWithFollowers<E, T>
 					/*
 					 * if (!visitedThisTurn.containsKey(next)) { visitedThisTurn.put(next, next); work.addHead(next); }
 					 */
-					if (visitedThisTurn.indexOf(next) == -1)
+//					if (visitedThisTurn.indexOf(next) == -1)
+					if (!visitedThisTurn.contains(next))
 					{
 						visitedThisTurn.add(next);
 						m_clist.addFirst(next); // push onto deque so as not to be behind the marker
