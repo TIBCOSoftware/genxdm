@@ -9,8 +9,10 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
+import org.genxdm.bridgekit.xs.BuiltInSchema;
 import org.genxdm.creation.Attrib;
 import org.genxdm.creation.BinaryAttrib;
 import org.genxdm.exceptions.GenXDMException;
@@ -27,7 +29,9 @@ import org.genxdm.xs.components.ModelGroup;
 import org.genxdm.xs.components.ParticleTerm;
 import org.genxdm.xs.components.SchemaParticle;
 import org.genxdm.xs.constraints.AttributeUse;
+import org.genxdm.xs.constraints.ValueConstraint;
 import org.genxdm.xs.exceptions.DatatypeException;
+import org.genxdm.xs.types.AtomicType;
 import org.genxdm.xs.types.ComplexType;
 import org.genxdm.xs.types.ContentType;
 import org.genxdm.xs.types.ContentTypeKind;
@@ -72,17 +76,29 @@ class TypePromoter<A>
     @Override
     public void attribute(final String namespaceURI, final String localName, final String prefix, final String value, final DtdAttributeKind type) throws GenXDMException
     {
-        if (m_attributes == null) // common: we don't create this until/unless it's needed
-            m_attributes = new TreeSet<Attrib>(new AttribComparator());
-        m_attributes.add(new Attr(namespaceURI, localName, prefix, value));
+        if(m_attributesMap == null)
+            m_attributesMap = new HashMap<QName, SortedSet<Attrib>>();
+        SortedSet<Attrib> allAttrsForElem = null;
+        if((allAttrsForElem = m_attributesMap.get(getCurrentElementName())) == null)
+        {
+            allAttrsForElem = new TreeSet<Attrib>(new AttribComparator());
+        }
+        allAttrsForElem.add(new Attr(namespaceURI, localName, prefix, value));
+        m_attributesMap.put(getCurrentElementName(), allAttrsForElem);
     }
     
     // interface is package
     public void binaryAttribute(final String namespaceURI, final String localName, final String prefix, final byte[] data)
     {
-        if (m_attributes == null)
-            m_attributes = new TreeSet<Attrib>(new AttribComparator());
-        m_attributes.add(new BinaryAttr(namespaceURI, localName, prefix, data));
+        if(m_attributesMap == null)
+            m_attributesMap = new HashMap<QName, SortedSet<Attrib>>();
+        SortedSet<Attrib> allAttrsForElem = null;
+        if((allAttrsForElem = m_attributesMap.get(getCurrentElementName())) == null)
+        {
+            allAttrsForElem = new TreeSet<Attrib>(new AttribComparator());
+        }
+        allAttrsForElem.add(new BinaryAttr(namespaceURI, localName, prefix, data));
+        m_attributesMap.put(getCurrentElementName(), allAttrsForElem);
     }
 
     @Override
@@ -108,6 +124,8 @@ class TypePromoter<A>
     public void endElement() throws GenXDMException
     {
         closeStartTag();
+        m_attributeUsesMap.remove(getCurrentElementName());
+        m_attributesMap.remove(getCurrentElementName());
         m_target.endElement();
         m_types.pop();
         m_elements.pop();
@@ -192,18 +210,16 @@ class TypePromoter<A>
     {
         // this can be called directly with the xsi type override, otherwise is called internally.
         PreCondition.assertNotNull(type, "{"+namespaceURI+"}"+localName+" type");
+        QName elementQName = new QName(namespaceURI, localName, prefix);// old form :nsStack.getPrefix(ns, bindings));
         Type actualType = m_provider.getTypeDefinition(type);
         if (actualType == null)
             actualType = m_lastActualTypeDiscovered;
         if (actualType instanceof ComplexType) // do some more setup: attribute uses, if any, and attribute set container
         {
             final ComplexType cType = (ComplexType)actualType;
-            m_attributeUses = cType.getAttributeUses();
-        }
-        else // simple type
-        {
-            m_attributeUses = null;
-            m_attributes = null;
+            if(m_attributeUsesMap == null)
+                m_attributeUsesMap = new HashMap<QName, Map<QName, AttributeUse>>();
+            m_attributeUsesMap.put(elementQName, cType.getAttributeUses());
         }
         m_target.startElement(namespaceURI, localName, prefix, type);
         m_elements.push(new QName(namespaceURI, localName, prefix));
@@ -299,7 +315,8 @@ class TypePromoter<A>
     public void reset()
     {
         //m_target.reset(); // don't have a reset in seqhandler?
-        m_attributeUses = null;
+        m_attributesMap.clear();
+        m_attributeUsesMap.clear();
         m_types.clear();
         m_elements.clear();
         m_lastActualTypeDiscovered = null;
@@ -315,6 +332,8 @@ class TypePromoter<A>
         // 6: after handling all of the specified attributes, check if some 'attribute uses' remain, and
         //    if so, checkformissing, again, with that subset, insertion or exception possible.
         // do we have any attributes?
+        SortedSet<Attrib> m_attributes = m_attributesMap.get(getCurrentElementName());
+        Map<QName, AttributeUse> m_attributeUses = m_attributeUsesMap.get(getCurrentElementName());
         if (m_attributes == null)
         {
             if ((m_attributeUses != null) && !m_attributeUses.isEmpty())
@@ -324,18 +343,87 @@ class TypePromoter<A>
         {
             // compare attributes (all of them at once!) with attribute uses.
             // first, if none are allowed, throw an exception.
+
             if (m_attributeUses == null)
+            {
+                ElementDefinition element = m_provider.getElementDeclaration(getCurrentElementName());
+                if(element == null && !(getCurrentElementType() instanceof ComplexType))
+                {
+                    // At this point in the execution, the element types Deque contains a simple element's type. Not it's parent's, which is what we want 
+                    // So, pop the deque, store the type to add it back later
+                    final Type typeToAddBack =  m_types.pop();
+                    element = getElementDeclarationFromComplexParent();
+                    m_types.push(typeToAddBack); // add back the popped type to the Deque
+                }
+                else if(element == null && (getCurrentElementType() instanceof ComplexType))
+                {
+                    element = getElementDeclarationFromComplexParent();
+                }
+                if(element != null && element.isNillable())
+                {
+                    final ValueConstraint valueConstraint = element.getValueConstraint();
+                    if(valueConstraint != null && valueConstraint.getVariety().isFixed())
+                    {
+                        throw new GenXDMException("Element "+getCurrentElementName()+" cannot be nilled because its type "+getCurrentElementType().getName()+" has a fixed {value constraint}");
+                    }
+                    boolean wasNilSeen = false;
+                    for (final Attrib a: m_attributes)
+                    {
+                        if(wasNilSeen) // protects against creating more than one occurrence of xsi:nil="true" for the same simple type element. If attempted, throw an error)
+                            break;
+                        QName key = null;
+                        if(a instanceof Attr)
+                        {
+                            Attr innerAttr = (Attr) a;
+                            key = new QName(innerAttr.getNamespace(), innerAttr.getName(), innerAttr.getPrefix());
+                        }
+                        else
+                        {
+                            key = new QName(a.getNamespace(), a.getName());
+                        }
+                        wasNilSeen = checkAndHandleNilAttribute(key, a);
+                        if(!wasNilSeen) // protects against creating a non nil attribute for simple type attributes. Not allowed. Throw error
+                            break;
+                    } // For loop over attributes ends here
+                    if(wasNilSeen)
+                        return; // We are done handling this simple type which has one xsi:nil="true" attribute
+                } // if element is not null and is nillable ends here
                 throw new GenXDMException("Element "+getCurrentElementName()+" contains "+m_attributes.size()+"attributes when type "+getCurrentElementType().getName()+" allows none");
+            } //If attribute uses is null ends here
             // make a shallow copy, and check that it contains something
             // we can modify the shallow copy by removing attribute uses, but not the original.
             Map<QName, AttributeUse> unusedSoFar = new HashMap<QName, AttributeUse>(m_attributeUses);
             //if (unusedSoFar.isEmpty()) // we have no allowed attributes, but at least one is here. it will throw
             // an exception in the for loop for m_attributes.
+            boolean wasNilSeen = false;
             for (final Attrib a: m_attributes)
             {
                 final boolean isBinary = a instanceof BinaryAttrib;
-                final QName key = new QName(a.getNamespace(), a.getName());
-                final AttributeUse use = unusedSoFar.get(key);
+                QName key = null;
+                if(a instanceof Attr)
+                {
+                    Attr innerAttr = (Attr) a;
+                    key = new QName(innerAttr.getNamespace(), innerAttr.getName(), innerAttr.getPrefix());
+                }
+                else
+                {
+                    key = new QName(a.getNamespace(), a.getName());
+                }
+                wasNilSeen = checkAndHandleNilAttribute(key, a); // handle xsi:nil attribute
+                if(wasNilSeen)
+                    continue;
+                AttributeUse use = unusedSoFar.get(key);
+                // Try with just the element name
+                if(use == null)
+                {
+                    key = new QName(a.getName());
+                    use = unusedSoFar.get(key);
+                }
+                // Try with the element name, and namespace
+                if(use == null)
+                {
+                    key = new QName(getCurrentElementName().getNamespaceURI(), a.getName());
+                }
                 if (use == null) // this attribute not allowed in this element
                 {
                     if (isBinary) // protection against blowing the heap/stack with a BLOB in an error message
@@ -390,6 +478,44 @@ class TypePromoter<A>
     QName getCurrentElementName()
     {
         return m_elements.peekFirst();
+    }
+    
+    private ElementDefinition getElementDeclarationFromComplexParent()
+    {
+        ElementDefinition element = null;
+        final Type pType = getCurrentElementType();
+        if(pType != null && pType instanceof ComplexType)
+        {
+            ComplexType cType = (ComplexType)pType;
+            if (!cType.getContentType().getKind().isSimple())
+            {
+                ModelGroup group = cType.getContentType().getContentModel().getTerm();
+                element = locateElementDefinition(group, getCurrentElementName());
+            }
+        }
+        return element;
+    }
+    
+    private boolean checkAndHandleNilAttribute(QName key, Attrib a)
+    {
+        if(key.equals(xsiNil))
+        {
+            if(a.getValue().equals("true"))
+            {
+                final Attr aa = (Attr)a; // this gives us back access to the prefix
+                AtomicType booleanType = BuiltInSchema.SINGLETON.BOOLEAN;
+                try
+                {
+                    attribute(aa.getNamespace(), aa.getName(), aa.getPrefix(), promote(booleanType, aa.getValue()), booleanType.getName());
+                    return true;
+                }
+                catch (DatatypeException dte)
+                {
+                    throw new GenXDMException("In element "+getCurrentElementName()+" attribute "+key+" has invalid content '"+a.getValue()+"' for declared type "+booleanType.getName(), dte);
+                }
+            }
+        }
+        return false;
     }
     
     private void checkForMissingAttributes(Map<QName, AttributeUse> unusedUses) throws GenXDMException
@@ -454,10 +580,8 @@ class TypePromoter<A>
         return content;
     }
     
-    private SortedSet<Attrib> m_attributes = null;
-    private Map<QName, AttributeUse> m_attributeUses = null; // set inside startElement if we have a complex type,
-    // nulled out if it's not a complex type.
-
+    private Map<QName, SortedSet<Attrib>> m_attributesMap = null;
+    private Map<QName, Map<QName, AttributeUse>> m_attributeUsesMap = null; //
     // this is a workaround for a weird problem: if we use m_provider to get a Type (from an element decl, perhaps),
     // then call startElement(... QName type) by using startElement(... type.getName()), then retrieve using:
     // m_provider.getTypeDefinition(QName type), we seem to sometimes get null. So save the original, use it
@@ -470,4 +594,5 @@ class TypePromoter<A>
     private AtomBridge<A> m_bridge;
     private ComponentProvider m_provider;
     
+    private static final QName xsiNil = new QName(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI, "nil");
 }
