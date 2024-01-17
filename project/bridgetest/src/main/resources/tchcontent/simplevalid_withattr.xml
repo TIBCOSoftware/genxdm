@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--  to be used in test cases for TCH using HandlerToHelper instead of the TCH APIs -->
+<table xmlns="http://www.example.com/typedContentWithNillAttr"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		a1="4" a2="a2val">
+    <row r1="4">
+    	<id>xyzzy</id>
+    	<name>word</name>
+    	<dateValue>1980-04-15</dateValue>
+    	<timeValue>12:34:56.78</timeValue>
+    	<countValue>17</countValue>
+    	<description xsi:nil="true"/>
+    </row>
+</table>

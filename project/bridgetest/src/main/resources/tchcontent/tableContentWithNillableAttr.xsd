@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tc="http://www.example.com/typedContentWithNillAttr"
+           targetNamespace="http://www.example.com/typedContentWithNillAttr"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+    <xs:element name="table" type="tc:tableType" /> <!-- sole document element candidate; others locally defined -->
+
+    <xs:complexType name="tableType">
+    	
+        <xs:sequence>
+            <xs:element name="row" type="tc:rowType" maxOccurs="unbounded" minOccurs="1" /> <!-- at least one good row, not all errors -->
+            <xs:element name="errors" type="tc:errorTableType" nillable="true" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="a1" type="xs:int" default="5"/>
+        <xs:attribute name="a2" type="xs:string"/>
+    </xs:complexType>
+    
+    <xs:complexType name="rowType">
+        <xs:sequence>
+            <xs:element name="id" type="xs:token" />
+            <xs:element name="name" type="xs:string" /><!-- dunno, something else? -->
+            <xs:element name="dateValue" type="xs:date" />
+            <xs:element name="timeValue" type="xs:time" />
+            <xs:element name="countValue" type="xs:int" />
+            <xs:element name="description" nillable="true" type="xs:string" minOccurs="0" />
+            <xs:element name="picture" type="xs:base64Binary" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute name="r1" type="xs:int" default="5"/>
+        <xs:attribute name="r2" type="xs:string" default="r2default"/>
+    </xs:complexType>
+    
+    <xs:complexType name="errorTableType">
+        <xs:sequence>
+            <xs:element name="errorCode" type="xs:int" />
+            <xs:element name="errorMsg" type="xs:string" />
+        </xs:sequence>
+        <xs:attribute name="errattr1" type="xs:string" default="errattrval"/>
+        <xs:attribute name="errattr2" type="xs:int" use="required"/>
+    </xs:complexType>
+</xs:schema>
