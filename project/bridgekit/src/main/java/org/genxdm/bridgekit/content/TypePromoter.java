@@ -528,11 +528,13 @@ class TypePromoter<A>
             // prefix, if the attribute is qualified, is prolly wrong. fix this when there's an actual example
             // of failure. this should work for most (unprefixed) attributes (99.8% case).
             // if we had logging, here's where we would log insertion of a default attribute
-            if (unused.getValue().getValueConstraint().getVariety().isDefault())
-                            attribute(unused.getKey().getNamespaceURI(), unused.getKey().getLocalPart(), unused.getKey().getPrefix(),
-                            unused.getValue().getValueConstraint().getValue(m_bridge), unused.getValue().getAttribute().getType().getName());
+            AttributeUse attrUse = unused.getValue();
+            ValueConstraint attrValConstraint = null;
+            if(attrUse != null && (attrValConstraint = attrUse.getValueConstraint()) != null && attrValConstraint.getVariety().isDefault())
+                attribute(unused.getKey().getNamespaceURI(), unused.getKey().getLocalPart(), unused.getKey().getPrefix(),
+                        attrValConstraint.getValue(m_bridge), attrUse.getAttribute().getType().getName());
             // any attribute that is required, but missing: exception
-            else if (unused.getValue().isRequired())
+            else if (attrUse.isRequired())
                 throw new GenXDMException("In element "+getCurrentElementName()+" required attribute "+unused.getKey()+" is missing.");
             // the invisible common case here: an attribute is optional, and has no default value.
             // so it exists in attribute uses, but there is no attribute for this instance. quietly ignore it;
