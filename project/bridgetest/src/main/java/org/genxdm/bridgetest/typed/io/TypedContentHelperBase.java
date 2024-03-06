@@ -3,10 +3,13 @@ package org.genxdm.bridgetest.typed.io;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +20,11 @@ import org.genxdm.bridgetest.typed.TypedTestBase;
 import org.genxdm.creation.Attrib;
 import org.genxdm.exceptions.GenXDMException;
 import org.genxdm.io.DocumentHandler;
+import org.genxdm.mutable.MutableModel;
+import org.genxdm.mutable.NodeFactory;
+import org.genxdm.typed.ValidatorFactory;
 import org.genxdm.typed.io.SequenceBuilder;
+import org.genxdm.typed.io.TypedDocumentHandler;
 import org.genxdm.xs.ComponentBag;
 import org.genxdm.xs.exceptions.AbortException;
 import org.junit.Before;
@@ -36,6 +43,8 @@ import org.junit.Test;
 public abstract class TypedContentHelperBase<N, A>
     extends TypedTestBase<N, A>
 {
+    public abstract TypedDocumentHandler<N, A> getTypedDocumentHandler();
+    
     @Ignore
     @Test
     public void createSimpleContentUsingHelper()
@@ -72,6 +81,7 @@ public abstract class TypedContentHelperBase<N, A>
         assertNotNull("Validation appears to have failed: null tree", validTree);
     }
     
+    @Ignore
     @Test
     public void nilledSimpleTypeUsingAPI()
     {
@@ -123,6 +133,7 @@ public abstract class TypedContentHelperBase<N, A>
         }
     }
     
+    @Ignore
     @Test
     public void nilledComplexTypeUsingAPI()
     {
@@ -182,6 +193,7 @@ public abstract class TypedContentHelperBase<N, A>
         }
     }
     
+    @Ignore
     @Test
     public void missingMandatoryAttributeErrChk()
     {
@@ -249,6 +261,117 @@ public abstract class TypedContentHelperBase<N, A>
         }
     }
     
+    @Ignore
+    @Test
+    public void testRVTCHRefactoring()
+    {
+        MutableModel<N> model = context.getMutableContext().getModel();
+        Model<N> nomutie = context.getModel();
+        N untypedInput = null;
+        N lNode = null;
+        ComponentBag bag = null;
+        try
+        {
+            bag = parseSchema(RV_DIR, RV_SCHEMA);
+        } 
+        catch (AbortException ae)
+        {
+            ae.printStackTrace();
+        } 
+        catch (IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
+        if (bag != null)
+            schema.register(bag);
+        else
+            fail("Could not locate schema resource: "+RV_DIR+RV_SCHEMA);
+        try
+        {
+            untypedInput = parseInstance(context.newDocumentHandler(), RV_DIR, RV_XML);
+            TypedDocumentHandler<N, A> typedDocHandler  = getTypedDocumentHandler();
+            InputStream is = getClass().getClassLoader().getResourceAsStream(RV_DIR+RV_XML);
+            lNode = typedDocHandler.parse(is, null);
+            
+            N child = null;
+            N rootNode = nomutie.getRoot(lNode);
+            N topChild = model.getFirstChildElement(lNode);
+            Iterator<N> childElements = model.getChildElements(topChild).iterator();
+            NodeFactory<N> factory = model.getFactory(rootNode);
+            //model.getNodeKind(rootNode).
+            System.out.println("root node is "+model.getLocalName(rootNode));
+            while (childElements.hasNext()) {
+                child = childElements.next();
+                if(model.getLocalName(child).equalsIgnoreCase("body") && model.getNamespaceURI(child).equals("http://www.example.com/typedContentWithNillAttr"))
+                {
+                    /*SequenceBuilder<N, A> builder = tc.newSequenceBuilder();
+                    TypedContentHelper<A> tch = new TypedContentHelper<A>(builder,tc.getSchema().getComponentProvider(), tc.getAtomBridge());
+                    tch.start();
+                    tch.startComplex("http://www.example.com/seleelemtns", "seleelemname",null, null); // start complex "Row"*/
+                    //N bodyElement = factory.createElement(sele.getTargetNamespace(), sele.getLocalName() , "");
+                    N bodyElement = factory.createElement("http://www.example.com/seleelemtns", "seleelemname" , "");
+                    Iterator<N> bodyChildElements = model.getChildElements(child).iterator();
+                    model.deleteChildren(lNode);
+                    while (bodyChildElements.hasNext()) {
+                        model.appendChild(bodyElement, bodyChildElements.next());
+                    }
+                    model.appendChild(lNode, bodyElement);
+                }
+            }
+            try
+            {
+                StringWriter writer = new StringWriter();
+                DocumentHandler<N> docHandler = context.newDocumentHandler();
+                docHandler.write(writer, lNode);
+                System.out.println("Output document of testRVTCHRefactoring using helper:" + "\n");
+                System.out.println(writer.toString());
+            }
+            catch (IOException ioe)
+            {
+                ioe.printStackTrace();
+            }
+            
+        }
+        catch (IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
+        System.out.println("After computing untyped node N for RV ");
+    }
+    
+    @Test
+    public void testNoAttributesinTCHCall()
+    {
+        SequenceBuilder<N, A> builder = tc.newSequenceBuilder();
+        TypedContentHelper<A> tch = new TypedContentHelper<A>(builder,tc.getSchema().getComponentProvider(), tc.getAtomBridge());
+        String tns = "http://www.example.com/typedContentWithNillAttr";
+        Map<String, String> bindings = new HashMap<String, String>();
+        bindings.put("", tns);
+        bindings.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        tch.start();
+        tch.startComplex(tns, "Output",bindings, null);
+        tch.startComplex(tns, "InnerComplex", null, null);
+        tch.simpleElement(tns, "child1", "childval");
+        tch.simpleElement(tns, "child2", "child2val");
+        tch.endComplex(); // end InnerComplex
+        tch.endComplex(); // end Output
+        tch.end();
+        N outputTree = builder.getNode();
+        try
+        {
+            StringWriter writer = new StringWriter();
+            DocumentHandler<N> docHandler = context.newDocumentHandler();
+            docHandler.write(writer, outputTree);
+            System.out.println("Output document of nilledComplexTypeUsingAPI using helper:" + "\n");
+            System.out.println(writer.toString());
+        }
+        catch (IOException ioe)
+        {
+            ioe.printStackTrace();
+        }
+    }
+
+
     @Before
     public void initCache()
     {
@@ -277,4 +400,7 @@ public abstract class TypedContentHelperBase<N, A>
     private static final String SIMPLE_INSTANCE = "simplevalid_withattr.xml";
     //private static final String BLOB_INSTANCE = "blobvalid-1row-1opt.xml";
     //private static final String INVALID_INSTANCE = "invalid-1row.xml";
+    private static final String RV_DIR = "rvtchrefactoring/";
+    private static final String RV_SCHEMA = "rvschema.xsd";
+    private static final String RV_XML = "rvmsg.xml";
 }

@@ -76,8 +76,6 @@ class TypePromoter<A>
     @Override
     public void attribute(final String namespaceURI, final String localName, final String prefix, final String value, final DtdAttributeKind type) throws GenXDMException
     {
-        if(m_attributesMap == null)
-            m_attributesMap = new HashMap<QName, SortedSet<Attrib>>();
         SortedSet<Attrib> allAttrsForElem = null;
         if((allAttrsForElem = m_attributesMap.get(getCurrentElementName())) == null)
         {
@@ -90,8 +88,6 @@ class TypePromoter<A>
     // interface is package
     public void binaryAttribute(final String namespaceURI, final String localName, final String prefix, final byte[] data)
     {
-        if(m_attributesMap == null)
-            m_attributesMap = new HashMap<QName, SortedSet<Attrib>>();
         SortedSet<Attrib> allAttrsForElem = null;
         if((allAttrsForElem = m_attributesMap.get(getCurrentElementName())) == null)
         {
@@ -220,6 +216,8 @@ class TypePromoter<A>
             if(m_attributeUsesMap == null)
                 m_attributeUsesMap = new HashMap<QName, Map<QName, AttributeUse>>();
             m_attributeUsesMap.put(elementQName, cType.getAttributeUses());
+            if(m_attributesMap == null)
+                m_attributesMap = new HashMap<QName, SortedSet<Attrib>>();
         }
         m_target.startElement(namespaceURI, localName, prefix, type);
         m_elements.push(new QName(namespaceURI, localName, prefix));
