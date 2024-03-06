@@ -39,4 +39,19 @@
         <xs:attribute name="errattr1" type="xs:string" default="errattrval"/>
         <xs:attribute name="errattr2" type="xs:int" use="required"/>
     </xs:complexType>
+    
+    <xs:element name="Output">
+    	<xs:complexType>
+    		<xs:sequence>
+    			<xs:element name="InnerComplex">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="child1" type="xs:string" />
+    						<xs:element name="child2" type="xs:string" />
+    					</xs:sequence>
+    				</xs:complexType>
+    			</xs:element>
+    		</xs:sequence>
+    	</xs:complexType>
+    </xs:element>
 </xs:schema>

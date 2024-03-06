@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rvmessage xmlns="http://www.example.com/typedContentWithNillAttr" xsi:schemaLocation="http://www.example.com/typedContentWithNillAttr schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <body>
+    <introduction>
+      <disclaimer>This is a RV disclaimer</disclaimer>
+      <purpose>To test RV refactoring using TCH API</purpose>
+    </introduction>
+    <maincontent>
+      <paragraph>some random paragraph1</paragraph>
+      <paragraph>some random paragraph2</paragraph>
+      <paragraph>some random paragraph3</paragraph>
+      <images>YTM0NZomIzI2OTsmIzM0NTueYQ==</images>
+      <images>YTM0NZomIzI2OTsmIzM0NTueYQ==</images>
+      <images>YTM0NZomIzI2OTsmIzM0NTueYQ==</images>
+    </maincontent>
+    <conclusion>
+      <summary>This is a nice summary worth a lot of money</summary>
+      <value>49783700000000.2</value>
+    </conclusion>
+  </body>
+  <header>
+  	<headerinfo1>345</headerinfo1>
+    <headerinfo2>someinfo1</headerinfo2>
+    <headerinfo3>23.45</headerinfo3>
+    <hasBody>true</hasBody>
+  </header>
+  <footer>
+    <references>ref1</references>
+    <references>ref2</references>
+    <references>ref3</references>
+    <references>ref4</references>
+    <externallink>https://www.google.com</externallink>
+    <footnote>Byes</footnote>
+  </footer>
+</rvmessage>

@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tc="http://www.example.com/typedContentWithNillAttr"
+           targetNamespace="http://www.example.com/typedContentWithNillAttr"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+    <xs:element name="rvmessage" type="tc:rvMessageType" />
+
+    <xs:complexType name="rvMessageType">
+    	
+        <xs:sequence>
+            <xs:element name="body" type="tc:bodyType" maxOccurs="1" minOccurs="0" />
+            <xs:element name="header" type="tc:headerType" nillable="true" minOccurs="0" maxOccurs="1" />
+            <xs:element name="footer" type="tc:footerType" nillable="true" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="bodyType">
+        <xs:sequence>
+            <xs:element name="introduction">
+            	<xs:complexType>
+            		<xs:sequence>
+            			<xs:element name="disclaimer" type="xs:string" minOccurs="0" maxOccurs="1"></xs:element>
+            			<xs:element name="purpose" type="xs:string" minOccurs="0" maxOccurs="1"></xs:element>
+            			<xs:element name="totalparagraphs" type="xs:int" minOccurs="0" maxOccurs="1"></xs:element>
+            		</xs:sequence>
+            	</xs:complexType>
+            </xs:element>
+            <xs:element name="maincontent">
+            	<xs:complexType>
+            		<xs:sequence>
+            			<xs:element name="paragraph" type="xs:string" minOccurs="1" maxOccurs="20"></xs:element>
+            			<xs:element name="images" type="xs:base64Binary" minOccurs="0" maxOccurs="unbounded"></xs:element>
+            		</xs:sequence>
+            	</xs:complexType>
+            </xs:element>
+            <xs:element name="conclusion">
+            	<xs:complexType>
+            		<xs:sequence>
+            			<xs:element name="summary" type="xs:string" minOccurs="0" maxOccurs="1"></xs:element>
+            			<xs:element name="value" type="xs:float" minOccurs="0" maxOccurs="1"></xs:element>
+            		</xs:sequence>
+            	</xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="headerType">
+        <xs:sequence>
+            <xs:element name="headerinfo1" type="xs:int" minOccurs="0" maxOccurs="1" />
+            <xs:element name="headerinfo2" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="headerinfo3" type="xs:float" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="hasBody" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="footerType">
+        <xs:sequence>
+            <xs:element name="references" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="externallink" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="footnote" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
