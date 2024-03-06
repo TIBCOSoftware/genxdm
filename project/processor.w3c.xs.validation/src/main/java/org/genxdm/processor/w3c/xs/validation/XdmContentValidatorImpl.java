@@ -202,7 +202,10 @@ final class XdmContentValidatorImpl<A> implements ValidationHandler<A>
 		flush();
 		try
 		{
-			kernel.text(atomBridge.wrapAtom(atomBridge.createUntypedAtomic(untypedAtomic)));
+			// If the element is not nillable or is nillable but xsi:nil attribute is not set to true
+			// then no text is added here. Then when we get to endElement() it throws an error saying cvc-type cannot have value ''
+			if(untypedAtomic != null)
+				kernel.text(atomBridge.wrapAtom(atomBridge.createUntypedAtomic(untypedAtomic)));
 		}
 		catch (final IOException ioe)
 		{

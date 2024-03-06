@@ -206,7 +206,7 @@ public class ValidatingContentHelper<N, A>
                 hexed = true;
             }
         }
-        if (!hexed)
+        if (!hexed && data != null)
             data(m_bridge.createBase64Binary(data));
         endComplex();
     }
